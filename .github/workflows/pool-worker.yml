@@ -72,8 +72,8 @@ jobs:
           if (issue.pull_request || issue.state !== "open") throw new Error("Task issue is not an open issue.");
           const labels = issue.labels.map(label => label.name);
           if (!labels.includes("pool:claimed")) throw new Error("Task does not hold the supervisor claim.");
-          const shaMatch = String(issue.body || "").match(/^### Target SHA\\s*\\r?\\n+([0-9a-f]{40})\\s*$/im);
-          const profileMatch = String(issue.body || "").match(/^### Worker profile\\s*\\r?\\n+([^\\r\\n]+)\\s*$/im);
+          const shaMatch = String(issue.body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
+          const profileMatch = String(issue.body || "").match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im);
           if (!shaMatch || shaMatch[1] !== sha) throw new Error("Dispatch SHA does not match the task envelope.");
           if (!profileMatch || profileMatch[1].trim() !== "DSH headless probe") throw new Error("Issue profile does not match the allowlist.");
           const commentsResponse = await fetch("https://api.github.com/repos/" + repo + "/issues/" + issueNumber + "/comments?per_page=100", {
