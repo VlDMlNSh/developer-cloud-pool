@@ -38,11 +38,11 @@ jobs:
           POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
         run: |
           set -euo pipefail
-          if [ "${POOL_DISPATCH_ENABLED:-}" = "true" ]; then
-            echo "::error::POOL_DISPATCH_ENABLED is true; validation refuses to proceed."
+          if [ "${POOL_DISPATCH_ENABLED:-}" != "false" ]; then
+            echo "::error::POOL_DISPATCH_ENABLED must be explicitly false; unset or unexpected values are rejected."
             exit 1
           fi
-          echo "Dispatch gate: disabled or unset." >> "$GITHUB_STEP_SUMMARY"
+          echo "Dispatch gate: explicitly false." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Parse workflow YAML syntax
         shell: bash
