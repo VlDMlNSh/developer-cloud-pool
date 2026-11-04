@@ -75,6 +75,11 @@ test("consumed approval recovery paths require a fresh owner approval", () => {
 test("Worker rejects direct manual dispatch and forged pool:claimed labels", () => {
   const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
   const owner = "VlDMlNSh";
+  const approvalMarker = {
+    user: { login: "github-actions[bot]" },
+    body: formatOwnerApproval({ issueNumber: 17, actor: owner, targetSha: sha, profile: "DSH headless probe" }),
+    created_at: "2026-11-04T20:00:00Z"
+  };
   const consumed = {
     user: { login: "github-actions[bot]" },
     body: formatOwnerApprovalConsumed(17, sha),
@@ -91,7 +96,7 @@ test("Worker rejects direct manual dispatch and forged pool:claimed labels", () 
     created_at: "2026-11-04T20:02:00Z"
   };
   assert.equal(hasWorkerDispatchAuthority({
-    actor: owner, comments: [consumed, claimed], expected, repositoryOwner: owner
+    actor: owner, comments: [approvalMarker, consumed, claimed], expected, repositoryOwner: owner
   }), false);
   assert.equal(hasWorkerDispatchAuthority({
     actor: "github-actions[bot]", comments: [], expected, repositoryOwner: owner
@@ -130,7 +135,53 @@ test("Worker rejects terminal or mismatched Supervisor evidence", () => {
     actor: "github-actions[bot]", comments: [consumed, claimed, terminal], expected, repositoryOwner: "VlDMlNSh"
   }), false);
   assert.equal(hasWorkerDispatchAuthority({
-    actor: "github-actions[bot]", comments: [consumed, { ...claimed, body: claimedBody.replace(sha, "b".repeat(40)) }],
+    actor: "github-actions[bot]", comments: [approvalMarker, consumed, { ...claimed, body: claimedBody.replace(sha, "b".repeat(40)) }],
     expected, repositoryOwner: "VlDMlNSh"
   }), false);
+
+
+test("fresh owner reapproval resets prior terminal evidence but requires a new consumed claim", () => {
+  const owner = "VlDMlNSh";
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const approval = {
+    user: { login: "github-actions[bot]" },
+    body: formatOwnerApproval({ issueNumber: 17, actor: owner, targetSha: sha, profile: "DSH headless probe" }),
+    created_at: "2026-11-04T20:00:00Z"
+  };
+  const consumed = {
+    user: { login: "github-actions[bot]" }, body: formatOwnerApprovalConsumed(17, sha),
+    created_at: "2026-11-04T20:01:00Z"
+  };
+  const claimed = {
+    user: { login: "github-actions[bot]" },
+    body: ["**POOL_TASK_CLAIMED**", "", "- Supervisor run: 123456",
+      "- Target SHA: " + sha, "- Profile: dsh-headless-probe"].join("\\n"),
+    created_at: "2026-11-04T20:02:00Z"
+  };
+  const terminal = {
+    user: { login: "github-actions[bot]" },
+    body: ["**POOL_DSH_PROBE_NEEDS_REVIEW**", "", "- Issue: 17"].join("\\n"),
+    created_at: "2026-11-04T20:03:00Z"
+  };
+  const reapproval = {
+    ...approval,
+    created_at: "2026-11-04T20:04:00Z"
+  };
+  const newConsumed = {
+    ...consumed,
+    created_at: "2026-11-04T20:05:00Z"
+  };
+  const newClaim = {
+    ...claimed,
+    created_at: "2026-11-04T20:06:00Z"
+  };
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [approval, consumed, claimed, terminal],
+    expected, repositoryOwner: owner
+  }), false);
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [approval, consumed, claimed, terminal, reapproval, newConsumed, newClaim],
+    expected, repositoryOwner: owner
+  }), true);
+});
 });
