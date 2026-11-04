@@ -173,10 +173,10 @@ async function recoverStaleClaims() {
 
     const ageMs = Date.now() - updatedAt;
     if (Number.isFinite(ageMs) && ageMs > 15 * 60 * 1000) {
-      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:ready"]);
+      await replaceIssueLabels(issue, ["pool:claimed", "pool:ready"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_CLAIM_LEASE_EXPIRED**\n\nNo matching worker workflow run appeared within 15 minutes. The task was returned to pool:ready for a later reconciliation. No automatic execution retry occurred.");
-      log("Recovered stale claim for task #" + issue.number + " after no worker run appeared.");
+        "**POOL_CLAIM_LEASE_EXPIRED**\n\nNo matching worker workflow run appeared within 15 minutes. The single-use approval was consumed; task moved to pool:needs-review. Fresh owner approval is required before another dispatch.");
+      log("Moved stale claim for task #" + issue.number + " to needs-review; fresh owner approval is required.");
     }
   }
 }
@@ -239,12 +239,12 @@ async function dispatchReadyTasks() {
       log("Dispatched task #" + issue.number + " at immutable SHA " + targetSha + ".");
     } catch (error) {
       const current = await request("/repos/" + ownerRepo + "/issues/" + issue.number);
-      await replaceIssueLabels(current, ["pool:claimed"], ["pool:ready"]);
+      await replaceIssueLabels(current, ["pool:claimed", "pool:ready"], ["pool:needs-review"]);
       await comment(issue.number,
         "**POOL_DISPATCH_FAILED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
         "\n- Failure: " + String(error.message).slice(0, 300) +
-        "\n- State restored to pool:ready. No credential material is recorded.");
-      log("Dispatch failed for task #" + issue.number + "; task returned to ready queue.");
+        "\n- The single-use approval was consumed. Task moved to pool:needs-review; fresh owner approval is required.");
+      log("Dispatch failed for task #" + issue.number + "; task moved to needs-review for fresh owner approval.");
     }
   }
   log("Supervisor cycle complete: " + dispatched + " worker workflow(s) dispatched.");
