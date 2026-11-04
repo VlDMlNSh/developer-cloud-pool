@@ -60,6 +60,8 @@ if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive reposito
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
 if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
+if (!approvalModule.includes("supervisorRun === String(expected.supervisorRun)") ||
+    !approvalModule.includes("actor || \"\").toLowerCase() !== BOT_LOGIN")) fail("Worker authorization helper must bind the exact Supervisor run and bot actor");
 if (!worker.includes("DISPATCH_ACTOR: \${{ github.actor }}") ||
     !worker.includes("hasWorkerDispatchAuthority") ||
     !worker.includes("/comments?per_page=100&sort=created&direction=desc") ||
