@@ -17,12 +17,6 @@ const maxDispatch = Number(process.env.POOL_MAX_DISPATCH || "20");
 const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 
 if (!ownerRepo || !token || !defaultBranch) throw new Error("Missing required GitHub runtime context.");
-if (!dispatchEnabled) {
-  console.log("Pool Supervisor heartbeat only: dispatch is disabled pending default-branch governance and owner approval.");
-  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\n");
-  process.exit(0);
-}
-
 const headers = {
   Accept: "application/vnd.github+json",
   Authorization: "Bearer " + token,
@@ -258,6 +252,10 @@ async function dispatchReadyTasks() {
 
 await ensureLabels();
 await recordOwnerApproval();
+if (!dispatchEnabled) {
+  log("Pool Supervisor approval intake only: dispatch is disabled; no recovery or Worker dispatch will run.");
+  process.exit(0);
+}
 if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
 await dispatchReadyTasks();
