@@ -74,3 +74,8 @@ Obtain an independent review of PR #11 and its parser edge cases, especially dup
 - [Current default branch](https://github.com/VlDMlNSh/developer-cloud-pool/tree/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B9)
 - [Free-only workflow contract](../architecture/GITHUB-FREE-TIER-WORKFLOW-CONTRACT.md)
 - [Gemini controller design contract](../architecture/GEMINI-REVIEW-CONTROLLER-CONTRACT.md)
+
+
+## Post-verification path-filter refinement
+
+The validation workflow's pull-request and push path filters now also include the Free-only policy contract, `docs/reports/**` and `docs/checkpoints/**`. This ensures policy documentation and evidence updates are checked by the same workflow. The code-level test evidence above remains tied to SHA `53e0bba68a429d9acd8dcbc67d5a2527e0971eda`; subsequent changes in this pass are limited to workflow path filters and documentation. The final PR head must be checked for its own exact-head run before this pass is closed.
