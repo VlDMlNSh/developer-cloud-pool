@@ -48,3 +48,15 @@ Design and implement Worker-side authorization so manual/direct dispatch cannot 
 - PR #7 exact-head static CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327): SUCCESS, but independent review remains NOT RUN.
 - `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass; no variable or secret mutation. Worker/DSH/Resource Probe/browser/model execution: NOT RUN.
 - Next: extract a pure Supervisor task-matrix builder with schema/bounds/duplicate/SHA/profile/approval tests. Do not yet wire it to reusable workflow or run Worker.
+
+
+## Task Matrix Builder pass — 2026-11-04
+- Created isolated branch `feat/supervisor-task-matrix-builder-2026-11-04` from PR #7 immutable head `d60d26ae647940e702d646e572c861a8f68f523e`.
+- Added pure `scripts/pool-task-matrix.mjs` and `scripts/pool-task-matrix.test.mjs`.
+- Builder rejects non-open issues, PRs, missing `pool:ready`, malformed target SHA/profile, missing or mismatched approval envelopes, duplicate issue numbers, invalid bounds, and more than 20 tasks. It emits deterministic `{ include: [...] }` matrix entries.
+- Local Node test: 9 passed / 0 failed. GitHub read-back verified module blob `ac0012e8c52e02be6d29e007a5cf8a2aa09113a4` and test blob `f32fd0914b8c96588d977545ec5eb9e0b7133275`.
+- Opened draft PR [#8](https://github.com/VlDMlNSh/developer-cloud-pool/pull/8) targeting PR #7 branch; head `0a8dba68aa12070b3768d6fb834bedf404ed5d99`. PR #8 exact-head workflow runs/status contexts empty: CI NOT VERIFIED. Independent review NOT RUN. PR is not accepted.
+- This is an isolated pure component, NOT integrated into Supervisor. Approval authenticity still depends on caller obtaining approval via trusted `pool-approval.mjs`; the builder does not authenticate GitHub comments itself.
+- PR #7 direct Worker `workflow_dispatch` gap remains BLOCKING. No dispatch, Runner, Worker, DSH, browser, model, secret or variable action. `POOL_DISPATCH_ENABLED` NOT VERIFIED.
+- Report: [Supervisor Task Matrix Builder](../reports/2026-11-04-supervisor-task-matrix-builder.md).
+- Next: implement/test a pure Supervisor planner that obtains approvals through `hasOwnerApproval`, constructs typed builder inputs, and specifies atomic claim/consume ordering and per-matrix terminal recovery. Do not wire to Worker until reusable workflow provenance and recovery design are reviewed.
