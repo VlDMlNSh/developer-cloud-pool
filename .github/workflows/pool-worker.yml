@@ -18,7 +18,7 @@ on:
         options:
           - dsh-headless-probe
 
-run-name: Pool task #${{ inputs.task_issue }} (${{ inputs.profile }})
+run-name: "Pool task #${{ inputs.task_issue }} (${{ inputs.profile }})"
 
 permissions: {}
 
