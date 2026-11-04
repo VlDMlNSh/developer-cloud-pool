@@ -83,3 +83,13 @@ A bounded architecture and component-selection pass for Developer Cloud Pool. Th
 - Tailscale access control: https://tailscale.com/docs/features/access-control/grants
 - Apple Mac mini Server 2011: https://support.apple.com/en-vn/112006
 - Apple Mac mini 2018: https://support.apple.com/en-ie/111912
+
+
+## Additional live control-plane discovery (read-only)
+- SentinelX host list returned one connected operational host: hostname `Voktors-Mini.Dlink`, host ID `host_5f7264034bdf0b51`, agent 0.23.30, architecture `arm64`, kernel `23.6.0`.
+- This does not match the stated Intel Mac mini 2011, Intel Mac mini 2018 or remote GPU server identities. It is not assigned to L1/L2/L3 without owner confirmation.
+- SentinelX plan reports Free, active-host limit 1, one active slot consumed, zero available slots.
+- Two other enrolled hosts, `mh-dev-01` and `mh-dev-02`, are disabled by the user in the SentinelX dashboard. They were not queried, enabled or modified.
+- A capabilities request for the connected host returned a transient `agent_disconnected / duplicate_session`; retry with summary succeeded. Full command allowlist was not inspected.
+- No command execution, file modification, service action, restart, host enrollment or deployment was performed.
+- Local hardware inventory status remains NOT RUN for the three intended L1/L2/L3 nodes.
