@@ -108,3 +108,21 @@ The default branch `Основной` is currently unprotected. The supervisor h
 - GitHub GITHUB_TOKEN workflow dispatch exception: https://docs.github.com/en/actions/concepts/security/github_token
 - GitHub workflow concurrency: https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency
 - GitHub self-hosted runner autoscaling and ephemeral guidance: https://docs.github.com/en/actions/reference/runners/self-hosted-runners
+
+
+## Final post-commit verification
+- Final HEAD at verification: `d08ea731e88477dc748e6369f9573879c7c21e28`.
+- Branch: `Основной`; GitHub reports `protected=false`.
+- Actions workflow runs: `total_count=0`.
+- Combined commit statuses for final HEAD: empty; CI is NOT VERIFIED, not PASS.
+- Re-read implementation blobs:
+  - `scripts/pool-supervisor.mjs`: `52bf03ca889edd92fd10c71ae96a2e35e106d43f`
+  - `.github/workflows/pool-supervisor.yml`: `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`
+  - `.github/workflows/pool-worker.yml`: `3ddb0038a8336214acc74717804562173c8eaa25`
+  - `.github/ISSUE_TEMPLATE/pool-task.yml`: `0406d241a92a675756eeb073a44060ee84f69c32`
+  - `docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md`: `3ac28f2f105a20a4eed5d93168bbe84d2d5273b8`
+  - `README.md`: `fea44c2485b604432ab9ee20293c3e1f7ee8bdec`
+  - This report before this append: `704ea779f4310ce4e9f4d2c7cb0fb6324e39cec7`
+- Workflow YAML acceptance and Node execution remain NOT VERIFIED because no Actions run exists.
+- `POOL_DISPATCH_ENABLED` is not configured; the supervisor therefore exits in heartbeat-only mode and does not create labels, claim tasks or dispatch workers.
+- No task issue was created or dispatched. No provider keys or other secrets were accessed.
