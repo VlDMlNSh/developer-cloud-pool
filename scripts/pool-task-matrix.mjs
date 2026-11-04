@@ -4,8 +4,8 @@ const MAX_TASKS = 20;
 
 function extractEnvelope(body) {
   const source = String(body || "");
-  const targetSha = source.match(/^### Target SHA\\s*\\r?\\n+([0-9a-f]{40})\\s*$/im)?.[1] || null;
-  const profile = source.match(/^### Worker profile\\s*\\r?\\n+([^\\r\\n]+)\\s*$/im)?.[1]?.trim() || null;
+  const targetSha = source.match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im)?.[1] || null;
+  const profile = source.match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im)?.[1]?.trim() || null;
   if (!targetSha || !TARGET_SHA.test(targetSha) || profile !== ALLOWED_PROFILE) return null;
   return { targetSha, profile };
 }
