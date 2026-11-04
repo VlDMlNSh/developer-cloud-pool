@@ -13,7 +13,7 @@ This is a best-effort event-driven supervisor, not a continuously running daemon
 - completion of a `Pool Worker` workflow;
 - manual `workflow_dispatch`.
 
-Scheduled events can be delayed or dropped during GitHub load, so event triggers and periodic reconciliation complement one another. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed.
+Scheduled events can be delayed or dropped during GitHub load, so event triggers and periodic reconciliation complement one another. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed. Dispatch is fail-closed by default: the repository variable POOL_DISPATCH_ENABLED must equal the literal string true. It must remain unset/false until the default branch has suitable protection and the supervisor workflow has been reviewed.
 
 ## 2. Lifecycle
 
@@ -99,7 +99,7 @@ Cross-repository worker dispatch is a separate gate:
 
 | Component | Role | Status |
 |---|---|---|
-| GitHub Actions scheduled supervisor | Periodic reconciliation | Implemented, not run |
+| GitHub Actions scheduled supervisor | Periodic reconciliation | Implemented, fail-closed gate, not run |
 | Issues task template | Typed task intake | Implemented, not run |
 | Pool Supervisor script | Validate, claim and dispatch | Implemented, not run |
 | Pool Worker workflow | DSH headless probe only | Implemented, not run |
@@ -113,6 +113,8 @@ Cross-repository worker dispatch is a separate gate:
 
 ## 10. Acceptance gates
 
+- [ ] Default branch governance is enabled and reviewed before dispatch activation.
+- [ ] Repository variable POOL_DISPATCH_ENABLED is explicitly set to true only after governance approval.
 - [ ] GitHub recognizes the workflow YAML.
 - [ ] Scheduled supervisor starts on the default branch.
 - [ ] Idle supervisor completes without dispatching a worker.
