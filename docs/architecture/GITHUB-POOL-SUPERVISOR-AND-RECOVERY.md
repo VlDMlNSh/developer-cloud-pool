@@ -9,9 +9,9 @@ Operate a logical pool of up to 20 concurrent standard GitHub-hosted jobs withou
 
 This is a best-effort event-driven supervisor, not a continuously running daemon. GitHub Actions has no permanent process inside a hosted runner. The supervisor wakes from:
 - a scheduled reconciliation every five minutes (fallback);
-- an owner applying the \`pool:ready\` label to a task issue;
-- completion of a \`Pool Worker\` workflow;
-- manual \`workflow_dispatch\`.
+- an owner applying the `pool:ready` label to a task issue;
+- completion of a `Pool Worker` workflow;
+- manual `workflow_dispatch`.
 
 Scheduled events can be delayed or dropped during GitHub load, so event triggers and periodic reconciliation complement one another. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed.
 
@@ -19,12 +19,12 @@ Scheduled events can be delayed or dropped during GitHub load, so event triggers
 
 1. An approved task is recorded as a GitHub Issue using the pool task template.
 2. An owner reviews the requested profile and immutable target commit SHA.
-3. The owner applies \`pool:ready\`. This is the explicit dispatch approval.
+3. The owner applies `pool:ready`. This is the explicit dispatch approval.
 4. The serialized Pool Supervisor validates the issue body and profile allowlist.
-5. It atomically changes the task label to \`pool:claimed\`, comments the task/run metadata, and dispatches \`pool-worker.yml\` using the short-lived repository \`GITHUB_TOKEN\`.
+5. It atomically changes the task label to `pool:claimed`, comments the task/run metadata, and dispatches `pool-worker.yml` using the short-lived repository `GITHUB_TOKEN`.
 6. The worker checks out exactly the supplied SHA and runs only the allowlisted profile.
-7. A separate reporting job, which does not install or execute agent code, updates the issue to \`pool:probe-complete\` or \`pool:needs-review\`.
-8. \`workflow_run: completed\` wakes the supervisor to process the next queued issues. The five-minute schedule is the recovery/reconciliation fallback.
+7. A separate reporting job, which does not install or execute agent code, updates the issue to `pool:probe-complete` or `pool:needs-review`.
+8. `workflow_run: completed` wakes the supervisor to process the next queued issues. The five-minute schedule is the recovery/reconciliation fallback.
 
 The first profile is deliberately limited to a DSH headless package/configuration smoke test. It makes no model call, receives no provider key and executes no user-supplied shell command. This proves the dispatch path, not general-purpose agent execution.
 
@@ -66,10 +66,10 @@ The supervisor serializes claims within this repository. It must never infer tas
 
 ## 6. Security and credentials
 
-- Supervisor permissions: only \`actions:write\` and \`issues:write\` plus required read access.
+- Supervisor permissions: only `actions:write` and `issues:write` plus required read access.
 - Worker execution job: read-only repository access; no provider credentials.
 - Reporting job: issue-write permission, but it does not install or execute third-party agent code.
-- The supervisor uses the job-scoped \`GITHUB_TOKEN\`; GitHub documents that \`workflow_dispatch\` and \`repository_dispatch\` are permitted workflow-trigger exceptions for events created by this token.
+- The supervisor uses the job-scoped `GITHUB_TOKEN`; GitHub documents that `workflow_dispatch` and `repository_dispatch` are permitted workflow-trigger exceptions for events created by this token.
 - Never echo tokens, API keys, private keys, environment dumps or authorization headers.
 - Logs contain task IDs, run IDs, target SHA, provider/model route identifiers, status and usage metadata only. Secret values must be masked and excluded.
 - Future cross-repository access requires an explicitly scoped GitHub App installation token and repository allowlist. A PAT is not the default.
@@ -85,7 +85,7 @@ If residency becomes a contractual requirement, select a GitHub product/region o
 
 ## 8. Cross-repository scaling
 
-GitHub account concurrency is shared across repositories. A central pool repository can later dispatch work into an allowlisted set of repositories, but this first implementation intentionally operates only on task issues in \`VlDMlNSh/developer-cloud-pool\`.
+GitHub account concurrency is shared across repositories. A central pool repository can later dispatch work into an allowlisted set of repositories, but this first implementation intentionally operates only on task issues in `VlDMlNSh/developer-cloud-pool`.
 
 Cross-repository worker dispatch is a separate gate:
 1. install a GitHub App only on approved repositories;
