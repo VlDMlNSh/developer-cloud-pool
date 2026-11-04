@@ -43,31 +43,31 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
   end
 
   def test_rejects_missing_and_excessive_timeout
-    assert errors(VALID.sub("    timeout-minutes: 5\\n", "")).any? { |e| e.include?("timeout-minutes") }
+    assert errors(VALID.sub("    timeout-minutes: 5\n", "")).any? { |e| e.include?("timeout-minutes") }
     assert errors(VALID.sub("timeout-minutes: 5", "timeout-minutes: 31")).any? { |e| e.include?("timeout-minutes") }
   end
 
   def test_rejects_custom_job_and_service_images
-    job_container = VALID.sub("    timeout-minutes: 5", "    timeout-minutes: 5\\n    container: node:latest")
-    service_image = VALID.sub("    steps:", "    services:\\n      db:\\n        image: postgres:latest\\n    steps:")
+    job_container = VALID.sub("    timeout-minutes: 5", "    timeout-minutes: 5\n    container: node:latest")
+    service_image = VALID.sub("    steps:", "    services:\n      db:\n        image: postgres:latest\n    steps:")
     assert errors(job_container).any? { |e| e.include?("containers/images") }
     assert errors(service_image).any? { |e| e.include?("service containers/images") }
   end
 
   def test_requires_bounded_matrix_parallelism
-    matrix = VALID.sub("    steps:", "    strategy:\\n      matrix:\\n        node: [20, 22]\\n    steps:")
+    matrix = VALID.sub("    steps:", "    strategy:\n      matrix:\n        node: [20, 22]\n    steps:")
     assert errors(matrix).any? { |e| e.include?("max-parallel") }
-    bounded = matrix.sub("      matrix:", "      max-parallel: 2\\n      matrix:")
+    bounded = matrix.sub("      matrix:", "      max-parallel: 2\n      matrix:")
     assert_empty errors(bounded)
   end
 
   def test_rejects_enabled_paid_fallback
-    source = VALID.sub("jobs:", "model:\\n  paid-fallback: true\\njobs:")
+    source = VALID.sub("jobs:", "model:\n  paid-fallback: true\njobs:")
     assert errors(source).any? { |e| e.include?("paid fallback") }
   end
 
   def test_rejects_invalid_yaml
-    assert errors("jobs:\\n  broken: [").any? { |e| e.include?("invalid workflow YAML") }
+    assert errors("jobs:\n  broken: [").any? { |e| e.include?("invalid workflow YAML") }
   end
 
   def test_recursively_validates_local_reusable_workflows
@@ -87,7 +87,7 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
   end
 
   def test_rejects_external_reusable_workflows
-    source = VALID.sub("    runs-on: ubuntu-24.04\\n    timeout-minutes: 5\\n    steps:\\n      - run: node --version", "    uses: vendor/workflow/.github/workflows/build.yml@v1")
+    source = VALID.sub("    runs-on: ubuntu-24.04\n    timeout-minutes: 5\n    steps:\n      - run: node --version", "    uses: vendor/workflow/.github/workflows/build.yml@v1")
     assert errors(source).any? { |e| e.include?("external/unpinned reusable workflows") }
   end
 
