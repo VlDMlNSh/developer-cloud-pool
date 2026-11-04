@@ -410,3 +410,12 @@ This section supersedes prior PR #7 acceptance assumptions where they conflict.
 
 ### Next bounded step
 Create a design-only iOS macOS runner profile contract plus static validation tests: runner label, pinned Xcode selection, simulator device/runtime matrix, concurrency=1, timeout, no general secrets, no signing and no persistent self-hosted runner. Do not add runnable workflow or dispatch until Worker authorization, governance, exact-head CI and independent review pass. Measure actual Linux runner resources with the read-only probe before changing capacity allocations.
+
+
+## Live continuation addendum — 2026-11-05
+
+GitHub Free-only execution is an immutable project invariant: no automatic charges, no paid runner SKU, no paid model/API fallback, and no paid external compute/storage/browser. Repository visibility was live-verified PUBLIC. Standard GitHub-hosted Linux/Windows/macOS runners are the allowed execution lane; larger/GPU runners and custom images are forbidden. Standard macOS is reserved for ephemeral on-demand Xcode/Simulator jobs, not Linux workers.
+
+PR #10 adds a static workflow policy validator, nine regression tests and CI integration. Exact head `fa308f0178fe332851cc8b5a8c43b564912c37a6`; run `41913465969`, job `126866831669`, COMPLETED/SUCCESS on `ubuntu-24.04`. PR #10 remains OPEN/DRAFT; independent review NOT RUN. Full report: [2026-11-05 GitHub Free-only policy guard](../reports/2026-11-05-github-free-tier-policy-guard.md).
+
+Do not infer runtime qualification from policy CI. PR #7 Worker provenance, PR #8 matrix wiring/review, PR #9 corrective revert/review and `POOL_DISPATCH_ENABLED` remain unresolved or NOT VERIFIED. No worker, DSH, resource probe, browser, provider call or secret access occurred.
