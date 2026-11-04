@@ -40,7 +40,8 @@ These references establish documented API constraints only; they do not establis
 
 - Architecture update committed to PR branch: commit 014291295ca4e10e925406760e83f40f58d75258.
 - New architecture blob SHA: 7f51531bfb96c9a990b357553c6439fdc78bf0b8.
-- Architecture read-back: PENDING in this report; must be checked before acceptance.
+- Architecture read-back: VERIFIED; fetched from the PR branch and blob SHA matched.
+- Report read-back: VERIFIED; fetched from the PR branch.
 - Platform adapters: NOT IMPLEMENTED / NOT RUN.
 - Skills/plugins installation: NOT RUN.
 - Research and publication workflows: NOT IMPLEMENTED.
@@ -51,4 +52,4 @@ These references establish documented API constraints only; they do not establis
 
 ## Next step
 
-Read back the changed architecture and this report, verify blob SHAs, update the PR summary, then await independent review. After governance and resource qualification, proceed with a read-only MI-01 smoke test. Platform adapters and publishing workflows remain separate later work packages.
+Update README/PR links and summary, then await independent review. After governance and resource qualification, proceed with a read-only MI-01 smoke test. Platform adapters and publishing workflows remain separate later work packages.
