@@ -7,7 +7,7 @@ function candidate(number = 7, overrides = {}) {
   const issue = {
     number,
     state: "open",
-    body: "### Target SHA\\n" + sha + "\\n\\n### Worker profile\\nDSH headless probe\\n",
+    body: "### Target SHA\n" + sha + "\n\n### Worker profile\nDSH headless probe\n",
     labels: [{ name: "pool:ready" }],
     ...overrides
   };
@@ -44,8 +44,8 @@ test("rejects closed issues, pull requests and issues without pool:ready", () =>
 });
 
 test("rejects malformed SHA and non-allowlisted profiles", () => {
-  assert.throws(() => buildTaskMatrix([candidate(7, { body: "### Target SHA\\nbad\\n\\n### Worker profile\\nDSH headless probe" })]), /invalid task envelope/);
-  assert.throws(() => buildTaskMatrix([candidate(7, { body: "### Target SHA\\n" + sha + "\\n\\n### Worker profile\\nother" })]), /invalid task envelope/);
+  assert.throws(() => buildTaskMatrix([candidate(7, { body: "### Target SHA\nbad\n\n### Worker profile\nDSH headless probe" })]), /invalid task envelope/);
+  assert.throws(() => buildTaskMatrix([candidate(7, { body: "### Target SHA\n" + sha + "\n\n### Worker profile\nother" })]), /invalid task envelope/);
 });
 
 test("rejects missing or mismatched owner approval envelope", () => {
