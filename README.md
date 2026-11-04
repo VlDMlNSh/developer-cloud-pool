@@ -5,34 +5,51 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 ## Current status
 - Repository: public.
 - 20-slot GitHub-hosted execution architecture: DESIGN.
-- Jarvis hybrid reference architecture: DESIGN.
-- DeepSeek Harness: selected as primary candidate agent runtime; developer-preview evaluation only.
-- DSH headless evaluation workflow: IMPLEMENTED, NOT RUN.
+- GitHub Pool Supervisor and task queue: IMPLEMENTED SCAFFOLD, NOT RUN.
+- Pool Worker: IMPLEMENTED for one DSH headless smoke profile only, NOT RUN.
+- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED.
+- General-purpose agent execution, checkpoint/resume and automatic task continuation: NOT IMPLEMENTED.
+- DeepSeek Harness: selected as candidate task runtime; developer-preview evaluation only.
+- DSH headless evaluation: NOT RUN.
 - Baseline runner resource probe: IMPLEMENTED, NOT RUN.
-- Cloud runtime deployment: NOT RUN.
+- Cloud runtime deployment and profile qualification: NOT RUN.
 - Only current local hardware: Mac mini Server 2011, 4 CPU cores, 16 GB RAM, Linux; not yet inventoried.
 - Mac mini 2018 and remote GPU server: FUTURE equipment, design only.
-- Pool Bridge, model gateway and durable database: DESIGN ONLY.
+- No local deployment is in scope until the cloud-first pool is qualified.
 
 ## Architecture
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
 - [Jarvis hybrid platform reference architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
 - [DeepSeek Harness adoption and cloud-first build plan](docs/architecture/DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md)
+- [GitHub Pool Supervisor and recovery architecture](docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md)
+
+## Cloud pool control
+1. Create a [Cloud Pool Task issue](https://github.com/VlDMlNSh/developer-cloud-pool/issues/new?template=pool-task.yml).
+2. Specify an exact 40-character target commit SHA.
+3. Review the task and apply the `pool:ready` label to approve dispatch.
+4. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
+5. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
+
+The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
 
 ## First cloud evaluations
-1. Run [Runner Resource Probe](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/runner-resource-probe.yml).
-2. Run [DeepSeek Harness Runtime Evaluation](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/dsh-runtime-evaluation.yml).
+- [Runner Resource Probe](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/runner-resource-probe.yml)
+- [DeepSeek Harness Runtime Evaluation](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/dsh-runtime-evaluation.yml)
+- [Pool Supervisor](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/pool-supervisor.yml)
 
-Both workflows are manual, read-only, and require no provider secrets. The DSH workflow installs a pinned npm package in an isolated ephemeral runner and inspects the headless composition without making a model call. It is a smoke test, not a security qualification.
+The baseline probes require no provider secrets and make no model calls. A passing smoke test is not security qualification.
 
-## Safety
-- Hosted jobs are ephemeral and isolated; runner disks are not shared storage.
+## Security
+- Worker profiles are allowlisted; issue text cannot provide shell commands or arbitrary workflow names.
+- Worker execution receives read-only repository permissions and no provider keys.
+- The issue-report job has issue-write permission but does not execute DSH.
+- Supervisor uses a short-lived job-scoped GITHUB_TOKEN with only the required repository permissions.
+- Never print API keys, private keys, tokens or authorization headers. Logs may contain non-secret credential identifiers only.
 - DSH is in developer preview and has not undergone a security audit.
-- Do not run DSH with unrestricted credentials or untrusted plugins.
-- Local nodes must not execute untrusted public pull-request code.
-- Default workflow permissions are read-only.
-- Never print secrets or credential material.
-- A green smoke test does not qualify an agent profile.
+- Do not run untrusted public pull-request code on persistent local machines.
+- Cross-repository dispatch is deferred until GitHub App allowlisting and scoped credentials are implemented.
+- GitHub-hosted runner location and data residency are managed by GitHub; this design does not promise a selected execution country.
 
 ## Latest engineering report
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
+- [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
