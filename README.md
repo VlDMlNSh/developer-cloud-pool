@@ -33,3 +33,6 @@ Both workflows are manual, read-only, and require no provider secrets. The DSH w
 - Default workflow permissions are read-only.
 - Never print secrets or credential material.
 - A green smoke test does not qualify an agent profile.
+
+## Latest engineering report
+- [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
