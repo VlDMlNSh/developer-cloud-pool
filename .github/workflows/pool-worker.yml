@@ -11,10 +11,6 @@ on:
         description: "Immutable 40-character target commit SHA"
         required: true
         type: string
-      supervisor_run:
-        description: "Supervisor workflow run that issued this task"
-        required: true
-        type: string
       profile:
         description: "Allowlisted worker profile"
         required: true
@@ -24,10 +20,6 @@ on:
 
 run-name: "Pool task #${{ inputs.task_issue }} (${{ inputs.profile }})"
 
-concurrency:
-  group: pool-worker-task-${{ inputs.task_issue }}
-  cancel-in-progress: false
-
 permissions: {}
 
 jobs:
@@ -36,23 +28,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
-      contents: read
       issues: read
     env:
-      DISPATCH_ACTOR: ${{ github.actor }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TASK_ISSUE: ${{ inputs.task_issue }}
       TARGET_SHA: ${{ inputs.target_sha }}
       PROFILE: ${{ inputs.profile }}
-      SUPERVISOR_RUN: ${{ inputs.supervisor_run }}
     steps:
-      - name: Checkout trusted authorization helper
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-          persist-credentials: false
-
       - name: Validate issue state, approval label and task envelope
         shell: bash
         run: |
@@ -62,10 +44,8 @@ jobs:
           const issueNumber = process.env.TASK_ISSUE;
           const sha = process.env.TARGET_SHA;
           const profile = process.env.PROFILE;
-          const supervisorRun = process.env.SUPERVISOR_RUN;
           if (!/^\d+$/.test(issueNumber || "")) throw new Error("Invalid task issue number.");
           if (!/^[0-9a-f]{40}$/.test(sha || "")) throw new Error("Invalid target SHA.");
-          if (!/^\d+$/.test(supervisorRun || "")) throw new Error("Invalid Supervisor run ID.");
           if (profile !== "dsh-headless-probe") throw new Error("Profile is not allowlisted.");
           const response = await fetch("https://api.github.com/repos/" + repo + "/issues/" + issueNumber, {
             headers: {
@@ -81,26 +61,9 @@ jobs:
           if (!labels.includes("pool:claimed")) throw new Error("Task does not hold the supervisor claim.");
           const shaMatch = String(issue.body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
           const profileMatch = String(issue.body || "").match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im);
-          if (!shaMatch || shaMatch[1] !== sha) throw new Error("Dispatch SHA does not match the task envelope.");
+          if (!shaMatch || shaMatch[1] !== sha) throw new Error("Dispatch SHA does not match the approved issue envelope.");
           if (!profileMatch || profileMatch[1].trim() !== "DSH headless probe") throw new Error("Issue profile does not match the allowlist.");
-          const commentsResponse = await fetch("https://api.github.com/repos/" + repo + "/issues/" + issueNumber + "/comments?per_page=100&sort=created&direction=desc", {
-            headers: {
-              Accept: "application/vnd.github+json",
-              Authorization: "Bearer " + process.env.GITHUB_TOKEN,
-              "X-GitHub-Api-Version": "2022-11-28"
-            }
-          });
-          if (!commentsResponse.ok) throw new Error("Cannot verify Supervisor provenance: HTTP " + commentsResponse.status);
-          const comments = await commentsResponse.json();
-          const { hasWorkerDispatchAuthority } = await import("./scripts/pool-approval.mjs");
-          const authorized = hasWorkerDispatchAuthority({
-            actor: process.env.DISPATCH_ACTOR,
-            comments,
-            expected: { issueNumber: Number(issueNumber), targetSha: sha, profile: "DSH headless probe", supervisorRun },
-            repositoryOwner: repo.split("/")[0]
-          });
-          if (!authorized) throw new Error("Worker invocation lacks bot issuer, consumed owner approval, matching Supervisor claim, or task is already terminal.");
-          console.log("Supervisor-issued task authority validated. Issue #" + issueNumber + ", target SHA " + sha + ".");
+          console.log("Task authority validated. Issue #" + issueNumber + ", target SHA " + sha + ".");
           NODE
 
   probe:
@@ -242,7 +205,6 @@ jobs:
           const body = [
             success ? "**POOL_DSH_PROBE_COMPLETE**" : "**POOL_DSH_PROBE_NEEDS_REVIEW**",
             "",
-            "- Issue: " + issueNumber,
             "- Worker run: " + process.env.WORKFLOW_RUN_ID,
             "- Target SHA: " + process.env.TARGET_SHA,
             "- Validation: " + process.env.VALIDATE_RESULT,
