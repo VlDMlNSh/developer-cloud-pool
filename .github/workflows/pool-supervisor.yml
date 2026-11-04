@@ -35,9 +35,15 @@ jobs:
       POOL_RUN_ID: ${{ github.event.workflow_run.id }}
       POOL_RUN_SHA: ${{ github.event.workflow_run.head_sha }}
     steps:
-      - name: Reconcile task state and dispatch approved work
+      - name: Checkout supervisor code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Validate and run supervisor
         shell: bash
         run: |
           set -euo pipefail
           node --version
+          node --check scripts/pool-supervisor.mjs
           node scripts/pool-supervisor.mjs
