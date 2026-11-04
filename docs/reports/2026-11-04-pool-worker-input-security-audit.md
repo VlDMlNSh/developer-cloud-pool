@@ -10,7 +10,7 @@
 
 ## Security finding
 
-The original `.github/workflows/pool-worker.yml` embedded the untrusted `${{ inputs.task_issue }}` expression directly inside the Bash source of the DSH probe step's summary block. Workflow-dispatch inputs are strings and must not be interpolated into shell program text. A crafted value could be interpreted by Bash before the validation job's separate runtime checks can protect the probe step.
+The original `.github/workflows/pool-worker.yml` embedded the workflow-dispatch input `${{ inputs.task_issue }}` directly inside the Bash source of the DSH probe step's summary block. This is an unsafe interpolation pattern. The current workflow also gates the probe job on successful completion of a validation job that rejects non-numeric issue values, so the reviewed path contains a prior runtime guard; this patch is defense-in-depth and removes the shell-source interpolation rather than claiming a demonstrated bypass of that guard.
 
 ## Change prepared
 
@@ -54,7 +54,7 @@ The owner has stated that editing the settings is not possible. No additional ow
 
 - Change implementation: COMPLETE ON PR BRANCH.
 - File re-read and blob SHA verification: VERIFIED.
-- Static source inspection for the identified shell interpolation: VERIFIED.
+- Static source inspection for the identified shell interpolation removal: VERIFIED. The existing upstream validation gate was also inspected; it rejects non-numeric issue identifiers before the probe job is eligible to run.
 - YAML parser / actionlint validation: NOT RUN.
 - Exact-head GitHub Actions CI: NOT VERIFIED.
 - Independent security review: NOT RUN.
