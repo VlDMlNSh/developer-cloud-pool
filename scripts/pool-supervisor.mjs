@@ -19,7 +19,7 @@ const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 if (!ownerRepo || !token || !defaultBranch) throw new Error("Missing required GitHub runtime context.");
 if (!dispatchEnabled) {
   console.log("Pool Supervisor heartbeat only: dispatch is disabled pending default-branch governance and owner approval.");
-  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\\n");
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\n");
   process.exit(0);
 }
 
@@ -95,7 +95,7 @@ async function recordOwnerApproval() {
     const current = await request("/repos/" + ownerRepo + "/issues/" + issueNumber);
     await replaceIssueLabels(current, ["pool:ready"], ["pool:needs-review"]);
     await comment(issueNumber,
-      "**POOL_OWNER_APPROVAL_REJECTED**\\n\\nThe `pool:ready` label was not applied by the repository owner to an open issue with the exact allowlisted task envelope. No worker was dispatched.");
+      "**POOL_OWNER_APPROVAL_REJECTED**\n\nThe `pool:ready` label was not applied by the repository owner to an open issue with the exact allowlisted task envelope. No worker was dispatched.");
     await comment(issueNumber, formatOwnerApprovalRevoked(issueNumber));
     log("Rejected pool:ready label event for issue #" + issueNumber + ": owner approval or task envelope invalid.");
     return;
@@ -216,7 +216,7 @@ async function dispatchReadyTasks() {
     }, repositoryOwner)) {
       await replaceIssueLabels(issue, ["pool:ready"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_TASK_APPROVAL_MISSING**\\n\\nNo bot-issued owner approval marker matches this issue, target SHA and worker profile. The task was not dispatched. The repository owner must re-apply `pool:ready` after reviewing the task.");
+        "**POOL_TASK_APPROVAL_MISSING**\n\nNo bot-issued owner approval marker matches this issue, target SHA and worker profile. The task was not dispatched. The repository owner must re-apply `pool:ready` after reviewing the task.");
       log("Skipped task #" + issue.number + ": no matching owner approval marker.");
       continue;
     }
