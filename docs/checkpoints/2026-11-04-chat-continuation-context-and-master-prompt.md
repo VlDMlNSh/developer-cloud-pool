@@ -308,3 +308,24 @@ Documentation report: [Ruleset remediation and Mac mini execution](../reports/20
 Ruleset state remains VERIFIED: only active Ruleset `26550182` remains; its exact branch selector and protection settings were independently read back. Old Ruleset `26535481` returns 404.
 
 Do not launch Worker, DSH, Resource Probe, or model/provider calls. Continue with safe static validation and independent PR review/CI follow-up.
+
+
+---
+
+## Live continuation update — 2026-11-04 (Ruleset verification)
+
+The previous governance blocker concerning the active Ruleset has been resolved and independently verified through the GitHub Rulesets API. Do not rely on the historical findings earlier in this checkpoint as current state.
+
+- Current default branch HEAD remains `4597617db0de7cc698cce936a540594ee3d25bf2`.
+- Exactly one active Ruleset is listed: [`Основной — verified`, ID 26550182](https://github.com/VlDMlNSh/developer-cloud-pool/rules/26550182).
+- Its exact selector is `refs/heads/Основной`; enforcement is active.
+- Deletion and non-fast-forward restrictions are enabled; pull requests are required; required approvals are 0; CODEOWNERS review and extra approval for unattributed changes are disabled; thread resolution is enabled; bypass actors are empty; current-user bypass is never.
+- Prior Ruleset ID `26535481` returns 404 and is absent from the ruleset collection.
+- Classic branch endpoint still reports `protected:false`; keep this distinct from the independently verified Ruleset object.
+- Issue #2 was commented with the API evidence and closed as completed: https://github.com/VlDMlNSh/developer-cloud-pool/issues/2.
+- Issue #1 remains open because the actual repository variable `POOL_DISPATCH_ENABLED` cannot be independently read through the available integration. Owner statements say unset/false, but its value remains NOT VERIFIED. Do not dispatch.
+- PR #3 and #4 remain open. Exact-head check-runs are empty, statuses have zero contexts and reviews are empty. Both remain NOT VERIFIED; do not merge.
+- Read-only workflow inspection completed. Worker, DSH, Resource Probe, model calls and dispatch were NOT RUN.
+- Detailed dated evidence: [2026-11-04-ruleset-verified-and-dispatch-gate.md](../reports/2026-11-04-ruleset-verified-and-dispatch-gate.md).
+
+Next step: continue static/read-only workflow contract validation and find an approved way to independently verify the dispatch variable without accessing secret values. Keep `POOL_DISPATCH_ENABLED` unset/false until then.
