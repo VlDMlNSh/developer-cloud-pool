@@ -11,7 +11,38 @@ module FreeTierWorkflowPolicy
 
   module_function
 
+  def validate_yaml_mapping_keys!(source, file)
+    stream = Psych.parse_stream(source)
+    walk = lambda do |node|
+      case node
+      when Psych::Nodes::Mapping
+        seen = {}
+        node.children.each_slice(2) do |key, value|
+          unless key.is_a?(Psych::Nodes::Scalar)
+            raise "#{file}: non-scalar YAML mapping keys are forbidden"
+          end
+
+          key_name = key.value
+          if key_name == "<<" || key.tag == "tag:yaml.org,2002:merge"
+            raise "#{file}: YAML merge keys are forbidden"
+          end
+          if seen.key?(key_name)
+            raise "#{file}: duplicate YAML mapping key #{key_name.inspect}"
+          end
+
+          seen[key_name] = true
+          walk.call(key)
+          walk.call(value)
+        end
+      when Psych::Nodes::Sequence, Psych::Nodes::Document, Psych::Nodes::Stream
+        node.children.each { |child| walk.call(child) }
+      end
+    end
+    walk.call(stream)
+  end
+
   def parse_workflow(source, file)
+    validate_yaml_mapping_keys!(source, file)
     parsed = YAML.safe_load(source, permitted_classes: [], permitted_symbols: [], aliases: true)
     raise "#{file}: workflow root must be a YAML mapping" unless parsed.is_a?(Hash)
     parsed
