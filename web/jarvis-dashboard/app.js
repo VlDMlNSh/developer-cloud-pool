@@ -1,4 +1,4 @@
-/* Static fixture only. Deliberately contains no fetch(), WebSocket, credentials or dispatch actions. */
+/* Static fixture only. No network access, credentials, persistent storage or dispatch actions. */
 (() => {
   "use strict";
   const links = [...document.querySelectorAll(".mobile-nav-link")];
