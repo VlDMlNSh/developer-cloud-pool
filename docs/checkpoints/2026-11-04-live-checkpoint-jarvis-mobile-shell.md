@@ -1,39 +1,36 @@
-# Live checkpoint — 2026-11-04: single-use approval recovery fix
+# Live checkpoint — 2026-11-04: Worker dispatch authorization boundary
 
-## Canonical state
-- Default branch `Основной`: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+## Canonical refs
+- Default branch `Основной` HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
 - Documentation branch: `docs/continuation-context-2026-11-04`.
-- Active Ruleset 26550182: exact selector `refs/heads/Основной`; PR required; no bypass actors.
+- PR #7 branch: `fix/pool-owner-approval-guard-2026-11-04`.
+- PR #7 head: `d60d26ae647940e702d646e572c861a8f68f523e`; 15 commits ahead of default, 0 behind.
+- PR #7 state: OPEN / DRAFT / NOT MERGED.
 
-## PR #7 — owner-bound approval
-- State: OPEN / DRAFT / NOT MERGED.
-- Head: `d60d26ae647940e702d646e572c861a8f68f523e`; base: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+## Blocking finding
+The Supervisor-side owner approval guard is not sufficient because `.github/workflows/pool-worker.yml` remains identical on default and PR #7 (blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`). It still exposes `workflow_dispatch` and validates issue open state, `pool:claimed`, target SHA and profile, but does not independently prove trusted dispatch provenance or bind authorization to the current workflow run/attempt. Direct/manual Worker invocation remains an unresolved path.
+
+## Evidence
+- PR #7 exact-head static CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327), job `126854055084`: COMPLETED / SUCCESS. This does not verify the Worker authorization boundary.
 - Supervisor blob: `b2046dd9671c6bd5491f63a006d10239fbd3d3b1`.
-- Approval test blob: `c7c7499d9d2bb4c123e72b86adb85369023c4284`.
-- Recovery paths for stale claims and dispatch API failures now move directly to `pool:needs-review` after the single-use approval is consumed. Fresh owner approval is required for another attempt.
-- Regression test asserts neither path restores `pool:ready`.
-- Exact-head CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327), job `126854055084`: COMPLETED / SUCCESS; dispatch-disabled assertion, YAML parse, owner approval tests and static security contract all passed.
-- Independent security review: 0 / NOT RUN. No live enabled-dispatch event test. PR remains draft.
+- Approval tests blob: `c7c7499d9d2bb4c123e72b86adb85369023c4284`.
+- Security finding recorded in [PR #7 comment](https://github.com/VlDMlNSh/developer-cloud-pool/pull/7#issuecomment-6641832357), comment ID `6641832357`.
+- Formal REQUEST_CHANGES review API rejected submission because the PR author is the repository owner. Independent review therefore remains NOT RUN.
+- Dated report: [Worker dispatch authorization boundary audit](../reports/2026-11-04-worker-dispatch-authorization-boundary-audit.md).
 
-## Other open work
-- PR #4: OPEN; head `ab43af86b63a731202fa0f8fa6f27f009b0d4aac`; base `4597617db0de7cc698cce936a540594ee3d25bf2`; exact-head check-runs absent / NOT VERIFIED; base stale.
-- PR #6: OPEN / DRAFT; head `2f6e7592dc4d2af4f1c76b28372d9c94354ef591`; static checks SUCCESS; independent review and browser/device validation NOT RUN.
-- Issues #1, #4, #5 remain OPEN.
-
-## Runtime / dispatch
-- SentinelX host `host_5f7264034bdf0b51`: ping PASS, capabilities summary PASS; Free plan 1 active / 0 spare slots.
-- `POOL_DISPATCH_ENABLED`: NOT VERIFIED. Read-only SentinelX check failed with duplicate_session / agent_disconnected; no mutation or fallback attempted.
-- Worker, DSH, Resource Probe, browser and model execution: NOT RUN.
+## Governance and runtime
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass. No change made.
+- Ruleset and SentinelX current state: NOT RECHECKED in this bounded pass; do not infer current state from historical snapshots.
+- Worker, DSH, Resource Probe, browser, model/provider calls: NOT RUN.
 - No secrets or provider credentials accessed.
+- Pool deployment: NOT DEPLOYED.
 
-## Documentation availability
-The repository tree does not contain the separately referenced Bootstrap, canonical chat tree map or Master Roadmap filenames. The README, full project context and dated checkpoints are the available in-repository sources.
+## Required next step
+Design and implement Worker-side authorization so manual/direct dispatch cannot enter the probe job. Authorization must be independently verifiable, bound to issue number + immutable target SHA + exact profile + workflow run/attempt, and not rely on a public label/comment as a secret capability. Verify GitHub event actor/provenance semantics before selecting the mechanism. Add positive Supervisor-path and negative direct/manual-dispatch tests. Keep dispatch disabled; do not run Worker. Then exact-head static CI and genuinely independent review.
 
-## Latest report and next step
-- [Single-use approval recovery fix](../reports/2026-11-04-single-use-approval-recovery-fix.md)
-- [Previous approval intake report](../reports/2026-11-04-approval-intake-disabled-dispatch.md)
-- [Full project context](../context/DEVELOPER-CLOUD-POOL-CONTEXT.md)
-- [Canonical default branch](https://github.com/VlDMlNSh/developer-cloud-pool/tree/Основной)
+## Canonical links
+- [Default branch](https://github.com/VlDMlNSh/developer-cloud-pool/tree/Основной)
 - [PR #7](https://github.com/VlDMlNSh/developer-cloud-pool/pull/7)
-
-Next: obtain independent security review of PR #7. Then inspect PR #4 diff/dependencies before reconciling its stale base and rerunning exact-head CI. Keep dispatch disabled until all governance and runtime qualification gates are independently accepted.
+- [Issue #1 governance](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1)
+- [Issue #5 browser runtime](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5)
+- [Full project context](../context/DEVELOPER-CLOUD-POOL-CONTEXT.md)
