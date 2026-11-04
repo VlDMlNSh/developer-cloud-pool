@@ -95,3 +95,11 @@ Review the actual runner free disk, Node version, npm installation footprint, DS
 - https://docs.github.com/en/actions/reference/runners/github-hosted-runners
 - https://docs.github.com/en/actions/reference/limits
 - https://docs.github.com/en/actions/reference/security/secure-use
+
+
+## Post-report verification
+- README was updated to link this report: commit 61faf7d2972387e12c89d45b21a8a726e9d5a08e; README blob SHA 52e8d9d26072d01b1719307fef2a1bdecab94320.
+- After that update, GitHub reports branch Основной HEAD as 61faf7d2972387e12c89d45b21a8a726e9d5a08e.
+- DSH workflow was re-read from GitHub: blob SHA df8a3788cd8ff4ba5c5b1009298f6bd81b80344d. Static content checks passed for manual dispatch, no secrets references, full-SHA setup-node pin and Node 24.9.0.
+- Actions run count remains zero. Workflow execution and DSH smoke result remain NOT RUN.
+- Local context snapshot updated and verified at /mnt/data/developer-cloud-pool-chat-context.md; SHA-256 0a9981e8ce236acd7750a80c50e9936cc262c4182018729a6dde84ac093a6f4d.
