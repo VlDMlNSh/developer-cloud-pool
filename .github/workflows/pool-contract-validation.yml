@@ -7,6 +7,9 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "docs/architecture/GITHUB-FREE-TIER-WORKFLOW-CONTRACT.md"
+      - "docs/reports/**"
+      - "docs/checkpoints/**"
   push:
     branches:
       - "Основной"
