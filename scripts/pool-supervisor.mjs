@@ -231,7 +231,6 @@ async function dispatchReadyTasks() {
           inputs: {
             task_issue: String(issue.number),
             target_sha: targetSha,
-            supervisor_run: String(process.env.GITHUB_RUN_ID),
             profile: "dsh-headless-probe"
           }
         })
