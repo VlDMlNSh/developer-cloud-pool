@@ -102,4 +102,28 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
       assert FreeTierWorkflowPolicy.validate_workflow_directory(directory).any? { |e| e.include?("is missing") }
     end
   end
+  def test_resolves_yaml_anchors_before_policy_validation
+    anchored = VALID.sub("runs-on: ubuntu-24.04", "runs-on: &standard ubuntu-24.04")
+    aliased = anchored.sub("timeout-minutes: 5", "timeout-minutes: 5\\n        env:\\n          RUNNER_LABEL: *standard")
+    assert_empty errors(aliased)
+  end
+
+  def test_rejects_reusable_workflow_cycles
+    Dir.mktmpdir do |directory|
+      File.write(File.join(directory, "root.yml"), <<~YAML)
+        name: Root
+        jobs:
+          call:
+            uses: ./.github/workflows/child.yml
+      YAML
+      File.write(File.join(directory, "child.yml"), <<~YAML)
+        name: Child
+        jobs:
+          call:
+            uses: ./.github/workflows/root.yml
+      YAML
+      assert FreeTierWorkflowPolicy.validate_workflow_directory(directory).any? { |e| e.include?("cycle detected") }
+    end
+  end
+
 end
