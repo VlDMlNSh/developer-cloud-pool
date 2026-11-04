@@ -7,7 +7,8 @@ import {
   formatOwnerApproval,
   formatOwnerApprovalConsumed,
   formatOwnerApprovalRevoked,
-  hasOwnerApproval
+  hasOwnerApproval,
+  hasWorkerDispatchAuthority
 } from "./pool-approval.mjs";
 
 const sha = "a".repeat(40);
@@ -68,4 +69,68 @@ test("consumed approval recovery paths require a fresh owner approval", () => {
   assert.match(supervisor, /replaceIssueLabels\(current, \["pool:claimed", "pool:ready"\], \["pool:needs-review"\]\)/);
   assert.doesNotMatch(supervisor, /replaceIssueLabels\(issue, \["pool:claimed"\], \["pool:ready"\]\)/);
   assert.doesNotMatch(supervisor, /replaceIssueLabels\(current, \["pool:claimed"\], \["pool:ready"\]\)/);
+});
+
+
+test("Worker rejects direct manual dispatch and forged pool:claimed labels", () => {
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const owner = "VlDMlNSh";
+  const consumed = {
+    user: { login: "github-actions[bot]" },
+    body: formatOwnerApprovalConsumed(17, sha),
+    created_at: "2026-11-04T20:01:00Z"
+  };
+  const claimed = {
+    user: { login: "github-actions[bot]" },
+    body: [
+      "**POOL_TASK_CLAIMED**", "",
+      "- Supervisor run: 123456",
+      "- Target SHA: " + sha,
+      "- Profile: dsh-headless-probe"
+    ].join("\\n"),
+    created_at: "2026-11-04T20:02:00Z"
+  };
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: owner, comments: [consumed, claimed], expected, repositoryOwner: owner
+  }), false);
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [], expected, repositoryOwner: owner
+  }), false);
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [claimed], expected, repositoryOwner: owner
+  }), false);
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [consumed, claimed], expected, repositoryOwner: owner
+  }), true);
+});
+
+test("Worker rejects terminal or mismatched Supervisor evidence", () => {
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const consumed = {
+    user: { login: "github-actions[bot]" },
+    body: formatOwnerApprovalConsumed(17, sha),
+    created_at: "2026-11-04T20:01:00Z"
+  };
+  const claimedBody = [
+    "**POOL_TASK_CLAIMED**", "",
+    "- Supervisor run: 123456",
+    "- Target SHA: " + sha,
+    "- Profile: dsh-headless-probe"
+  ].join("\\n");
+  const claimed = {
+    user: { login: "github-actions[bot]" }, body: claimedBody,
+    created_at: "2026-11-04T20:02:00Z"
+  };
+  const terminal = {
+    user: { login: "github-actions[bot]" },
+    body: "**POOL_DSH_PROBE_COMPLETE**\\n\\n- Worker run: 999",
+    created_at: "2026-11-04T20:03:00Z"
+  };
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [consumed, claimed, terminal], expected, repositoryOwner: "VlDMlNSh"
+  }), false);
+  assert.equal(hasWorkerDispatchAuthority({
+    actor: "github-actions[bot]", comments: [consumed, { ...claimed, body: claimedBody.replace(sha, "b".repeat(40)) }],
+    expected, repositoryOwner: "VlDMlNSh"
+  }), false);
 });
