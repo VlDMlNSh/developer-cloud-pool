@@ -231,3 +231,23 @@ Last live SentinelX inventory:
 - NOT VERIFIED — evidence absent, stale or inconclusive.
 
 Never collapse these states into a generic “done”.
+
+
+## 11. Live continuation update — 2026-11-04 21:17 Europe/Vilnius
+
+This section supersedes older live-state snapshots above where the live API now differs.
+
+- Default branch HEAD remains `4597617db0de7cc698cce936a540594ee3d25bf2`.
+- Active Ruleset 26550182 re-read successfully: exact selector `refs/heads/Основной`, active enforcement, PR required, no bypass actors.
+- Issue #1 and Issue #5 remain OPEN.
+- PR #3 remains OPEN/unmerged at head `7aa5b27b6e826918eeaa6397afe0378d14359022`. Exact-head run 41881360241 / job 126754359530 is COMPLETED/SUCCESS. The reviews endpoint returned an empty array; independent review remains NOT RUN. Do not merge.
+- PR #4 remains OPEN/unmerged at head `ab43af86b63a731202fa0f8fa6f27f009b0d4aac`. Exact-head check-runs and workflow-runs are empty; reviews are empty. NOT VERIFIED.
+- The PR #3 description contains stale head/run prose; live PR metadata and exact-head check-run endpoint are authoritative.
+- Current direct readback of `POOL_DISPATCH_ENABLED` was unavailable through the read-only GitHub interface. Prior SentinelX/GitHub CLI readback and the exact-head CI log recorded `false`, but this pass labels current value NOT RECHECKED. No mutation was attempted.
+- SentinelX inventory showed one operational host `host_5f7264034bdf0b51`, `Voktors-Mini.Dlink`, agent `0.23.30`; Free plan capacity is 1/1 active. A subsequent capabilities call returned `agent_disconnected/read_loop_ended`; host operations must wait for successful ping/capability retry. Disabled legacy hosts remain unavailable.
+- Agent-browser upstream documentation was reviewed. Its documented Linux install path is npm-pinned `agent-browser` followed by `agent-browser install --with-deps`; the version-matched usage guide is obtained with `agent-browser skills get core`. npm discovery returned 0.41.1, but release integrity/version provenance must be confirmed before implementation.
+- No Worker, DSH, Resource Probe, browser job, package installation, model/provider call, secret access or paid fallback was performed.
+
+Latest report: [2026-11-04 live governance and browser gate audit](../reports/2026-11-04-live-governance-browser-gate-audit.md). Latest checkpoint: [2026-11-04 live checkpoint 21:17](../checkpoints/2026-11-04-live-checkpoint-2117.md).
+
+Next step: obtain genuinely independent review for PR #3; recheck dispatch variable and SentinelX host state; revalidate exact-head CI; after acceptance, execute the separate read-only Resource Probe. Browser workflow implementation remains downstream of these gates.
