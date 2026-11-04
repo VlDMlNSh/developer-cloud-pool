@@ -101,3 +101,16 @@ Design and implement Worker-side authorization so manual/direct dispatch cannot 
 - PR #10 remains OPEN / DRAFT. Exact-head CI run `41913465969`, job `126866831669`, COMPLETED / SUCCESS. This is CI evidence only, not independent review or acceptance.
 - No direct Gemini/API call, workflow dispatch, secret/variable access, DSH, browser, Resource Probe, or paid service was used.
 - Next safe step: qualify/add the approved controller contract in this repository (or establish an explicitly approved integration with a controller whose contract is verifiably in scope), then dispatch this exact immutable review packet through that controller only. Keep PR #10 draft and pool dispatch disabled/unmodified.
+
+
+## Live update — 2026-11-05: Gemini controller contract and PR #10 audit
+
+- Rechecked default branch `Основной` HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`, documentation branch prior HEAD `a569c805fa082dace999b4542cafb8b387358091`, repository PUBLIC and active Ruleset ID `26550182` (selector `refs/heads/Основной`; PR required; approvals=0; no bypass; current-user bypass never). Classic branch protection endpoint reports `protected:false`; retain distinction from active Ruleset.
+- PR #10 remains OPEN/DRAFT/NOT MERGED at exact head `fa308f0178fe332851cc8b5a8c43b564912c37a6`; exact-head CI run `41913465969` COMPLETED/SUCCESS; formal review list empty. PR #9, #8, #7 remain open/draft/unmerged at previously recorded heads.
+- Source audit found PR #10 dispatch gate rejects only literal `true`; unset/unexpected values pass. This does not prove explicit `false`. Current `POOL_DISPATCH_ENABLED` remains NOT VERIFIED; no variable/secret was read or changed.
+- PR #10 Free-only validator is line-oriented regex parsing, not full YAML parsing, and does not prove transitive reusable-workflow coverage. Nine tests do not establish complete policy coverage. Treat policy guard as preliminary, not complete security qualification.
+- Added design-only [Gemini review controller contract](../architecture/GEMINI-REVIEW-CONTROLLER-CONTRACT.md). It defines manual-only controller entry, immutable PR SHA, workflow provenance, three isolated read-only roles, least-privilege token, provider free-quota/zero-paid-fallback gate, artifact digests and no auto-approval. No runnable workflow was added.
+- Gemini controller remains absent from default and docs branch; no Gemini-capable tool/connector or qualified provider free route/credential contract is available. Gemini agents NOT RUN; no controller run IDs, child IDs, reports or artifact digests.
+- No Worker, Supervisor dispatch, DSH, Resource Probe, browser, provider API, secrets or variables accessed. Pool dispatch remains unmodified; current dispatch variable NOT VERIFIED.
+- Report: [2026-11-05 Gemini controller contract and PR #10 audit](../reports/2026-11-05-gemini-controller-contract-and-pr10-audit.md).
+- Next bounded step: strengthen PR #10 validation with real YAML parsing, adversarial fixtures and transitive reusable-workflow coverage; keep PR draft until independent review. Do not implement/dispatch Gemini until provider free-tier evidence and exact credential contract are qualified.
