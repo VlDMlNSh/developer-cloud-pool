@@ -78,3 +78,35 @@ export function hasOwnerApproval(comments, expected, repositoryOwner) {
   }
   return approved;
 }
+
+
+export function hasWorkerDispatchAuthority({ actor, comments, expected, repositoryOwner }) {
+  if (String(actor || "").toLowerCase() !== BOT_LOGIN) return false;
+  if (!Array.isArray(comments)) return false;
+  const ordered = [...comments].sort((a, b) => Date.parse(a.created_at || 0) - Date.parse(b.created_at || 0));
+  let consumed = false;
+  let claimed = false;
+  let terminal = false;
+  for (const comment of ordered) {
+    if (comment?.user?.login !== BOT_LOGIN) continue;
+    const body = String(comment.body || "");
+    const issue = body.match(/^- Issue: (\\d+)$/m)?.[1];
+    if (issue !== String(expected.issueNumber)) continue;
+    if (body.startsWith("**POOL_OWNER_APPROVAL_CONSUMED_V1**")) {
+      const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
+      if (sha === expected.targetSha) consumed = true;
+      continue;
+    }
+    if (body.startsWith("**POOL_TASK_CLAIMED**")) {
+      const supervisorRun = body.match(/^- Supervisor run: (\\d+)$/m)?.[1];
+      const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
+      const profile = body.match(/^- Profile: ([^\\r\\n]+)$/m)?.[1];
+      if (consumed && supervisorRun && sha === expected.targetSha &&
+          profile === "dsh-headless-probe" && expected.profile === "DSH headless probe") claimed = true;
+      continue;
+    }
+    if (body.startsWith("**POOL_DSH_PROBE_COMPLETE**") ||
+        body.startsWith("**POOL_DSH_PROBE_NEEDS_REVIEW**")) terminal = true;
+  }
+  return consumed && claimed && !terminal && Boolean(repositoryOwner);
+}
