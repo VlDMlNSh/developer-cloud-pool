@@ -1,0 +1,71 @@
+name: Runner Resource Probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runner-resource-probe-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    name: Read-only host resource inventory
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Collect runner and resource facts
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Runner Resource Probe"
+            echo
+            echo "- Repository: $GITHUB_REPOSITORY"
+            echo "- Ref: $GITHUB_REF"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Runner OS: $RUNNER_OS"
+            echo "- Runner architecture: $RUNNER_ARCH"
+            echo "- Image: ${ImageOS:-unknown} / ${ImageVersion:-unknown}"
+            echo
+            echo "### CPU"
+            echo '~~~text'
+            lscpu
+            echo '~~~'
+            echo
+            echo "### Memory"
+            echo '~~~text'
+            free -h
+            echo '~~~'
+            echo
+            echo "### Filesystems"
+            echo '~~~text'
+            df -hT
+            echo '~~~'
+            echo
+            echo "### OS"
+            echo '~~~text'
+            cat /etc/os-release
+            uname -a
+            echo '~~~'
+            echo
+            echo "### Tool versions"
+            echo '~~~text'
+            bash --version | head -n 1
+            git --version
+            python3 --version
+            node --version || true
+            npm --version || true
+            echo '~~~'
+            echo
+            available_kib="$(df -Pk "$GITHUB_WORKSPACE" | awk 'NR==2 {print $4}')"
+            available_gib="$(awk -v kib="$available_kib" 'BEGIN {printf "%.2f", kib/1024/1024}')"
+            echo "Available workspace filesystem: ${available_gib} GiB"
+            if [ "$available_kib" -lt $((5 * 1024 * 1024)) ]; then
+              echo "::warning::Less than 5 GiB available before profile installation."
+            fi
+            echo
+            echo "> Read-only baseline. No agents are installed, no secrets are accessed, and no profile is qualified."
+          } >> "$GITHUB_STEP_SUMMARY"
