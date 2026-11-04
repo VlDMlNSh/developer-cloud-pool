@@ -251,3 +251,15 @@ This section supersedes older live-state snapshots above where the live API now 
 Latest report: [2026-11-04 live governance and browser gate audit](../reports/2026-11-04-live-governance-browser-gate-audit.md). Latest checkpoint: [2026-11-04 live checkpoint 21:17](../checkpoints/2026-11-04-live-checkpoint-2117.md).
 
 Next step: obtain genuinely independent review for PR #3; recheck dispatch variable and SentinelX host state; revalidate exact-head CI; after acceptance, execute the separate read-only Resource Probe. Browser workflow implementation remains downstream of these gates.
+
+
+## 9. Jarvis mobile read-only shell — 2026-11-04
+
+- Feature branch: `feat/jarvis-mobile-readonly-shell-2026-11-04`, created from immutable default HEAD `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Draft PR #6: https://github.com/VlDMlNSh/developer-cloud-pool/pull/6, head `037c16769df890761b816098377d30f67c3e2ca0`, OPEN / DRAFT / NOT MERGED.
+- Static shell files under `web/jarvis-dashboard/`: HTML blob `bce074dcf508225a5a8eb1662b18c9bc5b1fe54a`; CSS blob `a2f34bbe13108f9159ec52350c24b23afd2f80eb`; JS blob `a3304edadab37f601ecf2c1e130017682ba292b5`. All were read back from the feature branch.
+- The UI is a responsive static prototype with explicit demo warning. No live API, fetch/XHR, WebSocket, secrets, cookies, task submission, dispatch, approvals, browser control or model calls.
+- PR #6 exact-head checks count 0 and reviews empty: CI NOT VERIFIED; independent review NOT RUN. No browser/device rendering tests run. Do not merge or deploy yet.
+- Report: [2026-11-04 Jarvis mobile read-only shell](../reports/2026-11-04-jarvis-mobile-readonly-shell.md).
+- Checkpoint: [2026-11-04 Jarvis mobile shell checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: add deterministic static validation and browser-rendering CI using an approved runner path, then request independent review. Do not use the saturated SentinelX host for browser workload and do not enable pool dispatch.
