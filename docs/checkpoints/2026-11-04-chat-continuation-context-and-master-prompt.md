@@ -199,3 +199,29 @@ https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/continuation-context-
 Не заявляй о dispatch, запуске, тестировании, квалификации или приёмке без соответствующих доказательств. Статусы различай строго: PLANNED, DISPATCHED, RUNNING, SUCCEEDED, VERIFIED, QUALIFIED, ACCEPTED, NOT RUN, BLOCKED, FAILED, NOT VERIFIED.
 
 Начни с повторной проверки governance и актуального GitHub состояния, затем выполни один ограниченный и максимально полезный безопасный проход.
+
+
+---
+
+## Addendum — live governance recheck, 2026-11-04 17:26 +03:00
+
+Detailed evidence report: [Ruleset governance recheck](../reports/2026-11-04-ruleset-governance-recheck.md).
+
+Live API recheck confirms the previous blocker remains:
+- Only Ruleset `26535481` exists; enforcement is active.
+- `conditions.ref_name.include=[]` and `exclude=[]`; exact `refs/heads/Основной` targeting is not demonstrated.
+- `require_code_owner_review=true` and `require_extra_approval_for_unattributed_changes=true`, contrary to the owner comment in Issue #2.
+- Deletion and non-fast-forward restrictions are enabled; bypass actor list is empty.
+- Default branch `Основной` remains at `4597617db0de7cc698cce936a540594ee3d25bf2`; branch API still reports `protected=false`.
+- `POOL_DISPATCH_ENABLED` remains NOT VERIFIED because repository Actions variables are not readable through the available integration. Keep it unset/false.
+- PR #3 and #4 remain open. Both have zero exact-head check runs, zero associated workflow runs and no review submissions.
+- Default-branch check-runs contain two successful supervisor reconciliation checks, but combined status is pending with zero status contexts. These checks do not qualify a worker or runtime profile.
+- PR #3's proposed worker workflow fix was re-read at blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; shell summary uses `TASK_ISSUE` from environment. Exact-head CI and independent review remain NOT VERIFIED.
+
+No worker, DSH, Resource Probe, model call, dispatch, Ruleset mutation or PR merge was performed.
+
+### Updated next step
+
+The connected GitHub interface exposes Ruleset GET only, not create/update/delete. Owner-side creation of a replacement Ruleset is therefore required. Keep Ruleset `26535481` active until a new active Ruleset has been independently read back and verified with exact selector `refs/heads/Основной`, PR required, approvals 0, CODEOWNERS review OFF, unattributed-change extra approval OFF, deletion and non-fast-forward restrictions ON, and no bypass actors. Only then may the old Ruleset be removed and the resulting inventory re-read.
+
+Continue safe static/documentation work on this evidence branch while the governance gate is blocked. This addendum and report are on `docs/continuation-context-2026-11-04`, not on canonical default branch `Основной`; they are documentation work in progress and are not accepted into the default branch.
