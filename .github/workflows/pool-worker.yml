@@ -91,6 +91,7 @@ jobs:
       - name: Install and inspect DSH headless composition
         shell: bash
         env:
+          TASK_ISSUE: ${{ inputs.task_issue }}
           TARGET_SHA: ${{ inputs.target_sha }}
         run: |
           set -euo pipefail
@@ -107,7 +108,7 @@ jobs:
           {
             echo "## Pool Worker — DSH headless probe"
             echo
-            echo "- Task issue: #${{ inputs.task_issue }}"
+            echo "- Task issue: #$TASK_ISSUE"
             echo "- Target SHA: $TARGET_SHA"
             echo "- Profile: dsh-headless-probe"
             echo "- Node: $(node --version)"
