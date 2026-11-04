@@ -225,3 +225,61 @@ No worker, DSH, Resource Probe, model call, dispatch, Ruleset mutation or PR mer
 The connected GitHub interface exposes Ruleset GET only, not create/update/delete. Owner-side creation of a replacement Ruleset is therefore required. Keep Ruleset `26535481` active until a new active Ruleset has been independently read back and verified with exact selector `refs/heads/Основной`, PR required, approvals 0, CODEOWNERS review OFF, unattributed-change extra approval OFF, deletion and non-fast-forward restrictions ON, and no bypass actors. Only then may the old Ruleset be removed and the resulting inventory re-read.
 
 Continue safe static/documentation work on this evidence branch while the governance gate is blocked. This addendum and report are on `docs/continuation-context-2026-11-04`, not on canonical default branch `Основной`; they are documentation work in progress and are not accepted into the default branch.
+
+
+---
+
+## Addendum — Ruleset remediation and Mac mini execution, 2026-11-04 20:23 +03:00
+
+Detailed report: [Ruleset remediation and Mac mini execution](../reports/2026-11-04-ruleset-remediation-and-mac-mini-execution.md).
+
+### Governance result: VERIFIED
+
+The previous active Ruleset `26535481` was replaced only after a new Ruleset was created and independently read back through GitHub REST API.
+
+New Ruleset:
+- ID: `26550182`
+- Name: `Основной — verified`
+- Enforcement: `active`
+- Exact include: `refs/heads/Основной`
+- Exclude: empty
+- Deletion restriction: enabled
+- Non-fast-forward restriction: enabled
+- Pull request required: enabled
+- Required approvals: 0
+- CODEOWNERS review: disabled
+- Extra approval for unattributed changes: disabled
+- Last-push approval: disabled
+- Review-thread resolution: enabled
+- Allowed merge methods: merge, squash, rebase
+- Bypass actors: empty
+- Current user can bypass: never
+
+The new Ruleset was independently fetched by ID and the full configuration matched. Only after this API verification was old Ruleset `26535481` deleted.
+
+Final API read-back:
+- Rulesets inventory contains exactly one item: `26550182`.
+- GET of new Ruleset `26550182` returns the expected active configuration.
+- GET of old Ruleset `26535481` returns HTTP 404 Not Found.
+
+### Mac mini execution evidence
+
+- SentinelX host: `host_5f7264034bdf0b51`, hostname `Voktors-Mini.Dlink`.
+- macOS: 14.7.4, build 23H420.
+- SentinelX agent: 0.23.30.
+- GitHub CLI authenticated as `VlDMlNSh`; reported scopes `gist`, `read:org`, `repo`, `workflow`.
+- GitHub Ruleset create/delete operations were performed through `gh api` on this host. Token value was not read or exposed.
+- SentinelX experienced intermittent `agent_disconnected` / `duplicate_session`; before retrying the first failed create attempt, the Rulesets inventory was checked to confirm no partial creation.
+- `agent-browser` was absent. `npm install -g agent-browser` returned `changed 1 package`, but the executable still returned `command not found`; no browser session was launched. No SentinelX allowlist changes were made. Browser automation status: NOT RUN.
+
+### Scope and remaining gates
+
+- Default branch `Основной` was not modified.
+- Documentation changes are on `docs/continuation-context-2026-11-04`, not merged or accepted into the default branch.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED; keep unset/false.
+- Worker, DSH, Resource Probe and model/provider calls: NOT RUN.
+- PR #3 and #4: no changes or merges in this pass; exact-head CI/reviews still require fresh checks.
+
+### Next step
+
+Recheck repository Actions variable `POOL_DISPATCH_ENABLED` through an authorized read-only settings path, then recheck exact-head CI/reviews for PR #3 and #4. Continue safe static validation; do not launch Worker, DSH, Resource Probe, or model calls until all relevant gates are independently verified.
