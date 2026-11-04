@@ -4,6 +4,8 @@ import {
   extractTaskEnvelope,
   getOwnerApproval,
   formatOwnerApproval,
+  formatOwnerApprovalConsumed,
+  formatOwnerApprovalRevoked,
   hasOwnerApproval
 } from "./pool-approval.mjs";
 
@@ -42,10 +44,19 @@ test("non-owner, other labels, closed issues and pull requests cannot approve", 
 test("approval marker is accepted only from GitHub Actions bot and only for exact issue/SHA/profile/owner", () => {
   const approval = getOwnerApproval(event(), "VlDMlNSh");
   const marker = formatOwnerApproval(approval);
-  const comments = [{ user: { login: "github-actions[bot]" }, body: marker }];
+  const comments = [{ user: { login: "github-actions[bot]" }, body: marker, created_at: "2026-11-04T20:00:00Z" }];
   const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
   assert.equal(hasOwnerApproval(comments, expected, "VlDMlNSh"), true);
   assert.equal(hasOwnerApproval([{ user: { login: "contributor" }, body: marker }], expected, "VlDMlNSh"), false);
   assert.equal(hasOwnerApproval(comments, { ...expected, targetSha: "b".repeat(40) }, "VlDMlNSh"), false);
   assert.equal(hasOwnerApproval(comments, expected, "another-owner"), false);
+
+  const consumed = { user: { login: "github-actions[bot]" }, body: formatOwnerApprovalConsumed(17, sha), created_at: "2026-11-04T20:01:00Z" };
+  assert.equal(hasOwnerApproval([...comments, consumed], expected, "VlDMlNSh"), false);
+
+  const reapproved = { user: { login: "github-actions[bot]" }, body: marker, created_at: "2026-11-04T20:02:00Z" };
+  assert.equal(hasOwnerApproval([...comments, consumed, reapproved], expected, "VlDMlNSh"), true);
+
+  const revoked = { user: { login: "github-actions[bot]" }, body: formatOwnerApprovalRevoked(17), created_at: "2026-11-04T20:03:00Z" };
+  assert.equal(hasOwnerApproval([...comments, revoked], expected, "VlDMlNSh"), false);
 });
