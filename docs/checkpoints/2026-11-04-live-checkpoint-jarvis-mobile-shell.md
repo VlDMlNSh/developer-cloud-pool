@@ -34,3 +34,17 @@ Design and implement Worker-side authorization so manual/direct dispatch cannot 
 - [Issue #1 governance](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1)
 - [Issue #5 browser runtime](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5)
 - [Full project context](../context/DEVELOPER-CLOUD-POOL-CONTEXT.md)
+
+
+## Worker authorization architecture decision — 2026-11-04
+- Current default HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- PR #7 head: `d60d26ae647940e702d646e572c861a8f68f523e`; 15 ahead / 0 behind; OPEN / DRAFT / NOT MERGED.
+- Worker workflow remains unchanged on default and PR #7: blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; standalone `workflow_dispatch` still lacks caller provenance enforcement.
+- Official GitHub docs verified: `workflow_dispatch` is manually/API-triggerable; reusable workflows use `workflow_call`; inside a reusable workflow the `github` context belongs to caller and `job.workflow_*` identifies the called workflow. This supports a provenance gate using exact protected caller ref plus called workflow identity.
+- Preferred design: migrate Worker to `workflow_call`, and refactor Supervisor from script-level REST dispatch to a two-phase planner + statically declared reusable-workflow matrix job (bounded at 20). Validate caller `github.workflow_ref`/SHA and called `job.workflow_repository`, `job.workflow_file_path`, and SHA; revalidate task envelope and approval in Worker.
+- This is a design recommendation only; NOT IMPLEMENTED. It requires an orchestration/recovery refactor because reusable workflows cannot be invoked dynamically from a Node script step.
+- Rejected shortcuts: actor-only check (`github.actor` does not identify which workflow called); public issue labels/comments as capabilities; unverified new HMAC secret/replay contract; removing `workflow_dispatch` without replacing Supervisor dispatch.
+- Report: [Worker authorization architecture decision](../reports/2026-11-04-worker-authorization-architecture-decision.md).
+- PR #7 exact-head static CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327): SUCCESS, but independent review remains NOT RUN.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass; no variable or secret mutation. Worker/DSH/Resource Probe/browser/model execution: NOT RUN.
+- Next: extract a pure Supervisor task-matrix builder with schema/bounds/duplicate/SHA/profile/approval tests. Do not yet wire it to reusable workflow or run Worker.
