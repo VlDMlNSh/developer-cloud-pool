@@ -44,7 +44,7 @@ export function formatOwnerApprovalConsumed(issueNumber, targetSha) {
     "",
     "- Issue: " + issueNumber,
     "- Target SHA: " + targetSha
-  ].join("\\n");
+  ].join("\n");
 }
 
 export function formatOwnerApprovalRevoked(issueNumber) {
@@ -52,7 +52,7 @@ export function formatOwnerApprovalRevoked(issueNumber) {
     "**POOL_OWNER_APPROVAL_REVOKED_V1**",
     "",
     "- Issue: " + issueNumber
-  ].join("\\n");
+  ].join("\n");
 }
 
 export function hasOwnerApproval(comments, expected, repositoryOwner) {
@@ -63,7 +63,7 @@ export function hasOwnerApproval(comments, expected, repositoryOwner) {
   for (const comment of ordered) {
     if (comment?.user?.login !== BOT_LOGIN) continue;
     const body = String(comment.body || "");
-    const issue = body.match(/^- Issue: (\\d+)$/m)?.[1];
+    const issue = body.match(/^- Issue: (\d+)$/m)?.[1];
     if (issue !== String(expected.issueNumber)) continue;
     if (body.startsWith("**POOL_OWNER_APPROVAL_REVOKED_V1**") ||
         body.startsWith("**POOL_OWNER_APPROVAL_CONSUMED_V1**")) {
@@ -71,9 +71,9 @@ export function hasOwnerApproval(comments, expected, repositoryOwner) {
       continue;
     }
     if (!body.startsWith("**POOL_OWNER_APPROVAL_V1**")) continue;
-    const actor = body.match(/^- Approved by: ([^\\r\\n]+)$/m)?.[1]?.toLowerCase();
+    const actor = body.match(/^- Approved by: ([^\r\n]+)$/m)?.[1]?.toLowerCase();
     const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
-    const profile = body.match(/^- Worker profile: ([^\\r\\n]+)$/m)?.[1];
+    const profile = body.match(/^- Worker profile: ([^\r\n]+)$/m)?.[1];
     if (actor === owner && sha === expected.targetSha && profile === expected.profile) approved = true;
   }
   return approved;
