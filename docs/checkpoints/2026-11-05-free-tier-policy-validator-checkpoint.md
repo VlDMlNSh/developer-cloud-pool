@@ -36,4 +36,4 @@ Full evidence: [2026-11-05 validator report](../reports/2026-11-05-free-tier-pol
 
 ## Final-head verification boundary
 
-The workflow path filters now include the Free-only contract, reports and checkpoints so documentation evidence changes also trigger validation. Code-level policy/parser tests passed at SHA `53e0bba68a429d9acd8dcbc67d5a2527e0971eda`. This checkpoint update itself is expected to trigger a new exact-head run; its result must be checked before claiming final-head CI success.
+The workflow path filters include the Free-only contract, reports and checkpoints. Docs-inclusive exact-head run `41917121933` completed SUCCESS on SHA `20b68e8a6fffbc43ad42335603faabd83719ae36`. This checkpoint refresh triggers a new exact-head run; use the latest run attached to PR #11 as the final-head result.
