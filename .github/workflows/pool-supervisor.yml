@@ -1,0 +1,43 @@
+name: Pool Supervisor
+
+on:
+  schedule:
+    - cron: "3,8,13,18,23,28,33,38,43,48,53,58 * * * *"
+  workflow_dispatch:
+  issues:
+    types: [opened, reopened, labeled]
+  workflow_run:
+    workflows: ["Pool Worker"]
+    types: [completed]
+
+run-name: Pool Supervisor (${{ github.event_name }})
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+concurrency:
+  group: developer-cloud-pool-supervisor
+  queue: max
+
+jobs:
+  reconcile:
+    name: Reconcile approved task queue
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      POOL_DEFAULT_BRANCH: ${{ github.event.repository.default_branch || github.ref_name }}
+      POOL_MAX_DISPATCH: "20"
+      POOL_RUN_TITLE: ${{ github.event.workflow_run.display_title }}
+      POOL_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+      POOL_RUN_ID: ${{ github.event.workflow_run.id }}
+      POOL_RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Reconcile task state and dispatch approved work
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node scripts/pool-supervisor.mjs
