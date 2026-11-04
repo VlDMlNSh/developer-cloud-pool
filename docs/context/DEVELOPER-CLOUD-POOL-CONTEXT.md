@@ -332,3 +332,19 @@ This section supersedes prior PR #7 acceptance assumptions where they conflict.
 - Dated report: [Worker dispatch authorization boundary audit](../reports/2026-11-04-worker-dispatch-authorization-boundary-audit.md).
 - Latest checkpoint: [Worker authorization checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
 - Next: design and implement Worker-side authorization that rejects manual/direct dispatch, binds issue + immutable SHA + profile + workflow run/attempt, and cannot rely on publicly readable issue metadata as a secret. Verify GitHub event provenance semantics first; add positive Supervisor and negative manual-dispatch tests. Keep dispatch disabled and do not execute Worker.
+
+
+## 14. Worker authorization architecture decision — 2026-11-04
+
+- Live default HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- PR #7 head: `d60d26ae647940e702d646e572c861a8f68f523e`; 15 commits ahead / 0 behind; OPEN / DRAFT / NOT MERGED.
+- Worker workflow blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` is unchanged between default and PR #7 and still exposes `workflow_dispatch` without caller provenance validation.
+- Official GitHub docs reviewed: `workflow_dispatch` is manually/API triggerable; reusable workflows use `workflow_call`; reusable workflow `github` context belongs to the caller; `job.workflow_ref`, `job.workflow_sha`, `job.workflow_repository`, and `job.workflow_file_path` identify the workflow defining the job.
+- Preferred direction (DESIGN ONLY): migrate Worker to `workflow_call`; refactor Supervisor into a task-planning stage that emits a strictly validated, bounded matrix (max 20) and a statically declared downstream reusable-workflow job. Worker must validate exact protected caller workflow ref/SHA and exact called workflow repository/path/SHA, then independently revalidate issue/SHA/profile/approval.
+- This requires redesign of current script-level REST dispatch and workflow_run-based recovery; reusable workflows cannot be called dynamically from a Node step.
+- Rejected shortcuts: actor-only authorization (actor does not identify caller workflow); public labels/comments as capabilities; adding unverified HMAC secret and replay contract; removing workflow_dispatch without replacement orchestration.
+- Report: [Worker authorization architecture decision](../reports/2026-11-04-worker-authorization-architecture-decision.md).
+- PR #7 static exact-head CI remains SUCCESS but independent review NOT RUN. PR #7 remains unaccepted.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass. No secret/variable mutation and no privileged dispatch.
+- Worker, DSH, Resource Probe, browser and model/provider execution: NOT RUN.
+- Next: extract a pure Supervisor task-matrix builder and test schema, size bound, duplicate issue rejection, SHA/profile allowlist and owner-approval requirement. Do not wire Worker invocation until matrix and recovery contracts are reviewed.
