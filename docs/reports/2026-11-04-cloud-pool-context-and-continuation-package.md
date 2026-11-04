@@ -46,3 +46,15 @@
 ## Next step
 
 Start the next pass by reading the full context, then re-check current PR #3 head/reviews/checks. Obtain a genuinely independent review; if unavailable, record the precise blocker and proceed with a safe independent task such as the read-only Runner Resource Probe workflow review/preparation. Keep dispatch disabled.
+
+
+## Final read-back integrity
+
+All deliverables were fetched again from the documentation branch after writes:
+- Full context blob: `eff29079572d0607545027e90e8288794b1c308e`.
+- Master prompt blob: `54656400c1fd37b324adb056fea96aaef185d2c9`.
+- Checkpoint blob after update: `c739cd19d30bf3c74d5c311aa69dc0e5c98e546c`.
+- README index blob after update: `9c6ab0ebf3cd27c8f57e62815f840d9fdfe03f2c`.
+- This report was re-read with blob `a80740120350948421dd6f860f78c1eef8a9344b` before this integrity appendix; final report blob is verified in the subsequent read-back.
+- Link checks: context references Issue #5; master prompt links full context; checkpoint contains the context blob; README indexes both deliverables.
+- PR #3 live recheck after documentation writes: still OPEN, exact head `7aa5b27b6e826918eeaa6397afe0378d14359022`, one check completed SUCCESS, reviews count 0. Independent review remains NOT RUN.
