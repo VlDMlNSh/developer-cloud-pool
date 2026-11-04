@@ -426,3 +426,17 @@ Do not infer runtime qualification from policy CI. PR #7 Worker provenance, PR #
 Three independent Gemini review roles were requested for PR #10. Live inspection of the default-branch workflow tree found no `.github/workflows/gemini-batch-dispatch-controller.yml`; no Gemini-capable tool is available in this environment. The existing Pool Worker is a DSH workflow with unresolved direct-dispatch provenance risk, and Pool Supervisor has reconciliation/dispatch side effects. Neither is an approved Gemini review path. Therefore Gemini agents were NOT RUN and no controller/child run IDs or reports exist.
 
 A bounded, read-only, three-role review packet was prepared for PR #10 at immutable SHA `fa308f0178fe332851cc8b5a8c43b564912c37a6`: [review packet](../reviews/2026-11-05-gemini-independent-review-packet-pr10.md). Dispatch-readiness report: [2026-11-05 Gemini review dispatch readiness](../reports/2026-11-05-gemini-review-dispatch-readiness.md). PR #10 remains OPEN/DRAFT; exact-head CI is SUCCESS but independent review is NOT RUN. Next: qualify an approved controller and verify its contract before dispatch; do not bypass it.
+
+
+## Live continuation addendum — 2026-11-05: PR #11 structural YAML policy validation
+
+- Live default branch `Основной` HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`. Repository is public. Default branch remains separate from documentation continuation branch.
+- PR #11 [structural YAML Free-tier policy validator](https://github.com/VlDMlNSh/developer-cloud-pool/pull/11) head `20b68e8a6fffbc43ad42335603faabd83719ae36`, OPEN / DRAFT / NOT MERGED; independent review and review threads empty (NOT RUN).
+- PR-associated workflow run [41917121933](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41917121933), job `126879619510`: COMPLETED / SUCCESS. The job checked out merge ref `76c1177e42b7d6342755d7cb42822913facf917b` derived from the exact PR head and default base.
+- Job log observed `POOL_DISPATCH_ENABLED=false`; all five workflow YAML files parsed; structural policy validator PASS; 13 tests / 29 assertions / 0 failures / 0 errors / 0 skips; existing pool contract validator PASS.
+- Read-back blob SHAs: validator `69f7e284abd0695e4e513494feab72249acf7248`, tests `4f7e1de10ccb6da1bc3c023d46fe9ed4ae0d9f07`, workflow `2e278bc7eb4d729383f58aa8f291eaddb00266ac`.
+- The CI observation is not a fresh independent read of repository variables and does not qualify dispatch.
+- PR #10 remains OPEN / DRAFT; PR #7 Worker caller-provenance gap remains blocking; PR #8 matrix builder remains isolated and unreviewed; PR #9 corrective revert remains open. No pool dispatch, Worker, DSH, Resource Probe, browser, model/provider call or secret access was performed.
+- Report: [2026-11-05 PR #11 YAML policy verification](../reports/2026-11-05-github-free-yaml-policy-pr11-verification.md).
+- Checkpoint: [2026-11-05 PR #11 verification checkpoint](../checkpoints/2026-11-05-pr11-yaml-policy-verification.md).
+- Next: prepare read-only independent review packet for PR #11 at immutable SHA `20b68e8a6fffbc43ad42335603faabd83719ae36`. Gemini agents remain NOT RUN unless the approved controller and its contract are independently verified. Keep dispatch disabled; continue static-only design of the macOS/iOS runner profile.
