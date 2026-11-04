@@ -20,6 +20,10 @@ on:
 
 run-name: "Pool task #${{ inputs.task_issue }} (${{ inputs.profile }})"
 
+concurrency:
+  group: pool-worker-task-${{ inputs.task_issue }}
+  cancel-in-progress: false
+
 permissions: {}
 
 jobs:
@@ -28,13 +32,22 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
+      contents: read
       issues: read
     env:
+      DISPATCH_ACTOR: ${{ github.actor }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TASK_ISSUE: ${{ inputs.task_issue }}
       TARGET_SHA: ${{ inputs.target_sha }}
       PROFILE: ${{ inputs.profile }}
     steps:
+      - name: Checkout trusted authorization helper
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Validate issue state, approval label and task envelope
         shell: bash
         run: |
@@ -59,11 +72,28 @@ jobs:
           if (issue.pull_request || issue.state !== "open") throw new Error("Task issue is not an open issue.");
           const labels = issue.labels.map(label => label.name);
           if (!labels.includes("pool:claimed")) throw new Error("Task does not hold the supervisor claim.");
-          const shaMatch = String(issue.body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
-          const profileMatch = String(issue.body || "").match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im);
-          if (!shaMatch || shaMatch[1] !== sha) throw new Error("Dispatch SHA does not match the approved issue envelope.");
+          const shaMatch = String(issue.body || "").match(/^### Target SHA\\s*\\r?\\n+([0-9a-f]{40})\\s*$/im);
+          const profileMatch = String(issue.body || "").match(/^### Worker profile\\s*\\r?\\n+([^\\r\\n]+)\\s*$/im);
+          if (!shaMatch || shaMatch[1] !== sha) throw new Error("Dispatch SHA does not match the task envelope.");
           if (!profileMatch || profileMatch[1].trim() !== "DSH headless probe") throw new Error("Issue profile does not match the allowlist.");
-          console.log("Task authority validated. Issue #" + issueNumber + ", target SHA " + sha + ".");
+          const commentsResponse = await fetch("https://api.github.com/repos/" + repo + "/issues/" + issueNumber + "/comments?per_page=100", {
+            headers: {
+              Accept: "application/vnd.github+json",
+              Authorization: "Bearer " + process.env.GITHUB_TOKEN,
+              "X-GitHub-Api-Version": "2022-11-28"
+            }
+          });
+          if (!commentsResponse.ok) throw new Error("Cannot verify Supervisor provenance: HTTP " + commentsResponse.status);
+          const comments = await commentsResponse.json();
+          const { hasWorkerDispatchAuthority } = await import("./scripts/pool-approval.mjs");
+          const authorized = hasWorkerDispatchAuthority({
+            actor: process.env.DISPATCH_ACTOR,
+            comments,
+            expected: { issueNumber: Number(issueNumber), targetSha: sha, profile: "DSH headless probe" },
+            repositoryOwner: repo.split("/")[0]
+          });
+          if (!authorized) throw new Error("Worker invocation lacks bot issuer, consumed owner approval, matching Supervisor claim, or task is already terminal.");
+          console.log("Supervisor-issued task authority validated. Issue #" + issueNumber + ", target SHA " + sha + ".");
           NODE
 
   probe:
