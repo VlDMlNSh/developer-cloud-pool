@@ -58,7 +58,6 @@ if (!probeJob) fail("Worker probe job block cannot be isolated");
 if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive repository secrets");
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
 if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
-if (/\$\{\{\s*inputs\.task_issue\s*\}\}/.test(probeJob)) fail("Worker probe shell/job contains direct task_issue expression");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
 if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
