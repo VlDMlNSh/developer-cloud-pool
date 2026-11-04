@@ -32,3 +32,8 @@
 Independent review of PR #11, focusing on duplicate YAML mapping keys, YAML merge keys, local reusable workflow resolution/cycles, external reusable workflow rejection, runner/matrix/timeouts and explicit dispatch false semantics. Keep draft pending review. Then close/relabel PR #10 as superseded only after safe PR #11 review outcome. Gemini controller remains blocked pending free provider/quota/credential/provenance qualification.
 
 Full evidence: [2026-11-05 validator report](../reports/2026-11-05-free-tier-policy-yaml-validator.md).
+
+
+## Final-head verification boundary
+
+The workflow path filters now include the Free-only contract, reports and checkpoints so documentation evidence changes also trigger validation. Code-level policy/parser tests passed at SHA `53e0bba68a429d9acd8dcbc67d5a2527e0971eda`. This checkpoint update itself is expected to trigger a new exact-head run; its result must be checked before claiming final-head CI success.
