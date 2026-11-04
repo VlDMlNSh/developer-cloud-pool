@@ -6,8 +6,14 @@ const api = "https://api.github.com";
 const defaultBranch = process.env.POOL_DEFAULT_BRANCH || process.env.GITHUB_REF_NAME;
 const eventName = process.env.GITHUB_EVENT_NAME;
 const maxDispatch = Number(process.env.POOL_MAX_DISPATCH || "20");
+const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 
 if (!ownerRepo || !token || !defaultBranch) throw new Error("Missing required GitHub runtime context.");
+if (!dispatchEnabled) {
+  console.log("Pool Supervisor heartbeat only: dispatch is disabled pending default-branch governance and owner approval.");
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\\n");
+  process.exit(0);
+}
 
 const headers = {
   Accept: "application/vnd.github+json",
