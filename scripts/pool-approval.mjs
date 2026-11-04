@@ -38,20 +38,43 @@ export function formatOwnerApproval(approval) {
   ].join("\n");
 }
 
+export function formatOwnerApprovalConsumed(issueNumber, targetSha) {
+  return [
+    "**POOL_OWNER_APPROVAL_CONSUMED_V1**",
+    "",
+    "- Issue: " + issueNumber,
+    "- Target SHA: " + targetSha
+  ].join("\\n");
+}
+
+export function formatOwnerApprovalRevoked(issueNumber) {
+  return [
+    "**POOL_OWNER_APPROVAL_REVOKED_V1**",
+    "",
+    "- Issue: " + issueNumber
+  ].join("\\n");
+}
+
 export function hasOwnerApproval(comments, expected, repositoryOwner) {
   const owner = String(repositoryOwner || "").toLowerCase();
   if (!owner || !Array.isArray(comments)) return false;
-  return comments.some((comment) => {
-    if (comment?.user?.login !== BOT_LOGIN) return false;
+  const ordered = [...comments].sort((a, b) => Date.parse(a.created_at || 0) - Date.parse(b.created_at || 0));
+  let approved = false;
+  for (const comment of ordered) {
+    if (comment?.user?.login !== BOT_LOGIN) continue;
     const body = String(comment.body || "");
-    if (!body.startsWith("**POOL_OWNER_APPROVAL_V1**")) return false;
-    const issue = body.match(/^- Issue: (\d+)$/m)?.[1];
-    const actor = body.match(/^- Approved by: ([^\r\n]+)$/m)?.[1]?.toLowerCase();
+    const issue = body.match(/^- Issue: (\\d+)$/m)?.[1];
+    if (issue !== String(expected.issueNumber)) continue;
+    if (body.startsWith("**POOL_OWNER_APPROVAL_REVOKED_V1**") ||
+        body.startsWith("**POOL_OWNER_APPROVAL_CONSUMED_V1**")) {
+      approved = false;
+      continue;
+    }
+    if (!body.startsWith("**POOL_OWNER_APPROVAL_V1**")) continue;
+    const actor = body.match(/^- Approved by: ([^\\r\\n]+)$/m)?.[1]?.toLowerCase();
     const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
-    const profile = body.match(/^- Worker profile: ([^\r\n]+)$/m)?.[1];
-    return issue === String(expected.issueNumber) &&
-      actor === owner &&
-      sha === expected.targetSha &&
-      profile === expected.profile;
-  });
+    const profile = body.match(/^- Worker profile: ([^\\r\\n]+)$/m)?.[1];
+    if (actor === owner && sha === expected.targetSha && profile === expected.profile) approved = true;
+  }
+  return approved;
 }
