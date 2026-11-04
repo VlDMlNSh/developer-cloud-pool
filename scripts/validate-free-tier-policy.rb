@@ -5,7 +5,7 @@ require "yaml"
 require "pathname"
 
 module FreeTierWorkflowPolicy
-  ALLOWED_RUNNER = /\A(?:ubuntu-(?:latest|[0-9]{2}\.[0-9]{2})|windows-(?:latest|[0-9]{2})|macos-(?:latest|[0-9]{2}))\z/
+  ALLOWED_RUNNER = /\A(?:ubuntu-(?:latest|[0-9]{2}\.[0-9]{2})|windows-(?:latest|20[0-9]{2})|macos-(?:latest|[0-9]{2}))\z/
   MAX_TIMEOUT_MINUTES = 30
   MAX_MATRIX_PARALLEL = 4
 
