@@ -104,9 +104,21 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
   end
 
   def test_resolves_yaml_anchors_before_policy_validation
-    anchored = VALID.sub("runs-on: ubuntu-24.04", "runs-on: &standard ubuntu-24.04")
-    aliased = anchored.sub("timeout-minutes: 5", "timeout-minutes: 5\n    env:\n      RUNNER_LABEL: *standard")
-    assert_empty errors(aliased)
+    source = <<~YAML
+      name: Anchored
+      jobs:
+        first:
+          runs-on: &standard ubuntu-24.04
+          timeout-minutes: 5
+          steps:
+            - run: echo first
+        second:
+          runs-on: *standard
+          timeout-minutes: 5
+          steps:
+            - run: echo second
+    YAML
+    assert_empty errors(source)
   end
 
   def test_rejects_reusable_workflow_cycles
