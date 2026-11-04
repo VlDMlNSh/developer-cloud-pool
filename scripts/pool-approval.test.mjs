@@ -47,7 +47,7 @@ test("approval marker is accepted only from GitHub Actions bot and only for exac
   const approval = getOwnerApproval(event(), "VlDMlNSh");
   const marker = formatOwnerApproval(approval);
   const comments = [{ user: { login: "github-actions[bot]" }, body: marker, created_at: "2026-11-04T20:00:00Z" }];
-  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe", supervisorRun: "123456" };
   assert.equal(hasOwnerApproval(comments, expected, "VlDMlNSh"), true);
   assert.equal(hasOwnerApproval([{ user: { login: "contributor" }, body: marker }], expected, "VlDMlNSh"), false);
   assert.equal(hasOwnerApproval(comments, { ...expected, targetSha: "b".repeat(40) }, "VlDMlNSh"), false);
@@ -73,7 +73,7 @@ test("consumed approval recovery paths require a fresh owner approval", () => {
 
 
 test("Worker rejects direct manual dispatch and forged pool:claimed labels", () => {
-  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe", supervisorRun: "123456" };
   const owner = "VlDMlNSh";
   const approvalMarker = {
     user: { login: "github-actions[bot]" },
@@ -110,7 +110,7 @@ test("Worker rejects direct manual dispatch and forged pool:claimed labels", () 
 });
 
 test("Worker rejects terminal or mismatched Supervisor evidence", () => {
-  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe", supervisorRun: "123456" };
   const owner = "VlDMlNSh";
   const approval = {
     user: { login: "github-actions[bot]" },
@@ -150,7 +150,7 @@ test("Worker rejects terminal or mismatched Supervisor evidence", () => {
 
 test("fresh owner reapproval resets prior terminal evidence but requires a new consumed claim", () => {
   const owner = "VlDMlNSh";
-  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
+  const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe", supervisorRun: "123456" };
   const approval = {
     user: { login: "github-actions[bot]" },
     body: formatOwnerApproval({ issueNumber: 17, actor: owner, targetSha: sha, profile: "DSH headless probe" }),
