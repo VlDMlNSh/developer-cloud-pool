@@ -88,3 +88,16 @@ Design and implement Worker-side authorization so manual/direct dispatch cannot 
 - `POOL_DISPATCH_ENABLED`: NOT VERIFIED. No secrets/variables read or changed; no workflow dispatch, Worker, DSH, Resource Probe, browser or model execution.
 - Report: [GitHub Free-only policy guard implementation](../reports/2026-11-05-github-free-tier-policy-guard.md). Contract: [GitHub Free-only workflow contract](../architecture/GITHUB-FREE-TIER-WORKFLOW-CONTRACT.md).
 - Next: resolve Worker caller provenance and safe reusable-workflow orchestration/recovery. Keep dispatch disabled.
+
+
+## Live update — 2026-11-05: Gemini independent review request
+
+- User requested three manually launched Gemini agents for bounded independent review. The requirement was accepted in principle, but manual/direct Gemini invocation outside the approved controller is prohibited.
+- Rechecked default branch `Основной` HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`; repository is PUBLIC. Documentation branch before this update: `06ba03c06c66355be556bb285dc14bdc2963d78d`.
+- Inspected the full default-branch workflow tree: only `dsh-runtime-evaluation.yml`, `pool-contract-validation.yml`, `pool-supervisor.yml`, `pool-worker.yml`, `runner-resource-probe.yml`. `.github/workflows/gemini-batch-dispatch-controller.yml` is absent. No Gemini-capable connector/tool is available in this environment.
+- Existing `pool-worker.yml` is a DSH probe with standalone `workflow_dispatch`; it is not a Gemini controller and has unresolved caller-provenance risk documented in PR #7. `pool-supervisor.yml` has write permissions and reconciliation/dispatch side effects; it is not a review-only launcher. Neither may be repurposed for Gemini review.
+- Prepared bounded three-role read-only review packet for PR #10 at immutable SHA `fa308f0178fe332851cc8b5a8c43b564912c37a6`: [Gemini independent review packet](../reviews/2026-11-05-gemini-independent-review-packet-pr10.md). Roles: implementation/policy semantics; adversarial tests; security/governance/provenance. Agents must work independently and cannot modify code or repository state.
+- Packet status: PLANNED / BLOCKED — NOT DISPATCHED. No controller run ID, child run/job IDs, artifacts or Gemini reports exist. Do not describe this as a completed review.
+- PR #10 remains OPEN / DRAFT. Exact-head CI run `41913465969`, job `126866831669`, COMPLETED / SUCCESS. This is CI evidence only, not independent review or acceptance.
+- No direct Gemini/API call, workflow dispatch, secret/variable access, DSH, browser, Resource Probe, or paid service was used.
+- Next safe step: qualify/add the approved controller contract in this repository (or establish an explicitly approved integration with a controller whose contract is verifiably in scope), then dispatch this exact immutable review packet through that controller only. Keep PR #10 draft and pool dispatch disabled/unmodified.
