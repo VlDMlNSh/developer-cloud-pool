@@ -57,3 +57,4 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
 - [Media Intelligence and Skills discovery — 2026-11-04](docs/reports/2026-11-04-media-intelligence-skills-discovery.md)
+- [Social source and publishing architecture — 2026-11-04](docs/reports/2026-11-04-social-source-and-publishing-architecture.md)
