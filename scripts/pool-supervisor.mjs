@@ -1,10 +1,18 @@
 import fs from "node:fs";
+import { getOwnerApproval, formatOwnerApproval, hasOwnerApproval } from "./pool-approval.mjs";
 
 const ownerRepo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
 const api = "https://api.github.com";
 const defaultBranch = process.env.POOL_DEFAULT_BRANCH || process.env.GITHUB_REF_NAME;
 const eventName = process.env.GITHUB_EVENT_NAME;
+const repositoryOwner = (ownerRepo || "").split("/")[0];
+let eventPayload = {};
+try {
+  if (process.env.GITHUB_EVENT_PATH) eventPayload = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+} catch {
+  throw new Error("Cannot parse the GitHub event payload; refusing pool reconciliation.");
+}
 const maxDispatch = Number(process.env.POOL_MAX_DISPATCH || "20");
 const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 
@@ -68,6 +76,28 @@ async function comment(issueNumber, body) {
     method: "POST",
     body: JSON.stringify({ body })
   });
+}
+
+async function recordOwnerApproval() {
+  if (eventName !== "issues" || eventPayload.action !== "labeled" || eventPayload.label?.name !== "pool:ready") return;
+  const issueNumber = eventPayload.issue?.number;
+  if (!Number.isInteger(issueNumber) || eventPayload.issue?.pull_request) return;
+  const approval = getOwnerApproval(eventPayload, repositoryOwner);
+  if (!approval) {
+    const current = await request("/repos/" + ownerRepo + "/issues/" + issueNumber);
+    await replaceIssueLabels(current, ["pool:ready"], ["pool:needs-review"]);
+    await comment(issueNumber,
+      "**POOL_OWNER_APPROVAL_REJECTED**\\n\\nThe `pool:ready` label was not applied by the repository owner to an open issue with the exact allowlisted task envelope. No worker was dispatched.");
+    log("Rejected pool:ready label event for issue #" + issueNumber + ": owner approval or task envelope invalid.");
+    return;
+  }
+
+  const comments = await request("/repos/" + ownerRepo + "/issues/" + issueNumber + "/comments?per_page=100");
+  const expected = { issueNumber: approval.issueNumber, targetSha: approval.targetSha, profile: approval.profile };
+  if (!hasOwnerApproval(comments, expected, repositoryOwner)) {
+    await comment(issueNumber, formatOwnerApproval(approval));
+    log("Recorded owner approval marker for issue #" + issueNumber + " at immutable SHA " + approval.targetSha + ".");
+  }
 }
 
 function extractTargetSha(body) {
@@ -170,6 +200,19 @@ async function dispatchReadyTasks() {
       continue;
     }
 
+    const approvalComments = await request("/repos/" + ownerRepo + "/issues/" + issue.number + "/comments?per_page=100");
+    if (!hasOwnerApproval(approvalComments, {
+      issueNumber: issue.number,
+      targetSha,
+      profile
+    }, repositoryOwner)) {
+      await replaceIssueLabels(issue, ["pool:ready"], ["pool:needs-review"]);
+      await comment(issue.number,
+        "**POOL_TASK_APPROVAL_MISSING**\\n\\nNo bot-issued owner approval marker matches this issue, target SHA and worker profile. The task was not dispatched. The repository owner must re-apply `pool:ready` after reviewing the task.");
+      log("Skipped task #" + issue.number + ": no matching owner approval marker.");
+      continue;
+    }
+
     await replaceIssueLabels(issue, ["pool:ready"], ["pool:claimed"]);
     await comment(issue.number,
       "**POOL_TASK_CLAIMED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
@@ -205,6 +248,7 @@ async function dispatchReadyTasks() {
 }
 
 await ensureLabels();
+await recordOwnerApproval();
 if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
 await dispatchReadyTasks();
