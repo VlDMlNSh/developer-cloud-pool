@@ -21,6 +21,8 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
 - [Jarvis hybrid platform reference architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
 - [DeepSeek Harness adoption and cloud-first build plan](docs/architecture/DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md)
+- [Media Intelligence and Skills Architecture](docs/architecture/MEDIA-INTELLIGENCE-AND-SKILLS-ARCHITECTURE.md)
+- [Cloud Pool Skills and Runtime Plugin Policy](.agents/skills/README.md)
 - [GitHub Pool Supervisor and recovery architecture](docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md)
 
 ## Cloud pool control
@@ -54,3 +56,4 @@ The baseline probes require no provider secrets and make no model calls. A passi
 ## Latest engineering report
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
+- [Media Intelligence and Skills discovery — 2026-11-04](docs/reports/2026-11-04-media-intelligence-skills-discovery.md)
