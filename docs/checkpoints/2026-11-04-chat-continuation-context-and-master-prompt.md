@@ -283,3 +283,28 @@ Final API read-back:
 ### Next step
 
 Recheck repository Actions variable `POOL_DISPATCH_ENABLED` through an authorized read-only settings path, then recheck exact-head CI/reviews for PR #3 and #4. Continue safe static validation; do not launch Worker, DSH, Resource Probe, or model calls until all relevant gates are independently verified.
+
+
+---
+
+## Addendum — dispatch gate and PR recheck, 2026-11-04 20:24 +03:00
+
+This addendum supersedes the earlier statement that `POOL_DISPATCH_ENABLED` was NOT VERIFIED.
+
+- GET `/repos/VlDMlNSh/developer-cloud-pool/actions/variables/POOL_DISPATCH_ENABLED` from the authenticated Mac mini GitHub CLI returned HTTP 404.
+- Listing repository Actions variables and filtering the exact name returned no matching item (exit code 0, no output).
+- Default-branch supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` maps `POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}`; its job has no `environment:` assignment.
+- Repository owner type is `User`.
+
+Conclusion: repository-level `POOL_DISPATCH_ENABLED` is absent. The supervisor workflow reads the `vars` context and the explicit code gate requires the string `true`; dispatch is therefore VERIFIED OFF for the current repository configuration. No variable was created or enabled.
+
+Fresh PR/Issue recheck:
+- Issues #1 and #2 remain OPEN.
+- PR #3 remains OPEN at head `9a21c52afae02ac2b446d4ac1b5ae33fbbdad6df`; PR #4 remains OPEN at head `ab43af86b63a731202fa0f8fa6f27f009b0d4aac`.
+- Both PRs have zero review submissions, zero exact-head check-runs and zero associated workflow runs. Review/CI remain NOT VERIFIED. No merge was attempted.
+
+Documentation report: [Ruleset remediation and Mac mini execution](../reports/2026-11-04-ruleset-remediation-and-mac-mini-execution.md). Its latest content was restored and re-read after the write; final blob SHA to be recorded after read-back.
+
+Ruleset state remains VERIFIED: only active Ruleset `26550182` remains; its exact branch selector and protection settings were independently read back. Old Ruleset `26535481` returns 404.
+
+Do not launch Worker, DSH, Resource Probe, or model/provider calls. Continue with safe static validation and independent PR review/CI follow-up.
