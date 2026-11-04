@@ -1,4 +1,5 @@
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import assert from "node:assert/strict";
 import {
   extractTaskEnvelope,
@@ -59,4 +60,12 @@ test("approval marker is accepted only from GitHub Actions bot and only for exac
 
   const revoked = { user: { login: "github-actions[bot]" }, body: formatOwnerApprovalRevoked(17), created_at: "2026-11-04T20:03:00Z" };
   assert.equal(hasOwnerApproval([...comments, revoked], expected, "VlDMlNSh"), false);
+});
+
+test("consumed approval recovery paths require a fresh owner approval", () => {
+  const supervisor = readFileSync(new URL("./pool-supervisor.mjs", import.meta.url), "utf8");
+  assert.match(supervisor, /replaceIssueLabels\(issue, \["pool:claimed", "pool:ready"\], \["pool:needs-review"\]\)/);
+  assert.match(supervisor, /replaceIssueLabels\(current, \["pool:claimed", "pool:ready"\], \["pool:needs-review"\]\)/);
+  assert.doesNotMatch(supervisor, /replaceIssueLabels\(issue, \["pool:claimed"\], \["pool:ready"\]\)/);
+  assert.doesNotMatch(supervisor, /replaceIssueLabels\(current, \["pool:claimed"\], \["pool:ready"\]\)/);
 });
