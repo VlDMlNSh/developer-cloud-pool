@@ -72,3 +72,19 @@ Design and implement Worker-side authorization so manual/direct dispatch cannot 
 - No iOS/macOS workflow created, no simulator installed, no API keys/secrets accessed, no runner dispatch, no model or platform API calls.
 - Dated report: [Cloud Pool iOS, capacity, agents and API audit](../reports/2026-11-05-cloud-pool-ios-capacity-agents-api-audit.md).
 - Next bounded step: design-only iOS macOS runner profile contract and static tests (macOS label, pinned Xcode selection, simulator matrix, concurrency=1, timeout, no general secrets, no signing, no persistent self-hosted runner). Do not create runnable workflow until Worker authorization/governance/CI/review gates pass. Measure actual Linux runner resources via read-only probe before updating 20-slot capacity assumptions.
+
+
+## Live update — 2026-11-05: GitHub Free-only policy guard
+
+- Repository visibility: PUBLIC. Immutable constraint: GitHub Free only; zero automatic charges; no paid runner, model/API fallback, external paid compute/storage/browser or custom runner image.
+- PR #10: https://github.com/VlDMlNSh/developer-cloud-pool/pull/10 — OPEN / DRAFT / NOT MERGED. Branch `feat/github-free-tier-policy-guard-2026-11-05`; exact head `fa308f0178fe332851cc8b5a8c43b564912c37a6`.
+- Exact-head CI run `41913465969`, job `126866831669`: COMPLETED / SUCCESS on standard `ubuntu-24.04`. YAML parse, dispatch-disabled assertion, Free-only policy validator, nine Node tests and existing pool contract validator all passed.
+- Initial CI attempt on earlier head `36042186afed101cf8cf65ad946c5a72b41a732c` failed due over-escaped regexes; corrected in `fa308f0178fe332851cc8b5a8c43b564912c37a6`.
+- Validator requires literal standard Ubuntu/Windows/macOS labels, timeout 1–30 minutes, matrix max-parallel 1–4; rejects dynamic/self-hosted/larger/GPU labels, custom job images/containers and explicit paid-fallback config.
+- Standard ephemeral macOS remains allowed for future Xcode/Simulator tests; not implemented or run.
+- PR #10 independent review: NOT RUN. Keep DRAFT; do not merge without independent review and fresh exact-head verification.
+- PR #7 remains open/draft; Worker caller provenance unresolved. PR #8 and PR #9 remain open/draft with exact-head CI/review not verified.
+- Active Ruleset ID 26550182 applies to `refs/heads/Основной`, but required approvals = 0; independent review remains a separate gate.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED. No secrets/variables read or changed; no workflow dispatch, Worker, DSH, Resource Probe, browser or model execution.
+- Report: [GitHub Free-only policy guard implementation](../reports/2026-11-05-github-free-tier-policy-guard.md). Contract: [GitHub Free-only workflow contract](../architecture/GITHUB-FREE-TIER-WORKFLOW-CONTRACT.md).
+- Next: resolve Worker caller provenance and safe reusable-workflow orchestration/recovery. Keep dispatch disabled.
