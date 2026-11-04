@@ -329,3 +329,22 @@ The previous governance blocker concerning the active Ruleset has been resolved 
 - Detailed dated evidence: [2026-11-04-ruleset-verified-and-dispatch-gate.md](../reports/2026-11-04-ruleset-verified-and-dispatch-gate.md). Report blob SHA: `d449ca3f931fdc2130219c242e8d7bbbfdfa5c98`.
 
 Next step: continue static/read-only workflow contract validation and find an approved way to independently verify the dispatch variable without accessing secret values. Keep `POOL_DISPATCH_ENABLED` unset/false until then.
+
+
+---
+
+## Live continuation update — 2026-11-04 (contract validation + dispatch gate)
+
+- Rechecked the active Ruleset 26550182: active exact selector `refs/heads/Основной`; PR required; approvals 0; deletion and non-fast-forward restrictions ON; CODEOWNERS and unattributed-extra-approval OFF; thread resolution ON; bypass empty/current-user never.
+- Used the authorized Mac mini `Voktors-Mini.Dlink` and its authenticated GitHub CLI session. The repository Actions variable `POOL_DISPATCH_ENABLED` was initially UNSET. Set it explicitly to `false` and immediately read back exact value `false`. This is **VERIFIED FALSE**.
+- Added `.github/workflows/pool-contract-validation.yml` and `scripts/validate-pool-contract.mjs` to PR #3 branch `fix/worker-shell-input-escaping-2026-11-04`.
+- Latest PR #3 head: `de12e4461b3fc097adaea6a6973aa4073a746023`.
+- Local verification against a fresh clone of that exact head: all five workflow YAML files parsed; static contract validator output `POOL_CONTRACT_VALIDATION=PASS`. Validator SHA-256 `5445be364fbf7e3324f8116188ac0f9a4c7b6e0c69f90e80c801af29d82f3e2f`; workflow SHA-256 `53c4d0079cb02460f03e2cc09d21a931d6d3bb78a658f5ef6f4e62903d4f6467`.
+- Latest exact-head GitHub Actions run `41879551363`, job `126746982406`, was QUEUED; CI is NOT VERIFIED until it starts and completes.
+- Issue #1 was updated with current governance evidence and variable verification. PR #3 description and conversation updated.
+- PR #3 remains OPEN; independent review NOT RUN; no merge.
+- PR #4 remains OPEN and NOT VERIFIED.
+- Worker, DSH, Resource Probe, model calls and paid fallback were NOT RUN. Dispatch remains disabled.
+- Detailed report: [2026-11-04-pool-contract-validation-and-dispatch-fail-closed.md](../reports/2026-11-04-pool-contract-validation-and-dispatch-fail-closed.md).
+
+Next: inspect latest exact-head CI after it leaves queue; obtain independent PR #3 review; integrate only after both pass. Then run the isolated Resource Probe, followed by a separate DSH smoke gate. Keep `POOL_DISPATCH_ENABLED=false`.
