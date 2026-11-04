@@ -90,7 +90,7 @@ export function hasWorkerDispatchAuthority({ actor, comments, expected, reposito
   for (const comment of ordered) {
     if (comment?.user?.login !== BOT_LOGIN) continue;
     const body = String(comment.body || "");
-    const issue = body.match(/^- Issue: (\\d+)$/m)?.[1];
+    const issue = body.match(/^- Issue: (\d+)$/m)?.[1];
     if (issue !== String(expected.issueNumber)) continue;
     if (body.startsWith("**POOL_OWNER_APPROVAL_CONSUMED_V1**")) {
       const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
@@ -98,9 +98,9 @@ export function hasWorkerDispatchAuthority({ actor, comments, expected, reposito
       continue;
     }
     if (body.startsWith("**POOL_TASK_CLAIMED**")) {
-      const supervisorRun = body.match(/^- Supervisor run: (\\d+)$/m)?.[1];
+      const supervisorRun = body.match(/^- Supervisor run: (\d+)$/m)?.[1];
       const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
-      const profile = body.match(/^- Profile: ([^\\r\\n]+)$/m)?.[1];
+      const profile = body.match(/^- Profile: ([^\r\n]+)$/m)?.[1];
       if (consumed && supervisorRun && sha === expected.targetSha &&
           profile === "dsh-headless-probe" && expected.profile === "DSH headless probe") claimed = true;
       continue;
