@@ -362,3 +362,51 @@ This section supersedes prior PR #7 acceptance assumptions where they conflict.
 - PR #7's standalone Worker `workflow_dispatch` provenance gap remains BLOCKING. No Worker/DSH/Resource Probe/browser/model execution, secret access, paid fallback or variable mutation. `POOL_DISPATCH_ENABLED` NOT VERIFIED in this pass.
 - Report: [2026-11-04 Supervisor Task Matrix Builder](../reports/2026-11-04-supervisor-task-matrix-builder.md).
 - Next bounded pass: implement/test a pure Supervisor planner that obtains approvals via `hasOwnerApproval`, constructs typed matrix candidates, and defines atomic claim/consume ordering and per-matrix terminal recovery. Keep Worker invocation disconnected until provenance/recovery design review and exact-head CI.
+
+
+## 16. iOS Simulator, capacity, agent roster and API credential audit — 2026-11-05
+
+### iOS build/test placement
+- Do not install Xcode/iOS Simulator into Linux pool workers or operate a persistent simulator service.
+- Xcode Simulator is a macOS/Xcode capability. Use a separate on-demand ephemeral macOS GitHub-hosted job for Xcode build, Simulator boot, XCTest/XCUITest and screenshots/accessibility checks. Physical-device checks remain required for hardware-specific behavior and release acceptance.
+- Separate macOS jobs do not consume CPU/RAM on concurrent Linux jobs. They do consume macOS job time, simulator download/storage, and account concurrency while active.
+- Published GitHub billing docs list standard macOS 3/4-core M1/Intel at $0.062/min. Public standard-runner use is free under published policy; private included quota and overage depend on plan. Do not infer the user's billing entitlement. Verify before activation.
+- No iOS workflow or simulator has been installed/created in this pass.
+
+### Corrected capacity assumption
+- The "20 runner" model is 20 logical scheduling classes / account-level concurrent hosted jobs, not 20 permanent VMs.
+- Older architecture docs' 4 vCPU / 16 GB standard Linux baseline must not be treated as current guarantee. GitHub's current standard runner images vary by repository visibility and runner label; private standard Linux can be 2 vCPU / 8 GB / 14 GB. Run the read-only resource probe and base sizing on telemetry.
+- Keep macOS iOS lane outside Linux worker concurrency and give it concurrency 1 initially.
+
+### Component qualification state
+- Pool Supervisor/Worker: scaffold only; Worker authorization provenance gap remains blocking.
+- DSH: developer-preview candidate, not production-qualified; no provider call.
+- Matrix Builder PR #8: pure isolated component, 9 local tests passed, CI NOT VERIFIED, review NOT RUN, not wired into Supervisor.
+- agent-browser: Issue #5 design, not installed/smoke-tested.
+- Gemini controller, Ollama/FCC/Claude/ECC, Codex, Aider, Goose, mini-SWE-agent, OpenHands: candidate profiles, not operationally qualified.
+- No component roster should be described as fully installed or optimally allocated until actual per-profile resource, compatibility, security and workload measurements exist.
+
+### Placement policy
+- Ephemeral Linux: validation, policy, docs, API/backend tests, static analysis and one selected coding runtime per job.
+- Dedicated ephemeral Linux browser job: agent-browser + Chromium, clean profile, no secrets by default.
+- Separate ephemeral Linux Playwright job for deterministic UI tests.
+- Dedicated ephemeral macOS job: Xcode + Simulator + XCTest/XCUITest, concurrency 1 initially, pinned Xcode/runtime, no general secrets and no signing in ordinary test jobs.
+- Future GPU host/managed inference: Ollama, embeddings/reranking and GPU workloads; never download model weights onto standard hosted runners.
+- Persistent Pool Bridge/task ledger/checkpoints/audit: managed service or a separately qualified always-on host; not runner filesystem or Actions cache.
+- Do not install all agent CLIs into one image. Keep Aider, Goose, mini-SWE-agent and OpenHands opt-in pending benchmark. Keep DSH experimental. Gemini roles only through the approved controller.
+
+### API key policy
+- No API keys are required for static tests, read-only resource probes or iOS Simulator tests.
+- Phase 0: job-scoped least-privilege GITHUB_TOKEN only; no PAT and no provider key.
+- Phase 1: after Model Gateway and budget gates, select one model provider route at a time (Gemini, Anthropic, OpenAI or DeepSeek) with allowlisted models, task/token/daily caps, usage telemetry, retry ceiling and paid-fallback hard-deny. Workers should use gateway mediation/short-lived scope rather than receiving general long-lived keys.
+- Phase 2: only if the feature is implemented and approved: Apple App Store Connect Issuer ID + Key ID + .p8 in release-only scope; Google/YouTube, Meta, Telegram, TikTok credentials each in isolated platform adapters; GitHub App private key only in Pool Bridge token broker; short-lived scoped object-storage credentials for durable artifacts. No secrets/keys were added or read.
+- Never expose signing keys, social tokens, GitHub App private key or provider keys to public issue bodies, general coding agents, browser jobs, logs or artifacts.
+
+### Audit report
+- [2026-11-05 Cloud Pool iOS, capacity, agents and API audit](../reports/2026-11-05-cloud-pool-ios-capacity-agents-api-audit.md).
+- Apple: https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices
+- GitHub runner pricing: https://docs.github.com/en/billing/reference/actions-runner-pricing
+- GitHub Actions billing: https://docs.github.com/en/billing/concepts/product-billing/github-actions
+
+### Next bounded step
+Create a design-only iOS macOS runner profile contract plus static validation tests: runner label, pinned Xcode selection, simulator device/runtime matrix, concurrency=1, timeout, no general secrets, no signing and no persistent self-hosted runner. Do not add runnable workflow or dispatch until Worker authorization, governance, exact-head CI and independent review pass. Measure actual Linux runner resources with the read-only probe before changing capacity allocations.
