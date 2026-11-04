@@ -419,3 +419,10 @@ GitHub Free-only execution is an immutable project invariant: no automatic charg
 PR #10 adds a static workflow policy validator, nine regression tests and CI integration. Exact head `fa308f0178fe332851cc8b5a8c43b564912c37a6`; run `41913465969`, job `126866831669`, COMPLETED/SUCCESS on `ubuntu-24.04`. PR #10 remains OPEN/DRAFT; independent review NOT RUN. Full report: [2026-11-05 GitHub Free-only policy guard](../reports/2026-11-05-github-free-tier-policy-guard.md).
 
 Do not infer runtime qualification from policy CI. PR #7 Worker provenance, PR #8 matrix wiring/review, PR #9 corrective revert/review and `POOL_DISPATCH_ENABLED` remain unresolved or NOT VERIFIED. No worker, DSH, resource probe, browser, provider call or secret access occurred.
+
+
+## Live continuation addendum — 2026-11-05: Gemini reviewer dispatch
+
+Three independent Gemini review roles were requested for PR #10. Live inspection of the default-branch workflow tree found no `.github/workflows/gemini-batch-dispatch-controller.yml`; no Gemini-capable tool is available in this environment. The existing Pool Worker is a DSH workflow with unresolved direct-dispatch provenance risk, and Pool Supervisor has reconciliation/dispatch side effects. Neither is an approved Gemini review path. Therefore Gemini agents were NOT RUN and no controller/child run IDs or reports exist.
+
+A bounded, read-only, three-role review packet was prepared for PR #10 at immutable SHA `fa308f0178fe332851cc8b5a8c43b564912c37a6`: [review packet](../reviews/2026-11-05-gemini-independent-review-packet-pr10.md). Dispatch-readiness report: [2026-11-05 Gemini review dispatch readiness](../reports/2026-11-05-gemini-review-dispatch-readiness.md). PR #10 remains OPEN/DRAFT; exact-head CI is SUCCESS but independent review is NOT RUN. Next: qualify an approved controller and verify its contract before dispatch; do not bypass it.
