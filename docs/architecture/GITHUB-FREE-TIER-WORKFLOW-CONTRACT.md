@@ -11,6 +11,8 @@ This repository's execution policy is **zero automatic charges**.
 - GitHub Free does not provide model API credits. Provider routes stay disabled until a free quota is verified independently; exhaustion means queue or `BLOCKED_QUOTA`.
 - Standard macOS hosted jobs are allowed on demand for Xcode/Simulator in this public repository; they must remain ephemeral, bounded and concurrency-limited.
 
+The parser rejects duplicate mapping keys, YAML merge keys, and non-scalar mapping keys before loading values; aliases remain supported but cannot introduce ambiguous merged mappings.
+
 The validator is intentionally conservative: unsupported/dynamic runner selection fails closed and requires an explicit policy review before adoption.
 
 
