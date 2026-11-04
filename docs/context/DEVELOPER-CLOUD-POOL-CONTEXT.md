@@ -126,8 +126,8 @@ Issue: [#5 — Run agent-browser inside ephemeral GitHub-hosted pool runners](ht
 ### Repository and branches
 - Repository: `VlDMlNSh/developer-cloud-pool`, public, ID `1445644538`.
 - Default branch: `Основной`.
-- Last verified default HEAD: `4597617db0de7cc698cce936a540594ee3d25bf2`.
-- Relevant branches: `Основной`, `fix/worker-shell-input-escaping-2026-11-04`, `feat/media-intelligence-skills-2026-11-04`, `docs/continuation-context-2026-11-04`.
+- Live-verified default HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8` (2026-11-04, after PR #3 merge).
+- Relevant branches: `Основной`, `fix/worker-shell-input-escaping-2026-11-04`, `feat/media-intelligence-skills-2026-11-04`, `feat/jarvis-mobile-readonly-shell-2026-11-04`, `fix/pool-owner-approval-guard-2026-11-04`, `docs/continuation-context-2026-11-04`.
 - Docs branch is an evidence/continuation branch, not integrated into default. Do not represent documentation branch commits as accepted default-branch implementation.
 
 ### Governance
@@ -140,29 +140,25 @@ Issue: [#5 — Run agent-browser inside ephemeral GitHub-hosted pool runners](ht
 
 ### PR #3 — Worker shell-input hardening + static validation
 - URL: https://github.com/VlDMlNSh/developer-cloud-pool/pull/3
-- State OPEN, unmerged.
-- Branch: `fix/worker-shell-input-escaping-2026-11-04`.
-- Latest verified head: `7aa5b27b6e826918eeaa6397afe0378d14359022`.
-- Base: `Основной` at `4597617db0de7cc698cce936a540594ee3d25bf2`.
-- Latest exact-head run: [41881360241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41881360241), job `126754359530`, COMPLETED / SUCCESS.
-- Job logs: five workflow YAML files parsed; shell input interpolation assertion PASS; external Action refs pinned to full SHAs PASS; Worker least privilege/no-secret invariants PASS; Supervisor fail-closed PASS; DSH/Resource Probe manual/read-only/no-secret PASS; `POOL_CONTRACT_VALIDATION=PASS`.
-- Validator fix changed the assertion to match the actual `process.env.POOL_DISPATCH_ENABLED === "true"` guard. Validator blob after fix: `cfffb77905406d54505c711504a72ae1fafd3f06`; commit `7aa5b27b6e826918eeaa6397afe0378d14359022`.
-- Worker workflow blob last verified: `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`.
-- Reviews array empty; independent review NOT RUN. PR is mergeable true at last read but MUST NOT merge until independent review and exact-head checks revalidated.
-- Static contract CI: VERIFIED for this head. Integration/acceptance: NOT ACCEPTED.
+- State CLOSED / MERGED at 2026-11-04T20:17:27Z.
+- Merged commit and current default HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Head: `7aa5b27b6e826918eeaa6397afe0378d14359022`; exact-head validation run [41881360241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41881360241) COMPLETED / SUCCESS.
+- Validator blob: `cfffb77905406d54505c711504a72ae1fafd3f06`; Worker workflow blob: `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`.
+- PR review endpoint was empty at merge and remains evidence of no submitted independent review. The Issue #1 acceptance criterion requiring independent review before merge was not met. Record as a process deviation; do not retrospectively claim review, qualification or independent acceptance.
+- Static contract CI: VERIFIED for merged head. Integration/acceptance of the broader pool: NOT ACCEPTED.
 
 ### PR #4 — Media Intelligence and governed skills design
 - URL: https://github.com/VlDMlNSh/developer-cloud-pool/pull/4
 - State OPEN, unmerged.
 - Branch: `feat/media-intelligence-skills-2026-11-04`.
 - Head: `ab43af86b63a731202fa0f8fa6f27f009b0d4aac`.
-- Base: `4597617db0de7cc698cce936a540594ee3d25bf2`.
-- Latest recheck: reviews empty; check-runs array empty; no exact-head CI evidence. Status NOT VERIFIED.
+- Original base: `4597617db0de7cc698cce936a540594ee3d25bf2` (stale relative to current default HEAD `692025e4a039aaf94c6683bb95da38b4f324fce8`).
+- Latest recheck: reviews empty; check-runs array empty; no exact-head CI evidence. Status NOT VERIFIED; update/rebase before qualification.
 - Design separates research/read-only, editorial/draft-only, publication/write plane and publication verification. Platform connectors (YouTube, Instagram, Telegram, TikTok etc.) require per-platform permission and qualification.
 - No skills/plugins installed, no social credentials accessed, no publication, no provider calls. Keep publication DISABLED and profiles out of dispatch allowlist pending security, egress/SSRF, prompt-injection, provenance and platform authorization gates.
 
 ### Issues
-- [#1 Governance gate](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1): OPEN; records Ruleset and dispatch false state. Re-read before acting.
+- [#1 Governance gate](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1): OPEN. Ruleset verified, but current dispatch variable read NOT VERIFIED. Historical acceptance demanded independent review before PR #3 merge; that review was absent at merge, so the criterion was not met.
 - [#5 Browser runtime](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5): OPEN; proposed ephemeral GitHub-hosted browser job.
 - Issue #2 was previously closed after Ruleset verification; re-check current state if it becomes relevant.
 
@@ -184,7 +180,7 @@ Last live SentinelX inventory:
 - Free plan: active limit 1; 1 active / 0 parked / 0 free slots.
 - `sentinel_ping`: PASS.
 - `sentinel_exec("uname -a")`: PASS.
-- `gh variable get POOL_DISPATCH_ENABLED`: returned `false`.
+- Historical `gh variable get POOL_DISPATCH_ENABLED` returned `false`; latest read attempt via SentinelX script_run returned exit code 127/no output, and a preceding attempt had a duplicate session. Current value: NOT VERIFIED. Do not infer from historical evidence.
 - `gh api .../rulesets/26550182`: returned active Ruleset with exact selector and no bypass actors.
 - Full capabilities calls have intermittently returned `duplicate_session` / `read_loop_ended`; retry safely.
 - `node` not in host's allowlisted commands. Do not expand allowlist simply to run one-off tests. SentinelX documents `script_run` for bounded Bash/Python one-off execution.
@@ -267,4 +263,21 @@ Next step: obtain genuinely independent review for PR #3; recheck dispatch varia
 - Latest report: [Jarvis static validation CI](../reports/2026-11-04-jarvis-static-validation-ci.md).
 - Latest checkpoint: [Jarvis static validation checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
 - Next: independent PR review and safe ephemeral browser rendering. Keep pool dispatch disabled until governance and runtime gates are independently verified.
+
+
+## 10. Owner-bound Pool Supervisor approval guard — 2026-11-04
+
+- Security finding: the prior Supervisor treated `pool:ready` label presence as sufficient dispatch authority, while the issue template only stated that an owner must apply the label. The automation did not verify the label-event sender. No dispatch occurred during discovery.
+- Work branch: `fix/pool-owner-approval-guard-2026-11-04`.
+- Draft PR #7: https://github.com/VlDMlNSh/developer-cloud-pool/pull/7
+- Exact head: `87064dd1d8ec1b31196ee4e940bc0a86cfc299f3`; base `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Added `scripts/pool-approval.mjs` and `scripts/pool-approval.test.mjs`; changed Supervisor to require an owner-originated `issues.labeled` event and a bot-authored approval marker bound to issue/SHA/profile; approval is single-use and revoked when `pool:ready` is removed.
+- Added `unlabeled` Supervisor event and CI test step; static pool contract validator asserts the approval guard.
+- Exact-head CI run [41908095984](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41908095984), job `126848040382`: COMPLETED / SUCCESS. YAML parse, owner-bound approval tests, dispatch-disabled assertion and static pool contract validator all passed.
+- Changed file blobs: approval module `9442c413c38dc28c67455362e254ff703bcfedd9`; approval tests `685c5106ea8f7d4b9da4e8f896460cb2dca93d07`; supervisor `1e4e5323121f17caa883ebea24415cd0369cce0f`; contract validator `830d6bd5cfbd3f95e9c319e60764c9c5e9cf6def`; supervisor workflow `18e040f95d1d5c2ae5a2cce69d95109bec83947b`; contract workflow `65d8ada34950290939d8616b3f57ec22632d617e`.
+- PR #7 remains OPEN / DRAFT / NOT MERGED; independent review NOT RUN. No live event test with dispatch enabled. Do not merge or enable dispatch from static CI alone.
+- Current SentinelX: host `host_5f7264034bdf0b51`; ping PASS; capabilities summary PASS; Free plan 1 active / 0 spare slots. No host job or mutation.
+- Latest report: [Owner-bound Pool Supervisor approval guard](../reports/2026-11-04-pool-owner-approval-guard.md).
+- Latest checkpoint: [Owner-bound Pool Supervisor approval checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: independent security review PR #7; reconcile Issue #1 history; update PR #4 base and re-run exact-head CI/review. Keep dispatch disabled until all gates are accepted.
 
