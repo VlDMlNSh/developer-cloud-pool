@@ -32,6 +32,18 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Assert worker dispatch remains disabled
+        shell: bash
+        env:
+          POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
+        run: |
+          set -euo pipefail
+          if [ "${POOL_DISPATCH_ENABLED:-}" = "true" ]; then
+            echo "::error::POOL_DISPATCH_ENABLED is true; validation refuses to proceed."
+            exit 1
+          fi
+          echo "Dispatch gate: disabled or unset." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Parse workflow YAML syntax
         shell: bash
         run: |
