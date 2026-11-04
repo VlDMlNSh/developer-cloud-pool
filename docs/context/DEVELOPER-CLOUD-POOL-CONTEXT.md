@@ -297,3 +297,20 @@ Next step: obtain genuinely independent review for PR #3; recheck dispatch varia
 - Checkpoint: [Approval intake follow-up checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
 - Next: fix the two recovery branches with regression tests, exact-head CI, then independent security review. Keep dispatch disabled pending all gates.
 
+
+## 12. Single-use approval recovery consistency — 2026-11-04
+
+- Corrected stale-claim expiry and immediate workflow-dispatch API failure handling on PR #7. Both paths now remove `pool:claimed` and any stale `pool:ready`, set `pool:needs-review`, and require a fresh owner approval because the prior marker was consumed.
+- Added regression assertions to `scripts/pool-approval.test.mjs` that verify both transitions and prohibit restoring `pool:ready` from those recovery paths.
+- PR #7 exact head: `d60d26ae647940e702d646e572c861a8f68f523e`; base: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Blobs: Supervisor `b2046dd9671c6bd5491f63a006d10239fbd3d3b1`; tests `c7c7499d9d2bb4c123e72b86adb85369023c4284`.
+- Exact-head CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327), job `126854055084`: SUCCESS, including new recovery regression assertions.
+- PR #7 remains OPEN / DRAFT / NOT MERGED; independent security review NOT RUN.
+- PR #4 remains stale-base and exact-head CI NOT VERIFIED; inspect its diff/dependencies before retargeting.
+- PR #6 static CI SUCCESS; independent review and browser/device validation NOT RUN.
+- SentinelX host `host_5f7264034bdf0b51`: ping and capabilities summary PASS, 0 spare Free slots. Read-only dispatch variable check returned duplicate_session/agent_disconnected; `POOL_DISPATCH_ENABLED` remains NOT VERIFIED.
+- No Worker, DSH, Resource Probe, browser or model jobs launched; no secrets accessed.
+- Report: [Single-use approval recovery fix](../reports/2026-11-04-single-use-approval-recovery-fix.md).
+- Checkpoint: [Current live checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: independent security review PR #7, then bounded PR #4 base reconciliation after diff review. Dispatch stays disabled until all gates are independently accepted.
+
