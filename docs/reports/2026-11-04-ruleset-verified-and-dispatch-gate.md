@@ -13,7 +13,7 @@ This report is committed only to the documentation/evidence branch. It is not an
 
 ## Governance result
 
-<badge>VERIFIED</badge>
+**Status: VERIFIED**
 
 Rulesets collection returned exactly one active repository ruleset:
 
@@ -33,7 +33,7 @@ Rulesets collection returned exactly one active repository ruleset:
 - Bypass actors: empty
 - `current_user_can_bypass`: `never`
 
-The previous Ruleset ID `26535481` now returns HTTP 404. The collection contains only ID `26550182`. This confirms replacement and removal of the prior ruleset, without an observed period in this audit where the replacement was absent.
+The previous Ruleset ID `26535481` now returns HTTP 404. The collection contains only ID `26550182`; the prior ruleset is absent. This confirms the current replacement state. The present API snapshot cannot establish whether there was a brief protection gap during the owner's changes.
 
 The classic branch endpoint continues to return `protected: false` and `protection.enabled: false`. This is recorded separately: classic branch-protection metadata is not the same API object as repository Rulesets. The active Ruleset is independently verified with the exact branch selector and required controls.
 
@@ -46,7 +46,7 @@ Issue #2 received a verification comment and was closed as completed after the l
 
 ## Dispatch gate
 
-<badge color="warning">BLOCKED</badge>
+**Status: BLOCKED**
 
 - The supervisor source reads `vars.POOL_DISPATCH_ENABLED`.
 - `scripts/pool-supervisor.mjs` dispatches only when the value is the literal string `true`; otherwise it exits in heartbeat-only mode.
