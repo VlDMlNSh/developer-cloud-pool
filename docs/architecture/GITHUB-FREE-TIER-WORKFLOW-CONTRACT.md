@@ -3,7 +3,7 @@
 This repository's execution policy is **zero automatic charges**.
 
 - Repository must remain public for standard GitHub-hosted runner execution to remain free under the current GitHub policy. If visibility changes, stop and revalidate.
-- Allowed runner labels are literal standard hosted SKUs: `ubuntu-latest`, `ubuntu-XX.XX`, `windows-latest`, `windows-XX`, `macos-latest`, or `macos-XX`.
+- Allowed runner labels are literal standard hosted SKUs: `ubuntu-latest`, `ubuntu-XX.XX`, `windows-latest`, `windows-20XX`, `macos-latest`, or `macos-XX`.
 - Larger runners, GPU runners, self-hosted runners, runner groups, dynamic runner selection, and custom job images/containers are not permitted by this profile.
 - Every job must declare `timeout-minutes` from 1 through 30. Longer work must be split into resumable bounded jobs rather than increasing the ceiling.
 - Any matrix must declare `max-parallel` from 1 through 4.
