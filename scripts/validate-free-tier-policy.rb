@@ -5,7 +5,7 @@ require "yaml"
 require "pathname"
 
 module FreeTierWorkflowPolicy
-  ALLOWED_RUNNER = /\\A(?:ubuntu-(?:latest|[0-9]{2}\\.[0-9]{2})|windows-(?:latest|[0-9]{2})|macos-(?:latest|[0-9]{2}))\\z/
+  ALLOWED_RUNNER = /\A(?:ubuntu-(?:latest|[0-9]{2}\.[0-9]{2})|windows-(?:latest|[0-9]{2})|macos-(?:latest|[0-9]{2}))\z/
   MAX_TIMEOUT_MINUTES = 30
   MAX_MATRIX_PARALLEL = 4
 
@@ -29,7 +29,7 @@ module FreeTierWorkflowPolicy
       value.each do |key, child|
         key_name = key.to_s
         current = path + [key_name]
-        if key_name.match?(/\\A(?:paid[-_ ]?fallback|allow[-_ ]?paid[-_ ]?fallback|automatic[-_ ]?upgrade)\\z/i) && truthy_policy_value?(child)
+        if key_name.match?(/\A(?:paid[-_ ]?fallback|allow[-_ ]?paid[-_ ]?fallback|automatic[-_ ]?upgrade)\z/i) && truthy_policy_value?(child)
           errors << "#{file}: paid fallback/automatic upgrade configuration is forbidden at #{current.join(".")}"
         end
         inspect_policy_keys(child, file, errors, current)
@@ -37,7 +37,7 @@ module FreeTierWorkflowPolicy
     when Array
       value.each_with_index { |child, index| inspect_policy_keys(child, file, errors, path + [index.to_s]) }
     when String
-      if value.match?(/\\A(?:gpu|ubuntu-.*(?:large|[0-9]+core)|(?:ubuntu|windows|macos)-.*(?:xlarge|2xlarge|4xlarge))\\z/i)
+      if value.match?(/\A(?:gpu|ubuntu-.*(?:large|[0-9]+core)|(?:ubuntu|windows|macos)-.*(?:xlarge|2xlarge|4xlarge))\z/i)
         errors << "#{file}: paid/larger/GPU runner selector detected: #{value}"
       end
     end
@@ -137,7 +137,7 @@ module FreeTierWorkflowPolicy
       workflow["jobs"].each do |job_id, job|
         next unless job.is_a?(Hash) && job["uses"].is_a?(String) && job["uses"].start_with?("./.github/workflows/")
         target = job["uses"].delete_prefix("./.github/workflows/")
-        unless target.match?(/\\A[A-Za-z0-9_.-]+\\.ya?ml\\z/)
+        unless target.match?(/\A[A-Za-z0-9_.-]+\.ya?ml\z/)
           errors << "#{file} job #{job_id}: invalid local reusable workflow path #{job["uses"].inspect}"
           next
         end
