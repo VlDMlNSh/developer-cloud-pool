@@ -118,7 +118,7 @@ export function hasWorkerDispatchAuthority({ actor, comments, expected, reposito
       const supervisorRun = body.match(/^- Supervisor run: (\d+)$/m)?.[1];
       const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
       const profile = body.match(/^- Profile: ([^\r\n]+)$/m)?.[1];
-      if (approved && consumed && supervisorRun && sha === expected.targetSha &&
+      if (approved && consumed && supervisorRun === String(expected.supervisorRun) && sha === expected.targetSha &&
           profile === "dsh-headless-probe" && expected.profile === "DSH headless probe") claimed = true;
       continue;
     }
