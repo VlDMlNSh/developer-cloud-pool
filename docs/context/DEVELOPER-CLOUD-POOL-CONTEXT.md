@@ -455,3 +455,18 @@ A bounded, read-only, three-role review packet was prepared for PR #10 at immuta
 - Read-only review packet: [three-role independent review packet](../reviews/2026-11-05-independent-review-packet-pr11-yaml-hardening.md).
 - PR #7 Worker provenance, PR #8 matrix integration/review, PR #9 governance revert and PR #10 supersession remain unresolved. No Worker, Supervisor dispatch, DSH, Resource Probe, browser, provider call or secret access.
 - Next: obtain independent read-only review of PR #11 at immutable SHA `7b3bd8d8840e122f03326299444a921e3ba5f425`. Gemini agents remain NOT RUN until approved controller and all governance/credential/quota/provenance gates are verified. Keep dispatch disabled.
+
+
+## 2026-11-05 continuation update — Worker authorization rollback
+
+Latest live snapshot and evidence are recorded in [checkpoint](../checkpoints/2026-11-05-pr7-authorization-correction-and-rollback.md) and [report](../reports/2026-11-05-pr7-authorization-correction-and-rollback.md).
+
+The temporary PR #7 Worker gate based on `github.actor == github-actions[bot]` and public Issue comments was rejected and fully reverted to the baseline blobs from `d60d26ae647940e702d646e572c861a8f68f523e`. Do not reintroduce it. The owner's earlier architecture decision (#issuecomment-6641873962) remains authoritative: reusable Worker via `workflow_call`, static invocation from the protected Supervisor, and validation of caller/workflow contexts (`github.workflow_ref`, `github.workflow_sha`, `job.workflow_repository`, `job.workflow_file_path`, `job.workflow_sha`).
+
+PR #7 current head is `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`, OPEN/DRAFT, 40 commits ahead and 1 behind current default HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`. Restored exact-head CI run `41921293708` succeeded. Independent review NOT RUN.
+
+PR #8 remains OPEN/DRAFT and mergeable=false because it is based on former PR #7 head `d60d26a...`. Its bounded matrix builder (max 20) is a pure component with 9 tests, but its approval object is caller-supplied and not independently authenticated; it is not wired into Supervisor and CI is NOT VERIFIED. Reconcile its base before reuse.
+
+PR #11 remains OPEN/DRAFT at `7b3bd8d8840e122f03326299444a921e3ba5f425`; exact-head CI `41918209585` SUCCESS; independent review NOT RUN.
+
+Dispatch remains disabled and unqualified. No secrets/variables changed; no Worker, DSH, Resource Probe, browser, model/provider or paid workflow was run.
