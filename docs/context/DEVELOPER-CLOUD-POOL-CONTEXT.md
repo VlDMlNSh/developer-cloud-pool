@@ -314,3 +314,21 @@ Next step: obtain genuinely independent review for PR #3; recheck dispatch varia
 - Checkpoint: [Current live checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
 - Next: independent security review PR #7, then bounded PR #4 base reconciliation after diff review. Dispatch stays disabled until all gates are independently accepted.
 
+
+
+## 13. Worker dispatch authorization boundary audit — 2026-11-04
+
+This section supersedes prior PR #7 acceptance assumptions where they conflict.
+
+- Default HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- PR #7 head: `d60d26ae647940e702d646e572c861a8f68f523e`; compare reports 15 commits ahead, 0 behind.
+- PR #7 remains OPEN / DRAFT / NOT MERGED.
+- PR #7 exact-head static CI [41909811327](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41909811327), job `126854055084`: SUCCESS. This is static evidence only.
+- Critical unresolved issue: Worker workflow blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` is unchanged between default and PR #7. `workflow_dispatch` remains exposed; Worker validates issue open state, `pool:claimed`, SHA and profile, but does not independently prove trusted dispatch provenance or bind authorization to the current workflow run/attempt. Supervisor-only owner approval therefore does not close direct/manual Worker invocation.
+- Finding recorded in [PR #7 discussion comment](https://github.com/VlDMlNSh/developer-cloud-pool/pull/7#issuecomment-6641832357), comment ID `6641832357`.
+- Formal REQUEST_CHANGES review submission was rejected by GitHub because PR author is repository owner. Independent review remains NOT RUN; discussion comment is not independent review.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass; no mutation made. Ruleset and SentinelX state were not rechecked in this bounded pass.
+- Worker, DSH, Resource Probe, browser, model/provider execution: NOT RUN. No secrets accessed.
+- Dated report: [Worker dispatch authorization boundary audit](../reports/2026-11-04-worker-dispatch-authorization-boundary-audit.md).
+- Latest checkpoint: [Worker authorization checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: design and implement Worker-side authorization that rejects manual/direct dispatch, binds issue + immutable SHA + profile + workflow run/attempt, and cannot rely on publicly readable issue metadata as a secret. Verify GitHub event provenance semantics first; add positive Supervisor and negative manual-dispatch tests. Keep dispatch disabled and do not execute Worker.
