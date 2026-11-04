@@ -12,3 +12,8 @@ This repository's execution policy is **zero automatic charges**.
 - Standard macOS hosted jobs are allowed on demand for Xcode/Simulator in this public repository; they must remain ephemeral, bounded and concurrency-limited.
 
 The validator is intentionally conservative: unsupported/dynamic runner selection fails closed and requires an explicit policy review before adoption.
+
+
+## Validation implementation
+
+The policy check uses Ruby Psych to parse the complete YAML document structure, not line-oriented regular expressions. It rejects non-literal runner selectors, custom job/service images, unbounded matrix parallelism, invalid timeouts, enabled paid-fallback flags, and external reusable workflows. Local reusable workflows are resolved recursively and validated as part of the same workflow set. Missing references, invalid YAML and cycles fail closed. The validator is exercised by adversarial Minitest fixtures in `scripts/validate-free-tier-policy-test.rb`.
