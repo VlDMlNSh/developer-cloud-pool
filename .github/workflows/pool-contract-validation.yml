@@ -1,0 +1,45 @@
+name: Pool Contract Validation
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/**"
+      - "scripts/**"
+  push:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/**"
+      - "scripts/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pool-contract-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate workflow syntax and security invariants
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Parse workflow YAML syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.yml").sort.each { |path| YAML.parse_file(path); puts "YAML syntax OK: #{path}" }'
+
+      - name: Validate pool security contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/validate-pool-contract.mjs
