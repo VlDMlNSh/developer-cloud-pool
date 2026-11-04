@@ -103,6 +103,46 @@ async function recoverFailedWorkflowRun() {
   log("Marked task #" + issueNumber + " as needs-review after worker conclusion " + conclusion + ".");
 }
 
+async function recoverStaleClaims() {
+  const [issues, runData] = await Promise.all([
+    request("/repos/" + ownerRepo + "/issues?state=open&labels=" + encodeURIComponent("pool:claimed") + "&per_page=100"),
+    request("/repos/" + ownerRepo + "/actions/workflows/pool-worker.yml/runs?per_page=100")
+  ]);
+  const runs = runData.workflow_runs || [];
+  for (const issue of issues.filter(item => !item.pull_request)) {
+    const updatedAt = Date.parse(issue.updated_at || "");
+    const matchingRun = runs
+      .filter(run => {
+        const title = run.display_title || run.run_name || "";
+        return title.includes("Pool task #" + issue.number + " (") &&
+          Date.parse(run.created_at || "") >= updatedAt - 120000;
+      })
+      .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))[0];
+
+    if (matchingRun && matchingRun.status !== "completed") {
+      log("Task #" + issue.number + " has worker run " + matchingRun.id + " in state " + matchingRun.status + ".");
+      continue;
+    }
+    if (matchingRun && matchingRun.status === "completed") {
+      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
+      await comment(issue.number,
+        "**POOL_STALE_TERMINAL_RUN**\n\n- Worker run: " + matchingRun.id +
+        "\n- Conclusion: " + (matchingRun.conclusion || "unknown") +
+        "\n- Automatic retry: disabled; owner review is required.");
+      log("Task #" + issue.number + " moved to needs-review after terminal worker run " + matchingRun.id + ".");
+      continue;
+    }
+
+    const ageMs = Date.now() - updatedAt;
+    if (Number.isFinite(ageMs) && ageMs > 15 * 60 * 1000) {
+      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:ready"]);
+      await comment(issue.number,
+        "**POOL_CLAIM_LEASE_EXPIRED**\n\nNo matching worker workflow run appeared within 15 minutes. The task was returned to pool:ready for a later reconciliation. No automatic execution retry occurred.");
+      log("Recovered stale claim for task #" + issue.number + " after no worker run appeared.");
+    }
+  }
+}
+
 async function dispatchReadyTasks() {
   const issues = await request("/repos/" + ownerRepo + "/issues?state=open&labels=" +
     encodeURIComponent("pool:ready") + "&sort=created&direction=asc&per_page=100");
@@ -160,4 +200,5 @@ async function dispatchReadyTasks() {
 
 await ensureLabels();
 if (eventName === "workflow_run") await recoverFailedWorkflowRun();
+await recoverStaleClaims();
 await dispatchReadyTasks();
