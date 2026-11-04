@@ -102,9 +102,10 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
       assert FreeTierWorkflowPolicy.validate_workflow_directory(directory).any? { |e| e.include?("is missing") }
     end
   end
+
   def test_resolves_yaml_anchors_before_policy_validation
     anchored = VALID.sub("runs-on: ubuntu-24.04", "runs-on: &standard ubuntu-24.04")
-    aliased = anchored.sub("timeout-minutes: 5", "timeout-minutes: 5\n        env:\n          RUNNER_LABEL: *standard")
+    aliased = anchored.sub("timeout-minutes: 5", "timeout-minutes: 5\n    env:\n      RUNNER_LABEL: *standard")
     assert_empty errors(aliased)
   end
 
