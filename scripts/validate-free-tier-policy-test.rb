@@ -30,6 +30,10 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
     assert_empty errors(VALID.sub("ubuntu-24.04", "macos-15"))
   end
 
+  def test_accepts_standard_windows_runner
+    assert_empty errors(VALID.sub("ubuntu-24.04", "windows-2022"))
+  end
+
   def test_rejects_runner_arrays_expressions_and_nonstandard_skus
     [
       VALID.sub("ubuntu-24.04", "[self-hosted, linux]"),
