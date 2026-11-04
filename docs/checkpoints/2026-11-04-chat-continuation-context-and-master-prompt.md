@@ -326,6 +326,6 @@ The previous governance blocker concerning the active Ruleset has been resolved 
 - Issue #1 remains open because the actual repository variable `POOL_DISPATCH_ENABLED` cannot be independently read through the available integration. Owner statements say unset/false, but its value remains NOT VERIFIED. Do not dispatch.
 - PR #3 and #4 remain open. Exact-head check-runs are empty, statuses have zero contexts and reviews are empty. Both remain NOT VERIFIED; do not merge.
 - Read-only workflow inspection completed. Worker, DSH, Resource Probe, model calls and dispatch were NOT RUN.
-- Detailed dated evidence: [2026-11-04-ruleset-verified-and-dispatch-gate.md](../reports/2026-11-04-ruleset-verified-and-dispatch-gate.md).
+- Detailed dated evidence: [2026-11-04-ruleset-verified-and-dispatch-gate.md](../reports/2026-11-04-ruleset-verified-and-dispatch-gate.md). Report blob SHA: `d449ca3f931fdc2130219c242e8d7bbbfdfa5c98`.
 
 Next step: continue static/read-only workflow contract validation and find an approved way to independently verify the dispatch variable without accessing secret values. Keep `POOL_DISPATCH_ENABLED` unset/false until then.
