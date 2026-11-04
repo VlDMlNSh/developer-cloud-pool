@@ -235,6 +235,7 @@ jobs:
           const body = [
             success ? "**POOL_DSH_PROBE_COMPLETE**" : "**POOL_DSH_PROBE_NEEDS_REVIEW**",
             "",
+            "- Issue: " + issueNumber,
             "- Worker run: " + process.env.WORKFLOW_RUN_ID,
             "- Target SHA: " + process.env.TARGET_SHA,
             "- Validation: " + process.env.VALIDATE_RESULT,
