@@ -1,7 +1,7 @@
 # Live checkpoint — 2026-11-04: Worker dispatch authorization boundary
 
 ## Canonical refs
-- Default branch `Основной` HEAD: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Default branch `Основной` HEAD (live verified 2026-11-05): `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Documentation branch: `docs/continuation-context-2026-11-04`.
 - PR #7 branch: `fix/pool-owner-approval-guard-2026-11-04`.
 - PR #7 head: `d60d26ae647940e702d646e572c861a8f68f523e`; 15 commits ahead of default, 0 behind.
