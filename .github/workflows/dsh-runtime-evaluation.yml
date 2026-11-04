@@ -1,0 +1,95 @@
+name: DeepSeek Harness Runtime Evaluation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dsh-runtime-evaluation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  dsh-headless-smoke:
+    name: DSH headless profile smoke test (no model calls)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Set up pinned Node.js runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install and inspect pinned DeepSeek Harness
+        shell: bash
+        env:
+          DSH_TELEMETRY_DISABLED: "1"
+          DSH_PERMISSION_MODE: read-only
+          DSH_HOME: ${{ runner.temp }}/dsh-home
+        run: |
+          set -euo pipefail
+          prefix="$RUNNER_TEMP/dsh-evaluation"
+          mkdir -p "$prefix" "$DSH_HOME"
+          free_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$free_kib" -lt $((6 * 1024 * 1024)) ]; then
+            echo "::error::Less than 6 GiB free before DSH install; refusing installation."
+            exit 2
+          fi
+
+          {
+            echo "## DeepSeek Harness evaluation"
+            echo
+            echo "- Repository: $GITHUB_REPOSITORY"
+            echo "- Target SHA: $GITHUB_SHA"
+            echo "- Node: $(node --version)"
+            echo "- npm: $(npm --version)"
+            echo "- DSH package: @deepseek-ai/dsh@0.2.1-rc.5"
+            echo "- DSH_HOME: isolated under RUNNER_TEMP"
+            echo "- Telemetry: disabled"
+            echo "- Permission fallback: read-only"
+            echo "- Model/API credentials: none supplied"
+            echo
+            echo "### Resources before installation"
+            echo '~~~text'
+            free -h
+            df -hT "$RUNNER_TEMP"
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          npm install --prefix "$prefix" --no-audit --no-fund "@deepseek-ai/dsh@0.2.1-rc.5"
+          export PATH="$prefix/node_modules/.bin:$PATH"
+
+          installed_version="$(node -p "require('$prefix/node_modules/@deepseek-ai/dsh/package.json').version")"
+          test "$installed_version" = "0.2.1-rc.5"
+
+          /usr/bin/time -v timeout 180s dsh --profile headless --dump-config \
+            > "$RUNNER_TEMP/dsh-composition.txt" \
+            2> "$RUNNER_TEMP/dsh-startup-time.txt"
+
+          composition_sha="$(sha256sum "$RUNNER_TEMP/dsh-composition.txt" | awk '{print $1}')"
+          install_size="$(du -sh "$prefix/node_modules" | awk '{print $1}')"
+          available_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          available_gib="$(awk -v kib="$available_kib" 'BEGIN {printf "%.2f", kib/1024/1024}')"
+
+          {
+            echo
+            echo "### Result"
+            echo "- Installed version: $installed_version"
+            echo "- node_modules footprint: $install_size"
+            echo "- Composition output lines: $(wc -l < "$RUNNER_TEMP/dsh-composition.txt")"
+            echo "- Composition SHA-256: $composition_sha"
+            echo "- Free filesystem space after install: ${available_gib} GiB"
+            echo "- Model task executed: no"
+            echo "- Secrets accessed: no"
+            echo
+            echo "### Runtime resource measurement"
+            echo '~~~text'
+            cat "$RUNNER_TEMP/dsh-startup-time.txt"
+            free -h
+            df -hT "$RUNNER_TEMP"
+            echo '~~~'
+            echo
+            echo "This is a package/profile smoke test only. It does not qualify DSH for untrusted workloads or prove model-provider connectivity."
+          } >> "$GITHUB_STEP_SUMMARY"
