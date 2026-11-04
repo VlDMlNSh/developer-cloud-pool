@@ -62,7 +62,10 @@ if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile a
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
 if (!worker.includes("DISPATCH_ACTOR: \${{ github.actor }}") ||
     !worker.includes("hasWorkerDispatchAuthority") ||
-    !worker.includes("/comments?per_page=100")) fail("Worker must verify bot issuer and Supervisor approval/claim provenance from issue comments");
+    !worker.includes("/comments?per_page=100&sort=created&direction=desc") ||
+    !worker.includes("SUPERVISOR_RUN: ${{ inputs.supervisor_run }}") ||
+    !worker.includes("supervisorRun") ||
+    !supervisorScript.includes("supervisor_run: String(process.env.GITHUB_RUN_ID)")) fail("Worker must verify bot issuer and Supervisor approval/claim provenance from issue comments");
 if (!worker.includes("pool-worker-task-\${{ inputs.task_issue }}") ||
     !worker.includes("cancel-in-progress: false")) fail("Worker invocations for the same task must be serialized without cancellation");
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
