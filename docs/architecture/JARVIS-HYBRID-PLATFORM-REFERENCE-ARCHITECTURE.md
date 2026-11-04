@@ -363,3 +363,16 @@ Latest repository check on 2026-11-04:
 - Tailscale grants: https://tailscale.com/docs/features/access-control/grants
 - Apple Mac mini Server 2011: https://support.apple.com/en-vn/112006
 - Apple Mac mini 2018: https://support.apple.com/en-ie/111912
+
+
+## 12. Availability correction — cloud-first phase (2026-11-04)
+
+The L1/L2/L3 topology above is the intended future architecture, not current inventory.
+
+**Currently available:** one Mac mini Server 2011, Linux, 4 CPU cores and 16 GB RAM. Its exact CPU model, architecture, disk health/capacity, network and SentinelX identity remain unverified. It is not a required control-plane host for the first cloud phase.
+
+**Not currently available:** Mac mini 2018 and remote GPU server. Both are future equipment and design-only targets. Do not schedule installation or deployment against them yet.
+
+The first build phase runs on GitHub-hosted ephemeral jobs. The 2011 Mac mini may later join as an optional low-intensity worker or backup helper after read-only inventory; it must not execute untrusted public PR code.
+
+DeepSeek Harness is now the primary candidate agent runtime for evaluation. Use its headless profile for one-shot cloud tasks only after the dedicated runtime smoke test and security gates. It does not replace GitHub Actions dispatch, Pool Bridge policy, immutable task envelopes, durable project state or independent acceptance. See [DeepSeek Harness adoption and cloud-first build plan](DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md).
