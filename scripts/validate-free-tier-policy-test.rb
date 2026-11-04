@@ -70,6 +70,35 @@ class FreeTierWorkflowPolicyTest < Minitest::Test
     assert errors("jobs:\n  broken: [").any? { |e| e.include?("invalid workflow YAML") }
   end
 
+  def test_rejects_duplicate_mapping_keys_before_psych_overwrites_them
+    source = <<~YAML
+      name: Duplicate
+      jobs:
+        check:
+          runs-on: self-hosted
+          runs-on: ubuntu-24.04
+          timeout-minutes: 5
+          steps:
+            - run: echo duplicate
+    YAML
+    assert errors(source).any? { |e| e.include?("duplicate YAML mapping key") }
+  end
+
+  def test_rejects_yaml_merge_keys
+    source = <<~YAML
+      name: Merge
+      defaults: &defaults
+        runs-on: self-hosted
+        timeout-minutes: 5
+      jobs:
+        check:
+          <<: *defaults
+          steps:
+            - run: echo merge
+    YAML
+    assert errors(source).any? { |e| e.include?("YAML merge keys are forbidden") }
+  end
+
   def test_recursively_validates_local_reusable_workflows
     Dir.mktmpdir do |directory|
       FileUtils.mkdir_p(File.join(directory, ".github", "workflows"))
