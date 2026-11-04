@@ -87,7 +87,7 @@ test("Worker rejects direct manual dispatch and forged pool:claimed labels", () 
       "- Supervisor run: 123456",
       "- Target SHA: " + sha,
       "- Profile: dsh-headless-probe"
-    ].join("\\n"),
+    ].join("\n"),
     created_at: "2026-11-04T20:02:00Z"
   };
   assert.equal(hasWorkerDispatchAuthority({
@@ -116,14 +116,14 @@ test("Worker rejects terminal or mismatched Supervisor evidence", () => {
     "- Supervisor run: 123456",
     "- Target SHA: " + sha,
     "- Profile: dsh-headless-probe"
-  ].join("\\n");
+  ].join("\n");
   const claimed = {
     user: { login: "github-actions[bot]" }, body: claimedBody,
     created_at: "2026-11-04T20:02:00Z"
   };
   const terminal = {
     user: { login: "github-actions[bot]" },
-    body: "**POOL_DSH_PROBE_COMPLETE**\\n\\n- Worker run: 999",
+    body: "**POOL_DSH_PROBE_COMPLETE**\n\n- Worker run: 999",
     created_at: "2026-11-04T20:03:00Z"
   };
   assert.equal(hasWorkerDispatchAuthority({
