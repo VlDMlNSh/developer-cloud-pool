@@ -440,3 +440,18 @@ A bounded, read-only, three-role review packet was prepared for PR #10 at immuta
 - Report: [2026-11-05 PR #11 YAML policy verification](../reports/2026-11-05-github-free-yaml-policy-pr11-verification.md).
 - Checkpoint: [2026-11-05 PR #11 verification checkpoint](../checkpoints/2026-11-05-pr11-yaml-policy-verification.md).
 - Next: prepare read-only independent review packet for PR #11 at immutable SHA `20b68e8a6fffbc43ad42335603faabd83719ae36`. Gemini agents remain NOT RUN unless the approved controller and its contract are independently verified. Keep dispatch disabled; continue static-only design of the macOS/iOS runner profile.
+
+
+## Live continuation addendum — 2026-11-05: PR #11 parser hardening
+
+- Default branch `Основной` HEAD at this pass: `64d2636d4500127e635c214ccfb722c6b3fcda80`. Documentation branch remains separate.
+- PR #11 head: `7b3bd8d8840e122f03326299444a921e3ba5f425`, OPEN / DRAFT / NOT MERGED.
+- Independent static review found Psych may collapse duplicate YAML mapping keys and YAML merge keys can create implicit mappings. PR branch now rejects duplicate mapping keys, merge keys and non-scalar mapping keys in a Psych AST pass before safe_load; YAML aliases remain supported. Windows runner matcher corrected to accept `windows-2022`.
+- Exact-head PR CI [41918209585](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41918209585), job `126883451219`: COMPLETED / SUCCESS. Tested merge ref short SHA `43096d7`, from PR head + default base. Five workflow YAML files parse; Free-only policy PASS; 16 Minitest runs / 33 assertions / 0 failures / 0 errors / 0 skips; existing Pool Contract Validation PASS. Run log observed `POOL_DISPATCH_ENABLED=false`; this is run-scoped only.
+- Read-back blobs: validator `fcdcd916f107b4f09de5e7aa2f8a5d2a06be74bb`; tests `5ae50057aeb817a11555a6d13358bdb7edd328df`; Free-tier contract `d49208f6010991005f2cc0b80db3a984f3f2c8de`.
+- PR reviews and review threads remain empty; independent review NOT RUN. Gemini controller absent from default-branch workflow tree; Gemini NOT RUN.
+- Report: [2026-11-05 PR #11 YAML parser hardening](../reports/2026-11-05-pr11-yaml-parser-hardening.md).
+- Checkpoint: [2026-11-05 PR #11 hardening checkpoint](../checkpoints/2026-11-05-pr11-yaml-parser-hardening.md).
+- Read-only review packet: [three-role independent review packet](../reviews/2026-11-05-independent-review-packet-pr11-yaml-hardening.md).
+- PR #7 Worker provenance, PR #8 matrix integration/review, PR #9 governance revert and PR #10 supersession remain unresolved. No Worker, Supervisor dispatch, DSH, Resource Probe, browser, provider call or secret access.
+- Next: obtain independent read-only review of PR #11 at immutable SHA `7b3bd8d8840e122f03326299444a921e3ba5f425`. Gemini agents remain NOT RUN until approved controller and all governance/credential/quota/provenance gates are verified. Keep dispatch disabled.
