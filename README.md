@@ -7,7 +7,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - 20-slot GitHub-hosted execution architecture: DESIGN.
 - GitHub Pool Supervisor and task queue: IMPLEMENTED SCAFFOLD, NOT RUN.
 - Pool Worker: IMPLEMENTED for one DSH headless smoke profile only, NOT RUN.
-- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED.
+- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED; dispatch fail-closed until branch governance is enabled and POOL_DISPATCH_ENABLED=true.
 - General-purpose agent execution, checkpoint/resume and automatic task continuation: NOT IMPLEMENTED.
 - DeepSeek Harness: selected as candidate task runtime; developer-preview evaluation only.
 - DSH headless evaluation: NOT RUN.
@@ -26,11 +26,12 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 ## Cloud pool control
 1. Create a [Cloud Pool Task issue](https://github.com/VlDMlNSh/developer-cloud-pool/issues/new?template=pool-task.yml).
 2. Specify an exact 40-character target commit SHA.
-3. Review the task and apply the `pool:ready` label to approve dispatch.
-4. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
-5. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
+3. First enable default-branch governance, then set the repository variable `POOL_DISPATCH_ENABLED=true`.
+4. Review the task and apply the `pool:ready` label to approve dispatch.
+5. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
+6. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
 
-The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
+The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Dispatch is currently disabled by default because the default branch has not yet been protected. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
 
 ## First cloud evaluations
 - [Runner Resource Probe](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/runner-resource-probe.yml)
