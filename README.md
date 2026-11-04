@@ -51,6 +51,12 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - Cross-repository dispatch is deferred until GitHub App allowlisting and scoped credentials are implemented.
 - GitHub-hosted runner location and data residency are managed by GitHub; this design does not promise a selected execution country.
 
+## Continuation and context
+
+- [Full development context and live-state handoff](docs/context/DEVELOPER-CLOUD-POOL-CONTEXT.md)
+- [Short master prompt for a new chat](docs/prompts/DEVELOPER-CLOUD-POOL-NEW-CHAT-MASTER-PROMPT.md)
+- [Context package report — 2026-11-04](docs/reports/2026-11-04-cloud-pool-context-and-continuation-package.md)
+
 ## Latest engineering report
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
