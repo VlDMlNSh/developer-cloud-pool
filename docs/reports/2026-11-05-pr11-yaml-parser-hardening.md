@@ -27,7 +27,7 @@ PR #11 received a bounded parser-hardening implementation on its existing work b
 - Run ID: `41918209585`
 - Job ID: `126883451219`
 - PR head tested: `7b3bd8d8840e122f03326299444a921e3ba5f425`.
-- GitHub merge ref checked out by the job: `43096d7` (short SHA shown in log; derived from PR head and base).
+- GitHub merge ref checked out by the job: `43096d7efb07054601ab04861e1d86390e313df0` (full merge-ref SHA verified by GitHub commit lookup).
 - Terminal status: COMPLETED / SUCCESS.
 - All five workflow YAML files parsed.
 - Free-only policy validator: PASS.
