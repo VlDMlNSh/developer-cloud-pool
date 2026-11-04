@@ -255,11 +255,16 @@ Next step: obtain genuinely independent review for PR #3; recheck dispatch varia
 
 ## 9. Jarvis mobile read-only shell — 2026-11-04
 
-- Feature branch: `feat/jarvis-mobile-readonly-shell-2026-11-04`, created from immutable default HEAD `692025e4a039aaf94c6683bb95da38b4f324fce8`.
-- Draft PR #6: https://github.com/VlDMlNSh/developer-cloud-pool/pull/6, head `037c16769df890761b816098377d30f67c3e2ca0`, OPEN / DRAFT / NOT MERGED.
-- Static shell files under `web/jarvis-dashboard/`: HTML blob `bce074dcf508225a5a8eb1662b18c9bc5b1fe54a`; CSS blob `a2f34bbe13108f9159ec52350c24b23afd2f80eb`; JS blob `a3304edadab37f601ecf2c1e130017682ba292b5`. All were read back from the feature branch.
-- The UI is a responsive static prototype with explicit demo warning. No live API, fetch/XHR, WebSocket, secrets, cookies, task submission, dispatch, approvals, browser control or model calls.
-- PR #6 exact-head checks count 0 and reviews empty: CI NOT VERIFIED; independent review NOT RUN. No browser/device rendering tests run. Do not merge or deploy yet.
-- Report: [2026-11-04 Jarvis mobile read-only shell](../reports/2026-11-04-jarvis-mobile-readonly-shell.md).
-- Checkpoint: [2026-11-04 Jarvis mobile shell checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
-- Next: add deterministic static validation and browser-rendering CI using an approved runner path, then request independent review. Do not use the saturated SentinelX host for browser workload and do not enable pool dispatch.
+- Feature branch: `feat/jarvis-mobile-readonly-shell-2026-11-04`; PR #6: https://github.com/VlDMlNSh/developer-cloud-pool/pull/6; OPEN / DRAFT / NOT MERGED.
+- Latest exact PR head: `2f6e7592dc4d2af4f1c76b28372d9c94354ef591`; base remains default HEAD `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Static UI blobs read back: HTML `bce074dcf508225a5a8eb1662b18c9bc5b1fe54a`; CSS `a2f34bbe13108f9159ec52350c24b23afd2f80eb`; JS `5f66ca7e2a92bcdf78f7fe30e838a4022844baeb`.
+- Added validator `scripts/validate-jarvis-dashboard.mjs`, blob `bc74c24f1b9708024f2637a88a7ae6fe7470b98a`, and workflow `.github/workflows/jarvis-static-validation.yml`, blob `62fa96e52355e3d300999ff784029750d1e24864`.
+- The validator checks document language/viewport, visible demo boundary, accessible main/skip-link, navigation anchors, local assets, no external assets/inline handlers, responsive CSS/safe-area/reduced motion, and no network/persistent-storage access in the prototype JS.
+- Exact-head CI on `2f6e7592dc4d2af4f1c76b28372d9c94354ef591`: Jarvis run `41906629021` SUCCESS; Pool Contract Validation run `41906628978` SUCCESS; push validation run `41906617067` SUCCESS. The successful Jarvis job `126842909650` completed syntax and static contract steps. The successful pool validation job `126842909852` parsed workflows and passed pool security assertions.
+- Read-back assertions: 30/30 passed. Earlier intermediate-head static validation failures were corrected; do not treat those superseded runs as current-head failures.
+- Independent review remains NOT RUN; browser screenshot/device testing NOT RUN; API/auth/deployment NOT IMPLEMENTED. Do not merge or deploy based on static CI alone.
+- The prototype remains offline/static: no API, credentials, task submission, dispatch, approvals, browser control or model calls.
+- Latest report: [Jarvis static validation CI](../reports/2026-11-04-jarvis-static-validation-ci.md).
+- Latest checkpoint: [Jarvis static validation checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: independent PR review and safe ephemeral browser rendering. Keep pool dispatch disabled until governance and runtime gates are independently verified.
+
