@@ -1,0 +1,233 @@
+# Developer Cloud Pool — полный контекст разработки и продолжения
+
+**Срез состояния:** 2026-11-04 (UTC)  
+**Репозиторий:** https://github.com/VlDMlNSh/developer-cloud-pool  
+**Default branch:** `Основной`  
+**Назначение:** независимая облачная инженерная платформа и runtime для Jarvis. Не смешивать с репозиторием MediaHub OS.
+
+> Этот файл — долговременная сводка решений, архитектуры, доказательств, ограничений и текущего состояния. При каждом новом сеансе перепроверять refs, SHA, Issues, PR, Ruleset, Actions и исполнителей: данный файл не заменяет live-проверку.
+
+## 1. Цель и принципы
+
+Создать автономный cloud-first пул из эфемерных GitHub-hosted runners, который способен принимать ограниченные инженерные задачи, выбирать совместимый профиль/исполнителя, выполнять работу в изоляции, восстанавливаться после завершения runner по лимиту времени и сохранять проверяемые результаты.
+
+Ключевые принципы:
+- Минимум вмешательства владельца; не запрашивать его действия, если безопасную работу можно выполнить самостоятельно.
+- GitHub — control plane, queue, orchestration, immutable source и evidence. Runner — эфемерное место исполнения. Не использовать постоянный физический сервер как обязательный runtime.
+- Каждый task имеет immutable target SHA, task ID, роль, allowlist путей/операций, input refs, budget/timeout, минимальные permissions и проверяемые acceptance criteria.
+- Код и долговременные спецификации хранятся в Git; runner filesystem и Actions cache не являются durable storage.
+- Все операции с секретами — least privilege, изоляция, аудит; никогда не печатать/копировать токены, ключи, cookies или authorization headers.
+- Техническая возможность не означает разрешение. Ни один агент не получает права за пределами task envelope.
+- Разделять PLANNED, IMPLEMENTED, TESTED, VERIFIED, QUALIFIED, ACCEPTED, NOT RUN, BLOCKED, FAILED и NOT VERIFIED.
+- Пустой CI/review/status — NOT VERIFIED, не PASS.
+- Не включать платный fallback, не создавать secret aliases, не расширять полномочия без подтверждённого контракта и approval.
+
+## 2. Облачная модель исполнения
+
+### 2.1 Двадцать логических профилей
+
+Архитектура описывает до 20 одновременных GitHub-hosted jobs, а не 20 постоянных VM. Плановый baseline для стандартного публичного Linux x64 runner: 4 vCPU, 16 GB RAM, 14 GB SSD; фактические характеристики всегда измерять на runner и сверять с актуальными ограничениями GitHub. Теоретическая сумма 80 vCPU / 320 GB RAM / 280 GB SSD — распределённые ресурсы независимых эфемерных VM, не общий компьютер или диск.
+
+Логические профили (все, кроме явно реализованного scaffold, PLANNED / NOT QUALIFIED):
+1. Dispatch/intake validation.
+2. Policy/provenance.
+3. Gemini Research.
+4. Gemini Implementation.
+5. Gemini Independent Audit.
+6. Ollama → FCC → Claude Code → ECC (последовательный toolchain в одном профиле).
+7. Codex CLI.
+8. Aider + Goose (последовательно, не ставить все тяжёлые инструменты вместе без измерений).
+9. mini-SWE-agent.
+10. OpenHands SDK.
+11. Repository Intelligence.
+12. agent-browser + Chromium.
+13. Playwright UI QA.
+14. MCP/API integration.
+15. Research/documentation.
+16. Unit tests.
+17. Integration tests.
+18. Build/performance.
+19. Security audit.
+20. Independent review/evidence.
+
+Не закреплять постоянно runner за профилем: scheduler распределяет задачи динамически по capabilities, priority и доступной concurrency. Профили устанавливают только необходимые инструменты. Сначала измерить CPU, RAM, disk, startup, installation footprint, duration и cleanup.
+
+### 2.2 Контрольная плоскость и lifecycle
+
+Текущий scaffold:
+- GitHub Pool Supervisor — сериализованная reconciliation по Issues; event-driven wake-ups и scheduled fallback.
+- Pool Worker — один allowlisted профиль `dsh-headless-probe`.
+- Supervisor требует literal `POOL_DISPATCH_ENABLED === "true"`; иначе heartbeat-only и exit 0.
+- Intake требует immutable 40-character target SHA и точное allowlisted имя профиля. Issue body не может задавать shell command или произвольный workflow.
+- Worker checkout выполняется по target SHA, а не по mutable branch.
+- Supervisor использует task claim/lease и reconciliation; текущий lease-expiry путь возвращает задачу в ready, но не выполняет автоматический retry.
+- Система не является непрерывно работающим daemon. GitHub schedule может задерживаться/теряться; event triggers + периодическая reconciliation дают best-effort, не SLA.
+- General-purpose checkpoint/resume и automatic continuation arbitrary agent work пока NOT IMPLEMENTED.
+
+Предполагаемый lifecycle:
+1. Task issue с objective, profile, target SHA и acceptance criteria.
+2. Проверка схемы, статуса, label/approval и allowlist.
+3. Serialized claim с lease.
+4. Dispatch Worker на exact SHA.
+5. Worker исполняет только разрешённый профиль.
+6. Записывает ограниченные evidence/artifacts и terminal status.
+7. Completion event будит Supervisor; scheduled reconciliation — fallback.
+8. При достижении soft deadline сохраняется versioned checkpoint и digest; следующий worker проверяет target/checkpoint/idempotency и возобновляет только разрешённую работу.
+
+GitHub-hosted job имеет hard limit до шести часов. Для долгих задач нужен soft deadline ниже hard limit, durable checkpoint, task ID, target SHA, schema version, artifact digests, lease ownership и idempotency. Нельзя рассчитывать на выживание процесса за пределами job.
+
+### 2.3 Durable state
+
+GitHub Issues подходят для bootstrap/низкого потока, но не являются high-throughput transactional DB. Actions cache не является durable storage или shared filesystem. Будущая Pool Bridge может использовать PostgreSQL для task ledger, leases, checkpoints, policy и audit metadata; Redis — только при подтверждённой потребности в throughput/rate counters/cache. Выбор и квалификация storage ещё не завершены.
+
+## 3. Agent-browser: обязательное целевое размещение
+
+Пользователь явно потребовал: браузерный агент впоследствии должен работать внутри облачного пула, без отдельного внешнего сервера и без реального/физического оборудования. До появления этого runtime разрешено пользоваться SentinelX для административного контроля подключённого хоста; Desktop Commander — только как fallback, если необходимую операцию невозможно выполнить через SentinelX.
+
+Целевой дизайн:
+- Dedicated job на эфемерном GitHub-hosted `ubuntu-24.04`.
+- Внутри одного job устанавливать закреплённую версию `agent-browser` и совместимый Chromium.
+- Перед браузерными командами получать актуальный CLI skill: `agent-browser skills get core`; `--full` только если необходимо.
+- Chromium, CDP, browser profile, downloads и временные данные находятся в sandbox job. CDP loopback-only; не открывать debugging port наружу и не держать постоянный browser daemon.
+- Чистый профиль на задачу; не переносить cookies/session storage между задачами. Персистентная auth-state возможна только как отдельный security-reviewed design с encryption, узким scope и retention.
+- Browser job по умолчанию без secrets, с минимальными token permissions, allowlist доменов/URL, redirect validation, bounded timeout/downloads и scrubbed artifacts.
+- В evidence фиксировать target SHA, run/job IDs, agent-browser/Chromium versions, domains, operation summary, artifact digests и terminal status.
+- Browser Worker profile не добавлять в dispatch allowlist до independent security review, exact-head CI, egress controls, artifact policy и lifecycle qualification.
+- Не применять браузер к обходу MFA, account security, platform terms, issuer/capability gates или owner approval.
+
+Issue: [#5 — Run agent-browser inside ephemeral GitHub-hosted pool runners](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5). Статус: OPEN, design/work item; runtime не установлен, browser smoke NOT RUN.
+
+## 4. Toolchain и модели: намерения, не квалификация
+
+В прошлых обсуждениях рассматривались:
+- Три Gemini исполнителя через общий утверждённый controller (отдельный проектный controller, если он будет интегрирован сюда — только по проверенному контракту).
+- Отдельный профиль Ollama → FCC → Claude Code → ECC.
+- Codex CLI, Gemini CLI, Aider, Goose, mini-SWE-agent, OpenHands SDK и другие как кандидаты.
+- Qwen/GLM/DeepSeek и другие бесплатные/квотируемые облачные модели как кандидаты для безопасной маршрутизации.
+- Автоматическое продолжение работы через соседние runner при шестичасовом лимите.
+
+Ничего из этого не означает, что инструменты установлены, credentials доступны, модельные вызовы разрешены или профили квалифицированы. DSH — текущий candidate runtime, не policy authority и не scheduler. Его package/profile smoke не доказывает безопасность модели, tools или sandbox. Не передавать DSH полномочия Supervisor/Pool Bridge.
+
+## 5. Источники архитектурной истины в репозитории
+
+- [README](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/README.md)
+- [20 Runner Architecture](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
+- [Jarvis Hybrid Platform Reference Architecture](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
+- [DeepSeek Harness adoption and cloud-first plan](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/architecture/DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md)
+- [Pool Supervisor and Recovery Architecture](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md)
+- [DSH cloud-first bootstrap report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
+- [Supervisor implementation report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/reports/2026-11-04-pool-supervisor-implementation.md)
+- [Worker input security audit report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/fix/worker-shell-input-escaping-2026-11-04/docs/reports/2026-11-04-pool-worker-input-security-audit.md)
+- [Current continuation report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/continuation-context-2026-11-04/docs/reports/2026-11-04-sentinelx-control-and-ephemeral-browser-runtime.md)
+- [Browser runtime issue #5](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5)
+
+## 6. Current GitHub state — live-checked 2026-11-04
+
+### Repository and branches
+- Repository: `VlDMlNSh/developer-cloud-pool`, public, ID `1445644538`.
+- Default branch: `Основной`.
+- Last verified default HEAD: `4597617db0de7cc698cce936a540594ee3d25bf2`.
+- Relevant branches: `Основной`, `fix/worker-shell-input-escaping-2026-11-04`, `feat/media-intelligence-skills-2026-11-04`, `docs/continuation-context-2026-11-04`.
+- Docs branch is an evidence/continuation branch, not integrated into default. Do not represent documentation branch commits as accepted default-branch implementation.
+
+### Governance
+- Ruleset ID `26550182`, name `Основной — verified`, enforcement `active`.
+- Exact selector: `refs/heads/Основной`.
+- Rules: PR required; 0 required approvals; review thread resolution required; deletion and non-fast-forward prohibited; CODEOWNERS review OFF; extra approval for unattributed changes OFF; bypass actors empty.
+- Repository Actions variable `POOL_DISPATCH_ENABLED` read back via SentinelX-hosted `gh`: literal `false`.
+- Classic branch-protection endpoint and Ruleset are separate mechanisms; do not treat a classic endpoint's `protected:false` as negating this active Ruleset.
+- Never set dispatch true until all governance, review, Worker lifecycle, Resource Probe, DSH and security gates are satisfied.
+
+### PR #3 — Worker shell-input hardening + static validation
+- URL: https://github.com/VlDMlNSh/developer-cloud-pool/pull/3
+- State OPEN, unmerged.
+- Branch: `fix/worker-shell-input-escaping-2026-11-04`.
+- Latest verified head: `7aa5b27b6e826918eeaa6397afe0378d14359022`.
+- Base: `Основной` at `4597617db0de7cc698cce936a540594ee3d25bf2`.
+- Latest exact-head run: [41881360241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41881360241), job `126754359530`, COMPLETED / SUCCESS.
+- Job logs: five workflow YAML files parsed; shell input interpolation assertion PASS; external Action refs pinned to full SHAs PASS; Worker least privilege/no-secret invariants PASS; Supervisor fail-closed PASS; DSH/Resource Probe manual/read-only/no-secret PASS; `POOL_CONTRACT_VALIDATION=PASS`.
+- Validator fix changed the assertion to match the actual `process.env.POOL_DISPATCH_ENABLED === "true"` guard. Validator blob after fix: `cfffb77905406d54505c711504a72ae1fafd3f06`; commit `7aa5b27b6e826918eeaa6397afe0378d14359022`.
+- Worker workflow blob last verified: `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`.
+- Reviews array empty; independent review NOT RUN. PR is mergeable true at last read but MUST NOT merge until independent review and exact-head checks revalidated.
+- Static contract CI: VERIFIED for this head. Integration/acceptance: NOT ACCEPTED.
+
+### PR #4 — Media Intelligence and governed skills design
+- URL: https://github.com/VlDMlNSh/developer-cloud-pool/pull/4
+- State OPEN, unmerged.
+- Branch: `feat/media-intelligence-skills-2026-11-04`.
+- Head: `ab43af86b63a731202fa0f8fa6f27f009b0d4aac`.
+- Base: `4597617db0de7cc698cce936a540594ee3d25bf2`.
+- Latest recheck: reviews empty; check-runs array empty; no exact-head CI evidence. Status NOT VERIFIED.
+- Design separates research/read-only, editorial/draft-only, publication/write plane and publication verification. Platform connectors (YouTube, Instagram, Telegram, TikTok etc.) require per-platform permission and qualification.
+- No skills/plugins installed, no social credentials accessed, no publication, no provider calls. Keep publication DISABLED and profiles out of dispatch allowlist pending security, egress/SSRF, prompt-injection, provenance and platform authorization gates.
+
+### Issues
+- [#1 Governance gate](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1): OPEN; records Ruleset and dispatch false state. Re-read before acting.
+- [#5 Browser runtime](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5): OPEN; proposed ephemeral GitHub-hosted browser job.
+- Issue #2 was previously closed after Ruleset verification; re-check current state if it becomes relevant.
+
+### Latest Actions
+- Exact PR #3 static validation run 41881360241: success.
+- Earlier intermediate PR #3 validation runs failed due false-positive validator assertions; superseded by exact-head success.
+- Supervisor issue-triggered run 41881592336: completed success. This is Supervisor event handling, not a Worker execution or proof that dispatch occurred.
+- No Resource Probe, DSH smoke, Worker task, browser task, model call or paid fallback was executed.
+
+## 7. SentinelX and operator tooling
+
+User preference: SentinelX is primary for host control; Desktop Commander only if SentinelX cannot perform a necessary operation.
+
+Last live SentinelX inventory:
+- Host ID: `host_5f7264034bdf0b51`.
+- Hostname: `Voktors-Mini.Dlink`.
+- Agent: `0.23.30`.
+- macOS arm64, Darwin 23.6.0.
+- Free plan: active limit 1; 1 active / 0 parked / 0 free slots.
+- `sentinel_ping`: PASS.
+- `sentinel_exec("uname -a")`: PASS.
+- `gh variable get POOL_DISPATCH_ENABLED`: returned `false`.
+- `gh api .../rulesets/26550182`: returned active Ruleset with exact selector and no bypass actors.
+- Full capabilities calls have intermittently returned `duplicate_session` / `read_loop_ended`; retry safely.
+- `node` not in host's allowlisted commands. Do not expand allowlist simply to run one-off tests. SentinelX documents `script_run` for bounded Bash/Python one-off execution.
+- Two older enrolled hosts `mh-dev-01` and `mh-dev-02` appear disabled by user in SentinelX; they are not available for operations unless re-enabled through SentinelX UI by owner. Do not attempt to bypass disabled state.
+- Mac mini is administrative control only, not cloud runtime. No browser agent installed there.
+- Desktop Commander was not used in the last verified pass.
+
+## 8. Important safety and governance constraints
+
+- Keep `POOL_DISPATCH_ENABLED=false`.
+- No Worker dispatch until independent PR review, merge, exact default-head checks, resource qualification, DSH smoke and worker lifecycle controls are verified.
+- Resource Probe must be read-only and secret-free. DSH smoke must be manual, pinned, isolated, no model calls and no secrets.
+- Never run untrusted public PR code on persistent self-hosted/local machines.
+- No provider credentials or model calls until provider profiles, budget, quota, egress and provenance are qualified.
+- No cross-repository dispatch until GitHub App allowlisting and scoped credentials exist.
+- No browser authenticated session persistence by default; no CDP public exposure.
+- A passing smoke test is not security qualification. A passing resource probe does not qualify an agent profile.
+- Do not make owner intervention a routine dependency; request it only where a genuine authorization/credential/UI gate cannot be handled autonomously.
+
+## 9. Ordered continuation plan
+
+1. Re-read this file and all referenced architecture contracts. Live-check default HEAD, docs branch HEAD, PR #3/#4, Issues #1/#5, Ruleset, Actions variable, exact-head CI, review submissions, current SentinelX hosts and available tools.
+2. PR #3: independently inspect full diff and Worker/Supervisor/validator contracts. Obtain a genuinely independent reviewer if available; do not self-approve. If no reviewer exists, record NOT RUN/BLOCKED and continue independent work. Revalidate exact-head CI and integrate only when all gates pass.
+3. Run the manual read-only Runner Resource Probe on ephemeral GitHub-hosted `ubuntu-24.04`; record runner image, architecture, CPU, RAM, swap, disk, versions, run/job IDs, output digests and cleanup. Do not install agents or access secrets during this baseline.
+4. Review probe evidence; then run DSH headless smoke separately with fixed `@deepseek-ai/dsh@0.2.1-rc.5`, no secrets/model calls and no general-purpose tools. Qualify only that narrow smoke profile if evidence and independent review justify it.
+5. Implement Issue #5: isolated agent-browser + Chromium smoke workflow on GitHub-hosted ephemeral runner. Pin package/browser versions, no secrets, one public allowlisted origin, loopback CDP, clean profile, bounded artifacts and provenance. Add browser profile to Worker allowlist only after security review and lifecycle qualification.
+6. Design and implement durable task state/checkpoint/resume and lease recovery. Do not claim automatic six-hour continuation until demonstrated with idempotency and recovery tests.
+7. Build model/tool profiles incrementally, one profile per measured install/qualification cycle. Use secure model routing with budget/quota limits and no paid fallback unless explicitly approved.
+8. Only after gates are accepted, consider dispatch enablement. Never enable it as a convenience or to make a demo work.
+9. After each pass: re-read modified files, verify blob SHA, exact-head CI, update dated report and checkpoint; update architecture/README/index when necessary. Keep docs branch distinct from default until PR integration.
+
+## 10. Status vocabulary
+
+- PLANNED — design only.
+- DISPATCHED — controller confirmed dispatch with run ID.
+- RUNNING — actual execution observed.
+- SUCCEEDED — execution terminal result success.
+- VERIFIED — evidence and checks establish the specific claim.
+- QUALIFIED — representative workload, security controls, cleanup and independent review passed.
+- ACCEPTED — authorized integration/release decision completed.
+- NOT RUN — no execution.
+- BLOCKED — explicit unmet prerequisite.
+- FAILED — observed failure.
+- NOT VERIFIED — evidence absent, stale or inconclusive.
+
+Never collapse these states into a generic “done”.
