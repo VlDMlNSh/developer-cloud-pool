@@ -281,3 +281,19 @@ Next step: obtain genuinely independent review for PR #3; recheck dispatch varia
 - Latest checkpoint: [Owner-bound Pool Supervisor approval checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
 - Next: independent security review PR #7; reconcile Issue #1 history; update PR #4 base and re-run exact-head CI/review. Keep dispatch disabled until all gates are accepted.
 
+
+## 11. Approval intake while dispatch is disabled — 2026-11-04
+
+- Follow-up review found that the Supervisor exited on `POOL_DISPATCH_ENABLED !== "true"` before calling `recordOwnerApproval()`. Owner label actions performed while dispatch was disabled therefore were not recorded.
+- PR #7 now records/rejects the owner-originated `pool:ready` event before the dispatch-disabled exit. The disabled path exits before workflow recovery, stale-claim recovery and Worker dispatch.
+- PR #7 head: `8dc7252d8151da2c8f30926c3564074ecaebae92`; base: `692025e4a039aaf94c6683bb95da38b4f324fce8`.
+- Supervisor blob: `85f3997a4be723735d8eab1c06e6a52b938b33d3`.
+- Exact-head CI [41908966334](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41908966334), job `126851105703`: SUCCESS; YAML parse, owner approval tests and static contract validator passed.
+- PR #7 remains OPEN / DRAFT; independent review NOT RUN.
+- Remaining issue: stale-claim expiry and immediate dispatch API failure still transiently restore `pool:ready` after the single-use approval was consumed. Subsequent reconciliation fails closed and moves the issue to review, so approval replay is not enabled, but the state transition/comments are inconsistent. An attempted follow-up write was blocked and these two branches remain unfixed.
+- Current `POOL_DISPATCH_ENABLED`: NOT VERIFIED by live read. Do not infer from historical value.
+- No Worker, DSH, Resource Probe, browser or model execution was launched.
+- Report: [Approval intake while dispatch is disabled](../reports/2026-11-04-approval-intake-disabled-dispatch.md).
+- Checkpoint: [Approval intake follow-up checkpoint](../checkpoints/2026-11-04-live-checkpoint-jarvis-mobile-shell.md).
+- Next: fix the two recovery branches with regression tests, exact-head CI, then independent security review. Keep dispatch disabled pending all gates.
+
