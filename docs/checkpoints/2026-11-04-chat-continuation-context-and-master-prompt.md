@@ -364,3 +364,19 @@ Next: inspect latest exact-head CI after it leaves queue; obtain independent PR 
 - Detailed report: [2026-11-04-sentinelx-control-and-ephemeral-browser-runtime.md](../reports/2026-11-04-sentinelx-control-and-ephemeral-browser-runtime.md).
 
 Next: obtain independent review for PR #3; after review and integration, qualify Resource Probe and DSH separately. Implement browser-smoke workflow from issue #5 on GitHub-hosted ephemeral runners only. Keep `POOL_DISPATCH_ENABLED=false` until worker lifecycle gates pass.
+
+
+---
+
+## Context package and new-chat handoff — 2026-11-04
+
+The durable full development context and short continuation prompt have been created and read back from this documentation branch:
+
+- Full context: [DEVELOPER-CLOUD-POOL-CONTEXT.md](../context/DEVELOPER-CLOUD-POOL-CONTEXT.md) — blob `eff29079572d0607545027e90e8288794b1c308e`.
+- Short master prompt: [DEVELOPER-CLOUD-POOL-NEW-CHAT-MASTER-PROMPT.md](../prompts/DEVELOPER-CLOUD-POOL-NEW-CHAT-MASTER-PROMPT.md) — blob `54656400c1fd37b324adb056fea96aaef185d2c9`.
+- Dated package report: [2026-11-04-cloud-pool-context-and-continuation-package.md](../reports/2026-11-04-cloud-pool-context-and-continuation-package.md).
+- Repo architecture index: [README](../../README.md).
+
+The context captures the 20 logical ephemeral runner profiles, Supervisor/Worker queue and lease design, six-hour hard boundary, checkpoint/resume gap, DSH status, agent-browser-on-GitHub-hosted-runner target, toolchain/model intentions, current GitHub refs/PR/Issues/Ruleset/CI, SentinelX-first host control, security boundaries and ordered continuation steps.
+
+Current status at report time: PR #3 OPEN with exact-head CI success but no independent review; PR #4 OPEN with no checks/reviews; Ruleset 26550182 active; `POOL_DISPATCH_ENABLED=false`; Worker, Resource Probe, DSH smoke, browser tasks, model calls and paid fallback NOT RUN. Documentation branch remains separate from default branch.
