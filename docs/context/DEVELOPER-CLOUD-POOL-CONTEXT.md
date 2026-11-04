@@ -470,3 +470,16 @@ PR #8 remains OPEN/DRAFT and mergeable=false because it is based on former PR #7
 PR #11 remains OPEN/DRAFT at `7b3bd8d8840e122f03326299444a921e3ba5f425`; exact-head CI `41918209585` SUCCESS; independent review NOT RUN.
 
 Dispatch remains disabled and unqualified. No secrets/variables changed; no Worker, DSH, Resource Probe, browser, model/provider or paid workflow was run.
+
+
+## 2026-11-05 continuation update — live authorization boundary audit
+
+Latest read-only snapshot and evidence: [audit report](../reports/2026-11-05-authorization-boundary-live-audit.md), [checkpoint](../checkpoints/2026-11-05-authorization-boundary-live-audit.md).
+
+Canonical default `Основной` HEAD remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. Default Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still exposes `workflow_dispatch` and validates issue metadata rather than trusted caller workflow provenance. Default Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still uses REST dispatch. Worker authorization remains BLOCKED. The Gemini controller is absent from the default workflow tree; Gemini NOT RUN.
+
+PR #7 remains OPEN/DRAFT at `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`, 40 ahead / 1 behind current default; exact-head CI `41921293708` SUCCESS; independent review NOT RUN. PR #8 remains OPEN/DRAFT at `0a8dba68aa12070b3768d6fb834bedf404ed5d99`, based on stale `d60d26a...`, 19 ahead / 1 behind; exact-head CI NOT VERIFIED and its caller-supplied approval object is unauthenticated. PR #11 remains OPEN/DRAFT at `7b3bd8d8840e122f03326299444a921e3ba5f425`; exact-head CI `41918209585` SUCCESS; independent review NOT RUN.
+
+No implementation changes or merges. No secrets or variables accessed/changed; `POOL_DISPATCH_ENABLED` NOT VERIFIED. No Worker, DSH, Resource Probe, browser, model/provider calls or privileged dispatch. Paid fallback NOT USED. Runtime NOT QUALIFIED.
+
+Next: fresh branch from current default HEAD; implement trusted Supervisor planning and a statically declared reusable Worker `workflow_call`; validate actual caller/workflow repository, path and SHA; preserve bounded matrix, idempotency, approval consumption and terminal recovery. Keep dispatch disabled and require independent review and exact-head CI.
