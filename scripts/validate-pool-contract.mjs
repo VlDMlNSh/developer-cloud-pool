@@ -11,6 +11,7 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
+const approvalModule = read("scripts/pool-approval.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
@@ -64,6 +65,8 @@ if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
 if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
+if (!supervisorScript.includes("getOwnerApproval") || !supervisorScript.includes("hasOwnerApproval") || !supervisorScript.includes("recordOwnerApproval")) fail("Supervisor must verify and record owner-bound approval before dispatch");
+if (!approvalModule.includes("BOT_LOGIN") || !approvalModule.includes("repositoryOwner")) fail("Owner approval marker must be bot-authored and bound to repository owner");
 if (!/if\s*\(!dispatchEnabled\)[\s\S]*?process\.exit\(0\)/.test(supervisorScript)) fail("Supervisor must exit heartbeat-only when dispatch is disabled");
 if (failures.length === 0) pass("Supervisor dispatch is fail-closed and variable-controlled");
 
