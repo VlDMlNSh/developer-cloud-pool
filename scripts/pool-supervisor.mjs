@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { getOwnerApproval, formatOwnerApproval, hasOwnerApproval } from "./pool-approval.mjs";
+import { getOwnerApproval, formatOwnerApproval, formatOwnerApprovalConsumed, formatOwnerApprovalRevoked, hasOwnerApproval } from "./pool-approval.mjs";
 
 const ownerRepo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
@@ -79,15 +79,24 @@ async function comment(issueNumber, body) {
 }
 
 async function recordOwnerApproval() {
-  if (eventName !== "issues" || eventPayload.action !== "labeled" || eventPayload.label?.name !== "pool:ready") return;
+  if (eventName !== "issues") return;
   const issueNumber = eventPayload.issue?.number;
   if (!Number.isInteger(issueNumber) || eventPayload.issue?.pull_request) return;
+
+  if (eventPayload.action === "unlabeled" && eventPayload.label?.name === "pool:ready") {
+    await comment(issueNumber, formatOwnerApprovalRevoked(issueNumber));
+    log("Revoked prior owner approval for issue #" + issueNumber + " after pool:ready was removed.");
+    return;
+  }
+
+  if (eventPayload.action !== "labeled" || eventPayload.label?.name !== "pool:ready") return;
   const approval = getOwnerApproval(eventPayload, repositoryOwner);
   if (!approval) {
     const current = await request("/repos/" + ownerRepo + "/issues/" + issueNumber);
     await replaceIssueLabels(current, ["pool:ready"], ["pool:needs-review"]);
     await comment(issueNumber,
       "**POOL_OWNER_APPROVAL_REJECTED**\\n\\nThe `pool:ready` label was not applied by the repository owner to an open issue with the exact allowlisted task envelope. No worker was dispatched.");
+    await comment(issueNumber, formatOwnerApprovalRevoked(issueNumber));
     log("Rejected pool:ready label event for issue #" + issueNumber + ": owner approval or task envelope invalid.");
     return;
   }
@@ -99,7 +108,6 @@ async function recordOwnerApproval() {
     log("Recorded owner approval marker for issue #" + issueNumber + " at immutable SHA " + approval.targetSha + ".");
   }
 }
-
 function extractTargetSha(body) {
   const match = String(body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
   return match ? match[1] : null;
@@ -213,6 +221,7 @@ async function dispatchReadyTasks() {
       continue;
     }
 
+    await comment(issue.number, formatOwnerApprovalConsumed(issue.number, targetSha));
     await replaceIssueLabels(issue, ["pool:ready"], ["pool:claimed"]);
     await comment(issue.number,
       "**POOL_TASK_CLAIMED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
