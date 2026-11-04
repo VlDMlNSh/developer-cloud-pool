@@ -15,6 +15,7 @@ const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
 const workflows = [
+  ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
