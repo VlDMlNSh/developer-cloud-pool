@@ -1,0 +1,46 @@
+name: Cloud Pool Task
+description: Submit a bounded task for the GitHub-hosted pool supervisor.
+title: "[POOL] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This intake currently supports only the DSH headless probe profile.
+        Do not put credentials, private keys, tokens, personal data, or arbitrary shell commands in this issue.
+        An owner must review the request and apply the `pool:ready` label before dispatch.
+  - type: input
+    id: target_sha
+    attributes:
+      label: Target SHA
+      description: Exact 40-character commit SHA from this repository.
+      placeholder: "0123456789abcdef0123456789abcdef01234567"
+    validations:
+      required: true
+  - type: dropdown
+    id: worker_profile
+    attributes:
+      label: Worker profile
+      options:
+        - DSH headless probe
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: Explain what should be inspected by the current read-only DSH smoke profile.
+      placeholder: "Run the pinned DSH headless composition probe at the specified target SHA."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List the evidence that should be present in the worker summary.
+      placeholder: |
+        - Exact target SHA checked out
+        - Pinned DSH package installed
+        - Headless composition dump completed
+        - No model call and no provider credentials
+    validations:
+      required: true
