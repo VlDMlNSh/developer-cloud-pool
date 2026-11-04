@@ -348,3 +348,19 @@ Next step: continue static/read-only workflow contract validation and find an ap
 - Detailed report: [2026-11-04-pool-contract-validation-and-dispatch-fail-closed.md](../reports/2026-11-04-pool-contract-validation-and-dispatch-fail-closed.md).
 
 Next: inspect latest exact-head CI after it leaves queue; obtain independent PR #3 review; integrate only after both pass. Then run the isolated Resource Probe, followed by a separate DSH smoke gate. Keep `POOL_DISPATCH_ENABLED=false`.
+
+
+---
+
+## Live continuation update — SentinelX-first + agent-browser cloud runtime (2026-11-04)
+
+- User direction: SentinelX is the primary host-control channel; Desktop Commander is fallback only when a necessary operation cannot be done via SentinelX.
+- SentinelX host observed: `host_5f7264034bdf0b51`, `Voktors-Mini.Dlink`, agent `0.23.30`, macOS arm64; Free plan active-host limit 1/1. Ping and `uname -a` via SentinelX succeeded. Full capabilities calls intermittently returned `duplicate_session` / `read_loop_ended`. `node` is not in allowed commands; no allowlist expansion was made. Use documented SentinelX `script_run` for one-off Bash/Python only if needed. This Mac mini is an admin host, not the pool runtime.
+- PR #3 latest head `7aa5b27b6e826918eeaa6397afe0378d14359022`. Exact-head run [41881360241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/41881360241), job `126754359530`, COMPLETED/SUCCESS. Logs show five workflow YAML files parsed and all static contract assertions passed, ending with `POOL_CONTRACT_VALIDATION=PASS`.
+- PR #3 remains OPEN, unmerged, no independent review yet. Do not merge without independent review.
+- Ruleset 26550182 remains active with exact selector `refs/heads/Основной`; PR required, approvals 0, deletion/non-fast-forward restricted, no bypass actors. `POOL_DISPATCH_ENABLED=false` remains verified.
+- Created issue [#5 — Run agent-browser inside ephemeral GitHub-hosted pool runners](https://github.com/VlDMlNSh/developer-cloud-pool/issues/5). Target is ephemeral `ubuntu-24.04` Actions runner with pinned agent-browser + Chromium, fresh task profile, loopback-only CDP, no secrets by default, URL allowlists, bounded artifacts and provenance. No external browser server, persistent VM or physical machine required. Issue #5 is PLANNED only; no browser install/deployment occurred.
+- Worker, DSH, Resource Probe, model calls, paid fallback and browser jobs remain NOT RUN. Pool and browser runtime NOT QUALIFIED.
+- Detailed report: [2026-11-04-sentinelx-control-and-ephemeral-browser-runtime.md](../reports/2026-11-04-sentinelx-control-and-ephemeral-browser-runtime.md).
+
+Next: obtain independent review for PR #3; after review and integration, qualify Resource Probe and DSH separately. Implement browser-smoke workflow from issue #5 on GitHub-hosted ephemeral runners only. Keep `POOL_DISPATCH_ENABLED=false` until worker lifecycle gates pass.
