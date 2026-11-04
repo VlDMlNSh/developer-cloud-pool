@@ -348,3 +348,17 @@ This section supersedes prior PR #7 acceptance assumptions where they conflict.
 - `POOL_DISPATCH_ENABLED`: NOT VERIFIED in this pass. No secret/variable mutation and no privileged dispatch.
 - Worker, DSH, Resource Probe, browser and model/provider execution: NOT RUN.
 - Next: extract a pure Supervisor task-matrix builder and test schema, size bound, duplicate issue rejection, SHA/profile allowlist and owner-approval requirement. Do not wire Worker invocation until matrix and recovery contracts are reviewed.
+
+
+## 15. Bounded Supervisor Task Matrix Builder — 2026-11-04
+
+- New implementation branch: `feat/supervisor-task-matrix-builder-2026-11-04`, created from PR #7 head `d60d26ae647940e702d646e572c861a8f68f523e`.
+- Draft PR [#8](https://github.com/VlDMlNSh/developer-cloud-pool/pull/8) targets PR #7 branch; head `0a8dba68aa12070b3768d6fb834bedf404ed5d99`. It is OPEN / DRAFT / NOT MERGED.
+- Added pure `scripts/pool-task-matrix.mjs` and nine-test `scripts/pool-task-matrix.test.mjs`.
+- Builder requires open non-PR issue, `pool:ready`, exact 40-character SHA, exact DSH profile, and matching approval envelope from trusted caller. Rejects duplicates, malformed records, mismatched approval, invalid bounds and >20 tasks. Emits deterministic matrix `{ include: [...] }`.
+- Local Node test: 9 passed / 0 failed. Exact GitHub read-back verified module blob `ac0012e8c52e02be6d29e007a5cf8a2aa09113a4`, tests blob `f32fd0914b8c96588d977545ec5eb9e0b7133275`.
+- PR #8 exact-head workflow runs and combined status contexts are empty: CI NOT VERIFIED. Independent review NOT RUN. PR #8 must not be merged/accepted on local tests alone.
+- Component is NOT integrated into Supervisor and does not dispatch. Approval authenticity depends on caller using trusted `pool-approval.mjs`; arbitrary caller-supplied approval objects are not authenticated by this helper.
+- PR #7's standalone Worker `workflow_dispatch` provenance gap remains BLOCKING. No Worker/DSH/Resource Probe/browser/model execution, secret access, paid fallback or variable mutation. `POOL_DISPATCH_ENABLED` NOT VERIFIED in this pass.
+- Report: [2026-11-04 Supervisor Task Matrix Builder](../reports/2026-11-04-supervisor-task-matrix-builder.md).
+- Next bounded pass: implement/test a pure Supervisor planner that obtains approvals via `hasOwnerApproval`, constructs typed matrix candidates, and defines atomic claim/consume ordering and per-matrix terminal recovery. Keep Worker invocation disconnected until provenance/recovery design review and exact-head CI.
