@@ -57,3 +57,5 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Pool Contract Validation run `41977381462` was IN_PROGRESS at checkpoint creation.
 - Current working branch head `74d62dfed7512d853cc8e02af2a7d495ef5892d5`; 16 ahead / 0 behind canonical. Canonical HEAD unchanged `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Next: confirm validation run, add static regression checks for fixture trigger/call shape, retain all runtime gates closed.
+
+- Follow-up: Pool Contract Validation run `41977381462` completed SUCCESS (job `127079333733`); dispatch gate, YAML parse, caller unit tests, and static pool contract validator all passed. Fixture run `41977381184` also SUCCESS.
