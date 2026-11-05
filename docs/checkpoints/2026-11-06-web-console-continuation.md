@@ -29,13 +29,9 @@ The web console is the first product-access milestone. Native iOS and external w
 
 ## Proposed architecture — not accepted
 
-Cloudflare Workers Static Assets + Hono API + Cloudflare Access is the preferred hosting candidate, subject to:
-- explicit owner approval of the provider;
-- confirmation of the actual account's free-plan and Access entitlements;
-- a no-secret preview test proving Access protects both assets and API;
-- independent security review and exact-head CI.
+Cloudflare Workers Static Assets + Hono API remains the hosting candidate. Cloudflare Access is BLOCKED / NOT REQUIRED because Zero Trust onboarding requires payment details that the owner cannot provide. A project workers.dev namespace has now been provisioned through the Cloudflare API, but this does not prove the account's Workers Free subscription entitlement.
 
-The ADR identifies a critical integration nuance: `ctx.access` is not passed through the internal Static Assets router. The API must validate the signed `Cf-Access-Jwt-Assertion` header itself (signature/JWKS, issuer, audience, exp, nbf), or stop and use a reviewed alternative.
+The current authentication candidate is server-side GitHub OAuth with an exact numeric owner GitHub user-ID allowlist and an application-issued opaque session cookie. OAuth App credentials, callback, state/CSRF validation, session expiry/revocation, and negative tests are NOT IMPLEMENTED. Do not deploy until those controls and independent security review are complete.
 
 The initial API is GET-only, reads public GitHub repository data, and does not introduce a parallel task database. GitHub remains source of truth. Logs/artifacts are link-only or unavailable in v1. No task mutations, approvals or dispatch are exposed.
 
@@ -53,7 +49,7 @@ GitHub Pages alone is static and is not the trusted API. GitHub Actions runners 
 - Web architecture: PROPOSED / DOCUMENTED.
 - API contract: DRAFTED / PARSER VALIDATION NOT RUN.
 - Worker/Hono implementation: NOT STARTED.
-- Cloudflare account/Access plan: NOT VERIFIED.
+- Cloudflare workers.dev namespace: PROVISIONED / VERIFIED (`jarvis-developer-cloud-pool.workers.dev`). Workers Free subscription entitlement: NOT VERIFIED (Billing Read unavailable to connected OAuth integration). Cloudflare Access: DISABLED / NOT REQUIRED.
 - Preview deployment: NOT RUN.
 - Independent security review: NOT RUN.
 - Browser/mobile viewport QA: NOT RUN.
@@ -64,7 +60,7 @@ GitHub Pages alone is static and is not the trusted API. GitHub Actions runners 
 
 ## Next bounded step
 
-After independent review of PR #24 and explicit hosting-provider approval, implement a local/no-secret Hono Worker fixture reusing the existing graphite UI. Add OpenAPI validation, Access JWT negative tests, fixed GitHub API allowlist tests, XSS/SSRF fixtures and browser smoke tests. Do not deploy or create credentials until free-plan/Access entitlement and owner approval are confirmed.
+Next: implement a local/no-secret Hono Worker fixture reusing the existing graphite UI. Add OpenAPI validation, GitHub OAuth state/CSRF and session negative tests, fixed GitHub API allowlist tests, XSS/SSRF fixtures and browser smoke tests. Do not deploy until Workers Free entitlement is confirmed, OAuth App credentials are provisioned, and independent security review passes.
 
 ## Source priority
 
@@ -81,13 +77,13 @@ After independent review of PR #24 and explicit hosting-provider approval, imple
 Read-only account inspection via connected Cloudflare integration:
 - Account connection: AUTHENTICATED.
 - Workers scripts: none.
-- workers.dev subdomain: NOT PROVISIONED (API error 10007).
-- Cloudflare Access: NOT ENABLED (API error 9999).
+- workers.dev subdomain: PROVISIONED / VERIFIED as `jarvis-developer-cloud-pool` by PUT followed by GET read-back.
+- Cloudflare Access: NOT ENABLED (API error 9999); confirmed still disabled on recheck.
 - Zones/domains: none in account.
 - Workers Free/Paid plan and Access billing entitlement: NOT VERIFIED (`standard` account type is not a plan indicator).
 - No resource or account configuration was created/changed; no deployment attempted.
 
-Deployment status: BLOCKED / NOT RUN. Do not publish an unauthenticated console to work around the missing Access setup. Owner prerequisites are listed in the ADR. After owner actions, repeat read-only checks, then proceed to a no-secret preview and security tests.
+Deployment status: BLOCKED / NOT RUN. No Worker script exists. Do not publish an unauthenticated console. See the autonomous provisioning report for current evidence.
 
 
 ## Owner payment constraint update — 2026-11-06
@@ -110,3 +106,10 @@ Owner requested autonomous verification/actions. Cloudflare connector authentica
 Provisioned the project-specific workers.dev namespace using Cloudflare's documented Workers Subdomain API: `PUT /accounts/{account_id}/workers/subdomain` with `jarvis-developer-cloud-pool` returned success; immediate GET read-back returned the exact same subdomain. Hostname namespace: `jarvis-developer-cloud-pool.workers.dev`. This is a namespace only: no Worker script, application, Access policy, secret, DNS zone or paid resource was created. No application is deployed or served.
 
 Current: workers.dev namespace PROVISIONED / VERIFIED; Workers Free entitlement NOT VERIFIED; Access DISABLED; app-level GitHub OAuth NOT IMPLEMENTED; deployment NOT RUN. Do not deploy a public unauthenticated UI. Full recheck and GitHub CI/governance evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md).
+
+
+## 2026-11-06 correction — authentication and namespace evidence
+
+The previous Access-based OpenAPI security scheme is superseded. Cloudflare Access remains disabled and is not required for this no-card path. The OpenAPI contract now describes the intended `__Host-jarvis_session` application session cookie, issued only after server-side GitHub OAuth and exact owner numeric-ID authorization. This is a contract target, not implemented authentication. No OAuth app or secret exists.
+
+The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read back successfully. Workers scripts remain empty. Workers Free subscription entitlement remains NOT VERIFIED because the connected Cloudflare OAuth integration lacks Billing Read. See [autonomous provisioning report](../reports/2026-11-06-autonomous-web-console-recheck.md).
