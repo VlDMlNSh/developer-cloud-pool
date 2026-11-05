@@ -188,3 +188,16 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Audit report final blob: `1e52fee3cf2ca46fee5096122bc945d6921b5033`, report update commit `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`.
 - PR #12 head immediately before this final checkpoint update: `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`; this update is documentation-only and excluded from the existing CI path filters. No exact-head CI claim is made for it.
 - Canonical base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. PR #12 OPEN / DRAFT / NOT MERGED, mergeable=false at latest API read. PR #7 OPEN / DRAFT / NOT MERGED; base remains old `692025e4a039aaf94c6683bb95da38b4f324fce8`, exact-head static CI success but independent review NOT RUN.
+
+
+## Current live verification — 2026-11-05
+- PR #12 current head: `57d463f321466f838b4874b78add059280a30022`; base canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`; 49 ahead / 0 behind; OPEN / DRAFT.
+- Pool Contract Validation run `42027455932`, job `127245170356`: SUCCESS; 8/8 caller tests, YAML parse, dispatch-disabled assertion, static validator pass.
+- Reusable context fixture run `42027455840`, job `127245136149`: SUCCESS. Caller and called workflow SHA both `69d43319e0ba652f211242fd806957b18e74c52a`; ref was `refs/pull/12/merge`; called repo/path fields populated. Fixture only; no production authorization.
+- Canonical Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`: still `workflow_dispatch`, trusts issue label/body envelope, no caller provenance verification.
+- Canonical Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`: still uses REST workflow dispatch.
+- PR #7 owner-authored COMMENTED finding documents this direct-dispatch bypass; not an independent review.
+- PR #12 caller helper remains unwired. Reviews and review threads empty. Independent security review NOT RUN.
+- Governance settings were not freshly read; NOT VERIFIED. Worker/DSH/Resource Probe/browser/model/Gemini/Claude/privileged dispatch NOT RUN. Paid fallback NOT USED.
+- Classification: unit tests/static checks and fixture VERIFIED for narrow scope; production authorization BLOCKED / NOT IMPLEMENTED.
+- Next: solve owner approval provenance + replay-safe single-use consumption, then convert Worker to workflow_call only and Supervisor to static local invocation in one reviewed change. Keep dispatch disabled.
