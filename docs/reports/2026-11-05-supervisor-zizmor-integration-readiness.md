@@ -18,9 +18,11 @@
 - PR #15 exact head `c57f2ab3f2b91bf6b3e413640f65ec518008b75e`:
   - Pool Contract Validation run [42038004176](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42038004176): SUCCESS, job `127281084983`.
   - This run did not execute zizmor; exact-head zizmor remains NOT VERIFIED.
-- PR #14 current head `5a84f037a612dbb065ab9832bd3f6471cc5a551b`:
-  - Associated workflow run lookup returned only older run [42037723023](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42037723023), which FAILED on the earlier dangerous `workflow_run` finding.
-  - No exact-current-head CI or zizmor result was returned. Current head status: NOT VERIFIED.
+- PR #14 current head `5a84f037a612dbb065ab9832bd3f6471cc5a551b` had no associated exact-head run at the time of the initial lookup.
+- PR #17 integration audit head `7bd7234a1840847b602d1527475c35bfda3de94f`:
+  - Exact-head Pool Contract Validation run [42042364242](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42042364242): FAILED, job `127296204570`.
+  - The `Audit GitHub Actions workflows with zizmor` step failed; subsequent dispatch-disabled assertion, YAML parsing and project contract validation were skipped.
+  - Detailed job logs were not available through the connector, so the exact finding set is NOT VERIFIED. The integration lane still contains the pre-remediation Supervisor workflow, including `workflow_run`; the failure is consistent with the already recorded finding, but the diagnostic output was not independently retrieved.
 - Independent PR reviews and review threads for PR #12 and PR #14 were empty. Independent security review: NOT RUN.
 
 ## Confirmed integration blockers
@@ -57,7 +59,7 @@ PR #16 runs [42038801999](https://github.com/VlDMlNSh/developer-cloud-pool/actio
 
 - Audit and evidence review: VERIFIED for the sources and runs listed above.
 - Production integration: NOT IMPLEMENTED.
-- Zizmor on integrated exact head: NOT RUN.
+- Zizmor on current audit-lane head: EXECUTED / FAILED (run `42042364242`); detailed finding set NOT VERIFIED.
 - Independent review: NOT RUN.
 - Qualification / acceptance: NOT QUALIFIED / NOT ACCEPTED.
 - Dispatch: remains blocked; no dispatch setting was read or changed in this pass.
