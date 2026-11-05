@@ -36,3 +36,13 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - PR #12 was created at head `215bd04490d19ec1d6392a8defa9bbd9e1e7bafc`; branch advanced afterward. Current exact PR head SHA not independently read in this pass. CI NOT VERIFIED.
 - Updated report blob: `518bc11fb8f21b674f740ab66413beed5b94689d`.
 - PR #12 remains DRAFT; independent review NOT RUN; authorization BLOCKED.
+
+
+## Live verification update — 2026-11-05
+- PR #12 current head: `4d656a4337246f24cb3909a77e4198434f54076a`; base canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`; compare 12 ahead / 0 behind.
+- PR validation run `41973768962` SUCCESS; job `127067796013`. Run executed on PR merge ref `a41434d7b265e85e1347c483f427f83d36a0c3f0`, so this is merge-result CI evidence, not a direct head checkout. Logs: 8/8 Node tests passed; YAML parse and pool static validator passed; `POOL_DISPATCH_ENABLED=false` observed in that run.
+- Read-back blob SHAs: caller `88d79d74691431ead14f29426d214833c0086183`; tests `251a4772d85a5dff8cdcc8ca589509ffa48eac98`; workflow `5991c0cf839d510ef6e6540895ddbcd9e306c068`.
+- PR #12 remains OPEN / DRAFT / NOT ACCEPTED; reviews empty. Independent review NOT RUN.
+- Canonical Worker/Supervisor still use direct `workflow_dispatch` + REST dispatch; caller validator not wired. Authorization BLOCKED.
+- Canonical HEAD remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. Gemini/Claude/Worker/DSH/Resource Probe/browser/model execution NOT RUN; paid fallback NOT USED; runtime NOT QUALIFIED.
+- Next: add a non-privileged `workflow_call` fixture to observe actual caller/job context values before wiring the validator. Keep dispatch closed.
