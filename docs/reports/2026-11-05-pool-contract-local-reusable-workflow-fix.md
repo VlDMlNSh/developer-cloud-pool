@@ -52,3 +52,15 @@
 - Working branch: https://github.com/VlDMlNSh/developer-cloud-pool/tree/feat/reusable-worker-call-boundary-2026-11-05
 - Governance issue #1: https://github.com/VlDMlNSh/developer-cloud-pool/issues/1
 - Browser runtime issue #5: https://github.com/VlDMlNSh/developer-cloud-pool/issues/5
+
+
+## Follow-up — corrected validator CI result
+- Corrected PR head `8387dccf556f03194aabcf032c9579c7b9a1bf51`, base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Pool Contract Validation run [42023631278](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42023631278): COMPLETED / SUCCESS; job `127232286449`.
+- The run's PR association records exact head SHA `8387dccf556f03194aabcf032c9579c7b9a1bf51`; workflow is `pull_request` and uses the GitHub PR merge result checkout semantics. Classify as **PR merge-result CI PASS associated with exact PR head**, not a direct branch-only checkout.
+- Job logs: `POOL_DISPATCH_ENABLED=false`; all seven workflow YAML files parsed; caller unit tests 8 passed / 0 failed; static validator emitted `POOL_CONTRACT_VALIDATION=PASS`; external Actions SHA pin assertion passed.
+- Reusable Worker Context Fixture Caller run [42023631355](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42023631355): COMPLETED / SUCCESS; job `127232286911`.
+- This qualifies the static validator correction and fixture only. It does not qualify the production Worker/Supervisor authorization boundary.
+- PR #12 reviews remain empty; independent security review NOT RUN; PR remains DRAFT.
+- Ruleset `26550182` detail re-read: ACTIVE, selector exactly `refs/heads/Основной`, PR required, no bypass actors, current-user bypass `never`; required approval count is 0 and CODEOWNERS review is disabled. This protects the default branch from direct pushes but does not provide an independent security-review gate.
+- Branch compare at this read: 26 commits ahead / 0 behind; merge base canonical SHA unchanged. Current branch HEAD at verification: `8387dccf556f03194aabcf032c9579c7b9a1bf51`.
