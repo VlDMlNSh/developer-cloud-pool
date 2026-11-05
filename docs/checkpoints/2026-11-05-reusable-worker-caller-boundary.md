@@ -84,3 +84,12 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Working branch HEAD at verification: `8387dccf556f03194aabcf032c9579c7b9a1bf51`; compare 26 ahead / 0 behind canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Report: [validator correction and CI evidence](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
 - Next: independent review and a separately scoped implementation package to convert Worker to workflow_call and remove REST dispatch. Do not run production Worker/DSH/Resource Probe or enable dispatch.
+
+
+## Final checkpoint-head CI — 2026-11-05
+- Pool Contract Validation `42023792304`, job `127232831663`: SUCCESS for PR head `317a6a81294feb334f7a63d61da6ec2789914a85`.
+- Fixture `42023792334`, job `127232832106`: SUCCESS for the same PR head.
+- Contract job logs: dispatch variable observed false; 7 YAML files parsed; 8/8 Node tests passed; external action SHA check passed; `POOL_CONTRACT_VALIDATION=PASS`.
+- Exact PR head is covered by PR merge-result CI; no direct non-PR branch run was performed.
+- PR #12 remains DRAFT; independent security review NOT RUN; production authorization BLOCKED.
+- Detailed evidence: [2026-11-05 validator correction report](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
