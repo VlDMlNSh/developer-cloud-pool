@@ -42,3 +42,16 @@ npm resolution has not completed in repeated GitHub-hosted runs and the job log 
 ## Related security PRs
 - PR #14 zizmor audit: OPEN / DRAFT; latest recorded run failed due remaining dangerous-trigger and npm lockfile findings.
 - PR #15 removes privileged `workflow_run`: OPEN / DRAFT; tested code-head CI succeeded, but independent review is absent.
+
+
+## Upstream component research — 2026-11-05
+- npm's official package page confirms `@deepseek-ai/dsh@0.2.1-rc.5`, repository `deepseek-ai/deepseek-harness`, MIT license, and 86 declared dependencies: https://www.npmjs.com/package/%40deepseek-ai/dsh?activeTab=dependencies
+- The official upstream repository metadata identifies `master` as default branch. Its root `package.json` declares `pnpm@11.28.5`, Node.js >=24.9.0, and a multi-workspace layout; retrieved root manifest blob: `c4f130943ddfee2d8d8040c6dd679f5b0e12312a`.
+- Upstream `pnpm-workspace.yaml` exists (blob `59b31eb46b90e35251cbf3c26b20556892c4aa52`) and defines pnpm overrides/build allowlist. The repository's `pnpm-lock.yaml` endpoint returned empty content through the connector; this is NOT evidence that the lockfile is empty or usable.
+- Attempting to retrieve the source manifest by guessed npm-version tag `0.2.1-rc.5` returned "No commit found"; do not infer that the published package corresponds to that Git tag.
+- Upstream root pnpm lockfile is not a drop-in npm lockfile for this consumer. Converting lock formats or copying a partial lock would not establish reproducible npm resolution.
+- npm metadata and package page do not expose a complete verified transitive npm lock graph in the retrieved evidence.
+- Official npm package documentation currently shows 86 dependencies and a developer-preview package. Do not update the pinned DSH version merely because newer prerelease tags exist.
+
+## Decision after upstream research
+No authoritative npm lockfile suitable for direct reuse was found. Continue to treat npm resolution in GitHub Actions as blocked. Next investigate a supported npm registry/cache path and the workflow's actual network/resolution behavior; do not make another unchanged retry, fabricate integrity fields, or switch package managers in production workflows without a separately reviewed design.
