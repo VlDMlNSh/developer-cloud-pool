@@ -1,45 +1,53 @@
-# 2026-11-05 — reusable Worker caller-boundary specification
+# 2026-11-05 — reusable Worker caller-boundary implementation pass
 
-## Scope
-One bounded architecture pass: reconcile live repository/PR state, inspect the default Worker and Supervisor, reject unsafe approval shortcuts, create a fresh implementation branch from the last verified canonical HEAD, and write a testable caller-trust contract. No runtime execution.
+## Scope and immutable target
+- Canonical branch: `Основной`, HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Working branch: `feat/reusable-worker-call-boundary-2026-11-05`.
+- Working branch compare: 4 commits ahead, 0 behind; merge base is exactly canonical HEAD.
+- Latest implementation commit: `056f2f43d007a29b3893c4a26e6658ba7cb394ca`.
+- This branch is NOT canonical and has no acceptance/merge status.
 
-## Immutable target and branch
-- Canonical base: `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- New branch: `feat/reusable-worker-call-boundary-2026-11-05`.
-- First documentation commit: `1555b17702f97327d264386289ae3fa75c4f5eda`.
-- Compare against canonical base: `ahead 1 / behind 0`; merge base exactly equals canonical base.
-- Contract blob SHA: `138953c1c0b09098b009f4da5f4da12df67c65a2`.
-- Contract: [reusable Worker caller contract](../design/reusable-worker-caller-contract-2026-11-05.md).
+## Live source findings
+- Default Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still exposes `workflow_dispatch` and validates public issue state/labels/body only.
+- Default Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still starts the script-based Supervisor; Supervisor script blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` still calls the REST workflow-dispatch endpoint.
+- Default contract validator blob `cfffb77905406d54505c711504a72ae1fafd3f06` does not enforce reusable caller identity.
+- The Gemini batch controller file is absent from the default branch (file lookup returned 404); Gemini NOT RUN.
+- Current governance variable/ruleset remain NOT VERIFIED. Historical Issue #1 evidence is not current proof.
 
-## Live implementation findings
-- Default Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`: exposes `workflow_dispatch`; validation trusts open issue state, public `pool:claimed` label, target SHA and profile. No protected Supervisor caller proof.
-- Default Supervisor blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f`: performs REST workflow dispatch. It must be refactored together with Worker trigger semantics.
-- Default contract validator blob `cfffb77905406d54505c711504a72ae1fafd3f06`: currently does not assert Worker caller identity.
-- Existing PR #8 matrix builder source SHA `ac0012e8c52e02be6d29e007a5cf8a2aa09113a4` and tests SHA `f32fd0914b8c96588d977545ec5eb9e0b7133275`. It treats a caller-supplied approval-shaped object as verified. This is not proof of authority and must not be copied as an authorization gate.
-- Existing PR #7 approval helper blob `9442c413c38dc28c67455362e254ff703bcfedd9` uses a public bot-authored comment marker. Per the owner's prior architecture decision, public comments/labels are not capabilities. Do not restore this approach.
-- The repository issue #1 contains older governance and `POOL_DISPATCH_ENABLED=false` evidence from 2026-11-04. Current ruleset and variable state were not independently verified in this pass; treat current governance as NOT VERIFIED. Branch protection endpoint returned 403 to the connected integration.
+## Official GitHub semantics checked
+- The current GitHub Actions Contexts reference documents `github.workflow_ref` and `github.workflow_sha` as caller workflow properties, and `job.workflow_ref`, `job.workflow_sha`, `job.workflow_repository`, and `job.workflow_file_path` as the workflow defining the current job. In a reusable workflow these identify the called workflow. Source: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts
+- GitHub's reusable workflow reference confirms the call is a job-level static `uses`, not a step/API dispatch; the called workflow's `github` context remains associated with the caller. Source: https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations
+- The four `job.workflow_*` properties were announced for reusable workflows in September 2026. Source: https://github.blog/changelog/2026-09-03-github-actions-early-september-2026-updates/
+- The implementation therefore checks caller identity via `github.workflow_ref`/repository and reusable Worker identity via `job.workflow_repository`/file path, and requires caller and reusable workflow SHAs to match for a same-repository local reusable call. This assumption still requires independent security review and a controlled non-privileged fixture workflow before qualification.
 
-## PRs
-- PR #7 OPEN/DRAFT, head `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`, base `692025e4a039aaf94c6683bb95da38b4f324fce8`, 40 ahead / 1 behind canonical base; exact-head CI `41921293708` SUCCESS; independent review NOT RUN.
-- PR #8 OPEN/DRAFT, head `0a8dba68aa12070b3768d6fb834bedf404ed5d99`, stale base `d60d26a...`, 19 ahead / 1 behind canonical base; exact-head CI NOT VERIFIED; independent review NOT RUN.
-- PR #11 OPEN/DRAFT, head `7b3bd8d8840e122f03326299444a921e3ba5f425`, exact-head CI `41918209585` SUCCESS; independent review NOT RUN.
-- No PR merged.
+## Implementation performed
+Added `scripts/pool-worker-caller.mjs` on the working branch only.
+- Commit: `056f2f43d007a29b3893c4a26e6658ba7cb394ca`.
+- Read-back blob SHA: `88d79d74691431ead14f29426d214833c0086183`.
+- Validator fails closed on missing context, wrong caller repository/ref, wrong reusable workflow repository/path, malformed SHAs, or differing caller/reusable workflow SHAs.
+- It deliberately does not accept actor identity, labels, comments, or caller-supplied approval fields as authority.
+- The helper is not yet wired into the Worker workflow or the contract-validation workflow.
 
-## Work completed
-- Created a clean branch from the immutable canonical base.
-- Authored a contract that separates untrusted task data from trusted caller identity, forbids actor/comment/label/caller-object shortcuts, specifies static reusable `workflow_call`, required caller context, bounded deterministic matrix, replay-safe lifecycle, negative/positive tests and acceptance gates.
-- Re-read the new file and verified its blob SHA and branch ancestry.
-
-## Not done / status
-- No implementation workflow or runtime code changed.
-- Worker caller authorization: BLOCKED / NOT IMPLEMENTED.
-- Contract: DESIGN SPECIFIED, NOT IMPLEMENTED, NOT QUALIFIED.
-- Gemini controller absent from default workflow tree; Gemini NOT RUN.
-- No Worker, DSH, Resource Probe, browser, model/provider calls, or privileged dispatch.
-- No secrets or variables accessed or changed; current `POOL_DISPATCH_ENABLED` NOT VERIFIED.
-- No paid service or fallback used.
-- Exact-head CI for this docs-only branch: NOT RUN (no implementation workflow path changed).
+## Verification and status
+- GitHub read-back of the helper and blob SHA: VERIFIED.
+- Branch ancestry: VERIFIED (4 ahead / 0 behind canonical).
+- Tests: NOT RUN. Creation of the test file was blocked by the tool security layer; no test file was committed.
+- Exact-head CI for `056f2f43d007a29b3893c4a26e6658ba7cb394ca`: NOT VERIFIED; associated PR workflow runs empty and combined status has no statuses.
 - Independent security review: NOT RUN.
+- No PR created or merged; no canonical files changed.
+- No secrets/variables read or changed; Worker, DSH, Resource Probe, browser, model/provider calls and privileged dispatch NOT RUN.
+- Gemini NOT RUN (controller absent); Claude Code NOT RUN (no verified third host/free route in this pass); paid fallback NOT USED.
+- Runtime NOT QUALIFIED; no dispatch enablement.
+
+## Open PR snapshot
+- PR #7 remains open/draft; latest review submission is a COMMENTED finding authored by the owner, not independent review. It correctly identifies direct Worker dispatch as a bypass.
+- PR #8 remains open/draft; review submissions empty. Its approval-shaped input is not an authenticated capability.
+- PR #10 and #11 remain open/draft according to the repository PR search. PR #11's historical run `41918209585` was success for its then-current head; it is not evidence for this working branch.
+- PR #11 review submissions empty. No merge performed.
 
 ## Next bounded step
-Implement caller-context authorization as a pure module plus workflow static contract tests, first verifying the current GitHub reusable-workflow context semantics from official documentation. Then refactor Worker to `workflow_call` and Supervisor to a static reusable job. Keep dispatch disabled; require exact-head CI and independent review before runtime.
+1. Add and run unit tests for `pool-worker-caller.mjs` plus static YAML contract tests.
+2. Wire fail-closed caller validation into Worker and convert Worker to `workflow_call`; remove `workflow_dispatch`.
+3. Refactor Supervisor into a planner/matrix output job plus a statically declared reusable Worker job; remove REST dispatch.
+4. Preserve approval consumption/replay safety and bounded 0..20 matrix behavior; do not treat a public marker or a planner input as authority.
+5. Keep dispatch disabled; require exact-head CI, independent review, current governance evidence, and separately authorized read-only probe before any runtime.
