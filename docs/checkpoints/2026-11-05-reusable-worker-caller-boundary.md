@@ -122,3 +122,20 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - README corrected: event-driven wake-up is scaffold only, not qualified; latest reports linked; no instruction to enable dispatch merely after branch protection.
 - Production workflows unchanged. Worker/DSH/Resource Probe/browser/Gemini/Claude/provider calls/privileged dispatch NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
 - Next: design and test a GitHub Free-compatible owner approval provenance and single-use consumption mechanism, including duplicate events, concurrency and supervisor crash/replay. Only then implement Worker `workflow_call` only + static Supervisor invocation as one reviewed change.
+
+
+## Mature-project benchmark and live boundary audit — 2026-11-05
+- Audit target: PR #12 exact head `ea84b66ded2bb5044202d86143c878fa4bc565d6`; canonical `Основной` remains `64d2636d4500127e635c214ccfb722c6b3fcda80`; compare 37 ahead / 0 behind.
+- PR #12 OPEN / DRAFT / NOT MERGED. Independent review NOT RUN.
+- Mature-projects inspected directly on GitHub:
+  - [actions/runner](https://github.com/actions/runner): official runner execution agent, not a scheduler/controller; README says contributions are not currently accepted. Reference only.
+  - [actions/actions-runner-controller](https://github.com/actions/actions-runner-controller): Kubernetes operator and runner scale sets; valuable lifecycle reference but requires Kubernetes/self-hosted runner infrastructure. Not adopted under the current GitHub-Free/no-extra-infrastructure constraint.
+  - [runs-on/runs-on](https://github.com/runs-on/runs-on): per-job isolated EC2 runners and scale-to-zero; AWS compute/storage and commercial licensing make it ineligible for the current free-only constraint. Reference only.
+- Read current working branch Supervisor, Worker and Supervisor workflow. Worker still uses `workflow_dispatch`; Supervisor still calls REST workflow dispatch with `actions: write`; issue labels + GET/PATCH are not atomic, immutable, or replay-safe approval consumption. Existing caller validator is not wired into production.
+- Exact target SHA workflow evidence:
+  - Pool Contract Validation run `42024861836`, job `127236410587`: COMPLETED / SUCCESS (dispatch-disabled assertion, YAML parse, caller tests, static validator).
+  - Reusable Worker Context Fixture Caller run `42024861862`, job `127236411157`: COMPLETED / SUCCESS (non-secret fixture only).
+  - Combined commit status API returned empty statuses; the two workflow runs above are the positive CI evidence.
+- PR review submissions empty; independent security review NOT RUN. Production Worker/DSH/Resource Probe/browser/Gemini/Claude/provider calls/privileged dispatch NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
+- Report: [Mature project benchmark and pool boundary audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), commit `693434ad233971a82aa5035b91a095ae522a76f3`.
+- Next bounded step: prove a GitHub-Free-compatible owner approval provenance and single-use consumption primitive under duplicate delivery, concurrency, supervisor crash/replay and ref-update races. Keep dispatch disabled; do not migrate production Worker to `workflow_call` until this is proven.
