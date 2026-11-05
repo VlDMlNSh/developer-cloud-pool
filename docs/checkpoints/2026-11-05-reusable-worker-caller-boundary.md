@@ -46,3 +46,14 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Canonical Worker/Supervisor still use direct `workflow_dispatch` + REST dispatch; caller validator not wired. Authorization BLOCKED.
 - Canonical HEAD remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. Gemini/Claude/Worker/DSH/Resource Probe/browser/model execution NOT RUN; paid fallback NOT USED; runtime NOT QUALIFIED.
 - Next: add a non-privileged `workflow_call` fixture to observe actual caller/job context values before wiring the validator. Keep dispatch closed.
+
+
+## Reusable-workflow context fixture — live evidence
+- Added read-only fixture caller and reusable workflow; blobs:
+  - caller: `ac35c24a26bef2a9e5a894a274ec6f1f1b13ca7f`
+  - called workflow: `d6e7815db794de293e143aba48eaa36e5ab7ecd8`
+- Fixture run `41977381184`, job `127079303644`: SUCCESS. Log proves `github.workflow_ref` identifies caller; `job.workflow_ref`, `job.workflow_repository`, and `job.workflow_file_path` identify called workflow. Both SHA values were `05471e6e655e9008804136e0842c9285accb49e2` for the same local reusable invocation. Caller ref was `refs/pull/12/merge`, not protected default branch.
+- This supports context-field and local-call same-SHA assumptions for the fixture only; it does not qualify production authorization or default-branch governance.
+- Pool Contract Validation run `41977381462` was IN_PROGRESS at checkpoint creation.
+- Current working branch head `74d62dfed7512d853cc8e02af2a7d495ef5892d5`; 16 ahead / 0 behind canonical. Canonical HEAD unchanged `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Next: confirm validation run, add static regression checks for fixture trigger/call shape, retain all runtime gates closed.
