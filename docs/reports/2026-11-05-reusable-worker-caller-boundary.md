@@ -60,3 +60,10 @@ Added `scripts/pool-worker-caller.mjs` on the working branch only.
 - Branch compare against canonical: 8 commits ahead / 0 behind; merge base exactly canonical SHA. No canonical changes.
 - The CI workflow is pull_request-triggered for changes under `.github/workflows/**` or `scripts/**`; it is a read-only validation job. No pool Supervisor/Worker runtime was dispatched.
 - The test suite has been committed but has not yet executed in an observed runner. Do not report test pass until the exact PR head run is visible and completed successfully.
+
+
+## Final state correction — current branch head
+- The report's earlier 4-ahead / 8-ahead figures are historical snapshots. Latest live compare after this report/checkpoint update: 10 commits ahead, 0 behind canonical; merge base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Latest branch HEAD at checkpoint read-back: `6b409e0b09d2cef1b507d50662236d6f80b32340`.
+- Latest report blob at read-back: `af9329089528e46b35248f9ca540bdf44aaa1361`; latest checkpoint blob: `b61258165101ba67bd72adb86f16b074e360fc8c`.
+- PR #12 was created as DRAFT at head `215bd04490d19ec1d6392a8defa9bbd9e1e7bafc`. The branch has advanced since PR creation; do not treat that recorded SHA as the current PR head. A live exact-head CI run has not been observed; CI remains NOT VERIFIED.
