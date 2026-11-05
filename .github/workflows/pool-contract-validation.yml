@@ -48,14 +48,25 @@ jobs:
           corepack prepare pnpm@11.28.5 --activate
           test "$(pnpm --version)" = "11.28.5"
 
-      - name: Generate temporary DSH pnpm lockfile without lifecycle scripts
+      - name: Assert peer dependency policy and generate temporary lockfile
         shell: bash
         run: |
           set -euo pipefail
           cd dsh-runtime
+          test "$(pnpm config get autoInstallPeers)" = "true"
           pnpm install --lockfile-only --ignore-scripts --reporter=append-only
-          ruby -e 'require "yaml"; p=YAML.load_file("pnpm-lock.yaml"); abort "unexpected pnpm lockfile version" unless p["lockfileVersion"].to_s == "9.0"; d=p.fetch("importers").fetch(".").fetch("dependencies").fetch("@deepseek-ai/dsh"); abort "unexpected DSH specifier" unless d["specifier"] == "0.2.1-rc.5"; packages=p.fetch("packages"); integrity=packages.values.count { |v| v.is_a?(Hash) && v.dig("resolution", "integrity") }; abort "no package integrity records" if integrity == 0; puts "PNPM_LOCK_VALIDATED packages=#{packages.size} integrity_records=#{integrity}"'
+          ruby -e 'require "yaml"; p=YAML.load_file("pnpm-lock.yaml"); abort "unexpected pnpm lockfile version" unless p["lockfileVersion"].to_s == "9.0"; d=p.fetch("importers").fetch(".").fetch("dependencies").fetch("@deepseek-ai/dsh"); abort "unexpected DSH specifier" unless d["specifier"] == "0.2.1-rc.5"; packages=p.fetch("packages"); integrity=packages.values.count { |v| v.is_a?(Hash) && v.dig("resolution", "integrity") }; abort "no package integrity records" if integrity == 0; abort "autoInstallPeers not recorded" unless p.fetch("settings").fetch("autoInstallPeers") == true; puts "PNPM_LOCK_VALIDATED packages=#{packages.size} integrity_records=#{integrity}"'
           sha256sum pnpm-lock.yaml
+
+      - name: Verify frozen dependency installation without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dsh-runtime
+          pnpm install --frozen-lockfile --ignore-scripts --prod --reporter=append-only
+          installed_version="$(node -p "require('./node_modules/@deepseek-ai/dsh/package.json').version")"
+          test "$installed_version" = "0.2.1-rc.5"
+          echo "Frozen DSH package install verified: $installed_version"
 
       - name: Upload generated lockfile for review
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

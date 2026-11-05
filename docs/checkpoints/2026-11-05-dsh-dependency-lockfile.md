@@ -4,46 +4,54 @@
 - Repository: `VlDMlNSh/developer-cloud-pool`.
 - Canonical base: `Основной` / `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - PR #16 branch: `security/pin-dsh-npm-dependencies-2026-11-05`.
-- Previous branch head: `2bfdfabed8d27615d6ae3ca6a1146ae220b471ea`.
-- Scope: replace the temporary npm lockfile resolver with a bounded, pinned pnpm lockfile-generation probe. No production DSH workflow changed.
+- Previous implementation head: `22a86eb99a93456808fc4ba47f76bf6455ebcc04`.
+- Current direct dependency: `@deepseek-ai/dsh@0.2.1-rc.5`.
 
-## Evidence and decision
-- Current DSH package: `@deepseek-ai/dsh@0.2.1-rc.5`, exact direct version in `dsh-runtime/package.json`.
-- npm CLI issue #9934 reports a reproducible Arborist peer-dependency resolution livelock for `@deepseek-ai/dsh` (reported on 0.1.1-rc.2, npm 11.16.0/12.0.2): https://github.com/npm/cli/issues/9934
-- DSH discussion #4872 reports npm resolver OOM and a working pnpm route with auto-install-peers for an earlier DSH release: https://github.com/deepseek-ai/deepseek-harness/discussions/4872
-- These reports explain the observed pattern but do NOT prove that the current 0.2.1-rc.5 package has the identical defect.
-- Upstream repository root manifest pins pnpm 11.28.5; upstream pnpm lock settings enable `autoInstallPeers: true`. The upstream root lockfile is a monorepo lockfile and is NOT copied into this project.
-- Upstream root manifest blob: `c4f130943ddfee2d8d8040c6dd679f5b0e12312a`.
-- Upstream workspace configuration blob: `59b31eb46b90e35251cbf3c26b20556892c4aa52`.
+## First pnpm probe — verified
+- Exact-head CI run [42096330542](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42096330542): COMPLETED / SUCCESS.
+- Job: `127487220599`; all workflow steps succeeded.
+- Corepack activated pnpm `11.28.5` on Node `24.9.0`.
+- Lockfile artifact ID: `13446658533`; artifact name `dsh-runtime-pnpm-lockfile`.
+- Artifact ZIP SHA-256: `75b3abd3ea1bdbefb2f3d2984d98bcef4772929af62a188089d58f0cdd35710e`.
+- Extracted lockfile SHA-256: `9fb548f18191bcf3cb9786a3d3c6b597a88cc56a09ddff4f66b7b3c893d5a83c`.
+- Independent local inspection of the downloaded artifact: 630 package records, 630 snapshots and 630 package integrity records; importer pins `0.2.1-rc.5`.
+- Lockfile records `autoInstallPeers: true` in its settings.
+- The first run emitted a warning because this branch initially nested `autoInstallPeers` under an unsupported `settings:` key in `pnpm-workspace.yaml`. That file-level configuration was ignored, even though pnpm's default and generated lockfile setting were true.
 
-## Change in this checkpoint
-- Validation workflow now activates exact pnpm 11.28.5 through Corepack on Node 24.9.0.
-- Adds `dsh-runtime/pnpm-workspace.yaml` with upstream-compatible `autoInstallPeers: true`.
-- Generates a temporary lockfile only; lifecycle scripts remain disabled.
-- Validates lockfile version, exact DSH specifier and presence of package integrity records.
-- Uploads the generated lockfile as a one-day artifact for review.
-- Validation job timeout raised to 12 minutes to bound the resolver probe.
-- Worker and standalone DSH evaluation workflows are unchanged and still NOT QUALIFIED.
+## Corrective implementation in current pass
+- Move `autoInstallPeers: true` to the top level of `dsh-runtime/pnpm-workspace.yaml`, matching pnpm 11 project configuration.
+- Assert `pnpm config get autoInstallPeers` is exactly `true` before resolution.
+- Validate lockfile's `settings.autoInstallPeers` field.
+- Add a frozen install using `pnpm install --frozen-lockfile --ignore-scripts --prod`; verify installed DSH package version without executing DSH.
+- No production Worker or evaluation workflow changes until the corrected exact-head CI and frozen install pass.
 
-## Verification
-- New commit and blob SHAs: pending commit creation/readback.
-- Exact-head CI: NOT VERIFIED until the new run is terminal and logs/artifact are inspected.
-- Lockfile generation: NOT VERIFIED until artifact is produced and reviewed.
+## Upstream investigation
+- npm CLI issue #9934 reports an Arborist peer-dependency resolution livelock for an earlier DSH release: https://github.com/npm/cli/issues/9934
+- DSH discussion #4872 reports npm resolver OOM and a pnpm route with peer auto-install for an earlier release: https://github.com/deepseek-ai/deepseek-harness/discussions/4872
+- Upstream root manifest pins pnpm 11.28.5; upstream monorepo lockfile is not reused.
+- Current DSH `0.2.1-rc.5` has not been proven to share the exact npm defect.
+
+## Current verification gates
+- First pnpm lock generation: VERIFIED.
+- Artifact structure and integrity count: VERIFIED.
+- Initial file-level peer setting: FAILED (warning, ignored); corrected in current commit.
+- Corrected exact-head CI and frozen install: NOT VERIFIED until terminal run.
 - Independent security review: NOT RUN.
-- DSH runtime, Worker, Resource Probe, browser, model/provider calls: NOT RUN.
-- `POOL_DISPATCH_ENABLED`: unchanged; dispatch remains fail-closed.
+- DSH runtime, Worker, Resource Probe, browser and model/provider calls: NOT RUN.
+- `POOL_DISPATCH_ENABLED`: unchanged, false; dispatch remains fail-closed.
 
 ## Acceptance gates
-1. Exact-head CI reaches terminal SUCCESS.
-2. Generated `pnpm-lock.yaml` artifact is retrieved and inspected; all package versions and integrity records are present.
-3. A separate review confirms the package graph and peer dependencies resolve correctly.
-4. Only then commit the actual lockfile, remove the temporary generator, and update both DSH runtime workflows to install from the shared frozen lockfile.
-5. Run exact-head CI, zizmor and independent security review.
-6. Do not merge or enable dispatch before all gates pass.
+1. Corrected exact-head CI succeeds without an ignored-config warning.
+2. Frozen install succeeds from the generated lockfile with scripts disabled.
+3. Retrieve and inspect the new artifact and compare lockfile SHA/integrity.
+4. Review peer graph and package lifecycle scripts.
+5. Only then update both DSH runtime workflows to consume the shared frozen lockfile, with an explicit reviewed build-script allowlist if needed.
+6. Run exact-head CI, zizmor and independent security review before merge.
+7. Keep dispatch disabled until runtime authorization and governance gates are accepted.
 
-## Explicit prohibitions
-- Do not copy the upstream monorepo lockfile into this consumer project.
+## Prohibitions
+- Do not copy or convert the upstream monorepo lockfile.
 - Do not synthesize versions or integrity hashes.
-- Do not use `--legacy-peer-deps` as a workaround.
-- Do not switch production workflows to pnpm until the consumer lockfile has been generated and inspected.
-- Do not run DSH or Worker as part of lockfile generation.
+- Do not use `--legacy-peer-deps`.
+- Do not enable DSH lifecycle scripts by default.
+- Do not enable Worker dispatch or claim pool readiness based on lockfile CI.
