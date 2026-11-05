@@ -101,3 +101,12 @@ Official Workers Free limits: https://developers.cloudflare.com/workers/platform
 Detailed evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md).
 
 Updated disposition: Zero Trust Access BLOCKED / NOT REQUIRED; Workers Free CANDIDATE / NOT VERIFIED; app-level GitHub OAuth PLANNED / NOT IMPLEMENTED; deployment NOT RUN. Next step: independently review PR #24, validate the OAuth design in a no-secret fixture, and perform read-only Workers/subdomain recheck after the owner opens Workers & Pages without activating Access or adding payment details.
+
+
+## Autonomous Cloudflare verification — 2026-11-06
+
+Owner requested autonomous verification/actions. Cloudflare connector authenticated. Read-only checks: Workers scripts empty; Access apps API returns 403/error 9999 (Access disabled); zones empty; subscription API returns 403/error 10000 because this OAuth connection lacks Billing Read. Workers Free entitlement therefore remains NOT VERIFIED. No billing profile or payment details were read.
+
+Provisioned the project-specific workers.dev namespace using Cloudflare's documented Workers Subdomain API: `PUT /accounts/{account_id}/workers/subdomain` with `jarvis-developer-cloud-pool` returned success; immediate GET read-back returned the exact same subdomain. Hostname namespace: `jarvis-developer-cloud-pool.workers.dev`. This is a namespace only: no Worker script, application, Access policy, secret, DNS zone or paid resource was created. No application is deployed or served.
+
+Current: workers.dev namespace PROVISIONED / VERIFIED; Workers Free entitlement NOT VERIFIED; Access DISABLED; app-level GitHub OAuth NOT IMPLEMENTED; deployment NOT RUN. Do not deploy a public unauthenticated UI. Full recheck and GitHub CI/governance evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md).
