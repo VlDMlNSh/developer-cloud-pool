@@ -122,3 +122,13 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 - Latest report: [Autonomous web-console recheck — 2026-11-06](../reports/2026-11-06-autonomous-web-console-recheck.md).
 - PR #24 latest observed HEAD after report commit: `796299477b804edeb1af3b74e1caec9254791e13`; base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`; OPEN/DRAFT/UNMERGED; exact-head check-runs 0; formal reviews 0. CI and independent review NOT VERIFIED.
 - The required Gemini controller workflow is absent from the default-branch workflow tree. Gemini dispatch remains NOT RUN; do not substitute another workflow.
+
+
+## 2026-11-06 — Hono runtime selection
+
+- Framework decision: official Hono Cloudflare Workers starter + Workers Static Assets; preserve the existing vanilla graphite UI, do not migrate to React solely for framework adoption.
+- Official source: https://hono.dev/docs/getting-started/cloudflare-workers ; Cloudflare's Hono guide: https://developers.cloudflare.com/workers/framework-guides/web-apps/more-web-frameworks/hono/ .
+- Generate the starter from official tooling, pin exact dependencies and commit the generated lockfile. Hono v4.13.16 / Wrangler 4.157.0 are observed release versions, not committed dependencies.
+- PR #6 static UI remains unmerged and its validator/workflow exist only on that PR branch. Default branch has no package manifest, lockfile, Hono runtime or Jarvis UI.
+- Runtime scaffold NOT STARTED; tests NOT RUN; OAuth NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN.
+- Report: [Hono runtime selection](../reports/2026-11-06-hono-runtime-selection.md).
