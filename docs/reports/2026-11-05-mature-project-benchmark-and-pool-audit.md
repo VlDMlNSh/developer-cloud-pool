@@ -162,3 +162,11 @@ Unresolved issues:
 - Combined commit status array empty; the two workflow runs above are positive CI evidence.
 - PR #12 review submissions and review threads empty; independent review NOT RUN.
 - Current branch code still has caller validator `scripts/pool-worker-caller.mjs` not wired into production Worker. Worker still uses `workflow_dispatch`; Supervisor still uses REST dispatch with `actions: write`.
+
+
+## Final HEAD correction after report/checkpoint commits
+- The documentation commits advanced PR #12. Latest PR #12 head is now `4e86be99a268c685d0804783b501e801157af76f`; canonical base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- The two successful workflow runs `42025722988` and `42025722995` apply to the preceding code-bearing head `49b7cf0f456d70e37afef129d14b0f96c9090c3e`. The later commits changed documentation only, outside the contract workflow's `.github/workflows/**` and `scripts/**` path filters. Therefore no workflow runs were returned for documentation HEAD `4e86be9...`; do not label it exact-head CI PASS. The unchanged code-bearing tree has the two successful runs listed above; latest commit's workflow status is NOT VERIFIED.
+- PR #12 remains OPEN / DRAFT / NOT MERGED; mergeability currently returned false (may be transient GitHub calculation; do not merge).
+- PR #7 remains OPEN / DRAFT / NOT MERGED at `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`; exact-head static CI run `41921293708` / job `126894183572` SUCCESS; independent review NOT RUN.
+- Latest report blob: `<REPORT_BLOB_PENDING>`.
