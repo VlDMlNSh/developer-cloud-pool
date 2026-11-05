@@ -84,3 +84,24 @@ Added `scripts/pool-worker-caller.mjs` on the working branch only.
 
 ## Next bounded step
 Build a non-privileged reusable-workflow fixture to capture the actual `github.workflow_*` and `job.workflow_*` context values under a statically declared local `workflow_call` invocation, then compare those observed values against the validator assumptions. Do not wire the validator into the production Worker or refactor Supervisor until fixture evidence and independent review validate the context semantics and same-SHA assumption. Keep all dispatch/runtime gates closed.
+
+
+## Reusable-workflow context fixture — 2026-11-05
+
+- Added a read-only caller workflow: `.github/workflows/reusable-worker-context-fixture-caller.yml`, blob `ac35c24a26bef2a9e5a894a274ec6f1f1b13ca7f`.
+- Added a `workflow_call` fixture: `.github/workflows/reusable-worker-context-fixture.yml`, blob `d6e7815db794de293e143aba48eaa36e5ab7ecd8`.
+- Both workflows use `contents: read`; called job runs on `ubuntu-24.04`, has 2-minute timeout, no checkout, no secrets, no model/provider/browser/Worker dispatch. It emits only non-secret workflow identity metadata to the job summary.
+- Fixture run `41977381184` completed SUCCESS; job `127079303644` completed SUCCESS. Log evidence:
+  - `github.workflow_ref` => `VlDMlNSh/developer-cloud-pool/.github/workflows/reusable-worker-context-fixture-caller.yml@refs/pull/12/merge`
+  - `github.workflow_sha` => `05471e6e655e9008804136e0842c9285accb49e2`
+  - `job.workflow_ref` => `VlDMlNSh/developer-cloud-pool/.github/workflows/reusable-worker-context-fixture.yml@refs/pull/12/merge`
+  - `job.workflow_sha` => `05471e6e655e9008804136e0842c9285accb49e2`
+  - `job.workflow_repository` => `VlDMlNSh/developer-cloud-pool`
+  - `job.workflow_file_path` => `.github/workflows/reusable-worker-context-fixture.yml`
+  - `github.repository` => `VlDMlNSh/developer-cloud-pool`
+  - `github.ref` => `refs/pull/12/merge`
+- Observed result: caller and called-workflow SHA values were equal for this local reusable-workflow call on the PR merge ref. This validates the context field availability and same-commit relationship for this fixture invocation. It does NOT prove the protected default-branch caller/ref policy, governance or production authorization.
+- The fixture caller ref was PR merge ref, not the protected default branch. The production validator must continue to reject this PR ref and only accept the exact protected default-branch Supervisor identity.
+- Fixture CI run PASS. Separate Pool Contract Validation run `41977381462` was IN_PROGRESS at report time; do not classify it as PASS until completed.
+- Current branch head after fixture additions: `74d62dfed7512d853cc8e02af2a7d495ef5892d5`; compare 16 ahead / 0 behind canonical. Canonical remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Next: wait for Pool Contract Validation run, then add an explicit static regression assertion that the fixture caller is a local static `uses` and neither workflow contains `workflow_dispatch`. Independent security review remains required. Do not wire production Worker yet.
