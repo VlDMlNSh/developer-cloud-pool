@@ -218,3 +218,14 @@ Preferred future composition to prototype in isolation:
 7. Any timeout, duplicate marker, missing run, or ambiguous dispatch goes to `needs-review`; never auto-requeue the same approval.
 
 This composition remains a proposal. It does not establish strict end-to-end exactly-once semantics and must not be wired into production until adversarial race tests and independent review pass.
+
+
+## Gated single-use dispatch planner tests — 2026-11-05
+
+- Added pure planner/reconciler `scripts/pool-gated-dispatch.mjs`, blob SHA `f53257e2549dd7667c4c6b18d09adcae6f94e398`.
+- Added `scripts/pool-gated-dispatch.test.mjs`, blob SHA `64a9102dae5f134cb0640682443189e06f2c1190`; 12 test cases cover absent owner approval, Environment pending, post-gate envelope revalidation, marker not attempted/created/already exists/ambiguous/denied, prior dispatch attempt, accepted response with run ID, rejected response, timeout and accepted response without run ID.
+- Updated `.github/workflows/pool-contract-validation.yml`, blob SHA `22da931b7665b52a86a2ec6f8ef14d5211d7be47`, to run the new test file.
+- Exact current PR HEAD `60ab8fd7f5966c8392e1d088eb8f35c1277a2c3a`: [Pool Contract Validation run 42041816997](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42041816997) SUCCESS; [Reusable Worker Context Fixture run 42041817114](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42041817114) SUCCESS. Job `127294307371` confirms all test/validator steps completed successfully.
+- Planner/reconciler are pure and not wired to Supervisor/Worker. They model decisions only; they do not prove Environment configuration, atomic ref creation, tag ruleset behavior, or dispatch idempotency.
+- No Environment, ruleset, tag, ref, secret, workflow execution permission, or dispatch config changed. No Worker/DSH/provider/model execution. Current repository `POOL_DISPATCH_ENABLED` remains NOT VERIFIED via connector.
+- PR #12 remains OPEN / DRAFT / NOT MERGED. Independent security review NOT RUN.
