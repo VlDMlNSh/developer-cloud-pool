@@ -1,0 +1,45 @@
+name: DSH Lockfile Bootstrap (temporary)
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "dsh-runtime/package.json"
+      - ".github/workflows/dsh-lockfile-bootstrap.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dsh-lockfile-bootstrap-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    name: Generate npm lockfile without package lifecycle scripts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Resolve dependency tree and emit lockfile for review
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --prefix dsh-runtime --lockfile-version=3
+          node -e 'const p=require("./dsh-runtime/package-lock.json"); if(p.lockfileVersion!==3 || p.packages[""].dependencies["@deepseek-ai/dsh"]!=="0.2.1-rc.5") process.exit(1); console.log("LOCKFILE_VALIDATED packages="+Object.keys(p.packages).length)'
+          printf '%s\n' 'LOCKFILE_BASE64_BEGIN'
+          base64 -w0 dsh-runtime/package-lock.json
+          printf '\n%s\n' 'LOCKFILE_BASE64_END'
