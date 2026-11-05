@@ -113,3 +113,12 @@ Current: workers.dev namespace PROVISIONED / VERIFIED; Workers Free entitlement 
 The previous Access-based OpenAPI security scheme is superseded. Cloudflare Access remains disabled and is not required for this no-card path. The OpenAPI contract now describes the intended `__Host-jarvis_session` application session cookie, issued only after server-side GitHub OAuth and exact owner numeric-ID authorization. This is a contract target, not implemented authentication. No OAuth app or secret exists.
 
 The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read back successfully. Workers scripts remain empty. Workers Free subscription entitlement remains NOT VERIFIED because the connected Cloudflare OAuth integration lacks Billing Read. See [autonomous provisioning report](../reports/2026-11-06-autonomous-web-console-recheck.md).
+
+
+## Autonomous recheck — 2026-11-06 (latest)
+
+- Corrected the OpenAPI security scheme from Cloudflare Access to the intended application-issued `__Host-jarvis_session` cookie. This is a contract target only; OAuth and session implementation remain NOT IMPLEMENTED.
+- Cloudflare namespace `jarvis-developer-cloud-pool.workers.dev` remains provisioned; read-only recheck confirms 0 Worker scripts. Workers Free entitlement remains NOT VERIFIED.
+- Latest report: [Autonomous web-console recheck — 2026-11-06](../reports/2026-11-06-autonomous-web-console-recheck.md).
+- PR #24 latest observed HEAD after report commit: `796299477b804edeb1af3b74e1caec9254791e13`; base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`; OPEN/DRAFT/UNMERGED; exact-head check-runs 0; formal reviews 0. CI and independent review NOT VERIFIED.
+- The required Gemini controller workflow is absent from the default-branch workflow tree. Gemini dispatch remains NOT RUN; do not substitute another workflow.
