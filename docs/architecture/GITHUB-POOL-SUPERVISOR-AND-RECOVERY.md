@@ -10,7 +10,6 @@ Operate a logical pool of up to 20 concurrent standard GitHub-hosted jobs withou
 This is a best-effort event-driven supervisor, not a continuously running daemon. GitHub Actions has no permanent process inside a hosted runner. The supervisor wakes from:
 - a scheduled reconciliation every five minutes (fallback);
 - an owner applying the `pool:ready` label to a task issue;
-- completion of a `Pool Worker` workflow;
 - manual `workflow_dispatch`.
 
 Scheduled events can be delayed or dropped during GitHub load, so event triggers and periodic reconciliation complement one another. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed. Dispatch is fail-closed by default: the repository variable POOL_DISPATCH_ENABLED must equal the literal string true. It must remain unset/false until the default branch has suitable protection and the supervisor workflow has been reviewed.
@@ -24,7 +23,7 @@ Scheduled events can be delayed or dropped during GitHub load, so event triggers
 5. It atomically changes the task label to `pool:claimed`, comments the task/run metadata, and dispatches `pool-worker.yml` using the short-lived repository `GITHUB_TOKEN`.
 6. The worker checks out exactly the supplied SHA and runs only the allowlisted profile.
 7. A separate reporting job, which does not install or execute agent code, updates the issue to `pool:probe-complete` or `pool:needs-review`.
-8. `workflow_run: completed` wakes the supervisor to process the next queued issues. The five-minute schedule is the recovery/reconciliation fallback.
+8. The periodic five-minute schedule reconciles completed or failed Worker runs and processes subsequent queued tasks. Issue label events provide faster wakeups for newly approved work.
 
 The first profile is deliberately limited to a DSH headless package/configuration smoke test. It makes no model call, receives no provider key and executes no user-supplied shell command. This proves the dispatch path, not general-purpose agent execution.
 
@@ -123,7 +122,7 @@ Cross-repository worker dispatch is a separate gate:
 - [ ] Exact target SHA is checked out and recorded.
 - [ ] DSH package smoke passes with no provider credentials.
 - [ ] Failed worker transitions to needs-review, not infinite retry.
-- [ ] Worker completion wakes supervisor.
+- [ ] Scheduled reconciliation detects completed/failed Worker runs and transitions task state without a privileged `workflow_run` trigger.
 - [ ] No secret material appears in logs, issue comments or artifacts.
 - [ ] Cross-repository dispatch remains disabled until its own security gate passes.
 
