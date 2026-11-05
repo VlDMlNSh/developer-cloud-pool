@@ -11,7 +11,7 @@ servers:
   - url: /api/v1
     description: Same-origin API on the Jarvis web console
 security:
-  - cloudflareAccessCookie: []
+  - jarvisSessionCookie: []
 tags:
   - name: Health
   - name: Pool
@@ -208,15 +208,17 @@ paths:
           $ref: '#/components/responses/UpstreamUnavailable'
 components:
   securitySchemes:
-    cloudflareAccessCookie:
+    jarvisSessionCookie:
       type: apiKey
       in: cookie
-      name: CF_Authorization
+      name: __Host-jarvis_session
       description: >
-        Access session cookie. Cloudflare Access authenticates the browser
-        request; the Worker must independently verify the signed
-        Cf-Access-Jwt-Assertion header because ctx.access is unavailable behind
-        the Static Assets router.
+        Application-issued opaque session cookie created only after server-side
+        GitHub OAuth callback validation and exact numeric GitHub user-ID
+        allowlisting. Cookie is Secure, HttpOnly, SameSite=Lax or stricter,
+        host-only, Path=/, and has bounded server-side expiry. OAuth tokens are
+        never returned to the browser. Missing, invalid, expired or revoked
+        sessions fail closed. OAuth/session implementation is not yet deployed.
   responses:
     Unauthorized:
       description: Missing or invalid Access identity assertion.
