@@ -5,7 +5,7 @@
 - Canonical base: `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Stacked source: PR #15 head `c57f2ab3f2b91bf6b3e413640f65ec518008b75e`.
 - PR: [#18](https://github.com/VlDMlNSh/developer-cloud-pool/pull/18), OPEN / DRAFT / NOT MERGED.
-- Current source head at report creation: `b0676ea206cdce07b5d9c90cad3d853236b7f321`.
+- Code head tested by CI: `be8690c2e99b997cfc9e55efd147e0548628205a`.
 
 ## Change
 - Added pure policy module `scripts/pool-claim-recovery.mjs`.
@@ -25,7 +25,7 @@
 - All four files were re-read from the PR branch. Patch inspection confirms both ready-queue rollback paths were removed.
 
 ## Verification and limits
-- Exact-head CI lookup for `b0676ea206cdce07b5d9c90cad3d853236b7f321` returned no workflow runs and no combined status entries: CI NOT VERIFIED / NOT RUN evidence unavailable.
+- Exact code-head CI run [42043737439](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42043737439), job `127301013741`: COMPLETED / SUCCESS. The exact job steps passed dispatch-disabled assertion, YAML parsing, six single-use recovery tests, and static pool contract validation. This run tested code head `be8690c2e99b997cfc9e55efd147e0548628205a`; the subsequent report-only commit does not change executable code.
 - Independent PR reviews: empty; review threads: empty; independent security review NOT RUN.
 - Runtime Supervisor/Worker execution: NOT RUN.
 - No secrets, repository variables, Environments, rulesets, DSH, Resource Probe, browser, model/provider calls or paid fallback accessed/executed.
