@@ -212,3 +212,14 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - PR #12 head e6b4150cd1a56a032220514365b91e321ff9157f: exact-head fixture and contract runs 42039867663 and 42039867909 SUCCESS; no independent reviews; production Worker still unchanged.
 - All four PRs OPEN / DRAFT / NOT MERGED. No Worker, DSH, Resource Probe, browser, model/provider, Gemini/Claude or privileged dispatch run. Paid fallback not used.
 - Next: prove owner approval event provenance and race-safe one-time consumption. Labels/comments and Actions concurrency are not atomic one-time capabilities.
+
+
+## ADR — owner approval provenance and single-use dispatch — 2026-11-05
+- Added docs/architecture/2026-11-05-owner-approval-and-single-use-dispatch-adr.md (PROPOSED / NOT IMPLEMENTED / NOT QUALIFIED); blob SHA ddc05f0b3b1aa3b947e5b43e8b9f3c1c7557b59b.
+- Caller/callee identity design is grounded in official GitHub contexts: github context belongs to caller; job.workflow_* identifies called reusable workflow. Existing fixture remains test-only evidence.
+- GitHub concurrency queue:max supports up to 100 pending runs in FIFO wait order but is not CAS/transaction/exactly-once. Treat as serialized best-effort fail-closed single-writer control only.
+- ADR proposes owner-authored comment approval bound to issue + exact target SHA + allowlisted profile + envelope digest; serialized Supervisor sole state writer; Worker workflow_call only; no REST dispatch; ambiguous outcomes go needs-review; no auto-replay. Worker issue-write reporting must be removed.
+- Existing stale-claim recovery to pool:ready conflicts with single-use approval and must be replaced with needs-review.
+- Current ruleset has zero required approvals; independent review gate not satisfied. Dispatch setting current value NOT VERIFIED via connector. Keep disabled.
+- No production workflow changed; no Worker/DSH/browser/model/secret/privileged execution. ADR only.
+- Next: pure owner-approval parser and deterministic state-transition tests only; no network/side effects. Full Supervisor/Worker conversion must be one reviewed PR.
