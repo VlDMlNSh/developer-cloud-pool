@@ -11,7 +11,7 @@ const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 if (!ownerRepo || !token || !defaultBranch) throw new Error("Missing required GitHub runtime context.");
 if (!dispatchEnabled) {
   console.log("Pool Supervisor heartbeat only: dispatch is disabled pending default-branch governance and owner approval.");
-  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\\n");
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\n");
   process.exit(0);
 }
 
@@ -129,8 +129,8 @@ async function recoverStaleClaims() {
     if (recovery.state === "needs-review") {
       await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_CLAIM_REQUIRES_REVIEW**\\n\\n- Reason: " + recovery.reason +
-        "\\n- Automatic retry: disabled; a fresh owner approval is required.");
+        "**POOL_CLAIM_REQUIRES_REVIEW**\n\n- Reason: " + recovery.reason +
+        "\n- Automatic retry: disabled; a fresh owner approval is required.");
       log("Task #" + issue.number + " moved to needs-review: " + recovery.reason + ".");
     }
   }
@@ -183,10 +183,10 @@ async function dispatchReadyTasks() {
       const failure = planDispatchFailure();
       await replaceIssueLabels(current, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_DISPATCH_FAILED_REQUIRES_REVIEW**\\n\\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
-        "\\n- Failure: " + String(error.message).slice(0, 300) +
-        "\\n- State: " + failure.state +
-        "\\n- Automatic retry: disabled; a fresh owner approval is required.");
+        "**POOL_DISPATCH_FAILED_REQUIRES_REVIEW**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
+        "\n- Failure: " + String(error.message).slice(0, 300) +
+        "\n- State: " + failure.state +
+        "\n- Automatic retry: disabled; a fresh owner approval is required.");
       log("Dispatch failed for task #" + issue.number + "; moved to needs-review.");
     }
   }
