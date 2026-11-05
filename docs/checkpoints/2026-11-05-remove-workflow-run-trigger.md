@@ -6,7 +6,8 @@
 - Branch: `security/remove-supervisor-workflow-run-2026-11-05`.
 - PR #15: https://github.com/VlDMlNSh/developer-cloud-pool/pull/15
 - State: OPEN / DRAFT / NOT MERGED.
-- Scope: remove privileged `workflow_run` trigger from Supervisor; retain scheduled reconciliation and issue-label wakeups.
+- Tested code commit: `17fda11001288cc0123b667251c712af13d55f9a`.
+- Scope: remove privileged `workflow_run` trigger; retain scheduled reconciliation and issue-label wakeups.
 
 ## Source evidence
 - Trigger finding: zizmor run `42037723023`, job `127280177651`, finding at `.github/workflows/pool-supervisor.yml:9`.
@@ -17,14 +18,14 @@
 
 ## Verification status
 - Source readback: VERIFIED.
-- Exact-head CI: NOT VERIFIED; no run returned at last query.
+- Exact code-head CI: run `42037929298`, job `127280825826`, COMPLETED / SUCCESS.
+- Passed: dispatch-disabled assertion, workflow YAML parsing, pool security contract validator.
 - Runtime execution: NOT RUN.
 - Independent review: NOT RUN.
 - Qualification/acceptance: NOT QUALIFIED / NOT ACCEPTED.
 
 ## Remaining work
-1. Verify PR #15 exact-head CI and script checks.
-2. Review scheduled recovery behavior and ensure completed Worker runs transition to `pool:needs-review`.
-3. Resolve zizmor package-lock warnings in Worker and DSH evaluation workflows using committed lockfiles and `npm ci`.
-4. Continue Worker reusable caller authorization; direct `workflow_dispatch` remains a separate blocker.
-5. Maintain fail-closed dispatch; do not execute Worker/DSH until security and governance gates pass.
+1. Resolve zizmor package-lock warnings in Worker and DSH evaluation workflows using committed lockfiles and `npm ci`.
+2. Continue Worker reusable caller authorization; direct `workflow_dispatch` remains a separate blocker.
+3. Independently review the scheduled recovery behavior.
+4. Maintain fail-closed dispatch; do not execute Worker/DSH until security and governance gates pass.
