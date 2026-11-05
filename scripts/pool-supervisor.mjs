@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { planClaimRecovery, planDispatchFailure } from "./pool-claim-recovery.mjs";
 
 const ownerRepo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
@@ -121,11 +122,16 @@ async function recoverStaleClaims() {
     }
 
     const ageMs = Date.now() - updatedAt;
-    if (Number.isFinite(ageMs) && ageMs > 15 * 60 * 1000) {
-      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:ready"]);
+    const recovery = planClaimRecovery({
+      matchingRunStatus: matchingRun ? matchingRun.status : null,
+      ageMs
+    });
+    if (recovery.state === "needs-review") {
+      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_CLAIM_LEASE_EXPIRED**\n\nNo matching worker workflow run appeared within 15 minutes. The task was returned to pool:ready for a later reconciliation. No automatic execution retry occurred.");
-      log("Recovered stale claim for task #" + issue.number + " after no worker run appeared.");
+        "**POOL_CLAIM_REQUIRES_REVIEW**\\n\\n- Reason: " + recovery.reason +
+        "\\n- Automatic retry: disabled; a fresh owner approval is required.");
+      log("Task #" + issue.number + " moved to needs-review: " + recovery.reason + ".");
     }
   }
 }
@@ -174,12 +180,14 @@ async function dispatchReadyTasks() {
       log("Dispatched task #" + issue.number + " at immutable SHA " + targetSha + ".");
     } catch (error) {
       const current = await request("/repos/" + ownerRepo + "/issues/" + issue.number);
-      await replaceIssueLabels(current, ["pool:claimed"], ["pool:ready"]);
+      const failure = planDispatchFailure();
+      await replaceIssueLabels(current, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_DISPATCH_FAILED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
-        "\n- Failure: " + String(error.message).slice(0, 300) +
-        "\n- State restored to pool:ready. No credential material is recorded.");
-      log("Dispatch failed for task #" + issue.number + "; task returned to ready queue.");
+        "**POOL_DISPATCH_FAILED_REQUIRES_REVIEW**\\n\\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
+        "\\n- Failure: " + String(error.message).slice(0, 300) +
+        "\\n- State: " + failure.state +
+        "\\n- Automatic retry: disabled; a fresh owner approval is required.");
+      log("Dispatch failed for task #" + issue.number + "; moved to needs-review.");
     }
   }
   log("Supervisor cycle complete: " + dispatched + " worker workflow(s) dispatched.");
