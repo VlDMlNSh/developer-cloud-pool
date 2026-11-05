@@ -1,0 +1,54 @@
+# 2026-11-05 — contract-validator fix for local reusable workflows
+
+## Immutable target and branch state
+- Canonical branch: `Основной`, verified base/merge-base SHA: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Working branch: `feat/reusable-worker-call-boundary-2026-11-05`; NOT canonical.
+- PR #12: OPEN / DRAFT / NOT MERGED; latest implementation HEAD at report creation: `ef4de08e12d5a22adf0df19b61a35886c72d03f4`.
+- Compare: 23 commits ahead / 0 behind; merge base equals canonical SHA.
+- PR URL: https://github.com/VlDMlNSh/developer-cloud-pool/pull/12
+
+## Exact-head validation failure investigated
+- Pool Contract Validation run: [42023131061](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42023131061), terminal FAILURE.
+- Failed job: `127230605028`, step `Validate pool security contracts`.
+- Job logs prove:
+  - `POOL_DISPATCH_ENABLED=false` was present in this run's environment.
+  - All seven workflow YAML files parsed successfully.
+  - Caller authorization unit tests: 8 passed, 0 failed.
+  - Static validator failed only because it classified the local reusable workflow reference `./.github/workflows/reusable-worker-context-fixture.yml` as an external action that must be pinned to a 40-character commit SHA.
+- The separate non-privileged reusable context fixture run [42023131365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42023131365), job `127230606746`, completed SUCCESS.
+
+## Bounded corrective change
+- Updated `scripts/validate-pool-contract.mjs` to exempt only static local workflow references matching `./.github/workflows/<file>.yml|yaml` from the external action SHA-pinning assertion. External actions still require a full 40-character SHA.
+- Existing fixture-specific assertions continue to require a static local caller reference, `workflow_call`, no `workflow_dispatch`, no secrets, read-only permissions, bounded timeout and the caller/callee identity fields.
+- A second adjustment aligned the positive “all external Actions pinned” summary predicate with that local-workflow exception.
+- Latest commit: `ef4de08e12d5a22adf0df19b61a35886c72d03f4`.
+- Validator blob SHA after read-back: `a69714d87553d14b00cd0c0c3e3df89586136960`.
+- Previous validator blob: `f027bcbd637d840292232281c75c10bf4886fe88`.
+- Read-back of the updated validator: VERIFIED.
+- Commit link: https://github.com/VlDMlNSh/developer-cloud-pool/commit/ef4de08e12d5a22adf0df19b61a35886c72d03f4
+
+## CI and review status after correction
+- GitHub API queries for runs associated with latest implementation HEAD and latest PR merge SHA returned empty workflow-run arrays at the time of this report.
+- Corrected validator has NOT YET been executed by GitHub Actions; exact-head/merge-result CI for `ef4de08e12d5a22adf0df19b61a35886c72d03f4`: NOT VERIFIED.
+- PR #12 reviews list is empty; independent security review: NOT RUN.
+- PR remains DRAFT. No merge or acceptance.
+
+## Governance and safety
+- Repository Ruleset ID `26550182` was independently re-read and is ACTIVE.
+- The workflow run above observed `POOL_DISPATCH_ENABLED=false`; this is run-scoped evidence, not a direct read-back of the current repository variable.
+- Canonical Worker and Supervisor remain unchanged; Worker still exposes `workflow_dispatch`, and Supervisor still uses REST workflow dispatch. Caller validator is not wired into production.
+- Gemini controller availability, third-host Claude route, and current variable value are NOT VERIFIED in this pass.
+- Worker, DSH, Resource Probe, browser, provider/model calls and privileged dispatch: NOT RUN.
+- Paid fallback: NOT USED. Runtime: NOT QUALIFIED.
+
+## Next bounded step
+1. Obtain a new CI run for the corrected latest PR merge result and inspect job logs.
+2. If green, continue with a static, non-privileged authorization design review; do not wire production until independent review validates caller identity and approval provenance.
+3. Refactor Worker/Supervisor only as a separately reviewed package: Worker `workflow_call` only; no Worker `workflow_dispatch`; static reusable invocation; no REST dispatch; preserve one-time approval consumption and bounded matrix.
+4. Keep all dispatch/runtime gates closed.
+
+## Canonical and working references
+- Canonical branch: https://github.com/VlDMlNSh/developer-cloud-pool/tree/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9
+- Working branch: https://github.com/VlDMlNSh/developer-cloud-pool/tree/feat/reusable-worker-call-boundary-2026-11-05
+- Governance issue #1: https://github.com/VlDMlNSh/developer-cloud-pool/issues/1
+- Browser runtime issue #5: https://github.com/VlDMlNSh/developer-cloud-pool/issues/5
