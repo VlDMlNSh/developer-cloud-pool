@@ -74,3 +74,17 @@ After independent review of PR #24 and explicit hosting-provider approval, imple
 - [Issue #22](https://github.com/VlDMlNSh/developer-cloud-pool/issues/22)
 - [MediaHub OS canonical map](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md)
 - [MediaHub OS continuation checkpoint](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/checkpoints/mediahub-next-continuation-checkpoint-2026-10-12-current.md)
+
+
+## Cloudflare account readiness update — 2026-11-06
+
+Read-only account inspection via connected Cloudflare integration:
+- Account connection: AUTHENTICATED.
+- Workers scripts: none.
+- workers.dev subdomain: NOT PROVISIONED (API error 10007).
+- Cloudflare Access: NOT ENABLED (API error 9999).
+- Zones/domains: none in account.
+- Workers Free/Paid plan and Access billing entitlement: NOT VERIFIED (`standard` account type is not a plan indicator).
+- No resource or account configuration was created/changed; no deployment attempted.
+
+Deployment status: BLOCKED / NOT RUN. Do not publish an unauthenticated console to work around the missing Access setup. Owner prerequisites are listed in the ADR. After owner actions, repeat read-only checks, then proceed to a no-secret preview and security tests.
