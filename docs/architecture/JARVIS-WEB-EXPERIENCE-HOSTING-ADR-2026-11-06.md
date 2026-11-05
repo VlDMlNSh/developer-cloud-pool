@@ -169,3 +169,16 @@ Observed state:
 5. Re-run read-only account inspection after prerequisites are completed. Do not deploy a public, unauthenticated dashboard as a workaround.
 
 Disposition: Cloudflare account connection VERIFIED; deployment prerequisites BLOCKED / NOT SATISFIED. This is a useful blocker discovery, not a deployed pool.
+
+
+## Owner payment constraint and no-card authentication alternative — 2026-11-06
+
+Cloudflare Zero Trust onboarding requires payment details even when the Free plan is selected; Cloudflare states that the Free plan is not charged. See https://developers.cloudflare.com/cloudflare-one/setup/ . The owner reports that their card is not accepted. Zero Trust is therefore BLOCKED and must not be treated as a required dependency for the first web-console milestone. Do not request repeated card attempts, alternate payment instruments, or a bypass of billing verification.
+
+Retain Cloudflare Workers Free as a candidate only. The official Workers pricing/limits documentation lists a Free allocation (100,000 requests/day and 10 ms CPU per invocation): https://developers.cloudflare.com/workers/platform/pricing/ and https://developers.cloudflare.com/workers/platform/limits/ . This does not itself prove that this specific account can provision a workers.dev subdomain or deploy without payment details. Cloudflare documents workers.dev provisioning from the Workers & Pages dashboard: https://developers.cloudflare.com/workers/configuration/routing/workers-dev/ .
+
+Candidate alternative to Access: application-level server-side GitHub OAuth, with an exact owner numeric GitHub user-ID allowlist, state/CSRF validation, secure HttpOnly/Secure/SameSite cookies, short-lived signed sessions, and no OAuth token or privileged credential exposed to the browser. This is PLANNED only. Protocol details, OAuth App requirements, callback handling, cookie/session design, abuse controls and negative tests require implementation and independent security review before deployment. The existing API remains GET-only; no mutation or dispatch routes are added.
+
+If Workers Free cannot be provisioned without payment details, stop and compare no-card hosting alternatives using official vendor terms and measured constraints. Never publish an unauthenticated dashboard or introduce a paid fallback.
+
+Evidence and current disposition: [2026-11-06 no-card deployment-path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md). Zero Trust BLOCKED / NOT REQUIRED; Workers Free CANDIDATE / NOT VERIFIED; GitHub OAuth PLANNED / NOT IMPLEMENTED; deployment NOT RUN.
