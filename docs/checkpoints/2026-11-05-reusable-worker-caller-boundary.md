@@ -1,20 +1,20 @@
 # Checkpoint — 2026-11-05 reusable Worker caller boundary
 
-- Canonical base: `Основной` / `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Working branch: `feat/reusable-worker-call-boundary-2026-11-05`.
-- Branch first commit: `1555b17702f97327d264386289ae3fa75c4f5eda`; one commit ahead, zero behind canonical base.
-- Design contract blob: `138953c1c0b09098b009f4da5f4da12df67c65a2`; [contract](../design/reusable-worker-caller-contract-2026-11-05.md).
+- Canonical branch `Основной`: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Working branch: `feat/reusable-worker-call-boundary-2026-11-05`; NOT canonical.
+- Working branch latest documented implementation commit before this checkpoint update: `056f2f43d007a29b3893c4a26e6658ba7cb394ca`; branch ancestry 4 ahead / 0 behind canonical.
+- Design contract blob: `138953c1c0b09098b009f4da5f4da12df67c65a2`.
+- Caller validator `scripts/pool-worker-caller.mjs` blob: `88d79d74691431ead14f29426d214833c0086183`.
+- Detailed report: [2026-11-05 implementation pass](../reports/2026-11-05-reusable-worker-caller-boundary.md), latest report blob `8afa3a97dff4a7fd02d9d52c7966f67574a9addb`.
 
-## Blocking facts
-Default Worker `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still has `workflow_dispatch` and relies on public issue metadata. Default Supervisor `52bf03ca889edd92fd10c71ae96a2e35e106d43f` still uses REST dispatch. Caller authorization BLOCKED.
+## Current blocker
+Default Worker still uses `workflow_dispatch` and public issue metadata; default Supervisor still dispatches Worker through REST. Caller authorization BLOCKED. No production or privileged execution.
 
-Do not reuse PR #8 matrix builder as an authorization gate: it accepts caller-supplied approval data. Do not reuse PR #7 public bot-comment approval marker: comments/labels are not capabilities.
+## Implementation status
+A pure fail-closed caller-context validator was added to the working branch only. It checks the exact caller repository/ref, reusable Worker repository/path, SHA formats, and same-revision relationship. It is NOT wired into workflows. Unit test creation was blocked; tests NOT RUN. Exact-head CI NOT VERIFIED; no workflow runs/statuses were returned for the implementation commit. Independent review NOT RUN.
 
-PR #7 OPEN/DRAFT (40 ahead / 1 behind; CI `41921293708` SUCCESS; review NOT RUN). PR #8 OPEN/DRAFT (stale base; CI NOT VERIFIED; review NOT RUN). PR #11 OPEN/DRAFT (CI `41918209585` SUCCESS; review NOT RUN).
-
-## Execution state
-Design specified only. No runtime/code changes, no merges, no secrets/variables accessed or changed, `POOL_DISPATCH_ENABLED` NOT VERIFIED, Gemini NOT RUN, Worker/DSH/browser/provider calls NOT RUN, paid fallback NOT USED. Current ruleset/variable state NOT VERIFIED; integration lacks branch-protection API access.
+## Governance and execution
+Current ruleset and `POOL_DISPATCH_ENABLED` NOT VERIFIED; historical Issue #1 data is stale evidence. Gemini NOT RUN (controller absent in default branch). Claude Code NOT RUN (no verified third host/free route in this pass). Worker, DSH, Resource Probe, browser and model/provider calls NOT RUN. Paid fallback NOT USED. Runtime NOT QUALIFIED.
 
 ## Next
-Verify current GitHub reusable-workflow context semantics, implement pure caller identity checks and static workflow contract tests, then refactor Worker and Supervisor together. Keep dispatch disabled. Require exact-head CI and independent security review.
-Detailed record: [2026-11-05 report](../reports/2026-11-05-reusable-worker-caller-boundary.md).
+Add/run tests; wire Worker `workflow_call` caller validation and remove `workflow_dispatch`; refactor Supervisor to static reusable job plus bounded planner/matrix and remove REST dispatch. Keep dispatch disabled until exact-head CI, independent security review and current governance gates pass.
