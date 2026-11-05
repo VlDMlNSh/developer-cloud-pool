@@ -3,11 +3,12 @@ import assert from "node:assert/strict";
 import { planWorkerMatrix } from "./pool-worker-matrix.mjs";
 
 const sha = "a".repeat(40);
+const envelope = profile => ["### Target SHA", sha, "", "### Worker profile", profile].join("\n");
 const task = (number, overrides = {}) => ({
   number,
   state: "open",
   labels: [{ name: "pool:ready" }],
-  body: `### Target SHA\\n${sha}\\n\\n### Worker profile\\nDSH headless probe`,
+  body: envelope("DSH headless probe"),
   ...overrides
 });
 
@@ -27,7 +28,7 @@ test("rejects pull requests, closed issues, unclaimed readiness and invalid enve
     task(2, { state: "closed" }),
     task(3, { labels: [] }),
     task(4, { body: "no envelope" }),
-    task(5, { body: `### Target SHA\\n${sha}\\n\\n### Worker profile\\nOther profile` })
+    task(5, { body: envelope("Other profile") })
   ]);
   assert.deepEqual(result.matrix.include, []);
   assert.deepEqual(result.rejected.map(item => item.reason), [
