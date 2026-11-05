@@ -26,15 +26,16 @@ Reuse the existing graphite HTML/CSS/vanilla-JS dashboard. Do not rewrite the fr
 ```text
 iPhone / Desktop browser
         |
-        | HTTPS, Access session cookie
+        | HTTPS, application session cookie
         v
-Cloudflare Access (identity gate)
+Application GitHub OAuth callback (identity gate)
         |
-        | signed Cf-Access-Jwt-Assertion
+        | server-side validated GitHub OAuth identity
         v
 Cloudflare Worker
-  - verify JWT signature, issuer, audience, exp, nbf
-  - map authenticated subject to an allowlisted role
+  - validate OAuth state and callback response
+  - resolve GitHub numeric user ID server-side and enforce exact owner allowlist
+  - issue a short-lived opaque host-only session cookie
   - enforce GET-only API surface
   - fixed GitHub repository/API allowlist
   - bounded cache + rate-limit handling
@@ -100,7 +101,7 @@ Every HTTP method other than the documented GET/HEAD methods returns 405. There 
 
 | Threat | Required control |
 |---|---|
-| Spoofed identity header / forged JWT | Validate Access JWT signature and claims; exact issuer/audience; reject missing/invalid token |
+| Spoofed identity header / forged JWT | Validate GitHub OAuth state/session signature and claims; exact issuer/audience; reject missing/invalid token |
 | Browser token or secret exfiltration | No provider/GitHub credentials in browser; no tokens in localStorage/sessionStorage; server-side-only secrets if ever approved |
 | XSS from issue text, workflow titles, logs or artifacts | Treat all GitHub content as untrusted text; use text nodes, no `innerHTML` for remote data; strict CSP |
 | CSRF / cross-origin requests | Same-origin API; GET-only v1; reject unexpected Origin/Host; no permissive CORS; future mutations require CSRF and explicit authorization |
@@ -111,11 +112,11 @@ Every HTTP method other than the documented GET/HEAD methods returns 405. There 
 | Unauthorized task execution | No mutation routes; no Actions dispatch from browser; Pool Bridge remains sole mediator |
 | Artifact disclosure | Link-only in v1; no arbitrary download proxy; artifact access requires a separate authorization decision |
 
-Recommended response headers: strict Content-Security-Policy (including `frame-ancestors 'none'`), `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, and a restrictive Permissions-Policy. Use secure host-only session cookies as managed by Access. Do not log cookies, JWTs, authorization headers or query-string credentials.
+Recommended response headers: strict Content-Security-Policy (including `frame-ancestors 'none'`), `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, and a restrictive Permissions-Policy. Use secure host-only application session cookies issued only after server-side GitHub OAuth and owner-ID authorization. Do not log cookies, JWTs, authorization headers or query-string credentials.
 
 ## Deployment and rollback plan
 
-1. Confirm hosting-provider choice, account plan, Access availability and no-cost entitlement. No deployment before this check.
+1. Confirm hosting-provider choice, account plan, Workers Free entitlement and OAuth implementation readiness and no-cost entitlement. No deployment before this check.
 2. Implement locally with pinned dependencies and fixtures; add OpenAPI validation, JWT negative tests, API allowlist tests, XSS/SSRF fixtures and browser smoke tests.
 3. Deploy only to a non-production preview with no secrets and synthetic/public data; verify Access protects assets and API separately.
 4. Complete independent security review and exact-head CI; verify the preview from desktop and iPhone browser.
@@ -129,7 +130,7 @@ No Cloudflare account was accessed, no token/secret was created or read, and no 
 - The current HTML/CSS/JS prototype can be retained with minimal adaptation.
 - GitHub remains the source of truth for issues and workflow evidence; no database is required for the first read-only slice.
 - The console is a remote user interface, not the runtime for workers and not a continuous scheduler.
-- Cloudflare Workers + Access is only a preferred candidate. Actual account entitlement, Access behavior with Static Assets, domain availability, free-tier quota and deploy credential scope remain NOT VERIFIED.
+- Cloudflare Workers + application-level GitHub OAuth is only a preferred candidate. Actual account entitlement, application session enforcement across static assets and API, domain availability, free-tier quota and deploy credential scope remain NOT VERIFIED.
 - This ADR does not authorize paid resources, secret creation, deployment, production mutations, dispatch, model calls or external worker/server integration.
 - If Cloudflare Free + Access cannot meet the no-cost and security requirements, compare the GitHub Pages + separately hosted free API option or defer deployment; do not silently select a paid plan.
 
@@ -189,3 +190,10 @@ Evidence and current disposition: [2026-11-06 no-card deployment-path report](..
 A project-specific workers.dev namespace was provisioned via the Cloudflare API after the owner requested autonomous action: `jarvis-developer-cloud-pool`. Follow-up GET read-back returned the same value. This creates only the account namespace; there is no Worker script or application deployment. The connected OAuth session cannot read account subscriptions (HTTP 403 / error 10000, Billing Read scope unavailable), so Workers Free entitlement remains NOT VERIFIED. Access remains disabled (HTTP 403 / error 9999), and no zone exists. No payment or billing data was accessed. Do not treat workers.dev provisioning as proof of Free-plan entitlement or as authorization to deploy.
 
 Evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md). Current disposition: namespace PROVISIONED / VERIFIED; Workers Free entitlement NOT VERIFIED; application authentication NOT IMPLEMENTED; deployment NOT RUN.
+
+
+## Authentication contract correction — 2026-11-06
+
+Cloudflare Access is disabled and not required for the first milestone because the owner cannot complete the payment-details onboarding. The OpenAPI security scheme has been changed to the intended application-issued `__Host-jarvis_session` cookie. The cookie must be issued only after server-side GitHub OAuth callback validation, state/CSRF validation and exact numeric GitHub user-ID allowlisting; it must be Secure, HttpOnly, host-only, SameSite=Lax or stricter, Path=/, and bounded by server-side expiry/revocation. OAuth tokens must never reach browser code. This remains a design contract only; OAuth App registration, callback, session store/signing, implementation and negative tests are NOT IMPLEMENTED.
+
+The workers.dev namespace `jarvis-developer-cloud-pool` is now PROVISIONED / VERIFIED by API PUT + GET. Workers scripts remain empty. Workers Free subscription entitlement is NOT VERIFIED because Billing Read is not available to the connected OAuth integration. Deployment remains NOT RUN.
