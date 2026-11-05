@@ -169,4 +169,4 @@ Unresolved issues:
 - The two successful workflow runs `42025722988` and `42025722995` apply to the preceding code-bearing head `49b7cf0f456d70e37afef129d14b0f96c9090c3e`. The later commits changed documentation only, outside the contract workflow's `.github/workflows/**` and `scripts/**` path filters. Therefore no workflow runs were returned for documentation HEAD `4e86be9...`; do not label it exact-head CI PASS. The unchanged code-bearing tree has the two successful runs listed above; latest commit's workflow status is NOT VERIFIED.
 - PR #12 remains OPEN / DRAFT / NOT MERGED; mergeability currently returned false (may be transient GitHub calculation; do not merge).
 - PR #7 remains OPEN / DRAFT / NOT MERGED at `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`; exact-head static CI run `41921293708` / job `126894183572` SUCCESS; independent review NOT RUN.
-- Latest report blob: `<REPORT_BLOB_PENDING>`.
+- This report is self-referential; its verified blob SHA is recorded in the final checkpoint.
