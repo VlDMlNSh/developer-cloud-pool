@@ -1,0 +1,58 @@
+name: Jarvis Web Prototype Validation
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "package.json"
+      - "wrangler.jsonc"
+      - "src/**"
+      - "tests/**"
+      - "web/jarvis-dashboard/**"
+      - "scripts/validate-jarvis-dashboard.mjs"
+      - ".github/workflows/jarvis-web-validation.yml"
+  push:
+    branches:
+      - "feat/jarvis-hono-web-prototype-2026-11-06"
+    paths:
+      - "package.json"
+      - "wrangler.jsonc"
+      - "src/**"
+      - "tests/**"
+      - "web/jarvis-dashboard/**"
+      - "scripts/validate-jarvis-dashboard.mjs"
+      - ".github/workflows/jarvis-web-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jarvis-web-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate fail-closed Hono prototype
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify runtime
+        run: node --version && npm --version
+
+      - name: Install exact direct dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Static checks
+        run: npm run check
+
+      - name: API negative and fail-closed tests
+        run: npm test
+
+      - name: Static dashboard contract
+        run: npm run validate:ui
