@@ -3,12 +3,12 @@ const PROFILE_ID = "dsh-headless-probe";
 const MAX_BATCH_SIZE = 20;
 
 function targetShaFromBody(body) {
-  const match = String(body || "").match(/^### Target SHA\\s*\\r?\\n+([0-9a-f]{40})\\s*$/im);
+  const match = String(body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
   return match?.[1] ?? null;
 }
 
 function profileFromBody(body) {
-  const match = String(body || "").match(/^### Worker profile\\s*\\r?\\n+([^\\r\\n]+)\\s*$/im);
+  const match = String(body || "").match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im);
   return match?.[1]?.trim() ?? null;
 }
 
