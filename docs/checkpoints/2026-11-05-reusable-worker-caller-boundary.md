@@ -175,3 +175,10 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - PR #12 caller validator remains unwired; Worker still `workflow_dispatch`; Supervisor still REST dispatch + `actions: write`.
 - Latest audit report: [2026-11-05 mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `f204547009d975fd226726ee770755f62ec6e141`, commit `c0c316240d96671d0bd3cfba9fabea8b21636846`.
 - Next bounded task: prepare a single integrated authorization design using PR #7's owner-event intake only where needed, native Environment approval for per-run authorization, and PR #12's static reusable caller boundary. Add regression fixtures for direct Worker invocation, replayed labeled event after consumption, duplicate delivery, changed SHA/profile, missing Environment protection and bypass. No production workflow migration or dispatch until independently reviewed.
+
+
+## Final HEAD correction — 2026-11-05
+- PR #12 latest head after documentation commits: `5724029a87d090904be0170a4f3a3fff198147a3`; canonical base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Latest report: [Mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `9fa1389229d526d2a2e97acfff3ab4a692f48d6d`, commit `5724029a87d090904be0170a4f3a3fff198147a3`.
+- CI runs `42025722988` / `42025722995` are SUCCESS on the preceding code-bearing head `49b7cf0f456d70e37afef129d14b0f96c9090c3e`; later commits are docs-only and excluded by path filters. No runs returned for current docs HEAD; latest commit workflow status NOT VERIFIED. Do not call this exact-head CI PASS.
+- PR #12 OPEN / DRAFT / NOT MERGED; mergeability was reported false on latest API read. PR #7 OPEN / DRAFT / NOT MERGED; current head `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`; exact-head static CI run `41921293708`, job `126894183572` SUCCESS; independent review NOT RUN.
