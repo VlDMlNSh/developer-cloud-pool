@@ -62,3 +62,45 @@ Worker/Hono implementation: NOT STARTED.
 Preview/deployment: NOT RUN.
 Security qualification: NOT RUN.
 Production pool: NOT DEPLOYED / NOT QUALIFIED.
+
+
+## Autonomous account recheck and workers.dev provisioning — 2026-11-06
+
+The owner requested that all checks and actions be performed autonomously where possible. Cloudflare connector authentication was revalidated. Read-only API checks returned:
+- `GET /accounts/{account_id}/workers/scripts`: success, empty list; no Worker is deployed.
+- `GET /accounts/{account_id}/workers/subdomain`: initially HTTP 404 / error 10007; no subdomain existed.
+- `GET /accounts/{account_id}/access/apps`: HTTP 403 / error 9999; Cloudflare Access is not enabled.
+- `GET /zones`: success, empty list; no custom zone/domain is attached.
+- `GET /accounts/{account_id}/subscriptions`: HTTP 403 / error 10000; the connected OAuth authorization has no Billing Read scope. Actual Workers plan/subscription entitlement therefore remains NOT VERIFIED. No billing profile, payment data, or card details were read.
+
+A project-specific workers.dev namespace was provisioned through the documented Workers Subdomain API:
+- `PUT /accounts/{account_id}/workers/subdomain` with `subdomain=jarvis-developer-cloud-pool`: success.
+- Follow-up `GET /accounts/{account_id}/workers/subdomain`: success; exact subdomain returned as `jarvis-developer-cloud-pool`.
+- Public hostname namespace: `jarvis-developer-cloud-pool.workers.dev` (no Worker script is deployed there, so no application is being served).
+- This action creates only the account's workers.dev namespace. It did not create a Worker, Access application, identity provider, zone, DNS record, API token, secret, or paid subscription.
+
+Official documentation says workers.dev is included with Workers accounts and intended for personal/hobby projects: https://developers.cloudflare.com/workers/configuration/routing/workers-dev/ . The official Workers Free pricing/limits docs describe the Free allocation: https://developers.cloudflare.com/workers/platform/pricing/ and https://developers.cloudflare.com/workers/platform/limits/ . This documentation does not prove the connected account's current subscription or card requirements; Billing Read is unavailable to this OAuth connection.
+
+Updated status:
+- Cloudflare connector: AUTHENTICATED.
+- workers.dev namespace: PROVISIONED / VERIFIED.
+- Worker scripts: NONE.
+- Workers Free plan entitlement: NOT VERIFIED (billing scope unavailable).
+- Cloudflare Access: DISABLED / NOT REQUIRED for the proposed application-level GitHub OAuth alternative.
+- GitHub OAuth application credentials: NOT CONFIGURED / NOT AVAILABLE through current GitHub connector.
+- Secure application authentication implementation: NOT STARTED.
+- Preview/deployment: NOT RUN. No unauthenticated UI published.
+
+## GitHub exact-head and governance recheck
+
+- Repository default branch: `Основной`; target/default HEAD remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Active ruleset `26550182` targets `refs/heads/Основной`, enforces PR, deletion and non-fast-forward restrictions; required approving reviews = 0, code-owner review disabled, no bypass actors. Independent review is still a project acceptance requirement; do not merge documentation or implementation branches without it.
+- Default HEAD has six completed successful `Reconcile approved task queue` check runs (latest run 42114196331), but combined commit status remains pending with zero statuses; this is not an overall CI qualification.
+- Existing UI PR #6 head `5b8469b3bb691ff48f8be9bda9aea0969d42f537`: static UI and workflow validation checks succeeded, but PR is draft/unmerged, based on stale base SHA `692025e4a039aaf94c6683bb95da38b4f324fce8`, and contains fixtures only (no API/auth/live data).
+- Architecture PR #24 head `cc2003ec3cd01946df25f783842e54940b30a597`: zero check-runs, zero formal reviews, combined status pending; PR remains draft/unmerged. Exact-head CI and independent review NOT VERIFIED.
+- PR #23 mobile scope and several security/worker PRs remain separate open drafts with different base SHAs. Do not combine them blindly.
+- Governance issue #1 remains OPEN. Production dispatch stays disabled/fail-closed; no controller or worker dispatch was invoked.
+
+## Next bounded step
+
+Rebase or reconstruct the graphite UI prototype on the current default baseline only after reviewing the PR #6 diff and preserving its exact provenance. Implement a no-secret local Hono/Workers fixture with server-side GitHub OAuth contract and negative tests; do not expose a public app until the OAuth App credentials are explicitly provisioned through the owner's GitHub settings and the secure session implementation has independent review. Before any deploy, verify account plan entitlement through an authorized billing read or dashboard evidence; do not infer Free from account type or workers.dev availability.
