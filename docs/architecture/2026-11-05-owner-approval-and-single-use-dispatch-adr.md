@@ -153,3 +153,68 @@ This ADR is a design proposal. It does not change production workflow behavior a
 - Workflow syntax / workflow_call: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 - Control workflow concurrency: https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency
 - Actions limits and concurrency queue limit: https://docs.github.com/en/actions/reference/limits
+
+
+## 10. GitHub Free native approval and replay-ledger qualification — 2026-11-05
+
+### Repository plan facts
+
+The repository is confirmed **public** through GitHub repository metadata. GitHub documentation states that Environments, required reviewers, prevent-self-review and rulesets are available for public repositories on GitHub Free. Required reviewers are not available for private repositories on Free. Therefore the Environment gate is a viable no-paid-service candidate for this repository while it remains public.
+
+### Environment gate — candidate, not yet configured or qualified
+
+Proposed environment name: `pool-owner-approval`.
+
+The future Supervisor must complete all untrusted-data validation and publish a run summary containing issue number, exact task SHA, profile, task-envelope digest, approval evidence and run ID **before** the gated job references the Environment. The gated job must be a separate minimal job with no checkout and no untrusted code before approval.
+
+Required configuration:
+- Required reviewer is the repository owner account (trusted numeric ID resolved from repository metadata).
+- `prevent_self_review=true`.
+- Disallow administrator bypass.
+- For this public repository, configure deployment branch policy to permit only the canonical default branch, and verify the exact API read-back.
+- No environment secrets are required for the approval-only job.
+- After approval, a later job must re-fetch the issue/comment and revalidate the exact task envelope and target SHA before any privileged operation.
+
+Limitations:
+- Environment approval is approval of a particular waiting job/deployment in a workflow run; it is not itself a durable consumed-approval ledger for an issue/comment.
+- A run can be rerun or a second run can be started. Every run must require a fresh Environment approval; the workflow must not infer approval from a previous run.
+- The approval UI is not a substitute for displaying the exact issue/SHA/profile/digest in a prior job summary and verifying those values again after approval.
+- If a job is initiated by the repository owner, prevent-self-review prevents that owner from approving it. This must be tested with the actual event actor and intended dispatch route.
+- GitHub documents an administrator bypass feature and a setting to disallow it; the configuration must be read back, not assumed.
+- Environment support is plan-dependent on repository visibility. If the repository becomes private on Free, the required-reviewer protection is not available; fail closed.
+
+**Status:** viable design candidate; environment existence/configuration not read through the currently available GitHub connector; no owner action or environment mutation performed. NOT CONFIGURED / NOT QUALIFIED.
+
+### Git ref as a possible atomic single-use marker — design candidate only
+
+GitHub's Create a reference API creates a fully qualified ref and returns 201 on success; documented conflict/validation responses include 409 and 422. A deterministic ref name keyed only by approval comment ID (for example `refs/tags/pool-consumed/<comment-id>`) could provide a server-enforced uniqueness race: concurrent attempts cannot both successfully create the same ref. The ref should point to an immutable annotated tag object whose message binds comment ID, owner ID, issue, target SHA, profile and envelope digest.
+
+Potential protection:
+- A tag ruleset on `pool-consumed/**` with restrict-updates and restrict-deletions could make successful markers immutable.
+- Do not enable restrict-creations unless the exact authorized GitHub App/token actor is known to be able to create refs under that ruleset; otherwise the legitimate Supervisor may be blocked.
+- If creation remains unrestricted, a repository writer may pre-create a marker and cause denial of service. This is fail-closed but not availability-safe.
+- The marker creation token needs `contents:write`; isolate that permission to one tiny job after all validation and Environment approval. Never check out or execute task code in that job.
+- Treat only a successful create as consumption. On 409/422/timeout, fetch the existing ref and verify its immutable annotated-tag payload exactly; never interpret an ambiguous API failure as permission to retry dispatch.
+- Test tag-rule behavior with the actual `GITHUB_TOKEN` and active ruleset before qualification.
+
+Limitations:
+- A ref marker is a uniqueness primitive, not a full transaction spanning Environment approval and Worker dispatch.
+- A crash after marker creation but before Worker invocation must remain consumed and move to `needs-review`; no automatic replay.
+- A crash after dispatch but before recording the run remains ambiguous and must not cause a second dispatch.
+- Administrators can still change repository configuration/rulesets; governance and audit remain necessary.
+- A malicious writer can potentially preempt a marker name and cause denial of service if creation is not restricted to the authorized actor.
+
+**Status:** promising native primitive for a one-time consume marker; NOT IMPLEMENTED / NOT TESTED / NOT QUALIFIED. No tag ruleset or ref created.
+
+### Updated design direction
+
+Preferred future composition to prototype in isolation:
+1. Validate owner-authored approval and immutable task envelope.
+2. Present the validated issue/SHA/profile/digest in a run summary.
+3. Require owner approval through a protected Environment, with prevent-self-review and no bypass.
+4. Revalidate approval and task envelope after the gate.
+5. Create the deterministic, immutable Git ref marker keyed by approval comment ID using a minimal `contents:write` job.
+6. Dispatch exactly one reusable Worker attempt only after marker creation succeeds.
+7. Any timeout, duplicate marker, missing run, or ambiguous dispatch goes to `needs-review`; never auto-requeue the same approval.
+
+This composition remains a proposal. It does not establish strict end-to-end exactly-once semantics and must not be wired into production until adversarial race tests and independent review pass.
