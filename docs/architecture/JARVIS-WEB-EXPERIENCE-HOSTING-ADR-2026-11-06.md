@@ -145,3 +145,27 @@ No Cloudflare account was accessed, no token/secret was created or read, and no 
 - [Hono source repository](https://github.com/honojs/hono)
 - [Open WebUI API reference](https://docs.openwebui.com/reference/)
 - [GitHub REST API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
+
+
+## Cloudflare account inspection — 2026-11-06
+
+A read-only inspection was performed through the connected Cloudflare account. No account configuration was changed.
+
+Observed state:
+- One Cloudflare account is connected to this session.
+- Workers Scripts list is empty: no existing Worker deployment was found.
+- Workers subdomain lookup returns error 10007: no `workers.dev` subdomain has been provisioned.
+- Access applications lookup returns error 9999: Cloudflare Access is not enabled for this account.
+- Zones list is empty: no domain/zone is currently available in this account.
+- Account type is reported as `standard`; this is not sufficient evidence of the Workers subscription plan. The actual billing/plan entitlement is NOT VERIFIED.
+- No Access application, Access policy, identity provider, Worker, DNS record, secret, API token or deployment was created or changed.
+
+### Blocking prerequisites
+
+1. Owner must open the Workers & Pages dashboard once and provision a `workers.dev` subdomain. The account API explicitly reports that no subdomain exists.
+2. Owner must decide whether to enable Cloudflare Access. Access is currently disabled. Enabling it is an account-level security configuration and was not performed.
+3. No zone/domain exists in the connected account. For a first preview, use the provisioned `workers.dev` hostname only if its security and Access behavior can be qualified; otherwise a domain/zone must be separately provided and approved.
+4. Confirm Workers Free plan and any Access entitlement from the account dashboard before any deployment. The account API's `type: standard` does not prove a no-cost Workers plan.
+5. Re-run read-only account inspection after prerequisites are completed. Do not deploy a public, unauthenticated dashboard as a workaround.
+
+Disposition: Cloudflare account connection VERIFIED; deployment prerequisites BLOCKED / NOT SATISFIED. This is a useful blocker discovery, not a deployed pool.
