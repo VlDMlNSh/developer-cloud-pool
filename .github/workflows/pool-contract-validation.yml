@@ -50,6 +50,12 @@ jobs:
           set -euo pipefail
           ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.yml").sort.each { |path| YAML.parse_file(path); puts "YAML syntax OK: #{path}" }'
 
+      - name: Test reusable Worker caller authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test scripts/pool-worker-caller.test.mjs
+
       - name: Validate pool security contracts
         shell: bash
         run: |
