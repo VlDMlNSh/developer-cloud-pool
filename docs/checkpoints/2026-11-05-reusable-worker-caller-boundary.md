@@ -235,3 +235,13 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Parser is not a durable ledger or CAS. It trusts caller-supplied owner ID, expected task envelope and consumed-comment ID list; production must obtain these from authenticated GitHub metadata and a durable replay-safe store. It does not provide exactly-once.
 - Production Worker still has `workflow_dispatch`; Supervisor still REST-dispatches; production caller validation remains unwired. Dispatch gate current repository setting NOT VERIFIED. No Worker/DSH/Resource Probe/browser/model/provider/Gemini/Claude/privileged dispatch run. Paid fallback NOT USED.
 - Next: qualify native GitHub Environment required-reviewer as a per-run approval gate, including prevent-self-review, bypass policy, exact issue/SHA/profile binding and cancellation/duplicate semantics; separately establish durable single-use consumption. Keep production dispatch closed.
+
+
+## GitHub Free Environment and immutable ref-marker assessment — 2026-11-05
+
+- Confirmed repository visibility=public. GitHub Free supports Environment required reviewers, prevent-self-review and rulesets for public repositories. Required reviewers are not available for private repos on Free.
+- Environment approval is a per-run human gate, not a single-use task ledger. Proposed `pool-owner-approval`: owner as required reviewer, prevent self-review, no administrator bypass, default-branch-only deployment policy, exact run summary before gate, revalidation after gate. Environment API/configuration is NOT VERIFIED through current connector; no mutation.
+- GitHub Create Reference API is a candidate atomic uniqueness primitive for a deterministic tag/ref keyed by approval comment ID; create success is 201, conflict/validation may be 409/422. Protect tag updates/deletions with tag ruleset. Restrict-creations may block legitimate GITHUB_TOKEN unless actor bypass is verified; unrestricted creation permits marker preemption/DoS. This is not an end-to-end transaction.
+- Preferred proposal: validate -> summary -> Environment approval -> revalidate -> create immutable marker in isolated contents:write job -> one Worker attempt; ambiguous outcomes go needs-review, never replay.
+- No environment/ruleset/tag/ref/workflow/secret changes. No Worker/DSH/model/provider execution. Dispatch gate current repo value NOT VERIFIED.
+- Next: pure state-machine tests for environment/ref-marker/crash outcomes, then permission/actor qualification before production integration.
