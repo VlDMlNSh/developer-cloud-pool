@@ -188,3 +188,19 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Audit report final blob: `1e52fee3cf2ca46fee5096122bc945d6921b5033`, report update commit `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`.
 - PR #12 head immediately before this final checkpoint update: `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`; this update is documentation-only and excluded from the existing CI path filters. No exact-head CI claim is made for it.
 - Canonical base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. PR #12 OPEN / DRAFT / NOT MERGED, mergeable=false at latest API read. PR #7 OPEN / DRAFT / NOT MERGED; base remains old `692025e4a039aaf94c6683bb95da38b4f324fce8`, exact-head static CI success but independent review NOT RUN.
+
+
+## Live boundary recheck — 2026-11-05 16:25 +03:00
+- Audit target PR #12 head `57d463f321466f838b4874b78add059280a30022`; canonical `Основной` HEAD remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Created isolated documentation branch `docs/2026-11-05-live-boundary-recheck` from that immutable PR #12 head. No production code or settings changed.
+- New dated report: [live boundary recheck](../reports/2026-11-05-live-boundary-recheck.md), initial commit `46ebf512feb7b33147ab25c4c96161d001541c3f`.
+- PR #7 current head `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`, base `692025e4a039aaf94c6683bb95da38b4f324fce8` (stale relative to canonical), OPEN/DRAFT. Exact-head static CI run `41921293708` SUCCESS. One owner COMMENTED review only; independent review NOT RUN.
+- PR #12 current head `57d463f321466f838b4874b78add059280a30022`, base canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`, OPEN/DRAFT. Exact-head Pool Contract Validation run `42027455932` SUCCESS; reusable context fixture run `42027455840` SUCCESS. Reviews and review threads empty.
+- Active ruleset `26550182` confirmed for canonical branch; required approving review count is 0 and CODEOWNERS review disabled. Thus ruleset does not enforce independent review.
+- Production Worker remains directly triggerable by `workflow_dispatch`; it checks `pool:claimed` + issue SHA/profile but not approval marker or trusted reusable caller. PR #12 validator remains unwired. Supervisor still uses REST workflow dispatch and `actions: write`.
+- PR #7 Supervisor has `unlabeled` in its issue trigger; PR #12 Supervisor trigger omits it. Ensure revoke behavior is reachable in any integrated branch.
+- Approval marker replay/atomicity remain NOT PROVEN; issue comment pagination is capped at 100 and REST label/comment operations are not atomic.
+- GitHub Environments with required reviewers are supported for public repositories on GitHub Free; actual repository Environment/reviewer/prevent-self-review/bypass configuration remains NOT VERIFIED.
+- Current `POOL_DISPATCH_ENABLED` repository variable could not be read through the connected GitHub interface: NOT VERIFIED. Do not infer current value from historical issue notes.
+- Worker, DSH, Resource Probe, browser, Gemini, Claude, provider/model calls and privileged dispatch NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
+- Next: one integrated non-privileged design and implementation package on one immutable SHA: trusted per-run approval + replay controls + Worker `workflow_call` only + static Supervisor call + bounded matrix + regression fixtures. Require exact-head CI and independent security review before any privileged run.
