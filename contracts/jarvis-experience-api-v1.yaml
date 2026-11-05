@@ -1,0 +1,434 @@
+openapi: 3.1.0
+info:
+  title: Jarvis Experience API
+  version: 1.0.0
+  summary: Read-only web console API for Developer Cloud Pool
+  description: >
+    Read-only API for the Jarvis Experience plane. GitHub remains the source of
+    truth for tasks and workflow evidence. This API does not authorize or
+    dispatch work. Every response reports observation time and data provenance.
+servers:
+  - url: /api/v1
+    description: Same-origin API on the Jarvis web console
+security:
+  - cloudflareAccessCookie: []
+tags:
+  - name: Health
+  - name: Pool
+  - name: Tasks
+  - name: WorkflowRuns
+paths:
+  /health:
+    get:
+      tags: [Health]
+      operationId: getHealth
+      summary: Read service health
+      responses:
+        '200':
+          description: Service is responding; this does not imply that the pool is running.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /pool/summary:
+    get:
+      tags: [Pool]
+      operationId: getPoolSummary
+      summary: Read observed pool state and gate status
+      responses:
+        '200':
+          description: Summary with explicit unknown and unavailable states.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolSummaryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+  /tasks:
+    get:
+      tags: [Tasks]
+      operationId: listTasks
+      summary: List GitHub issue-backed pool tasks
+      parameters:
+        - name: state
+          in: query
+          schema:
+            type: string
+            enum: [open, closed, all]
+            default: open
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: Task list and provenance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+  /tasks/{taskId}:
+    get:
+      tags: [Tasks]
+      operationId: getTask
+      summary: Read one GitHub issue-backed task
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Task detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDetailResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Task not found.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+  /workflow-runs:
+    get:
+      tags: [WorkflowRuns]
+      operationId: listWorkflowRuns
+      summary: List GitHub Actions workflow runs
+      parameters:
+        - name: branch
+          in: query
+          schema:
+            type: string
+            maxLength: 128
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: Workflow run metadata and evidence links.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRunListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+  /workflow-runs/{runId}:
+    get:
+      tags: [WorkflowRuns]
+      operationId: getWorkflowRun
+      summary: Read one workflow run
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Workflow run details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRunDetailResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Workflow run not found.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+  /workflow-runs/{runId}/jobs:
+    get:
+      tags: [WorkflowRuns]
+      operationId: listWorkflowRunJobs
+      summary: List jobs associated with one workflow run
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Job metadata; no job logs or artifacts are proxied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+components:
+  securitySchemes:
+    cloudflareAccessCookie:
+      type: apiKey
+      in: cookie
+      name: CF_Authorization
+      description: >
+        Access session cookie. Cloudflare Access authenticates the browser
+        request; the Worker must independently verify the signed
+        Cf-Access-Jwt-Assertion header because ctx.access is unavailable behind
+        the Static Assets router.
+  responses:
+    Unauthorized:
+      description: Missing or invalid Access identity assertion.
+    Forbidden:
+      description: Authenticated identity is not allowlisted for this application.
+    RateLimited:
+      description: Upstream or local rate limit reached; retry only after the indicated reset.
+    UpstreamUnavailable:
+      description: GitHub API or required upstream evidence is unavailable.
+  schemas:
+    Availability:
+      type: string
+      enum: [AVAILABLE, STALE, UNAVAILABLE, NOT_VERIFIED]
+    Provenance:
+      type: object
+      additionalProperties: false
+      required: [observedAt, availability]
+      properties:
+        observedAt:
+          type: string
+          format: date-time
+        availability:
+          $ref: '#/components/schemas/Availability'
+        repository:
+          type: string
+          const: VlDMlNSh/developer-cloud-pool
+        ref:
+          type: string
+        commitSha:
+          type: string
+          pattern: '^[0-9a-f]{40}$'
+        sourceUrl:
+          type: string
+          format: uri
+        staleAfterSeconds:
+          type: integer
+          minimum: 0
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [service, status, observedAt]
+      properties:
+        service:
+          type: string
+          const: jarvis-experience-api
+        status:
+          type: string
+          enum: [HEALTHY, DEGRADED]
+        observedAt:
+          type: string
+          format: date-time
+    PoolSummaryResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, dispatchGate, runtimeStatus, telemetryAvailability, concurrencyCeiling]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        dispatchGate:
+          type: string
+          enum: [DISABLED, ENABLED, UNKNOWN]
+        runtimeStatus:
+          type: string
+          enum: [NOT_RUN, QUEUED, RUNNING, DEGRADED, SUCCEEDED, FAILED, UNKNOWN, NOT_VERIFIED]
+        telemetryAvailability:
+          $ref: '#/components/schemas/Availability'
+        activeRunners:
+          type: [integer, 'null']
+          minimum: 0
+        concurrencyCeiling:
+          type: integer
+          minimum: 0
+          description: Configured account-level concurrency ceiling; not a live runner count.
+        note:
+          type: string
+    TaskListResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, items]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    TaskDetailResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, task]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        task:
+          $ref: '#/components/schemas/Task'
+    Task:
+      type: object
+      additionalProperties: false
+      required: [id, title, state, url, updatedAt]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          maxLength: 512
+        state:
+          type: string
+          enum: [OPEN, CLOSED, CLAIMED, QUEUED, RUNNING, REVIEW, COMPLETE, INVALID, UNKNOWN]
+        labels:
+          type: array
+          items:
+            type: string
+            maxLength: 100
+        targetSha:
+          type: [string, 'null']
+          pattern: '^[0-9a-f]{40}$'
+        updatedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        bodyPreview:
+          type: string
+          maxLength: 4000
+          description: Untrusted plain text; must never be rendered as HTML.
+    WorkflowRunListResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, items]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowRun'
+    WorkflowRunDetailResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, run]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        run:
+          $ref: '#/components/schemas/WorkflowRun'
+    WorkflowRun:
+      type: object
+      additionalProperties: false
+      required: [id, name, status, url, createdAt, headSha]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          maxLength: 256
+        status:
+          type: string
+          enum: [QUEUED, IN_PROGRESS, COMPLETED, UNKNOWN]
+        conclusion:
+          type: [string, 'null']
+          enum: [SUCCESS, FAILURE, CANCELLED, SKIPPED, TIMED_OUT, ACTION_REQUIRED, STALE, NEUTRAL, null]
+        headSha:
+          type: string
+          pattern: '^[0-9a-f]{40}$'
+        branch:
+          type: string
+          maxLength: 128
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        logsAvailability:
+          type: string
+          enum: [LINK_ONLY, UNAVAILABLE, NOT_VERIFIED]
+        artifactsAvailability:
+          type: string
+          enum: [LINK_ONLY, UNAVAILABLE, NOT_VERIFIED]
+    WorkflowJobListResponse:
+      type: object
+      additionalProperties: false
+      required: [provenance, items]
+      properties:
+        provenance:
+          $ref: '#/components/schemas/Provenance'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJob'
+    WorkflowJob:
+      type: object
+      additionalProperties: false
+      required: [id, name, status, url]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          maxLength: 256
+        status:
+          type: string
+          enum: [QUEUED, IN_PROGRESS, COMPLETED, UNKNOWN]
+        conclusion:
+          type: [string, 'null']
+        url:
+          type: string
+          format: uri
