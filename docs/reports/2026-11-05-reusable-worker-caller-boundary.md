@@ -152,3 +152,19 @@ Build a non-privileged reusable-workflow fixture to capture the actual `github.w
 - ADR acceptance includes independent reviewer and required status checks. Current ruleset has zero required approvals, so branch PR gate is not an independent security review.
 - No production workflow changed; no worker/DSH/browser/model/secret/privileged execution. POOL_DISPATCH_ENABLED state remains NOT VERIFIED through current connector; do not execute.
 - Next: implement only a pure owner-approval evidence parser and deterministic state-transition tests, without network, workflow dispatch, or GitHub mutation. Then implement the complete Supervisor/Worker conversion as one reviewed PR.
+
+
+## Owner approval parser — bounded implementation and CI — 2026-11-05
+
+- Added pure module `scripts/pool-owner-approval.mjs`, blob SHA `84d631449c58a3b9b9f36b3adf1de976f6debeb8`.
+- Added `scripts/pool-owner-approval.test.mjs`, blob SHA `a08fe457376ff65d5d3a71c2f15688d30c705e88`.
+- Added test step to `.github/workflows/pool-contract-validation.yml`, blob SHA `3a03a48c7ce27302813fe5b53b6a8f1846f7463a`.
+- Parser checks numeric trusted owner ID vs comment author ID, comment ID, unchanged created/updated timestamp, strict command syntax, issue number, target SHA, allowlisted profile, envelope SHA-256 and consumed comment IDs. It returns structured rejection reasons and no side effects.
+- Pure transition helper allows a claim only from submitted/needs-review state with validated approval and no prior dispatch attempt; ambiguous dispatch or invalid state fails to needs-review. Source explicitly documents that external durable ledger + serialization are required; it is not CAS, a transaction or exactly-once.
+- No network calls, GitHub mutations, workflow dispatch or credentials exist in the new module.
+- Exact PR head `4afef4f23cbafa7b385760e5b025089af00e601a`: [Pool Contract Validation run 42041136037](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42041136037) SUCCESS; job `127291928780`. Logs: existing caller tests 8/8; owner approval tests 14/14; all seven workflow YAML files parsed; static validator emitted `POOL_CONTRACT_VALIDATION=PASS`; dispatch gate reported disabled or unset. [Reusable Worker Context Fixture run 42041136130](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42041136130) SUCCESS.
+- Exact-head PR metadata: OPEN / DRAFT / NOT MERGED; canonical base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`. Independent review remains NOT RUN.
+- This pass does NOT solve durable replay prevention or owner approval deployment authorization. GitHub Issues comment IDs/labels and workflow concurrency are not transactional. The parser is not wired into production Supervisor/Worker.
+- Canonical Worker remains `workflow_dispatch`; canonical Supervisor still uses REST dispatch and has `actions: write`; Worker report job still has `issues: write`. Production caller boundary remains BLOCKED / NOT IMPLEMENTED.
+- `POOL_DISPATCH_ENABLED` current repository value NOT VERIFIED through the connector. The CI run only observed its own environment as disabled/unset. No runtime, Worker, DSH, Resource Probe, browser, Gemini, Claude, provider/model or privileged dispatch was run. Paid fallback NOT USED.
+- Next: evaluate native GitHub Environment required-reviewer gate as per-run owner approval and integrate it with the parser/approval envelope only after proving the Environment is configured with prevent-self-review and no bypass. In parallel, assess durable single-use ledger options available under GitHub Free; do not claim exactly-once from Issues or concurrency.
