@@ -31,3 +31,13 @@ Wait for run 42038801999 to finish. If it fails or times out, do not repeat the 
 3. Temporary lockfile-generation code removed.
 4. Exact-head CI and zizmor pass.
 5. Independent security review.
+
+
+## Upstream dependency-source research
+- Official npm package: `@deepseek-ai/dsh@0.2.1-rc.5`, 86 declared dependencies, linked upstream repository: https://www.npmjs.com/package/%40deepseek-ai/dsh?activeTab=dependencies
+- Upstream repository root manifest blob: `c4f130943ddfee2d8d8040c6dd679f5b0e12312a`; declares `pnpm@11.28.5`, Node >=24.9.0, and workspaces.
+- Upstream pnpm workspace blob: `59b31eb46b90e35251cbf3c26b20556892c4aa52`.
+- Upstream pnpm lockfile retrieval returned empty content through connector; content not verified.
+- No authoritative npm lockfile/transitive dependency graph recovered. Upstream pnpm lockfile is not interchangeable with npm lockfile.
+- Exact npm version tag lookup in upstream GitHub failed; no source-tag provenance inferred.
+- Decision: npm lock generation remains BLOCKED / NOT VERIFIED. Do not fabricate or convert an incomplete lockfile. Research registry/cache/network path next.
