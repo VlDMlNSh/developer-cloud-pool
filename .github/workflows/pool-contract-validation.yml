@@ -62,6 +62,12 @@ jobs:
           set -euo pipefail
           node --test scripts/pool-owner-approval.test.mjs
 
+      - name: Test gated single-use dispatch planning and reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test scripts/pool-gated-dispatch.test.mjs
+
       - name: Validate pool security contracts
         shell: bash
         run: |
