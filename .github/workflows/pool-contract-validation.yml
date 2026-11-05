@@ -42,11 +42,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --prefix dsh-runtime --lockfile-version=3
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --fetch-retries=0 --fetch-timeout=45000 --prefix dsh-runtime --lockfile-version=3
           node -e 'const p=require("./dsh-runtime/package-lock.json"); if(p.lockfileVersion!==3 || p.packages[""].dependencies["@deepseek-ai/dsh"]!=="0.2.1-rc.5") process.exit(1); console.log("LOCKFILE_VALIDATED packages="+Object.keys(p.packages).length)'
           printf '%s\n' 'LOCKFILE_BASE64_BEGIN'
           base64 -w0 dsh-runtime/package-lock.json
           printf '\\n%s\\n' 'LOCKFILE_BASE64_END'
+
+      - name: Upload generated lockfile for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: dsh-runtime-lockfile
+          path: dsh-runtime/package-lock.json
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Assert worker dispatch remains disabled
         shell: bash
