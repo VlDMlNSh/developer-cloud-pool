@@ -31,7 +31,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 5. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
 6. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
 
-The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Dispatch is currently disabled by default because the default branch has not yet been protected. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
+The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. An active repository Ruleset protects the default branch, but it currently requires zero approving reviews. Dispatch must remain disabled until the production reusable-Worker caller boundary, independent security review, and current governance/variable state are verified and accepted. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
 
 ## First cloud evaluations
 - [Runner Resource Probe](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/runner-resource-probe.yml)
