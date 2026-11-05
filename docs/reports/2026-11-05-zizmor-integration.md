@@ -6,43 +6,44 @@
 - Working branch: `security/introduce-zizmor-audit-2026-11-05`.
 - Implementation commit: `787ec178bb813d26e9b1ebc7901e5b44db0174da`.
 - PR: [#14](https://github.com/VlDMlNSh/developer-cloud-pool/pull/14), OPEN / DRAFT / NOT MERGED.
-- PR head at implementation verification: `787ec178bb813d26e9b1ebc7901e5b44db0174da`; base: canonical HEAD.
-- Compare: 1 commit ahead, 0 behind; only `.github/workflows/pool-contract-validation.yml` changed (11 additions, 1 deletion).
+- Initial analyzer pin: `1.32.0`, subsequently corrected after an observed CI failure.
+- Adopted official action `zizmorcore/zizmor-action` pinned to `53290badfa369cb0bf7ad16342cb62c2fa47ac7b` (v0.8.0).
+- Corrected analyzer pin: `1.31.1`, matching the action's documented known stable version at this action release.
+- CI failure evidence: run [42037176846](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42037176846), job 127278234336. The action emitted `Unknown version 1.32.0`.
+- Correction commit: `b145aaa789fbddbbcf4e5aa8a1316812ba61d8e4`.
+- Corrected workflow blob SHA: `a7898bed7cbf439ca5c796b12133ea8640da842e`.
+- Checkpoint correction commit: `cead1efd0362884fbe25f4f28ef22cd9fb025ff3`.
 
 ## Mature component benchmark
-- Adopted `zizmor`, a mature static analyzer for GitHub Actions workflows: https://github.com/zizmorcore/zizmor
-- Adopted official action `zizmorcore/zizmor-action`, immutable action commit `53290badfa369cb0bf7ad16342cb62c2fa47ac7b` (v0.8.0).
-- Analyzer version pinned to `1.32.0`.
+- Adopted `zizmor`, a static analyzer for GitHub Actions workflows: https://github.com/zizmorcore/zizmor
+- Official action docs specify exact version inputs and the action's default/latest-known release; action release history records 1.31.1 as the synchronized default at v0.7.1. References: https://github.com/zizmorcore/zizmor-action and https://github.com/zizmorcore/zizmor-action/releases.
 - GitHub Advanced Security upload disabled; online audits disabled; local annotations enabled.
 - Existing project-specific YAML/Psych and Node contract validators retained; zizmor supplements rather than replaces them.
-- `actionlint` remains deferred pending compatibility verification for the GitHub reusable-workflow context fields used by this project.
 
 ## Change and provenance
-- Updated only `.github/workflows/pool-contract-validation.yml`.
-- New workflow retains `contents: read`, pinned checkout action and `persist-credentials: false`.
+- Corrected only `.github/workflows/pool-contract-validation.yml` after the failed analyzer bootstrap.
+- Workflow retains `contents: read`, pinned checkout action and `persist-credentials: false`.
 - No secret access, variable mutation, Environment changes, dispatch, Worker, DSH, Resource Probe, browser or provider/model calls.
 - No paid service or fallback introduced.
-- Workflow blob re-read and verified: `3e558fb8210a3de259207fe4c41343104e48d304`.
-- Implementation commit verified through GitHub: `787ec178bb813d26e9b1ebc7901e5b44db0174da`.
+- Workflow and checkpoint were read back from GitHub after their respective updates.
 
 ## CI and acceptance
-- Exact-head workflow runs queried after PR creation: empty result.
-- Combined status contexts queried: empty result.
-- Exact-head CI: NOT VERIFIED (not PASS).
+- Original run 42037176846: FAILURE, specifically because the action did not recognize analyzer version 1.32.0.
+- Corrected exact-head CI: NOT VERIFIED until its run completes and logs are inspected.
 - Independent review: NOT RUN.
-- PR #14 remains DRAFT, not merged, not accepted, not qualified.
+- PR #14 remains OPEN / DRAFT / NOT MERGED, not accepted, not qualified.
 - No production runtime authorization or execution is granted by this change.
 
 ## Governance and remaining blockers
-- Canonical HEAD confirmed unchanged at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Issues #1 and #5 remain open.
-- Current `POOL_DISPATCH_ENABLED` and live ruleset configuration were not re-read in this pass; current state NOT VERIFIED. Maintain fail-closed posture; do not enable dispatch.
+- Canonical base used by PR #14: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Issues #1 and #5 remain open in the latest available issue search.
+- Live `POOL_DISPATCH_ENABLED` and active ruleset were not re-read during this pass. Keep dispatch fail-closed; do not enable it.
 - Worker still exposes direct `workflow_dispatch`; Supervisor still uses REST dispatch; PR #12 caller validator remains unwired into production.
-- PR #13 docs-only exact-head CI remains NOT VERIFIED from the current query.
+- PR #13 is documentation-only and remains isolated from canonical branch.
 
 ## Next bounded step
-1. Recheck PR #14 exact-head CI after the workflow run is created.
-2. Inspect zizmor findings and classify each as confirmed issue, accepted false positive, or unresolved; do not suppress without evidence.
-3. Re-read workflow and blob SHA after any correction.
-4. Keep PR #14 draft until exact-head CI and independent review are complete.
-5. Continue the separate production Worker `workflow_call` boundary work; no dispatch until issuer/caller authorization and governance gates are accepted.
+1. Inspect corrected PR #14 exact-head CI and all zizmor findings.
+2. Classify findings as confirmed issue, false positive with evidence, or unresolved; do not suppress without evidence.
+3. Complete independent security review.
+4. Continue the integrated Worker `workflow_call` authorization boundary.
+5. Do not enable dispatch until caller authorization and governance gates are independently accepted.
