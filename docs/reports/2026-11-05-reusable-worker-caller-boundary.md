@@ -67,3 +67,20 @@ Added `scripts/pool-worker-caller.mjs` on the working branch only.
 - Latest branch HEAD at checkpoint read-back: `6b409e0b09d2cef1b507d50662236d6f80b32340`.
 - Latest report blob at read-back: `af9329089528e46b35248f9ca540bdf44aaa1361`; latest checkpoint blob: `b61258165101ba67bd72adb86f16b074e360fc8c`.
 - PR #12 was created as DRAFT at head `215bd04490d19ec1d6392a8defa9bbd9e1e7bafc`. The branch has advanced since PR creation; do not treat that recorded SHA as the current PR head. A live exact-head CI run has not been observed; CI remains NOT VERIFIED.
+
+
+## Follow-up verification — 2026-11-05 current live pass
+
+- Live PR #12 snapshot: OPEN / DRAFT / NOT MERGED; head `4d656a4337246f24cb3909a77e4198434f54076a`; base `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Live compare: 12 commits ahead / 0 behind; merge base exactly canonical base SHA. No canonical branch changes.
+- Exact PR validation workflow run `41973768962` completed SUCCESS. GitHub Actions associated this run with PR merge ref `a41434d7b265e85e1347c483f427f83d36a0c3f0` (merge of PR head `4d656a4337246f24cb3909a77e4198434f54076a` into base), not a direct checkout of the head SHA. Therefore classify as **PR merge-result CI PASS**, while direct head-only CI is not separately evidenced.
+- Job `127067796013` completed SUCCESS. Logs show `POOL_DISPATCH_ENABLED=false` in that validation run; YAML parsing passed for all five workflow files; Node tests: 8 passed, 0 failed; static pool contract validator emitted `POOL_CONTRACT_VALIDATION=PASS`. Runner was standard `ubuntu-24.04`; token permissions contents:read and metadata:read; checkout credentials were not persisted.
+- Caller validator/test/workflow files reread from branch; blob SHAs unchanged: validator `88d79d74691431ead14f29426d214833c0086183`, tests `251a4772d85a5dff8cdcc8ca589509ffa48eac98`, CI workflow `5991c0cf839d510ef6e6540895ddbcd9e306c068`.
+- PR #12 reviews: none. Independent security review NOT RUN. PR remains DRAFT.
+- Canonical Worker reread: blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; still `workflow_dispatch` with issue-label/body validation. Canonical Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; still launches REST-dispatching supervisor script. Caller validator remains unwired. Authorization boundary BLOCKED.
+- Gemini controller absent from canonical branch (404); Gemini NOT RUN. Claude Code NOT RUN; no verified third host/free route. Worker, DSH, Resource Probe, browser, model/provider calls and privileged dispatch NOT RUN. Paid fallback NOT USED. Runtime NOT QUALIFIED.
+- Governance: historical Issue #1 records Ruleset ID `26550182` and `POOL_DISPATCH_ENABLED=false` on 2026-11-04, but this pass did not independently query the live ruleset/settings endpoint. The workflow log's false value is run-scoped evidence only. Current governance qualification remains NOT VERIFIED.
+- PR #7/#8/#11 remain open drafts in this snapshot; PR #7's only review is a COMMENTED owner-authored finding, PR #8/#11 have no reviews. None are accepted or merged.
+
+## Next bounded step
+Build a non-privileged reusable-workflow fixture to capture the actual `github.workflow_*` and `job.workflow_*` context values under a statically declared local `workflow_call` invocation, then compare those observed values against the validator assumptions. Do not wire the validator into the production Worker or refactor Supervisor until fixture evidence and independent review validate the context semantics and same-SHA assumption. Keep all dispatch/runtime gates closed.
