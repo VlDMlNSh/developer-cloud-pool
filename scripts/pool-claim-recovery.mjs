@@ -6,7 +6,7 @@
  * provable run is ambiguous and must require fresh owner approval.
  */
 export function planClaimRecovery({ matchingRunStatus, ageMs, staleAfterMs = 15 * 60 * 1000 }) {
-  if (matchingRunStatus === "queued" || matchingRunStatus === "in_progress") {
+  if (["queued", "in_progress", "waiting", "pending", "requested"].includes(matchingRunStatus)) {
     return { state: "claimed", action: "wait", retryAllowed: false, reason: "worker-run-active" };
   }
   if (matchingRunStatus === "completed") {
