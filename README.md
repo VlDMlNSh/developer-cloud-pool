@@ -7,7 +7,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - 20-slot GitHub-hosted execution architecture: DESIGN.
 - GitHub Pool Supervisor and task queue: IMPLEMENTED SCAFFOLD, NOT RUN.
 - Pool Worker: IMPLEMENTED for one DSH headless smoke profile only, NOT RUN.
-- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED; dispatch fail-closed until branch governance is enabled and POOL_DISPATCH_ENABLED=true.
+- Scheduled/event-driven wake-up: IMPLEMENTED SCAFFOLD, NOT QUALIFIED; dispatch must remain disabled until production caller authorization, one-time owner approval, independent review and governance gates are accepted.
 - General-purpose agent execution, checkpoint/resume and automatic task continuation: NOT IMPLEMENTED.
 - DeepSeek Harness: selected as candidate task runtime; developer-preview evaluation only.
 - DSH headless evaluation: NOT RUN.
@@ -52,5 +52,7 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - GitHub-hosted runner location and data residency are managed by GitHub; this design does not promise a selected execution country.
 
 ## Latest engineering report
+- [Production caller boundary design — 2026-11-05](docs/reports/2026-11-05-production-caller-boundary-design.md)
+- [Production caller boundary readiness — 2026-11-05](docs/reports/2026-11-05-production-caller-boundary-readiness.md)
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
