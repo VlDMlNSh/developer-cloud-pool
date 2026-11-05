@@ -107,3 +107,18 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Canonical branch remains unchanged; docs updates are confined to the working branch.
 - Worker, DSH, Resource Probe, browser, Gemini, Claude, provider/model calls and privileged dispatch NOT RUN; runtime NOT QUALIFIED.
 - Next: define and implement production reusable Worker `workflow_call` + static Supervisor invocation, preserving single-use approval, provenance, immutable target SHA, bounded concurrency and least privilege. No dispatch until exact-head CI, independent review and current governance gates pass.
+
+
+## Production boundary design — 2026-11-05
+- Latest exact-head CI for PR #12 starting HEAD `91e157a0671b97a35a82d7f1a2df8ca325854aac`:
+  - Pool Contract Validation run `42024560920`, job `127235402134`: COMPLETED / SUCCESS.
+  - Reusable Worker Context Fixture Caller run `42024561075`, job `127235402611`: COMPLETED / SUCCESS.
+- Live Ruleset `26550182`: ACTIVE on `refs/heads/Основной`; required approvals = 0; CODEOWNERS review disabled. PR #12 reviews and threads empty; independent review NOT RUN.
+- Issue #1 still records owner-side `POOL_DISPATCH_ENABLED=false` read-back from 2026-11-04. No fresh variable read-back in this pass; current value NOT VERIFIED by this pass.
+- Current Worker remains `workflow_dispatch`; Supervisor still has `actions: write` and uses REST workflow dispatch; caller validator remains unconnected to production.
+- Key security finding: `pool:ready` / `pool:claimed` labels do not independently prove approver identity or single-use approval. No atomic consume/replay-safe design has yet been demonstrated using GitHub Issues labels.
+- Added design contract: [Production reusable Worker boundary contract](../architecture/PRODUCTION-REUSABLE-WORKER-BOUNDARY-CONTRACT.md).
+- Added report: [Production caller boundary design — 2026-11-05](../reports/2026-11-05-production-caller-boundary-design.md).
+- README corrected: event-driven wake-up is scaffold only, not qualified; latest reports linked; no instruction to enable dispatch merely after branch protection.
+- Production workflows unchanged. Worker/DSH/Resource Probe/browser/Gemini/Claude/provider calls/privileged dispatch NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
+- Next: design and test a GitHub Free-compatible owner approval provenance and single-use consumption mechanism, including duplicate events, concurrency and supervisor crash/replay. Only then implement Worker `workflow_call` only + static Supervisor invocation as one reviewed change.
