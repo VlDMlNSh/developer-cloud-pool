@@ -72,3 +72,15 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Worker/Supervisor production boundary unchanged; Worker still has `workflow_dispatch`, Supervisor still REST-dispatches. Runtime, Resource Probe, DSH, browser, model/provider calls and privileged dispatch NOT RUN. Gemini/Claude NOT RUN. Paid fallback NOT USED.
 - Detailed report: [2026-11-05 validator correction](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
 - Next: obtain corrected CI result, then independent review. Keep dispatch closed.
+
+
+## Corrected validator CI — 2026-11-05 verified result
+- Pool Contract Validation run `42023631278`, job `127232286449`: COMPLETED / SUCCESS, associated with PR #12 head `8387dccf556f03194aabcf032c9579c7b9a1bf51`.
+- Job logs: dispatch variable was observed as `false`; all seven workflow YAML files parsed; Node caller tests 8/8 passed; static validator output `POOL_CONTRACT_VALIDATION=PASS`; external Actions pin check passed.
+- Fixture run `42023631355`, job `127232286911`: COMPLETED / SUCCESS.
+- Classification: PR merge-result CI PASS associated with exact PR head; not a direct branch-only checkout. The passing result validates this validator correction and non-privileged fixture only.
+- Ruleset 26550182 detail re-read: ACTIVE; exact selector `refs/heads/Основной`; pull request required; no bypass actors; current-user bypass never. Required approving reviews = 0, CODEOWNERS review disabled — therefore this is not an independent security-review gate.
+- PR #12 remains OPEN / DRAFT / NOT MERGED; independent review NOT RUN. Canonical Worker/Supervisor remain unchanged and production authorization remains BLOCKED.
+- Working branch HEAD at verification: `8387dccf556f03194aabcf032c9579c7b9a1bf51`; compare 26 ahead / 0 behind canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Report: [validator correction and CI evidence](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
+- Next: independent review and a separately scoped implementation package to convert Worker to workflow_call and remove REST dispatch. Do not run production Worker/DSH/Resource Probe or enable dispatch.
