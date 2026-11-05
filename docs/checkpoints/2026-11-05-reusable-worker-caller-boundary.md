@@ -59,3 +59,16 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Next: confirm validation run, add static regression checks for fixture trigger/call shape, retain all runtime gates closed.
 
 - Follow-up: Pool Contract Validation run `41977381462` completed SUCCESS (job `127079333733`); dispatch gate, YAML parse, caller unit tests, and static pool contract validator all passed. Fixture run `41977381184` also SUCCESS.
+
+
+## Contract validator correction — 2026-11-05
+- Investigated failed Pool Contract Validation run `42023131061`, job `127230605028`. Logs show YAML parse success, 8/8 caller tests passed, and the sole failure was the generic action pin scanner incorrectly classifying the static local reusable workflow reference as an external action.
+- Separate fixture run `42023131365`, job `127230606746`: SUCCESS.
+- Corrected `scripts/validate-pool-contract.mjs`: local reusable workflow references under `./.github/workflows/` are exempted from external-action SHA pinning; external action refs remain SHA-pinned. Fixture-specific static/read-only/secret-free/workflow_call checks remain.
+- Latest implementation HEAD at correction: `ef4de08e12d5a22adf0df19b61a35886c72d03f4`; validator blob `a69714d87553d14b00cd0c0c3e3df89586136960`; read-back VERIFIED.
+- PR #12 remains OPEN / DRAFT / NOT MERGED. Compare 23 ahead / 0 behind; merge base remains canonical `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- New CI run for corrected HEAD/merge SHA had not appeared in GitHub API at checkpoint time: CI NOT VERIFIED. Independent review NOT RUN.
+- Ruleset `26550182` independently re-read ACTIVE. CI log observed `POOL_DISPATCH_ENABLED=false`, but direct current repository-variable read-back remains NOT VERIFIED.
+- Worker/Supervisor production boundary unchanged; Worker still has `workflow_dispatch`, Supervisor still REST-dispatches. Runtime, Resource Probe, DSH, browser, model/provider calls and privileged dispatch NOT RUN. Gemini/Claude NOT RUN. Paid fallback NOT USED.
+- Detailed report: [2026-11-05 validator correction](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
+- Next: obtain corrected CI result, then independent review. Keep dispatch closed.
