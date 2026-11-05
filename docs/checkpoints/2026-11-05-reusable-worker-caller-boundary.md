@@ -201,3 +201,14 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Governance settings were not freshly read; NOT VERIFIED. Worker/DSH/Resource Probe/browser/model/Gemini/Claude/privileged dispatch NOT RUN. Paid fallback NOT USED.
 - Classification: unit tests/static checks and fixture VERIFIED for narrow scope; production authorization BLOCKED / NOT IMPLEMENTED.
 - Next: solve owner approval provenance + replay-safe single-use consumption, then convert Worker to workflow_call only and Supervisor to static local invocation in one reviewed change. Keep dispatch disabled.
+
+
+## Governance and related PRs — live recheck 2026-11-05
+- Ruleset 26550182 read directly: ACTIVE; exact branch selector refs/heads/Основной; PR required; approvals 0; thread resolution required; deletion/non-fast-forward prohibited; CODEOWNERS review and unattributed extra approval disabled; no bypass actors; current-user bypass never. Required status checks not configured. Classic branch-protection endpoint returned 403 due integration permission.
+- Current POOL_DISPATCH_ENABLED cannot be read through this integration. Historical Issue #1 owner CLI evidence says false; current value NOT VERIFIED. Do not execute.
+- PR #15 head c57f2ab3f2b91bf6b3e413640f65ec518008b75e: exact-head run 42038004176 SUCCESS. Supervisor blob d05fc4037f5663a64bb82d9ff67afe95e20c73da removes workflow_run; still actions: write, REST dispatch, and Worker workflow_dispatch remain. No exact-head zizmor run on PR #15.
+- PR #14 head 5a84f037a612dbb065ab9832bd3f6471cc5a551b: run 42037723023 FAILED; zizmor error on workflow_run, warnings on ad-hoc npm dependency installation in DSH workflows.
+- PR #16 head 00bf891729de7c1092a5bde8b09fec6f4c4cbc66: run 42039481919 still IN_PROGRESS at temporary npm lockfile generation; no artifact confirmed.
+- PR #12 head e6b4150cd1a56a032220514365b91e321ff9157f: exact-head fixture and contract runs 42039867663 and 42039867909 SUCCESS; no independent reviews; production Worker still unchanged.
+- All four PRs OPEN / DRAFT / NOT MERGED. No Worker, DSH, Resource Probe, browser, model/provider, Gemini/Claude or privileged dispatch run. Paid fallback not used.
+- Next: prove owner approval event provenance and race-safe one-time consumption. Labels/comments and Actions concurrency are not atomic one-time capabilities.
