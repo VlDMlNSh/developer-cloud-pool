@@ -141,3 +141,14 @@ Build a non-privileged reusable-workflow fixture to capture the actual `github.w
 - Governance classification: active ruleset VERIFIED; zero required approvals is insufficient for independent acceptance; current dispatch variable NOT VERIFIED; no independent review. PRs #12/#14/#15/#16 remain OPEN / DRAFT / NOT MERGED.
 - No Worker, DSH, Resource Probe, browser, Gemini, Claude, model/provider, privileged dispatch, or paid fallback was run.
 - Next bounded action: design and test an owner-approval record with provenance and race-safe one-time consumption. GitHub issue labels/comments alone do not offer atomic compare-and-swap; do not pretend that a pool:claimed label or concurrency group is a one-time capability.
+
+
+## Owner approval / single-use dispatch ADR — 2026-11-05
+- Added [ADR: Owner approval provenance and single-use Worker dispatch](../architecture/2026-11-05-owner-approval-and-single-use-dispatch-adr.md), proposed / not implemented / not qualified. Verified blob SHA after reread: ddc05f0b3b1aa3b947e5b43e8b9f3c1c7557b59b.
+- Official GitHub context documentation confirms that reusable-workflow github context refers to the caller, while job.workflow_repository / job.workflow_file_path / job.workflow_ref / job.workflow_sha identify the called workflow. This supports the distinct caller/callee validation design; the existing fixture does not establish production values.
+- Official GitHub concurrency documentation confirms queue:max permits up to 100 pending runs and FIFO processing by when runs started waiting. It is a serialization aid only, not an atomic transaction or durable exactly-once ledger.
+- ADR proposes owner-authored approval comment bound to issue, target SHA, allowlisted profile and envelope digest; one serialized Supervisor as sole task-state writer; worker workflow_call only; no REST workflow dispatch; ambiguous dispatch outcomes go to needs-review with no automatic replay. Worker report job must lose issue-write permission. This is a design proposal, not implemented behavior.
+- Important incompatibility identified in current architecture: stale-claim recovery returns unobserved claims to pool:ready, which could replay the same approval. Future implementation must instead fail closed to needs-review.
+- ADR acceptance includes independent reviewer and required status checks. Current ruleset has zero required approvals, so branch PR gate is not an independent security review.
+- No production workflow changed; no worker/DSH/browser/model/secret/privileged execution. POOL_DISPATCH_ENABLED state remains NOT VERIFIED through current connector; do not execute.
+- Next: implement only a pure owner-approval evidence parser and deterministic state-transition tests, without network, workflow dispatch, or GitHub mutation. Then implement the complete Supervisor/Worker conversion as one reviewed PR.
