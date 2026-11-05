@@ -1,0 +1,43 @@
+name: Reusable Worker Context Fixture
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-context:
+    name: Emit caller and called-workflow identity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    steps:
+      - name: Record non-secret GitHub context fields
+        shell: bash
+        env:
+          CALLER_WORKFLOW_REF: ${{ github.workflow_ref }}
+          CALLER_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CALLED_WORKFLOW_REF: ${{ job.workflow_ref }}
+          CALLED_WORKFLOW_SHA: ${{ job.workflow_sha }}
+          CALLED_WORKFLOW_REPOSITORY: ${{ job.workflow_repository }}
+          CALLED_WORKFLOW_FILE_PATH: ${{ job.workflow_file_path }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          for name in CALLER_WORKFLOW_REF CALLER_WORKFLOW_SHA CALLED_WORKFLOW_REF CALLED_WORKFLOW_SHA CALLED_WORKFLOW_REPOSITORY CALLED_WORKFLOW_FILE_PATH GITHUB_REPOSITORY GITHUB_REF; do
+            value="${!name}"
+            if [ -z "$value" ]; then
+              echo "::error::$name is empty"
+              exit 1
+            fi
+            printf '%s=%s\n' "$name" "$value" >> "$GITHUB_STEP_SUMMARY"
+          done
+          if [ "$CALLER_WORKFLOW_SHA" != "$CALLED_WORKFLOW_SHA" ]; then
+            echo "::warning::Caller and called-workflow SHA differ; validator same-SHA assumption is not valid for this invocation."
+            echo "SHA_RELATION=DIFFERENT" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "SHA_RELATION=EQUAL" >> "$GITHUB_STEP_SUMMARY"
+          fi
