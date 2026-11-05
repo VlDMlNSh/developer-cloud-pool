@@ -32,10 +32,13 @@ No GitHub OAuth routes, OAuth App, credentials, cookies, session store, GitHub A
 ## Verification
 
 - Branch creation: SUCCEEDED from immutable base SHA above.
-- Runtime dependency install: NOT RUN in this environment (npm registry access timed out).
-- Node tests: NOT RUN locally.
-- Static UI validator: NOT RUN locally.
-- GitHub Actions: pending/not yet observed at report authoring.
+- Local runtime install: NOT RUN (npm registry access timed out in the interactive container).
+- GitHub Actions runtime dependency install: PASS; 39 packages installed on ubuntu-24.04.
+- Node syntax checks: PASS.
+- API negative/fail-closed tests: PASS, 4/4.
+- Static UI contract validator: PASS.
+- Exact-head PR #25 checks: 3 check runs observed, all SUCCEEDED for head `007c5ce752076933950dfa410bc6c50934790b75`; workflow run `42115866089` completed success. Job `127555208519` completed success. Workflow security/syntax job also completed success (run `42115865996`).
+- A package lock was not committed. The CI install generated transient dependency state only; reproducible dependency qualification remains incomplete.
 - Independent review: NOT RUN.
 - Workers Free entitlement: NOT VERIFIED.
 - Worker deployment: NOT RUN.
