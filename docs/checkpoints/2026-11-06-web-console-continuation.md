@@ -88,3 +88,16 @@ Read-only account inspection via connected Cloudflare integration:
 - No resource or account configuration was created/changed; no deployment attempted.
 
 Deployment status: BLOCKED / NOT RUN. Do not publish an unauthenticated console to work around the missing Access setup. Owner prerequisites are listed in the ADR. After owner actions, repeat read-only checks, then proceed to a no-secret preview and security tests.
+
+
+## Owner payment constraint update — 2026-11-06
+
+The owner reports that Cloudflare does not accept the payment card during Zero Trust Free onboarding. Cloudflare's official onboarding documentation confirms that Zero Trust requires payment details even when the Free plan is selected (with no charge on Free): https://developers.cloudflare.com/cloudflare-one/setup/ . Therefore Zero Trust activation is BLOCKED and is no longer a required dependency for the first web-console milestone. Do not ask the owner to retry or substitute payment instruments, and do not bypass billing verification.
+
+A no-card candidate is Cloudflare Workers Free with application-level server-side GitHub OAuth, subject to confirming that Workers Free and a workers.dev subdomain can be provisioned without payment details. This is only PLANNED: OAuth App setup, callback, owner numeric-ID allowlist, state/CSRF checks, secure HttpOnly/Secure/SameSite session, session expiry/signature and negative tests are NOT IMPLEMENTED. No unauthenticated preview is permitted.
+
+Official Workers Free limits: https://developers.cloudflare.com/workers/platform/pricing/ and https://developers.cloudflare.com/workers/platform/limits/ . workers.dev provisioning guidance: https://developers.cloudflare.com/workers/configuration/routing/workers-dev/ .
+
+Detailed evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md).
+
+Updated disposition: Zero Trust Access BLOCKED / NOT REQUIRED; Workers Free CANDIDATE / NOT VERIFIED; app-level GitHub OAuth PLANNED / NOT IMPLEMENTED; deployment NOT RUN. Next step: independently review PR #24, validate the OAuth design in a no-secret fixture, and perform read-only Workers/subdomain recheck after the owner opens Workers & Pages without activating Access or adding payment details.
