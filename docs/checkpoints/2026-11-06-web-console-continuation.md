@@ -128,7 +128,20 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 
 - Framework decision: official Hono Cloudflare Workers starter + Workers Static Assets; preserve the existing vanilla graphite UI, do not migrate to React solely for framework adoption.
 - Official source: https://hono.dev/docs/getting-started/cloudflare-workers ; Cloudflare's Hono guide: https://developers.cloudflare.com/workers/framework-guides/web-apps/more-web-frameworks/hono/ .
-- Generate the starter from official tooling, pin exact dependencies and commit the generated lockfile. Hono v4.13.16 / Wrangler 4.157.0 are observed release versions, not committed dependencies.
+- Generate the starter from official tooling, pin exact dependencies and commit the generated lockfile. Hono 4.13.16 / Wrangler 4.158.0 are exact direct dependency pins in the implementation prototype; no lockfile is committed yet.
 - PR #6 static UI remains unmerged and its validator/workflow exist only on that PR branch. Default branch has no package manifest, lockfile, Hono runtime or Jarvis UI.
 - Runtime scaffold NOT STARTED; tests NOT RUN; OAuth NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN.
 - Report: [Hono runtime selection](../reports/2026-11-06-hono-runtime-selection.md).
+
+
+## 2026-11-06 — Hono prototype implementation evidence
+
+- Implementation PR: [PR #25 — fail-closed Hono web console prototype](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25).
+- Branch: `feat/jarvis-hono-web-prototype-2026-11-06`; base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Initial implementation commit: `007c5ce752076933950dfa410bc6c50934790b75`; report evidence update commit: `a4bd234a98df7548e051b62f6833a23f6138bab9`.
+- Implementation: Hono Worker + Workers Static Assets, reused graphite dashboard and UI validator, service-only health endpoint, protected API fail-closed 503, mutation 405, no dispatch/deploy endpoints.
+- Exact-head status at initial implementation SHA: 3 checks SUCCEEDED; workflow run `42115866089` / job `127555208519` (4 API tests passed; syntax checks and static UI validation passed); workflow security validation run `42115865996` SUCCEEDED.
+- Report-only commit `a4bd234a98df7548e051b62f6833a23f6138bab9` advances PR head; its exact-head CI must be rechecked separately. Do not carry forward the previous checks as proof for the new head.
+- npm install created transient runner dependency state; no package lock is committed. Dependency reproducibility remains NOT QUALIFIED.
+- PR remains OPEN/DRAFT/UNMERGED; independent review 0; Workers Free entitlement NOT VERIFIED; OAuth/session NOT IMPLEMENTED; deployment NOT RUN.
+- Detailed evidence: [Hono prototype implementation report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/jarvis-hono-web-prototype-2026-11-06/docs/reports/2026-11-06-hono-prototype-implementation.md).
