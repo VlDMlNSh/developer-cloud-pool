@@ -152,3 +152,10 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Live PR #12: OPEN / DRAFT / NOT MERGED; current head `1549484ab43b25c6e7fc86b28ea91ae9c80d021d`; canonical base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Exact-head Pool Contract Validation run `42025350197`, job `127238073152`: SUCCESS. Exact-head reusable context fixture run `42025350303`, job `127238054663`: SUCCESS. Combined status array empty; these two workflow-run results are the positive evidence.
 - PR reviews and review threads empty; independent review NOT RUN. Production Worker/DSH/Resource Probe/browser/provider/model/Gemini/Claude/privileged dispatch NOT RUN; runtime NOT QUALIFIED; paid fallback NOT USED.
+
+
+## Post-benchmark documentation HEAD correction
+- PR #12 advanced after the benchmark report/checkpoint updates. Current head before this checkpoint correction: `ed18fd793392297718bdc4332365108c3d48bcd1`; canonical base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- On that head, Pool Contract Validation run `42025677984` and reusable context fixture run `42025678004` were QUEUED when queried. Exact-head CI NOT VERIFIED at that point; combined commit status array empty.
+- Successful runs `42025350197` and `42025350303` apply to the preceding head `1549484ab43b25c6e7fc86b28ea91ae9c80d021d` only.
+- Latest report after correction: [mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `94d7e29022b7489f2cac725cd977eaf06123caff`, commit `5ff9477b563ed798a4a832377547290e6755d7d5`.
