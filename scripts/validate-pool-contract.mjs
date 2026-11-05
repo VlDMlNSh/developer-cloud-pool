@@ -13,13 +13,17 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const fixtureCaller = read(".github/workflows/reusable-worker-context-fixture-caller.yml");
+const fixtureReusable = read(".github/workflows/reusable-worker-context-fixture.yml");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
-  ".github/workflows/runner-resource-probe.yml"
+  ".github/workflows/runner-resource-probe.yml",
+  ".github/workflows/reusable-worker-context-fixture-caller.yml",
+  ".github/workflows/reusable-worker-context-fixture.yml"
 ].map((path) => [path, read(path)]);
 
 for (const [path, source] of workflows) {
@@ -74,6 +78,27 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("DSH and Resource Probe remain manual, read-only and secret-free");
+
+if (!/^  inspect-reusable-context:\\s*\\n\\s+uses:\\s+\\.\\/\\.github\\/workflows\\/reusable-worker-context-fixture\\.yml\\s*$/m.test(fixtureCaller)) {
+  fail("Reusable context fixture caller must use a static local job-level workflow reference");
+}
+if (!/^on:\\s*\\n\\s+workflow_call:\\s*$/m.test(fixtureReusable)) {
+  fail("Reusable context fixture must expose workflow_call only");
+}
+if (/workflow_dispatch:/.test(fixtureCaller + fixtureReusable)) {
+  fail("Reusable context fixture must not expose workflow_dispatch");
+}
+if (/secrets\\./.test(fixtureCaller + fixtureReusable)) {
+  fail("Reusable context fixture must not reference secrets");
+}
+for (const field of ["github.workflow_ref", "github.workflow_sha", "job.workflow_ref", "job.workflow_sha", "job.workflow_repository", "job.workflow_file_path"]) {
+  if (!fixtureReusable.includes(field)) fail("Reusable context fixture must record " + field);
+}
+if (!/timeout-minutes:\\s*2/.test(fixtureReusable)) fail("Reusable context fixture must have a two-minute timeout");
+if (!/permissions:\\s*\\n\\s+contents:\\s*read/.test(fixtureCaller) || !/permissions:\\s*\\n\\s+contents:\\s*read/.test(fixtureReusable)) {
+  fail("Reusable context fixture caller and callee must be read-only");
+}
+if (failures.length === 0) pass("reusable workflow fixture is static, read-only, secret-free and records caller/callee identity");
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
