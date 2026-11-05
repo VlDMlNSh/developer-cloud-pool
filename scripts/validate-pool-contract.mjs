@@ -52,7 +52,7 @@ for (const [path, source] of workflows) {
   }
 }
 if (failures.length === 0) pass("workflow inputs are not interpolated into shell run blocks");
-if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /@[0-9a-f]{40}$/.test(m[1])))) {
+if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /^\.\/\.github\/workflows\/[^/]+\.ya?ml$/.test(m[1]) || /@[0-9a-f]{40}$/.test(m[1])))) {
   pass("all external Actions references are pinned to 40-character commit SHAs");
 }
 
