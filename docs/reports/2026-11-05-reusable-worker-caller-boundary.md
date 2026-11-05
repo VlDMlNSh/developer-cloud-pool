@@ -105,3 +105,5 @@ Build a non-privileged reusable-workflow fixture to capture the actual `github.w
 - Fixture CI run PASS. Separate Pool Contract Validation run `41977381462` was IN_PROGRESS at report time; do not classify it as PASS until completed.
 - Current branch head after fixture additions: `74d62dfed7512d853cc8e02af2a7d495ef5892d5`; compare 16 ahead / 0 behind canonical. Canonical remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - Next: wait for Pool Contract Validation run, then add an explicit static regression assertion that the fixture caller is a local static `uses` and neither workflow contains `workflow_dispatch`. Independent security review remains required. Do not wire production Worker yet.
+
+- Pool Contract Validation run `41977381462` subsequently completed SUCCESS; job `127079333733` passed all six steps, including dispatch gate, YAML parse, 8 caller tests, and static pool contract validator. This run was associated with the fixture PR merge context and confirms validation for the fixture-containing PR merge result; the fixture run itself is separately `41977381184` SUCCESS.
