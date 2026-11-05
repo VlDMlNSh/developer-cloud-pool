@@ -7,12 +7,14 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "dsh-runtime/**"
   push:
     branches:
       - "Основной"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "dsh-runtime/**"
 
 permissions:
   contents: read
