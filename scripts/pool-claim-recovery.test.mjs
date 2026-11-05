@@ -4,7 +4,9 @@ import { planClaimRecovery, planDispatchFailure } from "./pool-claim-recovery.mj
 
 test("keeps a task claimed while its matching Worker run is active", () => {
   assert.equal(planClaimRecovery({ matchingRunStatus: "in_progress", ageMs: 60 * 60 * 1000 }).state, "claimed");
-  for (const status of ["queued", "in_progress", "waiting", "pending", "requested"]) {\n    assert.equal(planClaimRecovery({ matchingRunStatus: status, ageMs: 60 * 60 * 1000 }).action, "wait");\n  }
+  for (const status of ["queued", "in_progress", "waiting", "pending", "requested"]) {
+    assert.equal(planClaimRecovery({ matchingRunStatus: status, ageMs: 60 * 60 * 1000 }).action, "wait");
+  }
 });
 
 test("moves a task with a terminal Worker run to needs-review", () => {
