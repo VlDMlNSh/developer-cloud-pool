@@ -1,57 +1,51 @@
-# DSH dependency lockfile generation — 2026-11-05 (recheck)
+# DSH dependency lockfile — artifact pipeline correction (2026-11-05)
 
 ## Scope
-Prepare one shared reproducible npm dependency tree for DSH workflows. No DSH runtime was launched.
+Recover a real lockfile from the existing GitHub-hosted generation path without printing the lockfile contents into Actions logs. No Worker or DSH runtime was executed.
 
-## Verified state
-- Canonical base `Основной`: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- PR #16: [security: pin DSH runtime dependency tree](https://github.com/VlDMlNSh/developer-cloud-pool/pull/16), OPEN / DRAFT / NOT MERGED.
-- PR branch: `security/pin-dsh-npm-dependencies-2026-11-05`.
-- Latest code commit: `f2836533e58954162924ff99e8e0a4a0e1e44c78`.
-- Branch compare: 8 commits ahead, 0 behind the canonical base.
-- Manifest: `dsh-runtime/package.json`, blob `54b3df47ce28f7c90c41266edc437f314271bea7`; direct dependency `@deepseek-ai/dsh@0.2.1-rc.5`.
-- Temporary validation workflow blob: `f4e9656add68d72682fd90deeeff9b9b1a962fd0`.
+## Repository and provenance
+- Repository: `VlDMlNSh/developer-cloud-pool`.
+- Canonical branch: `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- PR #16: https://github.com/VlDMlNSh/developer-cloud-pool/pull/16 — OPEN / DRAFT / NOT MERGED.
+- Working branch: `security/pin-dsh-npm-dependencies-2026-11-05`.
+- Current branch head: `9e24d3ae1bc00e1cb59da37d1dba4f70e789a5c3`.
+- Manifest blob: `54b3df47ce28f7c90c41266edc437f314271bea7`.
+- Validation workflow blob after change: `5b44d28cab32d03cf83d93b6d7cd8f14551bbe2a`.
 
-## Lockfile generation evidence
-- Run [42038801999](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42038801999), run number 101, on exact code commit `f283653...`.
-- Job `127283835661`: IN_PROGRESS at step "Generate temporary DSH lockfile without lifecycle scripts".
-- Checkout and Node.js setup steps completed successfully.
-- Artifact list is empty because upload step has not been reached.
-- Job logs API returns NOT_FOUND while the job is active; no package-resolution output is available.
-- Previous attempt [42038551072](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42038551072) ended CANCELLED and produced no artifact.
-- Earlier attempt [42038280749](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42038280749) remains reported IN_PROGRESS at npm resolution; no lockfile was retrieved.
-- Result: lockfile generation BLOCKED / NOT VERIFIED. No claim of generated lockfile.
+## Finding
+Earlier checkpoint text incorrectly characterized npm resolution as blocked. The decoded GitHub Actions log for run [42039481919](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42039481919), job `127287504135`, proves:
+- Node `v24.9.0`, npm `11.6.0`.
+- The bounded `npm install --package-lock-only --ignore-scripts --no-audit --no-fund --fetch-retries=0 --fetch-timeout=45000 --prefix dsh-runtime --lockfile-version=3` command completed in 32 seconds.
+- Lockfile validation passed and reported 687 package entries.
+- The job then emitted the entire lockfile as base64 to stdout. The log shows this output taking approximately 2m36s; the job was cancelled before artifact upload, YAML parsing, and project contract validation.
+- Therefore dependency resolution succeeded; the failure was in the artifact/log transfer stage, not evidence of registry unavailability.
 
-## Security boundary
-- npm lifecycle scripts disabled; retry count and fetch timeout bounded.
-- One-day artifact retention configured.
-- No DSH runtime, Worker, Resource Probe, model/provider call, repository secret or paid service used.
-- `POOL_DISPATCH_ENABLED` was not changed.
-- No independent review exists for PR #16.
+## Change implemented
+- Removed the multi-megabyte base64 stdout dump.
+- Replaced it with a SHA-256 summary line.
+- Retained the existing one-day artifact upload step as the only lockfile transfer path.
+- Added `dsh-runtime/**` to workflow path filters so changes to dependency manifests/lockfiles trigger validation.
+- Re-read the workflow from GitHub. Blob `5b44d28cab32d03cf83d93b6d7cd8f14551bbe2a` confirms no base64 command, a SHA-256 command, and the artifact upload step.
 
-## Why no lockfile was fabricated
-npm resolution has not completed in repeated GitHub-hosted runs and the job log is unavailable while active. Manually inventing transitive package versions or integrity hashes would undermine reproducibility and provenance. Do not create a synthetic lockfile.
+Commits:
+- `89798bb5b900f18da670db3a42449e91605208bf` — initial artifact/log pipeline adjustment.
+- `9e24d3ae1bc00e1cb59da37d1dba4f70e789a5c3` — removed base64 dump and added checksum output.
 
-## Next decision
-1. Let run 42038801999 reach a terminal state and inspect artifact/logs.
-2. If it times out/fails, stop repeating the same npm-resolution mechanism.
-3. Investigate the package's upstream published lockfile/provenance or use a verified npm registry mirror/cache mechanism already available in GitHub-hosted runners; document exact origin and integrity.
-4. Only then commit a real lockfile, remove temporary generation, switch both DSH workflows to `npm ci --ignore-scripts`, and rerun zizmor.
-5. Keep PR draft until exact-head CI and independent review pass.
+## Verification state
+- Source readback: VERIFIED.
+- Lockfile generation/structural check: SUCCESS on earlier PR head; 687 package entries.
+- Artifact capture: NOT VERIFIED; no artifact has yet been retrieved.
+- Exact-current-head run [42095679649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42095679649): PENDING at last read, no job created yet.
+- Intermediate run [42095638148](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42095638148): IN PROGRESS at last read; it targets the preceding commit, not current HEAD.
+- Lockfile full provenance review: NOT RUN.
+- DSH/Worker/browser/model execution: NOT RUN.
+- Independent review and qualification: NOT ACCEPTED / NOT QUALIFIED.
 
-## Related security PRs
-- PR #14 zizmor audit: OPEN / DRAFT; latest recorded run failed due remaining dangerous-trigger and npm lockfile findings.
-- PR #15 removes privileged `workflow_run`: OPEN / DRAFT; tested code-head CI succeeded, but independent review is absent.
+## Security boundaries
+- No repository secrets or variables changed.
+- `POOL_DISPATCH_ENABLED` not changed.
+- No provider credentials, paid services, model calls, DSH runtime, Worker, or browser used.
+- No lockfile was fabricated, converted from pnpm, or manually edited.
 
-
-## Upstream component research — 2026-11-05
-- npm's official package page confirms `@deepseek-ai/dsh@0.2.1-rc.5`, repository `deepseek-ai/deepseek-harness`, MIT license, and 86 declared dependencies: https://www.npmjs.com/package/%40deepseek-ai/dsh?activeTab=dependencies
-- The official upstream repository metadata identifies `master` as default branch. Its root `package.json` declares `pnpm@11.28.5`, Node.js >=24.9.0, and a multi-workspace layout; retrieved root manifest blob: `c4f130943ddfee2d8d8040c6dd679f5b0e12312a`.
-- Upstream `pnpm-workspace.yaml` exists (blob `59b31eb46b90e35251cbf3c26b20556892c4aa52`) and defines pnpm overrides/build allowlist. The repository's `pnpm-lock.yaml` endpoint returned empty content through the connector; this is NOT evidence that the lockfile is empty or usable.
-- Attempting to retrieve the source manifest by guessed npm-version tag `0.2.1-rc.5` returned "No commit found"; do not infer that the published package corresponds to that Git tag.
-- Upstream root pnpm lockfile is not a drop-in npm lockfile for this consumer. Converting lock formats or copying a partial lock would not establish reproducible npm resolution.
-- npm metadata and package page do not expose a complete verified transitive npm lock graph in the retrieved evidence.
-- Official npm package documentation currently shows 86 dependencies and a developer-preview package. Do not update the pinned DSH version merely because newer prerelease tags exist.
-
-## Decision after upstream research
-No authoritative npm lockfile suitable for direct reuse was found. Continue to treat npm resolution in GitHub Actions as blocked. Next investigate a supported npm registry/cache path and the workflow's actual network/resolution behavior; do not make another unchanged retry, fabricate integrity fields, or switch package managers in production workflows without a separately reviewed design.
+## Next step
+Wait for run 42095679649 to complete. Retrieve its `dsh-runtime-lockfile` artifact and review the actual bytes, package count, integrity and resolved URLs, lifecycle scripts, optional dependencies, and package graph. Only then commit the lockfile and switch both runtime workflows to `npm ci --ignore-scripts`. Keep PR #16 draft until exact-head CI, zizmor, and independent security review pass.
