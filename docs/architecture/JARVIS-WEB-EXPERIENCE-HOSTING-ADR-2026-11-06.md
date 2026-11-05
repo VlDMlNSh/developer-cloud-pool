@@ -182,3 +182,10 @@ Candidate alternative to Access: application-level server-side GitHub OAuth, wit
 If Workers Free cannot be provisioned without payment details, stop and compare no-card hosting alternatives using official vendor terms and measured constraints. Never publish an unauthenticated dashboard or introduce a paid fallback.
 
 Evidence and current disposition: [2026-11-06 no-card deployment-path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md). Zero Trust BLOCKED / NOT REQUIRED; Workers Free CANDIDATE / NOT VERIFIED; GitHub OAuth PLANNED / NOT IMPLEMENTED; deployment NOT RUN.
+
+
+## Autonomous provisioning result — 2026-11-06
+
+A project-specific workers.dev namespace was provisioned via the Cloudflare API after the owner requested autonomous action: `jarvis-developer-cloud-pool`. Follow-up GET read-back returned the same value. This creates only the account namespace; there is no Worker script or application deployment. The connected OAuth session cannot read account subscriptions (HTTP 403 / error 10000, Billing Read scope unavailable), so Workers Free entitlement remains NOT VERIFIED. Access remains disabled (HTTP 403 / error 9999), and no zone exists. No payment or billing data was accessed. Do not treat workers.dev provisioning as proof of Free-plan entitlement or as authorization to deploy.
+
+Evidence: [Cloudflare no-card deployment path report](../reports/2026-11-06-cloudflare-no-card-deployment-path.md). Current disposition: namespace PROVISIONED / VERIFIED; Workers Free entitlement NOT VERIFIED; application authentication NOT IMPLEMENTED; deployment NOT RUN.
