@@ -66,3 +66,48 @@ Keep the current GitHub-hosted ephemeral job architecture. Reuse documented patt
 
 ## Next bounded step
 Design and test a GitHub-Free-compatible owner approval provenance and single-use consumption primitive. Evaluate immutable Git commit/ref-based ledger options and GitHub Actions concurrency semantics against duplicate delivery, concurrent Supervisor runs, crash/replay, ref-update races, and auditability. Do not convert production Worker to `workflow_call` until the authorization primitive is proven. Keep dispatch disabled and PR #12 Draft.
+
+
+## Follow-up benchmark — native GitHub approval and concurrency primitives (2026-11-05)
+
+### New finding: GitHub Environments are a stronger candidate than issue-label approval
+
+Official documentation:
+- [Managing environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments): Environments and protection rules are available for public repositories on all current GitHub plans. Required reviewers are available on GitHub Free for public repositories; up to six people/teams may be configured, and one approval is sufficient. Prevent self-review is configurable.
+- [Reviewing deployments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/review-deployments): a reviewer approves/rejects a specific workflow job waiting on environment protection.
+- [Deployment API](https://docs.github.com/en/rest/deployments/deployments): deployments are associated with a specific ref/SHA and have auditable status transitions.
+- [Workflow concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency): concurrency groups limit simultaneous execution; `queue: max` permits up to 100 pending runs, but FIFO order is not guaranteed and default pending behavior replaces an earlier pending run.
+
+Repository fit:
+- This repository is currently PUBLIC, and the user constraint is GitHub Free. Therefore native Environment required-reviewer protection is a viable no-additional-infrastructure candidate, subject to live repository configuration verification.
+- A dedicated protected Environment could gate the privileged execution job. Its reviewer decision is attached to a particular workflow deployment/job rather than being inferred from mutable issue labels. Prevent self-review should be enabled where supported/configured.
+- The approval gate must be placed before any job receives runtime credentials or performs task execution. Validation and approval metadata must bind to immutable task issue, target SHA, profile and workflow run.
+- This is a candidate design, NOT YET IMPLEMENTED OR QUALIFIED. We have not inspected live Environment settings, reviewer configuration, bypass policy, or deployment records for this repository.
+
+Important limitations:
+1. Environment approval is a per-deployment human gate; it is not by itself a complete task queue, deduplication protocol, or exactly-once execution ledger.
+2. Workflow concurrency is not a transaction or compare-and-swap. GitHub documents that queue order is not guaranteed; it must not be represented as a durable FIFO approval ledger.
+3. A duplicate trigger may create another workflow run/deployment. Each run must remain independently gated; no stale approval may authorize a different run, SHA, profile, or issue.
+4. The production Worker currently uses `workflow_dispatch`, while Supervisor uses REST dispatch and has `actions: write`. The native Environment approach does not justify retaining this topology or enabling dispatch.
+5. Native Environment configuration and required reviewers must be checked through live GitHub settings/UI/API before relying on them. Do not assume they are already configured.
+
+### Benchmark decision update
+Prioritize a non-privileged proof-of-concept for a per-run Environment approval gate on the isolated branch. Compare it against the previous issue-label + GET/PATCH design with tests for:
+- correct reviewer identity and prevent-self-review behavior;
+- approval tied to one workflow run/deployment and immutable SHA;
+- duplicate issue events and repeated runs;
+- rejected, expired, canceled and timed-out approvals;
+- no runtime credential exposure before approval;
+- no bypass path and explicit behavior when Environment settings are missing;
+- audit extraction of reviewer, deployment/run ID, task issue, target SHA and profile.
+
+Do not claim exactly-once task execution from Environment approvals or concurrency alone. If the queue still needs atomic single-consumption semantics across retries, retain that as a separate design gate.
+
+### Updated live verification for this follow-up
+- PR #12 is OPEN / DRAFT / NOT MERGED; current head reported by PR API: `1549484ab43b25c6e7fc86b28ea91ae9c80d021d`; canonical base SHA remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Exact-head Pool Contract Validation run `42025350197`, job `127238073152`: COMPLETED / SUCCESS. Steps included dispatch-disabled assertion, YAML parse, caller tests and static contract validation.
+- Exact-head Reusable Worker Context Fixture Caller run `42025350303`, job `127238054663`: COMPLETED / SUCCESS. This is a non-secret context fixture only.
+- Combined commit status API returned an empty statuses array; workflow-run records above are the positive CI evidence.
+- PR review submissions and review threads remain empty; independent review NOT RUN.
+- Production dispatch, DSH, Resource Probe, browser, model/provider calls, Gemini and Claude NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
+- The previously documented workflow topology remains unchanged: Worker `workflow_dispatch`; Supervisor REST dispatch with `actions: write`; caller validator not wired to production.
