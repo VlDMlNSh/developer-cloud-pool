@@ -107,3 +107,24 @@ Build a non-privileged reusable-workflow fixture to capture the actual `github.w
 - Next: wait for Pool Contract Validation run, then add an explicit static regression assertion that the fixture caller is a local static `uses` and neither workflow contains `workflow_dispatch`. Independent security review remains required. Do not wire production Worker yet.
 
 - Pool Contract Validation run `41977381462` subsequently completed SUCCESS; job `127079333733` passed all six steps, including dispatch gate, YAML parse, 8 caller tests, and static pool contract validator. This run was associated with the fixture PR merge context and confirms validation for the fixture-containing PR merge result; the fixture run itself is separately `41977381184` SUCCESS.
+
+
+## Live recheck — 2026-11-05 current PR head
+- PR #12 current head: `57d463f321466f838b4874b78add059280a30022`; canonical base: `64d2636d4500127e635c214ccfb722c6b3fcda80`; compare 49 ahead / 0 behind. PR remains OPEN / DRAFT / NOT MERGED.
+- Pool Contract Validation run [42027455932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42027455932), job `127245170356`: COMPLETED / SUCCESS. Logs show 8/8 caller unit tests passed; static contract validator emitted `POOL_CONTRACT_VALIDATION=PASS`; YAML parse and dispatch-disabled assertion passed in this run. This is PR merge-result CI, not proof that production caller authorization is wired.
+- Reusable Worker Context Fixture run [42027455840](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42027455840), job `127245136149`: COMPLETED / SUCCESS. Captured:
+  - caller ref: `VlDMlNSh/developer-cloud-pool/.github/workflows/reusable-worker-context-fixture-caller.yml@refs/pull/12/merge`
+  - caller SHA: `69d43319e0ba652f211242fd806957b18e74c52a`
+  - called ref: `VlDMlNSh/developer-cloud-pool/.github/workflows/reusable-worker-context-fixture.yml@refs/pull/12/merge`
+  - called SHA: `69d43319e0ba652f211242fd806957b18e74c52a`
+  - called repository: `VlDMlNSh/developer-cloud-pool`
+  - called path: `.github/workflows/reusable-worker-context-fixture.yml`
+  - github ref: `refs/pull/12/merge`
+- Interpretation: local reusable workflow context fields were populated and caller/called SHA matched for this PR merge-ref fixture. This does NOT prove protected default-branch Supervisor identity, production workflow context or authorization.
+- Production Worker on canonical branch was reread (blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`): still exposes `workflow_dispatch`; validation trusts issue state/labels/body SHA/profile and does not validate Supervisor caller provenance. Supervisor still invokes REST dispatch and has `actions: write`.
+- PR #7 is OPEN / DRAFT. Its only review is an owner-authored COMMENTED preliminary finding that direct Worker dispatch can bypass the Supervisor owner-approval path. This is not an independent review, but the technical bypass remains visible in canonical Worker source.
+- PR #12's caller validator blob `88d79d74691431ead14f29426d214833c0086183` is still not imported by production Worker. The fixture tests context availability only.
+- PR #12 review submissions and review threads are empty; independent security review NOT RUN. Current ruleset/variable settings were not reread in this pass; current governance state NOT VERIFIED.
+- Worker, DSH, Resource Probe, browser, model/provider calls, Gemini, Claude and privileged dispatch NOT RUN. Paid fallback NOT USED.
+- Conclusion: static validator + fixture VERIFIED for their limited scope; production Worker authorization remains BLOCKED / NOT IMPLEMENTED. Do not merge or enable dispatch.
+- Next: implement a production reusable Worker boundary only after owner-approval provenance and replay-safe single-use consumption are solved. The PR #7 direct-dispatch bypass must be removed in the same reviewed transition; no isolated caller helper is sufficient.
