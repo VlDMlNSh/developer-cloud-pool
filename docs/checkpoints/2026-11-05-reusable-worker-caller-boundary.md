@@ -29,3 +29,10 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Worker remains `workflow_dispatch`; Supervisor still uses REST dispatch. Caller helper not wired into Worker. Authorization BLOCKED.
 - Runtime/dispatch remains NOT RUN; paid fallback NOT USED.
 - Detailed updated report: [2026-11-05 implementation report](../reports/2026-11-05-reusable-worker-caller-boundary.md), blob `af9329089528e46b35248f9ca540bdf44aaa1361`.
+
+## Final state correction
+- Latest live branch compare before this documentation correction: 10 commits ahead / 0 behind canonical; merge base exactly `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Latest branch HEAD before this correction: `6b409e0b09d2cef1b507d50662236d6f80b32340`; documentation correction creates a newer HEAD.
+- PR #12 was created at head `215bd04490d19ec1d6392a8defa9bbd9e1e7bafc`; branch advanced afterward. Current exact PR head SHA not independently read in this pass. CI NOT VERIFIED.
+- Updated report blob: `518bc11fb8f21b674f740ab66413beed5b94689d`.
+- PR #12 remains DRAFT; independent review NOT RUN; authorization BLOCKED.
