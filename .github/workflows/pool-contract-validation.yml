@@ -27,7 +27,7 @@ jobs:
   validate:
     name: Validate workflow syntax and security invariants
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 12
     steps:
       - name: Checkout source without persisting credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -40,19 +40,28 @@ jobs:
           node-version: 24.9.0
           check-latest: false
 
-      - name: Generate temporary DSH lockfile without lifecycle scripts
+      - name: Activate upstream-pinned pnpm
         shell: bash
         run: |
           set -euo pipefail
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund --fetch-retries=0 --fetch-timeout=45000 --prefix dsh-runtime --lockfile-version=3
-          node -e 'const p=require("./dsh-runtime/package-lock.json"); if(p.lockfileVersion!==3 || p.packages[""].dependencies["@deepseek-ai/dsh"]!=="0.2.1-rc.5") process.exit(1); console.log("LOCKFILE_VALIDATED packages="+Object.keys(p.packages).length)'
-          sha256sum dsh-runtime/package-lock.json
+          corepack enable
+          corepack prepare pnpm@11.28.5 --activate
+          test "$(pnpm --version)" = "11.28.5"
+
+      - name: Generate temporary DSH pnpm lockfile without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dsh-runtime
+          pnpm install --lockfile-only --ignore-scripts --reporter=append-only
+          ruby -e 'require "yaml"; p=YAML.load_file("pnpm-lock.yaml"); abort "unexpected pnpm lockfile version" unless p["lockfileVersion"].to_s == "9.0"; d=p.fetch("importers").fetch(".").fetch("dependencies").fetch("@deepseek-ai/dsh"); abort "unexpected DSH specifier" unless d["specifier"] == "0.2.1-rc.5"; packages=p.fetch("packages"); integrity=packages.values.count { |v| v.is_a?(Hash) && v.dig("resolution", "integrity") }; abort "no package integrity records" if integrity == 0; puts "PNPM_LOCK_VALIDATED packages=#{packages.size} integrity_records=#{integrity}"'
+          sha256sum pnpm-lock.yaml
 
       - name: Upload generated lockfile for review
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: dsh-runtime-lockfile
-          path: dsh-runtime/package-lock.json
+          name: dsh-runtime-pnpm-lockfile
+          path: dsh-runtime/pnpm-lock.yaml
           if-no-files-found: error
           retention-days: 1
 
