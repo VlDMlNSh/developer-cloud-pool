@@ -117,3 +117,48 @@ Do not claim exactly-once task execution from Environment approvals or concurren
 - The report/checkpoint commits advanced PR #12 after the benchmark CI above. Current PR #12 head is now `ed18fd793392297718bdc4332365108c3d48bcd1`; base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - New exact-head runs are queued: Pool Contract Validation `42025677984` and Reusable Worker Context Fixture Caller `42025678004`. They are NOT VERIFIED until terminal results are read.
 - Combined commit status is empty. The prior successful runs `42025350197` and `42025350303` cover the preceding head `1549484ab43b25c6e7fc86b28ea91ae9c80d021d`, not the new documentation HEAD.
+
+
+## Follow-up: audit of existing owner-approval implementation PR #7 (2026-11-05)
+
+### Existing work discovered — do not duplicate
+PR [#7 — bind pool dispatch approval to repository owner](https://github.com/VlDMlNSh/developer-cloud-pool/pull/7) already contains `scripts/pool-approval.mjs`, tests and Supervisor integration. Its current head is `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`; base SHA is `692025e4a039aaf94c6683bb95da38b4f324fce8`. PR #7 is OPEN / DRAFT / NOT MERGED.
+- Current exact-head CI: Pool Contract Validation run `41921293708`, job `126894183572`: COMPLETED / SUCCESS. The job ran YAML parsing, dispatch-disabled assertion, owner approval tests and static contract validation.
+- Review submissions contain one COMMENTED review authored by the repository owner, not an independent security review. It identifies a critical bypass: Worker remains directly callable through `workflow_dispatch`; Worker validation checks `pool:claimed`, issue state and SHA/profile but does not independently verify the owner-approval marker/caller provenance. A caller with sufficient Actions dispatch permission could bypass Supervisor approval. Independent review remains NOT RUN.
+
+### Static findings in PR #7 approval module
+Read back and verified:
+- `scripts/pool-approval.mjs` blob `9442c413c38dc28c67455362e254ff703bcfedd9`
+- `scripts/pool-approval.test.mjs` blob `c7c7499d9d2bb4c123e72b86adb85369023c4284`
+- `scripts/pool-supervisor.mjs` blob `b2046dd9671c6bd5491f63a006d10239fbd3d3b1`
+
+Positive properties:
+1. Approval intake is tied to an `issues.labeled` event for `pool:ready`, and sender login is compared with repository owner login.
+2. Task envelope is constrained to the expected immutable 40-hex SHA and allowlisted DSH profile.
+3. A bot-authored marker binds issue number, owner login, SHA and profile.
+4. Consumption is recorded before REST dispatch; dispatch failure and stale claim move to needs-review instead of silently restoring ready.
+5. Removing `pool:ready` records revocation.
+6. The Supervisor exits before recovery/dispatch when `POOL_DISPATCH_ENABLED` is not literal `true`.
+
+Unresolved issues:
+1. **Worker-side bypass (confirmed by the PR's own review comment):** the approval guard is in Supervisor only. Worker remains directly dispatchable and does not independently authenticate the approval/caller boundary. This alone blocks adoption/qualification.
+2. **Replay/idempotency gap (static-analysis finding):** the approval marker does not record a unique trusted GitHub event/delivery identifier. If an old owner-labeled event is replayed/redelivered after its marker was consumed, `recordOwnerApproval()` can see no active marker and append a new one from the old payload. No test covers replay/redelivery of the same approval event after consumption. Treat replay safety as NOT PROVEN; add a deterministic event identity and persistent deduplication rule or use a native per-run Environment approval gate.
+3. Approval identity is stored as mutable login text, not stable numeric GitHub user ID. Prefer numeric actor ID from trusted event payload and verify it against the repository owner identity.
+4. The marker is a normal issue comment and `hasOwnerApproval` reads only `per_page=100`; it is not an immutable append-only ledger and can fail closed when history exceeds the first page. Do not describe it as cryptographic or transactionally atomic.
+5. Supervisor concurrency reduces simultaneous execution but does not make the issue comment/label GET+POST/PATCH sequence a transactional compare-and-swap.
+6. PR #7's successful CI is exact-head static evidence only; no live event test with dispatch enabled, Worker dispatch, DSH or runtime qualification occurred.
+
+### Comparison and decision
+- PR #7 is valuable existing work and should be adapted rather than independently reimplemented.
+- PR #7 is NOT safe to merge/enable as-is because Worker direct dispatch bypasses Supervisor approval; replay safety is also unproven.
+- GitHub Environments remain the preferred native no-extra-infrastructure approval gate for privileged job execution: required reviewers are available on public repositories under GitHub Free, approval is attached to a specific waiting job/deployment, and environment secrets are withheld until approval. Configure disallow-admin-bypass and selected-branch restrictions where supported. The actual repository Environment settings remain NOT VERIFIED because the available GitHub integration did not expose the environment administration endpoint.
+- Recommended target: use a protected Environment as a per-run human authorization gate, keep PR #7's owner-event intake only if its event provenance is separately hardened and still needed for task queueing, and ensure Worker can only be called through a static Supervisor reusable-workflow edge. Do not treat Environment approval as exactly-once queue consumption; retain separate deduplication/replay controls.
+- Do not merge PR #7 or PR #12, wire production dispatch, or run any privileged task until direct Worker bypass is removed, replay tests pass, governance is verified, and independent review is recorded.
+
+## Current PR #12 verification after docs-only follow-up
+- PR #12 remains OPEN / DRAFT / NOT MERGED; current head at this audit: `49b7cf0f456d70e37afef129d14b0f96c9090c3e`; canonical base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Exact-head Pool Contract Validation run `42025722988`, job `127239348600`: COMPLETED / SUCCESS.
+- Exact-head Reusable Worker Context Fixture Caller run `42025722995`, job `127239323512`: COMPLETED / SUCCESS; non-secret context fixture only.
+- Combined commit status array empty; the two workflow runs above are positive CI evidence.
+- PR #12 review submissions and review threads empty; independent review NOT RUN.
+- Current branch code still has caller validator `scripts/pool-worker-caller.mjs` not wired into production Worker. Worker still uses `workflow_dispatch`; Supervisor still uses REST dispatch with `actions: write`.
