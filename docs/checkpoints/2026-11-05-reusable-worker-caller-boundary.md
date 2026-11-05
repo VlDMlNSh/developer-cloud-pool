@@ -182,3 +182,9 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Latest report: [Mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `9fa1389229d526d2a2e97acfff3ab4a692f48d6d`, commit `5724029a87d090904be0170a4f3a3fff198147a3`.
 - CI runs `42025722988` / `42025722995` are SUCCESS on the preceding code-bearing head `49b7cf0f456d70e37afef129d14b0f96c9090c3e`; later commits are docs-only and excluded by path filters. No runs returned for current docs HEAD; latest commit workflow status NOT VERIFIED. Do not call this exact-head CI PASS.
 - PR #12 OPEN / DRAFT / NOT MERGED; mergeability was reported false on latest API read. PR #7 OPEN / DRAFT / NOT MERGED; current head `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`; exact-head static CI run `41921293708`, job `126894183572` SUCCESS; independent review NOT RUN.
+
+
+## Final artifact read-back
+- Audit report final blob: `1e52fee3cf2ca46fee5096122bc945d6921b5033`, report update commit `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`.
+- PR #12 head immediately before this final checkpoint update: `cab54c934d23ec1a74283bd3a4f1f38d2cd8c911`; this update is documentation-only and excluded from the existing CI path filters. No exact-head CI claim is made for it.
+- Canonical base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`. PR #12 OPEN / DRAFT / NOT MERGED, mergeable=false at latest API read. PR #7 OPEN / DRAFT / NOT MERGED; base remains old `692025e4a039aaf94c6683bb95da38b4f324fce8`, exact-head static CI success but independent review NOT RUN.
