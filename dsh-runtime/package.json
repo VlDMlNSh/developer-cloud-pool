@@ -1,0 +1,9 @@
+{
+  "name": "pool-dsh-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pinned dependency root for isolated DSH smoke-test workflows.",
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.2.1-rc.5"
+  }
+}
