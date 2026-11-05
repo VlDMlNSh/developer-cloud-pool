@@ -159,3 +159,19 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - On that head, Pool Contract Validation run `42025677984` and reusable context fixture run `42025678004` were QUEUED when queried. Exact-head CI NOT VERIFIED at that point; combined commit status array empty.
 - Successful runs `42025350197` and `42025350303` apply to the preceding head `1549484ab43b25c6e7fc86b28ea91ae9c80d021d` only.
 - Latest report after correction: [mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `94d7e29022b7489f2cac725cd977eaf06123caff`, commit `5ff9477b563ed798a4a832377547290e6755d7d5`.
+
+
+## Existing owner-approval guard audit — 2026-11-05
+- Discovered existing implementation PR [#7](https://github.com/VlDMlNSh/developer-cloud-pool/pull/7); do not duplicate it. Current head `e7a1d20bc123f9f3cc6e6651b6335bebd802e333`, base SHA `692025e4a039aaf94c6683bb95da38b4f324fce8`; OPEN / DRAFT / NOT MERGED.
+- Exact-head PR #7 static CI: run `41921293708`, job `126894183572`: SUCCESS. Independent review NOT RUN; only one COMMENTED review from repository owner.
+- Readback blobs: approval module `9442c413c38dc28c67455362e254ff703bcfedd9`; tests `c7c7499d9d2bb4c123e72b86adb85369023c4284`; Supervisor `b2046dd9671c6bd5491f63a006d10239fbd3d3b1`.
+- Positive: owner-labeled event intake, fixed SHA/profile envelope, bot-authored marker, consume-before-dispatch, revoke-on-unlabel, fail-closed disabled gate.
+- Critical blocker explicitly recorded in PR #7's owner COMMENTED review: Worker remains directly callable by `workflow_dispatch`; Worker checks only `pool:claimed` and SHA/profile, not approval marker or trusted caller. Supervisor-only approval can therefore be bypassed by direct Worker dispatch if caller has Actions permission.
+- Additional static finding: approval marker does not bind a unique trusted event/delivery ID. Replay/redelivery of a prior owner-labeled event after consumption could append a fresh marker; tests do not cover same-event replay after consumption. Replay safety NOT PROVEN.
+- Actor is stored as login text rather than stable numeric GitHub user ID. Comments are mutable and read only with `per_page=100`; issue comment/label mutations are not transactional CAS. Supervisor concurrency alone does not make these writes atomic.
+- Decision: PR #7 is useful existing work to adapt, but NOT SAFE TO MERGE/QUALIFY as-is. Do not create a second parallel owner-approval mechanism.
+- Prefer GitHub Environment required-reviewer gate for per-run human authorization (Free plan supports this for public repos); actual live Environment configuration/bypass settings remain NOT VERIFIED. Environment is not an exactly-once queue; preserve separate deduplication/replay semantics.
+- PR #12 exact-head current at audit: `49b7cf0f456d70e37afef129d14b0f96c9090c3e`, OPEN / DRAFT / NOT MERGED. CI run `42025722988` job `127239348600`: SUCCESS; fixture run `42025722995` job `127239323512`: SUCCESS. Combined status array empty. Reviews/threads empty; independent review NOT RUN.
+- PR #12 caller validator remains unwired; Worker still `workflow_dispatch`; Supervisor still REST dispatch + `actions: write`.
+- Latest audit report: [2026-11-05 mature project benchmark and pool audit](../reports/2026-11-05-mature-project-benchmark-and-pool-audit.md), blob `f204547009d975fd226726ee770755f62ec6e141`, commit `c0c316240d96671d0bd3cfba9fabea8b21636846`.
+- Next bounded task: prepare a single integrated authorization design using PR #7's owner-event intake only where needed, native Environment approval for per-run authorization, and PR #12's static reusable caller boundary. Add regression fixtures for direct Worker invocation, replayed labeled event after consumption, duplicate delivery, changed SHA/profile, missing Environment protection and bypass. No production workflow migration or dispatch until independently reviewed.
