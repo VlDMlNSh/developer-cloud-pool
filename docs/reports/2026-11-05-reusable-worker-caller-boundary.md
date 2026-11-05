@@ -51,3 +51,12 @@ Added `scripts/pool-worker-caller.mjs` on the working branch only.
 3. Refactor Supervisor into a planner/matrix output job plus a statically declared reusable Worker job; remove REST dispatch.
 4. Preserve approval consumption/replay safety and bounded 0..20 matrix behavior; do not treat a public marker or a planner input as authority.
 5. Keep dispatch disabled; require exact-head CI, independent review, current governance evidence, and separately authorized read-only probe before any runtime.
+
+## Follow-up 2026-11-05 — tests and review intake
+- Added `scripts/pool-worker-caller.test.mjs`; read-back blob SHA `251a4772d85a5dff8cdcc8ca589509ffa48eac98`. It covers one positive context, missing context/spoofed actor+approval, wrong caller ref/repository, wrong called workflow path/repository, malformed SHA and revision mismatch.
+- Wired `node --test scripts/pool-worker-caller.test.mjs` into the read-only `Pool Contract Validation` workflow. Read-back blob SHA `5991c0cf839d510ef6e6540895ddbcd9e306c068`.
+- Opened draft PR #12: https://github.com/VlDMlNSh/developer-cloud-pool/pull/12 . Base `Основной` SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`; PR head at creation `215bd04490d19ec1d6392a8defa9bbd9e1e7bafc`.
+- PR #12 remains DRAFT / NOT ACCEPTED. Exact-head workflow runs and combined status queried immediately after creation returned empty arrays; CI NOT VERIFIED, not PASS. Independent review NOT RUN.
+- Branch compare against canonical: 8 commits ahead / 0 behind; merge base exactly canonical SHA. No canonical changes.
+- The CI workflow is pull_request-triggered for changes under `.github/workflows/**` or `scripts/**`; it is a read-only validation job. No pool Supervisor/Worker runtime was dispatched.
+- The test suite has been committed but has not yet executed in an observed runner. Do not report test pass until the exact PR head run is visible and completed successfully.
