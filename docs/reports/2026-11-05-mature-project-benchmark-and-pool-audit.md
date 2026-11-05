@@ -111,3 +111,9 @@ Do not claim exactly-once task execution from Environment approvals or concurren
 - PR review submissions and review threads remain empty; independent review NOT RUN.
 - Production dispatch, DSH, Resource Probe, browser, model/provider calls, Gemini and Claude NOT RUN. Runtime NOT QUALIFIED. Paid fallback NOT USED.
 - The previously documented workflow topology remains unchanged: Worker `workflow_dispatch`; Supervisor REST dispatch with `actions: write`; caller validator not wired to production.
+
+
+## Post-documentation HEAD correction
+- The report/checkpoint commits advanced PR #12 after the benchmark CI above. Current PR #12 head is now `ed18fd793392297718bdc4332365108c3d48bcd1`; base remains `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- New exact-head runs are queued: Pool Contract Validation `42025677984` and Reusable Worker Context Fixture Caller `42025678004`. They are NOT VERIFIED until terminal results are read.
+- Combined commit status is empty. The prior successful runs `42025350197` and `42025350303` cover the preceding head `1549484ab43b25c6e7fc86b28ea91ae9c80d021d`, not the new documentation HEAD.
