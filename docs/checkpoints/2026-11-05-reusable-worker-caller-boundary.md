@@ -223,3 +223,15 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Current ruleset has zero required approvals; independent review gate not satisfied. Dispatch setting current value NOT VERIFIED via connector. Keep disabled.
 - No production workflow changed; no Worker/DSH/browser/model/secret/privileged execution. ADR only.
 - Next: pure owner-approval parser and deterministic state-transition tests only; no network/side effects. Full Supervisor/Worker conversion must be one reviewed PR.
+
+
+## Owner approval parser implementation — 2026-11-05
+
+- Added `scripts/pool-owner-approval.mjs` blob `84d631449c58a3b9b9f36b3adf1de976f6debeb8`, pure parser + fail-closed state planner; no network or side effects.
+- Added `scripts/pool-owner-approval.test.mjs` blob `a08fe457376ff65d5d3a71c2f15688d30c705e88`; 14 tests cover owner numeric ID, non-owner, edited comment, consumed ID, issue/SHA/profile/envelope mismatch, invalid timestamp, ambiguous dispatch, already-claimed state and unauthorized parse.
+- Updated contract workflow blob `3a03a48c7ce27302813fe5b53b6a8f1846f7463a` to run the new tests.
+- Exact PR HEAD `4afef4f23cbafa7b385760e5b025089af00e601a`: Pool Contract Validation run `42041136037` / job `127291928780` SUCCESS; logs confirm existing caller tests 8/8, approval tests 14/14, YAML parsing of all seven workflows, dispatch gate disabled/unset and `POOL_CONTRACT_VALIDATION=PASS`. Reusable Worker context fixture run `42041136130` SUCCESS.
+- PR #12 remains OPEN / DRAFT / NOT MERGED; independent review NOT RUN. No canonical files changed.
+- Parser is not a durable ledger or CAS. It trusts caller-supplied owner ID, expected task envelope and consumed-comment ID list; production must obtain these from authenticated GitHub metadata and a durable replay-safe store. It does not provide exactly-once.
+- Production Worker still has `workflow_dispatch`; Supervisor still REST-dispatches; production caller validation remains unwired. Dispatch gate current repository setting NOT VERIFIED. No Worker/DSH/Resource Probe/browser/model/provider/Gemini/Claude/privileged dispatch run. Paid fallback NOT USED.
+- Next: qualify native GitHub Environment required-reviewer as a per-run approval gate, including prevent-self-review, bypass policy, exact issue/SHA/profile binding and cancellation/duplicate semantics; separately establish durable single-use consumption. Keep production dispatch closed.
