@@ -43,6 +43,9 @@ for (const [path, source] of workflows) {
   }
 
   for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)) {
+    // Local reusable workflows are immutable within the checked-out commit;
+    // they are validated separately for static path, workflow_call and policy.
+    if (/^\.\/\.github\/workflows\/[^/]+\.ya?ml$/.test(match[1])) continue;
     if (!/@[0-9a-f]{40}$/.test(match[1])) {
       fail(path + " uses an action that is not pinned to a full commit SHA: " + match[1]);
     }
