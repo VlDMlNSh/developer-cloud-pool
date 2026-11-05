@@ -84,3 +84,19 @@ Read back and verify the ADR/OpenAPI blobs, link them from Issue #22, and reques
 - Exact-head CI: NOT RUN / NOT VERIFIED; the current validation workflow does not include docs/contracts paths in its trigger filter.
 - Formal independent reviews: NOT RUN.
 - PR remains draft and unmerged.
+
+
+## Cloudflare account inspection — actual result (2026-11-06)
+
+The Cloudflare connector authenticated successfully and exposed one account. Read-only account inspection returned:
+- Workers scripts: empty list (no Worker deployed).
+- Workers subdomain: HTTP 404, API error 10007 — no `workers.dev` subdomain exists; Cloudflare says opening Workers & Pages dashboard for the first time provisions one.
+- Access applications: HTTP 403, API error 9999 — Access is not enabled.
+- Zones: empty list — no domain/zone exists in the connected account.
+- Account object type: `standard`; Workers Free/Paid plan and Access entitlement remain NOT VERIFIED.
+
+No account settings were changed. No Worker, subdomain, Access app/policy, IdP, zone, DNS record, API token, secret or deployment was created. No billing action was taken.
+
+**Current Cloudflare status:** connector AUTHENTICATED; account inspection READ-ONLY VERIFIED; Worker deployment BLOCKED by missing workers.dev subdomain and disabled Access; free-tier entitlement NOT VERIFIED. A publicly exposed, unauthenticated preview is not an acceptable workaround.
+
+**Required owner prerequisites:** provision the workers.dev subdomain through Workers & Pages dashboard; explicitly decide whether to enable Access; verify Workers Free and Access pricing/entitlement; then request a fresh read-only inspection before any deployment.
