@@ -93,3 +93,17 @@ Add/run tests; wire Worker `workflow_call` caller validation and remove `workflo
 - Exact PR head is covered by PR merge-result CI; no direct non-PR branch run was performed.
 - PR #12 remains DRAFT; independent security review NOT RUN; production authorization BLOCKED.
 - Detailed evidence: [2026-11-05 validator correction report](../reports/2026-11-05-pool-contract-local-reusable-workflow-fix.md).
+
+
+## Production boundary readiness audit — 2026-11-05
+- Latest verified PR #12 head before this documentation pass: `2bf299336bec8cbf55d8785eef0e00bb7a6ec411`; base/canonical HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`; compare 30 ahead / 0 behind.
+- Exact-head Pool Contract Validation run `42023879350`, job `127233125033`: COMPLETED / SUCCESS.
+- Exact-head reusable Worker context fixture run `42023879543`, job `127233126401`: COMPLETED / SUCCESS.
+- Production Worker still exposes `workflow_dispatch`; Supervisor still dispatches through REST; caller validator is not wired into production. Authorization remains BLOCKED.
+- Ruleset `26550182` is ACTIVE for `refs/heads/Основной`, but required approving review count is 0. PR #12 review submissions and review threads are empty; independent security review NOT RUN.
+- Issue #1 remains OPEN. Current repository variable read-back for `POOL_DISPATCH_ENABLED` was not performed; current value NOT VERIFIED. Historical issue text and prior CI environment observations are not a current API read-back.
+- README governance wording corrected to acknowledge the active Ruleset and explicitly state that zero required approvals do not satisfy the independent review gate.
+- New audit report: [2026-11-05 production caller boundary readiness](../reports/2026-11-05-production-caller-boundary-readiness.md).
+- Canonical branch remains unchanged; docs updates are confined to the working branch.
+- Worker, DSH, Resource Probe, browser, Gemini, Claude, provider/model calls and privileged dispatch NOT RUN; runtime NOT QUALIFIED.
+- Next: define and implement production reusable Worker `workflow_call` + static Supervisor invocation, preserving single-use approval, provenance, immutable target SHA, bounded concurrency and least privilege. No dispatch until exact-head CI, independent review and current governance gates pass.
