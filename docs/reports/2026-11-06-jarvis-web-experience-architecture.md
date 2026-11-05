@@ -63,7 +63,7 @@ Important constraints:
 
 - Source files and SHAs above were read from the current default branch or identified PR branch.
 - ADR and OpenAPI contract were committed to a new branch based on immutable target SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Documentation read-back and blob SHA verification: pending after commit.
+- Documentation read-back and blob SHA verification: VERIFIED; ADR blob `8e0171694a567e9d01ea2ec7c9da1625b747b7c4`, OpenAPI blob `3ac992af794f4a3037487e20fd4056d6470aab6b`, report blob before this terminal update `b0147d3d888c3d7514d2ae284e067f77c7955f34`, checkpoint created at commit `f17ee8ac1a0acbecfd3aab8adeb531962c35a7a7`.
 - OpenAPI parser/schema validation: NOT RUN.
 - Exact-head GitHub CI: NOT RUN / NOT VERIFIED (documentation-only files; existing validation workflow does not trigger on these paths).
 - Independent security review: NOT RUN.
@@ -73,3 +73,14 @@ Important constraints:
 ## Next step
 
 Read back and verify the ADR/OpenAPI blobs, link them from Issue #22, and request independent review. After the design is accepted, build a local/no-secret Worker API fixture and validate JWT negative cases, API schemas, XSS/SSRF defenses and mobile-browser smoke tests. Do not deploy until the provider's actual free-plan/Access entitlements and owner approval are confirmed.
+
+
+## Terminal update — PR and checkpoint
+
+- Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/24
+- Branch: `docs/jarvis-web-experience-adr-2026-11-06`
+- Base: `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`
+- Added continuation checkpoint: `docs/checkpoints/2026-11-06-web-console-continuation.md`, created in commit `f17ee8ac1a0acbecfd3aab8adeb531962c35a7a7`.
+- Exact-head CI: NOT RUN / NOT VERIFIED; the current validation workflow does not include docs/contracts paths in its trigger filter.
+- Formal independent reviews: NOT RUN.
+- PR remains draft and unmerged.
