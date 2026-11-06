@@ -5,6 +5,8 @@ on:
     branches: ["Основной"]
     paths:
       - "tests/security/pool-authorization-contract.test.mjs"
+      - "tests/security/pool-authorization-decision.test.mjs"
+      - "src/pool/authorization-decision.mjs"
       - ".github/workflows/pool-authorization-contract-validation.yml"
 
 permissions:
@@ -30,4 +32,4 @@ jobs:
           check-latest: false
 
       - name: Run production-source security contract tests
-        run: node --test tests/security/pool-authorization-contract.test.mjs
+        run: node --test tests/security/pool-authorization-contract.test.mjs tests/security/pool-authorization-decision.test.mjs
