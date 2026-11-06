@@ -62,7 +62,10 @@ export function recordProviderOutcome(ledgerInput, routeId, outcome, observedAt)
   assert(outcome && typeof outcome === "object", "outcome is required");
 
   const status = outcome.status;
-  const scope = outcome.scope === "quota_domain" ? "quota_domain" : "route";
+  const hasProviderScopeEvidence = outcome.scopeEvidence?.authority === "provider"
+    && typeof outcome.scopeEvidence.evidenceRef === "string"
+    && outcome.scopeEvidence.evidenceRef.trim().length > 0;
+  const scope = outcome.scope === "quota_domain" && hasProviderScopeEvidence ? "quota_domain" : "route";
   const affected = affectedRouteIds(ledger, route, scope);
   let nextState;
   let cooldownUntil = null;
@@ -104,6 +107,7 @@ export function recordProviderOutcome(ledgerInput, routeId, outcome, observedAt)
     affectedRouteIds: affected,
     status,
     scope: affected.length > 1 ? "quota_domain" : "route",
+    scopeEvidenceRef: scope === "quota_domain" ? outcome.scopeEvidence.evidenceRef : null,
     observedAt,
     cooldownUntil
   });
