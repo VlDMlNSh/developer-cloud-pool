@@ -74,4 +74,4 @@ test("Worker validates caller and callee identities using their distinct GitHub 
   assert.match(workerWorkflow, /job\.workflow_repository/);
   assert.match(workerWorkflow, /job\.workflow_file_path/);
   assert.match(workerWorkflow, /job\.workflow_sha/);
-});;;
+});
