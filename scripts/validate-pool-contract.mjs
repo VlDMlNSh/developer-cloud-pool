@@ -64,6 +64,7 @@ if (!/supervisor_run_id:[\s\S]*?required:\s*true/.test(worker)) fail("Worker mus
 if (!/SUPERVISOR_RUN_ID:[\s\S]*?inputs\.supervisor_run_id/.test(worker)) fail("Worker must pass supervisor_run_id through an environment variable");
 if (!/validate:[\s\S]*?permissions:[\s\S]*?contents:\s*read[\s\S]*?issues:\s*read[\s\S]*?actions:\s*read/.test(worker)) fail("Worker validation job must have read-only contents, issues and Actions permissions");
 if (!worker.includes('process.env.GITHUB_REF !== "refs/heads/" + defaultBranch')) fail("Worker must reject dispatches from non-default branches");
+if (!worker.includes("ref: ${{ github.event.repository.default_branch }}")) fail("Worker must load authorization code from the trusted default branch");
 if (!worker.includes("hasConsumedOwnerApproval") || !worker.includes("hasSupervisorClaimComment") || !worker.includes("hasOwnerReadyEvent") || !worker.includes("hasCurrentBotClaimEvent") || !worker.includes("isTrustedSupervisorRun") || !worker.includes("hasPriorWorkerRun")) fail("Worker must independently verify owner approval, Supervisor run, claim provenance and replay state");
 if (!/concurrency:[\s\S]*?pool-worker-task-/.test(worker)) fail("Worker must serialize executions per task issue");
 if (!supervisorScript.includes("supervisor_run_id: String(process.env.GITHUB_RUN_ID)")) fail("Supervisor must pass its own run ID to Worker");
