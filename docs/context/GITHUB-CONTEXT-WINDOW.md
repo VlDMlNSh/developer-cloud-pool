@@ -858,3 +858,23 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - PR #36 review count 0; independent security review NOT RUN. PR remains draft.
 - Local D1 proof VERIFIED for exact head only. Production integration, account-specific Workers Free/card-free entitlement and Contour A acceptance remain NOT VERIFIED / BLOCKED.
 - No cloud resource, deployment, billing, secret, provider call or dispatch occurred.
+
+
+## D1 proof final read-back — 2026-11-06
+
+- Default branch `Основной` remains at observed immutable HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Draft PR #36: https://github.com/VlDMlNSh/developer-cloud-pool/pull/36; state OPEN / DRAFT / NOT MERGE-READY. Superseded PR #35 CLOSED / UNMERGED.
+- Proof branch current HEAD: `3467486d76498bb8e3c4f1e5d32b738f794ff2e2`; compare to default: 19 ahead / 0 behind. No merge.
+- Tested D1 code SHA: `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`. Later commits only updated proof README/report metadata; D1 source, migration, tests, package manifest and workflow remained unchanged. Literal exact-head CI for current docs-only HEAD is NOT VERIFIED; tested code SHA is VERIFIED.
+- D1 workflow run `42271859222` / job `128078153536`: COMPLETED / SUCCESS. `npm run check` passed. Workers Vitest: 1 test file, 13/13 tests passed (537 ms).
+- Pool Contract Validation run `42271859290`: COMPLETED / SUCCESS.
+- Tests include 12 simultaneous consume attempts with exactly one winner, replay, owner/repository/issue/target SHA/profile/envelope mismatches, expiry, malformed input, unavailable storage, ambiguous storage error and D1 batch rollback.
+- Local adapter only allows first consume when exactly one row changes; even success returns `dispatch: false`. No dispatch capability, GitHub client, provider client or secrets are present in the proof package. The Worker entrypoint is inert and returns 404.
+- Dependency lock artifact `13529083485`, SHA-256 `2acf14b203cef11508e0f4143e4662d9c30228cbffcb80e0b382dbdeb335d5d1`. Inspected lockfile: lockfileVersion 3, 160 package entries, lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`. Direct pins plugin 1.4.7 / Vitest 4.1.12; resolved workerd 1.20261019.1 / Miniflare 5.20261019.2-beta / Wrangler 4.152.0. Artifact expires 2026-11-13.
+- Lockfile remains uncommitted; PR is not merge-ready. No independent reviews / inline threads (0 / 0).
+- First D1 CI attempts: PR #35 config import failure before tests; PR #36 first run compatibility date mismatch before tests. Both corrections were applied and the final tested source SHA passed. Do not treat earlier failed runs as D1 behavior failures.
+- No Cloudflare D1 database, Worker, DO namespace or production deployment was created. No account/billing change, secret access, dispatch, DSH, Resource Probe, provider call or Hono integration.
+- Cloudflare Workers Free activation and card-free eligibility remain NOT VERIFIED. Local D1 proof does not qualify live quota, backup/restore, real network ambiguity, caller identity or owner-approval provenance.
+- Status: local D1 Workers-runtime proof VERIFIED at `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`; production D1 NOT QUALIFIED; independent security review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+**Next bounded step:** obtain a committed, reviewed lockfile in PR #36, then request independent security review. Do not merge or deploy. Only after the free/no-card entitlement is independently proven may a separate disposable cloud test be considered with explicit authorization.
