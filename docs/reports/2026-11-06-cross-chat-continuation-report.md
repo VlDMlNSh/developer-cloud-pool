@@ -63,7 +63,7 @@ Persist the current Cloud Pool project state and all material decisions from the
 
 - Durable checkpoint: docs/checkpoints/2026-11-06-cross-chat-continuation.md
 - This report: docs/reports/2026-11-06-cross-chat-continuation-report.md
-- README will link to the checkpoint and this report.
+- README links to the checkpoint and this report.
 
 ## Next step
 
