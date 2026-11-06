@@ -176,3 +176,14 @@ Review classification: useful source-level engineering review only; NOT an indep
 - Lockfile remains NOT COMMITTED. The exact bytes are prepared for a direct branch upload; the available GitHub Contents API action accepts text content but this execution environment does not expose the local artifact file as a text binding. No substitute lockfile was generated.
 - PR #36 remains open/draft; 0 submitted reviews, 0 inline threads; independent security review NOT RUN.
 - No cloud resources, deployment, billing changes, secret access, provider calls, dispatch or production integration. Production security blockers remain as listed above.
+
+
+## Current exact-head rerun — 2026-11-06
+
+- Exact tested PR head: `2cd330b7b2965840be15f5e7cd25de349e41ebb4`.
+- D1 workflow run `42274318728`, job `128086595671`: COMPLETED / SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation run `42274318580`, job `128086594390`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13531931790`; ZIP SHA-256 `8be02144fab30cffb59c8175c3c9b477a586097616afab39366097378f9abfa6`; downloaded and inspected. Extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; 160 package entries, lockfileVersion 3, resolved dependency inventory unchanged.
+- The exact lockfile copy is prepared as `/mnt/data/package-lock.json`, but remains NOT COMMITTED.
+- PR #36 remains open/draft; 0 reviews, 0 inline threads; independent security review NOT RUN.
+- No cloud resources, deployment, billing changes, secrets, provider calls, dispatch or production integration. Production identity/provenance, trusted clock, issuance/revocation/audit, quotas, backup/restore, account entitlement and executor approval remain blockers.
