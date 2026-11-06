@@ -20,13 +20,14 @@ export function isAllowedGitHubOwnerId(userId, allowedIds) {
 export function isSessionActive(session, nowMs) {
   return Boolean(
     session &&
+    Number.isFinite(nowMs) &&
     typeof session.id === "string" &&
     session.id.length >= 32 &&
     Number.isFinite(session.issuedAt) &&
     Number.isFinite(session.expiresAt) &&
     session.issuedAt <= nowMs &&
     session.expiresAt > nowMs &&
-    session.revokedAt == null
+    session.revokedAt === null
   );
 }
 
