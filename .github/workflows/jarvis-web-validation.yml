@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - "Основной"
+      - "feat/jarvis-hono-web-prototype-2026-11-06"
     paths:
       - "package.json"
       - "wrangler.jsonc"
