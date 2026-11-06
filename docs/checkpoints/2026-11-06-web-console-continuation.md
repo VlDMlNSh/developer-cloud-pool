@@ -145,3 +145,12 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 - npm install created transient runner dependency state; no package lock is committed. Dependency reproducibility remains NOT QUALIFIED.
 - PR remains OPEN/DRAFT/UNMERGED; independent review 0; Workers Free entitlement NOT VERIFIED; OAuth/session NOT IMPLEMENTED; deployment NOT RUN.
 - Detailed evidence: [Hono prototype implementation report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/jarvis-hono-web-prototype-2026-11-06/docs/reports/2026-11-06-hono-prototype-implementation.md).
+
+
+## 2026-11-06 — reproducible dependency lockfile
+
+- PR #25 implementation branch now includes `package-lock.json` (npm lockfileVersion 3, 93 package entries; blob SHA `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`). Generated on GitHub Actions ubuntu-24.04 using npm 10.9.9 from exact direct pins Hono 4.13.16 and Wrangler 4.158.0.
+- Validation workflow now uses `npm ci --ignore-scripts --no-audit --no-fund`; no lockfile data is emitted to CI logs anymore.
+- Implementation report updated: [Hono prototype implementation](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/jarvis-hono-web-prototype-2026-11-06/docs/reports/2026-11-06-hono-prototype-implementation.md).
+- PR #25 current head at documentation update: `460e510ed5fe72edd8e9e857a7ffd55cd1471264`. Exact-head CI must be rechecked; prior green runs on older SHAs do not qualify the latest head.
+- Independent review remains NOT RUN; PR remains DRAFT/UNMERGED; OAuth/session NOT IMPLEMENTED; deployment NOT RUN.
