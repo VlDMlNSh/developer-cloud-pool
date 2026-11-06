@@ -29,6 +29,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
+      POOL_AUTHORIZATION_CONTRACT_ACCEPTED: ${{ vars.POOL_AUTHORIZATION_CONTRACT_ACCEPTED }}
     steps:
       - name: Checkout supervisor code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
