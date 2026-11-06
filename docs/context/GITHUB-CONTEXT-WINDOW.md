@@ -635,3 +635,17 @@ MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: obtain owner-authorized metadata-only evidence for Actions default permissions and Supervisor token identity/effective permission, or select a different consume design that can be independently qualified without tag rulesets.
 
 Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-tag-ruleset-actions-permission-readback.md
+
+## Engineering pass — 2026-11-06 — GitHub-native single-use consume alternatives
+
+- Fresh default branch HEAD verified by repository commit search: `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #32 freshly read: OPEN / DRAFT / UNMERGED; head `75c83a288d865f1bbeda4905cf817e00084bcc2d`, base default HEAD. Exact-head runs: Authorization Negative-First `42236017811` / job `127953700048` COMPLETED/FAILURE; Pool Contract Validation `42236017724` COMPLETED/SUCCESS. Reviews 0; inline threads 0; independent review NOT RUN.
+- Fresh production workflow read-back: Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` retains `workflow_run: completed`, `issues: write`, `actions: write`; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` retains direct `workflow_dispatch` and a report job with `issues: write`.
+- Evaluated Actions concurrency, cache reservation, Artifacts v4, Deployments API, Issues/comments/labels and Git refs/tags against uniqueness, durability, immutability, anti-delete and identity requirements. None is qualified as a durable one-time approval consume primitive. In particular, concurrency is only scheduler serialization (max 100 pending; ordering based on wait-start time); caches are evictable/deletable and branch-scoped; artifact uniqueness is within a workflow run; deployments can be duplicated/deleted; mutable issue metadata is not atomic; tag candidate remains blocked by absent tag ruleset and unverified workflow token identity.
+- Evidence report: [GitHub-native single-use consume alternatives](../reports/2026-11-06-github-native-single-use-consume-alternatives.md).
+- No production code/workflow/settings/ruleset/secret/variable/Environment changed; no tag, dispatch, workflow run, model/provider call, deployment, or paid resource was created.
+- Decision: do not substitute any reviewed GitHub-native primitive. Keep dispatch fail-closed. Any external durable store requires explicit no-cost eligibility proof and independent transaction/persistence/security qualification before provisioning.
+- Status: durable single-use consume NOT VERIFIED; Actions token identity/effective permissions NOT VERIFIED; PR #32 independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain owner-authorized metadata-only evidence for Actions default permissions and Supervisor token identity; in parallel, perform read-only comparison of free transaction-capable persistence options without provisioning.
+
+Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-github-native-single-use-consume-alternatives.md
