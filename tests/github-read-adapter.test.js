@@ -20,6 +20,18 @@ test("rejects non-allowlisted repositories before any network request", async ()
   assert.equal(calls, 0);
 });
 
+test("rejects ETags containing invalid HTTP entity-tag characters before network access", async () => {
+  let calls = 0;
+  const adapter = createGitHubReadAdapter({
+    fetchImpl: async () => { calls += 1; throw new Error("must not fetch"); }
+  });
+  for (const etag of ['"contains space"', '"contains\t-tab"', '"contains\u0001-control"', '"contains\u007f-delete"', '"contains\u0100-unicode"']) {
+    const result = await adapter.read({ repository: REPOSITORY, resource: "repository", etag });
+    assert.equal(result.error, "INVALID_ETAG", JSON.stringify(etag));
+  }
+  assert.equal(calls, 0);
+});
+
 test("rejects arbitrary resources and out-of-range pagination", async () => {
   const adapter = createGitHubReadAdapter({ fetchImpl: async () => { throw new Error("must not fetch"); } });
   assert.equal((await adapter.read({ repository: REPOSITORY, resource: "arbitrary" })).error, "RESOURCE_NOT_ALLOWED");
