@@ -413,3 +413,16 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Detailed comparison and acceptance tests: `docs/reports/2026-11-06-github-environment-single-use-marker-review.md`.
 - No dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: draft marker protocol/tag-ruleset spec and adversarial tests; obtain authorized read-back of Environment config before deciding to use it.
+
+
+## 20. Single-use Git marker protocol and adversarial acceptance spec — 2026-11-06
+- PR #12 OPEN/DRAFT/UNMERGED, head 6c053bacff29ca8efb5fdb759edd44fcd416b749; fixture 42041946049 and contract 42041945700 SUCCESS; reviews empty.
+- PR #15 OPEN/DRAFT/UNMERGED, head c57f2ab3f2b91bf6b3e413640f65ec518008b75e; contract 42038004176 SUCCESS; reviews empty.
+- PR #27 current head 7a7b05ec3a1581303c6207aaeaadba2ba3305a88; exact-head CI lookup empty => NOT VERIFIED; reviews empty.
+- Ruleset 26550182 active for refs/heads/Основной only; approvals=0, CODEOWNERS review=false, no bypass actors. No tag ruleset evidenced.
+- Proposed marker namespace refs/tags/pool-consumed/<approval-comment-id>; annotated tag payload binds repository/issue/comment/owner/task SHA/profile/envelope/expiry. Create Ref 201 must be followed by exact ref/object read-back; 409 is not success without exact payload verification; all ambiguous failures fail closed.
+- Proposed tag ruleset: target refs/tags/pool-consumed/*, restrict update and deletion, leave creation unrestricted, bypass list empty. Design only; require disposable-tag test.
+- Marker creation and dispatch are not transactional; crash after marker before dispatch => needs-review and fresh approval; no exactly-once claim.
+- Full protocol and adversarial matrix: docs/reports/2026-11-06-single-use-git-marker-protocol-spec.md.
+- No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only verify tag-ruleset and Environment API capabilities/config through authorized path; no resource creation.
