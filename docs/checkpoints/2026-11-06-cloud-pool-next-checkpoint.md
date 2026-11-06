@@ -166,3 +166,13 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Status: design CREATED; claim backend NOT QUALIFIED; independent review NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: qualify least-privilege conditional claim backend and independent review. Keep PR #37 draft and dispatch gates closed.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #37 exclusive task-state hardening — 2026-11-06
+
+- PR #37 HEAD advanced to `5587a4e013507b5be330fd0c49ce1fc836faa946`.
+- Worker requires exactly one managed lifecycle state and that it is `pool:claimed`; focused security test and contract-validator assertion added.
+- Exact-head CI: run `42284044591` / job `128120166723` and run `42284051311` / job `128120184802`, both SUCCESS.
+- Worker workflow push run `42284042173` had no jobs because Worker is workflow_call-only; it is not Worker execution.
+- PR remains DRAFT / UNMERGED; independent review NOT RUN; claim backend NOT QUALIFIED; gates unchanged/fail-closed.
+- No merge, dispatch, provider/model, secrets, deployment or paid service.
