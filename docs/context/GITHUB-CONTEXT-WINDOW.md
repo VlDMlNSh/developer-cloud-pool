@@ -622,3 +622,16 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-authenticated-governance-read-path.md
 Canonical unified context: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
 MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Engineering pass — 2026-11-06 — direct tag ruleset read-back
+
+- Direct Git ref read confirms default `Основной` HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; docs branch before this update `8ce1e499afad188913a3d96a801fe04623a75a6f`.
+- Direct current ruleset collection returned exactly one ACTIVE ruleset #26550182, target=branch, scoped only to `refs/heads/Основной`. Detail confirms no tag rules. Dedicated tag-target ruleset is therefore VERIFIED ABSENT (not merely stale/unknown).
+- Branch ruleset requires 0 approving reviews, no required reviewers, no code-owner review; thread resolution required; bypass actors empty; current user bypass=never.
+- Direct Actions permissions endpoint remains blocked by the connector allowlist. Workflow default permissions and effective Supervisor token identity/permissions remain NOT VERIFIED. Repository admin metadata must not be substituted for workflow-token permission evidence.
+- PR #32 remains OPEN/UNMERGED at head `75c83a288d865f1bbeda4905cf817e00084bcc2d` over base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Authorization run #42236017811 FAILED expected negative baseline; Pool Contract Validation #42236017724 SUCCESS but is not security qualification. Independent review NOT RUN.
+- No code, workflow, ruleset, settings, secrets, tag, dispatch, runtime or deployment was modified. Consume experiment NOT RUN. Keep dispatch fail-closed.
+- Next: obtain owner-authorized metadata-only evidence for Actions default permissions and Supervisor token identity/effective permission, or select a different consume design that can be independently qualified without tag rulesets.
+
+Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-tag-ruleset-actions-permission-readback.md
