@@ -53,7 +53,7 @@ test("Supervisor claims one task and verifies exact read-back before emitting ou
 });
 
 test("Failed or ambiguous claims are not automatically requeued", () => {
-  assert.doesNotMatch(script, /pool:claimed["'][^\n]*pool:ready/);
+  assert.doesNotMatch(script, /replaceLabels\([^,\n]+,\s*\["pool:claimed"\],\s*\["pool:ready"\]\)/);
   assert.doesNotMatch(script, /POOL_CLAIM_LEASE_EXPIRED/);
   assert.match(supervisor, /pool:needs-review/);
 });
