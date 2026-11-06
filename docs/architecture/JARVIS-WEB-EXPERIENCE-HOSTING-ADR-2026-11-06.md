@@ -216,3 +216,8 @@ An isolated implementation proposal now exists in [PR #25](https://github.com/Vl
 ## Reproducible dependencies — 2026-11-06
 
 The isolated Hono prototype in [PR #25](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25) now commits an npm v3 lockfile with 93 package entries (blob SHA `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`). CI now uses `npm ci` rather than resolving packages on every run. Exact-head CI after the lockfile and workflow changes is required before dependency reproducibility is considered qualified. OAuth/session, independent security review and deployment remain incomplete.
+
+
+## Exact-head CI — 2026-11-06
+
+PR #25 head `21839a314db6c1f72b71dadfb1fadd96d4bc38a7` has 2/2 successful checks: Hono validation (run `42174718716`, job `127750439087`) including `npm ci`, static checks, 4 API tests and static dashboard validation; and workflow/security validation (run `42174718720`, job `127750439342`). This is CI evidence only. PR remains draft/unmerged with no independent review; authentication, deployment and security qualification remain incomplete.
