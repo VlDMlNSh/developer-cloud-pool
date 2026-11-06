@@ -80,3 +80,14 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Report: docs/reports/2026-11-06-single-use-git-marker-protocol-spec.md. Unified Context Window Section 20; blob SHA b242dc994ed15a86c95e71594ad734153853da21 (read-back verified).
 - No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only verify effective tag-ruleset and Environment API/configuration capabilities through authorized path; do not create resources.
+
+
+## 2026-11-06 — Default-branch production authorization recheck
+- Current default branch Основной HEAD 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- Worker workflow blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4: workflow_dispatch remains; no trusted owner-comment or caller provenance validation; report job has issues:write.
+- Supervisor workflow blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd: privileged workflow_run remains on default branch; top-level issues:write/actions:write; PR #15 removal is unmerged.
+- Supervisor script blob 52bf03ca889edd92fd10c71ae96a2e35e106d43f: pool:ready label used as intake authority, REST dispatch, dispatch error restores ready, stale claim returns to ready after 15 min, both Worker and Supervisor mutate issue state. Code checks exact POOL_DISPATCH_ENABLED=true, but current repo variable is NOT VERIFIED.
+- PR #12 fixture/contract CI SUCCESS but not production caller authorization. PR #15 contract CI SUCCESS but not on default branch. PR #27 current head f10db507660c2945642e99e23f957025058e27c5, no exact-head PR-triggered CI runs found (NOT VERIFIED); formal reviews empty.
+- Reports: docs/reports/2026-11-06-github-api-capability-marker-namespace-recheck.md and docs/reports/2026-11-06-default-branch-supervisor-worker-authorization-recheck.md.
+- No code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: coherent test-first Supervisor/Worker remediation plan; keep dispatch disabled.
