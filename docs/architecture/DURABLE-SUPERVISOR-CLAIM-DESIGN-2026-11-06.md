@@ -8,8 +8,8 @@
 ## Immutable baseline
 
 - Default branch `Основной`: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
-- PR #37 head: `5b45a29ed7869c091741c0037c68bfcd6640de7d`, OPEN / DRAFT / UNMERGED.
-- Exact-head static CI: runs `42280875294` and `42280875365`, both SUCCESS.
+- PR #37 head: `5587a4e013507b5be330fd0c49ce1fc836faa946`, OPEN / DRAFT / UNMERGED.
+- Exact-head static CI: runs `42284044591` (Reusable Pool Worker Boundary Validation) and `42284051311` (Pool Contract Validation), both SUCCESS.
 - PR #37 reviews and inline threads: 0 / 0.
 - Active Ruleset `26550182` requires zero approving reviews and does not require CODEOWNERS review.
 
@@ -111,3 +111,12 @@ Immediate safe baseline:
 - Runtime execution: NOT RUN.
 - Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
 - Contour B: DEFERRED.
+
+
+## Implementation delta after design baseline
+
+- PR #37 at `5587a4e013507b5be330fd0c49ce1fc836faa946` now independently rejects a task unless exactly one managed lifecycle label is present and it is `pool:claimed`.
+- A focused security test and validator assertion cover conflicting/duplicate managed labels.
+- Exact-head CI runs `42284044591` and `42284051311` succeeded.
+- This is an additional state-consistency guard, not a claim-store/CAS implementation. It does not change the disposition of designs A/B/C or permit dispatch.
+- Independent review remains NOT RUN; PR remains DRAFT / OPEN / UNMERGED.
