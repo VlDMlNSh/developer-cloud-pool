@@ -33,7 +33,7 @@ test("does not infer account independence from provider identity", () => {
 
 test("429 with Retry-After cools only the explicitly affected quota domain", () => {
   const ledger = createQuotaLedger(definitions);
-  const next = recordProviderOutcome(ledger, "acct-a-key-1", { status: 429, retryAfterMs: 60_000, scope: "quota_domain" }, 1_000);
+  const next = recordProviderOutcome(ledger, "acct-a-key-1", { status: 429, retryAfterMs: 60_000, scope: "quota_domain", scopeEvidence: { authority: "provider", evidenceRef: "provider-doc:429-account-scope" } }, 1_000);
   assert.equal(next.routes["acct-a-key-1"].state, "cooldown");
   assert.equal(next.routes["acct-a-key-2"].state, "cooldown");
   assert.equal(next.routes["acct-b-key-1"].state, "ready");
@@ -74,4 +74,25 @@ test("does not mutate the source ledger", () => {
   const next = recordProviderOutcome(ledger, "acct-a-key-1", { status: 403 }, 1);
   assert.equal(ledger.routes["acct-a-key-1"].state, "ready");
   assert.equal(next.routes["acct-a-key-1"].state, "auth_failed");
+});
+
+test("unverified quota-domain scope cannot cool down sibling credential slots", () => {
+  const ledger = createQuotaLedger(definitions);
+  const next = recordProviderOutcome(ledger, "acct-a-key-1", { status: 429, retryAfterMs: 60_000, scope: "quota_domain" }, 1_000);
+  assert.equal(next.routes["acct-a-key-1"].state, "cooldown");
+  assert.equal(next.routes["acct-a-key-2"].state, "ready");
+  assert.equal(next.events.at(-1).scope, "route");
+  assert.equal(next.events.at(-1).scopeEvidenceRef, null);
+});
+
+test("provider quota-domain scope evidence is recorded in the audit event", () => {
+  const ledger = createQuotaLedger(definitions);
+  const next = recordProviderOutcome(ledger, "acct-a-key-1", {
+    status: 429,
+    retryAfterMs: 60_000,
+    scope: "quota_domain",
+    scopeEvidence: { authority: "provider", evidenceRef: "provider-doc:429-account-scope" }
+  }, 1_000);
+  assert.equal(next.events.at(-1).scope, "quota_domain");
+  assert.equal(next.events.at(-1).scopeEvidenceRef, "provider-doc:429-account-scope");
 });
