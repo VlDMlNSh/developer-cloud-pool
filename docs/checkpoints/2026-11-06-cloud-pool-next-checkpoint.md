@@ -322,3 +322,14 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Latest recorded Ruleset audit in Issue #38 comment `6694860325`: active Ruleset #26550182, approvals 0 and CODEOWNERS review false. No independent review enforcement. This pass did not re-query ruleset or live variables; no secrets read.
 - Dispatch gates remain fail-closed; no Worker, DSH, Resource Probe, model/provider call, deployment, resource provisioning, Gemini dispatch or Contour B work.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: isolated local proof of atomic claim/outbox and recovery under fault injection; independent security review and governance correction remain mandatory.
+
+
+## 2026-11-07 — D1 ledger implementation boundary audit
+
+- Report: [D1 single-use ledger implementation boundary audit](../reports/2026-11-07-d1-ledger-boundary-audit.md), commit `e46c2e0a2eb22a7b71b597bdcc183a85b851a982`.
+- Re-read PR #36 source at tested head `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`: migration blob `a80524ed839b63dd6483978118619495fa550877`; consume adapter `ef4f9693e1e2a378c08e974a65a8deb486af8712`; inert Worker `214622f6dc94623521070eb9e7fbc2f573fdc2c6`; test `8c4af56fffd40e716a4f1f16632b99c0c4f72f33`.
+- Re-fetched exact-head Actions runs/jobs: D1 run `42293956647` / job `128154248534` SUCCESS; Pool Contract run `42293956578` / job `128154248111` SUCCESS.
+- Source review confirms local one-row conditional consume and 12-way one-winner test. It does not include signed issuer verification, authenticated identity derivation, trusted server clock, transactional outbox, event ledger, lease/fencing, retry or recovery. Adapter returns `dispatch:false`; Worker entrypoint is inert. This is a bounded local proof, not production authorization or durable task delivery.
+- PR #36 remains OPEN/DRAFT/UNMERGED; independent reviews 0. PR #37 remains OPEN/DRAFT/UNMERGED; independent review remains NOT RUN. No merge or production wiring.
+- Next: isolated local-only claim + outbox proof with deterministic identity and fault-injection tests C01–C18. No live resources, dispatch, DSH, Resource Probe, secrets, provider/model calls or Contour B work.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Documentation remains on non-default branch `docs/github-context-window-2026-11-06`.
