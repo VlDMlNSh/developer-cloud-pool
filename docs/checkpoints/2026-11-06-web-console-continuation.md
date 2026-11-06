@@ -202,3 +202,15 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Metadata report read-back verified: blob `c55dd0c5e0608bdb89e02166c8aa20501709957b`. Previous checkpoint blob read-back: `bc2b731658333019af009661a646ebab4d8867ec`.
 - Branch commit immediately before this checkpoint update: `083e0b47e644d1ead075050a0cbcb11be76e145f`. Exact-head CI for docs-only changes remains NOT VERIFIED; reviews/threads 0/0.
 - Next bounded engineering action remains pinned OpenAPI 3.1 validation, followed by a no-secret OAuth/session fixture and negative tests. No credentials, deploy, paid resources, dispatch or agents were used.
+
+
+## 2026-11-06 — OpenAPI lint and health security alignment
+
+- Corrected OpenAPI `GET /health` to set `security: []` and removed 401/403 responses. This matches the public service-only health endpoint in the Hono prototype; all other operations remain protected by the global application-session scheme.
+- Added pinned Redocly CLI 2.75.0 validation workflow: `.github/workflows/jarvis-experience-openapi-validation.yml`. Contents read-only, checkout credentials disabled, Node 24, telemetry disabled.
+- Contract blob: `3cab6581f88a37d6090aeda5df1fb7157f749f84`; workflow blob: `47d3afecc918df0926a63b5cf2a6de473356f5d6`.
+- Exact PR #24 head: `8f8613eebb4a37e3a1c2296b66e9f7b53090d1ae`, 42 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Redocly OpenAPI validation run [42179122243](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42179122243) SUCCEEDED; Pool Contract Validation [42179122159](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42179122159) SUCCEEDED. Both are exact-head PR-triggered runs.
+- Dated report: [OpenAPI validation and health contract](../reports/2026-11-06-openapi-validation-and-health-contract.md).
+- PR #24 remains OPEN / DRAFT / UNMERGED; independent review 0 formal reviews / 0 inline threads. OAuth/session runtime NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; production dispatch BLOCKED / FAIL-CLOSED.
+- Next: implement a secret-free OAuth/session test fixture and negative tests; do not configure real OAuth credentials or enable protected routes before independent security review.
