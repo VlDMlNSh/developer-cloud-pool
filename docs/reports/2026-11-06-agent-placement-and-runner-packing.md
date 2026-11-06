@@ -18,12 +18,12 @@ Advance Developer Cloud Pool from the one-logical-profile-per-runner mental mode
 2. Added scripts/agent-placement.mjs: a deterministic best-fit-decreasing planner using CPU millicores, RAM MiB, per-workload scratch disk and immutable runtime bundle disk.
 3. Shared immutable runtime bundle disk is counted once per digest per runner. CPU/RAM reservations and scratch disk remain per workload.
 4. Multiple functions in one agent process use one combined workload reservation. Separate agents can be co-located only when task ID, target SHA, trust domain, isolation class, platform, architecture and network class match.
-5. Every workload must provide explicit CPU/RAM/scratch envelopes, a pinned SHA-256 runtime bundle digest, a separate workspace and explicit co-location permission.
+5. Every workload must provide explicit CPU/RAM/scratch envelopes backed by verified, unexpired measurement evidence, a pinned SHA-256 runtime bundle digest, a separate workspace and explicit co-location permission.
 6. Raw credential properties and raw-secret delivery modes are rejected. Gateway-scoped workloads must use unique opaque scope handles, never credential values.
 7. Independent-review and security-audit function labels automatically make a workload exclusive; the caller cannot accidentally co-locate those roles.
 
 7. Exclusive reviewer/security-auditor workloads cannot share a runner with implementation workloads. The planner does not override task/issuer/capability governance.
-8. Added 14 deterministic tests and wired them into Pool Contract Validation. The workflow now also triggers on config/**.
+8. Added 15 deterministic tests and wired them into Pool Contract Validation. The workflow now also triggers on config/**.
 
 ## Mature component review
 

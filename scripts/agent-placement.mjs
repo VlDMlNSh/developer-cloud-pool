@@ -20,7 +20,18 @@ function nonEmptyString(value, field) {
   assert(typeof value === "string" && value.trim().length > 0, field + " must be a non-empty string");
   return value;
 }
-function normalizeWorkload(workload) {
+function normalizeEvidence(evidence, field, now) {
+  assert(evidence && typeof evidence === "object", field + " is required");
+  assert(evidence.status === "verified", field + " must be verified");
+  const source = nonEmptyString(evidence.source, field + ".source");
+  const evidenceRef = nonEmptyString(evidence.evidenceRef, field + ".evidenceRef");
+  assert(Number.isFinite(evidence.observedAt) && evidence.observedAt >= 0 && evidence.observedAt <= now,
+    field + ".observedAt must be a valid timestamp not later than the planning time");
+  assert(Number.isFinite(evidence.validUntil) && evidence.validUntil > now,
+    field + ".validUntil must be later than the planning time");
+  return { status: "verified", source, evidenceRef, observedAt: evidence.observedAt, validUntil: evidence.validUntil };
+}
+function normalizeWorkload(workload, now) {
   assert(workload && typeof workload === "object" && !Array.isArray(workload), "each workload must be an object");
   assertNoCredentialMaterial(workload);
   const id = nonEmptyString(workload.id, "workload.id");
@@ -64,6 +75,7 @@ function normalizeWorkload(workload) {
   const digest = nonEmptyString(runtimeBundle.digest, "runtimeBundle.digest");
   assert(/^sha256:[a-f0-9]{64}$/i.test(digest), "runtimeBundle.digest must be a pinned sha256 digest");
   const runtimeDiskMiB = positiveInteger(runtimeBundle.diskMiB, "runtimeBundle.diskMiB");
+  const resourceEvidence = normalizeEvidence(workload.resourceEvidence, "workload.resourceEvidence", now);
   return {
     id, taskId, targetSha, trustDomainId, isolationClass, platform, architecture,
     networkClass, workspaceIsolation, coLocationAllowed: true,
@@ -73,10 +85,11 @@ function normalizeWorkload(workload) {
     functions,
     requiredCapabilities: [...new Set(workload.requiredCapabilities)],
     resources: normalizedResources,
+    resourceEvidence,
     runtimeBundle: { digest, diskMiB: runtimeDiskMiB }
   };
 }
-function normalizeTemplate(template) {
+function normalizeTemplate(template, now) {
   assert(template && typeof template === "object", "slotTemplate is required");
   const capacity = template.capacity;
   assert(capacity && typeof capacity === "object", "slotTemplate.capacity is required");
@@ -85,12 +98,14 @@ function normalizeTemplate(template) {
     memoryMiB: positiveInteger(capacity.memoryMiB, "capacity.memoryMiB"),
     diskMiB: positiveInteger(capacity.diskMiB, "capacity.diskMiB")
   };
+  const capacityEvidence = normalizeEvidence(template.capacityEvidence, "slotTemplate.capacityEvidence", now);
   assert(Array.isArray(template.capabilities), "slotTemplate.capabilities must be an array");
   assert(Array.isArray(template.allowedNetworkClasses), "slotTemplate.allowedNetworkClasses must be an array");
   return {
     platform: nonEmptyString(template.platform, "slotTemplate.platform"),
     architecture: nonEmptyString(template.architecture, "slotTemplate.architecture"),
     capacity: normalizedCapacity,
+    capacityEvidence,
     capabilities: new Set(template.capabilities),
     allowedNetworkClasses: new Set(template.allowedNetworkClasses)
   };
@@ -153,12 +168,13 @@ function fitScore(usage, capacity) {
  * Runtime bundle bytes are counted once per pinned digest per runner slot.
  * Every workload retains its own CPU/RAM reservation and scratch disk.
  */
-export function planAgentPlacement({ workloads, slotTemplate, maxRunnerSlots = HARD_MAX_RUNNER_SLOTS }) {
+export function planAgentPlacement({ workloads, slotTemplate, now, maxRunnerSlots = HARD_MAX_RUNNER_SLOTS }) {
   assert(Array.isArray(workloads), "workloads must be an array");
+  assert(Number.isFinite(now) && now >= 0, "now must be a non-negative planning timestamp");
   assert(Number.isInteger(maxRunnerSlots) && maxRunnerSlots >= 1 && maxRunnerSlots <= HARD_MAX_RUNNER_SLOTS,
     "maxRunnerSlots must be between 1 and the hard limit of 20");
-  const template = normalizeTemplate(slotTemplate);
-  const normalized = workloads.map(normalizeWorkload);
+  const template = normalizeTemplate(slotTemplate, now);
+  const normalized = workloads.map((workload) => normalizeWorkload(workload, now));
   const ids = normalized.map((item) => item.id);
   assert(new Set(ids).size === ids.length, "workload IDs must be unique");
   const gatewayScopeIds = normalized.map((item) => item.gatewayScopeId).filter(Boolean);

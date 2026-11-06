@@ -10,6 +10,7 @@
     "placement_strategy": "best-fit-decreasing-multidimensional",
     "resource_dimensions": ["cpu_millicores", "memory_mib", "scratch_disk_mib", "runtime_bundle_disk_mib"],
     "resource_source": "Measured workload peak plus explicit safety reserve; unknown envelopes are not eligible for co-location",
+    "evidence": "Each workload profile and runner capacity must have status=verified, source, evidenceRef, observedAt and future validUntil relative to planning time",
     "shared_runtime_disk": "Count a pinned immutable runtime bundle once per runner slot and digest; retain per-agent scratch disk",
     "multiple_functions": "Functions may share one agent workload reservation when they execute within the same runtime process",
     "multiple_agents": "Distinct agent workloads may share a runner only when all placement and isolation checks pass"

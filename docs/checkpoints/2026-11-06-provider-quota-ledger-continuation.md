@@ -35,7 +35,7 @@ Local API-client footprint may be small because inference runs on the provider s
 ## Safety invariants
 
 - All workloads in a placement plan use the same task ID, immutable target SHA, trust domain, isolation class, platform, architecture, network class and separate workspace.
-- Require explicit co-location consent, measured resource envelopes and pinned SHA-256 runtime bundle.
+- Require explicit co-location consent, verified and unexpired workload/host resource evidence, and pinned SHA-256 runtime bundle.
 - Reuse runtime bundle disk once per digest per runner slot; scratch disk, CPU and memory are reserved per workload.
 - Each process/container must keep separate workspace and a unique opaque gateway-scope handle; raw provider keys never enter placement metadata or worker environments.
 - Independent-review/security-audit function labels automatically force exclusive runner placement and never share a runner with implementation.
