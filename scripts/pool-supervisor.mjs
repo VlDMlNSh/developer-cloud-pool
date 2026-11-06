@@ -215,7 +215,7 @@ async function dispatchReadyTasks() {
       continue;
     }
 
-    await comment(issue.number, formatOwnerApprovalConsumed(issue.number, targetSha));
+    await comment(issue.number, formatOwnerApprovalConsumed(issue.number, targetSha, process.env.GITHUB_RUN_ID));
     await replaceIssueLabels(issue, ["pool:ready"], ["pool:claimed"]);
     await comment(issue.number,
       "**POOL_TASK_CLAIMED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
@@ -231,7 +231,8 @@ async function dispatchReadyTasks() {
           inputs: {
             task_issue: String(issue.number),
             target_sha: targetSha,
-            profile: "dsh-headless-probe"
+            profile: "dsh-headless-probe",
+            supervisor_run_id: String(process.env.GITHUB_RUN_ID)
           }
         })
       });
