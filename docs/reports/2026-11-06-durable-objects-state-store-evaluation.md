@@ -30,7 +30,7 @@ Cloudflare's official Workers Vitest integration supports local Miniflare tests 
 
 ## Decision
 
-Select SQLite-backed Durable Objects as a candidate for local/synthetic proof only. Do not yet select it for production. Keep D1, KV, PostgreSQL, Redis and paid managed services out of scope for this proof.
+Reconciled against the earlier free transactional state-store assessment: **D1 remains the preferred first candidate** for local/synthetic proof of the central single-use ledger. SQLite-backed Durable Objects are a secondary alternative where per-approval serialized coordination is required. This pass does not reverse the D1 preference. Neither is production-qualified.
 
 ## Required next tests
 
@@ -47,7 +47,7 @@ Select SQLite-backed Durable Objects as a candidate for local/synthetic proof on
 
 ## Status
 
-- ADR: RECORDED.
+- ADR: RECORDED; amended to preserve the earlier D1-first decision.
 - Durable Object implementation: NOT RUN.
 - Workers-runtime tests: NOT RUN.
 - Cloudflare account-specific Free/no-card eligibility: NOT VERIFIED.
@@ -62,3 +62,8 @@ Select SQLite-backed Durable Objects as a candidate for local/synthetic proof on
 - https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/
 - https://developers.cloudflare.com/durable-objects/examples/testing-with-durable-objects/
 - https://developers.cloudflare.com/workers/testing/vitest-integration/
+
+
+## Reconciliation correction
+
+The earlier repository assessment already selected D1 as the preferred first candidate and Durable Objects as a viable alternative. The new ADR was amended immediately after rereading that assessment; it no longer proposes DO ahead of D1. No implementation or resource creation occurred.
