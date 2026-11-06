@@ -15,7 +15,7 @@ Direct development dependencies are exact-pinned in `package.json`:
 - `@cloudflare/vitest-plugin@1.4.7`
 - `vitest@4.1.12`
 
-The pull-request workflow generates a per-run lockfile and preserves it as a short-retention artifact for review. This is a bootstrap compromise: a committed, reviewed lockfile is still required before this proof can be considered merge-ready or reproducible across runs. Do not merge this branch while `package-lock.json` is absent.
+The repository includes a committed `package-lock.json` (lockfileVersion 3). The pull-request workflow uses `npm ci --ignore-scripts --no-audit --no-fund` directly against that lockfile; it does not regenerate the dependency graph. CI also uploads the resolved lockfile as a short-retention artifact for independent comparison. Keep the committed lockfile in sync with `package.json`; do not replace `npm ci` with a lockfile-generating install step.
 
 ## Run
 
