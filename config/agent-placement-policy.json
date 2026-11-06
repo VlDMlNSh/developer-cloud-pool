@@ -29,7 +29,8 @@
     "allowed_modes": ["none", "gateway_scoped"],
     "raw_provider_credentials_allowed": false,
     "credential_material_in_placement_manifest": false,
-    "gateway_scope": "Per-workload short-lived capability; never share one agent's credential context with another agent"
+    "gateway_scope": "Per-workload short-lived capability; never share one agent's credential context with another agent",
+    "gateway_scope_id": "Required opaque non-secret handle; unique per workload; never the token or API key"
   },
   "isolation": {
     "workspace": "Separate working directory and per-workload scratch space",

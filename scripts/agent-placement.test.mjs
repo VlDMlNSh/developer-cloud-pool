@@ -25,6 +25,7 @@ function workload(id, overrides = {}) {
     coLocationAllowed: true,
     exclusive: false,
     credentialMode: "gateway_scoped",
+    gatewayScopeId: "gateway-scope-" + id,
     functions: ["research"],
     requiredCapabilities: ["node"],
     resources: { cpuMillicores: 250, memoryMiB: 512, scratchDiskMiB: 64 },
@@ -82,7 +83,7 @@ test("independent reviewers can be marked exclusive and receive separate runner 
   const plan = planAgentPlacement({
     workloads: [
       workload("implementation"),
-      workload("independent-review", { exclusive: true, isolationClass: "independent-review-v1" })
+      workload("independent-review", { functions: ["independent-review"], isolationClass: "independent-review-v1" })
     ],
     slotTemplate: template
   });
@@ -108,6 +109,16 @@ test("missing or unmeasured resource envelopes fail closed", () => {
     workloads: [workload("unknown", { resources: { cpuMillicores: 100, memoryMiB: 100 } })],
     slotTemplate: template
   }), /scratchDiskMiB/);
+});
+
+test("gateway capability scope identifiers are unique per workload", () => {
+  assert.throws(() => planAgentPlacement({
+    workloads: [
+      workload("agent-a"),
+      workload("agent-b", { gatewayScopeId: "gateway-scope-agent-a" })
+    ],
+    slotTemplate: template
+  }), /gatewayScopeId must be unique per workload/);
 });
 
 test("raw credential fields and raw-secret delivery are rejected", () => {

@@ -38,6 +38,8 @@ function normalizeWorkload(workload) {
   assert(workload.exclusive === undefined || typeof workload.exclusive === "boolean", "workload.exclusive must be boolean");
   assert(["none", "gateway_scoped"].includes(workload.credentialMode),
     "credentialMode must be none or gateway_scoped; raw credentials are forbidden");
+  const gatewayScopeId = workload.credentialMode === "gateway_scoped"
+    ? nonEmptyString(workload.gatewayScopeId, "workload.gatewayScopeId") : null;
   assert(Array.isArray(workload.functions) && workload.functions.length > 0
     && workload.functions.every((item) => typeof item === "string" && item.trim().length > 0),
   "workload.functions must contain one or more names");
@@ -47,6 +49,11 @@ function normalizeWorkload(workload) {
   "workload.requiredCapabilities must be an array of non-empty strings");
   const resources = workload.resources;
   assert(resources && typeof resources === "object", "workload.resources is required");
+  const functions = [...workload.functions];
+  const requiresExclusivePlacement = functions.some((name) =>
+    ["independent-review", "security-audit", "security-auditor"].includes(name.toLowerCase().replace(/_/g, "-"))
+  );
+  const exclusive = workload.exclusive === true || requiresExclusivePlacement;
   const normalizedResources = {
     cpuMillicores: positiveInteger(resources.cpuMillicores, "resources.cpuMillicores"),
     memoryMiB: positiveInteger(resources.memoryMiB, "resources.memoryMiB"),
@@ -60,9 +67,10 @@ function normalizeWorkload(workload) {
   return {
     id, taskId, targetSha, trustDomainId, isolationClass, platform, architecture,
     networkClass, workspaceIsolation, coLocationAllowed: true,
-    exclusive: workload.exclusive === true,
+    exclusive,
     credentialMode: workload.credentialMode,
-    functions: [...workload.functions],
+    gatewayScopeId,
+    functions,
     requiredCapabilities: [...new Set(workload.requiredCapabilities)],
     resources: normalizedResources,
     runtimeBundle: { digest, diskMiB: runtimeDiskMiB }
@@ -153,6 +161,9 @@ export function planAgentPlacement({ workloads, slotTemplate, maxRunnerSlots = H
   const normalized = workloads.map(normalizeWorkload);
   const ids = normalized.map((item) => item.id);
   assert(new Set(ids).size === ids.length, "workload IDs must be unique");
+  const gatewayScopeIds = normalized.map((item) => item.gatewayScopeId).filter(Boolean);
+  assert(new Set(gatewayScopeIds).size === gatewayScopeIds.length,
+    "gatewayScopeId must be unique per workload; credential capabilities cannot be shared");
 
   for (const workload of normalized) {
     assert(workload.platform === template.platform, "all workloads must match the selected runner platform");
