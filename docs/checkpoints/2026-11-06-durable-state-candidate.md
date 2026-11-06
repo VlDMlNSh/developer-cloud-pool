@@ -150,3 +150,12 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - PR #36 OPEN / DRAFT, 0 reviews, 0 inline threads; independent security review NOT RUN; account card-free eligibility NOT VERIFIED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No cloud resource/deployment/billing/secret/provider/dispatch activity.
 - Next: owner uploads the already-verified file to `proofs/d1-ledger/package-lock.json` in the PR branch; then assistant rechecks blob SHA and exact-head CI and proceeds with independent review.
+
+
+## Branch-head and CI scope correction — 2026-11-06
+
+- Current PR #36 branch HEAD: `7571f82b1d8015a40939151deded0a165b27b742`, 34 ahead / 0 behind base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Last code-bearing SHA: `9815da8fd316d8263b59f3493d076d4623c4c925`; D1 run `42274484200` and contract run `42274484234` both passed on that SHA. Newer `7571f82...` is report-only and not covered by a new D1 workflow run because report paths are excluded from the trigger.
+- Verified lockfile is still NOT COMMITTED. The exact SHA-256 is recorded in the context window; lockfileVersion 3, 160 packages.
+- PR body distinguishes current branch head and tested code head. PR remains OPEN / DRAFT, no reviews, independent security review NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
