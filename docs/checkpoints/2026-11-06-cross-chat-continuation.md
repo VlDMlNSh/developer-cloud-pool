@@ -154,3 +154,13 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Report: [negative-first authorization test harness](../reports/2026-11-06-negative-first-pool-authorization-tests.md).
 - Next: add a least-privilege read-only CI job on the isolated design branch, run tests and capture expected failures against current production source. Keep dispatch disabled; no merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — PR #32 negative-first authorization CI
+- PR #32 OPEN / DRAFT / UNMERGED; head `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`; base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; reviews 0, threads 0.
+- Corrected exact-head authorization run `42234855260` / job `127949725675`: FAILURE, 7 tests / 0 pass / 7 fail. This is the expected red baseline: direct Worker dispatch, Worker issue writes/mutations, Supervisor workflow_run/actions:write, missing static reusable call and stale-claim requeue. Initial run `42234770131` failed on test syntax before assertions and is superseded.
+- Existing Pool Contract Validation same head `42234855109` / job `127949430889`: SUCCESS; does not prove authorization properties.
+- Current production Worker/Supervisor blobs re-read: `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`, `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`.
+- Report: [negative-first authorization CI](../reports/2026-11-06-negative-first-pool-authorization-tests.md). PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/32.
+- Production unchanged; no dispatch/runtime/secrets/config/provider calls/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the integrated reusable Worker boundary and Supervisor-only queue writer against these failing tests; keep dispatch disabled and PR draft.
