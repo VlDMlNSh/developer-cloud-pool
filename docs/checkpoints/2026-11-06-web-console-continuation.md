@@ -193,3 +193,12 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - ADR blob: `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob: `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`.
 - PR #24 and #25 reviews/threads: 0/0 at recheck. Exact-head CI for documentation-only successor NOT VERIFIED. No deployment, OAuth credentials, dispatch, Gemini or Claude execution.
 - Next: validate OpenAPI 3.1 with a pinned parser; implement a no-secret local auth fixture and negative tests. Keep production routes fail-closed.
+
+
+## Metadata alignment verification — 2026-11-06
+
+- Issue #22's Cloudflare readiness section has now been replaced with current facts: workers.dev namespace PROVISIONED / VERIFIED; Worker scripts NONE; Access DISABLED / NOT REQUIRED; custom zones NONE; Workers Free entitlement NOT VERIFIED; deployment NOT RUN. The stale owner provisioning prerequisite is removed.
+- PR #24 description now reflects the application-level GitHub OAuth/session design and remains OPEN / DRAFT / UNMERGED.
+- Metadata report read-back verified: blob `c55dd0c5e0608bdb89e02166c8aa20501709957b`. Previous checkpoint blob read-back: `bc2b731658333019af009661a646ebab4d8867ec`.
+- Branch commit immediately before this checkpoint update: `083e0b47e644d1ead075050a0cbcb11be76e145f`. Exact-head CI for docs-only changes remains NOT VERIFIED; reviews/threads 0/0.
+- Next bounded engineering action remains pinned OpenAPI 3.1 validation, followed by a no-secret OAuth/session fixture and negative tests. No credentials, deploy, paid resources, dispatch or agents were used.
