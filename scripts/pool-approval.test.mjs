@@ -96,7 +96,7 @@ test("Worker requires a bot claim receipt bound to the same supervisor run and t
       "- Supervisor run: 9001",
       "- Target SHA: " + sha,
       "- Profile: dsh-headless-probe"
-    ].join("\\n")
+    ].join("\n")
   }];
   const expected = { issueNumber: 17, targetSha: sha, profile: "DSH headless probe" };
   assert.equal(hasSupervisorClaimComment(comments, expected, "9001"), true);
