@@ -62,3 +62,13 @@ Select and qualify a least-privilege conditional claim backend, or formally acce
 - GitHub also emits a push run named `.github/workflows/pool-worker.yml` (run `42284042173`) with no jobs and conclusion failure because the Worker is intentionally `workflow_call`-only. This is not a Worker execution and not one of the two PR validation checks. No Worker was run.
 - This is same-session implementation and self-review, not independent review. PR remains DRAFT / OPEN / UNMERGED; reviews/comments 0/0.
 - No merge, dispatch, provider/model call, secret access, deployment, or change to dispatch gates.
+
+
+## Claim design reconciliation — 2026-11-06
+
+- Refreshed Issue #38 immutable context to PR #37 HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946` and exact-head validation runs `42284044591` / `42284051311` (both SUCCESS).
+- Updated durable-claim ADR baseline and added the exclusive managed-state implementation delta. It is a consistency guard only, not CAS/exactly-once.
+- PR #37 remains OPEN / DRAFT / UNMERGED; reviews and inline comments 0/0; independent review NOT RUN.
+- Live Ruleset `26550182` active but requires zero approvals and does not enforce CODEOWNERS review. Governance still does not guarantee independent approval.
+- Issue-label updates remain non-CAS; no claim backend selected. Dispatch remains BLOCKED / FAIL-CLOSED.
+- No merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets, deployment, credentials, permissions or paid services.
