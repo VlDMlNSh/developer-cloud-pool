@@ -902,3 +902,17 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Bounded source review recorded in proof report. Key production blockers: caller identity not independently authenticated; approval row/owner approval provenance not cryptographically verified; caller-supplied `now` must be replaced with trusted server time; issuance/revocation, audit, quotas, backup/restore and live account-limit tests absent; placeholder profile is not production-approved. This was a source-level review, NOT independent security review.
 - PR #36 remains draft/open, no reviews or inline threads previously observed. No merge/deployment.
 - Next: verify run `42273038071`; solve exact lockfile commit path; obtain independent security review. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## D1 exact-head verification after bounded review — 2026-11-06
+
+- Latest proof branch HEAD: `16b0bdfec24e761bdeac97936ff9409e7235be45` at CI verification; subsequent report-only commit `582ee0b24ccff3d6e30dbebe4a6662079574d7f1` updates evidence only.
+- D1 workflow run `42273219768` / job `128082853105`: COMPLETED / SUCCESS; 1 test file, 13/13 Workers-runtime tests passed; npm ci, syntax check and artifact upload passed.
+- Pool Contract Validation run `42273219797` / job `128082854898`: COMPLETED / SUCCESS.
+- Latest lock artifact `13531037391`; archive digest `sha256:d670f77af00728e2b1a170ff96f73e37d32931d6d89027d7f70ed082d2d3593e`, expires 2026-11-13. Previously extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, 160 package entries. Latest artifact itself is authoritative for current head.
+- Removed report-only docs path from workflow trigger to avoid recursive reruns; source/workflow edits still trigger proof.
+- PR #36 remains open/draft, 0 submitted reviews and 0 inline threads; independent security review NOT RUN.
+- Lockfile NOT COMMITTED: artifact bytes/hash are verified but no supported transfer from this runtime file to GitHub Contents API was available. No reconstructed substitute.
+- Bounded source review recorded in proof report. Production blockers remain: verified caller/owner identity, approval issuer/provenance, signed approval evidence, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, live account limits and approved executor profile.
+- Local D1 proof VERIFIED for exact tested SHA `16b0bdfec24e761bdeac97936ff9409e7235be45`; not production qualification. No D1 resource, deployment, billing change, secrets, provider call or dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: commit exact lockfile, obtain independent security review, then separately qualify card-free cloud entitlement.
