@@ -980,3 +980,18 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Production gaps remain: authenticated caller/owner identity, verified issuer and signed approval provenance, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, Cloudflare Free/card-free eligibility evidence and approved production executor profile.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. PR #36 must remain draft until independent security review and all qualification gates pass.
 - Next: obtain independent security review of PR #36 and separately verify a free/card-free deployment path; do not merge or deploy before those gates.
+
+
+## /next — CI now enforces committed lockfile — 2026-11-06
+
+- PR #36 proof branch HEAD: `4229d8701f8ee79692619f481cef1d9d9483ff16`; base/default `Основной`: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. PR remains OPEN / DRAFT.
+- Found and corrected workflow flaw: removed `npm install --package-lock-only` (it regenerated the committed lockfile before install). D1 workflow now uses committed lock directly via `npm ci --ignore-scripts --no-audit --no-fund`.
+- Workflow blob SHA: `09b143c21d560d7eef93930da8f8f93bda378799`. Read back and verified; permissions remain `contents: read`, actions pinned, checkout credentials not persisted, no secrets/deploy/dispatch.
+- Committed lockfile blob SHA: `876c5d3de53bb12efaecdec939cbe8710cbd9e3c`; SHA-256 `73381e38dbec1ce06c8dcc79dc7b6c2008269713b632f6edb0ad18c8f31b0`.
+- Exact-head D1 run `42276825199` / job `128095160084`: COMPLETED / SUCCESS; npm ci, syntax check, Workers-runtime tests and artifact upload passed. Pool Contract Validation `42276825193` / job `128095160288`: COMPLETED / SUCCESS.
+- Artifact `13532718790`; archive digest `sha256:ff23a48ffbd12cde2c91c7239b0f663778bc4bbe88e92f872999bdd4883beb39`; expires 2026-11-13.
+- Proof implementation report appended and read back on proof branch.
+- PR reviews remain 0; independent security review NOT RUN. No authorized independent reviewer identity established. Do not self-approve or merge.
+- No production D1, Worker deployment, billing change, secret access, provider call, dispatch or integration. Production identity/issuer, signed approval, trusted clock, issuance/revocation/audit, quotas, backup/restore, Cloudflare Free/card-free entitlement and executor approval remain unresolved.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain a qualified independent security review, then separately qualify a free/card-free deployment route. Keep PR draft and do not deploy/merge.
