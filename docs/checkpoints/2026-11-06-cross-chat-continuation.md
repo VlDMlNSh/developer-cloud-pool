@@ -45,3 +45,14 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - PR #31 exact-head run lookup empty and reviews empty; CI NOT VERIFIED / independent review NOT RUN.
 - Keep dispatch fail-closed. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect PR #15 recovery logic and direct Worker caller authorization; verify current ruleset/dispatch state read-only; resolve DSH lockfile warnings; continue exact-head CI/review for PR #31.
+
+## 2026-11-06 — Supervisor/Worker authorization audit
+- Unified Context Window Section 17 published by commit f59420a55e7751482e8293f0af6d4ae39ae67a88; content blob SHA 7c474378816f2e0417b0ff676bea21da112bb365. Read-back required before treating final SHA as current.
+- Ruleset 26550182 directly read: active for refs/heads/Основной; PR required, but required approvals=0, CODEOWNERS review=false, bypass actors empty.
+- Current Actions variable POOL_DISPATCH_ENABLED was not re-read. Issue #1 contains historical owner CLI evidence false from 2026-11-04. Keep dispatch disabled; no dispatch performed.
+- Default Supervisor still has privileged workflow_run and issues:write/actions:write. Default Worker still exposes workflow_dispatch; validates issue label/body but not owner approval provenance or caller identity.
+- Worker report job has issues:write and mutates queue labels/comments, violating proposed Supervisor-only single-writer model; it does not revalidate the complete envelope immediately before mutation (TOCTOU gap).
+- PR #15 removes workflow_run but keeps stale-claim return to pool:ready after 15 minutes, conflicting with PR #12 ADR single-use approval; it does not solve direct Worker dispatch, owner approval, or report write authority. Latest-head contract CI run 42038004176 SUCCESS; zero formal reviews.
+- PR #12 adds caller-context fixture/helper/tests and proposed owner-approval/single-use ADR. Exact-head fixture run 42041946049 and contract run 42041945700 SUCCESS; zero formal reviews. Production Worker remains workflow_dispatch; fixture is not production authorization.
+- No runtime, DSH, Resource Probe, model call, secret read, deployment or dispatch. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: review PR #12 full ADR/helper/tests and create a security-property traceability matrix against current source; do not merge or enable dispatch.
