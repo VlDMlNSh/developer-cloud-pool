@@ -163,3 +163,19 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - No production code changed, no CI run triggered, no dispatch, no Worker execution, no DSH/Resource Probe, no secrets or provider calls, no deployment.
 - Dispatch remains BLOCKED / FAIL-CLOSED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
 - Next: implement Issue #37 on a new branch from the exact current default HEAD, beginning with workflow graph and tests; verify exact-head CI, then independent security review. Do not merge or enable dispatch before all gates.
+
+## Reusable Supervisor→Worker implementation pass — 2026-11-06
+
+- Implementation report: [reusable Supervisor→Worker implementation pass](../reports/2026-11-06-reusable-supervisor-worker-implementation-pass.md).
+- Working branch: `feat/reusable-pool-worker-boundary-2026-11-06`; draft PR #37: https://github.com/VlDMlNSh/developer-cloud-pool/pull/37; default base HEAD remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact tested head: `8d848629511ac1b8c379fd6c8d20cc17496f6f54`; compare: 23 ahead / 0 behind.
+- Worker is now `workflow_call` only, no issue-write/report mutation; caller/callee contexts checked with `github.workflow_*` and `job.workflow_*`; caller repo ID pinned to `1445644538`; caller/callee SHA equality required.
+- Supervisor no longer has `workflow_run`, `actions: write`, or REST workflow dispatch. It statically calls local reusable Worker. Intake/finalizer own issue writes; Worker has read-only permissions.
+- Supervisor script processes one task, requires protected default ref + `POOL_DISPATCH_ENABLED=true` + `POOL_AUTHORIZATION_CONTRACT_ACCEPTED=true`, claims and reads back exact envelope, and never automatically requeues a claimed approval. Ambiguous claim remains blocked for manual review.
+- Existing pool contract validator was updated to remove obsolete assertions requiring Worker issue-write/report and enforce the new architecture.
+- CI at exact head: run `42280397115` Reusable Pool Worker Boundary Validation SUCCESS; run `42280397122` Pool Contract Validation SUCCESS. Earlier syntax/validator/test failures were observed and corrected; see dated report.
+- PR #37 remains DRAFT / OPEN / UNMERGED. Reviews and review threads: 0. No Worker execution, DSH, Resource Probe, secrets, providers, models or deployment.
+- GitHub Issues labels are not CAS. Serialized Supervisor + read-back is not exactly-once proof; concurrency race qualification, independent security review and governance verification remain open.
+- Live value of `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` was not inspected or changed; no dispatch enabled.
+- Status: implementation SUCCEEDED on draft branch; exact-head CI VERIFIED; independent review NOT RUN; governance NOT VERIFIED; runtime NOT RUN; web console NOT DEPLOYED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of PR #37, audit claim/recovery and concurrency, re-read Issue #1/ruleset and verify non-secret gate state. Keep draft and fail-closed.
