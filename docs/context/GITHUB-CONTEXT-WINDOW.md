@@ -290,3 +290,14 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - PR #37 OPEN / DRAFT, 29 commits, 7 files, zero reviews/threads; exact-head CI evidence recorded for `5b45a29ed7869c091741c0037c68bfcd6640de7d`. Independent review NOT RUN.
 - Issue #38 remains OPEN / PLANNED. Full report: [Cloudflare Free-tier account qualification](../reports/2026-11-06-cloudflare-free-tier-account-qualification.md).
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
+
+
+## Cloudflare Free entitlement and live resource check — 2026-11-06
+
+- Read-only Cloudflare connection returned one standard account. Account entitlements endpoint succeeded with empty result; D1 database list succeeded with 0 databases; Worker scripts list succeeded with 0 scripts; Workers account settings returned `default_usage_model=standard`, `green_compute=false`.
+- Account subscriptions endpoint returned HTTP 403 Authentication error because the connected OAuth grant lacks Billing Read/Billing Write. No billing profile/payment method was read. Do not infer the actual account subscription state from empty entitlements.
+- Current official docs: Workers Free is available by default; 100,000 requests/day and 10ms HTTP CPU. D1 Free: 5m rows read/day, 100k rows written/day, 5GB total storage, 10 databases. Since 2026-09-01 D1 daily read/write limits are enforced (excess queries fail until midnight UTC). Workflows Free: 100k requests/day shared with Workers, 10ms CPU/invocation, 1GB-month, 3,000 steps/day. Queues Free: 10k operations/day, 24h retention. Browser Run Free is limited to 10min/day; not suitable as primary IDE.
+- Public Free capability VERIFIED; live account Workers Free subscription NOT VERIFIED; card-free eligibility NOT VERIFIED. No D1/Worker resource exists in connected account. No resource provisioned, deployment, billing change, payment method access, secret read, permission grant, provider call or dispatch.
+- No-card test not attempted because OAuth account/subscription metadata does not establish payment-method requirement. Billing endpoint needs Billing Read/Write; do not request broad write scope. Prefer dashboard UI non-secret confirmation or least-privilege read-only scope if supported.
+- Report: [Cloudflare Free entitlement live check](../reports/2026-11-06-cloudflare-free-entitlement-live-check.md).
+- Next: establish actual Workers Free/card-free eligibility via non-secret dashboard evidence or Billing Read-only metadata; stop if upgrade/payment method is required. Only then request separate governance approval for disposable isolated D1 test resource. Candidate C remains bounded qualification; dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
