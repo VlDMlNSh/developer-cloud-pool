@@ -6,16 +6,10 @@ on:
   workflow_dispatch:
   issues:
     types: [opened, reopened, labeled]
-  workflow_run:
-    workflows: ["Pool Worker"]
-    types: [completed]
 
 run-name: Pool Supervisor (${{ github.event_name }})
 
-permissions:
-  contents: read
-  issues: write
-  actions: write
+permissions: {}
 
 concurrency:
   group: developer-cloud-pool-supervisor
@@ -23,28 +17,103 @@ concurrency:
 
 jobs:
   reconcile:
-    name: Reconcile approved task queue
+    name: Validate and consume one approved task
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    permissions:
+      issues: write
+    outputs:
+      task_issue: ${{ steps.intake.outputs.task_issue }}
+      target_sha: ${{ steps.intake.outputs.target_sha }}
+      profile: ${{ steps.intake.outputs.profile }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      POOL_DEFAULT_BRANCH: ${{ github.event.repository.default_branch || github.ref_name }}
-      POOL_MAX_DISPATCH: "20"
       POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
-      POOL_RUN_TITLE: ${{ github.event.workflow_run.display_title }}
-      POOL_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-      POOL_RUN_ID: ${{ github.event.workflow_run.id }}
-      POOL_RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+      POOL_AUTHORIZATION_CONTRACT_ACCEPTED: ${{ vars.POOL_AUTHORIZATION_CONTRACT_ACCEPTED }}
     steps:
       - name: Checkout supervisor code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-
-      - name: Validate and run supervisor
+      - name: Validate and claim one task
+        id: intake
         shell: bash
         run: |
           set -euo pipefail
-          node --version
-          node --check scripts/pool-supervisor.mjs
           node scripts/pool-supervisor.mjs
+
+  worker:
+    name: Call reusable Pool Worker
+    needs: reconcile
+    if: needs.reconcile.outputs.task_issue != ''
+    uses: ./.github/workflows/pool-worker.yml
+    with:
+      task_issue: ${{ needs.reconcile.outputs.task_issue }}
+      target_sha: ${{ needs.reconcile.outputs.target_sha }}
+      profile: ${{ needs.reconcile.outputs.profile }}
+    permissions:
+      contents: read
+      issues: read
+
+  finalize:
+    name: Record terminal task result
+    needs: [reconcile, worker]
+    if: always() && needs.reconcile.outputs.task_issue != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      issues: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TASK_ISSUE: ${{ needs.reconcile.outputs.task_issue }}
+      TARGET_SHA: ${{ needs.reconcile.outputs.target_sha }}
+      WORKER_RESULT: ${{ needs.worker.result }}
+      SUPERVISOR_RUN_ID: ${{ github.run_id }}
+    steps:
+      - name: Set terminal state and append provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          const e = process.env;
+          const base = "https://api.github.com/repos/" + e.GITHUB_REPOSITORY + "/issues/" + e.TASK_ISSUE;
+          const headers = {
+            Accept: "application/vnd.github+json",
+            Authorization: "Bearer " + e.GITHUB_TOKEN,
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Content-Type": "application/json"
+          };
+          const get = await fetch(base, { headers });
+          if (!get.ok) throw new Error("Cannot read task before finalization: HTTP " + get.status);
+          const issue = await get.json();
+          const labels = (issue.labels || []).map(label => label.name);
+          if (!labels.includes("pool:claimed")) throw new Error("Claim mismatch; refusing ambiguous finalization.");
+          const success = e.WORKER_RESULT === "success";
+          const terminal = success ? "pool:probe-complete" : "pool:needs-review";
+          const managed = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"];
+          const retained = labels.filter(label => !managed.includes(label));
+          const patch = await fetch(base, {
+            method: "PATCH", headers,
+            body: JSON.stringify({ labels: [...new Set([...retained, terminal])] })
+          });
+          if (!patch.ok) throw new Error("Cannot set terminal state: HTTP " + patch.status);
+          const readback = await fetch(base, { headers });
+          if (!readback.ok) throw new Error("Cannot verify terminal state: HTTP " + readback.status);
+          const finalIssue = await readback.json();
+          const finalLabels = (finalIssue.labels || []).map(label => label.name);
+          if (!finalLabels.includes(terminal) || finalLabels.includes("pool:claimed") || finalLabels.includes("pool:ready")) {
+            throw new Error("Terminal state read-back mismatch; manual review required.");
+          }
+          const body = [
+            success ? "**POOL_WORKER_COMPLETE**" : "**POOL_WORKER_NEEDS_REVIEW**",
+            "",
+            "- Supervisor run: " + e.SUPERVISOR_RUN_ID,
+            "- Target SHA: " + e.TARGET_SHA,
+            "- Worker reusable workflow result: " + e.WORKER_RESULT,
+            "- Provider credentials: none",
+            "- Production qualification: NOT CLAIMED"
+          ].join("\n");
+          const posted = await fetch(base + "/comments", { method: "POST", headers, body: JSON.stringify({ body }) });
+          if (!posted.ok) throw new Error("Cannot append audit comment: HTTP " + posted.status);
+          console.log("Task #" + e.TASK_ISSUE + " finalized as " + terminal + ".");
+          NODE
