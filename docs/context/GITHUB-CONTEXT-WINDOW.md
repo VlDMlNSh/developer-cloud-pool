@@ -463,3 +463,21 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: docs/reports/2026-11-06-comparative-authorization-integration-audit.md.
 - No runtime code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: test-first integrated design on current default branch; durable consume marker + workflow_call-only production Worker + sole-writer Supervisor + fail-closed recovery. No dispatch or merge.
+
+
+## 25. Cloud Pool live-state and PR #31 CI audit — 2026-11-06
+
+- Default branch `Основной` re-read at HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Unified context remains on `docs/cross-chat-continuation-2026-11-06`; PR #27 OPEN/DRAFT/UNMERGED at `b946b70bee9515378825625caab870ad053c0a4e`. Documentation branch is not default/mainline.
+- PR #31 OPEN/DRAFT/UNMERGED, head `633cc2c8a2f7a70f996ccc7c5d03070b0899aa06`, base PR #25 feature branch at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`. Changes are only `src/github-read-adapter.js` and `tests/github-read-adapter.test.js`; exact-head PR workflow lookup/status empty, reviews 0, threads 0. CI NOT VERIFIED; independent review NOT RUN.
+- The default-branch Pool Contract Validation workflow filters only `.github/workflows/**` and `scripts/**`; PR #31 changes `src/**` and `tests/**`, so this workflow does not cover its changes. The workflow must be updated on the PR base branch and explicitly run the adapter tests before claiming exact-head CI.
+- PR #29 head `34fc78921b16359d136db553d8a51b4a4716995d` has exact-head Pool Contract Validation run `42211525076` COMPLETED/SUCCESS; formal reviews 0. Static CI only; no live provider router qualification.
+- PR #30 head `ad9f9ac598a2414b5209b6923094b16be64630ae`: current connector lookup has no PR-triggered runs/status and reviews 0; historical report records synthetic OAuth run `42216422883` SUCCESS. Preserve as historical proof, not live OAuth qualification.
+- PR #27 exact-head run/status lookup empty; reviews 0. Documentation-only PR remains unmerged.
+- Default production Supervisor/Worker re-read: privileged Supervisor `workflow_run` plus `issues:write/actions:write` remains; Worker `workflow_dispatch` and Worker report `issues:write` remain. Authorization remediation is incomplete. No dispatch performed.
+- Issue #1 contains historical `POOL_DISPATCH_ENABLED=false` owner read-back from 2026-11-04; current variable was not freshly read. Keep dispatch fail-closed.
+- SentinelX host inventory: only Voktors-Mini operational (Free plan, 1/1 slot); mh-dev-01 and mh-dev-02 user-disabled. Alamo/server-3 identity is not present; Claude Code not run. Desktop Commander shows Voktors-Mini online and both mh-dev hosts offline.
+- No Gemini controller/child run, Worker, DSH, Resource Probe, provider/model call, secret read, deployment or paid resource action occurred.
+- Report: [Cloud Pool PR #31 CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
+- Next: enable path-filtered exact-head tests for `src/**` and `tests/**` from the PR base branch, execute PR #31 tests, and obtain independent review. In parallel, maintain coherent Supervisor/Worker authorization remediation and fresh governance read-back before any runtime.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
