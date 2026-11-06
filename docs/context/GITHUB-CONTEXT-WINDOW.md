@@ -967,3 +967,16 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Exact lockfile remains local and verified, not committed. Hash `73381e38dbec1ce06c8dcc79dc7b6c2008269713b632f6edb0ad18c8f31b0` is the canonical value recorded in this context window; lockfileVersion 3; 160 packages.
 - PR #36 remains OPEN / DRAFT; no submitted reviews or inline threads. Independent security review NOT RUN.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No production deployment or external side effects.
+
+
+## /next — owner-uploaded lockfile verified; exact-head CI passed — 2026-11-06
+
+- Proof branch: `proof/d1-single-use-ledger-retry-2026-11-06`.
+- PR #36 current HEAD: `857b8291f95650af42139c81a2ac63a9aecde03e`; base/default `Основной` remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. PR OPEN / DRAFT.
+- Owner-added `proofs/d1-ledger/package-lock.json` is present in PR. Git blob SHA `876c5d3de53bb12efaecdec939cbe8710cbd9e3c` matches the previously verified local file's `git hash-object` result exactly. SHA-256 `73381e38dbec1ce06c8dcc79dc7b6c2008269713b632f6edb0ad18c8f31b0`; 87,979 bytes; lockfileVersion 3; 160 package entries; direct dev dependencies plugin 1.4.7 / Vitest 4.1.12.
+- Exact-current-HEAD D1 workflow run `42276327792`: COMPLETED / SUCCESS, HEAD `857b8291f95650af42139c81a2ac63a9aecde03e`. Pool Contract Validation run `42276327960`: COMPLETED / SUCCESS, same HEAD.
+- PR changed-files API confirms the lockfile is added with blob SHA above. PR reviews remain 0; independent security review NOT RUN.
+- Source-level proof remains local-only and inert. No production D1 resource, Worker deployment, billing change, secret access, provider call, dispatch or production integration.
+- Production gaps remain: authenticated caller/owner identity, verified issuer and signed approval provenance, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, Cloudflare Free/card-free eligibility evidence and approved production executor profile.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. PR #36 must remain draft until independent security review and all qualification gates pass.
+- Next: obtain independent security review of PR #36 and separately verify a free/card-free deployment path; do not merge or deploy before those gates.
