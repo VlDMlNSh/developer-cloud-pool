@@ -46,9 +46,22 @@ Advance Developer Cloud Pool from the one-logical-profile-per-runner mental mode
 - GitHub Actions Runner Controller: https://docs.github.com/en/actions/concepts/runners/actions-runner-controller
 - GitHub self-hosted runner/ephemeral guidance: https://docs.github.com/en/actions/reference/runners/self-hosted-runners
 
-## Verification record
+## Exact-head verification
 
-This report must be finalized after exact-head CI completes. Until then, status is IMPLEMENTED / CI NOT VERIFIED / NOT QUALIFIED / NOT ACCEPTED.
+- Code/test target SHA: 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1.
+- GitHub Actions run #215: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42209187115 — SUCCEEDED on that exact SHA.
+- Check run: Validate workflow syntax and security invariants — completed / success.
+- Job: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42209187115/job/127863321620.
+- Validation output: POOL_CONTRACT_VALIDATION=PASS; Node test suites 35 passed, 0 failed, including all 16 agent-placement tests.
+- Workflow YAML parsing and existing pool security invariants passed. Worker dispatch remained disabled.
+- The test suite ran on GitHub Actions; no local runner execution was claimed.
+- An earlier intermediate CI run exposed two missing fixture timestamps and was failed; the fixture calls were corrected, and the final code/test SHA above passed.
+- PR #29 remains OPEN / DRAFT / UNMERGED; independent review NOT RUN. Canonical branch Основной remains at 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- Current branch head at report finalization: 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1. Any later documentation-only successor must be separately checked before acceptance.
+
+## Current qualification
+
+Implementation and deterministic tests are VERIFIED on the exact code/test target. Runtime co-location, real host measurements, persistent placement leases, container isolation, provider routing, agent dispatch and production qualification remain NOT IMPLEMENTED / NOT RUN / NOT QUALIFIED.
 
 ## Next step
 

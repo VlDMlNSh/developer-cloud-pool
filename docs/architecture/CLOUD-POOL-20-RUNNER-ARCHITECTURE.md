@@ -143,7 +143,7 @@ A profile is QUALIFIED only after representative workload, cleanup, security con
 | Architecture specification | IMPLEMENTED | This file |
 | Runner resource probe | IMPLEMENTED, NOT RUN | .github/workflows/runner-resource-probe.yml |
 | Twenty logical profiles | PLANNED | Section 4 |
-| Pure agent placement planner | IMPLEMENTED in PR branch / exact-head CI pending | scripts/agent-placement.mjs and test |
+| Pure agent placement planner | IMPLEMENTED in PR branch / exact code-head CI SUCCEEDED | scripts/agent-placement.mjs; Actions run 42209187115 on 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 |
 | Runtime co-location / container supervisor | NOT IMPLEMENTED | No qualified runtime |
 | Dodaios control-plane bridge | NOT VERIFIED | No qualified bridge evidence |
 | Durable Repository Hub | DESIGN ONLY | No service selected |
