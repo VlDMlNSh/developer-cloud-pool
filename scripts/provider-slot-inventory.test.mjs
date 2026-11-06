@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
+// Registry-derived inventory checks; this test never reads credentials or provider endpoints.
 const inventory = JSON.parse(readFileSync(resolve(here, "../config/provider-slot-inventory.json"), "utf8"));
 
 test("inventory has exactly 24 cloud slots and excludes the local Ollama route", () => {
