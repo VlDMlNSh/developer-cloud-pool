@@ -46,3 +46,19 @@ Inspect existing package/test conventions and pinned dependency policy. Then con
 ## Next action
 
 Wait for exact-head run `42271859222`; inspect result and generated lock artifact. Commit reviewed lockfile to PR #36 if it can be retrieved safely, then request independent security review. No merge/deployment until all gates pass.
+
+
+## Latest D1 exact-head result — 2026-11-06
+
+- Proof branch: `proof/d1-single-use-ledger-retry-2026-11-06`.
+- Latest exact tested HEAD: `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602` (16 ahead / 0 behind immutable default `197ba98d0dc7d8437d759dd25bee8750d02e59ae`).
+- Draft PR #36: https://github.com/VlDMlNSh/developer-cloud-pool/pull/36.
+- D1 workflow run `42271859222` / job `128078153536`: SUCCEEDED; Workers Vitest 13/13 tests passed.
+- Pool Contract Validation `42271859290` / job `128078154302`: SUCCEEDED.
+- Lock artifact `13529083485`; archive digest `sha256:2acf14b203cef11508e0f4143e4662d9c30228cbffcb80e0b382dbdeb335d5d1`. Inspected lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, 160 package entries. The lockfile is not committed; merge remains blocked.
+- Independent security review NOT RUN; PR review count 0. No cloud resource, deployment, secrets, dispatch or provider call.
+- Local D1 proof VERIFIED for tested SHA only. Production qualification and Contour A acceptance remain NOT VERIFIED / BLOCKED. Contour B remains DEFERRED.
+
+## Next action
+
+Commit and review the exact generated package-lock file in PR #36, then obtain independent security review. Do not merge or deploy until both gates pass and Workers Free/card-free account eligibility is established without a billing change.
