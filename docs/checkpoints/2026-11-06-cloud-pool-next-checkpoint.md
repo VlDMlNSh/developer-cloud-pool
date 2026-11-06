@@ -291,3 +291,13 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Existing PR #36 schema lacks signed issuer, outbox, lease/fencing and event ledger. Its caller-supplied owner/time remains test-only and is not production trust.
 - Dispatch disabled. Entitlement NOT VERIFIED; real D1 NOT RUN; independent review NOT RUN. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: isolated proof-branch schema/state-machine implementation and local C01–C18 fault-injection tests, with no production wiring.
+
+
+## 2026-11-07 — Claim/outbox contract v1 and lockfile correction
+
+- Default branch HEAD rechecked: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; docs work remains on non-default branch `docs/github-context-window-2026-11-06`.
+- PR #36 old head `1e278b1601b8a77131118aa5c627c07d663b0e51`: D1 proof run `42276981988` / job `128095703539` and contract run `42276982111` / job `128095703972` SUCCESS. Lockfile was already committed (blob `876c5d3de53bb12efaecdec939cbe8710cbd9e3c`). README falsely claimed absent; corrected on PR branch commit `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, blob `3fc9f826efaf77b9be384b4283bfe7201855c726`. New Pool Contract run `42293956578` QUEUED; exact-head D1 and final CI not yet verified.
+- Proposed contract: [POOL-CLAIM-OUTBOX-CONTRACT-v1.md](../contracts/POOL-CLAIM-OUTBOX-CONTRACT-v1.md), commit `2a62b8b9b22df787464e2f495b641a4855bb8056`, blob `a65e0c19354e0450364f279b13850e7e7a5273e7`. Design only; no implementation or resource provisioning.
+- PR #37 OPEN/DRAFT at `5587a4e013507b5be330fd0c49ce1fc836faa946`, exact-head boundary/contract CI success; no reviews/threads.
+- Independent review NOT RUN; account Free/card-free entitlement NOT VERIFIED; no live D1/deployment/dispatch/secrets. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify new PR #36 exact-head CI; then convert accepted contract into isolated local adversarial tests, still with dispatch disabled.
