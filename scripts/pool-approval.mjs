@@ -141,7 +141,7 @@ export function hasOwnerReadyEvent(events, repositoryOwner, supervisorRunCreated
     if (event?.event !== "labeled" || event?.label?.name !== "pool:ready") return false;
     if (String(event?.actor?.login || "").toLowerCase() !== owner) return false;
     const eventTime = Date.parse(event.created_at || "");
-    return Number.isFinite(eventTime) && eventTime <= runTime && runTime - eventTime <= 10 * 60 * 1000;
+    return Number.isFinite(eventTime) && eventTime <= runTime;
   });
 }
 
