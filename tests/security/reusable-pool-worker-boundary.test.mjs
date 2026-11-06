@@ -1,5 +1,3 @@
-  assert.match(worker, /EXPECTED_REPOSITORY_ID: "1445644538"/);
-  assert.match(worker, /CALLER_WORKFLOW_SHA !== e.CALLEE_WORKFLOW_SHA/);
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -66,4 +64,6 @@ test("Worker validates caller and reusable callee identity separately", () => {
   assert.match(worker, /job\.workflow_repository/);
   assert.match(worker, /job\.workflow_file_path/);
   assert.match(worker, /job\.workflow_sha/);
+  assert.match(worker, /EXPECTED_REPOSITORY_ID: "1445644538"/);
+  assert.match(worker, /CALLER_WORKFLOW_SHA !== e.CALLEE_WORKFLOW_SHA/);
 });
