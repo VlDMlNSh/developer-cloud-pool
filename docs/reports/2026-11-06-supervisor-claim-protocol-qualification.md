@@ -48,3 +48,17 @@ No source/workflow changes, no merge, no dispatch, no Worker/DSH/Resource Probe 
 ## Next step
 
 Select and qualify a least-privilege conditional claim backend, or formally accept a limited single-writer prototype that does not run provider/model or untrusted-code workloads. Keep PR #37 draft and dispatch gates fail-closed.
+
+
+## Additional PR #37 hardening — exclusive managed task state
+
+- During source-level review, Worker validation was found to accept an Issue carrying `pool:claimed` together with another managed lifecycle label (for example `pool:ready`). Supervisor read-back rejected this conflict, but Worker should independently enforce the invariant.
+- Updated Worker validation to require exactly one managed state among `pool:ready`, `pool:claimed`, `pool:probe-complete`, `pool:needs-review`, `pool:invalid`, and require that state to be `pool:claimed`.
+- Added a focused security test and added the same invariant to the pool contract validator.
+- New PR #37 HEAD: `5587a4e013507b5be330fd0c49ce1fc836faa946`.
+- Exact-head checks:
+  - Reusable Pool Worker Boundary Validation: run `42284044591`, job `128120166723`, SUCCESS.
+  - Pool Contract Validation: run `42284051311`, job `128120184802`, SUCCESS.
+- GitHub also emits a push run named `.github/workflows/pool-worker.yml` (run `42284042173`) with no jobs and conclusion failure because the Worker is intentionally `workflow_call`-only. This is not a Worker execution and not one of the two PR validation checks. No Worker was run.
+- This is same-session implementation and self-review, not independent review. PR remains DRAFT / OPEN / UNMERGED; reviews/comments 0/0.
+- No merge, dispatch, provider/model call, secret access, deployment, or change to dispatch gates.
