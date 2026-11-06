@@ -123,3 +123,18 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Web-console issue #22: https://github.com/VlDMlNSh/developer-cloud-pool/issues/22
 - Provider routing issue #26: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live reconciliation — 2026-11-06 22:14 Europe/Vilnius
+
+- Latest dated report: [Live GitHub reconciliation](../reports/2026-11-06-live-reconciliation-2214.md).
+- Default HEAD remains observed as `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; default HEAD status and PR-workflow queries returned empty arrays: CI NOT VERIFIED.
+- PR #25 current recorded head `d311998640122c4a83e0d1485ae43fb4140bb0fa`: exact-head Pool Contract run `42188040679` / job `127793018101` SUCCESS; Jarvis Web run `42188040627` / job `127792999385` SUCCESS. This corrects the earlier stale "no returned runs" note. PR remains OPEN/DRAFT/UNMERGED; independent reviews/threads 0/0.
+- PR #31 head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: run `42229917555` / job `127932882432` SUCCESS; synthetic adapter remains unmounted; reviews/threads 0/0.
+- PR #30 synthetic OAuth proof remains limited to test fixtures; reviews/threads 0/0.
+- PR #25 branch is 29 ahead / 2 behind default; PR #31 is 36 ahead / 2 behind. Both DIVERGED and #31 remains stacked on #25.
+- Path-segment correction branch head `dee17350864cb49e8c5dd41cf61859d77d3affca`: no workflow run returned; CI NOT VERIFIED; local tests NOT RUN; no PR observed.
+- Issue #1 governance and dispatch evidence is stale; current ruleset and `POOL_DISPATCH_ENABLED` NOT VERIFIED. Dispatch remains fail-closed.
+- Issue #26 provider/account-slot routing remains DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED.
+- No deployment, OAuth/session implementation, runtime execution, DSH, Resource Probe, provider calls, secrets access or paid resources.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
+- Next: reconcile the two-commit divergence and stacked PR dependency without blind retarget/merge; then submit the path-segment fix as a stacked PR, obtain exact-head CI and independent review. Re-read governance before any execution.
