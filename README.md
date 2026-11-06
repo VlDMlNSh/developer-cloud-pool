@@ -7,7 +7,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - 20-slot GitHub-hosted execution architecture: DESIGN.
 - GitHub Pool Supervisor and task queue: IMPLEMENTED SCAFFOLD, NOT RUN.
 - Pool Worker: IMPLEMENTED for one DSH headless smoke profile only, NOT RUN.
-- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED; dispatch fail-closed until branch governance is enabled and POOL_DISPATCH_ENABLED=true.
+- Scheduled/event-driven wake-up: IMPLEMENTED, NOT VERIFIED. Dispatch remains fail-closed pending independent Worker authorization review and runtime qualification; `POOL_DISPATCH_ENABLED=false`.
 - General-purpose agent execution, checkpoint/resume and automatic task continuation: NOT IMPLEMENTED.
 - DeepSeek Harness: selected as candidate task runtime; developer-preview evaluation only.
 - DSH headless evaluation: NOT RUN.
@@ -26,12 +26,12 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 ## Cloud pool control
 1. Create a [Cloud Pool Task issue](https://github.com/VlDMlNSh/developer-cloud-pool/issues/new?template=pool-task.yml).
 2. Specify an exact 40-character target commit SHA.
-3. First enable default-branch governance, then set the repository variable `POOL_DISPATCH_ENABLED=true`.
+3. Keep `POOL_DISPATCH_ENABLED=false` until Worker authorization, independent review and no-secret runtime qualification gates are accepted. Enabling dispatch is a separate owner-controlled action.
 4. Review the task and apply the `pool:ready` label to approve dispatch.
-5. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
-6. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
+5. Only the repository owner's `issues.labeled` event for `pool:ready` can trigger dispatch; the Supervisor passes its run identity to the Worker, which revalidates the approval and claim.
+6. Worker completion and the five-minute schedule wake the Supervisor for reconciliation/recovery only; they do not dispatch new Workers.
 
-The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Dispatch is currently disabled by default because the default branch has not yet been protected. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
+The supervisor is event-driven and best-effort, not a continuously running daemon. GitHub may delay or drop scheduled events under high load. Dispatch remains disabled pending independent review and runtime qualification; an active PR-only ruleset alone does not qualify the Worker authority boundary. Hosted jobs are ephemeral and subject to a six-hour maximum; general checkpoint/resume is still pending.
 
 ## First cloud evaluations
 - [Runner Resource Probe](https://github.com/VlDMlNSh/developer-cloud-pool/actions/workflows/runner-resource-probe.yml)
