@@ -78,3 +78,18 @@ Commit and review the exact generated package-lock file in PR #36, then obtain i
 ## Next action
 
 Obtain a committed and reviewed lockfile, then request independent security review. Keep PR #36 draft and do not merge/deploy. Only after free/no-card eligibility is independently established may a separately authorized disposable cloud test be considered.
+
+
+## Final exact-head CI result — 2026-11-06
+
+- Proof branch HEAD: `07f555788730f1d67acf3c11013e6d9c85894062`.
+- D1 workflow run `42272377412` / job `128079939633`: SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation `42272377526` / job `128079941530`: SUCCESS.
+- Lock artifact `13530006379`, archive digest `sha256:92b2094bc1bc3d6734d7b6709ae58b235d9193245dde89ed9035072027b9d755`; inspected lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, 160 packages.
+- Lockfile is NOT committed; independent security review NOT RUN; PR #36 remains draft and NOT MERGE-READY.
+- Local D1 proof VERIFIED for tested SHA only; production D1 integration/account eligibility NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- No cloud resources, deployment, billing changes, secrets, provider calls or dispatch.
+
+## Next action
+
+Commit the inspected lockfile to PR #36 and obtain independent security review. Do not merge or deploy until all gates pass.
