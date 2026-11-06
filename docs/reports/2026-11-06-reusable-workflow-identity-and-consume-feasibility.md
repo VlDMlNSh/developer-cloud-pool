@@ -41,3 +41,11 @@ Official GitHub Actions documentation distinguishes two identity contexts:
 1. Obtain exact-head CI for PR #32 at `75c83a288d865f1bbeda4905cf817e00084bcc2d`; confirm the corrected caller/callee assertion fails only because production Worker lacks the required identity checks.
 2. Independently obtain authorized read-only tag-ruleset and Actions permission metadata. If unavailable, keep the durable consume design BLOCKED rather than assuming tag immutability.
 3. Only after the consume primitive is proven, implement the Worker reusable boundary and Supervisor-only state machine together. Keep all execution disabled.
+
+
+## Final-head CI read-back
+- PR #32 final head `75c83a288d865f1bbeda4905cf817e00084bcc2d`, merge commit `86fbe64076bb67307409a7584bd2e2d7bfd05954`.
+- Exact-head Pool Authorization Negative-First Validation: run `42236017811`, job `127953700048`, COMPLETED / FAILURE. Node summary: 8 tests, 0 passed, 8 failed. The eighth caller/callee-context assertion is now correctly expressed and fails because production Worker contains no explicit `github.repository/repository_id/workflow_ref/workflow_sha` caller checks and no `job.workflow_repository/workflow_file_path/workflow_sha` callee checks. The other failures reproduce the already-known Worker/Supervisor authorization gaps. This is a red baseline, not an authorization pass.
+- Same exact head Pool Contract Validation: run `42236017724`, job `127953700415`, COMPLETED / SUCCESS. This validates the existing static pool contract only; it does not override the authorization failure.
+- The previous run `42235842885` at a preceding head is superseded. Its caller-context assertion was over-escaped; final-head run above contains the corrected assertion.
+- PR remains OPEN / DRAFT / UNMERGED; reviews 0, inline threads 0; independent review NOT RUN.
