@@ -310,3 +310,15 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Ruleset #26550182 rechecked active on default branch, but approvals=0 and CODEOWNERS=false; independent review is not enforced.
 - Contract v1 is design-only. No live D1, deployment, secret, billing, dispatch or production code.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-07 — fresh /next repository and exact-head CI reconciliation
+
+- Report: [Cloud Pool /next reconciliation](../reports/2026-11-07-pool-next-reconciliation.md), blob `03a66dff04f12c1b5214d459e360b4765438c6e8`.
+- Default branch `Основной` HEAD observed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Context branch `docs/github-context-window-2026-11-06` compares 76 ahead / 0 behind and remains unmerged.
+- PR #36 current head `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`: exact-head D1 run `42293956647` / job `128154248534` SUCCESS; Pool Contract run `42293956578` / job `128154248111` SUCCESS. PR remains OPEN/DRAFT; independent reviews 0.
+- PR #37 current head `5587a4e013507b5be330fd0c49ce1fc836faa946`: reusable Worker boundary run `42284051309` / job `128122653104` SUCCESS; Pool Contract run `42284051311` / job `128120184802` SUCCESS. PR remains OPEN/DRAFT; independent reviews 0.
+- Issue #38 remains the controlling next engineering work: isolated local claim + transactional outbox, retry/idempotency, lease/fencing and interrupted-delivery tests. Existing D1 consume proof is local-only and does not qualify a live backend or exactly-once execution.
+- Latest recorded Ruleset audit in Issue #38 comment `6694860325`: active Ruleset #26550182, approvals 0 and CODEOWNERS review false. No independent review enforcement. This pass did not re-query ruleset or live variables; no secrets read.
+- Dispatch gates remain fail-closed; no Worker, DSH, Resource Probe, model/provider call, deployment, resource provisioning, Gemini dispatch or Contour B work.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: isolated local proof of atomic claim/outbox and recovery under fault injection; independent security review and governance correction remain mandatory.
