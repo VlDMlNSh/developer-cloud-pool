@@ -366,3 +366,38 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 
 ### 17.7 Next bounded action
 Review the full PR #12 ADR and helper/tests against the current Supervisor and Worker code; create a traceability matrix of required security properties versus implemented evidence. Do not merge PR #12/#15 or enable dispatch based on fixture CI alone.
+
+## 18. PR #12 approval and reusable Worker traceability audit — 2026-11-06
+
+### 18.1 Immutable target and CI
+- PR #12 exact observed head 6c053bacff29ca8efb5fdb759edd44fcd416b749; base 64d2636d4500127e635c214ccfb722c6b3fcda80; OPEN/DRAFT/UNMERGED; formal reviews empty.
+- Exact-head fixture run 42041946049 SUCCESS and Pool Contract Validation run 42041945700 SUCCESS. Static test evidence only.
+- Report: docs/reports/2026-11-06-pr12-approval-worker-traceability-audit.md.
+
+### 18.2 Traceability conclusions
+- Owner approval parser `scripts/pool-owner-approval.mjs` compares numeric author ID with supplied ownerId and binds command to issue number/SHA/fixed profile/envelope digest. Trusted owner ID derivation, trusted comment retrieval, repository/issue URL association and live Supervisor integration are absent.
+- Parser checks updated_at equals created_at and tests edited comments, but no expiry/age policy or immediate pre-consumption re-fetch is integrated.
+- `planApprovalConsumption` is pure. Consumed comment IDs are caller-supplied; no durable ledger/atomic consumption is implemented. It returns dispatchAllowed=true after pure validation; this is not production authority.
+- `pool-gated-dispatch.mjs` accepts booleans and marker outcome strings. No Environment configuration/read-back, Git ref marker API adapter, marker payload verification, uniqueness race handling or durable replay ledger exists.
+- `pool-worker-caller.mjs` is pure and not wired into Worker. It validates caller repo/ref, called repo/path and SHA equality, but does not validate `job.workflow_ref` explicitly.
+- Fixture invokes `reusable-worker-context-fixture.yml`, not production `pool-worker.yml`; fixture success does not prove production Worker context.
+- Default Worker remains workflow_dispatch-only, Supervisor still uses REST workflow_dispatch, Worker report job still has issues:write, and default Supervisor still has privileged workflow_run.
+
+### 18.3 Required work
+1. Bind approval comment to trusted repository/issue API identity and re-fetch immediately before consumption; define expiry and deletion/edit policy.
+2. Implement durable single-use consumption with a race-safe native primitive, exact marker payload read-back, duplicate/precreated marker and API timeout tests. Do not claim exactly-once.
+3. Integrate protected Environment approval only after API read-back of reviewer, prevent-self-review, bypass and branch policy.
+4. Convert Worker to workflow_call-only and Supervisor to static local reusable invocation in one coherent reviewed transition; validate caller/callee context before checkout/install.
+5. Remove Worker issue-write and privileged workflow_run; Supervisor alone writes lifecycle state; ambiguous dispatch => needs-review.
+6. Independent security review, exact-head CI and current governance read-back before any runtime.
+
+### 18.4 Status
+- PR #12 CI: SUCCESS; independent review NOT RUN.
+- Owner approval: PARTIAL pure helper; production integration NOT IMPLEMENTED.
+- Durable single-use and Environment gate: NOT IMPLEMENTED / NOT QUALIFIED.
+- Production reusable Worker boundary: NOT IMPLEMENTED.
+- Worker/DSH/dispatch/model/secrets/deployment: NOT RUN.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+### 18.5 Next bounded action
+Inspect GitHub-native Environment and Git ref/ruleset API capabilities using read-only metadata/docs, then compare viable race-safe single-use designs against GitHub Free limits. Do not create an Environment/ref or change rulesets in this pass without an accepted implementation and explicit authorization.
