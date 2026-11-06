@@ -150,3 +150,19 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - GitHub Create a reference endpoint is a candidate reservation primitive (201/409/422) but requires `Contents: write`: https://docs.github.com/en/rest/git/refs#create-a-reference .
 - Formal atomicity is not guaranteed by the cited docs; candidate needs contention testing and isolated authority design. Do not add `contents: write` to current Supervisor.
 - No ref/permission change. DESIGN ONLY / NOT QUALIFIED.
+
+
+## Supervisor claim protocol qualification — 2026-11-06
+
+- Issue #38: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38 — OPEN / PLANNED.
+- Design record: [Durable Supervisor claim design](../architecture/DURABLE-SUPERVISOR-CLAIM-DESIGN-2026-11-06.md).
+- Report: [Supervisor claim protocol qualification](../reports/2026-11-06-supervisor-claim-protocol-qualification.md).
+- Default HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #37 remains DRAFT / UNMERGED at `5b45a29ed7869c091741c0037c68bfcd6640de7d`; reviews/comments 0/0.
+- Exact-head CI runs `42280875294` and `42280875365`: SUCCESS. Live Ruleset `26550182` has 0 required approvals and CODEOWNERS review false.
+- Default Supervisor/Worker retain old privileged behavior until PR #37 is reviewed and merged. Other default workflow dispatch triggers were inspected; DSH/Resource Probe do not hold issue-write authority.
+- GitHub Actions concurrency serializes one running run per group; queue max is 100 pending but not FIFO and does not lock external Issue writers.
+- GitHub Issues labels are not CAS. Git reference creation requires Contents: write and is only a candidate; do not grant this permission to Supervisor. No claim backend selected.
+- No merge, dispatch, runtime, provider/model call, secret access, credential or permission change, provisioning or deployment.
+- Status: design CREATED; claim backend NOT QUALIFIED; independent review NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: qualify least-privilege conditional claim backend and independent review. Keep PR #37 draft and dispatch gates closed.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
