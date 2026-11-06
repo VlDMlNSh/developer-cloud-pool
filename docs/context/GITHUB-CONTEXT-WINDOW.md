@@ -397,3 +397,13 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Independent review remains NOT RUN; ruleset last recorded had required approvals 0 and CODEOWNERS review false (not freshly re-audited in this pass). Cloudflare account Free/card-free entitlement NOT VERIFIED; no live D1, resource provisioning, deployment, secrets, billing/profile access, dispatch, Worker/DSH/Resource Probe or provider/model calls.
 - Status: local D1 proof remains VERIFIED only for bounded local behavior; atomic outbox/recovery/leases/fencing NOT IMPLEMENTED; live D1 NOT RUN; PR #36 exact-head after README correction NOT VERIFIED pending CI; PR #37 static checks remain prior verified; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: poll exact-head CI for PR #36 new head, then review the contract against actual SQL/runtime constraints and add isolated local tests only on a separately scoped proof branch. Keep all dispatch gates fail-closed.
+
+
+### Follow-up: PR #36 README correction exact-head qualification — 2026-11-07
+
+- PR #36 head is now `9ef7e4aadd6c723fa86b21ea44383f8020643a0c` (OPEN/DRAFT/UNMERGED; base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`). README blob `3fc9f826efaf77b9be384b4283bfe7201855c726`; direct read-back confirms committed lockfile policy and no stale absent-lockfile claim.
+- Exact-head D1 run `42293956647` / job `128154248534`: COMPLETED/SUCCESS. Steps: pinned Node setup, npm ci, syntax check, Workers-runtime tests, lockfile artifact upload.
+- Exact-head Pool Contract run `42293956578` / job `128154248111`: COMPLETED/SUCCESS. Steps: checkout without persisted credentials, dispatch-disabled assertion, YAML parse, security contract validation.
+- PR #36 formal reviews 0; inline threads 0. Combined commit status API returned empty statuses (NOT a substitute for the two successful Actions runs). No independent security review.
+- Live ruleset #26550182 re-read: active on `refs/heads/Основной`; PR required but required approvals = 0, CODEOWNERS review false, last-push approval false, thread resolution true, bypass actors empty. Governance does not enforce independent review.
+- Contract v1 remains PROPOSED only. No schema migration, claim/outbox code, real D1, deployment, secret/billing access or dispatch.
