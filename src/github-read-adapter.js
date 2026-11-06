@@ -56,7 +56,11 @@ async function readJsonBounded(response, maxBytes) {
       if (done) break;
       total += value.byteLength;
       if (total > maxBytes) {
-        await reader.cancel();
+        try {
+          await reader.cancel();
+        } catch {
+          // Preserve the bounded-size failure even if stream cancellation fails.
+        }
         throw new Error("RESPONSE_TOO_LARGE");
       }
       chunks.push(value);
@@ -238,10 +242,10 @@ export function createGitHubReadAdapter({
     }
 
     if (controller.signal.aborted) return finish(failure("UPSTREAM_TIMEOUT"));
-    if (response.status >= 300 && response.status < 400) return finish(failure("REDIRECT_REJECTED"));
     if (response.status === 304) {
       return finish({ ok: true, notModified: true, etag: response.headers.get("etag") || etag || null });
     }
+    if (response.status >= 300 && response.status < 400) return finish(failure("REDIRECT_REJECTED"));
 
     const rateLimit = readRateLimit(response.headers);
     if (response.status === 429 || (response.status === 403 && rateLimit.remaining === 0)) {
