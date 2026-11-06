@@ -13,11 +13,13 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const validation = read(".github/workflows/reusable-pool-worker-boundary-validation.yml");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
+  ".github/workflows/reusable-pool-worker-boundary-validation.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
   ".github/workflows/runner-resource-probe.yml"
 ].map((path) => [path, read(path)]);
@@ -34,38 +36,61 @@ for (const [path, source] of workflows) {
       continue;
     }
     if (runIndent !== null && /\$\{\{\s*inputs\./.test(line)) {
-      fail(path + ":" + (index + 1) + " interpolates a workflow input inside a shell run block");
+      fail(path + ":" + (index + 1) + " interpolates workflow input directly into a shell run block");
     }
   }
-
   for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)) {
-    if (!/@[0-9a-f]{40}$/.test(match[1])) {
-      fail(path + " uses an action that is not pinned to a full commit SHA: " + match[1]);
+    const target = match[1];
+    if (target.startsWith("./.github/workflows/")) {
+      if (target !== "./.github/workflows/pool-worker.yml") fail(path + " references an unexpected local reusable workflow: " + target);
+      continue;
     }
+    if (!/@[0-9a-f]{40}$/.test(target)) fail(path + " uses an action that is not pinned to a full commit SHA: " + target);
   }
 }
 if (failures.length === 0) pass("workflow inputs are not interpolated into shell run blocks");
-if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /@[0-9a-f]{40}$/.test(m[1])))) {
-  pass("all external Actions references are pinned to 40-character commit SHAs");
+if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => m[1].startsWith("./.github/workflows/") || /@[0-9a-f]{40}$/.test(m[1])))) {
+  pass("all external Actions references are pinned; local reusable workflow is statically declared");
 }
 
 if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Worker must default to permissions: {}");
+if (!/^on:\s*\n\s+workflow_call:/m.test(worker)) fail("Worker must expose workflow_call");
+if (/^\s+workflow_dispatch:/m.test(worker)) fail("Worker must not expose workflow_dispatch");
 if (!/  validate:[\s\S]*?permissions:\s*\n\s+issues:\s*read/.test(worker)) fail("Worker validation job must have issues: read");
 if (!/  probe:[\s\S]*?permissions:\s*\n\s+contents:\s*read/.test(worker)) fail("Worker probe job must have contents: read");
-if (!/  report:[\s\S]*?permissions:\s*\n\s+issues:\s*write/.test(worker)) fail("Worker report job must have issues: write");
-const probeJob = worker.split(/^  probe:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
-if (!probeJob) fail("Worker probe job block cannot be isolated");
-if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive repository secrets");
+if (/^\s+issues:\s*write\s*$/m.test(worker)) fail("Worker must not have issues: write");
+if (/method:\s*["'](?:PATCH|POST)["']/.test(worker) || /\/issues\/[^\n]*\/comments/.test(worker)) fail("Worker must not mutate issues or post comments");
+if (/^  report:/m.test(worker)) fail("Worker must not contain a privileged report job");
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
-if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
-if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
-if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
-if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
+if (!/PROFILE !== "dsh-headless-probe"/.test(worker)) fail("Worker must enforce the exact allowlisted DSH profile");
+if (!/CALLER_REPOSITORY_ID: \$\{\{ github\.repository_id \}\}/.test(worker)) fail("Worker must inspect caller repository ID");
+if (!/EXPECTED_REPOSITORY_ID: "1445644538"/.test(worker)) fail("Worker must pin the expected repository ID");
+if (!/CALLER_WORKFLOW_REF: \$\{\{ github\.workflow_ref \}\}/.test(worker)) fail("Worker must inspect caller workflow ref");
+if (!/CALLER_WORKFLOW_SHA: \$\{\{ github\.workflow_sha \}\}/.test(worker)) fail("Worker must inspect caller workflow SHA");
+if (!/CALLEE_REPOSITORY: \$\{\{ job\.workflow_repository \}\}/.test(worker)) fail("Worker must inspect reusable callee repository");
+if (!/CALLEE_FILE_PATH: \$\{\{ job\.workflow_file_path \}\}/.test(worker)) fail("Worker must inspect reusable callee path");
+if (!/CALLEE_WORKFLOW_SHA: \$\{\{ job\.workflow_sha \}\}/.test(worker)) fail("Worker must inspect reusable callee SHA");
+if (!/CALLER_WORKFLOW_SHA !== e\.CALLEE_WORKFLOW_SHA/.test(worker)) fail("Worker must require caller and callee to share the immutable invocation SHA");
+if (!/pool:claimed/.test(worker)) fail("Worker must require Supervisor claim state");
+if (failures.length === 0) pass("Worker is reusable-only, read-only, identity-bound and has no issue mutation authority");
 
-if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
-if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
-if (!/if\s*\(!dispatchEnabled\)[\s\S]*?process\.exit\(0\)/.test(supervisorScript)) fail("Supervisor must exit heartbeat-only when dispatch is disabled");
-if (failures.length === 0) pass("Supervisor dispatch is fail-closed and variable-controlled");
+if (/^\s+workflow_run:/m.test(supervisor)) fail("Supervisor must not use privileged workflow_run");
+if (/^\s+actions:\s*write\s*$/m.test(supervisor)) fail("Supervisor must not grant actions: write");
+if (!/^\s+uses:\s+\.\/\.github\/workflows\/pool-worker\.yml\s*$/m.test(supervisor)) fail("Supervisor must statically call the reusable Worker");
+if (/\/actions\/workflows\/[^\s"']+\/dispatch/.test(supervisor) || /\/actions\/workflows\/[^\s"']+\/dispatch/.test(supervisorScript)) fail("Supervisor must not use REST workflow dispatch");
+if (/workflow_dispatch/.test(supervisorScript)) fail("Supervisor script must not use workflow_dispatch");
+if (!/POOL_DISPATCH_ENABLED: \$\{\{ vars\.POOL_DISPATCH_ENABLED \}\}/.test(supervisor)) fail("Supervisor must read the dispatch gate");
+if (!/POOL_AUTHORIZATION_CONTRACT_ACCEPTED: \$\{\{ vars\.POOL_AUTHORIZATION_CONTRACT_ACCEPTED \}\}/.test(supervisor)) fail("Supervisor must read explicit authorization acceptance gate");
+if (!/protectedDefaultRef = process\.env\.GITHUB_REF === "refs\/heads\/Основной"/.test(supervisorScript)) fail("Supervisor must be restricted to the protected default branch");
+if (!/dispatchEnabled = process\.env\.POOL_DISPATCH_ENABLED === "true"/.test(supervisorScript)) fail("Supervisor must require literal true for dispatch");
+if (!/authorizationAccepted = process\.env\.POOL_AUTHORIZATION_CONTRACT_ACCEPTED === "true"/.test(supervisorScript)) fail("Supervisor must require explicit authorization acceptance");
+if (!/if \(!protectedDefaultRef \|\| !dispatchEnabled \|\| !authorizationAccepted\)/.test(supervisorScript)) fail("Supervisor must remain heartbeat-only unless every gate passes");
+if (!/const issue = candidates\[0\]/.test(supervisorScript)) fail("Supervisor must process at most one task per run");
+if (!/Claim read-back was ambiguous/.test(supervisorScript)) fail("Supervisor must fail closed on ambiguous claim read-back");
+if (/POOL_CLAIM_LEASE_EXPIRED|pool:claimed["'][^\n]*pool:ready/.test(supervisorScript)) fail("Supervisor must never auto-requeue a consumed approval");
+if (!/needs\.worker\.result/.test(supervisor)) fail("Supervisor finalizer must consume reusable Worker result");
+if (!/pool:needs-review/.test(supervisor)) fail("Supervisor must route non-success to needs-review");
+if (failures.length === 0) pass("Supervisor uses reusable invocation, dual fail-closed gates and one-task claim/read-back");
 
 for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resource]]) {
   if (!/workflow_dispatch:/.test(source)) fail(name + " must remain manually dispatched");
@@ -73,6 +98,7 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
   if (/secrets\./.test(source)) fail(name + " must not reference repository secrets");
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
+if (!validation.includes("node --test tests/security/reusable-pool-worker-boundary.test.mjs")) fail("Dedicated reusable boundary tests must run in CI");
 if (failures.length === 0) pass("DSH and Resource Probe remain manual, read-only and secret-free");
 
 if (failures.length) {
