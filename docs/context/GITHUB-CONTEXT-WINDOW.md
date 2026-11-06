@@ -678,3 +678,20 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - No D1/DO resources, cloud deployments, production changes, dispatches, provider/model calls, paid resources or secrets access. No payment/billing action.
 - Status: local SQLite reference SUCCEEDED (7/7); D1 qualification NOT RUN; Cloudflare Free/no-card NOT VERIFIED; GitHub caller/owner authorization NOT IMPLEMENTED/NOT VERIFIED; PR #32 independent review NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement D1-specific adapter and migrations with official Workers/D1 test runtime; verify atomic concurrent consume, affected-row semantics, rollback and ambiguous-response recovery. Keep cloud provisioning blocked until no-card Free eligibility is independently proven and a separately authorized disposable test is approved.
+
+
+## Engineering pass — 2026-11-06 — governance and context-window reconciliation
+
+- Fresh default-branch API read: `Основной` HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; commit message `revert: remove misplaced Cloud Pool audit report from default branch`. Commit is unsigned; no integrity conclusion beyond GitHub's `verified=false / unsigned` metadata.
+- Ruleset collection contains one active ruleset, ID `26550182`, exact selector `refs/heads/Основной`. It requires PRs, blocks deletion and non-fast-forward, and requires review-thread resolution. It requires **zero approvals**, with CODEOWNERS and extra approval for unattributed changes disabled. Bypass actors are empty and current-user bypass is never.
+- Classic branch API separately reports `protected=false` / protection disabled. Keep classic protection and repository Ruleset as distinct controls. Effective PR-only ruleset is active, but independent review is not enforced.
+- Direct Actions variable read for `POOL_DISPATCH_ENABLED` was rejected by the available GitHub read connector as unsupported. No value was read. Issue #1 contains historical owner-authored read-back evidence `false`; current value remains **NOT VERIFIED in this pass**. Keep dispatch fail-closed and do not change the variable.
+- Exact commit workflow-run lookup for current default HEAD returned an empty array. This is **NOT VERIFIED**, not a pass and not evidence of an idle supervisor. No workflow, worker, DSH, resource probe, model call or deployment was run.
+- Discovered and adopted this already-existing comprehensive context window as the single shared recovery source. Closed the duplicate documentation PR #33 unmerged to avoid competing context windows.
+- Dated evidence report: [Governance and context-window reconciliation](../reports/2026-11-06-governance-context-reconciliation.md).
+- Report commit: `07237e070cab993864c03bef9cc39ca0dd660178`.
+- No production workflow, ruleset, variable, secret, deployment or runtime state changed.
+
+**Current disposition:** governance PR requirement VERIFIED; independent-review gate NOT SATISFIED; current dispatch variable NOT VERIFIED; exact-head workflow evidence NOT VERIFIED; Supervisor/Worker NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+**Next bounded step:** obtain a fresh metadata-only dispatch-variable read through an authorized owner path; close the independent-review governance gap through an owner-approved ruleset change; then recheck exact-head CI before considering an idle Supervisor validation. Do not dispatch Worker/DSH/resource probes.
