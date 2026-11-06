@@ -58,3 +58,22 @@ Advance Issue #26 acceptance criterion 1 with a normalized, versioned inventory 
 ## Next step
 
 Run a no-secret LiteLLM proof-of-fit with pinned immutable image/package, blocked provider egress, synthetic non-routable placeholders, and measurements for install/pull time, disk, RSS and readiness. Do not provision PostgreSQL/Redis or wire real provider credentials. Design an owner-authorized metadata handoff for account/quota-domain references without moving secret values.
+
+
+## 2026-11-06 follow-up — lazy activation and capacity assessment
+
+- Added `config/provider-slot-capacity-policy.json`: registration is unbounded; active credential slots have a pool-wide hard ceiling of 20. This is distinct from GitHub Actions runner concurrency.
+- Added pure planner `scripts/provider-slot-admission.mjs` and tests. Tests cover 60 registered / 20 admitted, existing active leases consuming capacity, unqualified/paid/cooldown routes being rejected, over-limit fail-closed behavior and prevention of raising the hard ceiling.
+- The planner does not acquire durable leases or resolve secrets. Production requires atomic shared lease storage and fail-closed admission; runtime is NOT IMPLEMENTED.
+- Added quota assessment document: `docs/architecture/SLOT-ACTIVATION-AND-DAILY-QUOTA-ASSESSMENT-2026-11-06.md`.
+- Publicly documented conditional subtotal: up to 120,000 tokens/day from Aion Labs Free (20k/day) + LLM7 Free (100k/rolling 24h). This is a potential documented subtotal only, not verified capacity of GitHub secrets. Cloudflare's 10,000 Neurons/day is a separate unit and not included. NaraRouter is excluded because its official docs/pricing pages conflict (5M vs 7M daily allowance).
+- Exact code/test target: `94166dce9fc68d07918ea6fb6461bbd587b4258d`.
+- Exact-head Actions run #214: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42207313455 — SUCCEEDED. Workflow YAML, security contracts and all three Node test files in the validation step exited successfully.
+- Capacity policy blob SHA: `21d1a1cb1593256e625c1468e14fb40710313c8f`.
+- Admission planner blob SHA: `b04fcb60c19cf911ae7e2f178268a1b1ceae193d`.
+- Admission tests blob SHA: `c2b3f77f42a068e4fde063dfc988ad15de016fee`.
+- Quota assessment blob SHA: `7fc46ef2f06777aed61772549eb540525ba01587`.
+- Workflow blob SHA: `295ff3827f464bb77df61f743f361bc6eb79b5cb`.
+- PR #29 remains OPEN / DRAFT / UNMERGED; independent review NOT RUN. Canonical `Основной` remains at `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- GitHub combined commit status endpoint still reports `pending` with no status contexts; the exact-head Actions check-run itself is completed/success. Treat aggregate status as NOT VERIFIED.
+- No secret values or secret-presence metadata were accessed; no provider API calls or live quota probes were made; no paid fallback, DB/Redis provisioning, or agent dispatch occurred.
