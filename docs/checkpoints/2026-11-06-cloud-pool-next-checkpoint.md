@@ -236,3 +236,13 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Governance BLOCKED until at least one approving review and CODEOWNERS review are enforced, then independent review final heads. No Ruleset change made.
 - Report: [live governance and dispatch gate audit](../reports/2026-11-06-live-governance-ruleset-audit.md).
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## MH 3 host availability — 2026-11-06
+
+- SentinelX fresh inventory: Voktors-Mini.Dlink is only operational host (`host_5f7264034bdf0b51`); mh-dev-01 (`host_58114817a6ab4dd0`) and mh-dev-02 (`host_5bda3b5006655e9e`) are user-disabled. No MH 3 / mh-dev-03 record in inventory.
+- SentinelX Free plan: one active slot, currently occupied (0 available). Desktop Commander independently shows Voktors-Mini Online, mh-dev-01/02 Offline, no MH 3.
+- No execution on substitute host. Probe on Voktors-Mini was rejected before execution by allowlist; no policy changes. Browser and Cloudflare dashboard not accessed.
+- MH 3 browser qualification BLOCKED; Cloudflare Workers Free plan/card-free D1 eligibility NOT VERIFIED. No resources or paid services used.
+- Report: [MH 3 host availability check](../reports/2026-11-06-mh3-host-availability-check.md).
+- Next: restore/enroll MH 3 online and verify exact host ID/capabilities before browser use. No active-host changes or plan upgrade without authorization.
