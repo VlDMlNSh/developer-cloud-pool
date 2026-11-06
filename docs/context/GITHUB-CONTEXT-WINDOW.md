@@ -301,3 +301,16 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - No-card test not attempted because OAuth account/subscription metadata does not establish payment-method requirement. Billing endpoint needs Billing Read/Write; do not request broad write scope. Prefer dashboard UI non-secret confirmation or least-privilege read-only scope if supported.
 - Report: [Cloudflare Free entitlement live check](../reports/2026-11-06-cloudflare-free-entitlement-live-check.md).
 - Next: establish actual Workers Free/card-free eligibility via non-secret dashboard evidence or Billing Read-only metadata; stop if upgrade/payment method is required. Only then request separate governance approval for disposable isolated D1 test resource. Candidate C remains bounded qualification; dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Live governance reconciliation — 2026-11-06
+
+- Default branch `Основной` HEAD confirmed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Documentation branch HEAD read from GitHub commits API: `f01f2fdb7b9fd6dc5cfa0911d133f68553c8028a`; compare default→docs: 50 ahead / 0 behind.
+- Live Ruleset collection + detail read: ID `26550182`, `Основной — verified`, enforcement ACTIVE, exact ref `refs/heads/Основной`; deletion and non-fast-forward blocked; PR required; required approvals **0**; CODEOWNERS review false; last-push approval false; review-thread resolution true; bypass actors empty; current-user bypass never. Ruleset updated `2026-11-04T20:22:47.243+03:00`. Therefore independent review is NOT enforced despite active Ruleset.
+- Default `.github/workflows` directory contains only `dsh-runtime-evaluation.yml`, `pool-contract-validation.yml`, `pool-supervisor.yml`, `pool-worker.yml`, `runner-resource-probe.yml`. Gemini controller file absent from this repository (direct fetch 404); no Gemini dispatch attempted. Approved controller must be verified in its authoritative repository before any run.
+- PR #36 OPEN/DRAFT/UNMERGED; head `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code-tested `4229d8701f8ee79692619f481cef1d9d9483ff16`; D1 run `42276825199` job `128095160084` SUCCESS; contract run `42276825193` job `128095160288` SUCCESS. Current head is report-only outside D1 path filter; no fresh D1 run on current report-only head. Reviews/threads 0/0.
+- PR #37 OPEN/DRAFT/UNMERGED; tested head `5b45a29ed7869c091741c0037c68bfcd6640de7d`; boundary run `42280875294` job `128109201815` SUCCESS; contract run `42280875365` job `128109179508` SUCCESS. Reviews/threads 0/0; independent review NOT RUN.
+- PR #37 recorded exact-head environment read-back: `POOL_DISPATCH_ENABLED=false`, `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` empty/unset. No secrets read, no gates changed, no runtime/DSH/Resource Probe/provider execution.
+- Governance remains BLOCKED: active Ruleset does not enforce approval. Do not merge PR #36/#37 or enable dispatch until Ruleset enforces independent review and authorized reviewers review final exact heads.
+- Report: [live governance and dispatch gate audit](../reports/2026-11-06-live-governance-ruleset-audit.md).
