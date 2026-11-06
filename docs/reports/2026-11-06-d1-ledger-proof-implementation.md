@@ -115,3 +115,17 @@ Review classification: useful source-level engineering review only; NOT an indep
 - Lockfile content and hashes are VERIFIED; repository commit of lockfile remains BLOCKED by file-transfer/write-path limitation in this session.
 - PR #36 remains draft/open and NOT MERGE-READY.
 - No cloud resources, deployment, billing changes, secrets, provider calls, GitHub dispatch or production integration.
+
+
+## Latest exact-head verification after bounded review — 2026-11-06
+
+- Final proof branch HEAD: `16b0bdfec24e761bdeac97936ff9409e7235be45`.
+- Exact-head D1 run `42273219768`, job `128082853105`: COMPLETED / SUCCESS; `npm ci`, syntax check, Workers Vitest and artifact upload all succeeded.
+- Test result: 1 file passed, 13/13 tests passed.
+- Exact-head Pool Contract Validation run `42273219797`, job `128082854898`: COMPLETED / SUCCESS.
+- Exact-head generated lock artifact `13531037391`; ZIP digest `sha256:d670f77af00728e2b1a170ff96f73e37d32931d6d89027d7f70ed082d2d3593e`; expires 2026-11-13. Previous downloaded artifact was inspected and its extracted lockfile hash was `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0` with 160 packages. Current exact-head artifact exists and must be treated as the authoritative artifact if re-downloaded.
+- Removed report-only path from workflow trigger. Report/checkpoint updates no longer recursively launch proof CI; code and workflow changes still trigger.
+- PR #36 remains open/draft; 0 submitted reviews, 0 inline review threads. Independent security review NOT RUN.
+- Lockfile remains NOT COMMITTED. Current tool path verified the artifact bytes locally but does not expose a supported file-to-GitHub-Contents transfer. No hand-built replacement was used.
+- Local D1 proof VERIFIED for this exact head only. Source-level review is not independent review. Identity/issuer provenance, owner approval authenticity, trusted clock, issuance/revocation/audit, quotas, backup/restore, live account limits and production executor approval remain blockers.
+- No D1 cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
