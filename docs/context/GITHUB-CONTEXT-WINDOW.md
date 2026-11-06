@@ -957,3 +957,13 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Production gaps remain: authenticated caller/owner identity, issuer and signed approval provenance, trusted clock, issuance/revocation/audit, quota accounting, backup/restore, account entitlement and approved production executor.
 - No cloud D1 resource, deployment, billing change, secret access, provider call, GitHub dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add the verified file to `proofs/d1-ledger/package-lock.json` on PR branch, then run exact-head CI and obtain independent security review. Afterward qualify the card-free Cloudflare deployment route.
+
+
+## Branch-head correction after report-only commit — 2026-11-06
+
+- PR #36 branch HEAD is now `7571f82b1d8015a40939151deded0a165b27b742`, 34 commits ahead / 0 behind base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Last code-bearing commit remains `9815da8fd316d8263b59f3493d076d4623c4c925`. Exact-head D1 run `42274484200` and contract run `42274484234` passed on that code-bearing SHA. The newer `7571f82...` commit changes only `docs/reports/2026-11-06-d1-ledger-proof-implementation.md`; workflow path filters intentionally exclude report-only changes, so do NOT label the new report commit as exact-head CI tested.
+- PR body now distinguishes current branch HEAD from the last code-bearing SHA and tested SHA.
+- Exact lockfile remains local and verified, not committed. Hash `73381e38dbec1ce06c8dcc79dc7b6c2008269713b632f6edb0ad18c8f31b0` is the canonical value recorded in this context window; lockfileVersion 3; 160 packages.
+- PR #36 remains OPEN / DRAFT; no submitted reviews or inline threads. Independent security review NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No production deployment or external side effects.
