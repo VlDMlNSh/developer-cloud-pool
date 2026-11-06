@@ -144,3 +144,13 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Formal reviews and inline review threads remain empty. Independent review NOT RUN. Adapter remains unmounted.
 - Report updated: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
 - Next: obtain independent security review and recheck effective repository governance. Do not merge/mount or enable dispatch. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — Negative-first authorization test harness
+- Production baseline re-read at `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`: Worker `workflow_dispatch`/report `issues:write`, Supervisor privileged `workflow_run`/ `actions:write`, REST dispatch and stale `pool:ready` recovery remain.
+- Isolated design branch: `design/integrated-pool-authorization-contract-2026-11-06`; contract blob `ce42dd0095ca67166b9872b50ecaa90373b2e8ac`.
+- Negative-first production-source test file: `tests/security/pool-authorization-contract.test.mjs`, final blob `c482c9921774261e97de6aaa5beae3c5a7a4659b`, commit `52151b23669f7b37a8c4d61c17a0bf61ba86f426`. Seven tests cover Worker workflow_call-only/no issue writes, Supervisor trigger/permissions, static reusable invocation, and fail-closed recovery.
+- Read-back VERIFIED. CI/test execution NOT RUN / NOT VERIFIED. Production source unchanged; no dispatch, secret/config mutation, runtime, provider calls or deployment.
+- Report: [negative-first authorization test harness](../reports/2026-11-06-negative-first-pool-authorization-tests.md).
+- Next: add a least-privilege read-only CI job on the isolated design branch, run tests and capture expected failures against current production source. Keep dispatch disabled; no merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
