@@ -120,3 +120,15 @@ Immediate safe baseline:
 - Exact-head CI runs `42284044591` and `42284051311` succeeded.
 - This is an additional state-consistency guard, not a claim-store/CAS implementation. It does not change the disposition of designs A/B/C or permit dispatch.
 - Independent review remains NOT RUN; PR remains DRAFT / OPEN / UNMERGED.
+
+
+## Candidate C evidence update — local D1 conditional-consume proof — 2026-11-06
+
+- Isolated proof branch: `proof/d1-single-use-ledger-retry-2026-11-06`, 37 commits ahead / 0 behind immutable default baseline `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Source uses one conditional SQL UPDATE and accepts only a successful result with exactly one changed row. It binds approval ID, owner numeric ID, repository ID, issue, target SHA, profile, envelope digest, ready/unconsumed state and expiry.
+- 12-way concurrent local Workers-runtime test demonstrates one winner and 11 denials; replay, mismatches, expiry, malformed input, storage unavailable/ambiguous and batch rollback are covered.
+- Exact code/workflow commit `4229d8701f8ee79692619f481cef1d9d9483ff16`: D1 run `42276825199` / job `128095160084` SUCCESS; Pool Contract run `42276825193` / job `128095160288` SUCCESS. The workflow runs `npm ci` against committed lockfile; workflow blob `09b143c21d560d7eef93930da8f8f93bda378799`; lockfile blob `876c5d3de53bb12efaecdec939cbe8710cbd9e3c`.
+- This is local Miniflare/workerd proof, not a provisioned Cloudflare D1 resource or production integration. No account entitlement, live quotas, real backend contention, backup/restore or deployed runtime has been qualified.
+- Source review found blocking provenance gaps: owner ID is caller-supplied; approval issuer/signature is not authenticated; caller supplies `now`; issuance/revocation/audit and quota/recovery are absent. The Worker entrypoint is inert and successful consume always returns `dispatch: false`.
+- Disposition: candidate C is the strongest technical candidate and advances to bounded qualification only. It is NOT selected for production and does not authorize provisioning, deployment, integration or dispatch. Do not broaden current Supervisor permissions. If free/card-free entitlement and least-privilege isolation cannot be proven, retain fail-closed behavior.
+- Full review: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
