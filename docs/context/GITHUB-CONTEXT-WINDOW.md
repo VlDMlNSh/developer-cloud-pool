@@ -260,3 +260,18 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Live Ruleset `26550182` active but requires zero approvals and does not enforce CODEOWNERS review. Governance still does not guarantee independent approval.
 - Issue-label updates remain non-CAS; no claim backend selected. Dispatch remains BLOCKED / FAIL-CLOSED.
 - No merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets, deployment, credentials, permissions or paid services.
+
+
+## Durable claim candidate C — local D1 proof review — 2026-11-06 23:21 Europe/Vilnius
+
+- Tracking Issue #38 remains OPEN / PLANNED: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38.
+- Reviewed isolated branch `proof/d1-single-use-ledger-retry-2026-11-06`, compare against default `197ba98d0dc7d8437d759dd25bee8750d02e59ae`: 37 ahead / 0 behind.
+- Read-back source blobs: consume `ef4f9693e1e2a378c08e974a65a8deb486af8712`; tests `8c4af56fffd40e716a4f1f16632b99c0c4f72f33`; migration `a80524ed839b63dd6483978118619495fa550877`; lockfile `876c5d3de53bb12efaecdec939cbe8710cbd9e3c`; workflow `09b143c21d560d7eef93930da8f8f93bda378799`.
+- Exact code/workflow commit `4229d8701f8ee79692619f481cef1d9d9483ff16` fetched. D1 run `42276825199` / job `128095160084`: COMPLETED / SUCCESS; all seven substantive steps, including npm ci, syntax, Workers D1 tests and lock artifact upload, passed. Pool Contract run `42276825193` / job `128095160288`: COMPLETED / SUCCESS; dispatch-disabled assertion, YAML parse and security invariants passed. Proof report records 13/13 tests including 12 contenders / one winner.
+- Source review: conditional single-statement UPDATE; exact one changed row required; replay/mismatch/expiry/storage ambiguity fail closed; successful consume still returns `dispatch: false`; inert Worker entrypoint. This is local Miniflare/workerd proof only, not live Cloudflare D1 or production integration.
+- Blocking gaps: caller-supplied owner ID; no authenticated approval issuer/signature provenance; caller-supplied clock; no production issuance/revocation/audit, quota reservation, backup/restore or real account contention/limits. Independent review NOT RUN.
+- Candidate C (conditional-write store / D1) is advanced to bounded qualification as strongest technical candidate, NOT selected/qualified for production. No provisioning, deployment, billing, secrets, permission changes, provider/model calls, dispatch or runtime pool execution.
+- PR #36 remains OPEN / DRAFT; reviews/threads 0/0. PR #37 remains OPEN / DRAFT / UNMERGED; reviews/threads 0/0. Active Ruleset 26550182 has 0 required approvals and CODEOWNERS review disabled; independent-review governance remains inadequate.
+- Next: verify no-card/free Cloudflare entitlement and isolation through authorized non-secret evidence; complete owner/issuer provenance and trusted-clock design; independent security review. Keep both dispatch gates fail-closed.
+- Report: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
+- Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
