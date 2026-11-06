@@ -10,8 +10,8 @@ Advance Issue #26 acceptance criterion 1 with a normalized, versioned inventory 
 - Source schema: `mediahub.provider-model-registry.v1`.
 - Developer Cloud Pool base: `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/29
-- Code/test/workflow target: `0b7c5e0e5887fb675c3c638fc3366747f888ff89`.
-- Actions run #208: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206843613 — SUCCEEDED on the exact target SHA.
+- Code/test/workflow target: `ad210f0c3f2da7c734c31f44ad7883c4822ba40f`.
+- Actions run #210: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206967591 — SUCCEEDED on the exact target SHA `ad210f0c3f2da7c734c31f44ad7883c4822ba40f`.
 
 ## Work completed
 
@@ -31,7 +31,7 @@ Advance Issue #26 acceptance criterion 1 with a normalized, versioned inventory 
 - The combined validation step runs the security-contract validator and both Node test files under `set -euo pipefail`; successful job conclusion confirms both commands exited successfully.
 - Files were read back from the branch after writes:
   - inventory blob `42789e7408ba688b4af323deffe63eb2e15f50b8`;
-  - quota ledger blob `2662c5d6c73b4193edb9532748290acbe0ad9c18`;
+  - quota ledger blob `4ea35b4ee565fc97b7ee437a521170d38c2b46b1`;
   - quota tests blob `257efb123f3a9393c04ba64586931733f2648e11`;
   - inventory tests blob `1289bb057ae22e31b893d8e306cc980d5f20467e`;
   - workflow blob `a9913f89e20f5c2e3eadda3120719b9fc1231ae7`.
