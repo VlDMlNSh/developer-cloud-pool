@@ -1,7 +1,7 @@
 {
   "name": "pool-d1-single-use-ledger-proof",
   "main": "./src/worker.mjs",
-  "compatibility_date": "2026-11-06",
+  "compatibility_date": "2026-10-26",
   "d1_databases": [
     {
       "binding": "POOL_DB",
