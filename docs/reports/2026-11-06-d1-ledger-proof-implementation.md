@@ -129,3 +129,16 @@ Review classification: useful source-level engineering review only; NOT an indep
 - Lockfile remains NOT COMMITTED. Current tool path verified the artifact bytes locally but does not expose a supported file-to-GitHub-Contents transfer. No hand-built replacement was used.
 - Local D1 proof VERIFIED for this exact head only. Source-level review is not independent review. Identity/issuer provenance, owner approval authenticity, trusted clock, issuance/revocation/audit, quotas, backup/restore, live account limits and production executor approval remain blockers.
 - No D1 cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
+
+
+## Latest branch-head proof and artifact verification — 2026-11-06
+
+- Exact tested PR head: `2fbd3117249e9a6ef26192d08c14d85acbec5247`.
+- D1 workflow run `42273436794`, job `128083592087`: COMPLETED / SUCCESS; `npm ci`, syntax check, Workers Vitest and artifact upload all passed.
+- Workers Vitest: 1 file, 13/13 tests passed.
+- Pool Contract Validation run `42273436799`, job `128083592438`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13533100651`; ZIP SHA-256 `732a7389b7a11c126a01a7039729d91273eeb6e046dbc9d38be915b1389737fc`; downloaded and inspected. Extracted `package-lock.json` SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 packages. Resolved versions: plugin 1.4.7, Vitest 4.1.12, workerd 1.20261019.1, Miniflare 5.20261019.2-beta, Wrangler 4.152.0.
+- Lockfile bytes and artifact provenance are verified but the lockfile remains NOT COMMITTED to the branch. No generated or manually reconstructed replacement was committed.
+- PR #36 remains draft/open; review count 0; independent security review NOT RUN. The bounded source review is not a substitute for independent review.
+- Production blockers remain: caller/owner identity, issuer and signed-approval provenance, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, live account limits and production executor approval.
+- No cloud D1 resource, deployment, billing change, secret access, provider call, GitHub dispatch or production integration.
