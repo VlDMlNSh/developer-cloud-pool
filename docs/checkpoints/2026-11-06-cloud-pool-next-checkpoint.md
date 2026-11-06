@@ -128,3 +128,18 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Independent review remains NOT RUN. Issue #1 latest stored Ruleset snapshot (2026-11-05) has 0 required approvals and CODEOWNERS review disabled; live Ruleset not freshly read through API. PR #37 remains DRAFT / OPEN / UNMERGED.
 - No Worker execution, DSH, Resource Probe, provider/model call or deployment.
 - Next: independent security review and live Ruleset verification; keep PR draft and gates unchanged.
+
+
+## PR #37 security self-audit — 2026-11-06
+
+- Report: [PR #37 bounded security self-audit](../reports/2026-11-06-pr37-security-self-audit.md).
+- PR #37 OPEN / DRAFT / UNMERGED; head `5b45a29ed7869c091741c0037c68bfcd6640de7d`; default HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head CI runs `42280875294` and `42280875365`: COMPLETED / SUCCESS.
+- Live Ruleset `26550182` VERIFIED active for default branch, but requires 0 approvals and no CODEOWNERS review; independent approval is not enforced.
+- Live Actions variable read unavailable; latest exact-head CI logged dispatch=false and authorization-accepted unset. No changes made.
+- Residual: issue-label PATCH is not CAS; no proof of atomic single-use consumption/exactly-once under concurrent edits. Runtime reusable-workflow identity values and end-to-end execution remain untested.
+- Same-session self-audit only; independent review NOT RUN; PR reviews/threads 0/0.
+- No merge, dispatch, Worker execution, DSH/Resource Probe, provider/model calls, secrets, deployment or paid services.
+- Status: CI VERIFIED; governance independent-review enforcement INSUFFICIENT; runtime NOT QUALIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review plus durable conditional claim/receipt design; keep PR draft and both dispatch gates fail-closed.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
