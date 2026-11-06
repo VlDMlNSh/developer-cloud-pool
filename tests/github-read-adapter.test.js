@@ -70,6 +70,56 @@ test("uses fixed GitHub origin, GET only, manual redirects and no Authorization 
   assert.equal(result.etag, '"repo-v1"');
 });
 
+test("rejects lookalike, credentialed and non-HTTPS GitHub links in every projected resource", async () => {
+  const invalidUrls = [
+    "https://github.com.attacker.example/path",
+    "https://user@github.com/VlDMlNSh/developer-cloud-pool",
+    "http://github.com/VlDMlNSh/developer-cloud-pool"
+  ];
+  const fixtures = [
+    {
+      resource: "repository",
+      payload: (html_url) => ({
+        id: 42, name: "developer-cloud-pool", full_name: REPOSITORY,
+        default_branch: "Основной", private: false, html_url
+      }),
+      getUrl: (data) => data.html_url
+    },
+    {
+      resource: "issues",
+      payload: (html_url) => [{
+        number: 17, title: "Example", state: "open",
+        updated_at: "2026-11-06T10:00:00Z", html_url
+      }],
+      getUrl: (data) => data[0].html_url
+    },
+    {
+      resource: "workflowRuns",
+      payload: (html_url) => ({
+        total_count: 1,
+        workflow_runs: [{
+          id: 123, name: "CI", event: "pull_request", status: "completed",
+          conclusion: "success", head_sha: "a".repeat(40), run_number: 1,
+          created_at: "2026-11-06T10:00:00Z", updated_at: "2026-11-06T10:00:00Z",
+          html_url
+        }]
+      }),
+      getUrl: (data) => data.workflow_runs[0].html_url
+    }
+  ];
+
+  for (const fixture of fixtures) {
+    for (const htmlUrl of invalidUrls) {
+      const adapter = createGitHubReadAdapter({
+        fetchImpl: async () => jsonResponse(fixture.payload(htmlUrl))
+      });
+      const result = await adapter.read({ repository: REPOSITORY, resource: fixture.resource });
+      assert.equal(result.ok, true, fixture.resource);
+      assert.equal(fixture.getUrl(result.data), null, `${fixture.resource}: ${htmlUrl}`);
+    }
+  }
+});
+
 test("rejects upstream redirects without following them", async () => {
   let calls = 0;
   const adapter = createGitHubReadAdapter({
