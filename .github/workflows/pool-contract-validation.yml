@@ -7,30 +7,74 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "dsh-runtime/**"
   push:
     branches:
       - "Основной"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "dsh-runtime/**"
 
 permissions:
   contents: read
 
 concurrency:
-  group: pool-contract-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: pool-contract-validation-dsh-lockgen-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
     name: Validate workflow syntax and security invariants
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 12
     steps:
       - name: Checkout source without persisting credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+
+      - name: Set up pinned Node.js for lockfile generation
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Activate upstream-pinned pnpm
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack prepare pnpm@11.28.5 --activate
+          test "$(pnpm --version)" = "11.28.5"
+
+      - name: Assert peer dependency policy and generate temporary lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dsh-runtime
+          test "$(pnpm config get autoInstallPeers)" = "true"
+          pnpm install --lockfile-only --ignore-scripts --reporter=append-only
+          ruby -e 'require "yaml"; p=YAML.load_file("pnpm-lock.yaml"); abort "unexpected pnpm lockfile version" unless p["lockfileVersion"].to_s == "9.0"; d=p.fetch("importers").fetch(".").fetch("dependencies").fetch("@deepseek-ai/dsh"); abort "unexpected DSH specifier" unless d["specifier"] == "0.2.1-rc.5"; packages=p.fetch("packages"); integrity=packages.values.count { |v| v.is_a?(Hash) && v.dig("resolution", "integrity") }; abort "no package integrity records" if integrity == 0; abort "autoInstallPeers not recorded" unless p.fetch("settings").fetch("autoInstallPeers") == true; puts "PNPM_LOCK_VALIDATED packages=#{packages.size} integrity_records=#{integrity}"'
+          sha256sum pnpm-lock.yaml
+
+      - name: Verify frozen dependency installation without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dsh-runtime
+          pnpm install --frozen-lockfile --ignore-scripts --prod --reporter=append-only
+          installed_version="$(node -p "require('./node_modules/@deepseek-ai/dsh/package.json').version")"
+          test "$installed_version" = "0.2.1-rc.5"
+          echo "Frozen DSH package install verified: $installed_version"
+
+      - name: Upload generated lockfile for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: dsh-runtime-pnpm-lockfile
+          path: dsh-runtime/pnpm-lock.yaml
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Assert worker dispatch remains disabled
         shell: bash
