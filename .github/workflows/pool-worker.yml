@@ -51,7 +51,7 @@ jobs:
       - name: Checkout trusted workflow source without persisting credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
 
       - name: Validate one-time owner approval and trusted supervisor run
