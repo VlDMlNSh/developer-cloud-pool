@@ -66,10 +66,12 @@ test("Supervisor never requeues an expired or failed claim using the same approv
   assert.match(supervisorScript, /pool:needs-review/);
 });
 
-test("Worker binds execution to the actual reusable-workflow caller identity", () => {
-  assert.match(workerWorkflow, /job\.workflow_repository/);
-  assert.match(workerWorkflow, /job\.workflow_file_path/);
-  assert.match(workerWorkflow, /job\.workflow_ref/);
-  assert.match(workerWorkflow, /job\.workflow_sha/);
-  assert.match(workerWorkflow, /github\.repository_id/);
-});
+test("Worker validates caller and callee identities using their distinct GitHub contexts", () => {
+  assert.match(workerWorkflow, /github\\.repository/);
+  assert.match(workerWorkflow, /github\\.repository_id/);
+  assert.match(workerWorkflow, /github\\.workflow_ref/);
+  assert.match(workerWorkflow, /github\\.workflow_sha/);
+  assert.match(workerWorkflow, /job\\.workflow_repository/);
+  assert.match(workerWorkflow, /job\\.workflow_file_path/);
+  assert.match(workerWorkflow, /job\\.workflow_sha/);
+});;
