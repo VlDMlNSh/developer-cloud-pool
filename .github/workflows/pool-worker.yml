@@ -27,6 +27,7 @@ jobs:
       PROFILE: ${{ inputs.profile }}
       CALLER_REPOSITORY: ${{ github.repository }}
       CALLER_REPOSITORY_ID: ${{ github.repository_id }}
+      EXPECTED_REPOSITORY_ID: "1445644538"
       CALLER_WORKFLOW_REF: ${{ github.workflow_ref }}
       CALLER_WORKFLOW_SHA: ${{ github.workflow_sha }}
       CALLEE_REPOSITORY: ${{ job.workflow_repository }}
@@ -44,12 +45,13 @@ jobs:
           if (!/^[0-9a-f]{40}$/.test(e.TARGET_SHA || "")) throw new Error("Invalid target SHA.");
           if (e.PROFILE !== "dsh-headless-probe") throw new Error("Profile is not allowlisted.");
           if (e.CALLER_REPOSITORY !== e.GITHUB_REPOSITORY) throw new Error("Caller repository mismatch.");
-          if (!/^[0-9]+$/.test(e.CALLER_REPOSITORY_ID || "")) throw new Error("Caller repository ID missing.");
+          if (e.CALLER_REPOSITORY_ID !== e.EXPECTED_REPOSITORY_ID) throw new Error("Caller repository ID mismatch.");
           if (!e.CALLER_WORKFLOW_REF.endsWith("/.github/workflows/pool-supervisor.yml@refs/heads/Основной")) throw new Error("Caller is not the protected default-branch Supervisor.");
           if (!/^[0-9a-f]{40}$/.test(e.CALLER_WORKFLOW_SHA || "")) throw new Error("Caller SHA missing.");
           if (e.CALLEE_REPOSITORY !== e.GITHUB_REPOSITORY) throw new Error("Callee repository mismatch.");
           if (e.CALLEE_FILE_PATH !== ".github/workflows/pool-worker.yml") throw new Error("Callee path mismatch.");
           if (!/^[0-9a-f]{40}$/.test(e.CALLEE_WORKFLOW_SHA || "")) throw new Error("Callee SHA missing.");
+          if (e.CALLER_WORKFLOW_SHA !== e.CALLEE_WORKFLOW_SHA) throw new Error("Caller and reusable callee are not pinned to the same immutable commit.");
           const url = "https://api.github.com/repos/" + e.GITHUB_REPOSITORY + "/issues/" + e.TASK_ISSUE;
           const response = await fetch(url, { headers: {
             Accept: "application/vnd.github+json",
