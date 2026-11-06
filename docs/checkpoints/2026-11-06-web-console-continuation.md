@@ -262,3 +262,14 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - OpenAPI Validation run `42187773805` / job `127792102143`: SUCCEEDED (Node 24, Redocly lint).
 - Pool Contract Validation run `42187774177` / job `127792103675`: SUCCEEDED (YAML syntax, dispatch-disabled invariant, pool security contracts).
 - Both job details and all steps were read back as completed/success. This covers the exact branch head before this final documentation-only publication.
+
+
+## 2026-11-06 — existing OAuth component fit assessment
+
+- Inspected Bezzie `neilpmas/bezzie`: README blob `1217e4c4fafdca91f74905fef14c50a835143c92`, package blob `f5d38fa52fa815c309cc07a018a99c7153e627d1`, changelog blob `ee0382ffeecf1907a9b4d23f0fdea9986cdaa208`; package v1.4.2, MIT, oauth4webapi dependency, Hono peer dependency. Its documented providers are OIDC IdPs (Auth0/Okta/Keycloak/Google), not direct GitHub OAuth App. Requires KV or another session adapter; README documents 1,000 free-tier KV writes/day and default 30-day session TTL. REJECTED as direct drop-in; reference only.
+- Inspected official `auth0/auth0-hono`: package manifest blob `6e92d44d45f87022090ebb1070e9da274feee704`, version 1.0.0, Apache-2.0, Auth0 server SDK dependency. Auth0 broker/social connection introduces another identity provider and no-cost entitlement is not established. NOT SELECTED.
+- No auth dependency or KV binding added. No secrets, OAuth provider configuration, deployment or runtime auth changes.
+- Dated report: [OAuth component fit assessment](../reports/2026-11-06-auth-component-fit-assessment.md), blob `fae30703113aadb00ff62d8a36b79f9c80e96625`; report commit `422b09bc29c491e0751904f4e910c3778ed0ace6`.
+- PR #24 documentation branch before checkpoint append: 56 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This is an unmerged working branch, not canonical main.
+- Direct GitHub OAuth drop-in component NOT IDENTIFIED. Next: verify GitHub's OAuth App and authenticated-user API contracts and evaluate a narrow GitHub adapter around an established protocol library, with no secrets and no production route activation.
+- PR #25 remains OPEN/DRAFT/UNMERGED; exact-head CI passed at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea` (runs `42188468584`, `42188468546`), but independent review remains 0/0. Runtime auth NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN.
