@@ -8,12 +8,12 @@
 Operate a logical pool of up to 20 concurrent standard GitHub-hosted jobs without requiring an always-on server or a local machine to remain online. GitHub Actions is the control/event plane and ephemeral jobs are workers.
 
 This is a best-effort event-driven supervisor, not a continuously running daemon. GitHub Actions has no permanent process inside a hosted runner. The supervisor wakes from:
-- a scheduled reconciliation every five minutes (fallback);
-- an owner applying the `pool:ready` label to a task issue;
-- completion of a `Pool Worker` workflow;
-- manual `workflow_dispatch`.
+- a scheduled reconciliation every five minutes (recovery only);
+- an owner applying the `pool:ready` label to a task issue (the only Worker-dispatch trigger);
+- completion of a `Pool Worker` workflow (reconciliation only);
+- manual `workflow_dispatch` (Supervisor reconciliation only; it does not dispatch Workers).
 
-Scheduled events can be delayed or dropped during GitHub load, so event triggers and periodic reconciliation complement one another. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed. Dispatch is fail-closed by default: the repository variable POOL_DISPATCH_ENABLED must equal the literal string true. It must remain unset/false until the default branch has suitable protection and the supervisor workflow has been reviewed.
+Scheduled events can be delayed or dropped during GitHub load, so periodic reconciliation complements owner-triggered dispatch. No guarantee of uninterrupted availability or exact five-minute dispatch is claimed. Worker dispatch is permitted only from the repository owner's `issues.labeled` event for `pool:ready`; scheduled, `workflow_run` and manual Supervisor runs are reconciliation-only. Dispatch is fail-closed by default: `POOL_DISPATCH_ENABLED` must equal the literal string `true`, and must remain `false` until Worker provenance checks, independent security review and no-secret runtime qualification pass.
 
 ## 2. Lifecycle
 
@@ -24,7 +24,7 @@ Scheduled events can be delayed or dropped during GitHub load, so event triggers
 5. It atomically changes the task label to `pool:claimed`, comments the task/run metadata, and dispatches `pool-worker.yml` using the short-lived repository `GITHUB_TOKEN`.
 6. The worker checks out exactly the supplied SHA and runs only the allowlisted profile.
 7. A separate reporting job, which does not install or execute agent code, updates the issue to `pool:probe-complete` or `pool:needs-review`.
-8. `workflow_run: completed` wakes the supervisor to process the next queued issues. The five-minute schedule is the recovery/reconciliation fallback.
+8. `workflow_run: completed` wakes the Supervisor for failure recovery and stale-claim reconciliation. The five-minute schedule is also recovery/reconciliation only; neither trigger dispatches a new Worker.
 
 The first profile is deliberately limited to a DSH headless package/configuration smoke test. It makes no model call, receives no provider key and executes no user-supplied shell command. This proves the dispatch path, not general-purpose agent execution.
 
@@ -32,7 +32,7 @@ The first profile is deliberately limited to a DSH headless package/configuratio
 
 The 20 slots are an account-level concurrency ceiling for the Free plan's standard hosted jobs, not 20 dedicated VMs and not 20 slots per repository. Jobs from other repositories owned by the same account can consume the same concurrency. GitHub performs actual scheduling and may leave jobs queued.
 
-The supervisor can dispatch up to 20 approved task workflows per reconciliation. It does not reserve or guarantee all 20 slots. Other repository workflows, plan limits, service availability and GitHub queueing take precedence.
+The supervisor can dispatch up to 20 currently approved task workflows per owner `pool:ready` event; it does not dispatch from scheduled or `workflow_run` reconciliation cycles. It does not reserve or guarantee all 20 slots. Other repository workflows, plan limits, service availability and GitHub queueing take precedence.
 
 A supervisor run briefly consumes one job slot. The supervisor exits after dispatch; workers are independent workflow runs. Do not create 20 permanent poller jobs or let workers directly start arbitrary sibling workflows.
 
