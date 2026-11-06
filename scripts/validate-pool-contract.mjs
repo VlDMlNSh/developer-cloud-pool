@@ -87,7 +87,7 @@ if (!/authorizationAccepted = process\.env\.POOL_AUTHORIZATION_CONTRACT_ACCEPTED
 if (!/if \(!protectedDefaultRef \|\| !dispatchEnabled \|\| !authorizationAccepted\)/.test(supervisorScript)) fail("Supervisor must remain heartbeat-only unless every gate passes");
 if (!/const issue = candidates\[0\]/.test(supervisorScript)) fail("Supervisor must process at most one task per run");
 if (!/Claim read-back was ambiguous/.test(supervisorScript)) fail("Supervisor must fail closed on ambiguous claim read-back");
-if (/POOL_CLAIM_LEASE_EXPIRED|pool:claimed["'][^\n]*pool:ready/.test(supervisorScript)) fail("Supervisor must never auto-requeue a consumed approval");
+if (/POOL_CLAIM_LEASE_EXPIRED|replaceLabels\([^,\n]+,\s*\["pool:claimed"\],\s*\["pool:ready"\]\)/.test(supervisorScript)) fail("Supervisor must never auto-requeue a consumed approval");
 if (!/needs\.worker\.result/.test(supervisor)) fail("Supervisor finalizer must consume reusable Worker result");
 if (!/pool:needs-review/.test(supervisor)) fail("Supervisor must route non-success to needs-review");
 if (failures.length === 0) pass("Supervisor uses reusable invocation, dual fail-closed gates and one-task claim/read-back");
