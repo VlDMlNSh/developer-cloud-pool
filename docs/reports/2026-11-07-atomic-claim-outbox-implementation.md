@@ -44,3 +44,17 @@ No secrets, live D1 provisioning, Worker deployment, billing changes, GitHub dis
 2. Resolve any SQL/runtime/test failures, then re-fetch final blobs and exact-head CI.
 3. Add lease/fencing/recovery tests in a subsequent bounded increment.
 4. Obtain independent security review before any production-selection decision.
+
+
+
+## 2026-11-07 follow-up — transaction attribution correction
+
+A second review found that the original batch design guarded claim insertion by matching `consumed_at`. That did not prove the current transaction performed the ready-to-consumed transition when a previously consumed approval had the same timestamp. The original batch implementation was therefore superseded before qualification.
+
+The adapter is now changed to issue one conditional `UPDATE` only. A SQLite `AFTER UPDATE OF state` trigger creates the claim and outbox rows in the same transaction, and only when `OLD.state='ready'`, `NEW.state='consumed'`, and the old/new consumed timestamp conditions hold. A trigger insert failure should roll back the parent update and claim insert atomically.
+
+New adversarial coverage: pre-consumed approval with the same timestamp; synthetic outbox insert abort verifies approval remains ready and no claim survives. Concurrency and idempotent retry tests remain. All outcomes still set `dispatch:false`.
+
+Updated PR #39 head: `f33f552f396e878e80a7f383e5436080cb668cb0`, 11 commits ahead / 0 behind the immutable parent `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Current blobs: migration `44b8f7e0658296d287269770c5e91b1c3e25973c`; adapter `253bf5c6c9dcfca9c9c2666b21c1a77101766cba`; tests `4711bb7a5186807d6618d6dc59af10809caec6f3`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `faac8cacf27d58362c2acf16006acf8ab973e421`.
+
+Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/threads 0/0. No local test execution claimed. Trigger-backed semantics still require Workers-runtime CI and independent security review. Lease/fencing/recovery remain unimplemented. No production integration, D1 provisioning, dispatch, secrets or provider/model calls.
