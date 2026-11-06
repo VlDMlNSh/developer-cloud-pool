@@ -116,3 +116,15 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - Local D1 proof VERIFIED for exact head only; production qualification and Contour A acceptance NOT VERIFIED / BLOCKED. Contour B DEFERRED.
 - No cloud resource, deployment, billing change, secret access, provider call or dispatch.
 - Next: transfer exact lockfile into PR #36 without modifying workflow trust boundaries, then obtain independent security review.
+
+
+## Final PR #36 qualification checkpoint — 2026-11-06
+
+- PR head `f340bd02bdfb045c3ba242ebe2581511b5a4b5c7`, 27 ahead / 0 behind base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- D1 run `42273670730` / job `128084381636`: SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation `42273670766` / job `128084412944`: SUCCESS.
+- Lock artifact `13532516126`, ZIP SHA-256 `cdce1fe10af044e4481224c528cfbcd43b904a051354109782fd683d80f93dc8`; inspected lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, 160 packages. Lockfile NOT COMMITTED.
+- PR #36 remains draft/open, no reviews. Independent security review NOT RUN.
+- Local D1 proof VERIFIED only. Identity, issuer/provenance, signed approval, trusted clock, issuance/revocation/audit, quotas, backup/restore, account limits and approved production executor remain unresolved.
+- No cloud resources, deployment, billing changes, secrets, provider calls or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: commit exact lockfile with unchanged read-only CI permissions; obtain independent security review; then separately qualify Cloudflare Free/card-free capability.
