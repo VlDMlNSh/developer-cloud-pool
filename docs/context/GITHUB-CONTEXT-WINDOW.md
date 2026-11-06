@@ -819,3 +819,14 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Status: ADR RECORDED; DO implementation NOT RUN; local Workers-runtime tests NOT RUN; account eligibility NOT VERIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 **Next bounded step:** inspect existing Hono/Worker package conventions and pinned dependency policy, then continue with a local-only D1 adapter/transaction proof on a branch rooted at the current default SHA. Keep it unmounted and undeployed; no cloud resource required for local proof. Consider Durable Objects only if a specific per-approval coordination requirement is demonstrated.
+
+
+## Reconciliation and package inventory — 2026-11-06
+
+- Re-read prior report `docs/reports/2026-11-06-free-transactional-state-store-assessment.md` (blob `be26f1a7aea367f7aa1c1e2f28f543eeaa190880`). It already records D1 as the preferred first local proof candidate and SQLite-backed Durable Objects as an alternative. This decision remains in force. The new Durable Objects ADR was corrected to preserve D1-first; no architecture reversal is intended.
+- Re-read GitHub-native consume alternatives report. GitHub concurrency, cache, artifacts, deployments, labels/comments and unprotected refs do not qualify as durable single-use authorization primitives. Tag-based consume remains blocked on tag ruleset and token identity proof.
+- Inspected Hono prototype package files at the feature branch: `package.json` blob `a2162f4ae9629c4b6e710906a0b223d737613cce`, `package-lock.json` blob `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`, Wrangler config blob `2544010bb468a94d26043320c45838632997449c`.
+- Existing Hono prototype pins Hono `4.13.16` and Wrangler `4.158.0`; scripts use Node's built-in `node --test`. No Vitest config or D1/DO binding exists on that branch. Any D1 proof must add a pinned Workers Vitest integration and local binding/migration without mounting it in the Worker API or deploying it.
+- Cloudflare account inventory in the earlier read-only assessment: 0 D1 databases, 0 Durable Object namespaces, 0 Worker scripts. The connection proves API reachability only; Workers Free activation and card-free eligibility remain NOT VERIFIED. No resource or billing setting changed.
+- Current documentation branch is `docs/cross-chat-continuation-2026-11-06`, 106 ahead / 2 behind default; status DIVERGED. Do not merge as-is. Default HEAD observed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Next: D1-first local proof using pinned dependencies and Workers Vitest; keep it isolated, unmounted, undeployed, and fail-closed. Reconsider DO only if a specific coordination need is demonstrated.
