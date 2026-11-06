@@ -67,3 +67,9 @@ test("Worker validates caller and reusable callee identity separately", () => {
   assert.match(worker, /EXPECTED_REPOSITORY_ID: "1445644538"/);
   assert.match(worker, /CALLER_WORKFLOW_SHA !== e.CALLEE_WORKFLOW_SHA/);
 });
+
+
+test("Worker rejects conflicting or duplicate managed task states", () => {
+  assert.match(worker, /const managedStates = \["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"\]/);
+  assert.match(worker, /activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/);
+});
