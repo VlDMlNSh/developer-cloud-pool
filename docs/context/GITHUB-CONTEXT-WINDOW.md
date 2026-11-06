@@ -401,3 +401,15 @@ Review the full PR #12 ADR and helper/tests against the current Supervisor and W
 
 ### 18.5 Next bounded action
 Inspect GitHub-native Environment and Git ref/ruleset API capabilities using read-only metadata/docs, then compare viable race-safe single-use designs against GitHub Free limits. Do not create an Environment/ref or change rulesets in this pass without an accepted implementation and explicit authorization.
+
+
+## 19. GitHub-native Environment and single-use marker review — 2026-11-06
+
+- PR #12 exact head `6c053bacff29ca8efb5fdb759edd44fcd416b749`; fixture run `42041946049` and Pool Contract Validation `42041945700` SUCCESS; formal reviews empty. PR #15 head `c57f2ab3f2b91bf6b3e413640f65ec518008b75e`, PR #27 head `e289e97bbffeb0196a03226f9a052856dfa5567f`; all OPEN/DRAFT/UNMERGED with zero formal reviews.
+- Ruleset `26550182` read back active and targets only `refs/heads/Основной`; PR required but required approvals=0, CODEOWNERS review=false, no bypass actors. No tag ruleset evidenced.
+- GitHub docs confirm required-reviewer Environments are available for public repositories on Free; up to six reviewers, one approval suffices, prevent-self-review is configurable. Environment config and bypass settings are not verified in this repository; Environment is a workflow human gate, not a durable nonce store.
+- GitHub Create Ref API documents 201/409/422. A unique tag ref can be a create-if-absent claim, but requires tag ruleset restrictions on update/delete, exact ref/tag-object read-back on conflicts/timeouts, and fail-closed recovery. It does not transact with subsequent dispatch; crash after marker creation must remain needs-review. No exactly-once claim.
+- Environment-list API read unavailable through current connector; configuration NOT VERIFIED. No Environment/ref/ruleset mutation occurred.
+- Detailed comparison and acceptance tests: `docs/reports/2026-11-06-github-environment-single-use-marker-review.md`.
+- No dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: draft marker protocol/tag-ruleset spec and adversarial tests; obtain authorized read-back of Environment config before deciding to use it.
