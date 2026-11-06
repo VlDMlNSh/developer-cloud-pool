@@ -4,6 +4,7 @@ const repo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
 const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 const authorizationAccepted = process.env.POOL_AUTHORIZATION_CONTRACT_ACCEPTED === "true";
+const protectedDefaultRef = process.env.GITHUB_REF === "refs/heads/Основной";
 if (!repo || !token) throw new Error("Missing GitHub runtime context.");
 
 const headers = {
@@ -70,7 +71,7 @@ for (const [name, color, description] of [
   await ensureLabel(name, color, description);
 }
 
-if (!dispatchEnabled || !authorizationAccepted) {
+if (!protectedDefaultRef || !dispatchEnabled || !authorizationAccepted) {
   log("Pool Supervisor heartbeat only: dispatch or authorization acceptance gate is absent. No task was claimed or executed.");
 } else {
   const issues = await request("/repos/" + repo + "/issues?state=open&labels=" +
