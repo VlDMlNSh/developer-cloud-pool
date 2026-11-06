@@ -88,7 +88,7 @@ const MANAGED_TASK_LABELS = new Set([
 export function hasConsumedOwnerApproval(comments, expected, repositoryOwner, supervisorRunId) {
   const owner = String(repositoryOwner || "").toLowerCase();
   const runId = String(supervisorRunId || "");
-  if (!owner || !/^\\d+$/.test(runId) || !Array.isArray(comments)) return false;
+  if (!owner || !/^\d+$/.test(runId) || !Array.isArray(comments)) return false;
   const ordered = [...comments].sort((a, b) =>
     (Date.parse(a.created_at || "") || 0) - (Date.parse(b.created_at || "") || 0)
   );
@@ -96,16 +96,16 @@ export function hasConsumedOwnerApproval(comments, expected, repositoryOwner, su
   for (const comment of ordered) {
     if (comment?.user?.login !== BOT_LOGIN) continue;
     const body = String(comment.body || "");
-    const issue = body.match(/^- Issue: (\\d+)$/m)?.[1];
+    const issue = body.match(/^- Issue: (\d+)$/m)?.[1];
     if (issue !== String(expected.issueNumber)) continue;
     if (body.startsWith("**POOL_OWNER_APPROVAL_REVOKED_V1**")) {
       state = null;
       continue;
     }
     if (body.startsWith("**POOL_OWNER_APPROVAL_V1**")) {
-      const actor = body.match(/^- Approved by: ([^\\r\\n]+)$/m)?.[1]?.toLowerCase();
+      const actor = body.match(/^- Approved by: ([^\r\n]+)$/m)?.[1]?.toLowerCase();
       const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
-      const profile = body.match(/^- Worker profile: ([^\\r\\n]+)$/m)?.[1];
+      const profile = body.match(/^- Worker profile: ([^\r\n]+)$/m)?.[1];
       state = actor === owner && sha === expected.targetSha && profile === expected.profile
         ? { consumedBy: null }
         : null;
@@ -113,7 +113,7 @@ export function hasConsumedOwnerApproval(comments, expected, repositoryOwner, su
     }
     if (body.startsWith("**POOL_OWNER_APPROVAL_CONSUMED_V1**") && state) {
       const sha = body.match(/^- Target SHA: ([0-9a-f]{40})$/m)?.[1];
-      const consumedBy = body.match(/^- Supervisor run: (\\d+)$/m)?.[1];
+      const consumedBy = body.match(/^- Supervisor run: (\d+)$/m)?.[1];
       if (sha === expected.targetSha && consumedBy) state = { consumedBy };
     }
   }
@@ -122,7 +122,7 @@ export function hasConsumedOwnerApproval(comments, expected, repositoryOwner, su
 
 export function hasSupervisorClaimComment(comments, expected, supervisorRunId) {
   const runId = String(supervisorRunId || "");
-  if (!/^\\d+$/.test(runId) || !Array.isArray(comments)) return false;
+  if (!/^\d+$/.test(runId) || !Array.isArray(comments)) return false;
   return comments.some(comment => {
     if (comment?.user?.login !== BOT_LOGIN) return false;
     const body = String(comment.body || "");
