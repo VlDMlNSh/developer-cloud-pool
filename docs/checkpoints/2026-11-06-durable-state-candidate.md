@@ -187,3 +187,10 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - No production D1, Worker deployment, billing change, secret access, provider call, dispatch or integration. Production identity/issuer, signed approval, trusted clock, issuance/revocation/audit, quotas, backup/restore, Cloudflare Free/card-free entitlement and executor approval remain unresolved.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain a qualified independent security review, then separately qualify a free/card-free deployment route. Keep PR draft and do not deploy/merge.
+
+
+## Branch-head scope note — 2026-11-06
+
+- After the exact-head code/workflow CI passed on `4229d8701f8ee79692619f481cef1d9d9483ff16`, the implementation report was appended in documentation-only commit `1e278b1601b8a77131118aa5c627c07d663b0e51`.
+- Current PR branch HEAD is therefore `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code-bearing / workflow-tested SHA remains `4229d8701f8ee79692619f481cef1d9d9483ff16`. The report path is outside D1 workflow path filters; do not claim CI ran on the report-only HEAD.
+- Context blob current at time of correction: `d1c12a57d9ecbde7927e13e83e8e320902cdc206`; checkpoint blob: `871867f15b06ce71f0973d02cb5ac46ec201485e`.
