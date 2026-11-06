@@ -451,3 +451,15 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Full audit: docs/reports/2026-11-06-default-branch-supervisor-worker-authorization-recheck.md.
 - No code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: coherent test-first remediation plan; keep dispatch disabled and require independent review before any runtime.
+
+
+## 24. Comparative authorization implementation audit — 2026-11-06
+- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.
+- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.
+- PR #18 provides fail-closed recovery and dispatch-failure policy (needs-review, no replay) with exact-head static tests SUCCESS; it does not implement owner approval or caller authorization.
+- PR #15 removes workflow_run but retains unsafe stale-claim requeue; PR #18 later proposes fail-closed recovery. Neither is merged.
+- PR #12 tests a fixture reusable workflow, not production Worker caller boundary.
+- GitHub reusable workflow contract: workflow_call + static local uses; concurrency is not durable nonce storage. Sources: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows and https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax.
+- Report: docs/reports/2026-11-06-comparative-authorization-integration-audit.md.
+- No runtime code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: test-first integrated design on current default branch; durable consume marker + workflow_call-only production Worker + sole-writer Supervisor + fail-closed recovery. No dispatch or merge.
