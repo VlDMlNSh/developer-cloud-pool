@@ -164,3 +164,12 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 - Package lock v3 blob SHA: `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`; 93 package entries. Workflow uses `npm ci`; no lockfile is emitted to logs.
 - OAuth/session NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN.
 - Implementation report: [Hono prototype implementation](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/jarvis-hono-web-prototype-2026-11-06/docs/reports/2026-11-06-hono-prototype-implementation.md).
+
+
+## 2026-11-06 — OAuth architecture contract consistency correction
+
+- Found stale Cloudflare Access JWT instructions in the hosting ADR and a stale Access assertion description in the OpenAPI 401 response, despite the no-card application-session decision.
+- Updated ADR: server-side GitHub OAuth, single-use state, exact numeric owner-ID allowlist, opaque `__Host-jarvis_session` cookie, server-side expiry/revocation, GET-only API and fail-closed requirements. ADR blob: `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; commit `a2590fde257b3ab9d52044f3f9114b664383c543`.
+- Updated OpenAPI 401 response to application-session semantics. Contract blob: `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; commit `b0d5a3a16c80c423cac0f5e553859a9bc83fb18c`.
+- Dated report: [OAuth architecture contract consistency](../reports/2026-11-06-oauth-architecture-contract-consistency.md).
+- This is documentation/contract correction only. OAuth application/credentials and session implementation remain NOT IMPLEMENTED; Cloudflare Workers Free entitlement NOT VERIFIED; deployment NOT RUN; independent review NOT RUN; production dispatch BLOCKED / FAIL-CLOSED.
