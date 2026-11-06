@@ -43,12 +43,12 @@ Local API-client footprint may be small because inference runs on the provider s
 
 ## Current status
 
-- Pure placement planner: IMPLEMENTED in PR branch; code/test target 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 VERIFIED by Actions run #215 (42209187115); 35/35 total tests passed, including 16 placement tests.
+- Pure placement planner: IMPLEMENTED in PR branch; prior code/test target 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 VERIFIED by Actions run #215. Runner capacity probe and converter target 10b74421aa5ab4d94fed1664ebf0a87109e9d4d5 VERIFIED by Actions run #218 (42211249689); 39/39 total tests passed.
 - Runtime multi-agent supervisor/containers: NOT IMPLEMENTED.
-- Host resource probe: machine-readable JSON artifact and provenance added; manual workflow dispatch still NOT RUN. A single sample remains observed/not-qualified until independent profile qualification.
+- Host resource probe: machine-readable JSON artifact and provenance added. Workflow YAML and contract validation VERIFIED at code target 10b74421aa5ab4d94fed1664ebf0a87109e9d4d5 by Actions run #218 (42211249689), 39/39 tests passed. Actual manual workflow dispatch NOT RUN; actual host capacity NOT MEASURED. A single sample remains observed/not-qualified until independent profile qualification.
 - Durable placement/credential lease store: NOT IMPLEMENTED.
 - Provider quota-domain reconciliation: next bounded workstream.
-- PR #29: OPEN / DRAFT / UNMERGED; independent review NOT RUN. Branch code/test target 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 passed exact-head CI run #215; canonical Основной remains 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- PR #29: OPEN / DRAFT / UNMERGED; independent review NOT RUN. Latest code/test target 10b74421aa5ab4d94fed1664ebf0a87109e9d4d5 passed exact-head CI run #218; canonical Основной remains 64d2636d4500127e635c214ccfb722c6b3fcda80.
 - Canonical branch: unchanged at start of pass; verify final ref after commit.
 - Provider calls, secret access, agent dispatch and paid fallback: NOT RUN.
 
