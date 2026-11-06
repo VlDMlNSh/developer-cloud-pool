@@ -27,6 +27,7 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
@@ -77,26 +78,42 @@ describe("atomic D1 claim and transactional outbox", () => {
     expect(count.n).toBe(0);
   });
 
-  it("fails closed when the transactional batch is unavailable", async () => {
-    const noBatch = { prepare: env.POOL_DB.prepare.bind(env.POOL_DB) };
-    const result = await claimAndEnqueue(noBatch, approval, NOW);
+  it("does not create a claim from a pre-consumed approval with the same timestamp", async () => {
+    await env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger SET state = 'consumed', consumed_at = ?
+       WHERE approval_id = ?
+    `).bind(NOW, approval.approvalId).run();
+
+    const result = await claimAndEnqueue(env.POOL_DB, approval, NOW);
     expect(result).toMatchObject({
       decision: "DENY",
       dispatch: false,
-      reason: "STORAGE_UNAVAILABLE"
+      reason: "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED"
     });
+    const count = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims").first();
+    expect(count.n).toBe(0);
   });
 
-  it("fails closed when batch execution has an ambiguous outcome", async () => {
-    const ambiguous = {
-      prepare: () => ({ bind: () => ({}) }),
-      batch: async () => { throw new Error("synthetic ambiguous batch result"); }
-    };
-    const result = await claimAndEnqueue(ambiguous, approval, NOW);
+  it("rolls back approval consumption and claim when outbox insertion fails", async () => {
+    await env.POOL_DB.prepare(`
+      CREATE TRIGGER test_abort_outbox_insert
+      BEFORE INSERT ON pool_task_outbox
+      BEGIN SELECT RAISE(ABORT, 'synthetic outbox failure'); END
+    `).run();
+
+    const result = await claimAndEnqueue(env.POOL_DB, approval, NOW);
     expect(result).toMatchObject({
       decision: "DENY",
       dispatch: false,
       reason: "CLAIM_TRANSACTION_AMBIGUOUS"
     });
+
+    const ledger = await env.POOL_DB.prepare(
+      "SELECT state, consumed_at FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(approval.approvalId).first();
+    const claims = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims").first();
+    expect(ledger.state).toBe("ready");
+    expect(ledger.consumed_at).toBeNull();
+    expect(claims.n).toBe(0);
   });
 });
