@@ -84,6 +84,7 @@ if (!/POOL_AUTHORIZATION_CONTRACT_ACCEPTED: \$\{\{ vars\.POOL_AUTHORIZATION_CONT
 if (!/protectedDefaultRef = process\.env\.GITHUB_REF === "refs\/heads\/Основной"/.test(supervisorScript)) fail("Supervisor must be restricted to the protected default branch");
 if (!/dispatchEnabled = process\.env\.POOL_DISPATCH_ENABLED === "true"/.test(supervisorScript)) fail("Supervisor must require literal true for dispatch");
 if (!/authorizationAccepted = process\.env\.POOL_AUTHORIZATION_CONTRACT_ACCEPTED === "true"/.test(supervisorScript)) fail("Supervisor must require explicit authorization acceptance");
+if (process.env.POOL_AUTHORIZATION_CONTRACT_ACCEPTED === "true") fail("Authorization acceptance gate must remain disabled until independent review and governance acceptance.");
 if (!/if \(!protectedDefaultRef \|\| !dispatchEnabled \|\| !authorizationAccepted\)/.test(supervisorScript)) fail("Supervisor must remain heartbeat-only unless every gate passes");
 if (!/const issue = candidates\[0\]/.test(supervisorScript)) fail("Supervisor must process at most one task per run");
 if (!/Claim read-back was ambiguous/.test(supervisorScript)) fail("Supervisor must fail closed on ambiguous claim read-back");
