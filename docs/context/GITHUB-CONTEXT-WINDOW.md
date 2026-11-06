@@ -916,3 +916,16 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Bounded source review recorded in proof report. Production blockers remain: verified caller/owner identity, approval issuer/provenance, signed approval evidence, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, live account limits and approved executor profile.
 - Local D1 proof VERIFIED for exact tested SHA `16b0bdfec24e761bdeac97936ff9409e7235be45`; not production qualification. No D1 resource, deployment, billing change, secrets, provider call or dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: commit exact lockfile, obtain independent security review, then separately qualify card-free cloud entitlement.
+
+
+## Final PR #36 head and D1 proof result — 2026-11-06
+
+- PR #36 latest head: `f340bd02bdfb045c3ba242ebe2581511b5a4b5c7`, 27 commits ahead / 0 behind immutable base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head D1 run `42273670730` / job `128084381636`: COMPLETED / SUCCESS; 13/13 Workers-runtime tests passed.
+- Exact-head Pool Contract Validation run `42273670766` / job `128084412944`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13532516126`; archive SHA-256 `cdce1fe10af044e4481224c528cfbcd43b904a051354109782fd683d80f93dc8`. Downloaded and inspected extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, lockfileVersion 3, 160 packages; resolved plugin 1.4.7, Vitest 4.1.12, workerd 1.20261019.1, Miniflare 5.20261019.2-beta, Wrangler 4.152.0.
+- Workflow no longer runs on report-only changes; source/workflow changes still trigger CI.
+- Lockfile NOT COMMITTED. Artifact content and hash verified, but no supported file-to-GitHub-Contents transfer was available in this session. PR #36 remains draft/open, 0 reviews, 0 inline threads; independent security review NOT RUN.
+- Local D1 proof VERIFIED for exact PR head. It does not authenticate caller/owner or approval issuer, verify signed approval provenance, provide trusted server time, issuance/revocation/audit, quotas, backup/restore, live account-limit evidence or production executor approval.
+- No cloud D1 resource, deployment, billing change, secret access, provider call, dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: commit the verified lockfile to PR #36 without broadening workflow permissions, obtain independent security review, then qualify the card-free cloud deployment path.
