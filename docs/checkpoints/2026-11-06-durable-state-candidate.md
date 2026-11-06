@@ -62,3 +62,19 @@ Wait for exact-head run `42271859222`; inspect result and generated lock artifac
 ## Next action
 
 Commit and review the exact generated package-lock file in PR #36, then obtain independent security review. Do not merge or deploy until both gates pass and Workers Free/card-free account eligibility is established without a billing change.
+
+
+## Final D1 proof status — 2026-11-06
+
+- Draft PR #36: https://github.com/VlDMlNSh/developer-cloud-pool/pull/36 (OPEN / DRAFT / NOT MERGE-READY).
+- Proof branch HEAD: `3467486d76498bb8e3c4f1e5d32b738f794ff2e2`; default baseline `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; 19 ahead / 0 behind.
+- D1 source tested at `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`; subsequent commits are documentation-only. Exact-head CI for current docs-only HEAD is NOT VERIFIED.
+- D1 workflow `42271859222` / job `128078153536`: SUCCESS; 13/13 Workers-runtime tests passed. Pool Contract Validation `42271859290`: SUCCESS.
+- Tests cover 12-way concurrent consume exactly-one-winner, replay, six binding mismatches, expiry, malformed input, storage unavailable, ambiguous storage exception and batch rollback.
+- Lock artifact `13529083485`; ZIP digest `2acf14b203cef11508e0f4143e4662d9c30228cbffcb80e0b382dbdeb335d5d1`; inspected lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; 160 packages. Direct pins plugin 1.4.7 / Vitest 4.1.12. Lockfile not committed; this blocks merge.
+- Independent PR reviews 0; inline threads 0. Cloudflare Free/card-free entitlement NOT VERIFIED. No cloud resources, deployment, billing changes, secrets, dispatch or production integration.
+- Local D1 proof VERIFIED at tested source SHA; production D1 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Next action
+
+Obtain a committed and reviewed lockfile, then request independent security review. Keep PR #36 draft and do not merge/deploy. Only after free/no-card eligibility is independently established may a separately authorized disposable cloud test be considered.
