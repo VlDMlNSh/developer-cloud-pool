@@ -244,3 +244,13 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Exact-head Pool Contract Validation run `42187467083` SUCCEEDED; OpenAPI Validation run `42187467194` SUCCEEDED. Both job details and all steps were read back as completed/success.
 - PR #24 remains OPEN / DRAFT / UNMERGED; PR #25 remains OPEN / DRAFT / UNMERGED. Both have 0 formal reviews and 0 inline threads.
 - Workers Free entitlement NOT VERIFIED; deployment NOT RUN; OAuth/session runtime NOT IMPLEMENTED; dispatch BLOCKED / FAIL-CLOSED.
+
+
+## Cross-project controller and map verification
+
+- MediaHub canonical map recovered by blob SHA `75f62685459ec99ebf8be478f4e9096cdb842b1d` (1,204,915 chars); earlier empty Contents API result is superseded.
+- Current MediaHub main controller blob: `0a1246f6755020faf8b7e48d07bfff790bbaece3`; it requires the explicit batch variable `MEDIAHUB_GEMINI_BATCH_ENABLED`, secrets `MEDIAHUB_GITHUB_TOKEN` and `MEDIAHUB_DISPATCH_HMAC_KEY`, and qualifying workflow_dispatch or Issue #301 OWNER comment events. Secret presence/scope NOT VERIFIED; no secret values read.
+- Duplicate suppression reads only `per_page=100` workflow runs and the inspected implementation contains no pagination/completeness check. Full-history idempotency NOT VERIFIED; do not dispatch. A ChatGPT /next is not a GitHub issue_comment event.
+- Agent 1/2/3 workflows exist on main (blobs `155a02159912ca371e6f826c51325ca269857aad`, `fff1820a6b97d379b23674f36bd62227b7d4dec2`, `781df56e8aa7c75ba453c08378611857862b2e44`). No child dispatch.
+- PR #437 merged; PR #441 open/non-draft/unmerged, no exact-head PR workflow runs returned, reviews/threads 0/0. SentinelX Free has one operational host `host_5f7264034bdf0b51`, not Alamo/Server 3; no Claude/browser use.
+- Detailed findings added to [hosting ADR/prototype reconciliation report](../reports/2026-11-06-hosting-adr-prototype-reconciliation.md).
