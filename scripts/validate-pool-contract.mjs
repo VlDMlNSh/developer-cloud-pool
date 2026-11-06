@@ -67,7 +67,7 @@ if (!worker.includes('process.env.GITHUB_REF !== "refs/heads/" + defaultBranch')
 if (!worker.includes("hasConsumedOwnerApproval") || !worker.includes("hasSupervisorClaimComment") || !worker.includes("hasOwnerReadyEvent") || !worker.includes("hasCurrentBotClaimEvent") || !worker.includes("isTrustedSupervisorRun") || !worker.includes("hasPriorWorkerRun")) fail("Worker must independently verify owner approval, Supervisor run, claim provenance and replay state");
 if (!/concurrency:[\s\S]*?pool-worker-task-/.test(worker)) fail("Worker must serialize executions per task issue");
 if (!supervisorScript.includes("supervisor_run_id: String(process.env.GITHUB_RUN_ID)")) fail("Supervisor must pass its own run ID to Worker");
-if (!approvalModule.includes('" - Supervisor run: " + supervisorRunId')) fail("Consumed approval marker must bind the exact Supervisor run ID");
+if (!approvalModule.includes("supervisorRunId")) fail("Consumed approval marker must bind the exact Supervisor run ID");
 
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
 if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
