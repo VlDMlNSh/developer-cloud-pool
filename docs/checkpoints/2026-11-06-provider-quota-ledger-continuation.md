@@ -76,3 +76,13 @@ Build a no-secret LiteLLM proof-of-fit and a provider adapter contract fixture u
 - Exact-head Actions run #210: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206967591 — SUCCEEDED.
 - Check run `Validate workflow syntax and security invariants` completed with conclusion `success` on the same SHA.
 - PR #29 remains OPEN / DRAFT / UNMERGED; independent review NOT RUN.
+
+
+## 2026-11-06 — lazy slot activation follow-up
+
+- Unbounded registered inventory with pool-wide maximum 20 active slots is now specified in `config/provider-slot-capacity-policy.json`.
+- Pure admission planner and tests are in `scripts/provider-slot-admission.mjs` and `scripts/provider-slot-admission.test.mjs`. Exact tested target `94166dce9fc68d07918ea6fb6461bbd587b4258d`; Actions run #214 SUCCEEDED: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42207313455.
+- This is a deterministic planner, not a production lease manager. Atomic durable lease acquisition and secret-broker integration remain NOT IMPLEMENTED.
+- Quota assessment: potential published subtotal up to 120k tokens/day from Aion Labs + LLM7 only, conditional on active free accounts and independent quota domains. Actual GitHub-stored credential quota remains NOT VERIFIED. Cloudflare neuron quota is separate; NaraRouter's public allowance is contradictory (5M docs / 7M pricing), so excluded.
+- Full analysis: `docs/architecture/SLOT-ACTIVATION-AND-DAILY-QUOTA-ASSESSMENT-2026-11-06.md`.
+- PR #29 OPEN / DRAFT / UNMERGED. Canonical `Основной` unchanged. Independent review NOT RUN. Combined commit status API is still empty/pending although exact-head Actions check-run passed.
