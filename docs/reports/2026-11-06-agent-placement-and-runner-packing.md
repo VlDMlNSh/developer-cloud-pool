@@ -23,7 +23,7 @@ Advance Developer Cloud Pool from the one-logical-profile-per-runner mental mode
 7. Independent-review and security-audit function labels automatically make a workload exclusive; the caller cannot accidentally co-locate those roles.
 
 7. Exclusive reviewer/security-auditor workloads cannot share a runner with implementation workloads. The planner does not override task/issuer/capability governance.
-8. Added 15 deterministic tests and wired them into Pool Contract Validation. The workflow now also triggers on config/**.
+8. Added 16 deterministic tests and wired them into Pool Contract Validation. The workflow now also triggers on config/**.
 
 ## Mature component review
 

@@ -50,7 +50,7 @@ function workload(id, overrides = {}) {
 
 test("many lightweight API-backed agents share one runner when measured resources fit", () => {
   const workloads = Array.from({ length: 6 }, (_, index) => workload("agent-" + index));
-  const plan = planAgentPlacement({ workloads, slotTemplate: template });
+  const plan = planAgentPlacement({ now: 1800000000, workloads, slotTemplate: template });
   assert.equal(plan.admitted, true);
   assert.equal(plan.runnerSlotCount, 1);
   assert.equal(plan.coLocatedWorkloadCount, 5);
@@ -105,7 +105,7 @@ test("resource reservations are never overcommitted and overflow creates another
   const workloads = Array.from({ length: 10 }, (_, index) =>
     workload("agent-" + index, { resources: { cpuMillicores: 500, memoryMiB: 1024, scratchDiskMiB: 128 } })
   );
-  const plan = planAgentPlacement({ workloads, slotTemplate: template });
+  const plan = planAgentPlacement({ now: 1800000000, workloads, slotTemplate: template });
   assert.equal(plan.runnerSlotCount, 3);
   for (const slot of plan.slots) {
     assert.ok(slot.usage.cpuMillicores <= slot.capacity.cpuMillicores);
