@@ -179,3 +179,12 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Live value of `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` was not inspected or changed; no dispatch enabled.
 - Status: implementation SUCCEEDED on draft branch; exact-head CI VERIFIED; independent review NOT RUN; governance NOT VERIFIED; runtime NOT RUN; web console NOT DEPLOYED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent security review of PR #37, audit claim/recovery and concurrency, re-read Issue #1/ruleset and verify non-secret gate state. Keep draft and fail-closed.
+
+## Follow-up governance and validation gate — 2026-11-06
+
+- Re-read Issue #1 and latest comment: last recorded Ruleset 26550182 requires PRs but has 0 required approvals, CODEOWNERS review false and unattributed-change extra approval false. It does not enforce independent review. Ruleset not freshly read via API this pass; live ruleset NOT RE-VERIFIED.
+- Run `42280397122` Pool Contract Validation log observed `POOL_DISPATCH_ENABLED: false`; guard and validator passed at tested head `8d848629511ac1b8c379fd6c8d20cc17496f6f54`.
+- Added `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` as a second Supervisor gate and added validator rejection if it is literal true before independent review/governance acceptance. This change was made after the last passing CI.
+- Latest branch head: `5b45a29ed7869c091741c0037c68bfcd6640de7d`; exact-head CI NOT VERIFIED. Prior tested head `8d848629511ac1b8c379fd6c8d20cc17496f6f54` has both workflows SUCCESS.
+- Live `POOL_AUTHORIZATION_CONTRACT_ACCEPTED`: NOT VERIFIED; not read or changed. PR #37 remains draft/unmerged with no reviews.
+- Next: obtain exact-head CI for the new guard commit, then independent security review and live governance verification. Keep dispatch fail-closed.
