@@ -1002,3 +1002,17 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - After the exact-head code/workflow CI passed on `4229d8701f8ee79692619f481cef1d9d9483ff16`, the implementation report was appended in documentation-only commit `1e278b1601b8a77131118aa5c627c07d663b0e51`.
 - Current PR branch HEAD is therefore `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code-bearing / workflow-tested SHA remains `4229d8701f8ee79692619f481cef1d9d9483ff16`. The report path is outside D1 workflow path filters; do not claim CI ran on the report-only HEAD.
 - Context blob current at time of correction: `d1c12a57d9ecbde7927e13e83e8e320902cdc206`; checkpoint blob: `871867f15b06ce71f0973d02cb5ac46ec201485e`.
+
+
+## /next — exact current PR HEAD CI and governance refresh — 2026-11-06
+
+- Re-read PR #36, proof branch, base branch, context/checkpoint, changed-file list, D1 workflow, PR reviews/comments and open issue evidence.
+- PR #36 remains OPEN / DRAFT / mergeable=true (mergeability is not acceptance). Current proof branch HEAD 1e278b1601b8a77131118aa5c627c07d663b0e51; base/default Основной 197ba98d0dc7d8437d759dd25bee8750d02e59ae.
+- Exact-current-HEAD CI: Isolated D1 Ledger Proof run 42276981988, job 128095703539, COMPLETED / SUCCESS; Pool Contract Validation run 42276982111, job 128095703972, COMPLETED / SUCCESS. Both target current HEAD 1e278b1601b8a77131118aa5c627c07d663b0e51. D1 job completed npm ci, syntax, Workers-runtime tests and lockfile artifact upload; contract job completed YAML parsing and security-invariant assertions.
+- D1 workflow blob 09b143c21d560d7eef93930da8f8f93bda378799 uses committed lockfile directly via npm ci --ignore-scripts --no-audit --no-fund; no pre-install lock regeneration. Permissions remain read-only; checkout credentials not persisted; no secrets, deploy or dispatch.
+- PR #36 changed files: workflow, D1 proof README/migration/package/lockfile/adapter/worker/tests/config and implementation report. Lockfile blob 876c5d3de53bb12efaecdec939cbe8710cbd9e3c; workflow blob above.
+- PR reviews: 0; review comments: 0; requested reviewers: none; PR discussion comments: none. Independent security review remains NOT RUN. Repository issue #1 records required approvals=0 in active ruleset evidence; do not treat repository owner mergeability as independent acceptance. No authorized reviewer identity established.
+- Issue #22 confirms web console is still architecture candidate only: PR #24 docs-only; GitHub OAuth/session NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; no application deployed. workers.dev namespace was provisioned, but this does not establish free entitlement or deployability. Issue #26 provider/account-slot routing remains DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED; do not access secrets or make provider calls.
+- No production D1, Worker deployment, billing changes, secret access, provider/model calls, dispatch, or production integration.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue Contour A qualification by verifying a card-free persistent hosting route using authorized account evidence; separately secure independent review. Do not merge/deploy or enable dispatch until gates pass.
