@@ -38,7 +38,7 @@ No GitHub OAuth routes, OAuth App, credentials, cookies, session store, GitHub A
 - API negative/fail-closed tests: PASS, 4/4.
 - Static UI contract validator: PASS.
 - Exact-head PR #25 checks: 3 check runs observed, all SUCCEEDED for head `007c5ce752076933950dfa410bc6c50934790b75`; workflow run `42115866089` completed success. Job `127555208519` completed success. Workflow security/syntax job also completed success (run `42115865996`).
-- Lockfile generation succeeded on GitHub Actions; the workflow was changed to use `npm ci` against the committed lockfile. The new exact-head run is pending at report update time; dependency reproducibility is not qualified until that run passes.
+- Lockfile generation succeeded on GitHub Actions; committed lockfile SHA `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9` contains 93 package entries. `npm ci --ignore-scripts --no-audit --no-fund` passed on PR head `460e510ed5fe72edd8e9e857a7ffd55cd1471264`; the same exact-head workflow also passed syntax checks, 4/4 API tests and static UI validation. Workflow run `42174665077`, job `127750287981`; security/syntax workflow run `42174665050`, job `127750261319`. This qualifies the current lockfile installation path on the runner, but not independent security review.
 - Independent review: NOT RUN.
 - Workers Free entitlement: NOT VERIFIED.
 - Worker deployment: NOT RUN.
