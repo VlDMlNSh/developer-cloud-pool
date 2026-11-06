@@ -199,3 +199,17 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - PR #36 OPEN/DRAFT; reviews/threads 0/0. PR #37 OPEN/DRAFT/UNMERGED; reviews/threads 0/0. Independent review NOT RUN. Ruleset 26550182 still has zero required approvals and CODEOWNERS review disabled.
 - Report: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
 - Next: verify no-card/free account entitlement, define authenticated owner/issuer provenance and trusted clock, obtain independent review. Keep dispatch fail-closed; Contour B deferred.
+
+
+## Cloudflare Free-tier account qualification — 2026-11-06
+
+- Read-only Cloudflare API confirmed one accessible standard account; entitlements [] (success), D1 databases [] (success), Worker scripts [] (success), Workers account settings standard usage model / green_compute false.
+- Account subscriptions GET blocked with HTTP 403 because OAuth connection lacks Billing Read/Billing Write. Billing profile/payment details not queried. Account-specific plan and card-free eligibility NOT VERIFIED.
+- Public docs confirm Workers Free is default, D1 available on Free; D1 limits 5M rows read/day, 100K rows written/day, 5GB total storage, 10 DBs; Workers 100K requests/day / 10ms CPU; Workflows 3K steps/day / 1GB-month; Queues 10K ops/day / 24h retention. D1 over-limit daily read/write queries fail until midnight UTC from 2026-09-01.
+- Sources: https://developers.cloudflare.com/workers/platform/pricing/ ; https://developers.cloudflare.com/d1/platform/pricing/ ; https://developers.cloudflare.com/changelog/post/2026-09-01-d1-free-tier-limit-enforcement/ ; https://developers.cloudflare.com/workers/platform/limits/ ; https://developers.cloudflare.com/workflows/reference/pricing/ ; https://developers.cloudflare.com/queues/platform/pricing/ .
+- No D1/Worker resource exists in the connected account. No provisioning/deployment, billing/OAuth change, secret or provider access.
+- Candidate C stays local-only; no paid fallback. Provisioning blocked until account-specific Free and card-free eligibility verified via authorized non-secret evidence. Dispatch remains fail-closed.
+- Report: [Cloudflare Free-tier account qualification](../reports/2026-11-06-cloudflare-free-tier-account-qualification.md).
+- PR #36 OPEN/DRAFT; current head `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code/workflow-tested SHA `4229d8701f8ee79692619f481cef1d9d9483ff16`; reviews/threads 0/0.
+- PR #37 OPEN/DRAFT; tested head `5b45a29ed7869c091741c0037c68bfcd6640de7d`; reviews/threads 0/0. Independent review NOT RUN. Issue #38 OPEN/PLANNED.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
