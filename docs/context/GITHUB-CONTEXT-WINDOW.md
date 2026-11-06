@@ -759,3 +759,19 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 **Disposition:** tag ruleset platform capability = DOCUMENTED; current repository tag ruleset = ABSENT / VERIFIED; tag refs = EMPTY / VERIFIED; Supervisor current token tag-write permission = ABSENT / VERIFIED; safe one-time consume implementation = NOT VERIFIED / BLOCKED pending separately scoped authority and admin-configured tag governance. Production authorization NOT SATISFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 **Next bounded step:** continue architecture work without dispatch by designing and testing the authorization state machine against an abstract consume interface, while separately specifying the exact minimal GitHub App permission + tag-ruleset contract. Do not alter repository governance or grant broad contents-write to Supervisor. The owner/admin decision is needed only when the exact least-privilege configuration is ready for review.
+
+
+## Engineering pass — 2026-11-06 — fail-closed authorization decision seam
+
+- Revalidated the integrated implementation branch from its current ref; it now points to `97d3c909165d963ad19f8fea319d363df8a0528f`. New files: `src/pool/authorization-decision.mjs` (pure decision function, no I/O) and `tests/security/pool-authorization-decision.test.mjs` (12 negative/positive decision cases). Existing production-source test remains intact. Validation workflow updated to run both test files and watch the new paths.
+- Decision rule: dispatch is allowed only when caller repository ID, caller workflow ref/SHA, task repository ID, immutable target SHA, approval event ID, ready state, allowlisted profile, and exact first-consume receipt all match. Replay, denial, mismatch, missing receipt and ambiguous outcomes return DENY / needs-review / dispatch=false.
+- This is deliberately an abstract decision seam. It does not implement GitHub API calls, tag creation, an atomic consume adapter, or production workflow integration. The first-consume result is trusted input and therefore cannot by itself prove a durable consume mechanism.
+- Opened draft PR #34 against `Основной`, base SHA `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, head SHA `97d3c909165d963ad19f8fea319d363df8a0528f`: https://github.com/VlDMlNSh/developer-cloud-pool/pull/34
+- Exact-head workflow run `42267503656` / job `128063136224` (Pool Contract Validation) completed SUCCESS; this validates YAML/static security invariants only, not the new Node test suite.
+- Exact-head workflow run `42267529773` / job `128063225960` (Pool Authorization Negative-First Validation) was QUEUED at last read; decision-model tests therefore NOT VERIFIED at this checkpoint. Poll this run and retrieve logs/results before claiming tests pass.
+- PR #34 remains OPEN / DRAFT / UNMERGED; no reviews yet. PR #32 remains separate and its prior negative-first production-source suite had 8/8 failures. Do not merge either PR until the actual production workflows are corrected, all exact-head checks pass, and independent review is complete.
+- No production Supervisor/Worker files, repository rulesets, variables, secrets, tokens, dispatch settings, providers, deployments or paid resources were changed. No Worker/DSH dispatch occurred.
+
+**Disposition:** pure decision model = IMPLEMENTED; static contract CI = SUCCEEDED / VERIFIED; authorization decision Node suite = QUEUED / NOT VERIFIED; durable consume adapter = NOT IMPLEMENTED / NOT VERIFIED; production authorization = NOT SATISFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+**Next bounded step:** poll run `42267529773` for exact-head test evidence, fix any failures, then implement the durable consume adapter only after a separately scoped GitHub App + tag ruleset authority contract is approved and tested in an isolated namespace.
