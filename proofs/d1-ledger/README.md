@@ -6,8 +6,8 @@ This package is a local-only proof of D1 transaction and conditional-consume beh
 
 - Uses the official Cloudflare Workers Vitest integration and local Miniflare/workerd runtime.
 - Uses a synthetic D1 binding and local SQL migration.
-- Tests concurrent first-consumer-wins, replay, immutable binding checks, expiry, malformed input, unavailable storage, ambiguous storage exceptions, and D1 batch rollback.
-- The adapter returns `dispatch: false` even on a successful ledger consume. It has no GitHub, provider, dispatch, or secret integrations.
+- Tests concurrent first-consumer-wins, replay, immutable binding checks, expiry, malformed input, unavailable storage, ambiguous storage exceptions, D1 batch rollback, atomic claim-plus-outbox creation, deterministic retry identity, and fail-closed batch errors.
+- The consume and claim/outbox adapters return `dispatch: false` even on successful local proofs. The claim/outbox adapter uses one D1 batch to conditionally consume approval, create a durable pending claim, and append one deterministic outbox event. It has no GitHub, provider, dispatch, or secret integrations.
 
 ## Dependency policy
 
