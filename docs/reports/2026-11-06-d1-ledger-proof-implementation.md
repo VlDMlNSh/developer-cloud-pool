@@ -49,3 +49,18 @@ Open a new draft PR from this branch, wait for exact-head Workers-runtime D1 tes
 - Dependency lockfile is not committed. Artifact review is possible, but PR remains NOT MERGE-READY until the lockfile is committed and reviewed. No artifact content was copied into the repository.
 - PR #36 reviews: 0; inline review threads: 0; independent security review NOT RUN.
 - Successful local D1 proof is not production qualification and does not prove account-specific Workers Free/card-free entitlement, caller identity, owner approval provenance, quotas under live account limits, backup/restore or deployment.
+
+
+## Latest exact-head qualification — 2026-11-06
+
+- Latest proof branch HEAD: `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602` (16 commits ahead / 0 behind immutable default baseline).
+- Exact-head D1 workflow run `42271859222` (run 7): COMPLETED / SUCCESS.
+- Exact-head D1 job `128078153536`: COMPLETED / SUCCESS; `npm run check` and Workers Vitest succeeded.
+- Vitest: `test/consume.test.ts`, 13/13 tests passed; 1/1 test file passed.
+- Exact-head Pool Contract Validation run `42271859290` (run 244): COMPLETED / SUCCESS; security invariant job `128078154302` passed.
+- Lock artifact for exact head: artifact `13529083485`, name `d1-ledger-proof-package-lock`, GitHub archive digest `sha256:2acf14b203cef11508e0f4143e4662d9c30228cbffcb80e0b382dbdeb335d5d1`, expires 2026-11-13.
+- Downloaded and inspected the lockfile inside the artifact: lockfileVersion 3, 160 package entries, lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`. Resolved packages: `@cloudflare/vitest-plugin@1.4.7`, `vitest@4.1.12`, `workerd@1.20261019.1`, `miniflare@5.20261019.2-beta`, `wrangler@4.152.0`. The workflow's `npm ci` completed successfully against this generated lock.
+- The lockfile remains an artifact, not a committed repository file. It has been inspected for package versions and hash but still must be committed/reviewed before merge.
+- PR #36 has zero submitted reviews and zero inline review threads; independent security review NOT RUN. PR remains draft / not merge-ready.
+- No Cloudflare D1 database, Worker deployment, billing change, secret access, dispatch, provider call or production integration occurred. Workers Free/card-free entitlement remains NOT VERIFIED.
+- Local D1 runtime proof: VERIFIED for exact tested SHA `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`. Production qualification and Contour A acceptance remain NOT VERIFIED / BLOCKED.
