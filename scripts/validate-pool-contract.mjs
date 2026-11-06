@@ -60,12 +60,12 @@ if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive reposito
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
 if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
-if (!/supervisor_run_id:[\\s\\S]*?required:\\s*true/.test(worker)) fail("Worker must require the supervisor_run_id input");
-if (!/SUPERVISOR_RUN_ID:[\\s\\S]*?inputs\\.supervisor_run_id/.test(worker)) fail("Worker must pass supervisor_run_id through an environment variable");
-if (!/validate:[\\s\\S]*?permissions:[\\s\\S]*?contents:\\s*read[\\s\\S]*?issues:\\s*read[\\s\\S]*?actions:\\s*read/.test(worker)) fail("Worker validation job must have read-only contents, issues and Actions permissions");
+if (!/supervisor_run_id:[\s\S]*?required:\s*true/.test(worker)) fail("Worker must require the supervisor_run_id input");
+if (!/SUPERVISOR_RUN_ID:[\s\S]*?inputs\.supervisor_run_id/.test(worker)) fail("Worker must pass supervisor_run_id through an environment variable");
+if (!/validate:[\s\S]*?permissions:[\s\S]*?contents:\s*read[\s\S]*?issues:\s*read[\s\S]*?actions:\s*read/.test(worker)) fail("Worker validation job must have read-only contents, issues and Actions permissions");
 if (!worker.includes('process.env.GITHUB_REF !== "refs/heads/" + defaultBranch')) fail("Worker must reject dispatches from non-default branches");
 if (!worker.includes("hasConsumedOwnerApproval") || !worker.includes("hasSupervisorClaimComment") || !worker.includes("hasOwnerReadyEvent") || !worker.includes("hasCurrentBotClaimEvent") || !worker.includes("isTrustedSupervisorRun") || !worker.includes("hasPriorWorkerRun")) fail("Worker must independently verify owner approval, Supervisor run, claim provenance and replay state");
-if (!/concurrency:[\\s\\S]*?pool-worker-task-/.test(worker)) fail("Worker must serialize executions per task issue");
+if (!/concurrency:[\s\S]*?pool-worker-task-/.test(worker)) fail("Worker must serialize executions per task issue");
 if (!supervisorScript.includes("supervisor_run_id: String(process.env.GITHUB_RUN_ID)")) fail("Supervisor must pass its own run ID to Worker");
 if (!approvalModule.includes('" - Supervisor run: " + supervisorRunId')) fail("Consumed approval marker must bind the exact Supervisor run ID");
 
