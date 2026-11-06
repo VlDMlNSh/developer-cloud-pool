@@ -182,3 +182,11 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Report: [reusable workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md).
 - No production source change, dispatch, Worker/DSH, provider/model, secret/config mutation, paid resource or deployment.
 - Next: verify exact-head CI, then authorized read-only ruleset and Actions permission metadata. Keep execution disabled.
+
+
+## 2026-11-06 — PR #32 final-head CI
+- Exact-head PR #32 negative-first run `42236017811` / job `127953700048`: FAILURE, 8 tests / 0 pass / 8 fail. Corrected caller/callee identity test confirms production Worker lacks the required identity validation; other failures reproduce prior gaps.
+- Same exact head Pool Contract Validation `42236017724` / job `127953700415`: SUCCESS, static contract only; not authorization qualification.
+- PR #32 remains OPEN / DRAFT / UNMERGED, head `75c83a288d865f1bbeda4905cf817e00084bcc2d`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; reviews 0, threads 0.
+- Updated evidence report: [reusable workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md).
+- Durable tag consume primitive remains NOT VERIFIED; no repository ruleset read-back or disposable tag test. No production changes or execution.
