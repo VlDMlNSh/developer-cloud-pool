@@ -173,3 +173,11 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 - Updated OpenAPI 401 response to application-session semantics. Contract blob: `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; commit `b0d5a3a16c80c423cac0f5e553859a9bc83fb18c`.
 - Dated report: [OAuth architecture contract consistency](../reports/2026-11-06-oauth-architecture-contract-consistency.md).
 - This is documentation/contract correction only. OAuth application/credentials and session implementation remain NOT IMPLEMENTED; Cloudflare Workers Free entitlement NOT VERIFIED; deployment NOT RUN; independent review NOT RUN; production dispatch BLOCKED / FAIL-CLOSED.
+
+
+## Final verification — OAuth contract correction pass
+
+- Final branch HEAD after evidence update: `a2590fde257b3ab9d52044f3f9114b664383c543` is an earlier ADR commit only; use the current PR branch HEAD from PR #24 for final provenance. The preceding compare at `03561bde8238a70af89fd733e5c594f3fc58ab7a` was 32 ahead / 0 behind before the final report evidence update.
+- Updated files read back: ADR blob `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; report is linked above.
+- Exact-head CI for docs-only changes: NOT VERIFIED (no PR-triggered runs returned); independent reviews/threads 0/0.
+- OAuth/session implementation NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
