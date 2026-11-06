@@ -288,3 +288,33 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 - Report: [2026-11-06 adapter correction](../reports/2026-11-06-github-read-adapter-correction.md).
 - Next: obtain exact-head CI and independent review for PR #31; then assess integration into PR #25 only after governance/security review. Do not merge or mount prematurely.
 - Contour A: NOT ACCEPTED; Contour B remains deferred.
+
+## 16. Cloud environment consolidation — 2026-11-06 follow-up
+
+### 16.1 Priority and product sequence (Issue #22 refreshed)
+- Owner's current delivery order: (1) authenticated remote web console usable from desktop and iPhone; (2) native iOS Developer Mobile AI; (3) connect/qualify external owner-operated servers. Steps 2–3 remain deferred until Contour A acceptance.
+- The web console is an Experience plane, not a privileged control plane. First live phase is read-only; task intake, cancellation, approval and dispatch are separate later gates. Browser must never receive PAT, App private key, provider key or privileged workflow token.
+- PR #6 is static fixture-only UI. PR #25 is a fail-closed Hono/Workers prototype, not a live console. PR #24 is the API/hosting contract. PR #30 is synthetic OAuth protocol fit. PR #31 is synthetic GitHub read-adapter correction and remains unmounted.
+- PR #25 exact-head validation evidence was reported in Issue #22: runs 42188468584 and 42188468546 succeeded at head d8521571ede91d7f6d7fb6d5ee37747ac94385ea. This proves prototype/contract checks only; it does not prove production OAuth, live API, browser QA or deployment.
+
+### 16.2 Supervisor privileged-event boundary — current verification
+- Default-branch .github/workflows/pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd still contains workflow_run: completed for Pool Worker and permissions issues: write, actions: write.
+- This is a privileged trust boundary. Do not enable dispatch or treat the current default branch as cleared for Worker lifecycle execution.
+- PR #15 proposes removal of workflow_run and associated event metadata/recovery branch. Changed files: Supervisor workflow, Supervisor architecture, dated checkpoint/report, scripts/pool-supervisor.mjs.
+- PR #15 latest head observed: c57f2ab3f2b91bf6b3e413640f65ec518008b75e; base Основной at 64d2636d4500127e635c214ccfb722c6b3fcda80; OPEN / DRAFT / UNMERGED; formal reviews empty.
+- Code change commit 17fda11001288cc0123b667251c712af13d55f9a removed privileged trigger and event-specific failure handler; retains scheduled reconciliation, issue-label wakeups and manual invocation. Scheduled polling becomes Worker completion/recovery mechanism and is best-effort, not immediate.
+- Exact code-head validation run 42037929298, job 127280825826, COMPLETED / SUCCESS. Later PR head c57f2ab changes only checkpoint documentation; commit diff read-back confirms this. Run passed dispatch-disabled assertion, workflow YAML parsing and pool security contract validator. This is CI contract evidence, not runtime qualification.
+- PR #15 has zero formal reviews. Independent review NOT RUN. PR remains unmerged. Two zizmor package provenance warnings were documented for ad-hoc DSH installation in Worker and DSH evaluation workflows; deterministic lockfiles and npm ci remain required. Direct Worker workflow_dispatch caller-boundary remains a separate blocker.
+- Do not call the remediation accepted until independent security review and exact current-head governance are verified.
+
+### 16.3 Runtime/worker facts revalidated
+- Default-branch .github/workflows/pool-worker.yml blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4: only dsh-headless-probe is an allowed input profile; workflow starts with no permissions and grants issues: read to validation, then contents: read to probe.
+- Validation checks numeric issue number, 40-character lowercase SHA, allowlisted profile, open issue, pool:claimed, exact target SHA and expected issue profile.
+- Probe checks out exact immutable SHA, pins Node 24.9.0 and setup-node action, requires at least 6 GiB free space, installs @deepseek-ai/dsh@0.2.1-rc.5; it declares no provider credentials and no model call.
+- DSH install currently uses ad-hoc npm install in the default-branch workflow; PR #15 report records a package-lock provenance warning. Do not claim dependency graph is fully reproducible until lockfile/npm ci remediation is verified.
+- Supervisor and Worker remain IMPLEMENTED SCAFFOLD / NOT RUN / NOT QUALIFIED. No Worker execution, DSH execution, Resource Probe or production task lifecycle was performed in this pass.
+
+### 16.4 Context integrity and next actions
+- The failed previous context write did not change this file: read-back SHA remains 3287a30009ecdd8a967e32e67ee1185df96b5957, size 36,543 characters. This section is a proposed addition until its write and read-back are successful.
+- PR #31 still has no workflow runs associated with exact head 633cc2c8a2f7a70f996ccc7c5d03070b0899aa06, and no formal reviews. CI NOT VERIFIED; independent review NOT RUN.
+- Next bounded work: (1) independently inspect PR #15 scheduled recovery and caller authorization, resolve pinned dependency/lockfile warnings; (2) inspect current active ruleset and dispatch variable read-only; (3) diagnose PR #31 exact-head CI trigger association; (4) update this same unified context and checkpoint with verified blob/commit SHAs. Keep dispatch disabled and Contour B deferred.
