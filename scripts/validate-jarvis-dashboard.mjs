@@ -18,6 +18,12 @@ assert.match(html, /API не подключён/, "No-live-API state must be exp
 assert.match(html, /<main\b[^>]*id="main"/i, "Main landmark and skip-link target are required");
 assert.match(html, /<a class="skip-link" href="#main">/i, "Keyboard skip link is required");
 assert.ok(headers.startsWith("/*\n"), "Static asset security headers must cover all paths");
+const headerLines = headers.trimEnd().split("\n");
+assert.equal(headerLines[0], "/*", "Cloudflare _headers must start with a route pattern");
+assert.ok(headerLines.length > 1, "At least one static response header is required");
+for (const line of headerLines.slice(1)) {
+  assert.match(line, /^\\s+[A-Za-z0-9-]+:\\s+\\S/, "Invalid Cloudflare _headers entry: " + line);
+}
 for (const header of [
   "Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   "X-Content-Type-Options: nosniff",
