@@ -6,6 +6,13 @@ test("health endpoint reports service health without claiming pool health", asyn
   const response = await app.request("/api/v1/health");
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("cache-control"), "no-store");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(response.headers.get("referrer-policy"), "no-referrer");
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("content-security-policy"), "default-src 'none'; frame-ancestors 'none'; base-uri 'none'");
+  assert.equal(response.headers.get("permissions-policy"), "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+  assert.equal(response.headers.get("cross-origin-opener-policy"), "same-origin");
+  assert.equal(response.headers.get("cross-origin-resource-policy"), "same-origin");
   const body = await response.json();
   assert.equal(body.service, "jarvis-web-console");
   assert.equal(body.status, "ok");
@@ -18,6 +25,8 @@ test("protected read routes fail closed before authentication exists", async () 
   const response = await app.request("/api/v1/repositories");
   assert.equal(response.status, 503);
   assert.equal(response.headers.get("cache-control"), "no-store");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
   assert.equal((await response.json()).error, "AUTHENTICATION_NOT_CONFIGURED");
 });
 
