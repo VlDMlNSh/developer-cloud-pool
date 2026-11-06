@@ -40,6 +40,9 @@ test("sessions reject expiry, future issue time and revocation", () => {
   assert.equal(isSessionActive({ ...active, issuedAt: 1_001 }, 1_000), false);
   assert.equal(isSessionActive({ ...active, revokedAt: 999 }, 1_000), false);
   assert.equal(isSessionActive({ ...active, id: "short" }, 1_000), false);
+  const { revokedAt, ...missingRevocationField } = active;
+  assert.equal(isSessionActive(missingRevocationField, 1_000), false);
+  assert.equal(isSessionActive(active, Number.NaN), false);
 });
 
 test("session cookie uses host-only secure HttpOnly SameSite policy", () => {
