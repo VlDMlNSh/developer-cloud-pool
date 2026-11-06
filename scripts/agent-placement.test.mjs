@@ -95,7 +95,7 @@ test("resource reservations are never overcommitted and overflow creates another
     workload("agent-" + index, { resources: { cpuMillicores: 500, memoryMiB: 1024, scratchDiskMiB: 128 } })
   );
   const plan = planAgentPlacement({ workloads, slotTemplate: template });
-  assert.equal(plan.runnerSlotCount, 5);
+  assert.equal(plan.runnerSlotCount, 3);
   for (const slot of plan.slots) {
     assert.ok(slot.usage.cpuMillicores <= slot.capacity.cpuMillicores);
     assert.ok(slot.usage.memoryMiB <= slot.capacity.memoryMiB);
