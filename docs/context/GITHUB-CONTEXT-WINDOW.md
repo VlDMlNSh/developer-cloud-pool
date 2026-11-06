@@ -426,3 +426,16 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Full protocol and adversarial matrix: docs/reports/2026-11-06-single-use-git-marker-protocol-spec.md.
 - No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only verify tag-ruleset and Environment API capabilities/config through authorized path; no resource creation.
+
+
+## 21. GitHub API capability and marker namespace recheck — 2026-11-06
+- PR #12 remains OPEN/DRAFT/UNMERGED at head 6c053bacff29ca8efb5fdb759edd44fcd416b749; exact-head fixture 42041946049 and contract 42041945700 SUCCESS; formal reviews empty.
+- PR #15 remains OPEN/DRAFT/UNMERGED at head c57f2ab3f2b91bf6b3e413640f65ec518008b75e; exact-head contract 42038004176 SUCCESS; reviews empty.
+- PR #27 current head is f10db507660c2945642e99e23f957025058e27c5 (corrects stale 7a7b05e reference in Section 20/checkpoint); exact-head PR-triggered workflow lookup returned no runs => CI NOT VERIFIED; reviews empty.
+- Default branch remains 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- Active ruleset 26550182 is branch-only for refs/heads/Основной; active, PR required, 0 approvals, CODEOWNERS review false, no bypass actors, current_user_can_bypass=never. Branch API protected=false only describes legacy branch protection and does not negate this ruleset.
+- Ruleset collection returned one ruleset only (26550182); no tag ruleset. GET matching-refs/tags/pool-consumed/ returned [].
+- GitHub docs say public repository Environment listing is readable with repository read access / Actions: read; connected GitHub action rejected the /environments endpoint as disallowed by its endpoint allowlist. Actual Environment config remains NOT VERIFIED; do not infer absence.
+- Report: docs/reports/2026-11-06-github-api-capability-marker-namespace-recheck.md.
+- No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect current production workflow contracts and ruleset tag semantics read-only; no resource creation.
