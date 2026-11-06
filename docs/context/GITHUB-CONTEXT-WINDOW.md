@@ -452,3 +452,19 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Gemini dispatch NOT RUN; approved controller is not present in this repository's default workflow directory. No secrets read, no dispatch, no DSH/Resource Probe, no provider/model calls, no paid fallback, no Contour B.
 - Documentation remains on `docs/github-context-window-2026-11-06`, separate from canonical default branch. This working branch is 82 commits ahead / 0 behind at latest compare; no merge.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+
+
+## 2026-11-07 — atomic claim + transactional outbox implementation pass
+
+- Report: [Atomic D1 claim + transactional outbox implementation](../reports/2026-11-07-atomic-claim-outbox-implementation.md).
+- Parent PR #36 immutable head: `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`.
+- Isolated branch: `proof/d1-claim-outbox-atomic-2026-11-07`; stacked draft PR #39: https://github.com/VlDMlNSh/developer-cloud-pool/pull/39.
+- PR #39 head: `c07460ea685ead1792eec85c82218c7d579c4b65`; compare vs parent: 5 ahead / 0 behind.
+- Added migration tables `pool_task_claims` and `pool_task_outbox`; added `claimAndEnqueue` D1 batch adapter, deterministic approval-derived IDs, idempotent existing-pair read-back and 5 new adversarial tests (12-way contention, retry, mismatch, missing batch API, ambiguous failure).
+- Verified changed blob SHAs: migration `9c1fef55001bb2db1d51621f0ad17114628a496d`; adapter `a696952e693ef1e31cc1a9d648fb785092185dc7`; tests `04690862095c6bdd0156b4a6d10e23e8c314b953`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `c23aadbb0b0dc9b531f5afbf180400bffe8501a9`.
+- Exact-head workflow query and combined status both returned empty results: CI NOT VERIFIED. Reviews/threads 0/0. No local test execution claimed.
+- Scope is strictly local proof; every result retains `dispatch:false`. No secrets, live D1, deployment, dispatch, Worker/DSH/Resource Probe or provider/model calls.
+- Lease/fencing/reclaim/stale-ack/crash recovery/dead-letter are not implemented. Caller identity and time are still untrusted inputs; no issuer signature or production authorization.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: recheck PR #39 exact-head CI and job logs; fix any failure, then extend lease/fencing/recovery coverage and obtain independent security review.
