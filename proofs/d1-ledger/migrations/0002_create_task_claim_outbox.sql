@@ -31,3 +31,27 @@ CREATE INDEX IF NOT EXISTS pool_task_claims_pending
 
 CREATE INDEX IF NOT EXISTS pool_task_outbox_pending
   ON pool_task_outbox (status, created_at);
+
+-- The transition itself owns claim/outbox creation. These trigger writes run in
+-- the same SQLite transaction as the conditional approval UPDATE, so a claim
+-- can only be emitted by the transaction that changes ready -> consumed.
+CREATE TRIGGER IF NOT EXISTS pool_approval_consumed_creates_claim_outbox
+AFTER UPDATE OF state ON pool_approval_ledger
+WHEN OLD.state = 'ready'
+ AND NEW.state = 'consumed'
+ AND OLD.consumed_at IS NULL
+ AND NEW.consumed_at IS NOT NULL
+BEGIN
+  INSERT INTO pool_task_claims (
+    approval_id, claim_id, envelope_digest, status, created_at
+  ) VALUES (
+    NEW.approval_id, NEW.approval_id, NEW.envelope_digest, 'pending', NEW.consumed_at
+  );
+
+  INSERT INTO pool_task_outbox (
+    outbox_id, approval_id, event_type, envelope_digest, status, created_at
+  ) VALUES (
+    'pool-task:' || NEW.approval_id, NEW.approval_id,
+    'pool.task.claimed', NEW.envelope_digest, 'pending', NEW.consumed_at
+  );
+END;
