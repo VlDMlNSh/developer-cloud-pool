@@ -177,7 +177,6 @@ All listed PR states were refreshed on 2026-11-06. Refresh before each subsequen
 | #28 | Account-isolated routing design | OPEN/DRAFT; head `c07e3442a54fabdb74431f00cbbcd9d75280b01b` |
 | #29 | Quota ledger state machine | OPEN/DRAFT; head `34fc78921b16359d136db553d8a51b4a4716995d`; exact-head contract CI SUCCESS |
 | #30 | oauth4webapi synthetic compatibility proof | OPEN/DRAFT; head `ad9f9ac598a2414b5209b6923094b16be64630ae`; exact-head synthetic CI SUCCESS; no live OAuth; no independent review |
-
 Issue map:
 - #1 governance / protect default branch before dispatch (OPEN; refresh details)
 - #2 governance follow-up (CLOSED)
@@ -358,139 +357,14 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 ### 17.6 Required coherent remediation before any dispatch
 1. Make Supervisor the sole queue-state writer; remove Worker report issues:write and reconcile terminal run state through Supervisor.
 2. Replace Worker workflow_dispatch with static same-repository workflow_call only, in the same change that wires caller identity checks before checkout/install/side effects.
-3. Implement owner approval provenance bound to immutable issue/SHA/profile/envelope digest and a single-use approval reference; do not treat labels as approval.
-4. Change stale/ambiguous claim recovery to needs-review, never automatic return to ready using the same approval.
-5. Revalidate task envelope and approval at each trust boundary; test duplicate events, issue edits, dispatch ambiguity, replay, cancellation and concurrent Supervisor runs.
-6. Resolve DSH package provenance with committed lockfiles and npm ci.
-7. Obtain independent security review, exact-head CI, current ruleset and live dispatch-variable read-back before any separately authorized runtime gate.
 
-### 17.7 Next bounded action
-Review the full PR #12 ADR and helper/tests against the current Supervisor and Worker code; create a traceability matrix of required security properties versus implemented evidence. Do not merge PR #12/#15 or enable dispatch based on fixture CI alone.
-
-## 18. PR #12 approval and reusable Worker traceability audit — 2026-11-06
-
-### 18.1 Immutable target and CI
-- PR #12 exact observed head 6c053bacff29ca8efb5fdb759edd44fcd416b749; base 64d2636d4500127e635c214ccfb722c6b3fcda80; OPEN/DRAFT/UNMERGED; formal reviews empty.
-- Exact-head fixture run 42041946049 SUCCESS and Pool Contract Validation run 42041945700 SUCCESS. Static test evidence only.
-- Report: docs/reports/2026-11-06-pr12-approval-worker-traceability-audit.md.
-
-### 18.2 Traceability conclusions
-- Owner approval parser `scripts/pool-owner-approval.mjs` compares numeric author ID with supplied ownerId and binds command to issue number/SHA/fixed profile/envelope digest. Trusted owner ID derivation, trusted comment retrieval, repository/issue URL association and live Supervisor integration are absent.
-- Parser checks updated_at equals created_at and tests edited comments, but no expiry/age policy or immediate pre-consumption re-fetch is integrated.
-- `planApprovalConsumption` is pure. Consumed comment IDs are caller-supplied; no durable ledger/atomic consumption is implemented. It returns dispatchAllowed=true after pure validation; this is not production authority.
-- `pool-gated-dispatch.mjs` accepts booleans and marker outcome strings. No Environment configuration/read-back, Git ref marker API adapter, marker payload verification, uniqueness race handling or durable replay ledger exists.
-- `pool-worker-caller.mjs` is pure and not wired into Worker. It validates caller repo/ref, called repo/path and SHA equality, but does not validate `job.workflow_ref` explicitly.
-- Fixture invokes `reusable-worker-context-fixture.yml`, not production `pool-worker.yml`; fixture success does not prove production Worker context.
-- Default Worker remains workflow_dispatch-only, Supervisor still uses REST workflow_dispatch, Worker report job still has issues:write, and default Supervisor still has privileged workflow_run.
-
-### 18.3 Required work
-1. Bind approval comment to trusted repository/issue API identity and re-fetch immediately before consumption; define expiry and deletion/edit policy.
-2. Implement durable single-use consumption with a race-safe native primitive, exact marker payload read-back, duplicate/precreated marker and API timeout tests. Do not claim exactly-once.
-3. Integrate protected Environment approval only after API read-back of reviewer, prevent-self-review, bypass and branch policy.
-4. Convert Worker to workflow_call-only and Supervisor to static local reusable invocation in one coherent reviewed transition; validate caller/callee context before checkout/install.
-5. Remove Worker issue-write and privileged workflow_run; Supervisor alone writes lifecycle state; ambiguous dispatch => needs-review.
-6. Independent security review, exact-head CI and current governance read-back before any runtime.
-
-### 18.4 Status
-- PR #12 CI: SUCCESS; independent review NOT RUN.
-- Owner approval: PARTIAL pure helper; production integration NOT IMPLEMENTED.
-- Durable single-use and Environment gate: NOT IMPLEMENTED / NOT QUALIFIED.
-- Production reusable Worker boundary: NOT IMPLEMENTED.
-- Worker/DSH/dispatch/model/secrets/deployment: NOT RUN.
-- Contour A NOT ACCEPTED; Contour B DEFERRED.
-
-### 18.5 Next bounded action
-Inspect GitHub-native Environment and Git ref/ruleset API capabilities using read-only metadata/docs, then compare viable race-safe single-use designs against GitHub Free limits. Do not create an Environment/ref or change rulesets in this pass without an accepted implementation and explicit authorization.
-
-
-## 19. GitHub-native Environment and single-use marker review — 2026-11-06
-
-- PR #12 exact head `6c053bacff29ca8efb5fdb759edd44fcd416b749`; fixture run `42041946049` and Pool Contract Validation `42041945700` SUCCESS; formal reviews empty. PR #15 head `c57f2ab3f2b91bf6b3e413640f65ec518008b75e`, PR #27 head `e289e97bbffeb0196a03226f9a052856dfa5567f`; all OPEN/DRAFT/UNMERGED with zero formal reviews.
-- Ruleset `26550182` read back active and targets only `refs/heads/Основной`; PR required but required approvals=0, CODEOWNERS review=false, no bypass actors. No tag ruleset evidenced.
-- GitHub docs confirm required-reviewer Environments are available for public repositories on Free; up to six reviewers, one approval suffices, prevent-self-review is configurable. Environment config and bypass settings are not verified in this repository; Environment is a workflow human gate, not a durable nonce store.
-- GitHub Create Ref API documents 201/409/422. A unique tag ref can be a create-if-absent claim, but requires tag ruleset restrictions on update/delete, exact ref/tag-object read-back on conflicts/timeouts, and fail-closed recovery. It does not transact with subsequent dispatch; crash after marker creation must remain needs-review. No exactly-once claim.
-- Environment-list API read unavailable through current connector; configuration NOT VERIFIED. No Environment/ref/ruleset mutation occurred.
-- Detailed comparison and acceptance tests: `docs/reports/2026-11-06-github-environment-single-use-marker-review.md`.
-- No dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Next: draft marker protocol/tag-ruleset spec and adversarial tests; obtain authorized read-back of Environment config before deciding to use it.
-
-
-## 20. Single-use Git marker protocol and adversarial acceptance spec — 2026-11-06
-- PR #12 OPEN/DRAFT/UNMERGED, head 6c053bacff29ca8efb5fdb759edd44fcd416b749; fixture 42041946049 and contract 42041945700 SUCCESS; reviews empty.
-- PR #15 OPEN/DRAFT/UNMERGED, head c57f2ab3f2b91bf6b3e413640f65ec518008b75e; contract 42038004176 SUCCESS; reviews empty.
-- PR #27 current head 7a7b05ec3a1581303c6207aaeaadba2ba3305a88; exact-head CI lookup empty => NOT VERIFIED; reviews empty.
-- Ruleset 26550182 active for refs/heads/Основной only; approvals=0, CODEOWNERS review=false, no bypass actors. No tag ruleset evidenced.
-- Proposed marker namespace refs/tags/pool-consumed/<approval-comment-id>; annotated tag payload binds repository/issue/comment/owner/task SHA/profile/envelope/expiry. Create Ref 201 must be followed by exact ref/object read-back; 409 is not success without exact payload verification; all ambiguous failures fail closed.
-- Proposed tag ruleset: target refs/tags/pool-consumed/*, restrict update and deletion, leave creation unrestricted, bypass list empty. Design only; require disposable-tag test.
-- Marker creation and dispatch are not transactional; crash after marker before dispatch => needs-review and fresh approval; no exactly-once claim.
-- Full protocol and adversarial matrix: docs/reports/2026-11-06-single-use-git-marker-protocol-spec.md.
-- No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Next: read-only verify tag-ruleset and Environment API capabilities/config through authorized path; no resource creation.
-
-
-## 21. GitHub API capability and marker namespace recheck — 2026-11-06
-- PR #12 remains OPEN/DRAFT/UNMERGED at head 6c053bacff29ca8efb5fdb759edd44fcd416b749; exact-head fixture 42041946049 and contract 42041945700 SUCCESS; formal reviews empty.
-- PR #15 remains OPEN/DRAFT/UNMERGED at head c57f2ab3f2b91bf6b3e413640f65ec518008b75e; exact-head contract 42038004176 SUCCESS; reviews empty.
-- PR #27 current head is f10db507660c2945642e99e23f957025058e27c5 (corrects stale 7a7b05e reference in Section 20/checkpoint); exact-head PR-triggered workflow lookup returned no runs => CI NOT VERIFIED; reviews empty.
-- Default branch remains 64d2636d4500127e635c214ccfb722c6b3fcda80.
-- Active ruleset 26550182 is branch-only for refs/heads/Основной; active, PR required, 0 approvals, CODEOWNERS review false, no bypass actors, current_user_can_bypass=never. Branch API protected=false only describes legacy branch protection and does not negate this ruleset.
-- Ruleset collection returned one ruleset only (26550182); no tag ruleset. GET matching-refs/tags/pool-consumed/ returned [].
-- GitHub docs say public repository Environment listing is readable with repository read access / Actions: read; connected GitHub action rejected the /environments endpoint as disallowed by its endpoint allowlist. Actual Environment config remains NOT VERIFIED; do not infer absence.
-- Report: docs/reports/2026-11-06-github-api-capability-marker-namespace-recheck.md.
-- No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Next: inspect current production workflow contracts and ruleset tag semantics read-only; no resource creation.
-
-
-## 22. Default-branch production Supervisor/Worker authorization recheck — 2026-11-06
-- Read immutable default-branch files at HEAD 64d2636d4500127e635c214ccfb722c6b3fcda80: Worker workflow blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4; Supervisor workflow blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; Supervisor script blob 52bf03ca889edd92fd10c71ae96a2e35e106d43f.
-- Production Worker still exposes workflow_dispatch, does not validate owner-authored approval/caller provenance, and its report job has issues:write. Probe checks out exact target SHA, but this does not authorize the caller.
-- Production Supervisor still has privileged workflow_run, issues:write/actions:write, REST dispatch to Worker, and pool:ready label intake without trusted owner-comment verification. PR #15 removing workflow_run remains unmerged.
-- Supervisor script is fail-closed unless POOL_DISPATCH_ENABLED equals exact string true; current repository variable value is NOT VERIFIED. Dispatch API errors restore pool:ready; stale claims with no matching run are returned to pool:ready after 15 minutes. Both conflict with single-use approval/replay prevention.
-- Worker report job and Supervisor both mutate issue state: multiple writers remain.
-- PR #12 exact-head fixture/contract runs SUCCESS, but fixture is not production Worker. PR #15 exact-head contract SUCCESS, but proposed workflow change is not on default branch. PR #27 head f10db507660c2945642e99e23f957025058e27c5 has no PR-triggered CI runs (NOT VERIFIED). Reviews empty.
-- Full audit: docs/reports/2026-11-06-default-branch-supervisor-worker-authorization-recheck.md.
-- No code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Next: coherent test-first remediation plan; keep dispatch disabled and require independent review before any runtime.
-
-
-## 24. Comparative authorization implementation audit — 2026-11-06
-- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.
-- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.
-- PR #18 provides fail-closed recovery and dispatch-failure policy (needs-review, no replay) with exact-head static tests SUCCESS; it does not implement owner approval or caller authorization.
-- PR #15 removes workflow_run but retains unsafe stale-claim requeue; PR #18 later proposes fail-closed recovery. Neither is merged.
-- PR #12 tests a fixture reusable workflow, not production Worker caller boundary.
-- GitHub reusable workflow contract: workflow_call + static local uses; concurrency is not durable nonce storage. Sources: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows and https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax.
-- Report: docs/reports/2026-11-06-comparative-authorization-integration-audit.md.
-- No runtime code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Next: test-first integrated design on current default branch; durable consume marker + workflow_call-only production Worker + sole-writer Supervisor + fail-closed recovery. No dispatch or merge.
-
-
-## 25. Cloud Pool live-state and PR #31 CI audit — 2026-11-06
-
-- Default branch `Основной` re-read at HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Unified context remains on `docs/cross-chat-continuation-2026-11-06`; PR #27 OPEN/DRAFT/UNMERGED at `b946b70bee9515378825625caab870ad053c0a4e`. Documentation branch is not default/mainline.
-- PR #31 OPEN/DRAFT/UNMERGED, head `633cc2c8a2f7a70f996ccc7c5d03070b0899aa06`, base PR #25 feature branch at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`. Changes are only `src/github-read-adapter.js` and `tests/github-read-adapter.test.js`; exact-head PR workflow lookup/status empty, reviews 0, threads 0. CI NOT VERIFIED; independent review NOT RUN.
-- The default-branch Pool Contract Validation workflow filters only `.github/workflows/**` and `scripts/**`; PR #31 changes `src/**` and `tests/**`, so this workflow does not cover its changes. The workflow must be updated on the PR base branch and explicitly run the adapter tests before claiming exact-head CI.
-- PR #29 head `34fc78921b16359d136db553d8a51b4a4716995d` has exact-head Pool Contract Validation run `42211525076` COMPLETED/SUCCESS; formal reviews 0. Static CI only; no live provider router qualification.
-- PR #30 head `ad9f9ac598a2414b5209b6923094b16be64630ae`: current connector lookup has no PR-triggered runs/status and reviews 0; historical report records synthetic OAuth run `42216422883` SUCCESS. Preserve as historical proof, not live OAuth qualification.
-- PR #27 exact-head run/status lookup empty; reviews 0. Documentation-only PR remains unmerged.
-- Default production Supervisor/Worker re-read: privileged Supervisor `workflow_run` plus `issues:write/actions:write` remains; Worker `workflow_dispatch` and Worker report `issues:write` remain. Authorization remediation is incomplete. No dispatch performed.
-- Issue #1 contains historical `POOL_DISPATCH_ENABLED=false` owner read-back from 2026-11-04; current variable was not freshly read. Keep dispatch fail-closed.
-- SentinelX host inventory: only Voktors-Mini operational (Free plan, 1/1 slot); mh-dev-01 and mh-dev-02 user-disabled. Alamo/server-3 identity is not present; Claude Code not run. Desktop Commander shows Voktors-Mini online and both mh-dev hosts offline.
-- No Gemini controller/child run, Worker, DSH, Resource Probe, provider/model call, secret read, deployment or paid resource action occurred.
-- Report: [Cloud Pool PR #31 CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
-- Next: enable path-filtered exact-head tests for `src/**` and `tests/**` from the PR base branch, execute PR #31 tests, and obtain independent review. In parallel, maintain coherent Supervisor/Worker authorization remediation and fresh governance read-back before any runtime.
-- Contour A NOT ACCEPTED; Contour B DEFERRED.
-
-
-## 26. PR #31 exact-head CI activation and adapter hardening — 2026-11-06
-
-- Corrected prior diagnosis: PR #31's CI was not excluded by Pool Contract Validation. Its applicable `jarvis-web-validation.yml` already covered `src/**` and `tests/**`; the `pull_request.branches` target filter omitted PR #31's Hono feature base branch.
-- Added `feat/jarvis-hono-web-prototype-2026-11-06` to that pull_request filter on the base branch. Workflow commit / PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; workflow blob `cb935cc92272f09576604ed0365d5e7bf92903a0`.
-- PR #25 exact-head CI after workflow correction: run `42228269689` Pool Contract Validation SUCCESS; run `42228269676` Jarvis Web Prototype Validation SUCCESS.
-- PR #31 adapter hardening: ETag validator now accepts only HTTP entity-tag opaque-tag character ranges (with optional weak prefix); malformed spaces, tabs, controls, DEL and out-of-range Unicode rejected before fetch. Regression test added. Source blob `9df448c7817a62d9eca86b91697eb593be23855e`; test blob `04a7acb6173625f50934ba59e87ab55d7001ecc0`.
-- PR #31 exact head `907bf6c819bf0744473dfc96027fedc3a82e475a`; run `42228343320` COMPLETED/SUCCESS; job `127927472859` SUCCESS; logs: npm test 22/22 pass, 0 fail; runtime check, npm ci, static checks and dashboard contract all passed.
-- PR #31 remains OPEN/DRAFT/UNMERGED; reviews 0; review threads 0. Exact-head CI VERIFIED, independent review NOT RUN. Adapter is still not mounted in Hono.
-- Supervisor/Worker authorization blockers persist. Historical dispatch variable read-back false from 2026-11-04 only; current value not freshly read. No dispatch, Worker, DSH, Resource Probe, Gemini, Claude Code, provider/model calls, secret reads or deployment.
-- Report: [PR #31 exact-head CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
-- Next: independent review of PR #31; then continue Supervisor/Worker authorization remediation and fresh ruleset/Actions-variable read-back before runtime. Contour A NOT ACCEPTED; Contour B DEFERRED.
+## 17. PR #31 URL-origin validation hardening — 2026-11-06
+- Previous exact-head CI for PR #31 head `907bf6c819bf0744473dfc96027fedc3a82e475a`: run `42228343320`, job `127927472859`, COMPLETED/SUCCESS (22 tests passed). This evidence applies only to that earlier head.
+- Security finding: three projected upstream `html_url` fields used string-prefix matching rather than parsed-origin validation, allowing lookalike domains.
+- Corrective source commit `ef91ad75738e1bf2f9d89b66d3767b8adcb2fe17`; source blob `97d49834085f9ad4466ffaeae76bb927fe322e3b`. Shared validator parses the URL and requires HTTPS, exact GitHub origin, and no embedded credentials.
+- Regression test commit/final branch head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`; test blob `a2ff0a846c62b61e58a9c4b2729434d6af8d6d99`. Coverage spans repository, issue, and workflow-run projections; invalid lookalike hosts, embedded credentials, and non-HTTPS values are rejected. Files were read back.
+- Exact-head workflow lookup for `5470fccbc4a5fe80a750f402d70d703757fc4c1d` returned no runs: CI NOT VERIFIED; local tests NOT RUN.
+- Finding recorded in PR comment `6686543110`. Formal review submission was rejected because the connected identity authored the PR. Independent review NOT RUN.
+- PR #31 remains unmerged and the adapter remains unmounted from Hono. No live API, OAuth, dispatch, worker/DSH execution, provider calls, or deployment.
+- Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
+- Next: refresh exact-head CI and obtain an independent reviewer. Dispatch remains fail-closed. Contour A NOT ACCEPTED; Contour B DEFERRED.
