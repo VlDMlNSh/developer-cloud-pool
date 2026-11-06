@@ -301,3 +301,12 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - PR #37 OPEN/DRAFT at `5587a4e013507b5be330fd0c49ce1fc836faa946`, exact-head boundary/contract CI success; no reviews/threads.
 - Independent review NOT RUN; account Free/card-free entitlement NOT VERIFIED; no live D1/deployment/dispatch/secrets. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: verify new PR #36 exact-head CI; then convert accepted contract into isolated local adversarial tests, still with dispatch disabled.
+
+
+### 2026-11-07 follow-up — PR #36 exact-head CI and governance
+
+- Corrected README commit `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`; exact-head D1 run `42293956647` / job `128154248534` SUCCESS; exact-head Pool Contract run `42293956578` / job `128154248111` SUCCESS. README read-back verified.
+- PR #36 remains OPEN/DRAFT, reviews 0, threads 0; no independent security review.
+- Ruleset #26550182 rechecked active on default branch, but approvals=0 and CODEOWNERS=false; independent review is not enforced.
+- Contract v1 is design-only. No live D1, deployment, secret, billing, dispatch or production code.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
