@@ -187,3 +187,14 @@ Review classification: useful source-level engineering review only; NOT an indep
 - The exact lockfile copy is prepared as `/mnt/data/package-lock.json`, but remains NOT COMMITTED.
 - PR #36 remains open/draft; 0 reviews, 0 inline threads; independent security review NOT RUN.
 - No cloud resources, deployment, billing changes, secrets, provider calls, dispatch or production integration. Production identity/provenance, trusted clock, issuance/revocation/audit, quotas, backup/restore, account entitlement and executor approval remain blockers.
+
+
+## Follow-up checkpoint — current PR head and uploaded lockfile — 2026-11-06
+
+- PR #36 current head verified: `9815da8fd316d8263b59f3493d076d4623c4c925`; base/default branch `Основной` remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head D1 run `42274484200` / job `128087166113`: COMPLETED / SUCCESS, 13/13 tests.
+- Exact-head Pool Contract Validation run `42274484234` / job `128087177754`: COMPLETED / SUCCESS.
+- Current lock artifact `13532667030`; ZIP digest `sha256:60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`.
+- The package-lock file is now present in the active execution workspace and independently rechecked: 87,979 bytes; SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 package entries. It is still NOT COMMITTED to GitHub. The GitHub connector's supported file write accepts text content only; there is no direct file-path bridge from the execution workspace. No unverified reconstruction or workflow permission expansion was attempted.
+- PR body refreshed to the current exact-head evidence. PR remains OPEN / DRAFT; 0 submitted reviews and 0 inline threads; independent security review NOT RUN.
+- Merge/deployment blockers and exclusions unchanged. No cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
