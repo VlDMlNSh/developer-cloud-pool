@@ -788,3 +788,17 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 **Disposition:** negative-first production contract = FAILURE / expected gate still open; isolated decision model test step = RUNNING / NOT VERIFIED at checkpoint; static YAML/security invariants = steps SUCCEEDED, job cleanup pending; durable consume adapter = NOT IMPLEMENTED / NOT VERIFIED; production authorization = NOT SATISFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 **Next bounded step:** retrieve completion/logs for runs `42267827737` and `42267827757`; confirm isolated decision-model tests independently. Then replace unsafe production Supervisor/Worker orchestration with the reusable workflow and identity/provenance contract in a bounded implementation pass, keeping all dispatch disabled until durable consume and governance are qualified.
+
+
+## Engineering pass — 2026-11-06 — exact-head CI completion
+
+- Rechecked PR #34: OPEN / DRAFT / UNMERGED; head `43f48f9f4d0947f102b5f0c3170ee05186fe90e0`; base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head workflow run `42267827737`, job `128064261403`: COMPLETED / FAILURE. Crucially, isolated step `Run isolated fail-closed decision model tests` completed SUCCESS; production-source security contract step completed FAILURE. The red production suite is the intentional acceptance gate: it still detects current default-branch unsafe production architecture. It must not be weakened to match implementation.
+- Exact-head static workflow run `42267827757`, job `128064261829`: COMPLETED / SUCCESS. Worker dispatch-disabled assertion, YAML syntax parse and static security contract all succeeded.
+- Current production baseline read-back confirms Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`, Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`, Supervisor script blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f`. These remain unchanged on default branch: Worker has workflow_dispatch and issue-write report job; Supervisor has workflow_run and actions:write, REST dispatch, and stale-claim path that returns work to ready. No production changes made in this pass.
+- The two validation lanes are now independently evidenced: decision model = VERIFIED (pure function/unit tests only); static syntax/security = VERIFIED; production authorization integration = FAILURE / NOT SATISFIED. This does not verify durable approval consumption, caller/callee provenance, or runtime dispatch.
+- Governance issue #1 remains OPEN; web console issue #22 remains OPEN. No dispatch, secrets access, model calls, DSH run, ruleset/variable mutation, deployment, or paid resource usage.
+
+**Disposition:** decision-model unit tests VERIFIED; static workflow/security checks VERIFIED; production authorization contract FAILURE; durable single-use consume NOT IMPLEMENTED / NOT VERIFIED; production auth NOT SATISFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+**Next bounded step:** prepare and review the least-privilege production integration contract for reusable workflow caller/callee identity, Supervisor-only issue state, and terminal needs-review on ambiguous outcomes. Do not implement a production consume adapter until a separately authorized GitHub App identity and isolated tag-ruleset namespace are available; do not enable dispatch.
