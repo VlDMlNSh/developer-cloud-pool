@@ -695,3 +695,19 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 **Current disposition:** governance PR requirement VERIFIED; independent-review gate NOT SATISFIED; current dispatch variable NOT VERIFIED; exact-head workflow evidence NOT VERIFIED; Supervisor/Worker NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 **Next bounded step:** obtain a fresh metadata-only dispatch-variable read through an authorized owner path; close the independent-review governance gap through an owner-approved ruleset change; then recheck exact-head CI before considering an idle Supervisor validation. Do not dispatch Worker/DSH/resource probes.
+
+
+## Engineering pass — 2026-11-06 — scheduled Supervisor run and authorization gate recheck
+
+- Fresh default branch ref remains `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- New Actions evidence discovered: scheduled Pool Supervisor run `42250028848`, job `128002343563`, exact default HEAD above, completed `success` at 2026-11-06 16:11:37Z. The job steps show checkout and `node scripts/pool-supervisor.mjs` completed successfully.
+- Important limitation: run/job metadata available through the read connector does not expose step stdout or step summary. The production script has two materially different paths: if `POOL_DISPATCH_ENABLED !== "true"`, it exits after a heartbeat; if true, it reconciles issues and may dispatch allowlisted DSH tasks. Since current Actions variable value and the run's step output were not readable, execution mode is **NOT VERIFIED**. Do not describe this run as heartbeat-only or as proof that no dispatch occurred. No follow-up Worker run was established in this pass.
+- The production Supervisor workflow has permissions `contents: read`, `issues: write`, `actions: write`, and schedule every five minutes. Script SHA on default branch: `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; workflow blob SHA: `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`. Script uses exact string comparison `POOL_DISPATCH_ENABLED === "true"` as the dispatch gate.
+- PR #32 remains OPEN/DRAFT/UNMERGED at head `75c83a288d865f1bbeda4905cf817e00084bcc2d`; negative-first production authorization run `42236017811` / job `127953700048` FAILED (8/8 assertions); static Pool Contract Validation run `42236017724` / job `127953700415` SUCCEEDED. PR #32 reviews 0, inline threads 0. This is an intentionally red security baseline, not a pass.
+- Active ruleset `26550182` still requires zero approvals. PR #27 remains OPEN/DRAFT/UNMERGED at `d4c72c72bbe31bff96eac3a7f0a00d1f7ad8625d`; reviews 0, threads 0. Exact-head PR-triggered workflow lookup returned empty; NOT VERIFIED.
+- Direct metadata read for Actions variable `POOL_DISPATCH_ENABLED` remains unavailable through the GitHub connector (endpoint rejected). Historical owner-authored issue #1 documents a prior read-back of `false`, but it is not a fresh current read. No secrets were accessed.
+- No workflows were manually dispatched, no settings or variables changed, no deployment/provider/model/DSH/resource probe initiated by this pass.
+
+**Disposition:** Supervisor scheduled execution SUCCEEDED as a GitHub Actions job; its dispatch-vs-heartbeat mode NOT VERIFIED. Authorization contract remains FAILED/RED; independent review NOT RUN; current dispatch variable NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+**Next bounded step:** obtain a fresh owner-authorized metadata-only read-back of `POOL_DISPATCH_ENABLED` and the scheduled run's step summary/log evidence; verify no task was dispatched by inspecting workflow runs and issue labels/comments around run time. Keep dispatch disabled and do not run Worker/DSH until authorization assertions are fixed, independently reviewed and exact-head CI is green.
