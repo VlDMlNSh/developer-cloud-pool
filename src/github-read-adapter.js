@@ -143,8 +143,14 @@ function nextPageFromLink(header, requestUrl, maxPages) {
     throw new Error("INVALID_PAGINATION_LINK");
   }
 
+  const expectedKeys = requestUrl.pathname.endsWith("/issues")
+    ? ["page", "per_page", "state"]
+    : ["page", "per_page"];
   const keys = [...candidate.searchParams.keys()].sort();
-  if (keys.join(",") !== "page,per_page") throw new Error("INVALID_PAGINATION_LINK");
+  if (keys.join(",") !== expectedKeys.sort().join(",")) throw new Error("INVALID_PAGINATION_LINK");
+  if (requestUrl.pathname.endsWith("/issues") && candidate.searchParams.get("state") !== "open") {
+    throw new Error("INVALID_PAGINATION_LINK");
+  }
   const page = Number(candidate.searchParams.get("page"));
   const perPage = Number(candidate.searchParams.get("per_page"));
   const currentPage = Number(requestUrl.searchParams.get("page") || "1");
@@ -214,6 +220,10 @@ export function createGitHubReadAdapter({
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    const finish = (result) => {
+      clearTimeout(timeout);
+      return result;
+    };
     let response;
     try {
       response = await fetchImpl(url.toString(), {
@@ -224,33 +234,30 @@ export function createGitHubReadAdapter({
         signal: controller.signal
       });
     } catch (error) {
-      clearTimeout(timeout);
-      return failure(error?.name === "AbortError" ? "UPSTREAM_TIMEOUT" : "UPSTREAM_UNAVAILABLE");
+      return finish(failure(error?.name === "AbortError" ? "UPSTREAM_TIMEOUT" : "UPSTREAM_UNAVAILABLE"));
     }
 
-    if (controller.signal.aborted) {
-      clearTimeout(timeout);
-      return failure("UPSTREAM_TIMEOUT");
-    }
-    clearTimeout(timeout);
-
-    if (response.status >= 300 && response.status < 400) return failure("REDIRECT_REJECTED");
+    if (controller.signal.aborted) return finish(failure("UPSTREAM_TIMEOUT"));
+    if (response.status >= 300 && response.status < 400) return finish(failure("REDIRECT_REJECTED"));
     if (response.status === 304) {
-      return { ok: true, notModified: true, etag: response.headers.get("etag") || etag || null };
+      return finish({ ok: true, notModified: true, etag: response.headers.get("etag") || etag || null });
     }
 
     const rateLimit = readRateLimit(response.headers);
     if (response.status === 429 || (response.status === 403 && rateLimit.remaining === 0)) {
-      return failure("RATE_LIMITED", { rateLimit });
+      return finish(failure("RATE_LIMITED", { rateLimit }));
     }
-    if (response.status === 401 || response.status === 403) return failure("UPSTREAM_FORBIDDEN");
-    if (!response.ok) return failure("UPSTREAM_ERROR", { status: response.status });
+    if (response.status === 401 || response.status === 403) return finish(failure("UPSTREAM_FORBIDDEN"));
+    if (!response.ok) return finish(failure("UPSTREAM_ERROR", { status: response.status }));
 
     let raw;
     try {
       raw = await readJsonBounded(response, maxResponseBytes);
     } catch (error) {
-      return failure(error.message === "RESPONSE_TOO_LARGE" ? "RESPONSE_TOO_LARGE" : "INVALID_UPSTREAM_RESPONSE");
+      if (controller.signal.aborted || error?.name === "AbortError") {
+        return finish(failure("UPSTREAM_TIMEOUT"));
+      }
+      return finish(failure(error.message === "RESPONSE_TOO_LARGE" ? "RESPONSE_TOO_LARGE" : "INVALID_UPSTREAM_RESPONSE"));
     }
 
     let data;
@@ -259,24 +266,24 @@ export function createGitHubReadAdapter({
       else if (resource === "issues") data = projectIssues(raw);
       else data = projectWorkflowRuns(raw);
     } catch {
-      return failure("INVALID_UPSTREAM_RESPONSE");
+      return finish(failure("INVALID_UPSTREAM_RESPONSE"));
     }
 
     let nextPage;
     try {
       nextPage = nextPageFromLink(response.headers.get("link"), url, maxPages);
     } catch {
-      return failure("INVALID_PAGINATION_LINK");
+      return finish(failure("INVALID_PAGINATION_LINK"));
     }
 
-    return {
+    return finish({
       ok: true,
       notModified: false,
       data,
       etag: response.headers.get("etag"),
       nextPage,
       rateLimit
-    };
+    });
   }
 
   return Object.freeze({ read });
