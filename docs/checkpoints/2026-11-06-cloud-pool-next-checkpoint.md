@@ -186,3 +186,16 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Live Ruleset `26550182` active but requires zero approvals and does not enforce CODEOWNERS review. Governance still does not guarantee independent approval.
 - Issue-label updates remain non-CAS; no claim backend selected. Dispatch remains BLOCKED / FAIL-CLOSED.
 - No merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets, deployment, credentials, permissions or paid services.
+
+
+## Durable single-use claim review — 2026-11-06 23:21 Europe/Vilnius
+
+- Issue #38 remains OPEN / PLANNED.
+- Local D1 proof branch `proof/d1-single-use-ledger-retry-2026-11-06` compared 37 ahead / 0 behind default baseline `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact code/workflow commit `4229d8701f8ee79692619f481cef1d9d9483ff16`: D1 run `42276825199` / job `128095160084` SUCCESS; Pool Contract run `42276825193` / job `128095160288` SUCCESS. Run/job steps were fetched and read back. Test report: 13/13 local Workers-runtime tests, including 12-way one-winner contention.
+- Source and lockfile blobs re-read; conditional single-statement UPDATE accepts exactly one changed row. Replay, mismatches, expiry and ambiguous storage outcomes deny. Successful consume returns `dispatch: false`.
+- Local Miniflare/workerd proof only. Owner identity and approval issuer/provenance are not authenticated; `now` is caller-supplied; issuance/revocation/audit, quotas, backup/restore, live account entitlement and real D1 deployment are unqualified.
+- Candidate C is the strongest technical candidate and moves to bounded qualification only. It is NOT production-selected or qualified. No resource provisioned, deployment, billing, secrets, provider calls, permissions or dispatch.
+- PR #36 OPEN/DRAFT; reviews/threads 0/0. PR #37 OPEN/DRAFT/UNMERGED; reviews/threads 0/0. Independent review NOT RUN. Ruleset 26550182 still has zero required approvals and CODEOWNERS review disabled.
+- Report: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
+- Next: verify no-card/free account entitlement, define authenticated owner/issuer provenance and trusted clock, obtain independent review. Keep dispatch fail-closed; Contour B deferred.
