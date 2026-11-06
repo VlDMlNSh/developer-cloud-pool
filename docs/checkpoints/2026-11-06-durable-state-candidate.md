@@ -103,3 +103,16 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - Source-level review found no dispatch capability and confirmed fail-closed conditional consume, but flagged production blockers: identity/issuer provenance, owner approval authenticity, trusted clock, issuance/revocation/audit, quotas, backup/restore, account limits and production executor approval. NOT an independent security review.
 - PR #36 remains draft/open. Do not merge or deploy.
 - Next: verify current exact-head CI; commit the verified lockfile; obtain independent security review; then separately qualify cloud account entitlements without billing changes.
+
+
+## D1 final exact-head verification — 2026-11-06
+
+- Proof branch HEAD tested: `16b0bdfec24e761bdeac97936ff9409e7235be45`.
+- D1 run `42273219768` / job `128082853105`: SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation run `42273219797` / job `128082854898`: SUCCESS.
+- Latest lock artifact `13531037391`, archive digest `sha256:d670f77af00728e2b1a170ff96f73e37d32931d6d89027d7f70ed082d2d3593e`. Extracted lockfile SHA-256 previously verified as `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; 160 packages. Lockfile still NOT COMMITTED.
+- PR #36 draft/open, no reviews; independent security review NOT RUN.
+- Bounded source review confirms inert dispatch=false path but leaves identity/issuer provenance, signed approval, trusted clock, issuance/revocation, audit, quotas, backups and production executor approval unresolved.
+- Local D1 proof VERIFIED for exact head only; production qualification and Contour A acceptance NOT VERIFIED / BLOCKED. Contour B DEFERRED.
+- No cloud resource, deployment, billing change, secret access, provider call or dispatch.
+- Next: transfer exact lockfile into PR #36 without modifying workflow trust boundaries, then obtain independent security review.
