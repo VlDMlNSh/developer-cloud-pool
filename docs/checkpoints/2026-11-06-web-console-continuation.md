@@ -177,7 +177,7 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 
 ## Final verification — OAuth contract correction pass
 
-- Branch HEAD at final compare: `95723956230160b59ad92a5e32270d7d749ef319`, 34 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This checkpoint update itself is commit `95723956230160b59ad92a5e32270d7d749ef319`.
+- Branch HEAD at final compare before this checkpoint correction: `31bcd998f871c3cd1d3a136558e13184e05e8124`, 35 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This final checkpoint correction advances the branch by one documentation-only commit; exact-head CI remains NOT VERIFIED.
 - Updated files read back: ADR blob `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; checkpoint blob before this final update `6739e919aa1ed2d5ace853a603c5948e0e408d96`; report blob `2209c84b7133e649d23b1f4402b59a5fc7035806`.
 - Exact-head CI query for documentation-only HEAD returned no PR-triggered workflow runs: NOT VERIFIED, not PASS. PR #24 formal reviews and inline review threads remain 0/0.
 - OAuth/session implementation NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
