@@ -214,3 +214,12 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Dated report: [OpenAPI validation and health contract](../reports/2026-11-06-openapi-validation-and-health-contract.md).
 - PR #24 remains OPEN / DRAFT / UNMERGED; independent review 0 formal reviews / 0 inline threads. OAuth/session runtime NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; production dispatch BLOCKED / FAIL-CLOSED.
 - Next: implement a secret-free OAuth/session test fixture and negative tests; do not configure real OAuth credentials or enable protected routes before independent security review.
+
+
+## Final provenance — OpenAPI validation pass
+
+- Report read-back SHA before final provenance append: `ac83161c641e2e71fd8a97bc903ca4af7575b30b`; report updated with final branch/CI distinction in commit `73f4310f1f66a825d040bb6f1fc22f349a0d1ac1`.
+- Branch snapshot before this final checkpoint update: `a15680a46b508b2fe205547e363a4aaba3c0e10e`, 44 ahead / 0 behind base.
+- Exact contract/workflow CI HEAD `8f8613eebb4a37e3a1c2296b66e9f7b53090d1ae`: Redocly OpenAPI validation and Pool Contract Validation both SUCCEEDED. Latest docs-only successor has no returned PR workflow runs and is NOT VERIFIED by exact-head CI.
+- Current contract/workflow blobs unchanged and read back: `3cab6581f88a37d6090aeda5df1fb7157f749f84` / `47d3afecc918df0926a63b5cf2a6de473356f5d6`.
+- PR #24 OPEN / DRAFT / UNMERGED; reviews/threads 0/0. OAuth/session NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
