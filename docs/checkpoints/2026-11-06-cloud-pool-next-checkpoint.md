@@ -223,3 +223,16 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - No resources created, deployment, billing change, payment method, secret, permission or dispatch. No paid fallback.
 - Report: [Cloudflare Free entitlement live check](../reports/2026-11-06-cloudflare-free-entitlement-live-check.md).
 - Next: non-secret dashboard confirmation of Workers Free and no-card eligibility, or least-privilege Billing Read-only access. If payment method/upgrade required, stop. Candidate C stays bounded qualification; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Live governance ruleset audit — 2026-11-06
+
+- Default HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; docs branch HEAD before this update `f01f2fdb7b9fd6dc5cfa0911d133f68553c8028a`, 50 ahead / 0 behind.
+- Live Ruleset ID 26550182 active for exact `refs/heads/Основной`; deletion/non-fast-forward prohibited; PR required; required approvals 0; CODEOWNERS false; last-push approval false; review-thread resolution true; bypass actors empty/current-user bypass never. Independent review not enforced.
+- Workflow directory has five files only; Gemini controller absent from this repo. No dispatch attempted.
+- PR #36 OPEN/DRAFT; head `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code-tested `4229d8701f8ee79692619f481cef1d9d9483ff16`; D1 run `42276825199` and contract run `42276825193` SUCCESS on code-bearing commit; current report-only head has no fresh D1 run. Reviews/threads 0/0.
+- PR #37 OPEN/DRAFT; tested head `5b45a29ed7869c091741c0037c68bfcd6640de7d`; boundary run `42280875294` / job `128109201815` SUCCESS; contract run `42280875365` / job `128109179508` SUCCESS. Reviews/threads 0/0; independent review NOT RUN.
+- Recorded PR #37 exact-head env: `POOL_DISPATCH_ENABLED=false`; `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` unset. No secret read or dispatch.
+- Governance BLOCKED until at least one approving review and CODEOWNERS review are enforced, then independent review final heads. No Ruleset change made.
+- Report: [live governance and dispatch gate audit](../reports/2026-11-06-live-governance-ruleset-audit.md).
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
