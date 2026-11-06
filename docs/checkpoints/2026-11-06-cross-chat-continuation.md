@@ -135,7 +135,7 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Finding recorded in PR conversation comment `6686543110`. Formal review submission was rejected because the connected identity authored the PR. Independent review NOT RUN.
 - Adapter remains unmounted. No live API, OAuth, dispatch, worker execution, provider call, or deployment.
 - Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
-- Next: recheck exact-head CI and obtain independent review. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain independent security review and recheck effective governance. Exact-head CI is already SUCCESS (run `42229917555`). Contour A NOT ACCEPTED; Contour B DEFERRED.
 
 
 ## 2026-11-06 — PR #31 exact-head CI recheck
