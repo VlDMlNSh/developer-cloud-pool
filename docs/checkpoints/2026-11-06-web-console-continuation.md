@@ -235,3 +235,12 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Report: [hosting ADR/prototype reconciliation](../reports/2026-11-06-hosting-adr-prototype-reconciliation.md).
 - ADR update commit `753f692475e19c0b041a7155af0aa6ae8b1d49c2`; its new PR-triggered checks queued: `42187404021` Pool Contract and `42187404044` OpenAPI. Terminal states pending read-back.
 - Next: read terminal CI results, then build isolated no-secret auth policy tests; no live OAuth credentials, deployment or dispatch.
+
+
+## Final CI read-back — ADR reconciliation pass
+
+- Updated ADR blob: `b5fbb978f6e61e91e2ebcff41dc9bb4f7de6d3ee`; report updated with exact-head CI evidence (report update commit `903b1dfc4805b58da50e466455acd5dfe69e4690`).
+- Latest branch snapshot before this checkpoint append: `c84b5aed0a306ea92c8d9919564a0803acc56aef`, 49 ahead / 0 behind base.
+- Exact-head Pool Contract Validation run `42187467083` SUCCEEDED; OpenAPI Validation run `42187467194` SUCCEEDED. Both job details and all steps were read back as completed/success.
+- PR #24 remains OPEN / DRAFT / UNMERGED; PR #25 remains OPEN / DRAFT / UNMERGED. Both have 0 formal reviews and 0 inline threads.
+- Workers Free entitlement NOT VERIFIED; deployment NOT RUN; OAuth/session runtime NOT IMPLEMENTED; dispatch BLOCKED / FAIL-CLOSED.
