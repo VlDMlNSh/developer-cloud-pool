@@ -64,3 +64,16 @@ Open a new draft PR from this branch, wait for exact-head Workers-runtime D1 tes
 - PR #36 has zero submitted reviews and zero inline review threads; independent security review NOT RUN. PR remains draft / not merge-ready.
 - No Cloudflare D1 database, Worker deployment, billing change, secret access, dispatch, provider call or production integration occurred. Workers Free/card-free entitlement remains NOT VERIFIED.
 - Local D1 runtime proof: VERIFIED for exact tested SHA `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`. Production qualification and Contour A acceptance remain NOT VERIFIED / BLOCKED.
+
+
+## Final current-head CI rerun — 2026-11-06
+
+- Final proof branch HEAD: `3122c5da813e9aeb450e52e4de6e63e903578622`.
+- D1 workflow run `42272226252` (run 11), job `128079410112`: COMPLETED / SUCCESS.
+- Pool Contract Validation run `42272226037` (run 248): COMPLETED / SUCCESS.
+- Workers Vitest: 1 file passed, 13/13 tests passed.
+- The workflow now includes this qualification report in its path filter so report-only updates do not leave the proof CI stale.
+- Final lock artifact: `13530245611`, GitHub archive digest `sha256:d5324c94f2cef9d55906c0d6e0319c5dd99bf967dc58b9cece98eb8dcee2b2af`, expires 2026-11-13.
+- Downloaded and inspected exact-head lockfile: lockfileVersion 3, 160 packages, SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; plugin 1.4.7, Vitest 4.1.12, Wrangler 4.152.0, Miniflare 5.20261019.2-beta. CI `npm ci` succeeded.
+- The lockfile remains an artifact and is NOT committed. Independent security review remains NOT RUN. PR #36 remains draft / not merge-ready.
+- This is local-only D1 runtime proof; no cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
