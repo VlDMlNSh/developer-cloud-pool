@@ -649,3 +649,20 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Next: obtain owner-authorized metadata-only evidence for Actions default permissions and Supervisor token identity; in parallel, perform read-only comparison of free transaction-capable persistence options without provisioning.
 
 Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-github-native-single-use-consume-alternatives.md
+
+
+## Engineering pass — 2026-11-06 — free transactional state-store assessment
+
+- Immutable baseline refreshed: production `Основной` HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #32 OPEN/DRAFT/UNMERGED at `75c83a288d865f1bbeda4905cf817e00084bcc2d`.
+- Cloudflare account API read-only inventory: one existing standard account; D1 databases 0, Durable Object namespaces 0, Worker scripts 0. This proves connection and empty inventory only, not Workers Free activation or card-free deployment eligibility. No resource or billing setting was changed.
+- Compared Cloudflare D1 and SQLite-backed Durable Objects against transaction semantics, uniqueness, persistence, isolation and free-tier quotas. D1 batch runs as a SQL transaction and rolls back on a failed statement; documented Free limits: 5M rows read/day, 100K rows written/day, 5GB total storage, 10 databases. Durable Objects provide per-object private transactional/strongly consistent SQLite storage; Free limits include 100K requests/day, 13K GB-s/day, 5M rows read/day, 100K rows written/day and 5GB total SQLite storage.
+- Preferred candidate for a local-only prototype: D1, because a SQL unique approval_id and atomic insert/consume transaction is simpler for a central immutable ledger. Durable Objects remain an alternative for per-approval serialized coordination. Neither is provisioned or qualified.
+- Mature official starter code inspected: Cloudflare Worker + D1 template README blob `abaf618a7af8687d03b50c9712b1499f6368b630`; official SQLite-backed Durable Object voice-agent template README blob `5992911a6042bf583d9ebd07c5ca347ebdae4a55`. These demonstrate platform APIs, not authorization logic; do not copy unrelated product logic.
+- D1 and DO free tiers are documented, but account-specific Free activation and no-card provisioning are NOT VERIFIED. Existing card acceptance issue remains a hard stop; do not add payment method, upgrade, or bypass billing.
+- Critical separation: transactional uniqueness solves only duplicate consumption. It does not authenticate the GitHub caller or prove owner approval provenance. GitHub workflow identity, immutable task envelope, owner numeric ID, expiry, one-time approval and fail-closed recovery must all be validated independently.
+- Evidence report: [Free transactional state-store assessment](../reports/2026-11-06-free-transactional-state-store-assessment.md).
+- No production code/workflow/settings/secrets/variables changed; no cloud DB/namespace/Worker created; no deploy, dispatch, provider/model call or paid resource used.
+- Status: D1 PREFERRED CANDIDATE / NOT PROVISIONED / NOT QUALIFIED; DO ALTERNATIVE / NOT PROVISIONED / NOT QUALIFIED; Cloudflare Free/card-free eligibility NOT VERIFIED; single-use consume NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: local-only D1 ledger implementation and adversarial concurrent consume tests, without cloud provisioning. Only after local tests, obtain independent security review and separately verify no-card Free activation before any disposable cloud test.
+
+Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-free-transactional-state-store-assessment.md
