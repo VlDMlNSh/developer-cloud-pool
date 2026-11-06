@@ -259,5 +259,5 @@ if (!dispatchEnabled) {
 }
 if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
-if (eventName === "issues") await dispatchReadyTasks();
+if (eventName === "issues" && eventPayload.action === "labeled" && eventPayload.label?.name === "pool:ready" && String(eventPayload.sender?.login || "").toLowerCase() === repositoryOwner.toLowerCase()) await dispatchReadyTasks();
 else log("Reconciliation-only cycle; task dispatch is reserved for issue approval events.");
