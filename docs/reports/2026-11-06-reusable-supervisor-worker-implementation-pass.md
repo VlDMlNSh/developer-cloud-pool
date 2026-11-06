@@ -90,3 +90,14 @@ Perform a security-focused review of PR #37, especially repository/workflow iden
 - Latest working branch head after this follow-up: `5b45a29ed7869c091741c0037c68bfcd6640de7d`. Exact-head CI for this latest head: NOT VERIFIED. Prior exact tested head `8d848629511ac1b8c379fd6c8d20cc17496f6f54` has both CI workflows SUCCESS.
 - `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` live value: NOT VERIFIED. It was not read or changed. The new validator guard requires it not to be literal true until independent review and governance acceptance.
 - PR #37 remains DRAFT / OPEN / UNMERGED; reviews and review threads are empty. Do not merge.
+
+## Final exact-head verification — 2026-11-06
+
+- Latest PR #37 head: `5b45a29ed7869c091741c0037c68bfcd6640de7d`.
+- Reusable Pool Worker Boundary Validation run `42280875294`: COMPLETED / SUCCESS. Checkout exact PR head, Node setup, Supervisor syntax check and authorization boundary tests all passed.
+- Pool Contract Validation run `42280875365`: COMPLETED / SUCCESS. Workflow YAML parse and updated pool contract validator passed.
+- Latest contract run environment showed `POOL_DISPATCH_ENABLED=false` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` empty/unset. Both are non-secret repository variables; no secret values were read.
+- Therefore both Supervisor gates are presently fail-closed as observed in this CI run.
+- The later follow-up changes are now CI-verified at the exact current PR head; supersedes the earlier NOT VERIFIED note for head `5b45a29...`.
+- Independent review remains NOT RUN. Issue #1's latest stored Ruleset snapshot (2026-11-05) shows 0 required approvals and CODEOWNERS review disabled; current live Ruleset state not freshly read via API. PR #37 remains DRAFT / OPEN / UNMERGED.
+- No Worker execution, DSH, Resource Probe, provider/model call, secrets read, or deployment.
