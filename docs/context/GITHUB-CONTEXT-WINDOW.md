@@ -519,3 +519,16 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: [2026-11-06 negative-first pool authorization tests](../reports/2026-11-06-negative-first-pool-authorization-tests.md), commit `e90a70d23391a862fd1493d4ac022dcf8bb7d319`.
 - No secrets, variables, Environment/rulesets, dispatch, Worker/DSH, provider/model calls, paid resources or deployment touched. Independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add a least-privilege read-only CI job for these tests on the isolated design branch, run against the recorded baseline and capture expected failures; then implement the integrated remediation. Do not enable dispatch or merge.
+
+
+## 2026-11-06 — PR #32 negative-first authorization CI evidence
+
+- PR #32: OPEN / DRAFT / UNMERGED; head `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`; current base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; mergeable=true at last read-back. Reviews 0; inline threads 0; independent review NOT RUN.
+- New read-only workflow `.github/workflows/pool-authorization-contract-validation.yml` has contents:read only, pinned checkout/setup-node, Node 24.9.0. Test file is `tests/security/pool-authorization-contract.test.mjs`.
+- Initial run `42234770131` failed before assertions because of a malformed regex; corrected in head `6bb7d8c6...`. Do not count initial run as a baseline result.
+- Corrected exact-head run `42234855260`, job `127949725675`: COMPLETED / FAILURE; 7 tests, 0 passed, 7 failed. Logs show expected current-production violations: Worker has workflow_dispatch rather than workflow_call; Worker report has issues:write and issue mutations; Supervisor has workflow_run and actions:write; no static reusable Worker call; stale claims are returned to pool:ready.
+- Existing Pool Contract Validation for the same head: run `42234855109`, job `127949430889`, SUCCESS. This does not override the red authorization tests.
+- Tested merge commit `bbb90f8d17a617b7a7edb5336139f0fb76cba4af`. Current production Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`.
+- Report: [negative-first pool authorization tests](../reports/2026-11-06-negative-first-pool-authorization-tests.md), latest report commit `4aa0e1b236d66c4b19de99146d65cd2214a3c480`.
+- No production workflow/script changes, dispatch, Worker/DSH runtime, secrets/config changes, provider/model calls, paid resources or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: use these exact failing assertions to implement a single integrated production remediation, starting with the reusable Worker boundary and removing Worker issue-write authority; then rerun tests. Do not enable dispatch or merge.
