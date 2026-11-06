@@ -112,3 +112,15 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Only SentinelX host operational is Voktors-Mini; mh-dev-01/mh-dev-02 disabled; Alamo/server-3 not identified. No Claude Code run. No Gemini, Worker, DSH, Resource Probe, provider calls, secret reads or deployment.
 - Report: [PR #31 CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
 - Next: add `src/**`/`tests/**` to the Hono validation workflow on PR #31's base branch, run exact-head tests, and obtain independent review. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — PR #31 exact-head CI activated and ETag input hardened
+- Correction to prior checkpoint: PR #31 was not excluded by the Pool Contract Validation path filter. The applicable `jarvis-web-validation.yml` already included `src/**` and `tests/**`; its `pull_request.branches` filter omitted PR #31's base branch.
+- Added `feat/jarvis-hono-web-prototype-2026-11-06` to that pull_request target-branch filter on the base branch. Workflow commit / PR #25 head: `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; workflow blob `cb935cc92272f09576604ed0365d5e7bf92903a0`.
+- PR #25 exact-head runs: `42228269689` Pool Contract Validation SUCCESS; `42228269676` Jarvis Web Prototype Validation SUCCESS.
+- PR #31 source hardening: ETag validator now rejects spaces, tabs, control/DEL and non-ASCII-out-of-range characters per HTTP entity-tag grammar. Regression test verifies malformed ETags are rejected before fetch. Source blob `9df448c7817a62d9eca86b91697eb593be23855e`; test blob `04a7acb6173625f50934ba59e87ab55d7001ecc0`.
+- PR #31 exact head `907bf6c819bf0744473dfc96027fedc3a82e475a`; workflow run `42228343320` COMPLETED/SUCCESS; job `127927472859` SUCCESS; log confirms 22 tests, 22 pass, 0 fail. Static checks, lockfile install and dashboard contract also passed.
+- PR #31 remains OPEN/DRAFT/UNMERGED; formal reviews 0, inline review threads 0. Independent review NOT RUN. Adapter remains unmounted from Hono; no live provider/OAuth path qualified.
+- Supervisor/Worker authorization blockers remain. Historical `POOL_DISPATCH_ENABLED=false` read-back is from 2026-11-04; current value not freshly read. No dispatch, Worker, DSH, Resource Probe, Gemini, Claude Code, provider/model call, secret read or deployment.
+- Report: [PR #31 exact-head CI and adapter hardening](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
+- Next: independent review of PR #31, then Supervisor/Worker authorization remediation and fresh governance read-back. Contour A NOT ACCEPTED; Contour B DEFERRED.
