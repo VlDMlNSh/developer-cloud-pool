@@ -14,15 +14,15 @@ const approval = {
 };
 
 async function seed(overrides = {}) {
-  const row = { ...approval, expiresAt: NOW + 3600, ...overrides };
+  const row = { ...approval, expiresAt: NOW + 3600, state: "ready", consumedAt: null, ...overrides };
   await env.POOL_DB.prepare(`
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number,
-      target_sha, profile, envelope_digest, expires_at, state
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'ready')
+      target_sha, profile, envelope_digest, expires_at, state, consumed_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     row.approvalId, row.ownerNumericId, row.repositoryId, row.issueNumber,
-    row.targetSha, row.profile, row.envelopeDigest, row.expiresAt
+    row.targetSha, row.profile, row.envelopeDigest, row.expiresAt, row.state, row.consumedAt
   ).run();
 }
 
@@ -79,18 +79,17 @@ describe("atomic D1 claim and transactional outbox", () => {
   });
 
   it("does not create a claim from a pre-consumed approval with the same timestamp", async () => {
-    await env.POOL_DB.prepare(`
-      UPDATE pool_approval_ledger SET state = 'consumed', consumed_at = ?
-       WHERE approval_id = ?
-    `).bind(NOW, approval.approvalId).run();
+    const alreadyConsumed = { ...approval, approvalId: "approval-preconsumed-001" };
+    await seed({ ...alreadyConsumed, state: "consumed", consumedAt: NOW });
 
-    const result = await claimAndEnqueue(env.POOL_DB, approval, NOW);
+    const result = await claimAndEnqueue(env.POOL_DB, alreadyConsumed, NOW);
     expect(result).toMatchObject({
       decision: "DENY",
       dispatch: false,
       reason: "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED"
     });
-    const count = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims").first();
+    const count = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims WHERE approval_id = ?")
+      .bind(alreadyConsumed.approvalId).first();
     expect(count.n).toBe(0);
   });
 
