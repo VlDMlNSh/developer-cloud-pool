@@ -250,3 +250,13 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - PR remains OPEN / DRAFT / UNMERGED; independent reviews/comments 0/0. No dispatch/merge/secrets/provider/deployment; gates unchanged.
 - Same-session self-review only; independent security review NOT RUN. Durable claim backend NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED.
 - Detailed evidence appended to [claim protocol qualification report](../reports/2026-11-06-supervisor-claim-protocol-qualification.md).
+
+
+## Claim design reconciliation — 2026-11-06
+
+- Refreshed Issue #38 immutable context to PR #37 HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946` and exact-head validation runs `42284044591` / `42284051311` (both SUCCESS).
+- Updated durable-claim ADR baseline and added the exclusive managed-state implementation delta. It is a consistency guard only, not CAS/exactly-once.
+- PR #37 remains OPEN / DRAFT / UNMERGED; reviews and inline comments 0/0; independent review NOT RUN.
+- Live Ruleset `26550182` active but requires zero approvals and does not enforce CODEOWNERS review. Governance still does not guarantee independent approval.
+- Issue-label updates remain non-CAS; no claim backend selected. Dispatch remains BLOCKED / FAIL-CLOSED.
+- No merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets, deployment, credentials, permissions or paid services.
