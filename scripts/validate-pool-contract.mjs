@@ -72,6 +72,7 @@ if (!/CALLEE_FILE_PATH: \$\{\{ job\.workflow_file_path \}\}/.test(worker)) fail(
 if (!/CALLEE_WORKFLOW_SHA: \$\{\{ job\.workflow_sha \}\}/.test(worker)) fail("Worker must inspect reusable callee SHA");
 if (!/CALLER_WORKFLOW_SHA !== e\.CALLEE_WORKFLOW_SHA/.test(worker)) fail("Worker must require caller and callee to share the immutable invocation SHA");
 if (!/pool:claimed/.test(worker)) fail("Worker must require Supervisor claim state");
+if (!/activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/.test(worker)) fail("Worker must reject conflicting or duplicate managed task states");
 if (failures.length === 0) pass("Worker is reusable-only, read-only, identity-bound and has no issue mutation authority");
 
 if (/^\s+workflow_run:/m.test(supervisor)) fail("Supervisor must not use privileged workflow_run");
