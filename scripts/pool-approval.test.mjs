@@ -142,3 +142,10 @@ test("Worker rejects a second execution for the same issue approval", () => {
   assert.equal(hasPriorWorkerRun(runs, "9002", 17, "2026-11-06T10:02:00Z"), false);
   assert.equal(hasPriorWorkerRun(runs, "9999", 17, "2026-11-06T10:02:00Z"), true);
 });
+
+
+test("Supervisor dispatches only on the repository owner's pool:ready label event", () => {
+  const supervisor = readFileSync(new URL("./pool-supervisor.mjs", import.meta.url), "utf8");
+  assert.ok(supervisor.includes('if (eventName === "issues" && eventPayload.action === "labeled" && eventPayload.label?.name === "pool:ready" && String(eventPayload.sender?.login || "").toLowerCase() === repositoryOwner.toLowerCase()) await dispatchReadyTasks();'));
+  assert.ok(supervisor.includes("Reconciliation-only cycle"));
+});
