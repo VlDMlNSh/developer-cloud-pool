@@ -81,3 +81,12 @@
 ## Next bounded step
 
 Perform a security-focused review of PR #37, especially repository/workflow identity binding, claim transition semantics, finalizer recovery, GitHub concurrency guarantees and reusable-workflow permissions. Re-read Issue #1 governance/ruleset and verify the new acceptance variable without reading secrets. Keep PR draft and dispatch fail-closed until review findings are resolved.
+
+## Follow-up governance and validation-gate amendment — 2026-11-06
+
+- Re-read Issue #1 and its latest comment (2026-11-05). Last recorded active Ruleset evidence: ID `26550182`, exact selector `refs/heads/Основной`, PR required, but required approving reviews = 0, CODEOWNERS review = false, and extra approval for unattributed changes = false. This does not enforce independent review. The ruleset was not freshly read through API in this pass; treat its live state as NOT RE-VERIFIED.
+- The exact-head Pool Contract Validation run `42280397122` exposed `POOL_DISPATCH_ENABLED=false` in the workflow environment and passed the explicit guard. This is fresh CI evidence that the existing dispatch variable was false at that run.
+- Added a second required gate `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` to the Supervisor workflow. Updated Pool Contract Validation to expose that non-secret variable and fail if it is literal `true` before independent review/governance acceptance. This additional guard was committed after the last passing exact-head CI.
+- Latest working branch head after this follow-up: `5b45a29ed7869c091741c0037c68bfcd6640de7d`. Exact-head CI for this latest head: NOT VERIFIED. Prior exact tested head `8d848629511ac1b8c379fd6c8d20cc17496f6f54` has both CI workflows SUCCESS.
+- `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` live value: NOT VERIFIED. It was not read or changed. The new validator guard requires it not to be literal true until independent review and governance acceptance.
+- PR #37 remains DRAFT / OPEN / UNMERGED; reviews and review threads are empty. Do not merge.
