@@ -439,3 +439,15 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: docs/reports/2026-11-06-github-api-capability-marker-namespace-recheck.md.
 - No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect current production workflow contracts and ruleset tag semantics read-only; no resource creation.
+
+
+## 22. Default-branch production Supervisor/Worker authorization recheck — 2026-11-06
+- Read immutable default-branch files at HEAD 64d2636d4500127e635c214ccfb722c6b3fcda80: Worker workflow blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4; Supervisor workflow blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; Supervisor script blob 52bf03ca889edd92fd10c71ae96a2e35e106d43f.
+- Production Worker still exposes workflow_dispatch, does not validate owner-authored approval/caller provenance, and its report job has issues:write. Probe checks out exact target SHA, but this does not authorize the caller.
+- Production Supervisor still has privileged workflow_run, issues:write/actions:write, REST dispatch to Worker, and pool:ready label intake without trusted owner-comment verification. PR #15 removing workflow_run remains unmerged.
+- Supervisor script is fail-closed unless POOL_DISPATCH_ENABLED equals exact string true; current repository variable value is NOT VERIFIED. Dispatch API errors restore pool:ready; stale claims with no matching run are returned to pool:ready after 15 minutes. Both conflict with single-use approval/replay prevention.
+- Worker report job and Supervisor both mutate issue state: multiple writers remain.
+- PR #12 exact-head fixture/contract runs SUCCESS, but fixture is not production Worker. PR #15 exact-head contract SUCCESS, but proposed workflow change is not on default branch. PR #27 head f10db507660c2945642e99e23f957025058e27c5 has no PR-triggered CI runs (NOT VERIFIED). Reviews empty.
+- Full audit: docs/reports/2026-11-06-default-branch-supervisor-worker-authorization-recheck.md.
+- No code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: coherent test-first remediation plan; keep dispatch disabled and require independent review before any runtime.
