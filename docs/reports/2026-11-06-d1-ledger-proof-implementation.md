@@ -13,12 +13,13 @@
 - Added inert Worker entrypoint and pull-request-only CI with `contents: read`, pinned action SHAs, no secrets and no deployment.
 - Exact direct dev dependency pins: `@cloudflare/vitest-plugin@1.4.7`, `vitest@4.1.12`.
 
-## First CI attempt and correction
+## CI failures and corrections
 
-- Initial PR #35 run `42271255527` failed during Vitest config startup: plugin package did not export the `./config` subpath.
-- The configuration was corrected to import `readD1Migrations` from the package public entrypoint, following Cloudflare's documented example.
-- The first PR run's Pool Contract Validation `42271255356` succeeded. The D1 proof tests did not execute because config loading failed.
-- PR #35 is superseded by this branch; a new PR is needed to obtain exact-head CI after the correction.
+- PR #35 run `42271358694` (job `128076447530`) failed before test discovery because the config imported `readD1Migrations` from an unsupported `@cloudflare/vitest-plugin/config` subpath. The import was changed to the documented package public entrypoint.
+- PR #36 run `42271502211` (job `128076937313`) then failed before test discovery because `compatibility_date: 2026-11-06` exceeded the bundled workerd server's supported date `2026-10-26`. No D1 assertions ran; this is a runtime/configuration compatibility failure, not a failing ledger assertion.
+- Corrected `proofs/d1-ledger/wrangler.jsonc` to `compatibility_date: 2026-10-26` in commit `38748cac9d2f6464995459b45db9e4f97d07d755`.
+- Both failed D1 attempts had successful Pool Contract Validation jobs. Exact-head D1 proof remains NOT VERIFIED until the next run completes.
+- PR #35 is superseded/closed. PR #36 remains the active review path.
 
 ## Qualification limits
 
