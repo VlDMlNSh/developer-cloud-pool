@@ -552,3 +552,11 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - GitHub connector exposed no ruleset read/write operation. No settings or secrets were touched. No production workflow/script changed, no dispatch/runtime/DSH/provider call/deployment/paid resource.
 - Report: [reusable-workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md), commit `4b36d65ad1e5befbd56fc33b537feb7b946feee5`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: obtain exact-head CI for PR #32 at `75c83a2...`; then obtain authorized read-only tag-ruleset and Actions permission metadata. Do not implement/enable execution until durable consume is proven.
+
+
+## 2026-11-06 — PR #32 final-head CI supersedes earlier NOT VERIFIED note
+- Latest PR #32 head remains `75c83a288d865f1bbeda4905cf817e00084bcc2d`; base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; merge commit checked `86fbe64076bb67307409a7584bd2e2d7bfd05954` (PR metadata subsequently returned merge SHA `754c41c0434ac8ab46933d2f64a1429abb8cc359` after body update; test run below is the recorded exact-head run).
+- Exact-head negative-first CI run `42236017811`, job `127953700048`: COMPLETED / FAILURE, 8 tests, 0 pass, 8 fail. Corrected eighth test now confirms missing explicit caller and callee identity checks in current Worker. Other failures confirm the known production gaps. This is expected red baseline.
+- Same exact head Pool Contract Validation run `42236017724`, job `127953700415`: SUCCESS. This validates existing static contract only, not authorization.
+- Report updated: [reusable-workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md), latest blob `718948b2a8c841fd99d6c24b2493a24309de3cee`.
+- PR #32 body refreshed and read back; OPEN / DRAFT / UNMERGED; reviews 0, threads 0.
