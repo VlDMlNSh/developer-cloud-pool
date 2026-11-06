@@ -136,3 +136,11 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Adapter remains unmounted. No live API, OAuth, dispatch, worker execution, provider call, or deployment.
 - Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
 - Next: recheck exact-head CI and obtain independent review. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — PR #31 exact-head CI recheck
+- Final PR #31 head `5470fccbc4a5fe80a750f402d70d703757fc4c1d` is associated with Jarvis Web Prototype Validation run `42229917555`: COMPLETED/SUCCESS.
+- Job `127932882432` completed successfully: lockfile install, static checks, API negative/fail-closed tests, and dashboard contract validation all succeeded. Step API did not return test-count output.
+- Formal reviews and inline review threads remain empty. Independent review NOT RUN. Adapter remains unmounted.
+- Report updated: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
+- Next: obtain independent security review and recheck effective repository governance. Do not merge/mount or enable dispatch. Contour A NOT ACCEPTED; Contour B DEFERRED.
