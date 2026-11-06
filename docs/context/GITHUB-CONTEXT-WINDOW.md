@@ -500,7 +500,7 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Finding recorded in PR comment `6686543110`. Formal review submission was rejected because the connected identity authored the PR. Independent review NOT RUN.
 - PR #31 remains unmerged and the adapter remains unmounted from Hono. No live API, OAuth, dispatch, worker/DSH execution, provider calls, or deployment.
 - Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
-- Next: refresh exact-head CI and obtain an independent reviewer. Dispatch remains fail-closed. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain an independent security reviewer and recheck effective governance before any merge or adapter mounting. Exact-head CI is already SUCCESS (run `42229917555`). Dispatch remains fail-closed. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
 ## 17.1. PR #31 exact-head CI recheck — 2026-11-06
 - The exact final head `5470fccbc4a5fe80a750f402d70d703757fc4c1d` is associated with run `42229917555` / job `127932882432`, COMPLETED/SUCCESS.
