@@ -45,14 +45,7 @@ jobs:
       - name: Verify runtime
         run: node --version && npm --version
 
-      - name: Generate lockfile from exact direct dependency pins
-        run: |
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          printf 'LOCKFILE_BASE64_BEGIN\\n'
-          base64 -w0 package-lock.json
-          printf '\\nLOCKFILE_BASE64_END\\n'
-
-      - name: Install from generated lockfile
+      - name: Install from committed lockfile
         run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Static checks
