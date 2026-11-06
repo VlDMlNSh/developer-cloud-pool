@@ -132,3 +132,18 @@ Immediate safe baseline:
 - Source review found blocking provenance gaps: owner ID is caller-supplied; approval issuer/signature is not authenticated; caller supplies `now`; issuance/revocation/audit and quota/recovery are absent. The Worker entrypoint is inert and successful consume always returns `dispatch: false`.
 - Disposition: candidate C is the strongest technical candidate and advances to bounded qualification only. It is NOT selected for production and does not authorize provisioning, deployment, integration or dispatch. Do not broaden current Supervisor permissions. If free/card-free entitlement and least-privilege isolation cannot be proven, retain fail-closed behavior.
 - Full review: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
+
+
+## Cloudflare Free-tier account qualification — 2026-11-06
+
+- Read-only Cloudflare account API access: VERIFIED; exactly one account accessible (identifier withheld).
+- `GET /accounts/{account_id}/entitlements`: SUCCESS, empty result.
+- `GET /accounts/{account_id}/d1/database`: SUCCESS, zero databases.
+- `GET /accounts/{account_id}/workers/scripts`: SUCCESS, zero scripts.
+- `GET /accounts/{account_id}/workers/account-settings`: SUCCESS, `default_usage_model=standard`, `green_compute=false`. This setting does not establish paid/free subscription.
+- `GET /accounts/{account_id}/subscriptions`: BLOCKED / NOT VERIFIED, HTTP 403 because connected OAuth lacks Billing Read/Billing Write. Billing profile/payment details were not queried.
+- Current public Cloudflare docs confirm D1 available on Workers Free and publish 5M rows read/day, 100K rows written/day, 5GB total storage and 10 databases; Workers Free default access, 100K requests/day and 10ms CPU/request; Workflows 3K steps/day and 1GB-month storage; Queues 10K operations/day and 24h retention. D1 Free row read/write overages are enforced as errors until 00:00 UTC since 2026-09-01.
+- Sources: https://developers.cloudflare.com/workers/platform/pricing/ ; https://developers.cloudflare.com/d1/platform/pricing/ ; https://developers.cloudflare.com/changelog/post/2026-09-01-d1-free-tier-limit-enforcement/ ; https://developers.cloudflare.com/workers/platform/limits/ ; https://developers.cloudflare.com/workflows/reference/pricing/ ; https://developers.cloudflare.com/queues/platform/pricing/ .
+- Public Free product eligibility and quotas: VERIFIED. Account-specific subscription and card-free eligibility: NOT VERIFIED. No live D1 or Worker resource exists. No provisioning/deployment performed.
+- Disposition unchanged: candidate C remains local-only / not production-selected. No paid fallback. Do not provision until account plan and card-free enrollment are established through an authorized non-secret route.
+- Full evidence: [Cloudflare Free-tier account qualification](../reports/2026-11-06-cloudflare-free-tier-account-qualification.md).
