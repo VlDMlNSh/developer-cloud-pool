@@ -41,3 +41,20 @@ Source: https://developers.cloudflare.com/workers/static-assets/headers/ (last u
 ## Next bounded step
 
 Verify exact-head CI and obtain independent security review for PR #25. Then implement the server-side OAuth/session boundary and its negative tests as a separate reviewable slice. Do not deploy this prototype or enable dispatch.
+
+## Exact-head CI recheck — 2026-11-06
+
+A subsequent exact-head query confirmed that the implementation branch head at the time of this recheck, `3252e9a5e361cc75ecde3991f30193e39c3768dc`, had 2/2 successful GitHub Actions workflows:
+
+- Pool Contract Validation: run `42176848185`, job `127757167912`; all listed steps completed successfully, including dispatch-disabled invariant, workflow YAML syntax and pool security contracts.
+- Jarvis Web Prototype Validation: run `42176848195`, job `127757167861`; all listed steps completed successfully, including `npm ci`, static checks, API negative/fail-closed tests and static dashboard contract validation.
+
+The workflow definition was read back from the same implementation branch (blob `3b4475257e1e1325229a1e3fea11b8f5c163da27`); its pull-request path filter includes the validator and dashboard files changed in this slice. Job-level evidence was read back for both runs.
+
+- Exact-head CI at `3252e9a5e361cc75ecde3991f30193e39c3768dc`: **SUCCEEDED (2/2)**.
+- Independent review submissions: **NOT RUN** (zero).
+- Inline review threads: **NOT RUN** (zero).
+- OAuth/session, live GitHub adapter, browser/device QA and deployment: **NOT IMPLEMENTED / NOT RUN**.
+- Pool runtime and production dispatch: **NOT RUN / FAIL-CLOSED**.
+
+This report update is documentation-only; it does not change executable code. The CI result above applies to the implementation head before this report-only successor commit, not to a newly changed executable tree.
