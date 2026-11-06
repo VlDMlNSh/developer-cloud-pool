@@ -22,7 +22,7 @@ const headerLines = headers.trimEnd().split("\n");
 assert.equal(headerLines[0], "/*", "Cloudflare _headers must start with a route pattern");
 assert.ok(headerLines.length > 1, "At least one static response header is required");
 for (const line of headerLines.slice(1)) {
-  assert.match(line, /^\\s+[A-Za-z0-9-]+:\\s+\\S/, "Invalid Cloudflare _headers entry: " + line);
+  assert.match(line, /^\s+[A-Za-z0-9-]+:\s+\S/, "Invalid Cloudflare _headers entry: " + line);
 }
 for (const header of [
   "Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
