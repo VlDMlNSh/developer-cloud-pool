@@ -275,3 +275,18 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Next: verify no-card/free Cloudflare entitlement and isolation through authorized non-secret evidence; complete owner/issuer provenance and trusted-clock design; independent security review. Keep both dispatch gates fail-closed.
 - Report: [durable single-use claim design review](../reports/2026-11-06-durable-single-use-claim-design-review.md).
 - Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+## Cloudflare Free-tier account qualification — 2026-11-06 (read-only)
+
+- Cloudflare connector identity succeeded; GET /accounts returned exactly one accessible standard account. Account identifiers withheld.
+- Read-only account API: entitlements [] (success); D1 database list [] (success); Worker scripts [] (success); Workers account settings `default_usage_model=standard`, `green_compute=false` (success).
+- Account subscriptions endpoint returned HTTP 403 because OAuth connection lacks Billing Read/Billing Write. Billing profile/payment details were not queried. Account-specific plan and card-free eligibility remain NOT VERIFIED. Empty entitlements and standard usage_model are not proof of free/paid status.
+- Public Cloudflare docs: Workers Free is default and D1 is available. D1 Free limits 5M rows read/day, 100K rows written/day, 5GB storage total, 10 databases; Workers 100K requests/day and 10ms CPU/request; Workflows 3K steps/day and 1GB-month; Queues 10K operations/day, 24h retention. D1 daily row limit overage fails closed until midnight UTC since 2026-09-01.
+- Sources: https://developers.cloudflare.com/workers/platform/pricing/ ; https://developers.cloudflare.com/d1/platform/pricing/ ; https://developers.cloudflare.com/changelog/post/2026-09-01-d1-free-tier-limit-enforcement/ ; https://developers.cloudflare.com/workers/platform/limits/ ; https://developers.cloudflare.com/workflows/reference/pricing/ ; https://developers.cloudflare.com/queues/platform/pricing/ .
+- Public eligibility/quotas VERIFIED; account plan/card-free eligibility NOT VERIFIED; live D1 and Worker resources NOT PRESENT. No resource provisioned, no OAuth scope changed, no billing/profile/payment details accessed, no secrets or deployments.
+- Candidate C remains local-only / not production-selected. Do not provision until account-specific free/card-free eligibility is established through authorized non-secret evidence. No paid fallback. Dispatch remains BLOCKED / FAIL-CLOSED.
+- PR #36 OPEN / DRAFT, 37 commits, 12 files, zero reviews/threads. Current head `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code/workflow-tested SHA `4229d8701f8ee79692619f481cef1d9d9483ff16` (report-only commit after it; no fresh D1 run on current head).
+- PR #37 OPEN / DRAFT, 29 commits, 7 files, zero reviews/threads; exact-head CI evidence recorded for `5b45a29ed7869c091741c0037c68bfcd6640de7d`. Independent review NOT RUN.
+- Issue #38 remains OPEN / PLANNED. Full report: [Cloudflare Free-tier account qualification](../reports/2026-11-06-cloudflare-free-tier-account-qualification.md).
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
