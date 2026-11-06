@@ -1,6 +1,8 @@
 name: Reusable Pool Worker Boundary Validation
 
 on:
+  push:
+    branches: [feat/reusable-pool-worker-boundary-2026-11-06]
   pull_request:
     branches: [Основной]
     paths:
