@@ -878,3 +878,16 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Status: local D1 Workers-runtime proof VERIFIED at `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`; production D1 NOT QUALIFIED; independent security review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 **Next bounded step:** obtain a committed, reviewed lockfile in PR #36, then request independent security review. Do not merge or deploy. Only after the free/no-card entitlement is independently proven may a separate disposable cloud test be considered with explicit authorization.
+
+
+## Final D1 proof rerun after report/CI path update — 2026-11-06
+
+- Latest proof branch HEAD and exact tested SHA: `07f555788730f1d67acf3c11013e6d9c85894062`; isolated branch remains 16+ commits ahead of default and unmerged.
+- Exact-head D1 run `42272377412` (run 12), job `128079939633`: COMPLETED / SUCCESS; Workers Vitest 1 file / 13 tests passed.
+- Exact-head Pool Contract Validation run `42272377526` (run 249), job `128079941530`: COMPLETED / SUCCESS.
+- Lock artifact `13530006379`; archive digest `sha256:92b2094bc1bc3d6734d7b6709ae58b235d9193245dde89ed9035072027b9d755`; expires 2026-11-13. Downloaded and inspected exact artifact: lockfileVersion 3, 160 packages, lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; plugin 1.4.7, Vitest 4.1.12, Wrangler 4.152.0, Miniflare 5.20261019.2-beta. `npm ci` succeeded.
+- Added report path to D1 workflow trigger to ensure qualification report changes rerun the proof workflow. Current exact head has a fresh successful D1 and contract run.
+- PR #36 remains DRAFT / OPEN. Review count 0; independent security review NOT RUN. Lockfile is inspected but remains an artifact, not committed to the repository; merge remains blocked.
+- Local D1 proof VERIFIED for exact tested SHA only. Production integration, account-specific Workers Free/card-free eligibility, live quota/backup recovery and owner/caller provenance remain NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- No cloud resources, deployment, billing changes, secrets, provider calls or dispatch were used.
+- Next: commit the inspected lockfile into PR #36, then request independent security review. Do not merge/deploy until all remaining gates pass.
