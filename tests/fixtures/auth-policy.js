@@ -60,8 +60,15 @@ export function isAllowedUpstream(candidate, allowedOrigins) {
   try {
     const url = new URL(candidate);
     if (url.protocol !== "https:" || url.username || url.password || (url.port && url.port !== "443")) return false;
-    if (url.origin !== candidate.slice(0, candidate.indexOf("/", candidate.indexOf("://") + 3) < 0 ? candidate.length : candidate.indexOf("/", candidate.indexOf("://") + 3))) return false;
-    return allowedOrigins.some((origin) => typeof origin === "string" && url.origin === origin);
+    return allowedOrigins.some((origin) => {
+      if (typeof origin !== "string") return false;
+      try {
+        const allowed = new URL(origin);
+        return allowed.protocol === "https:" && allowed.origin === origin && url.origin === allowed.origin;
+      } catch {
+        return false;
+      }
+    });
   } catch {
     return false;
   }
