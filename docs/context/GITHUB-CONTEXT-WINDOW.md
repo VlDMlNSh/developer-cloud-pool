@@ -929,3 +929,16 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Local D1 proof VERIFIED for exact PR head. It does not authenticate caller/owner or approval issuer, verify signed approval provenance, provide trusted server time, issuance/revocation/audit, quotas, backup/restore, live account-limit evidence or production executor approval.
 - No cloud D1 resource, deployment, billing change, secret access, provider call, dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: commit the verified lockfile to PR #36 without broadening workflow permissions, obtain independent security review, then qualify the card-free cloud deployment path.
+
+
+## Final /next checkpoint — exact PR head and lock verification — 2026-11-06
+
+- PR #36 current head: `9815da8fd316d8263b59f3493d076d4623c4c925`, 33 commits ahead / 0 behind immutable base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR OPEN / DRAFT.
+- Exact-head D1 run `42274484200` / job `128087166113`: COMPLETED / SUCCESS; Workers-runtime suite 13/13 passed; npm ci, syntax check and lock artifact upload passed.
+- Exact-head Pool Contract Validation run `42274484234` / job `128087177754`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13532667030`; archive SHA-256 `60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`; downloaded and inspected. Extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, lockfileVersion 3, 160 packages; plugin 1.4.7, Vitest 4.1.12, workerd 1.20261019.1, Miniflare 5.20261019.2-beta, Wrangler 4.152.0.
+- Verified lockfile is staged for owner transfer at `/mnt/data/package-lock.json`; still NOT COMMITTED in GitHub. No alternate lock was fabricated.
+- PR reviews 0; inline review threads 0; independent security review NOT RUN.
+- Source-level review (not independent) flagged production requirements: authenticated caller/owner identity, verified issuer and signed owner approval provenance, trusted server clock, issuance/revocation/audit, quotas, backup/restore, live account-limit evidence and production-approved executor profile.
+- No D1 cloud resource, Worker deployment, billing change, secret access, provider call, GitHub dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add the verified lockfile to PR #36 at `proofs/d1-ledger/package-lock.json` without changing read-only CI permissions; then request independent security review. Only after those gates proceed to Cloudflare Free/card-free account qualification.
