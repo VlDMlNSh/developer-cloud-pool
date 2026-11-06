@@ -177,7 +177,7 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 
 ## Final verification — OAuth contract correction pass
 
-- Final branch HEAD after evidence update: `a2590fde257b3ab9d52044f3f9114b664383c543` is an earlier ADR commit only; use the current PR branch HEAD from PR #24 for final provenance. The preceding compare at `03561bde8238a70af89fd733e5c594f3fc58ab7a` was 32 ahead / 0 behind before the final report evidence update.
-- Updated files read back: ADR blob `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; report is linked above.
-- Exact-head CI for docs-only changes: NOT VERIFIED (no PR-triggered runs returned); independent reviews/threads 0/0.
+- Branch HEAD at final compare: `95723956230160b59ad92a5e32270d7d749ef319`, 34 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This checkpoint update itself is commit `95723956230160b59ad92a5e32270d7d749ef319`.
+- Updated files read back: ADR blob `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; checkpoint blob before this final update `6739e919aa1ed2d5ace853a603c5948e0e408d96`; report blob `2209c84b7133e649d23b1f4402b59a5fc7035806`.
+- Exact-head CI query for documentation-only HEAD returned no PR-triggered workflow runs: NOT VERIFIED, not PASS. PR #24 formal reviews and inline review threads remain 0/0.
 - OAuth/session implementation NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
