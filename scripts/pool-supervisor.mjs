@@ -259,4 +259,5 @@ if (!dispatchEnabled) {
 }
 if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
-await dispatchReadyTasks();
+if (eventName === "issues") await dispatchReadyTasks();
+else log("Reconciliation-only cycle; task dispatch is reserved for issue approval events.");
