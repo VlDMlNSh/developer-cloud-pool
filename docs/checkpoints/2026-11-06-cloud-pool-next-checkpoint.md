@@ -246,3 +246,16 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - MH 3 browser qualification BLOCKED; Cloudflare Workers Free plan/card-free D1 eligibility NOT VERIFIED. No resources or paid services used.
 - Report: [MH 3 host availability check](../reports/2026-11-06-mh3-host-availability-check.md).
 - Next: restore/enroll MH 3 online and verify exact host ID/capabilities before browser use. No active-host changes or plan upgrade without authorization.
+
+## Integrated Cloud Pool / Web Console / MH 3 reconciliation — 2026-11-06
+
+- Default Основной HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae.
+- MH 3 not present in SentinelX or Desktop Commander. Only Voktors-Mini online; mh-dev-01/02 disabled/offline; SentinelX Free active-host slot occupied. No substitute host used.
+- Cloudflare workers.dev namespace provisioned/read back; Worker scripts 0; D1 databases 0; subscription endpoint HTTP 403 due missing Billing Read. Workers Free entitlement/card-free eligibility NOT VERIFIED.
+- PR #24 ADR/OpenAPI: head d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6; 59 ahead / 2 behind current default; exact-head OpenAPI run 42188894226 and Pool Contract 42188894227 both SUCCESS; reviews/threads 0/0; OAuth/session NOT IMPLEMENTED.
+- PR #25 Hono prototype: head 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85; 29 ahead / 2 behind current default; exact-head Pool Contract run 42228269689 and Jarvis Web run 42228269676 both SUCCESS, including npm ci, static checks, auth-policy tests, UI validation; reviews/threads 0/0. Runtime remains fail-closed; test fixture not production auth.
+- PR #24/#25 must not merge blindly while 2 commits behind current default. Reconcile and rerun CI. Active Ruleset audit indicates approvals=0 and CODEOWNERS review false; independent review not enforced.
+- PR #36/#37 remain draft; Issue #38 planned. Dispatch disabled/fail-closed.
+- Report: [Integrated Cloud Pool / Web Console / MH 3 reconciliation](../reports/2026-11-06-integrated-pool-web-console-host-reconciliation.md).
+- Next: keep MH 3 blocked; reconcile web-console PR branches against default; synthetic OAuth compatibility tests; independent security review; verify Workers Free/card-free entitlement through authorized non-secret evidence. No deployment/dispatch.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
