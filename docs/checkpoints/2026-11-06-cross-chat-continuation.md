@@ -91,3 +91,14 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Reports: docs/reports/2026-11-06-github-api-capability-marker-namespace-recheck.md and docs/reports/2026-11-06-default-branch-supervisor-worker-authorization-recheck.md.
 - No code/config mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: coherent test-first Supervisor/Worker remediation plan; keep dispatch disabled.
+
+
+## 2026-11-06 — Comparative authorization integration audit
+- PR #7 has useful owner event/approval comment helpers and Worker checks, but still uses workflow_dispatch, retains Worker report issues:write, uses owner login rather than numeric ID, relies on mutable bot comments and bounded history scans; no durable atomic consume. Base is stale and independent review absent.
+- PR #18 fail-closed recovery tests SUCCESS: active runs wait; terminal/unknown/expired/no-run and dispatch failures go needs-review, never pool:ready. It does not solve owner provenance or caller boundary.
+- PR #15 removes workflow_run but its stale-recovery behavior is superseded by PR #18's no-requeue semantics; neither is merged.
+- PR #12 caller-context fixture does not invoke production Worker.
+- PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2; exact-head PR CI NOT VERIFIED; reviews empty.
+- New report: docs/reports/2026-11-06-comparative-authorization-integration-audit.md.
+- No runtime/config changes, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: test-first integrated implementation design from current default branch with durable single-use marker, workflow_call-only Worker, Supervisor sole state writer, fail-closed recovery. No dispatch/merge.
