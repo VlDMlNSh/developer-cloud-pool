@@ -50,19 +50,28 @@ Typed, minimized API response -> graphite dashboard
 
 No browser-to-GitHub privileged API path exists. The browser never receives a GitHub token, PAT, GitHub App private key, provider key, or workflow token. The initial implementation does not need a database: GitHub remains the existing task/evidence source of truth; the Worker must not create a parallel task ledger.
 
-### Authentication nuance
+### Authentication model — application-issued session
 
-Cloudflare documents that Access can protect a Worker and expose identity through `ctx.access`, but also documents that the internal Static Assets router does **not** pass `ctx.access` to the user Worker. Therefore, the proposed combined Static Assets + API design must not assume `ctx.access` exists. The API must validate the Access-signed `Cf-Access-Jwt-Assertion` header itself (signature using the documented JWKS, exact issuer, configured audience, expiry and not-before) and fail closed on missing/invalid claims. The Access cookie is handled by the Access edge; no custom client-side token storage is introduced.
+Cloudflare Access is **not part of this deployment path**: the owner cannot complete its payment-details onboarding, and the project must not depend on Access or ask for another payment instrument. The application instead uses server-side GitHub OAuth followed by an application-issued opaque session cookie.
 
-Before implementation, verify the exact behavior on the chosen Worker deployment configuration with a no-secret test. If Access assertion delivery cannot be proven for the selected route, stop and choose a separately protected API origin or a reviewed alternative; do not silently trust user-supplied identity headers.
+Required flow and controls before any protected route is enabled:
 
+1. Generate a cryptographically random, single-use OAuth `state` value; bind it to a short-lived pre-authentication cookie and validate it exactly on callback. Reject missing, mismatched, expired or replayed state.
+2. Exchange the authorization code only on the Worker server side. Validate the GitHub response and retrieve the authenticated account's immutable numeric user ID from GitHub; never trust a login name or callback-supplied identity field.
+3. Enforce an exact numeric owner-ID allowlist. Deny all other identities; do not provide self-service registration or role escalation in v1.
+4. Issue a high-entropy opaque session identifier in a `__Host-jarvis_session` cookie with `Secure; HttpOnly; SameSite=Lax; Path=/` and no `Domain`. Keep session validity, expiry and revocation server-side; never place OAuth access tokens in browser storage or return them to client JavaScript.
+5. Validate the session on every protected API request. Expire and revoke sessions server-side, rotate after authentication, and reject missing, malformed, expired or revoked sessions. Do not treat possession of a GitHub OAuth callback URL as an authenticated session.
+6. Keep the v1 API GET-only. Enforce same-origin request policy and restrictive CORS (none by default); do not expose mutation, approval, dispatch, or arbitrary proxy endpoints.
+7. Protect the OAuth callback against login CSRF and replay; validate exact callback origin/host and redirect destinations. Use fixed GitHub API hosts and repository paths, bounded timeouts, response-size limits, and no caller-controlled upstream URLs.
+
+The Worker must not expose a privileged GitHub token, PAT, GitHub App private key, provider key or workflow token to the browser. OAuth/session implementation is NOT IMPLEMENTED and must remain fail-closed until negative tests and independent security review pass. The session-cookie contract in the OpenAPI document is a target, not evidence of implementation.
 ## Options considered
 
 | Option | Advantages | Limitations | Disposition |
 |---|---|---|---|
 | GitHub Pages alone | Free static hosting, easy GitHub integration | Static only; no trusted server-side API, secret isolation or server authorization | REJECT as complete solution; may host a UI-only mock |
 | GitHub Pages + separate API | Reuses Pages and separates backend | Two origins/services, CORS/session complexity, separate deployment and security boundary | Viable fallback, more moving parts |
-| Workers Static Assets + Hono API + Access | One origin for UI/API; managed HTTPS; no always-on VM; static files and API routes can share one Worker; Hono is portable across runtimes | Provider dependency; Free quotas; Access account/plan and JWT behavior must be verified; deploy token requires owner-managed setup | PREFERRED CANDIDATE, NOT QUALIFIED |
+| Workers Static Assets + Hono API + application-level GitHub OAuth | One origin for UI/API; managed HTTPS; no always-on VM; static files and API routes can share one Worker; Hono is portable across runtimes | Provider dependency; Free quotas; Access account/plan and JWT behavior must be verified; deploy token requires owner-managed setup | PREFERRED CANDIDATE, NOT QUALIFIED |
 | Open WebUI | Mature existing web application, authentication and API surface, model-provider integrations | Primarily a model/chat interface; adds a persistent application/data stack and does not replace Pool Bridge, task authority or Jarvis-specific evidence UX | REUSE selectively for later model experimentation, not the primary pool console |
 | GitHub Actions runner as web host | No separate host account | Ephemeral job lifecycle, queued/delayed starts, finite runtime; no durable listener or availability | REJECT |
 | Owner-operated server / external node | Full control over runtime and storage | Conflicts with the web-first / no-server dependency; adds patching, uptime, network exposure and hardware qualification | DEFER to later external-server phase |
@@ -118,7 +127,7 @@ Recommended response headers: strict Content-Security-Policy (including `frame-a
 
 1. Confirm hosting-provider choice, account plan, Workers Free entitlement and OAuth implementation readiness and no-cost entitlement. No deployment before this check.
 2. Implement locally with pinned dependencies and fixtures; add OpenAPI validation, JWT negative tests, API allowlist tests, XSS/SSRF fixtures and browser smoke tests.
-3. Deploy only to a non-production preview with no secrets and synthetic/public data; verify Access protects assets and API separately.
+3. Deploy only to a non-production preview with no secrets and synthetic/public data; verify the application session protects both static application entry points and API routes consistently.
 4. Complete independent security review and exact-head CI; verify the preview from desktop and iPhone browser.
 5. Only then consider production deployment. Deployment credentials must be narrowly scoped, stored only as GitHub Actions secrets, and never exposed to PR code or artifacts. Use an owner-approved environment with deployment protection.
 6. Rollback by redeploying the last accepted immutable Worker version and reverting the static asset bundle. Preserve audit metadata; do not alter Pool Bridge or task state during rollback.
@@ -132,7 +141,7 @@ No Cloudflare account was accessed, no token/secret was created or read, and no 
 - The console is a remote user interface, not the runtime for workers and not a continuous scheduler.
 - Cloudflare Workers + application-level GitHub OAuth is only a preferred candidate. Actual account entitlement, application session enforcement across static assets and API, domain availability, free-tier quota and deploy credential scope remain NOT VERIFIED.
 - This ADR does not authorize paid resources, secret creation, deployment, production mutations, dispatch, model calls or external worker/server integration.
-- If Cloudflare Free + Access cannot meet the no-cost and security requirements, compare the GitHub Pages + separately hosted free API option or defer deployment; do not silently select a paid plan.
+- If Cloudflare Workers Free + application-level GitHub OAuth cannot meet the no-cost and security requirements, compare the GitHub Pages + separately hosted free API option or defer deployment; do not silently select a paid plan.
 
 ## References
 
@@ -140,8 +149,8 @@ No Cloudflare account was accessed, no token/secret was created or read, and no 
 - [Cloudflare Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/)
 - [Cloudflare Workers Static Assets SPA routing](https://developers.cloudflare.com/workers/static-assets/routing/single-page-application/)
 - [Cloudflare Static Assets bindings and run_worker_first](https://developers.cloudflare.com/workers/static-assets/binding/)
-- [Cloudflare Access with Workers, including ctx.access limitations](https://developers.cloudflare.com/workers/configuration/cloudflare-access/)
-- [Cloudflare Access JWT validation](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/)
+- [Cloudflare Workers routing and Static Assets](https://developers.cloudflare.com/workers/configuration/cloudflare-access/)
+- [GitHub OAuth web application flow](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/)
 - [Hono Cloudflare Workers guide](https://hono.dev/docs/getting-started/cloudflare-workers)
 - [Hono source repository](https://github.com/honojs/hono)
 - [Open WebUI API reference](https://docs.openwebui.com/reference/)
