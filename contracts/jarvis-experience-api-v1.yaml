@@ -23,6 +23,7 @@ paths:
       tags: [Health]
       operationId: getHealth
       summary: Read service health
+      security: []
       responses:
         '200':
           description: Service is responding; this does not imply that the pool is running.
@@ -30,10 +31,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
   /pool/summary:
     get:
       tags: [Pool]
