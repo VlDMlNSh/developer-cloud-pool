@@ -142,3 +142,15 @@ Review classification: useful source-level engineering review only; NOT an indep
 - PR #36 remains draft/open; review count 0; independent security review NOT RUN. The bounded source review is not a substitute for independent review.
 - Production blockers remain: caller/owner identity, issuer and signed-approval provenance, trusted server clock, issuance/revocation/audit, quota accounting, backup/restore, live account limits and production executor approval.
 - No cloud D1 resource, deployment, billing change, secret access, provider call, GitHub dispatch or production integration.
+
+
+## Final PR-head verification after trigger cleanup — 2026-11-06
+
+- Final PR head: `f340bd02bdfb045c3ba242ebe2581511b5a4b5c7` (27 commits ahead / 0 behind immutable base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`).
+- D1 workflow run `42273670730`, job `128084381636`: COMPLETED / SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation run `42273670766`, job `128084412944`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13532516126`; ZIP SHA-256 `cdce1fe10af044e4481224c528cfbcd43b904a051354109782fd683d80f93dc8`; downloaded and inspected. Extracted `package-lock.json` SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 packages. Versions: plugin 1.4.7, Vitest 4.1.12, workerd 1.20261019.1, Miniflare 5.20261019.2-beta, Wrangler 4.152.0.
+- The workflow no longer triggers on report-only changes; code and workflow changes still trigger. This avoids recursive documentation-triggered runs.
+- Lockfile remains NOT COMMITTED. Verified artifact bytes are preserved, but no supported direct file-to-GitHub-Contents transfer was available. Do not merge while absent.
+- PR #36 remains OPEN / DRAFT; 0 submitted reviews and 0 inline threads. Independent security review NOT RUN.
+- Local proof VERIFIED for this PR head only. Production blockers and exclusions remain unchanged; no cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
