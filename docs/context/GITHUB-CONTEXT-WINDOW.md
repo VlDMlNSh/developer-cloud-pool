@@ -532,3 +532,10 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: [negative-first pool authorization tests](../reports/2026-11-06-negative-first-pool-authorization-tests.md), latest report commit `4aa0e1b236d66c4b19de99146d65cd2214a3c480`.
 - No production workflow/script changes, dispatch, Worker/DSH runtime, secrets/config changes, provider/model calls, paid resources or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: use these exact failing assertions to implement a single integrated production remediation, starting with the reusable Worker boundary and removing Worker issue-write authority; then rerun tests. Do not enable dispatch or merge.
+
+
+## 2026-11-06 — PR #32 final documentation successor
+- Authorization contract status text updated after CI evidence; final contract blob `aede066210086f4955e125192c7499ad039997fb`.
+- PR #32 final branch HEAD `dd3de21690e921bfccf207efd919cfd63be53e60`; code/test head remains `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`. The successor commit changed only the design contract document; no executable source changed, so the prior exact-head test result remains applicable to code/test head.
+- PR #32 OPEN / DRAFT / UNMERGED, base SHA `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, mergeable=true; reviews 0, threads 0.
+- Final evidence report updated: [negative-first pool authorization tests](../reports/2026-11-06-negative-first-pool-authorization-tests.md).
