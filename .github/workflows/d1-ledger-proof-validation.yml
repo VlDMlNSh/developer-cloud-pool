@@ -6,7 +6,6 @@ on:
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
-      - "docs/reports/2026-11-06-d1-ledger-proof-implementation.md"
 
 permissions:
   contents: read
