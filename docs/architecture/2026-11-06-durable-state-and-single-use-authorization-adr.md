@@ -1,17 +1,17 @@
 # Durable state and single-use authorization storage — architecture decision record
 
 - Date: 2026-11-06
-- Status: CANDIDATE SELECTED FOR LOCAL/SYNTHETIC PROOF ONLY
+- Status: D1 PREFERRED CANDIDATE; DURABLE OBJECTS SECONDARY ALTERNATIVE; BOTH NOT QUALIFIED
 - Scope: Contour A state persistence and atomic approval consumption.
 - No deployment, cloud resource creation, billing/plan change, secret access, dispatch, or production integration is authorized by this record.
 
 ## Decision
 
-Evaluate **SQLite-backed Cloudflare Durable Objects** as the first persistence/coordination candidate for the Cloud Pool authorization ledger and tightly scoped task state.
+Retain the earlier repository assessment: **Cloudflare D1 on Workers Free remains the preferred first candidate** for the central transactional single-use approval ledger because it is the simpler relational fit and its batch API provides SQL transaction semantics. **SQLite-backed Durable Objects remain a viable secondary alternative** when per-approval serialized coordination or object-local state is materially needed.
 
-Do not treat this as a production selection until the local Workers-runtime integration tests, quota/failure tests, free-plan account eligibility, security review, and governance checks pass.
+This ADR records the Durable Objects comparison and testing path; it does not reverse the existing D1 preference. Neither candidate is selected for production. Do not prototype both in parallel. The next bounded proof should continue with D1 unless new evidence demonstrates a concrete coordination requirement that justifies Durable Objects.
 
-Do not introduce D1, KV, PostgreSQL, Redis, or a paid managed service in parallel during this proof. D1 remains a possible later relational read/reporting store if a demonstrated requirement justifies it.
+Do not treat either candidate as production-ready until local runtime tests, quota/failure tests, free-plan account eligibility, security review, and governance checks pass. Do not introduce KV, PostgreSQL, Redis, or a paid managed service.
 
 ## Why this candidate
 
@@ -80,6 +80,6 @@ Pin exact package versions and lockfile entries before adding dependencies. Do n
 
 ## Acceptance
 
-This ADR is accepted as a **candidate for local proof only**. The next implementation pass may add a synthetic SQLite-backed Durable Object and Vitest tests on an isolated branch after exact package versions and existing repository test conventions are checked. It must not mount the object in the deployed Hono Worker or any production workflow.
+This ADR is an architecture comparison only. The next implementation pass should continue with a local-only D1 adapter and transaction tests, following the prior free transactional state-store assessment. Durable Objects should receive a separate proof only if per-approval actor coordination is required and D1's transaction model proves insufficient. No storage adapter may be mounted in the Hono Worker or production workflow.
 
 Production use requires exact-head CI, independent security review, free/no-card account eligibility read-back, current governance/ruleset verification, and explicit authorization for a separate disposable cloud test.
