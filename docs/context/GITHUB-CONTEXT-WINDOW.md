@@ -314,3 +314,14 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - PR #37 recorded exact-head environment read-back: `POOL_DISPATCH_ENABLED=false`, `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` empty/unset. No secrets read, no gates changed, no runtime/DSH/Resource Probe/provider execution.
 - Governance remains BLOCKED: active Ruleset does not enforce approval. Do not merge PR #36/#37 or enable dispatch until Ruleset enforces independent review and authorized reviewers review final exact heads.
 - Report: [live governance and dispatch gate audit](../reports/2026-11-06-live-governance-ruleset-audit.md).
+
+
+## MH 3 host availability check — 2026-11-06
+
+- Fresh SentinelX host inventory: only connected operational host is `Voktors-Mini.Dlink` (`host_5f7264034bdf0b51`, agent 0.23.30, session `sess_58063dc45f31`). Disabled hosts: `mh-dev-01` (`host_58114817a6ab4dd0`, user-disabled 2026-10-22) and `mh-dev-02` (`host_5bda3b5006655e9e`, user-disabled 2026-10-01). No MH 3 / `mh-dev-03` host is present in connected, offline, or disabled inventory.
+- SentinelX Free plan active-host limit 1; active 1, parked 0, available 0.
+- Desktop Commander inventory independently lists Voktors-Mini Online, mh-dev-02 Offline (last seen 526h), mh-dev-01 Offline (last seen 565h), no MH 3 device.
+- No commands run on any other host. A read-only Voktors-Mini probe was rejected before execution by allowlist (`hostname` not allowed); no allowlist change. Capabilities query encountered duplicate-session reconnect. No browser, credentials, dashboard, host activation, plan upgrade, or Cloudflare resource touched.
+- Decision: MH 3 is not registered/visible; do not silently substitute Voktors-Mini. Cloudflare dashboard check on MH 3 BLOCKED. Browser availability on MH 3 NOT CHECKED. Cloudflare actual Workers Free status and card-free D1 eligibility remain NOT VERIFIED.
+- Report: [MH 3 host availability check](../reports/2026-11-06-mh3-host-availability-check.md).
+- Next: restore/enroll exact MH 3 host in SentinelX and make it online; then verify exact host ID, macOS, capabilities, allowlist and browser. Do not change active host or upgrade SentinelX without explicit authorization.
