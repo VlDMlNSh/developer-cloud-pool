@@ -49,3 +49,9 @@ Wire this test file into a dedicated read-only CI job on the design branch (or a
 - CI checked merge commit `bbb90f8d17a617b7a7edb5336139f0fb76cba4af`; current base SHA and current production workflow blobs were separately re-read. Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`.
 - PR #32 formal reviews: 0; inline review threads: 0. Independent review NOT RUN.
 - No production source changes, dispatch, Worker/DSH runtime, secret/config mutation, provider/model calls, paid services or deployment.
+
+
+## Documentation successor and final PR metadata
+- Authorization contract was updated after CI read-back to replace its stale NOT RUN statement with exact baseline evidence. Updated contract blob: `aede066210086f4955e125192c7499ad039997fb`; documentation-only branch commit / final PR head: `dd3de21690e921bfccf207efd919cfd63be53e60`.
+- PR #32 remains OPEN / DRAFT / UNMERGED; base SHA `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; final head `dd3de21690e921bfccf207efd919cfd63be53e60`; mergeable=true at last read-back. Exact test CI remains tied to code/test head `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`; successor changed only documentation.
+- PR body was refreshed and read back. Reviews 0; inline threads 0.
