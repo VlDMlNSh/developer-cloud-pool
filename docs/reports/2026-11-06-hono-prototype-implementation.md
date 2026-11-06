@@ -44,6 +44,14 @@ No GitHub OAuth routes, OAuth App, credentials, cookies, session store, GitHub A
 - Worker deployment: NOT RUN.
 - Security qualification: NOT RUN.
 
+## Follow-up — secret-free authentication policy fixtures (2026-11-06)
+
+- Added test-only `tests/fixtures/auth-policy.js` and `tests/auth-policy.test.js`; these are not imported by the Worker and do not implement or enable authentication.
+- Coverage: single-use OAuth state/mismatch/expiry, exact GitHub numeric owner-ID allowlist, session expiry/revocation, secure host-only cookie attributes, exact HTTPS Origin validation, and fixed HTTPS upstream allowlist.
+- Fixture blob: `7b69e79d6c39aac2db861ef3fde12b386ab78a42`; test blob: `9fab2f5aed43057890fd767c6e37ccbaa10d705c`.
+- Exact-head CI on `f8e9e5c2eb4f7ac354e92b6ea6d8728bfd28b861`: NOT VERIFIED (no run/status records returned); local tests NOT RUN.
+- Detailed evidence: [auth policy negative fixtures report](2026-11-06-auth-policy-negative-fixtures.md).
+
 ## Next step
 
-Verify the exact-head CI run using `npm ci`, inspect the lockfile diff and package provenance, then obtain independent review. Only after review should OAuth/session work begin. Do not deploy this scaffold.
+Read exact-head CI terminal results and obtain independent review of the new test fixtures. Only then design production OAuth/session integration. Keep protected routes fail-closed and do not deploy this scaffold.
