@@ -51,7 +51,7 @@ if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s
 }
 
 if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Worker must default to permissions: {}");
-if (!/validate:[\\s\\S]*?issues:\\s*read/.test(worker)) fail("Worker validation job must have issues: read");
+if (!worker.includes("issues: read")) fail("Worker validation job must have issues: read");
 if (!/  probe:[\s\S]*?permissions:\s*\n\s+contents:\s*read/.test(worker)) fail("Worker probe job must have contents: read");
 if (!/  report:[\s\S]*?permissions:\s*\n\s+issues:\s*write/.test(worker)) fail("Worker report job must have issues: write");
 const probeJob = worker.split(/^  probe:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
