@@ -32,9 +32,6 @@ jobs:
           node-version: 24.9.0
           check-latest: false
 
-      - name: Generate an isolated dependency lock for this run
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-
       - name: Install exact declared dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
 
