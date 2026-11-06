@@ -77,3 +77,41 @@ Open a new draft PR from this branch, wait for exact-head Workers-runtime D1 tes
 - Downloaded and inspected exact-head lockfile: lockfileVersion 3, 160 packages, SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; plugin 1.4.7, Vitest 4.1.12, Wrangler 4.152.0, Miniflare 5.20261019.2-beta. CI `npm ci` succeeded.
 - The lockfile remains an artifact and is NOT committed. Independent security review remains NOT RUN. PR #36 remains draft / not merge-ready.
 - This is local-only D1 runtime proof; no cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
+
+
+## Follow-up engineering review — 2026-11-06
+
+### Reproducibility artifact integrity
+
+- Retrieved the exact lock artifact `13530006379` from the final successful run and inspected the ZIP contents.
+- ZIP SHA-256: `92b2094bc1bc3d6734d7b6709ae58b235d9193245dde89ed9035072027b9d755`.
+- Extracted `package-lock.json` SHA-256: `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`.
+- LockfileVersion 3; 160 package entries; resolved versions match the previously recorded inventory.
+- The bytes are verified locally, but this execution path does not provide a supported bridge to write the extracted binary-origin text file into the GitHub Contents API. Therefore the lockfile has NOT been committed; no substitute lockfile was generated or hand-reconstructed.
+
+### Bounded source review (not independent security review)
+
+Reviewed the current source files `consume.mjs`, `worker.mjs`, migration, tests, package manifest and workflow.
+
+Positive observations:
+- The consume operation is one conditional SQL UPDATE, binding approval ID, owner/repository IDs, issue, immutable target SHA, profile, envelope digest, ready state, unconsumed state and expiry.
+- Only an explicit successful D1 result with exactly one changed row yields `ALLOW_ONCE`; all other outcomes deny.
+- Storage exceptions fail closed; dispatch remains hard-coded false.
+- Worker HTTP entrypoint is inert (404); no dispatch, provider, GitHub or secret capability is imported.
+- CI has contents:read only, pinned action SHAs, checkout credentials disabled, no secrets and no deployment.
+
+Unresolved security/production requirements (blocking; not covered by local proof):
+1. This package does not authenticate the caller or establish owner identity. `ownerNumericId` is supplied as a binding field and is not independently derived from a verified GitHub identity.
+2. It does not verify an owner-signed approval or prove the provenance of the ledger row. `approvalId` and `envelopeDigest` are matched, not cryptographically authenticated by this adapter.
+3. The caller supplies `now`; production must use a trusted server-side clock, not caller-controlled time.
+4. No issuance/revocation workflow, durable audit trail, quota reservation, backup/restore test or live account-limit test exists in this proof.
+5. The allowlisted profile is a placeholder proof profile and must not be treated as an approved production executor.
+
+Review classification: useful source-level engineering review only; NOT an independent security review and NOT production qualification.
+
+### Current disposition
+
+- Exact-head local Workers-runtime proof remains VERIFIED for `07f555788730f1d67acf3c11013e6d9c85894062`.
+- Lockfile content and hashes are VERIFIED; repository commit of lockfile remains BLOCKED by file-transfer/write-path limitation in this session.
+- PR #36 remains draft/open and NOT MERGE-READY.
+- No cloud resources, deployment, billing changes, secrets, provider calls, GitHub dispatch or production integration.
