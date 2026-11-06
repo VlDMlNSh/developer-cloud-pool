@@ -128,3 +128,14 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - Local D1 proof VERIFIED only. Identity, issuer/provenance, signed approval, trusted clock, issuance/revocation/audit, quotas, backup/restore, account limits and approved production executor remain unresolved.
 - No cloud resources, deployment, billing changes, secrets, provider calls or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: commit exact lockfile with unchanged read-only CI permissions; obtain independent security review; then separately qualify Cloudflare Free/card-free capability.
+
+
+## Final exact-head acceptance checkpoint — 2026-11-06
+
+- PR #36 head `9815da8fd316d8263b59f3493d076d4623c4c925`, 33 ahead / 0 behind base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; draft/open.
+- D1 workflow `42274484200` / job `128087166113`: SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation `42274484234` / job `128087177754`: SUCCESS.
+- Lock artifact `13532667030`; ZIP SHA-256 `60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`; extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; 160 packages, versions recorded in the context window. Verified copy available as `/mnt/data/package-lock.json`; NOT COMMITTED.
+- Independent security review NOT RUN; PR reviews 0. Production identity/issuer, signed approval, trusted clock, issuance/revocation/audit, quota, backup/restore, account entitlement and executor gates remain unresolved.
+- No cloud resources, deployment, billing changes, secrets, provider calls or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add exact lockfile to PR #36 without widening workflow permissions; independent security review; then qualify card-free cloud deployment.
