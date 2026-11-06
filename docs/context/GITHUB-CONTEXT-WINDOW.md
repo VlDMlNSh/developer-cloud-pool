@@ -222,3 +222,19 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - This endpoint is NOT yet accepted as atomic CAS; GitHub docs do not explicitly guarantee transaction semantics. Must be qualified under competing requests.
 - Do not broaden current Supervisor from `issues: write` to `contents: write`. Evaluate a dedicated isolated state repository/authority and retention/recovery model first.
 - No refs created and no permissions changed. Candidate DESIGN ONLY / NOT QUALIFIED.
+
+
+## Supervisor claim protocol qualification — 2026-11-06
+
+- Tracking issue created: [Issue #38 — Design and qualify durable single-use Supervisor task claims](https://github.com/VlDMlNSh/developer-cloud-pool/issues/38), OPEN / PLANNED.
+- Design decision record: [Durable Supervisor claim design](../architecture/DURABLE-SUPERVISOR-CLAIM-DESIGN-2026-11-06.md).
+- Dated report: [Supervisor claim protocol qualification pass](../reports/2026-11-06-supervisor-claim-protocol-qualification.md).
+- Fresh live check: default HEAD remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #37 remains OPEN / DRAFT / UNMERGED at `5b45a29ed7869c091741c0037c68bfcd6640de7d`; reviews/comments 0/0.
+- Exact-head CI remains SUCCESS: runs `42280875294` and `42280875365`.
+- Active Ruleset `26550182` still requires zero approvals and no CODEOWNERS review; governance does not enforce independent approval.
+- Re-enumerated all five default workflow files. Default Supervisor/Worker still contain privileged legacy workflow behavior because PR #37 is not merged. DSH runtime and Resource Probe have manual dispatch but no issue-write permission/mutation.
+- GitHub Actions concurrency: one running execution per group; `queue: max` allows up to 100 pending, but FIFO is not guaranteed and overflow is rejected/cancelled. It serializes runs in the group only; it is not a global Issue lock.
+- GitHub Issues label PATCH is not CAS. Git reference creation has documented 201/409/422 responses and requires Contents: write; not accepted as formal CAS and would materially expand authority. Dedicated state repository or conditional-write store remain candidates only.
+- No source/workflow changes, merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets access, credentials, permission changes, provisioning or deployment.
+- Status: design CREATED; Issue #38 PLANNED; claim backend NOT SELECTED / NOT QUALIFIED; PR #37 exact-head CI VERIFIED; independent review NOT RUN; dispatch BLOCKED / FAIL-CLOSED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: qualify a least-privilege conditional claim backend, or explicitly bound a single-writer prototype to non-provider/non-untrusted workloads; keep PR #37 draft and gates closed.
