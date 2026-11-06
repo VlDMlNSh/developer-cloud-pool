@@ -67,3 +67,15 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - No deployment, OAuth/session implementation, runtime execution, DSH, Resource Probe, provider calls, secrets access or paid resources.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
 - Next: reconcile the two-commit divergence and stacked PR dependency without blind retarget/merge; then submit the path-segment fix as a stacked PR, obtain exact-head CI and independent review. Re-read governance before any execution.
+
+## Integrated authorization branch audit — 2026-11-06
+
+- Dated report: [integrated pool authorization branch audit](../reports/2026-11-06-integrated-pool-authorization-branch-audit.md).
+- Candidate branch `fix/integrated-pool-authorization-2026-11-06` compares as 6 ahead / 0 behind `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; merge base equals default.
+- Branch adds decision function + tests + validation workflow only. No production Worker/Supervisor source files are changed.
+- Read-back default production Worker still has `workflow_dispatch`, issue-write report job and issue PATCH/POST. Supervisor still has `workflow_run`, `actions: write`, and REST workflow dispatch.
+- New static contract tests assert these dangerous patterns are absent; against current default source they are expected to fail. This is a source-based inference, NOT an observed CI failure. Candidate branch exact head and CI NOT VERIFIED; no PR observed.
+- Pure decision function models a first successful durable consume receipt but does not implement the durable consume operation. It is not a production authorization integration.
+- No merge, dispatch, Worker execution, provider call, secret access or deployment.
+- Next: implement the complete production caller/callee boundary in a coherent branch (Worker reusable-only/no issue-write; Supervisor no privileged workflow_run/actions-write/REST dispatch; static reusable caller identity checks; durable single-use consume and fail-closed recovery), then exact-head CI and independent security review. Keep dispatch fail-closed.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
