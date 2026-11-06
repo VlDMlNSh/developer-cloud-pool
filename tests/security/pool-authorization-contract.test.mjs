@@ -20,8 +20,12 @@ const supervisorScript = fs.readFileSync(
 );
 
 function workflowEventBlock(source) {
-  const match = source.match(/^on:\s*\n([\s\S]*?)(?=^[^ \t#][^\n]*:|\s*$)/m);
-  return match?.[1] ?? "";
+  const lines = source.split(/\r?\n/);
+  const start = lines.findIndex(line => /^on:\s*$/.test(line));
+  if (start < 0) return "";
+  let end = start + 1;
+  while (end < lines.length && (/^\s/.test(lines[end]) || /^\s*$/.test(lines[end]) || /^#/.test(lines[end]))) end += 1;
+  return lines.slice(start + 1, end).join("\n");
 }
 
 test("Worker is reusable-workflow-only", () => {
