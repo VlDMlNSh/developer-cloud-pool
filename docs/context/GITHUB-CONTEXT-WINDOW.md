@@ -318,3 +318,51 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 - This section was successfully published and read back. Current context blob SHA: 9d79670c50f3d76988b15b2921ab2ae8507e1836; size 41,548 characters. Previous blocked write attempt did not modify the file; this later update did.
 - PR #31 still has no workflow runs associated with exact head 633cc2c8a2f7a70f996ccc7c5d03070b0899aa06, and no formal reviews. CI NOT VERIFIED; independent review NOT RUN.
 - Next bounded work: (1) independently inspect PR #15 scheduled recovery and caller authorization, resolve pinned dependency/lockfile warnings; (2) inspect current active ruleset and dispatch variable read-only; (3) diagnose PR #31 exact-head CI trigger association; (4) update this same unified context and checkpoint with verified blob/commit SHAs. Keep dispatch disabled and Contour B deferred.
+
+## 17. Supervisor / Worker authorization audit — 2026-11-06
+
+### 17.1 Governance read-back
+- Repository ruleset ID 26550182 was read directly from the GitHub Rulesets API. It is active and selects refs/heads/Основной; it enforces PR, deletion and non-fast-forward restrictions, but required approving review count is 0, CODEOWNERS review is false, and bypass actors are empty. This does not satisfy the project's independent-review gate by itself.
+- Issue #1 is OPEN and records POOL_DISPATCH_ENABLED=false as verified by an owner-host CLI read-back on 2026-11-04. The current Actions variable value was not independently re-read in this pass; do not represent the historical value as a fresh live check. Keep dispatch fail-closed.
+
+### 17.2 Current default-branch Supervisor / Worker trust boundary
+- Default-branch Supervisor workflow blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd still has workflow_run: completed for Pool Worker and grants issues:write plus actions:write. This remains an active privileged event boundary on Основной.
+- Default-branch Worker workflow blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4 still exposes workflow_dispatch, accepts task_issue/target_sha/profile and allows only dsh-headless-probe.
+- Worker validation checks issue open/non-PR, pool:claimed, exact target SHA in issue body and expected profile. It does not authenticate an owner approval event, bind a single-use approval reference, or prove that the caller is the protected Supervisor.
+- Worker report job has issues:write and mutates issue labels/comments after the probe. This violates the single-writer Supervisor-only lifecycle model proposed in ADR #12; report must become read-only/no-write or be replaced by Supervisor reconciliation.
+- Report job does not re-read and revalidate the complete task envelope immediately before mutation. The validate/probe/report sequence therefore has a time-of-check/time-of-use gap if issue state/body/labels change between jobs. Treat this as a concrete design finding requiring remediation and tests.
+- Direct workflow_dispatch means a user with sufficient repository Actions permissions can invoke the Worker independently of Supervisor. The current issue-label/body checks are not caller authentication or owner approval provenance.
+
+### 17.3 PR #15 workflow_run remediation
+- PR #15 remains OPEN/DRAFT/UNMERGED at head c57f2ab3f2b91bf6b3e413640f65ec518008b75e, base 64d2636d4500127e635c214ccfb722c6b3fcda80. Formal reviews: zero.
+- PR #15 removes workflow_run and associated event fields/handler. It retains scheduled reconciliation, issue-label wakeups and manual workflow_dispatch. This reduces the privileged trigger surface but does not repair direct Worker workflow_dispatch, owner approval provenance, Worker report write authority, or the single-use dispatch model.
+- PR #15 scheduled recovery still returns a stale claim to pool:ready when no matching run appears after 15 minutes. ADR #12 explicitly identifies this as incompatible with single-use approval; ambiguous dispatch must move to needs-review and require fresh owner approval. Do not integrate PR #15 as complete authorization remediation.
+- PR #15 latest-head Pool Contract Validation run 42038004176 completed SUCCESS; independent review NOT RUN. This is static contract CI only. No Supervisor/Worker runtime was run.
+
+### 17.4 PR #12 caller-boundary design status
+- PR #12 remains OPEN/DRAFT/UNMERGED at head 6c053bacff29ca8efb5fdb759edd44fcd416b749; formal reviews zero.
+- Exact-head fixture workflow 42041946049 and Pool Contract Validation 42041945700 completed SUCCESS. The fixture proves selected reusable-workflow context fields in a non-privileged fixture only; it does not prove production Worker caller authorization.
+- PR #12 adds helper/tests and a proposed ADR for owner-authored approval, single-use consumption and static local reusable Worker. It is design/fixture evidence, not a production caller-boundary implementation. No actual owner approval, durable nonce/transaction store, workflow_call-only Worker or production caller check has been accepted.
+
+### 17.5 Security gate disposition
+- Ruleset: VERIFIED active; required review count 0, so independent review remains a project gate, not a branch-ruleset enforcement guarantee.
+- Current Actions dispatch variable: NOT RE-READ in this pass; historical issue evidence says false on 2026-11-04. No dispatch action was taken.
+- Supervisor privileged workflow_run on default branch: VERIFIED PRESENT.
+- Worker direct workflow_dispatch: VERIFIED PRESENT.
+- Worker report issues:write: VERIFIED PRESENT; conflicts with proposed single-writer authority.
+- Owner approval provenance / single-use approval / production caller verification: NOT IMPLEMENTED / NOT QUALIFIED.
+- PR #15: static CI SUCCESS; independent review NOT RUN; authorization remediation incomplete.
+- PR #12: fixture/contract CI SUCCESS; independent review NOT RUN; production boundary not implemented.
+- No Worker, DSH, Resource Probe, model call, secret read, deployment or dispatch was performed.
+
+### 17.6 Required coherent remediation before any dispatch
+1. Make Supervisor the sole queue-state writer; remove Worker report issues:write and reconcile terminal run state through Supervisor.
+2. Replace Worker workflow_dispatch with static same-repository workflow_call only, in the same change that wires caller identity checks before checkout/install/side effects.
+3. Implement owner approval provenance bound to immutable issue/SHA/profile/envelope digest and a single-use approval reference; do not treat labels as approval.
+4. Change stale/ambiguous claim recovery to needs-review, never automatic return to ready using the same approval.
+5. Revalidate task envelope and approval at each trust boundary; test duplicate events, issue edits, dispatch ambiguity, replay, cancellation and concurrent Supervisor runs.
+6. Resolve DSH package provenance with committed lockfiles and npm ci.
+7. Obtain independent security review, exact-head CI, current ruleset and live dispatch-variable read-back before any separately authorized runtime gate.
+
+### 17.7 Next bounded action
+Review the full PR #12 ADR and helper/tests against the current Supervisor and Worker code; create a traceability matrix of required security properties versus implemented evidence. Do not merge PR #12/#15 or enable dispatch based on fixture CI alone.
