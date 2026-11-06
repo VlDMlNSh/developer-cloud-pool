@@ -67,3 +67,16 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Default Worker remains workflow_dispatch; Supervisor REST-dispatches; Worker report has issues:write; Supervisor workflow_run remains on default branch.
 - Report published: docs/reports/2026-11-06-pr12-approval-worker-traceability-audit.md. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only compare native Environment and immutable Git ref/ruleset capabilities for a race-safe single-use primitive; no resource/config mutation.
+
+
+## 2026-11-06 — Single-use Git marker protocol specification
+- PR #12 head 6c053bacff29ca8efb5fdb759edd44fcd416b749: exact-head fixture 42041946049 and contract 42041945700 SUCCESS; reviews empty.
+- PR #15 head c57f2ab3f2b91bf6b3e413640f65ec518008b75e: exact-head contract 42038004176 SUCCESS; reviews empty.
+- PR #27 current head 7a7b05ec3a1581303c6207aaeaadba2ba3305a88: exact-head CI lookup empty (NOT VERIFIED); reviews empty.
+- Active ruleset 26550182 applies to refs/heads/Основной only; approvals 0, CODEOWNERS review false, no bypass actors. No tag ruleset evidenced.
+- Protocol proposal: refs/tags/pool-consumed/<trusted approval-comment-id>, annotated tag payload binds repo/issue/comment/owner/task SHA/profile/envelope/expiry; create-ref 201 followed by exact read-back; 409 requires exact payload comparison; ambiguous failures fail closed.
+- Proposed tag ruleset targets refs/tags/pool-consumed/*, restricts update and deletion, leaves creation unrestricted, no bypass actors; must be proven on a disposable tag before implementation.
+- Marker creation and dispatch are separate operations; crash after marker before dispatch => needs-review and fresh approval; no exactly-once claim.
+- Report: docs/reports/2026-11-06-single-use-git-marker-protocol-spec.md. Unified Context Window Section 20; blob SHA b242dc994ed15a86c95e71594ad734153853da21 (read-back verified).
+- No tag/Environment/ruleset mutation, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only verify effective tag-ruleset and Environment API/configuration capabilities through authorized path; do not create resources.
