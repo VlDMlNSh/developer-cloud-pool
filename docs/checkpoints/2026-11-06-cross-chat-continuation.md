@@ -56,3 +56,14 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - PR #12 adds caller-context fixture/helper/tests and proposed owner-approval/single-use ADR. Exact-head fixture run 42041946049 and contract run 42041945700 SUCCESS; zero formal reviews. Production Worker remains workflow_dispatch; fixture is not production authorization.
 - No runtime, DSH, Resource Probe, model call, secret read, deployment or dispatch. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: review PR #12 full ADR/helper/tests and create a security-property traceability matrix against current source; do not merge or enable dispatch.
+
+## 2026-11-06 — PR #12 approval / caller boundary traceability
+- PR #12 exact head 6c053bacff29ca8efb5fdb759edd44fcd416b749; OPEN/DRAFT/UNMERGED; reviews empty.
+- Exact-head fixture 42041946049 SUCCESS; Pool Contract Validation 42041945700 SUCCESS. Fixture invokes a separate fixture reusable workflow, not production Worker.
+- Pure owner parser validates numeric author ID and command binding, but trusted owner ID derivation/comment API provenance/repository-issue association/expiry/re-fetch are not integrated.
+- Consumed IDs are caller-supplied; no durable atomic ledger. Pure planner's dispatchAllowed=true is not production authorization.
+- Gated planner trusts booleans/string outcomes; no Environment config, Git ref marker API adapter, payload verification or race handling.
+- Caller helper is not wired; validates caller ref/repo, callee repo/path and SHA equality but omits explicit job.workflow_ref validation.
+- Default Worker remains workflow_dispatch; Supervisor REST-dispatches; Worker report has issues:write; Supervisor workflow_run remains on default branch.
+- Report published: docs/reports/2026-11-06-pr12-approval-worker-traceability-audit.md. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only compare native Environment and immutable Git ref/ruleset capabilities for a race-safe single-use primitive; no resource/config mutation.
