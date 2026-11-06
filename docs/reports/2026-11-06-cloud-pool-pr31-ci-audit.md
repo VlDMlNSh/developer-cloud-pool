@@ -1,44 +1,53 @@
-# Engineering pass report — 2026-11-06 — Cloud Pool current-state and PR #31 CI audit
+# Engineering pass report — 2026-11-06 — PR #31 exact-head CI activation and adapter hardening
 
-## Scope and immutable targets
+## Immutable targets and resulting heads
 - Repository: `VlDMlNSh/developer-cloud-pool`.
-- Default branch at audit start: `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`. A misplaced report commit was immediately removed from this branch; see correction below.
-- Unified context branch: `docs/cross-chat-continuation-2026-11-06`; PR #27 OPEN / DRAFT / UNMERGED.
-- PR #31 head: `633cc2c8a2f7a70f996ccc7c5d03070b0899aa06`; base PR #25 feature branch `feat/jarvis-hono-web-prototype-2026-11-06` @ `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`.
-- PR #29 head: `34fc78921b16359d136db553d8a51b4a4716995d`; PR #30 head: `ad9f9ac598a2414b5209b6923094b16be64630ae`; PR #27 head before context update: `b946b70bee9515378825625caab870ad053c0a4e`.
+- PR #31 base branch: `feat/jarvis-hono-web-prototype-2026-11-06`.
+- PR #31 feature branch: `feat/github-read-adapter-synthetic-2026-11-06`.
+- PR #31 resulting exact head: `907bf6c819bf0744473dfc96027fedc3a82e475a` (OPEN / DRAFT / UNMERGED).
+- PR #25 resulting head after base-branch workflow correction: `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
+- Unified documentation branch: `docs/cross-chat-continuation-2026-11-06`; PR #27 remains OPEN / DRAFT / UNMERGED.
 
-## Fresh GitHub evidence
-- PR #31: OPEN / DRAFT / UNMERGED; exact-head PR workflow lookup returned zero runs, combined commit statuses empty, formal reviews 0, inline threads 0. CI and independent review remain NOT VERIFIED / NOT RUN.
-- PR #31 changes only `src/github-read-adapter.js` and `tests/github-read-adapter.test.js`. Its base branch is PR #25's feature branch, not `Основной`. The default-branch Pool Contract Validation workflow path filters include only `.github/workflows/**` and `scripts/**`; neither changed path matches. This is a concrete reason the existing default-branch workflow does not cover the adapter changes. Do not label an empty run lookup as a pass.
-- PR #29: exact-head Pool Contract Validation run `42211525076` COMPLETED / SUCCESS. This is static contract CI; no formal review or inline threads. It does not qualify a live provider router.
-- PR #30: current connector lookup has no PR-triggered runs/status and reviews 0; earlier report records synthetic OAuth compatibility run `42216422883` SUCCESS for the same head. Preserve the earlier run as historical evidence; no live OAuth integration is proven.
-- PR #27: OPEN / DRAFT / UNMERGED; no exact-head PR-triggered run/status found; reviews 0, threads 0. Documentation-only branch is not default branch.
-- Repository README describes Supervisor/Worker as scaffold/NOT RUN, DSH probe NOT RUN, general agent execution/checkpoint-resume NOT IMPLEMENTED, cloud runtime deployment NOT RUN, and no qualified persistent web host.
-- Default-branch production Supervisor/Worker source re-read: Supervisor still has privileged `workflow_run` plus `issues:write/actions:write`; Worker still exposes `workflow_dispatch` and its report job has `issues:write`. These remain authorization blockers. No dispatch was attempted.
-- Issue #1 has historical owner read-back that `POOL_DISPATCH_ENABLED=false` on 2026-11-04. Current variable value was not freshly read. Keep dispatch fail-closed.
-- Active ruleset details were not re-read in this pass. Earlier evidence says ruleset #26550182 has zero required approvals and CODEOWNERS review disabled; refresh before any merge.
+## Root cause and correction
+- The earlier audit incorrectly attributed missing PR #31 CI to the Pool Contract Validation path filter. The actual applicable workflow is `.github/workflows/jarvis-web-validation.yml`, which already includes `src/**` and `tests/**`.
+- Root cause: its `pull_request.branches` filter included only `Основной`, while PR #31 targets the Hono prototype feature branch.
+- Corrected the workflow on PR #31's base branch by adding `feat/jarvis-hono-web-prototype-2026-11-06` to the pull_request target-branch allowlist.
+- Workflow commit: `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; workflow blob: `cb935cc92272f09576604ed0365d5e7bf92903a0`.
+- PR #25 exact-head validation after that base-branch change: run `42228269689` Pool Contract Validation SUCCESS and run `42228269676` Jarvis Web Prototype Validation SUCCESS.
 
-## Executor availability
-- SentinelX currently reports only `Voktors-Mini.Dlink` operational, on Free plan with one active slot. `mh-dev-01` and `mh-dev-02` are user-disabled. This is not the designated Alamo/server-3 identity; no Claude Code task was run.
-- Desktop Commander reports Voktors-Mini online and mh-dev-01/mh-dev-02 offline.
-- No Gemini controller run, child run, provider call, model call, Worker, DSH or Resource Probe was launched. No secrets were read. No paid resources or deployments were created.
+## Adapter hardening
+- Reviewed PR #31 source and tests. Found that the previous ETag validator accepted spaces and control/DEL/non-Latin characters even though HTTP entity-tag opaque-tag grammar does not.
+- Tightened validation to accept only the permitted entity-tag character ranges (plus optional weak prefix), rejecting malformed input before any upstream request.
+- Added a regression test covering space, tab, control, DEL and out-of-range Unicode characters; verifies fetch is never called.
+- Source blob: `9df448c7817a62d9eca86b91697eb593be23855e`.
+- Test blob: `04a7acb6173625f50934ba59e87ab55d7001ecc0`.
 
-## Bounded conclusion and next step
-1. Add an explicit CI path/command for `src/**` and `tests/**` in the Hono prototype's validation workflow, then run adapter tests against immutable PR #31 head. Ensure the workflow is available from the PR base branch before expecting pull_request CI.
-2. Independently review PR #31's no-credential adapter, pagination/ETag/timeout behavior and unmounted integration boundary.
-3. Continue coherent Supervisor/Worker authorization remediation: single-writer Supervisor, static reusable Worker caller boundary, trusted owner approval and durable single-use consumption, fail-closed ambiguous recovery, pinned DSH dependency graph.
-4. Re-read current ruleset and Actions variable through authorized read-only access before any dispatch-related action.
-5. Keep Contour B deferred until Contour A is independently qualified and ACCEPTED.
+## Exact-head CI evidence
+- PR #31 exact resulting head `907bf6c819bf0744473dfc96027fedc3a82e475a`: Jarvis Web Prototype Validation run `42228343320` COMPLETED / SUCCESS.
+- Job `127927472859` COMPLETED / SUCCESS.
+- Job log confirms `npm test`: 22 tests, 22 passed, 0 failed. New malformed-ETag regression test is test 13 and passed.
+- The same job completed runtime verification, lockfile install, static checks and static dashboard contract validation successfully.
+- PR #31 formal reviews: 0; inline review threads: 0. Independent review remains NOT RUN. PR remains DRAFT and unmerged.
+- This verifies the workflow and tests at the exact PR head; it does not qualify adapter integration, OAuth, live provider calls or the cloud pool.
 
-## Status
-- PR #31 code review: PLANNED; exact-head CI: NOT VERIFIED; independent review: NOT RUN.
-- Pool execution / DSH / Resource Probe: NOT RUN.
-- Remote web console: prototype only; authentication, persistent session state, deployment and browser/iPhone QA NOT IMPLEMENTED / NOT RUN.
+## Scope boundaries and blockers
+- The adapter remains deliberately unmounted from Hono Worker routes. Protected API still fails closed pending qualified OAuth/session implementation.
+- Default production Supervisor/Worker authorization remediation remains incomplete: privileged Supervisor workflow_run and issues/actions write, Worker workflow_dispatch and report issue-write remain blockers.
+- Issue #1 historical read-back recorded `POOL_DISPATCH_ENABLED=false` on 2026-11-04; current value was not freshly read. Keep dispatch fail-closed.
+- Active ruleset details were not re-read in this pass. Refresh before any merge.
+- SentinelX availability previously read: only Voktors-Mini operational; mh-dev-01/mh-dev-02 user-disabled; Alamo/server-3 not identified. No Claude Code task.
+- No Gemini controller/child run, Worker, DSH, Resource Probe, provider/model call, secret read, deployment or paid resource action occurred.
+
+## Status and next step
+- PR #31 exact-head CI: VERIFIED SUCCESS (run `42228343320`; 22/22 tests).
+- PR #31 independent review: NOT RUN; merge: NOT APPROVED / NOT PERFORMED.
+- Adapter integration into Hono: NOT IMPLEMENTED.
+- OAuth/session live operation, browser/device QA, deployment and pool runtime: NOT RUN.
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED.
-- This pass was read-only apart from documentation records; no runtime/configuration/governance/secret changes.
+- Next: obtain independent review of PR #31; separately audit and remediate Supervisor/Worker authorization before any execution test. Re-read ruleset and Actions variable before dispatch-related operations.
 
 ## Documentation write correction
-An initial report creation omitted the documentation branch argument and landed on `Основной`. The file was immediately deleted from `Основной` using its exact blob SHA. The report is being recreated only on `docs/cross-chat-continuation-2026-11-06`. The deletion is a corrective commit; default branch history remains auditable.
+An earlier report creation omitted the documentation branch argument and briefly landed on `Основной`. The file was immediately deleted from `Основной` using its exact blob SHA; corrective deletion commit: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. The report now resides only on the documentation branch.
 
 Canonical unified context: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
 Continuation checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/checkpoints/2026-11-06-cross-chat-continuation.md
