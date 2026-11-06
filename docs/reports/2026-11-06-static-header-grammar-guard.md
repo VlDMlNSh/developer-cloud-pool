@@ -58,3 +58,19 @@ The workflow definition was read back from the same implementation branch (blob 
 - Pool runtime and production dispatch: **NOT RUN / FAIL-CLOSED**.
 
 This report update is documentation-only; it does not change executable code. The CI result above applies to the implementation head before this report-only successor commit, not to a newly changed executable tree.
+
+
+## Documentation consistency pass — 2026-11-06
+
+A read-through of the implementation branch found that the README still described the lockfile as not yet committed, despite the committed npm v3 lockfile and CI already using `npm ci`. This was a stale statement and has been corrected without changing executable files:
+
+- README update commit: `95f3d8712a385c07e6d9035a612e6d9630744a75`.
+- README blob after read-back: `e1b2960e03d8771487743bf429ede1e8ead3260d`.
+- The local validation command now uses `npm ci`; deployment gate and verification snapshot now reflect the committed lockfile and recorded exact-head CI.
+- README was fetched again after the write; content and blob SHA were confirmed.
+
+The code audit also reconfirmed that the current Worker exposes only service health, fails protected reads closed with 503, rejects API mutations with 405, and has no OAuth/session or live GitHub adapter. The dashboard continues to identify itself as DEMO and explicitly labels its values as fixtures. No runtime code was changed in this pass.
+
+The exact-head CI evidence remains tied to executable implementation head `3252e9a5e361cc75ecde3991f30193e39c3768dc`. The two later commits are documentation-only. A new exact-head CI run for the report-only successor was not required for this documentation correction and is not claimed.
+
+Current disposition: documentation consistency fix VERIFIED; PR #25 OPEN/DRAFT/UNMERGED; independent review NOT RUN; authentication NOT IMPLEMENTED; browser/device QA NOT RUN; deployment NOT RUN; dispatch FAIL-CLOSED.
