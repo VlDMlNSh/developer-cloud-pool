@@ -214,3 +214,11 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - No source change, merge, dispatch, Worker/DSH/Resource Probe execution, secrets/provider access, browser execution, deployment or paid resource.
 - Status: implementation SUCCEEDED on draft branch; exact-head CI VERIFIED; live Ruleset VERIFIED but inadequate for independent approval; independent review NOT RUN; runtime NOT QUALIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: preserve fail-closed gates and draft PR; obtain independent review and resolve durable single-use claim semantics before any runtime dispatch.
+
+
+### Durable claim-store research — 2026-11-06
+
+- GitHub REST Create a reference is a candidate for unique task reservation: documented outcomes 201/409/422; requires repository `Contents: write`. Source: https://docs.github.com/en/rest/git/refs#create-a-reference .
+- This endpoint is NOT yet accepted as atomic CAS; GitHub docs do not explicitly guarantee transaction semantics. Must be qualified under competing requests.
+- Do not broaden current Supervisor from `issues: write` to `contents: write`. Evaluate a dedicated isolated state repository/authority and retention/recovery model first.
+- No refs created and no permissions changed. Candidate DESIGN ONLY / NOT QUALIFIED.
