@@ -177,8 +177,7 @@ All listed PR states were refreshed on 2026-11-06. Refresh before each subsequen
 | #28 | Account-isolated routing design | OPEN/DRAFT; head `c07e3442a54fabdb74431f00cbbcd9d75280b01b` |
 | #29 | Quota ledger state machine | OPEN/DRAFT; head `34fc78921b16359d136db553d8a51b4a4716995d`; exact-head contract CI SUCCESS |
 | #30 | oauth4webapi synthetic compatibility proof | OPEN/DRAFT; head `ad9f9ac598a2414b5209b6923094b16be64630ae`; exact-head synthetic CI SUCCESS; no live OAuth; no independent review |
-Issue map:
-- #1 governance / protect default branch before dispatch (OPEN; refresh details)
+Issue map:- #1 governance / protect default branch before dispatch (OPEN; refresh details)
 - #2 governance follow-up (CLOSED)
 - #21 native mobile assistant scope (OPEN; Contour B deferred)
 - #22 primary secure remote web console (OPEN; top product priority)
@@ -357,8 +356,7 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 ### 17.6 Required coherent remediation before any dispatch
 1. Make Supervisor the sole queue-state writer; remove Worker report issues:write and reconcile terminal run state through Supervisor.
 2. Replace Worker workflow_dispatch with static same-repository workflow_call only, in the same change that wires caller identity checks before checkout/install/side effects.3. Implement owner approval provenance bound to immutable issue/SHA/profile/envelope digest and a single-use approval reference; do not treat labels as approval.
-4. Change stale/ambiguous claim recovery to needs-review, never automatic return to ready using the same approval.
-5. Revalidate task envelope and approval at each trust boundary; test duplicate events, issue edits, dispatch ambiguity, replay, cancellation and concurrent Supervisor runs.
+4. Change stale/ambiguous claim recovery to needs-review, never automatic return to ready using the same approval.5. Revalidate task envelope and approval at each trust boundary; test duplicate events, issue edits, dispatch ambiguity, replay, cancellation and concurrent Supervisor runs.
 6. Resolve DSH package provenance with committed lockfiles and npm ci.
 7. Obtain independent security review, exact-head CI, current ruleset and live dispatch-variable read-back before any separately authorized runtime gate.
 
@@ -498,8 +496,14 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Security finding: three projected upstream `html_url` fields used string-prefix matching rather than parsed-origin validation, allowing lookalike domains.
 - Corrective source commit `ef91ad75738e1bf2f9d89b66d3767b8adcb2fe17`; source blob `97d49834085f9ad4466ffaeae76bb927fe322e3b`. Shared validator parses the URL and requires HTTPS, exact GitHub origin, and no embedded credentials.
 - Regression test commit/final branch head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`; test blob `a2ff0a846c62b61e58a9c4b2729434d6af8d6d99`. Coverage spans repository, issue, and workflow-run projections; invalid lookalike hosts, embedded credentials, and non-HTTPS values are rejected. Files were read back.
-- Exact-head workflow lookup for `5470fccbc4a5fe80a750f402d70d703757fc4c1d` returned an empty list: CI NOT VERIFIED; local tests NOT RUN.
+- Exact-head CI for `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: run `42229917555`, job `127932882432`, COMPLETED/SUCCESS. Lockfile install, static checks, API negative/fail-closed tests, and dashboard contract steps succeeded. The job-step API did not expose test counts; local tests NOT RUN.
 - Finding recorded in PR comment `6686543110`. Formal review submission was rejected because the connected identity authored the PR. Independent review NOT RUN.
 - PR #31 remains unmerged and the adapter remains unmounted from Hono. No live API, OAuth, dispatch, worker/DSH execution, provider calls, or deployment.
 - Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
 - Next: refresh exact-head CI and obtain an independent reviewer. Dispatch remains fail-closed. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## 17.1. PR #31 exact-head CI recheck — 2026-11-06
+- The exact final head `5470fccbc4a5fe80a750f402d70d703757fc4c1d` is associated with run `42229917555` / job `127932882432`, COMPLETED/SUCCESS.
+- CI steps for lockfile install, static checks, API negative/fail-closed tests, and dashboard contract all succeeded. No numeric test count was returned by the job-step API.
+- PR formal reviews and inline threads remain empty; independent review NOT RUN. Adapter remains unmounted.
+- Updated report and checkpoint record this evidence. Next: obtain independent security review and recheck effective governance before any merge or mounting.
