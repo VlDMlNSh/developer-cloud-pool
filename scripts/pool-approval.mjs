@@ -38,12 +38,13 @@ export function formatOwnerApproval(approval) {
   ].join("\n");
 }
 
-export function formatOwnerApprovalConsumed(issueNumber, targetSha) {
+export function formatOwnerApprovalConsumed(issueNumber, targetSha, supervisorRunId) {
   return [
     "**POOL_OWNER_APPROVAL_CONSUMED_V1**",
     "",
     "- Issue: " + issueNumber,
-    "- Target SHA: " + targetSha
+    "- Target SHA: " + targetSha,
+    "- Supervisor run: " + supervisorRunId
   ].join("\n");
 }
 
