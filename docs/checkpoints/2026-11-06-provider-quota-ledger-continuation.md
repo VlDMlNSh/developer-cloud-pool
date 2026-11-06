@@ -46,3 +46,24 @@ Verify PR #29 exact-head CI, inspect test output and run independent review. Aft
 - [PR #28 — architecture](https://github.com/VlDMlNSh/developer-cloud-pool/pull/28)
 - [PR #29 — implementation](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29)
 - [Canonical repository](https://github.com/VlDMlNSh/developer-cloud-pool)
+
+## 2026-11-06 follow-up — normalized inventory and evidence-gated scope
+
+- MediaHub registry source was re-read from `docs/mediahub-chat-tree-map-20261012`; its `selection_order` contains 24 cloud slots. Local `ollama-local-1` is excluded from the cloud inventory.
+- Added `config/provider-slot-inventory.json`, derived from the registry with opaque symbolic credential references only. All account/quota-domain references remain null; evidence status is unknown; credential presence was not checked; billing eligibility is not verified.
+- Added `scripts/provider-slot-inventory.test.mjs` and wired it into Pool Contract Validation.
+- Hardened quota-domain cooldown propagation: a caller-supplied `scope: quota_domain` is no longer sufficient. Sibling slots are affected only when a provider-authoritative scope evidence reference is supplied. Added tests for both rejected unverified scope and accepted evidenced scope.
+- PR #29 latest tested target before documentation-only follow-up: `0b7c5e0e5887fb675c3c638fc3366747f888ff89`.
+- Exact-head Actions run [#208](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206843613): SUCCEEDED. The workflow's single validation step ran both `node scripts/validate-pool-contract.mjs` and `node --test scripts/provider-quota-ledger.test.mjs scripts/provider-slot-inventory.test.mjs` under `set -euo pipefail`; the job succeeded.
+- Inventory blob SHA: `42789e7408ba688b4af323deffe63eb2e15f50b8`.
+- Ledger blob SHA: `2662c5d6c73b4193edb9532748290acbe0ad9c18`.
+- Quota tests blob SHA: `257efb123f3a9393c04ba64586931733f2648e11`.
+- Inventory tests blob SHA: `1289bb057ae22e31b893d8e306cc980d5f20467e`.
+- Workflow blob SHA: `a9913f89e20f5c2e3eadda3120719b9fc1231ae7`.
+- PR #29 remains OPEN / DRAFT / UNMERGED; independent review remains NOT RUN.
+- No secrets, secret-presence metadata, provider calls, paid services, database/cache resources, or agent dispatch were used.
+- Account identity and quota-domain independence remain NOT VERIFIED for all 24 slots. This inventory is not an instruction to resolve or fetch the symbolic secret references.
+
+## Next bounded step
+
+Build a no-secret LiteLLM proof-of-fit and a provider adapter contract fixture using only synthetic non-routable placeholders and blocked provider egress. Do not read secret values or presence, provision PostgreSQL/Redis, or enable provider execution. Separately plan how account references can be supplied by an authorized owner-side process without moving credentials between repositories.
