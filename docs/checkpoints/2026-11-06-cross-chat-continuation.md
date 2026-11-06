@@ -124,3 +124,15 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - Supervisor/Worker authorization blockers remain. Historical `POOL_DISPATCH_ENABLED=false` read-back is from 2026-11-04; current value not freshly read. No dispatch, Worker, DSH, Resource Probe, Gemini, Claude Code, provider/model call, secret read or deployment.
 - Report: [PR #31 exact-head CI and adapter hardening](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
 - Next: independent review of PR #31, then Supervisor/Worker authorization remediation and fresh governance read-back. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — PR #31 URL-origin validation hardening
+- PR #31 feature branch final head: `5470fccbc4a5fe80a750f402d70d703757fc4c1d`.
+- Found that string-prefix validation of upstream GitHub links did not verify the parsed hostname and could accept lookalike domains.
+- Added a shared URL validator requiring HTTPS, exact GitHub origin, and no embedded username/password. Source blob: `97d49834085f9ad4466ffaeae76bb927fe322e3b`.
+- Added regression coverage across repository, issue, and workflow-run projections for lookalike hostnames, embedded credentials, and non-HTTPS URLs. Test blob: `a2ff0a846c62b61e58a9c4b2729434d6af8d6d99`.
+- Source and test files were read back. Exact-head CI lookup returned no runs: NOT VERIFIED. Local tests NOT RUN.
+- Finding recorded in PR conversation comment `6686543110`. Formal review submission was rejected because the connected identity authored the PR. Independent review NOT RUN.
+- Adapter remains unmounted. No live API, OAuth, dispatch, worker execution, provider call, or deployment.
+- Report: [PR #31 URL-origin hardening](../reports/2026-11-06-pr31-url-origin-hardening.md).
+- Next: recheck exact-head CI and obtain independent review. Contour A NOT ACCEPTED; Contour B DEFERRED.
