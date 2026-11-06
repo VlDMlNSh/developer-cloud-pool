@@ -165,3 +165,14 @@ Review classification: useful source-level engineering review only; NOT an indep
 - A verified copy of the exact package-lock is prepared for transfer to `proofs/d1-ledger/package-lock.json`; it is still NOT COMMITTED.
 - PR #36 remains draft/open; no submitted reviews or inline threads. Independent security review NOT RUN.
 - Production security gaps and exclusions remain unchanged. Local proof only; no cloud resource, deployment, billing change, secret access, provider call, dispatch or production integration.
+
+
+## Latest exact-head result — 2026-11-06
+
+- PR #36 head tested: `0584c3622a6f7207f62f27a33659e004e278b665`.
+- D1 workflow run `42274157731`, job `128086045727`: COMPLETED / SUCCESS; Workers Vitest 13/13 tests passed.
+- Pool Contract Validation run `42274157717`, job `128086045594`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13531433351`; ZIP SHA-256 `8b28d83f36e8637f907955ee9bd4b20efa0c9a17af94926a4fb016e82bc14300`; downloaded and inspected. Extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, lockfileVersion 3, 160 packages; versions match the package inventory. A verified copy is prepared as `/mnt/data/package-lock.json`.
+- Lockfile remains NOT COMMITTED. The exact bytes are prepared for a direct branch upload; the available GitHub Contents API action accepts text content but this execution environment does not expose the local artifact file as a text binding. No substitute lockfile was generated.
+- PR #36 remains open/draft; 0 submitted reviews, 0 inline threads; independent security review NOT RUN.
+- No cloud resources, deployment, billing changes, secret access, provider calls, dispatch or production integration. Production security blockers remain as listed above.
