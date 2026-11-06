@@ -1016,3 +1016,13 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - No production D1, Worker deployment, billing changes, secret access, provider/model calls, dispatch, or production integration.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: continue Contour A qualification by verifying a card-free persistent hosting route using authorized account evidence; separately secure independent review. Do not merge/deploy or enable dispatch until gates pass.
+
+
+## /next — Cloudflare account entitlement and deployability audit — 2026-11-06
+
+- Authenticated Cloudflare connector identity confirmed (profile identity only; no token material accessed). Read-only GET /accounts returned exactly one standard account, created 2026-09-28.
+- Read-only Workers account settings succeeded: default_usage_model=standard; green_compute=false. Read-only Workers script inventory returned an empty list. This confirms no Worker application script is currently deployed in that account; previously provisioned workers.dev namespace is not an application deployment.
+- Billing profile GET and account subscriptions GET both returned HTTP 403 / error 10000. Connector diagnostic states no OAuth scope covers these endpoints; an API token with Billing Read or Billing Write is required. No billing details or payment methods were read or changed.
+- Therefore Workers Free entitlement, payment-method requirement for this specific account, and any subscription status remain NOT VERIFIED. Public pricing docs describing a Free tier do not prove this account is eligible or provisionable without card.
+- No Worker, D1, OAuth app, billing profile, payment method, secret, or deployment was created/changed. No paid fallback or dispatch.
+- Next: pursue an authorized read-only billing entitlement evidence path or independently qualify a persistent no-card host; do not request payment details or change account settings. Keep deployment blocked until eligibility and auth/security gates are proven.
