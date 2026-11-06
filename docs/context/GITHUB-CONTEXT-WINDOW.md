@@ -830,3 +830,20 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Cloudflare account inventory in the earlier read-only assessment: 0 D1 databases, 0 Durable Object namespaces, 0 Worker scripts. The connection proves API reachability only; Workers Free activation and card-free eligibility remain NOT VERIFIED. No resource or billing setting changed.
 - Current documentation branch is `docs/cross-chat-continuation-2026-11-06`, 106 ahead / 2 behind default; status DIVERGED. Do not merge as-is. Default HEAD observed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
 - Next: D1-first local proof using pinned dependencies and Workers Vitest; keep it isolated, unmounted, undeployed, and fail-closed. Reconsider DO only if a specific coordination need is demonstrated.
+
+
+## D1 single-use ledger proof implementation — 2026-11-06
+
+- Immutable production target: `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Isolated branch: `proof/d1-single-use-ledger-retry-2026-11-06`; latest observed HEAD after implementation report: `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`. Compare against default: 14 ahead / 0 behind before report update; branch remains isolated and not merged.
+- Draft PR #36: https://github.com/VlDMlNSh/developer-cloud-pool/pull/36. Superseded PR #35 was closed without merge after its initial Vitest config import error.
+- Added `proofs/d1-ledger/`: local D1 migration, conditional consume adapter, inert Worker entrypoint, Workers Vitest config, test setup, adversarial test suite, pinned direct dependencies, README and PR-only CI. No Hono integration or production workflow wiring.
+- Adapter performs one conditional UPDATE bound to approval ID, owner numeric ID, repository ID, issue number, immutable target SHA, allowlisted profile, envelope digest, ready state and expiry. It permits ALLOW_ONCE only if D1 reports exactly one changed row. All successful consume responses still set `dispatch: false`. Invalid input, storage unavailability and ambiguous errors fail closed.
+- Tests: 12 concurrent consumers with exactly one winner; replay; six binding mismatch dimensions; expiry; malformed binding; unavailable storage; ambiguous storage exception; failed D1 batch rollback.
+- First exact-head run exposed an unsupported compatibility date; corrected local Wrangler date from 2026-11-06 to 2026-10-26, maximum supported by resolved workerd 1.20261019.1.
+- Corrected exact-head D1 workflow run `42271632317`, job `128077381562`: COMPLETED / SUCCESS; Vitest 1 file / 13 tests passed. Pool Contract Validation `42271632320`: COMPLETED / SUCCESS. This evidence is for tested SHA `38748cac9d2f6464995459b45db9e4f97d07d755`; a later report-only commit changed PR head to `a223386dd08a33a9b9a2cdfaaa19e4d8744eb602`, so a final exact-head rerun is required before treating CI as current.
+- Lock artifact: run `42271632317`, artifact `13531380206`, SHA-256 `4e8fcea9dda6887e480169456d1770527eba2357997fe834876f632075b08f4a`, 160 package entries. Direct pins: `@cloudflare/vitest-plugin@1.4.7`, `vitest@4.1.12`; resolved workerd `1.20261019.1`, Miniflare `5.20261019.2-beta`, Wrangler `4.152.0`. Artifact expires 2026-11-13. The lockfile is NOT committed; PR is not merge-ready until lockfile is reviewed and committed.
+- PR #36 reviews: 0; inline review threads: 0; independent security review NOT RUN.
+- Cloudflare account still has no provisioned D1 database/Worker from earlier read-back. Workers Free activation/card-free eligibility NOT VERIFIED. No cloud resource, billing, secret, provider call, dispatch, deployment or production integration occurred.
+- D1 local Workers-runtime proof: SUCCEEDED for tested SHA only. Production D1 qualification: NOT VERIFIED. Owner/caller provenance, live quota behavior, backup/restore and ambiguous real network recovery remain unqualified. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: rerun exact-head CI for latest PR #36 head; review and commit generated lockfile; obtain independent security review. Only then consider a separately authorized disposable cloud test after no-card/free entitlement is proven. Do not merge or deploy.
