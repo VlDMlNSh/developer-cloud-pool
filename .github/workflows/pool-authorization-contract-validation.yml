@@ -31,5 +31,8 @@ jobs:
           node-version: 24.9.0
           check-latest: false
 
+      - name: Run isolated fail-closed decision model tests
+        run: node --test tests/security/pool-authorization-decision.test.mjs
+
       - name: Run production-source security contract tests
-        run: node --test tests/security/pool-authorization-contract.test.mjs tests/security/pool-authorization-decision.test.mjs
+        run: node --test tests/security/pool-authorization-contract.test.mjs
