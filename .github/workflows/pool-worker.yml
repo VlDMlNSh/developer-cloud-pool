@@ -43,6 +43,8 @@ jobs:
           if (!/^\d+$/.test(e.TASK_ISSUE || "")) throw new Error("Invalid task issue.");
           if (!/^[0-9a-f]{40}$/.test(e.TARGET_SHA || "")) throw new Error("Invalid target SHA.");
           if (e.PROFILE !== "dsh-headless-probe") throw new Error("Profile is not allowlisted.");
+          if (e.CALLER_REPOSITORY !== e.GITHUB_REPOSITORY) throw new Error("Caller repository mismatch.");
+          if (!/^\\d+$/.test(e.CALLER_REPOSITORY_ID || "")) throw new Error("Caller repository ID missing.");
           if (!e.CALLER_WORKFLOW_REF.endsWith("/.github/workflows/pool-supervisor.yml@refs/heads/Основной")) throw new Error("Caller is not the protected default-branch Supervisor.");
           if (!/^[0-9a-f]{40}$/.test(e.CALLER_WORKFLOW_SHA || "")) throw new Error("Caller SHA missing.");
           if (e.CALLEE_REPOSITORY !== e.GITHUB_REPOSITORY) throw new Error("Callee repository mismatch.");
