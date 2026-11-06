@@ -45,7 +45,7 @@ Local API-client footprint may be small because inference runs on the provider s
 
 - Pure placement planner: IMPLEMENTED in PR branch; code/test target 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 VERIFIED by Actions run #215 (42209187115); 35/35 total tests passed, including 16 placement tests.
 - Runtime multi-agent supervisor/containers: NOT IMPLEMENTED.
-- Host resource probe: existing manual workflow; NOT RUN in this pass.
+- Host resource probe: machine-readable JSON artifact and provenance added; manual workflow dispatch still NOT RUN. A single sample remains observed/not-qualified until independent profile qualification.
 - Durable placement/credential lease store: NOT IMPLEMENTED.
 - Provider quota-domain reconciliation: next bounded workstream.
 - PR #29: OPEN / DRAFT / UNMERGED; independent review NOT RUN. Branch code/test target 8506de25ce52f9dd2a0db2ad7886898c5ef6c2b1 passed exact-head CI run #215; canonical Основной remains 64d2636d4500127e635c214ccfb722c6b3fcda80.

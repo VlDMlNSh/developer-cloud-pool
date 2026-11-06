@@ -28,7 +28,7 @@ Resource packing dimensions:
 
 The inference workload for hosted API models runs on the provider side. A lightweight API client often has a small local footprint, but agent runtimes, browser binaries, language toolchains, repository checkout, context files and temporary artifacts may dominate local disk/RAM/CPU. Do not use API-key size as a proxy for agent runtime footprint.
 
-The planner consumes measured usable capacity after host/system reserves, never nominal hardware capacity. Unknown resource envelopes are not eligible for multi-agent co-location. Do not overcommit CPU, memory or disk.
+The planner consumes measured usable capacity after host/system reserves, never nominal hardware capacity. Unknown resource envelopes are not eligible for multi-agent co-location. Do not overcommit CPU, memory or disk. The read-only probe emits a machine-readable artifact; its single-sample result is observation-only and must not be promoted automatically to verified capacity.
 
 ## 3. Resource-aware workload placement
 
