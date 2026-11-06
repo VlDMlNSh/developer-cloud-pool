@@ -42,7 +42,7 @@ test("Supervisor statically calls Worker as reusable workflow", () => {
 test("Supervisor requires both dispatch and authorization acceptance gates", () => {
   assert.match(supervisor, /POOL_DISPATCH_ENABLED: \$\{\{ vars\.POOL_DISPATCH_ENABLED \}\}/);
   assert.match(supervisor, /POOL_AUTHORIZATION_CONTRACT_ACCEPTED: \$\{\{ vars\.POOL_AUTHORIZATION_CONTRACT_ACCEPTED \}\}/);
-  assert.match(script, /!protectedDefaultRef \\|\\| !dispatchEnabled \\|\\| !authorizationAccepted/);
+  assert.ok(script.includes("!protectedDefaultRef") && script.includes("!dispatchEnabled") && script.includes("!authorizationAccepted"));
 });
 
 test("Supervisor claims one task and verifies exact read-back before emitting outputs", () => {
