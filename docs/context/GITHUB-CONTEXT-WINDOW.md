@@ -585,3 +585,40 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: [Governance and tag-consume read-back](../reports/2026-11-06-governance-and-tag-consume-readback.md).
 - No settings, rulesets, tags, secrets, variables, workflows, production refs, dispatch, runtime, provider/model calls, paid resources or deployment changed/touched.
 - Next: establish an owner-authorized read path for dedicated tag ruleset and effective Actions token permissions; if impossible, redesign consume. Keep dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Engineering pass — 2026-11-06 — authenticated governance read-path boundary
+
+### Immutable evidence and fresh refs
+- Repository metadata: public; default branch `Основной`; connected GitHub identity reports admin=true.
+- Latest repository commit search (descending committer date) identifies default-branch HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (commit message: revert misplaced audit report). The preceding `64d2636d4500127e635c214ccfb722c6b3fcda80` is not current HEAD. Earlier header references to 64d2636 are historical and must not be reused as latest.
+- The prior governance report is present at blob `3bbe06adc63db24f6a41abf63fd2c3a1b3ee4fd0`; its recorded ruleset read remains the last available evidence: only active branch ruleset #26550182, no tag-target ruleset in that returned collection. This pass did not obtain a newer ruleset collection response.
+- Production Worker/Supervisor files were freshly read from `Основной`; blobs remain Worker `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` and Supervisor `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`.
+
+### PR #32 exact-head status
+- Target PR head: `75c83a288d865f1bbeda4905cf817e00084bcc2d`; authorization workflow blob `b6d1877c9452906d7350b90f98f69e628bc915fd`.
+- Exact-head PR-triggered runs: authorization negative-first run `42236017811` COMPLETED/FAILURE; pool contract validation run `42236017724` COMPLETED/SUCCESS. The former is an expected red baseline, not a passing authorization test; the latter does not qualify authorization.
+- Reviews: 0. Inline review threads: 0. Independent review NOT RUN.
+
+### Authenticated read-path assessment
+- Repository metadata confirms the linked GitHub connection has repository admin permission, but this is not proof of the Actions workflow token's effective permission or identity.
+- Available GitHub connector exposes no read action for repository Actions permissions or tag-target ruleset collection. Prior attempts to use the Actions permission endpoints through this connector were rejected as unsupported. No supported read-only owner-authorized route was available in this pass.
+- No workflow run, tag, ruleset, variable, Environment, secret, branch protection, repository setting or production resource was modified. No secret values were accessed.
+- Dedicated tag ruleset remains ABSENT in the last complete collection evidence; effective Actions token identity/permissions remain NOT VERIFIED; single-use consume experiment NOT RUN.
+
+### Decision / next bounded step
+- Do not infer token permissions from repository admin metadata, and do not test tag creation using an unidentified token. Dispatch remains fail-closed.
+- Next: establish an explicit metadata-only owner-authenticated read path for (a) GET repository rulesets including tag-target scopes and (b) GET Actions permissions/workflow permissions plus effective token identity. If the available connection cannot expose those reads, document the exact limitation and require a narrowly scoped owner-side read-only CLI/API evidence capture before considering any disposable tag test. No settings mutation is authorized.
+
+### Status
+- Default HEAD: VERIFIED `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #32 exact-head CI: authorization contract FAILED (expected negative baseline); general pool contract SUCCESS.
+- PR #32 independent review: NOT RUN.
+- Tag ruleset: last complete read ABSENT; current refresh NOT VERIFIED.
+- Actions token identity/effective permissions: NOT VERIFIED.
+- Consume experiment: NOT RUN.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-authenticated-governance-read-path.md
+Canonical unified context: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
+MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
