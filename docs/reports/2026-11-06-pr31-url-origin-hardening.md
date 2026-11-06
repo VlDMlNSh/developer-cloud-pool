@@ -38,6 +38,6 @@ A formal `REQUEST_CHANGES` review was attempted but GitHub rejected it because t
 - No Supervisor/Worker/DSH execution was started. Dispatch remains fail-closed.
 
 ## Next step
-Recheck exact-head CI on `5470fccbc4a5fe80a750f402d70d703757fc4c1d`; if it passes, request an authorized reviewer who is not the PR author. Do not mount or merge the adapter until exact-head CI, independent review and governance gates are satisfied.
+Exact-head CI is now confirmed successful (run `42229917555`, job `127932882432`). The remaining PR #31 gate is an independent security review by an authorized reviewer who is not the PR author. Recheck effective governance before any merge. Do not mount the adapter until independent review and governance gates are satisfied.
 
 Contour A: **NOT ACCEPTED**. Contour B: **DEFERRED**.
