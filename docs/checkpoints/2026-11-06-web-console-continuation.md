@@ -254,3 +254,11 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Agent 1/2/3 workflows exist on main (blobs `155a02159912ca371e6f826c51325ca269857aad`, `fff1820a6b97d379b23674f36bd62227b7d4dec2`, `781df56e8aa7c75ba453c08378611857862b2e44`). No child dispatch.
 - PR #437 merged; PR #441 open/non-draft/unmerged, no exact-head PR workflow runs returned, reviews/threads 0/0. SentinelX Free has one operational host `host_5f7264034bdf0b51`, not Alamo/Server 3; no Claude/browser use.
 - Detailed findings added to [hosting ADR/prototype reconciliation report](../reports/2026-11-06-hosting-adr-prototype-reconciliation.md).
+
+
+## Latest exact-head CI evidence — 2026-11-06
+
+- Branch head before report/checkpoint publication: `7c48323ff9bf2d118cb995668d73550cf2b3ba11`, 53 ahead / 0 behind.
+- OpenAPI Validation run `42187773805` / job `127792102143`: SUCCEEDED (Node 24, Redocly lint).
+- Pool Contract Validation run `42187774177` / job `127792103675`: SUCCEEDED (YAML syntax, dispatch-disabled invariant, pool security contracts).
+- Both job details and all steps were read back as completed/success. This covers the exact branch head before this final documentation-only publication.
