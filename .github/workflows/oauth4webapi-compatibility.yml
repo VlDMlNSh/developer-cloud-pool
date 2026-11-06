@@ -1,0 +1,40 @@
+name: GitHub OAuth Protocol Compatibility (Synthetic)
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "scripts/oauth4webapi-github-compat.test.mjs"
+      - ".github/workflows/oauth4webapi-compatibility.yml"
+  push:
+    branches:
+      - "proof/github-oauth4webapi-compat-2026-11-06"
+    paths:
+      - "scripts/oauth4webapi-github-compat.test.mjs"
+      - ".github/workflows/oauth4webapi-compatibility.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oauth4webapi-compat-\${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-compatibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify runtime
+        run: node --version && npm --version
+      - name: Install existing project dependencies from lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install pinned OAuth protocol library for isolated proof-of-fit
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund oauth4webapi@3.8.8
+      - name: Run synthetic GitHub OAuth compatibility test
+        run: node --test scripts/oauth4webapi-github-compat.test.mjs
