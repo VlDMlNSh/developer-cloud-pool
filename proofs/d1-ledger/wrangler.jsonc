@@ -1,0 +1,13 @@
+{
+  "name": "pool-d1-single-use-ledger-proof",
+  "main": "./src/worker.mjs",
+  "compatibility_date": "2026-11-06",
+  "d1_databases": [
+    {
+      "binding": "POOL_DB",
+      "database_name": "pool-d1-single-use-ledger-proof",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "./migrations"
+    }
+  ]
+}
