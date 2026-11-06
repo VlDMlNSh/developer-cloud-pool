@@ -100,7 +100,7 @@ Implementation must begin with deterministic tests that fail against the current
 
 - Contract: DESIGN RECORDED.
 - Production implementation: NOT RUN.
-- Tests: NOT RUN (this document defines required tests; it does not claim test execution).
+- Negative-first test harness: implemented on this branch; exact-head run `42234855260` executed 7 tests and failed all 7 against current production source as expected. This is evidence of unmet requirements, not qualification.
 - Durable consume primitive and tag governance: NOT VERIFIED.
 - Effective repository variable/ruleset read-back: NOT VERIFIED.
 - Independent security review: NOT RUN.
@@ -108,4 +108,4 @@ Implementation must begin with deterministic tests that fail against the current
 - Contour A: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
 
-Next step: implement the negative-first test harness against the current production workflow on a branch based on this immutable SHA; do not enable dispatch or merge.
+Next step: remediate the production Worker caller boundary and queue write ownership against the seven failing assertions; retain fail-closed dispatch and rerun exact-head CI. Do not merge or enable dispatch.
