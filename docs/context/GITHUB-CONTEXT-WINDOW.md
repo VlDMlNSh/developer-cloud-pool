@@ -340,3 +340,12 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - Consolidated report: [Integrated Cloud Pool / Web Console / MH 3 reconciliation](../reports/2026-11-06-integrated-pool-web-console-host-reconciliation.md).
 - Next: maintain MH 3 block; reconcile PR #24/#25 with current default, then synthetic oauth4webapi/GitHub compatibility tests; independent security review; authorized non-secret Workers Free/card-free evidence. No deployment or dispatch.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
+
+## Voktors-Mini authorized read-only host and browser inventory — 2026-11-06
+
+- Owner explicitly authorized using Voktors-Mini.Dlink for this pass. Exact target: `host_5f7264034bdf0b51`; do not confuse it with MH 3. Host inventory reports it operational on SentinelX Agent 0.23.30; Free plan active-host limit 1, active 1, available 0.
+- Fresh `sentinel_ping` returned pong; `sentinel_capabilities(detail=summary)` and `sentinel_state` succeeded after one transient duplicate-session reconnect. Host is macOS 14.7.4 / arm64, kernel 23.6.0, Python 3.9.6.
+- Read-only Python inventory script succeeded (return code 0; temporary script cleanup enabled). Safari and `/usr/bin/safaridriver` are present; Chrome/Chromium/Firefox/Arc/Brave/Edge bundles are absent; node/npm/playwright/agent-browser CLI are absent; git is present. Agent-browser skill requires Chrome/Chromium CDP and the installed CLI workflow; Safari alone is insufficient.
+- Host connectivity/identity/read-only inventory VERIFIED. Browser automation readiness NOT AVAILABLE; browser/iPhone QA and Cloudflare dashboard inspection NOT RUN. No package install, allowlist/config/service/file changes, secrets access, billing, Cloudflare mutation, deployment, OAuth, model calls or dispatch.
+- Report: [Voktors-Mini read-only host and browser inventory](../reports/2026-11-06-voktors-mini-readonly-host-and-browser-inventory.md), report commit `28275f4d4a4815c3ab1bd43e2a8ae05d88212fb7`.
+- Decision: Voktors-Mini is now the explicitly authorized host for this scope, but it is not MH 3 and does not qualify Contour A. Keep dispatch fail-closed and Contour B deferred. Next: continue PR #24/#25 base reconciliation and exact-head CI review; pursue browser QA only through an authorized supported browser runtime.
