@@ -238,3 +238,15 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - No source/workflow changes, merge, dispatch, Worker/DSH/Resource Probe execution, provider/model calls, secrets access, credentials, permission changes, provisioning or deployment.
 - Status: design CREATED; Issue #38 PLANNED; claim backend NOT SELECTED / NOT QUALIFIED; PR #37 exact-head CI VERIFIED; independent review NOT RUN; dispatch BLOCKED / FAIL-CLOSED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: qualify a least-privilege conditional claim backend, or explicitly bound a single-writer prototype to non-provider/non-untrusted workloads; keep PR #37 draft and gates closed.
+
+
+### PR #37 exclusive managed-state hardening — 2026-11-06
+
+- New PR #37 HEAD: `5587a4e013507b5be330fd0c49ce1fc836faa946`.
+- Worker now independently requires exactly one lifecycle-managed label and that label must be `pool:claimed`; it rejects conflicting states such as `pool:ready + pool:claimed`.
+- Added a focused test and contract-validator assertion.
+- Exact-head CI: Reusable Pool Worker Boundary Validation run `42284044591` / job `128120166723` SUCCESS; Pool Contract Validation run `42284051311` / job `128120184802` SUCCESS.
+- Push run `42284042173` for `pool-worker.yml` has no jobs and failure because Worker is intentionally workflow_call-only; no Worker execution occurred.
+- PR remains OPEN / DRAFT / UNMERGED; independent reviews/comments 0/0. No dispatch/merge/secrets/provider/deployment; gates unchanged.
+- Same-session self-review only; independent security review NOT RUN. Durable claim backend NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED.
+- Detailed evidence appended to [claim protocol qualification report](../reports/2026-11-06-supervisor-claim-protocol-qualification.md).
