@@ -315,6 +315,6 @@ Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07
 - Supervisor and Worker remain IMPLEMENTED SCAFFOLD / NOT RUN / NOT QUALIFIED. No Worker execution, DSH execution, Resource Probe or production task lifecycle was performed in this pass.
 
 ### 16.4 Context integrity and next actions
-- The failed previous context write did not change this file: read-back SHA remains 3287a30009ecdd8a967e32e67ee1185df96b5957, size 36,543 characters. This section is a proposed addition until its write and read-back are successful.
+- This section was successfully published and read back. Current context blob SHA: 9d79670c50f3d76988b15b2921ab2ae8507e1836; size 41,548 characters. Previous blocked write attempt did not modify the file; this later update did.
 - PR #31 still has no workflow runs associated with exact head 633cc2c8a2f7a70f996ccc7c5d03070b0899aa06, and no formal reviews. CI NOT VERIFIED; independent review NOT RUN.
 - Next bounded work: (1) independently inspect PR #15 scheduled recovery and caller authorization, resolve pinned dependency/lockfile warnings; (2) inspect current active ruleset and dispatch variable read-only; (3) diagnose PR #31 exact-head CI trigger association; (4) update this same unified context and checkpoint with verified blob/commit SHAs. Keep dispatch disabled and Contour B deferred.
