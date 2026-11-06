@@ -30,8 +30,8 @@ A formal `REQUEST_CHANGES` review was attempted but GitHub rejected it because t
 - Both files were fetched again from the feature branch; helper presence, removal of all old prefix checks and regression fixture presence were verified.
 
 ## Verification and boundaries
-- Exact-head CI for `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: **NOT VERIFIED**; commit workflow-run lookup returned an empty list at the time of this report.
-- Local test execution: **NOT RUN** in this pass.
+- Exact-head CI for `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: **COMPLETED / SUCCESS** — workflow run `42229917555`, job `127932882432`. The job completed lockfile install, static checks, API negative/fail-closed tests and dashboard contract validation. The job-step API returned success for each step; it did not expose individual test counts.
+- Local test execution: **NOT RUN**; the regression suite ran in GitHub Actions.
 - Independent review: **NOT RUN**. Formal review submission is unavailable from the PR-author identity; an external reviewer is still required.
 - PR #31 remains unmerged; the adapter remains unmounted from the Hono Worker.
 - No live GitHub API request, OAuth credential, secret, provider/model call, dispatch, deployment, browser test or paid resource was used.
