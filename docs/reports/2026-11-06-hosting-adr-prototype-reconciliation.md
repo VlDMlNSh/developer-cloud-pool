@@ -46,10 +46,9 @@ ADR blob after read-back: `b5fbb978f6e61e91e2ebcff41dc9bb4f7de6d3ee`.
 
 ## CI status for this ADR update
 
-- ADR-only update commit: `753f692475e19c0b041a7155af0aa6ae8b1d49c2`.
-- Branch comparison: 47 ahead / 0 behind base.
-- New PR-triggered checks for the updated head were queued at the time of report: Pool Contract Validation run `42187404021`; Jarvis Experience OpenAPI Validation run `42187404044`. Their terminal status must be read back before claiming PASS.
-- No executable runtime or API contract file changed in this ADR-only update.
+- ADR update commit: `753f692475e19c0b041a7155af0aa6ae8b1d49c2`; final report/checkpoint snapshot: `c84b5aed0a306ea92c8d9919564a0803acc56aef`, 49 ahead / 0 behind base.
+- Exact latest-head checks on `c84b5aed...`: Pool Contract Validation run `42187467083` SUCCEEDED; Jarvis Experience OpenAPI Validation run `42187467194` SUCCEEDED. Both jobs and all steps were read back as completed/success.
+- No executable runtime or API contract file changed in this ADR-only update; exact-head checks nevertheless completed successfully.
 
 ## Next bounded step
 
