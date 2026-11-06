@@ -223,3 +223,15 @@ The PR #24 description and Issue #22 were stale: both still described Cloudflare
 - Exact contract/workflow CI HEAD `8f8613eebb4a37e3a1c2296b66e9f7b53090d1ae`: Redocly OpenAPI validation and Pool Contract Validation both SUCCEEDED. Latest docs-only successor has no returned PR workflow runs and is NOT VERIFIED by exact-head CI.
 - Current contract/workflow blobs unchanged and read back: `3cab6581f88a37d6090aeda5df1fb7157f749f84` / `47d3afecc918df0926a63b5cf2a6de473356f5d6`.
 - PR #24 OPEN / DRAFT / UNMERGED; reviews/threads 0/0. OAuth/session NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
+
+
+## 2026-11-06 — Hosting ADR/prototype reconciliation
+
+- Updated hosting ADR blob: `b5fbb978f6e61e91e2ebcff41dc9bb4f7de6d3ee`. Removed stale no-lockfile claim; documented npm v3 lockfile (93 entries) and `npm ci`; reconciled pre-auth 503 behavior vs target post-auth 401/403; replaced JWT wording with opaque server-side session semantics; marked workers.dev provisioning prerequisite as superseded.
+- PR #24 prior exact-head checks: Pool Contract run `42179227251` and OpenAPI run `42179227232`, both SUCCEEDED on `bb674bc63ac0b286b0a167c990ee6ad702098438`.
+- PR #25 exact-head checks: Pool Contract run `42178033386` and Hono validation run `42178033062`, both SUCCEEDED on `fdda4c143cbb4b65c123b5458e0f8bef5fa5f9a4`; Hono job read-back confirms npm ci, static checks, API tests and UI validation succeeded.
+- PR #24 / #25 both remain OPEN / DRAFT / UNMERGED; reviews/threads 0/0.
+- Current MediaHub map fetch returned empty content (blob `75f62685459ec99ebf8be478f4e9096cdb842b1d`); per Bootstrap, stop at safe reading. Issue #301 remains open; Gemini controller requested path was 404; no Gemini dispatch. SentinelX Free plan has one operational host `host_5f7264034bdf0b51`, not identified as Alamo/Server 3; no Claude/browser use.
+- Report: [hosting ADR/prototype reconciliation](../reports/2026-11-06-hosting-adr-prototype-reconciliation.md).
+- ADR update commit `753f692475e19c0b041a7155af0aa6ae8b1d49c2`; its new PR-triggered checks queued: `42187404021` Pool Contract and `42187404044` OpenAPI. Terminal states pending read-back.
+- Next: read terminal CI results, then build isolated no-secret auth policy tests; no live OAuth credentials, deployment or dispatch.
