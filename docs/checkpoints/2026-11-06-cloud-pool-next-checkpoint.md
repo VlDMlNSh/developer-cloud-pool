@@ -266,3 +266,11 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Safari + safaridriver present; Chrome/Chromium/Firefox absent; node/npm/agent-browser CLI absent. Agent-browser requires Chrome/Chromium CDP, so browser QA NOT RUN. No installs or host configuration changes.
 - Report: [Voktors-Mini read-only inventory](../reports/2026-11-06-voktors-mini-readonly-host-and-browser-inventory.md). Report commit `28275f4d4a4815c3ab1bd43e2a8ae05d88212fb7`.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED. Continue safe GitHub PR base reconciliation and validation; no deploy/dispatch.
+
+
+## 2026-11-06 — PR #37 identity contract review
+
+- PR #37 head `5587a4e013507b5be330fd0c49ce1fc836faa946`, OPEN/DRAFT. Exact-head boundary run `42284051309` and contract run `42284051311` SUCCESS; reviews 0, inline threads 0. GitHub official docs support the caller/callee workflow identity contexts used by the PR. Hosted expression evaluation NOT RUN.
+- Default branch still contains the old privileged dispatch chain; PR #37 not merged. Issue #38 single-use claim remains NOT QUALIFIED: Issue labels not CAS; local D1 proof not live resource and lacks production issuer/identity/clock/audit/restore qualification. Latest recorded Ruleset audit: approvals 0, CODEOWNERS false (not freshly re-queried).
+- Report: [PR #37 identity contract review](../reports/2026-11-06-pr37-reusable-workflow-identity-contract-review.md), commit `64696d44e3bc68ef75e234409adc4db88e323c5a`.
+- Next: bounded real-backend qualification plan for Issue #38 candidate C, no provisioning or dispatch. Contour A BLOCKED; Contour B DEFERRED.
