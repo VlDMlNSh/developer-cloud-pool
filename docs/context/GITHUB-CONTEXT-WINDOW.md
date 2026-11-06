@@ -571,3 +571,17 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: [GitHub-native single-use consume feasibility review](../reports/2026-11-06-github-native-single-use-consume-review.md).
 - No production code, settings, secrets, variables, rulesets, tags, environments, dispatch, runners, providers, models, paid resources or deployments changed/touched.
 - Next: only if authorized read-only metadata can establish the tag-ruleset and token-identity prerequisites, run an isolated disposable create/race/read-back/update/delete-denial test. Otherwise stop and redesign; do not enable dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-06 — Governance and tag-consume read-back
+
+- Fresh default branch read-back: `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; public repository; branch inventory refreshed.
+- Ruleset collection returned exactly one ACTIVE ruleset, ID `26550182`, target `branch`, scoped only to `refs/heads/Основной`. Rules: deletion, non-fast-forward, PR required. Required approving review count is 0; no required reviewers; code-owner review false; last-push approval false; bypass actors empty; current identity cannot bypass. No tag-target ruleset exists in the returned collection.
+- Branch endpoint separately reports `protected:false`, legacy protection disabled, and no required status checks. This does not override the ACTIVE branch ruleset; it does mean no required status-check contexts were evidenced by that endpoint.
+- Tag matching refs at `pool-consume-probe` returned empty. No disposable tag created.
+- Actions permissions endpoints `/actions/permissions` and `/actions/permissions/workflow` were rejected by the available read connector as unsupported. Effective Actions token identity/permissions remain NOT VERIFIED.
+- PR #32 remains OPEN / DRAFT / UNMERGED at head `75c83a288d865f1bbeda4905cf817e00084bcc2d`; reviews 0, threads 0. Exact-head authorization CI run `42236017811` / job `127953700048`: 8/8 failed (expected red baseline); Pool Contract run `42236017724` / job `127953700415`: SUCCESS, not authorization qualification.
+- Historical branches `feat/reusable-worker-call-boundary-2026-11-05` and `integration/zizmor-supervisor-removal-2026-11-05` point to the unchanged production Worker/Supervisor blobs; they are not remediation.
+- Report: [Governance and tag-consume read-back](../reports/2026-11-06-governance-and-tag-consume-readback.md).
+- No settings, rulesets, tags, secrets, variables, workflows, production refs, dispatch, runtime, provider/model calls, paid resources or deployment changed/touched.
+- Next: establish an owner-authorized read path for dedicated tag ruleset and effective Actions token permissions; if impossible, redesign consume. Keep dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
