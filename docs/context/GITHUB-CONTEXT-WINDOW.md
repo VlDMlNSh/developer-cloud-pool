@@ -942,3 +942,18 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Source-level review (not independent) flagged production requirements: authenticated caller/owner identity, verified issuer and signed owner approval provenance, trusted server clock, issuance/revocation/audit, quotas, backup/restore, live account-limit evidence and production-approved executor profile.
 - No D1 cloud resource, Worker deployment, billing change, secret access, provider call, GitHub dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add the verified lockfile to PR #36 at `proofs/d1-ledger/package-lock.json` without changing read-only CI permissions; then request independent security review. Only after those gates proceed to Cloudflare Free/card-free account qualification.
+
+
+## /next — uploaded lockfile verified; GitHub transfer remains blocked — 2026-11-06
+
+- Default branch `Основной` remains at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 head remains `9815da8fd316d8263b59f3493d076d4623c4c925`; OPEN / DRAFT; 33 ahead / 0 behind.
+- Exact-head D1 run `42274484200` / job `128087166113`: SUCCESS; 13/13 Workers-runtime tests. Pool Contract Validation `42274484234` / job `128087177754`: SUCCESS.
+- Lock artifact `13532667030`, ZIP digest `sha256:60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`. The downloaded file at `/mnt/data/package-lock.json` was rechecked this turn: 87,979 bytes; SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 packages.
+- GitHub PR body refreshed with the current exact-head evidence and the accurate lockfile-transfer blocker. PR remains draft and unmerged.
+- Proof report updated at commit `7571f82b1d8015a40939151deded0a165b27b742` (report blob `496e4a19cf1988c851c59cc616c92991b72afe3d`). Report-only path is not a D1 workflow trigger; no source/workflow changes made in this pass.
+- No supported GitHub connector action accepts a local execution-workspace file path; Contents API requires UTF-8 text. No file-content transfer bridge was exposed. Did not add write permissions to CI, invent a lockfile, or modify trust boundaries.
+- Reviews: 0; inline threads: 0; independent security review NOT RUN. Workers Free/card-free eligibility NOT VERIFIED.
+- Production gaps remain: authenticated caller/owner identity, issuer and signed approval provenance, trusted clock, issuance/revocation/audit, quota accounting, backup/restore, account entitlement and approved production executor.
+- No cloud D1 resource, deployment, billing change, secret access, provider call, GitHub dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add the verified file to `proofs/d1-ledger/package-lock.json` on PR branch, then run exact-head CI and obtain independent security review. Afterward qualify the card-free Cloudflare deployment route.
