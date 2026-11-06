@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-06 (UTC+3)
+Last refreshed: 2026-11-06 (UTC+3) — governance read-path pass
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`
+Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Documentation branch HEAD before this consolidation: `ae542e7f9496e4c7e113682edf40b1a67cf2dd33`
+Latest documentation update commit: `09e187983335e61c2ed26d4cd20baee95047f27a` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
