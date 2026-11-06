@@ -102,3 +102,13 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - New report: docs/reports/2026-11-06-comparative-authorization-integration-audit.md.
 - No runtime/config changes, dispatch, Worker/DSH, provider/model calls, secret reads or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: test-first integrated implementation design from current default branch with durable single-use marker, workflow_call-only Worker, Supervisor sole state writer, fail-closed recovery. No dispatch/merge.
+
+
+## 2026-11-06 — PR #31 CI and executor availability recheck
+- Default HEAD `64d2636d4500127e635c214ccfb722c6b3fcda80`; PR #27 documentation branch head before this update `b946b70bee9515378825625caab870ad053c0a4e`.
+- PR #31 head `633cc2c8a2f7a70f996ccc7c5d03070b0899aa06`, base PR #25 feature branch `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`; exact-head runs/status empty, reviews 0, threads 0. Its changed paths `src/**` and `tests/**` are excluded from default Pool Contract Validation path filters (`.github/workflows/**`, `scripts/**`). CI NOT VERIFIED.
+- PR #29 exact-head run `42211525076` SUCCESS; reviews 0. PR #30 historical synthetic OAuth run `42216422883` SUCCESS, but current run lookup empty; no live OAuth qualification.
+- Default Supervisor still has privileged workflow_run and issues/actions write; Worker still has workflow_dispatch and report issue-write. Dispatch remains fail-closed; current variable not freshly re-read (historical false on 2026-11-04).
+- Only SentinelX host operational is Voktors-Mini; mh-dev-01/mh-dev-02 disabled; Alamo/server-3 not identified. No Claude Code run. No Gemini, Worker, DSH, Resource Probe, provider calls, secret reads or deployment.
+- Report: [PR #31 CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
+- Next: add `src/**`/`tests/**` to the Hono validation workflow on PR #31's base branch, run exact-head tests, and obtain independent review. Contour A NOT ACCEPTED; Contour B DEFERRED.
