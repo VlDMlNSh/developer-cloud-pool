@@ -79,3 +79,16 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - No merge, dispatch, Worker execution, provider call, secret access or deployment.
 - Next: implement the complete production caller/callee boundary in a coherent branch (Worker reusable-only/no issue-write; Supervisor no privileged workflow_run/actions-write/REST dispatch; static reusable caller identity checks; durable single-use consume and fail-closed recovery), then exact-head CI and independent security review. Keep dispatch fail-closed.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
+
+## Reusable Supervisor→Worker authorization contract — 2026-11-06
+
+- Production workflow audit re-confirmed: Worker `.github/workflows/pool-worker.yml` still has `workflow_dispatch`, an `issues: write` report job, and direct issue PATCH/POST; Supervisor `.github/workflows/pool-supervisor.yml` still has `workflow_run` and `actions: write`; `scripts/pool-supervisor.mjs` contains REST workflow dispatch and stale-claim requeue.
+- Existing candidate branch `fix/integrated-pool-authorization-2026-11-06` only adds a decision module and tests; production files are unchanged. It is not an integrated fix.
+- Created architecture contract: [POOL reusable workflow authorization contract](../architecture/POOL-REUSABLE-WORKFLOW-AUTHORIZATION-CONTRACT-2026-11-06.md), commit `dff2992c51a00a85da72e1e2710bf603b20789b6`.
+- Created implementation Issue #37: https://github.com/VlDMlNSh/developer-cloud-pool/issues/37 (OPEN, PLANNED, NOT IMPLEMENTED, NOT QUALIFIED).
+- Contract: statically declared reusable Worker call; Worker `workflow_call` only and read-only; Supervisor owns issue mutation; remove `workflow_run`, `actions: write`, REST workflow dispatch and stale auto-requeue; serialize Supervisor; one task per run initially; failed/ambiguous execution goes to needs-review; exact-head CI and independent review required.
+- Approval consume semantics are explicitly limited: GitHub Issues labels do not provide database-grade compare-and-swap. Serialized Supervisor + exact read-back is a risk-reduction mechanism, not a claim of atomic exactly-once. If stronger atomicity is required, a separately qualified conditional-write store is required before dispatch.
+- Official GitHub docs confirm reusable-workflow identity split: caller identity via `github.workflow_ref/github.workflow_sha`; called job identity via `job.workflow_repository/job.workflow_file_path/job.workflow_sha` (not available on GHES). Sources: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts and https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows .
+- No production code changed, no CI run triggered, no dispatch, no Worker execution, no DSH/Resource Probe, no secrets or provider calls, no deployment.
+- Dispatch remains BLOCKED / FAIL-CLOSED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
+- Next: implement Issue #37 on a new branch from the exact current default HEAD, beginning with workflow graph and tests; verify exact-head CI, then independent security review. Do not merge or enable dispatch before all gates.
