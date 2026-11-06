@@ -15,7 +15,7 @@ The web console is an **Experience plane**, not a control plane. The Pool Bridge
 
 ## Decision
 
-Select **Cloudflare Workers Static Assets + a small Hono API** as the preferred hosting candidate for a first read-only web console, subject to owner approval of the hosting provider, confirmation of the actual account's free-plan/Access entitlements, and security qualification.
+Select **Cloudflare Workers Static Assets + a small Hono API** as the preferred hosting candidate for a first read-only web console, subject to confirmation of the actual account's Workers Free entitlement and application-session security qualification. Cloudflare Access is not required for this design.
 
 This is a serverless managed runtime, not an owner-operated worker server and not a persistent GitHub Actions runner. It is not yet connected to the account and is not deployed. Selecting it as the preferred candidate does not authorize creating credentials, deploying, or incurring charges.
 
@@ -71,7 +71,7 @@ The Worker must not expose a privileged GitHub token, PAT, GitHub App private ke
 |---|---|---|---|
 | GitHub Pages alone | Free static hosting, easy GitHub integration | Static only; no trusted server-side API, secret isolation or server authorization | REJECT as complete solution; may host a UI-only mock |
 | GitHub Pages + separate API | Reuses Pages and separates backend | Two origins/services, CORS/session complexity, separate deployment and security boundary | Viable fallback, more moving parts |
-| Workers Static Assets + Hono API + application-level GitHub OAuth | One origin for UI/API; managed HTTPS; no always-on VM; static files and API routes can share one Worker; Hono is portable across runtimes | Provider dependency; Free quotas; Access account/plan and JWT behavior must be verified; deploy token requires owner-managed setup | PREFERRED CANDIDATE, NOT QUALIFIED |
+| Workers Static Assets + Hono API + application-level GitHub OAuth | One origin for UI/API; managed HTTPS; no always-on VM; static files and API routes can share one Worker; Hono is portable across runtimes | Provider dependency; Free quotas and application-session controls must be verified; deploy token requires owner-managed setup | PREFERRED CANDIDATE, NOT QUALIFIED |
 | Open WebUI | Mature existing web application, authentication and API surface, model-provider integrations | Primarily a model/chat interface; adds a persistent application/data stack and does not replace Pool Bridge, task authority or Jarvis-specific evidence UX | REUSE selectively for later model experimentation, not the primary pool console |
 | GitHub Actions runner as web host | No separate host account | Ephemeral job lifecycle, queued/delayed starts, finite runtime; no durable listener or availability | REJECT |
 | Owner-operated server / external node | Full control over runtime and storage | Conflicts with the web-first / no-server dependency; adds patching, uptime, network exposure and hardware qualification | DEFER to later external-server phase |
@@ -110,7 +110,7 @@ Every HTTP method other than the documented GET/HEAD methods returns 405. There 
 
 | Threat | Required control |
 |---|---|
-| Spoofed identity header / forged JWT | Validate GitHub OAuth state/session signature and claims; exact issuer/audience; reject missing/invalid token |
+| Spoofed identity header / forged session | Validate single-use OAuth state and server-side opaque-session lookup; reject missing, malformed, expired or revoked sessions |
 | Browser token or secret exfiltration | No provider/GitHub credentials in browser; no tokens in localStorage/sessionStorage; server-side-only secrets if ever approved |
 | XSS from issue text, workflow titles, logs or artifacts | Treat all GitHub content as untrusted text; use text nodes, no `innerHTML` for remote data; strict CSP |
 | CSRF / cross-origin requests | Same-origin API; GET-only v1; reject unexpected Origin/Host; no permissive CORS; future mutations require CSRF and explicit authorization |
@@ -126,7 +126,7 @@ Recommended response headers: strict Content-Security-Policy (including `frame-a
 ## Deployment and rollback plan
 
 1. Confirm hosting-provider choice, account plan, Workers Free entitlement and OAuth implementation readiness and no-cost entitlement. No deployment before this check.
-2. Implement locally with pinned dependencies and fixtures; add OpenAPI validation, JWT negative tests, API allowlist tests, XSS/SSRF fixtures and browser smoke tests.
+2. Implement locally with pinned dependencies and fixtures; add OpenAPI validation, OAuth-state/session negative tests, API allowlist tests, XSS/SSRF fixtures and browser smoke tests.
 3. Deploy only to a non-production preview with no secrets and synthetic/public data; verify the application session protects both static application entry points and API routes consistently.
 4. Complete independent security review and exact-head CI; verify the preview from desktop and iPhone browser.
 5. Only then consider production deployment. Deployment credentials must be narrowly scoped, stored only as GitHub Actions secrets, and never exposed to PR code or artifacts. Use an owner-approved environment with deployment protection.
@@ -172,11 +172,11 @@ Observed state:
 
 ### Blocking prerequisites
 
-1. Owner must open the Workers & Pages dashboard once and provision a `workers.dev` subdomain. The account API explicitly reports that no subdomain exists.
-2. Owner must decide whether to enable Cloudflare Access. Access is currently disabled. Enabling it is an account-level security configuration and was not performed.
-3. No zone/domain exists in the connected account. For a first preview, use the provisioned `workers.dev` hostname only if its security and Access behavior can be qualified; otherwise a domain/zone must be separately provided and approved.
-4. Confirm Workers Free plan and any Access entitlement from the account dashboard before any deployment. The account API's `type: standard` does not prove a no-cost Workers plan.
-5. Re-run read-only account inspection after prerequisites are completed. Do not deploy a public, unauthenticated dashboard as a workaround.
+1. Historical observation at the time of the initial inspection: no `workers.dev` subdomain existed. This prerequisite was later resolved by provisioning and API read-back of `jarvis-developer-cloud-pool` (see Autonomous provisioning result below).
+2. Cloudflare Access remains disabled and is not required for the application-level GitHub OAuth design.
+3. No custom zone/domain was available in the inspected account; the provisioned `workers.dev` hostname is the current candidate preview origin, subject to qualification.
+4. Workers Free entitlement remains NOT VERIFIED because Billing Read is unavailable to the connected OAuth integration. Do not infer entitlement from the namespace's existence.
+5. Before deployment, re-run read-only account inspection and verify the exact no-cost entitlement. Do not deploy a public, unauthenticated dashboard as a workaround.
 
 Disposition: Cloudflare account connection VERIFIED; deployment prerequisites BLOCKED / NOT SATISFIED. This is a useful blocker discovery, not a deployed pool.
 
@@ -212,14 +212,14 @@ The workers.dev namespace `jarvis-developer-cloud-pool` is now PROVISIONED / VER
 
 The selected server baseline is the official Hono Cloudflare Workers starter, with Cloudflare Workers Static Assets serving the existing vanilla HTML/CSS/JS dashboard on the same origin. The official Hono guide documents the `create-hono` Cloudflare Workers template, Wrangler local development, Static Assets and Workers runtime testing: https://hono.dev/docs/getting-started/cloudflare-workers . Cloudflare's official Hono guide documents its full-stack React + Hono template and same-origin Static Assets architecture: https://developers.cloudflare.com/workers/framework-guides/web-apps/more-web-frameworks/hono/ .
 
-For this first milestone, do not migrate the existing static dashboard to React solely to adopt the React template. Retain the existing interface and use the lighter Hono Workers starter. Generate the scaffold from the official template, verify the current dependency versions, commit the generated lockfile and pin exact versions; do not hand-author an incomplete dependency tree or float `latest` tags. Hono 4.13.16 and Wrangler 4.158.0 are pinned exactly in the prototype package manifest. No lockfile is committed yet; reproducible dependency qualification remains pending. Official release references: https://github.com/honojs/hono/releases and https://github.com/cloudflare/workers-sdk/releases .
+For this first milestone, do not migrate the existing static dashboard to React solely to adopt the React template. Retain the existing interface and use the lighter Hono Workers starter. Generate the scaffold from the official template, verify the current dependency versions, commit the generated lockfile and pin exact versions; do not hand-author an incomplete dependency tree or float `latest` tags. Hono 4.13.16 and Wrangler 4.158.0 are pinned exactly in the prototype package manifest. PR #25 commits an npm v3 lockfile with 93 package entries (blob SHA `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`); its workflow installs with `npm ci --ignore-scripts --no-audit --no-fund`. Exact-head CI evidence is recorded in the prototype implementation report. This establishes a reproducible install path on the GitHub Actions runner, not independent dependency/security qualification. Official release references: https://github.com/honojs/hono/releases and https://github.com/cloudflare/workers-sdk/releases .
 
-The first runtime slice must remain fail-closed: no public deployment, no live data endpoints until GitHub OAuth/session validation is implemented and independently reviewed, no mutations or dispatch routes, and all protected reads return 401/403 until session qualification. Health must not imply pool health. See [Hono runtime selection report](../reports/2026-11-06-hono-runtime-selection.md).
+The first runtime slice must remain fail-closed: no public deployment, no live data endpoints until GitHub OAuth/session validation is implemented and independently reviewed, and no mutations or dispatch routes. The current Hono prototype returns 503 AUTHENTICATION_NOT_CONFIGURED for protected reads while auth is absent; after a qualified session layer is implemented, unauthenticated/unauthorized requests should use the contract's 401/403 semantics. Health must not imply pool health. See [Hono runtime selection report](../reports/2026-11-06-hono-runtime-selection.md).
 
 
 ## Hono prototype implementation — 2026-11-06
 
-An isolated implementation proposal now exists in [PR #25](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25), based on the default branch SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`. It reuses the existing static dashboard, adds Hono API health semantics, fails closed on protected reads and rejects mutation methods. Initial exact-head CI passed syntax, 4 API negative/fail-closed tests and static UI validation. The PR report records run IDs and SHA evidence. A later report-only commit advances the PR head and requires a fresh exact-head CI check. No lockfile, OAuth, secrets or deployment are present; independent review and qualification remain outstanding.
+An isolated implementation proposal now exists in [PR #25](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25), based on the default branch SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`. It reuses the existing static dashboard, adds Hono API health semantics, fails closed on protected reads and rejects mutation methods. Initial exact-head CI passed syntax, 4 API negative/fail-closed tests and static UI validation. The PR report records run IDs and SHA evidence. The PR now contains the committed lockfile and `npm ci` workflow. The current PR head has exact-head CI evidence recorded in its run history; no OAuth, secrets or deployment are present; independent review and qualification remain outstanding.
 
 
 ## Reproducible dependencies — 2026-11-06
