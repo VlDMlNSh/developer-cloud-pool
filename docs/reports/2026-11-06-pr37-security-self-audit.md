@@ -74,3 +74,11 @@ Residual risks / qualification gaps:
 ## Next bounded step
 
 Keep PR #37 draft and dispatch disabled. Obtain an actual independent security review; separately design and test a durable conditional single-use claim/receipt or explicitly qualify and accept the residual GitHub Issues race before any execution authorization. Then run exact-head CI again after any change.
+
+
+## Follow-up design research — Git reference reservation candidate
+
+- Official GitHub REST documentation describes create-reference as `POST /repos/{owner}/{repo}/git/refs`, with success `201`, conflict `409`, and validation/spam `422`. It requires repository `Contents: write`: https://docs.github.com/en/rest/git/refs# create-a-reference
+- A unique immutable ref name per task/run could be evaluated as a durable reservation candidate: competing attempts would contend on the same name. The documentation does not itself promise a formal compare-and-swap/transaction guarantee, so atomicity must be experimentally qualified before relying on it.
+- The required `contents: write` permission is materially broader than current Supervisor `issues: write`; it must NOT be added to the current Supervisor as a quick fix. Evaluate an isolated dedicated state repository / narrowly scoped authority, retention and recovery model first.
+- No ref was created, no permission changed and no dispatch attempted. Candidate remains DESIGN ONLY / NOT QUALIFIED.
