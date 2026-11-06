@@ -124,7 +124,7 @@ test("Worker accepts only the actual owner-triggered Supervisor workflow run", (
   const run = {
     id: 9001, workflow_id: 44, event: "issues",
     actor: { login: "VlDMlNSh" }, head_branch: "Основной",
-    status: "in_progress", created_at: "2026-11-06T10:02:00Z"
+    status: "in_progress", created_at: new Date(Date.now() - 60_000).toISOString()
   };
   const expected = { supervisorRunId: "9001", workflowId: 44, repositoryOwner: "VlDMlNSh", defaultBranch: "Основной" };
   assert.equal(isTrustedSupervisorRun(run, expected), true);
