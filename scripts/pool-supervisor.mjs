@@ -98,7 +98,7 @@ if (!protectedDefaultRef || !dispatchEnabled || !authorizationAccepted) {
       setOutput("task_issue", String(issue.number));
       setOutput("target_sha", targetSha);
       setOutput("profile", "dsh-headless-probe");
-      log("Claimed one task #" + issue.number after exact read-back; awaiting reusable Worker.");
+      log("Claimed one task #" + issue.number + " after exact read-back; awaiting reusable Worker.");
     }
   }
 }
