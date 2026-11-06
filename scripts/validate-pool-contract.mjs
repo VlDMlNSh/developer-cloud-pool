@@ -68,6 +68,8 @@ if (!worker.includes("ref: ${{ github.event.repository.default_branch }}")) fail
 if (!worker.includes("hasConsumedOwnerApproval") || !worker.includes("hasSupervisorClaimComment") || !worker.includes("hasOwnerReadyEvent") || !worker.includes("hasCurrentBotClaimEvent") || !worker.includes("isTrustedSupervisorRun") || !worker.includes("hasPriorWorkerRun")) fail("Worker must independently verify owner approval, Supervisor run, claim provenance and replay state");
 if (!/concurrency:[\s\S]*?pool-worker-task-/.test(worker)) fail("Worker must serialize executions per task issue");
 if (!supervisorScript.includes("supervisor_run_id: String(process.env.GITHUB_RUN_ID)")) fail("Supervisor must pass its own run ID to Worker");
+if (!supervisorScript.includes('if (eventName === "issues" && eventPayload.action === "labeled" && eventPayload.label?.name === "pool:ready" && String(eventPayload.sender?.login || "").toLowerCase() === repositoryOwner.toLowerCase()) await dispatchReadyTasks();')) fail("Supervisor dispatch must be bound to the owner pool:ready issue event");
+if (!supervisorScript.includes("Reconciliation-only cycle")) fail("Scheduled and workflow-run Supervisor cycles must not dispatch Workers");
 if (!approvalModule.includes("supervisorRunId")) fail("Consumed approval marker must bind the exact Supervisor run ID");
 
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
