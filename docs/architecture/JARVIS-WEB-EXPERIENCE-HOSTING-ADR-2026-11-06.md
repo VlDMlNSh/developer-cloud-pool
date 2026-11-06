@@ -211,3 +211,8 @@ The first runtime slice must remain fail-closed: no public deployment, no live d
 ## Hono prototype implementation — 2026-11-06
 
 An isolated implementation proposal now exists in [PR #25](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25), based on the default branch SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`. It reuses the existing static dashboard, adds Hono API health semantics, fails closed on protected reads and rejects mutation methods. Initial exact-head CI passed syntax, 4 API negative/fail-closed tests and static UI validation. The PR report records run IDs and SHA evidence. A later report-only commit advances the PR head and requires a fresh exact-head CI check. No lockfile, OAuth, secrets or deployment are present; independent review and qualification remain outstanding.
+
+
+## Reproducible dependencies — 2026-11-06
+
+The isolated Hono prototype in [PR #25](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25) now commits an npm v3 lockfile with 93 package entries (blob SHA `9d0d18ca770ee329d3260ae0503cf0a58ee19ce9`). CI now uses `npm ci` rather than resolving packages on every run. Exact-head CI after the lockfile and workflow changes is required before dependency reproducibility is considered qualified. OAuth/session, independent security review and deployment remain incomplete.
