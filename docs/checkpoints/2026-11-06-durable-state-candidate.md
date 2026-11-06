@@ -139,3 +139,14 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - Independent security review NOT RUN; PR reviews 0. Production identity/issuer, signed approval, trusted clock, issuance/revocation/audit, quota, backup/restore, account entitlement and executor gates remain unresolved.
 - No cloud resources, deployment, billing changes, secrets, provider calls or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add exact lockfile to PR #36 without widening workflow permissions; independent security review; then qualify card-free cloud deployment.
+
+
+## /next lockfile transfer checkpoint — 2026-11-06
+
+- Current PR #36 head `9815da8fd316d8263b59f3493d076d4623c4c925`; default/base `Основной` at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- D1 exact-head run `42274484200` / job `128087166113`: SUCCESS, 13/13 tests. Pool Contract Validation `42274484234` / job `128087177754`: SUCCESS.
+- Downloaded exact artifact `13532667030`; file verified: 87,979 bytes; SHA-256 `73381e38dbec1ce06c8dcc79dc7b6c2008269713b632f6edb0ad18c8f31b0` (canonical SHA recorded in context window); lockfileVersion 3; 160 packages.
+- PR body and implementation report refreshed. Exact lockfile remains NOT COMMITTED because current GitHub connector has no local-file upload operation and Contents write requires text; no CI write-token expansion or substitute was used.
+- PR #36 OPEN / DRAFT, 0 reviews, 0 inline threads; independent security review NOT RUN; account card-free eligibility NOT VERIFIED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No cloud resource/deployment/billing/secret/provider/dispatch activity.
+- Next: owner uploads the already-verified file to `proofs/d1-ledger/package-lock.json` in the PR branch; then assistant rechecks blob SHA and exact-head CI and proceeds with independent review.
