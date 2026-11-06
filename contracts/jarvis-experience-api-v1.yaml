@@ -221,7 +221,7 @@ components:
         sessions fail closed. OAuth/session implementation is not yet deployed.
   responses:
     Unauthorized:
-      description: Missing or invalid Access identity assertion.
+      description: Missing, invalid, expired or revoked application session cookie.
     Forbidden:
       description: Authenticated identity is not allowlisted for this application.
     RateLimited:
