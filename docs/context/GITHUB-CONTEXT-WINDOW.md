@@ -560,3 +560,14 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Same exact head Pool Contract Validation run `42236017724`, job `127953700415`: SUCCESS. This validates existing static contract only, not authorization.
 - Report updated: [reusable-workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md), latest blob `718948b2a8c841fd99d6c24b2493a24309de3cee`.
 - PR #32 body refreshed and read back; OPEN / DRAFT / UNMERGED; reviews 0, threads 0.
+
+
+## 2026-11-06 — GitHub-native single-use consume feasibility review
+
+- Reviewed current production Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` and Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; production code unchanged.
+- PR #32 head `75c83a288d865f1bbeda4905cf817e00084bcc2d`: exact-head negative-first run `42236017811` / job `127953700048`, 8 tests, 0 passed, 8 failed (expected red baseline); Pool Contract run `42236017724` / job `127953700415` succeeded but does not qualify authorization. Reviews 0, threads 0.
+- Compared GitHub-native candidates using current official documentation. Tag rulesets are available to public repositories on GitHub Free and can restrict tag creation/update/deletion; Git refs plus a narrowly scoped ACTIVE tag ruleset remain the only plausible GitHub-native create-if-absent candidate. Repository-specific ruleset, bypass semantics, Actions token identity/effective permissions, and immutable marker behavior are NOT VERIFIED. No disposable tag test performed.
+- Actions concurrency (`queue: max`, up to 100 pending) is scheduling serialization, not durable atomic nonce consumption; documented queue order is based on when runs start waiting, not dispatch order. Artifacts v4 are immutable after upload and disallow same-name duplicates within one workflow run, but do not provide a repository-wide unique nonce across runs. Issue comments/labels are mutable and rejected as the consume primitive.
+- Report: [GitHub-native single-use consume feasibility review](../reports/2026-11-06-github-native-single-use-consume-review.md).
+- No production code, settings, secrets, variables, rulesets, tags, environments, dispatch, runners, providers, models, paid resources or deployments changed/touched.
+- Next: only if authorized read-only metadata can establish the tag-ruleset and token-identity prerequisites, run an isolated disposable create/race/read-back/update/delete-denial test. Otherwise stop and redesign; do not enable dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
