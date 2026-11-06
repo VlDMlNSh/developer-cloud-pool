@@ -213,3 +213,13 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - PR #36 OPEN/DRAFT; current head `1e278b1601b8a77131118aa5c627c07d663b0e51`; last code/workflow-tested SHA `4229d8701f8ee79692619f481cef1d9d9483ff16`; reviews/threads 0/0.
 - PR #37 OPEN/DRAFT; tested head `5b45a29ed7869c091741c0037c68bfcd6640de7d`; reviews/threads 0/0. Independent review NOT RUN. Issue #38 OPEN/PLANNED.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED.
+
+
+## Cloudflare Free entitlement live check — 2026-11-06
+
+- Connected Cloudflare account API read-only: one standard account; entitlements empty; D1 database list 0; Worker scripts list 0; Workers settings `default_usage_model=standard`, `green_compute=false`.
+- Billing subscriptions GET returned 403 because connected OAuth lacks Billing Read/Write. No billing/payment method read. Actual account Workers Free status and card-free eligibility NOT VERIFIED.
+- Official current docs confirm Workers Free and D1 Free are available; D1 limits 5m rows read/day, 100k rows written/day, 5GB total, 10 DBs; limits enforced since 2026-09-01. Workers Free 100k requests/day, 10ms HTTP CPU. Workflows 3k steps/day, 1GB-month; Queues 10k ops/day/24h retention; Browser Run 10min/day.
+- No resources created, deployment, billing change, payment method, secret, permission or dispatch. No paid fallback.
+- Report: [Cloudflare Free entitlement live check](../reports/2026-11-06-cloudflare-free-entitlement-live-check.md).
+- Next: non-secret dashboard confirmation of Workers Free and no-card eligibility, or least-privilege Billing Read-only access. If payment method/upgrade required, stop. Candidate C stays bounded qualification; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
