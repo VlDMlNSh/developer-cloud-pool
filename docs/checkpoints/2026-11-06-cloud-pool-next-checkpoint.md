@@ -333,3 +333,26 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - PR #36 remains OPEN/DRAFT/UNMERGED; independent reviews 0. PR #37 remains OPEN/DRAFT/UNMERGED; independent review remains NOT RUN. No merge or production wiring.
 - Next: isolated local-only claim + outbox proof with deterministic identity and fault-injection tests C01–C18. No live resources, dispatch, DSH, Resource Probe, secrets, provider/model calls or Contour B work.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Documentation remains on non-default branch `docs/github-context-window-2026-11-06`.
+
+
+## Decision refresh — 2026-11-07
+
+### Fresh repository evidence
+- Default branch remains `Основной`; latest observed base SHA is `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 head `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, OPEN / DRAFT / UNMERGED. Exact-head D1 run `42293956647` / job `128154248534`: COMPLETED / SUCCESS. Exact-head Pool Contract run `42293956578` / job `128154248111`: COMPLETED / SUCCESS. Submitted reviews 0; inline threads 0.
+- PR #37 head `5587a4e013507b5be330fd0c49ce1fc836faa946`, OPEN / DRAFT / UNMERGED. Exact-head boundary run `42284051309` and contract run `42284051311`: COMPLETED / SUCCESS. Submitted reviews 0; inline threads 0.
+- Issue #38 remains OPEN. Its required design comparison and acceptance criteria remain controlling.
+
+### Updated candidate assessment
+- A (serialized Supervisor + Issue labels): workflow concurrency is defense-in-depth only. Issue label mutation is not a compare-and-swap lock across all writers; no global exactly-once claim.
+- B (dedicated state repository + immutable refs): no qualified atomicity/deletion-recreation proof; would require a separate repository and narrowly scoped Contents authority. Do not grant Contents:write to the current Supervisor.
+- C (conditional-write store / D1): local Workers-runtime proof demonstrates only a one-row conditional consume under local contention. The proof accepts caller-supplied identity/time inputs, has no signed issuer verification or trusted server clock, and has no outbox, lease/fencing, durable audit or recovery. No live D1/account entitlement is qualified.
+
+**Decision unchanged:** no backend currently satisfies production acceptance criteria. Candidate C remains the strongest research direction but is NOT selected for production, NOT authorized for provisioning/integration, and does not permit dispatch. Keep both dispatch gates fail-closed. The previous design record and D1 boundary audit are consistent; no new code is justified until the local claim+outbox proof is implemented and independently reviewed, and account-level entitlement/least-privilege can be verified.
+
+### Governance and phase
+- Ruleset `26550182` last live audited as active for `refs/heads/Основной`, but required approvals=0 and CODEOWNERS review=false. The current pass did not re-fetch Ruleset details; treat that as the latest recorded audit, not a fresh live Ruleset verification.
+- Cloudflare account plan/card-free eligibility remains NOT VERIFIED (prior read-only subscription endpoint 403 for missing Billing scopes); no resources deployed.
+- Gemini dispatch NOT RUN; approved controller is not present in this repository's default workflow directory. No secrets read, no dispatch, no DSH/Resource Probe, no provider/model calls, no paid fallback, no Contour B.
+- Documentation remains on `docs/github-context-window-2026-11-06`, separate from canonical default branch. This working branch is 82 commits ahead / 0 behind at latest compare; no merge.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B remains DEFERRED.
