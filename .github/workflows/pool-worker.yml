@@ -61,7 +61,11 @@ jobs:
           if (!response.ok) throw new Error("Cannot read task: HTTP " + response.status);
           const issue = await response.json();
           const labels = (issue.labels || []).map(label => label.name);
-          if (issue.pull_request || issue.state !== "open" || !labels.includes("pool:claimed")) throw new Error("Task is not an open claimed issue.");
+          const managedStates = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"];
+          const activeStates = labels.filter(label => managedStates.includes(label));
+          if (issue.pull_request || issue.state !== "open" || activeStates.length !== 1 || activeStates[0] !== "pool:claimed") {
+            throw new Error("Task must be open and have exactly one managed state: pool:claimed.");
+          }
           const sha = String(issue.body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
           const profile = String(issue.body || "").match(/^### Worker profile\s*\r?\n+([^\r\n]+)\s*$/im);
           if (!sha || sha[1] !== e.TARGET_SHA) throw new Error("Target SHA mismatch.");
