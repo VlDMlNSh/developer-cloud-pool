@@ -39,3 +39,13 @@ The tests are deliberately negative-first: the current production source violate
 
 ## Next bounded step
 Wire this test file into a dedicated read-only CI job on the design branch (or an isolated PR) with no privileged permissions, execute it against the immutable production baseline and capture expected failures. Then implement one coherent remediation behind those tests. Do not enable dispatch or merge.
+
+
+## CI execution — exact-head evidence
+- PR #32 created as OPEN / DRAFT / UNMERGED; head `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`; current base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; mergeable=true at last read-back.
+- First run `42234770131` failed before tests because the initial reusable-workflow assertion regex was malformed. The regex was corrected; no result from that first run is counted as security evidence.
+- Corrected exact-head run `42234855260`, job `127949725675`: COMPLETED / FAILURE. Node summary: 7 tests, 0 passed, 7 failed. The log confirms actual assertion failures for Worker workflow_call-only, Worker issue-write/mutation, Supervisor workflow_run/actions:write, missing static local reusable call, and stale claim requeue. This is the expected red baseline against current production files, not a green authorization result.
+- The same source head's existing Pool Contract Validation run `42234855109` completed SUCCESS (job `127949430889`). It validates existing project contracts, not the new authorization requirements.
+- CI checked merge commit `bbb90f8d17a617b7a7edb5336139f0fb76cba4af`; current base SHA and current production workflow blobs were separately re-read. Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`.
+- PR #32 formal reviews: 0; inline review threads: 0. Independent review NOT RUN.
+- No production source changes, dispatch, Worker/DSH runtime, secret/config mutation, provider/model calls, paid services or deployment.
