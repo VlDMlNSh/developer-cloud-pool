@@ -12,6 +12,15 @@ function jsonResponse(data, init = {}) {
   });
 }
 
+test("rejects dot-segment repository slugs in the configured allowlist", () => {
+  for (const repository of ["../issues", "./repo", "owner/..", "owner/."]) {
+    assert.throws(
+      () => createGitHubReadAdapter({ allowedRepositories: [repository] }),
+      /allowedRepositories must contain repository slugs/
+    );
+  }
+});
+
 test("rejects non-allowlisted repositories before any network request", async () => {
   let calls = 0;
   const adapter = createGitHubReadAdapter({ fetchImpl: async () => { calls += 1; } });
