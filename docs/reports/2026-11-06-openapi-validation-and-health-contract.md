@@ -47,3 +47,11 @@ Add automated OpenAPI 3.1 linting to the architecture/contract PR and correct a 
 ## Next bounded step
 
 Build a no-secret authentication/session fixture with deterministic tests for OAuth state mismatch/replay/expiry, allowlist rejection, cookie flags, session expiry/revocation, CSRF and fixed-upstream allowlisting. Keep the fixture isolated from production credentials and do not enable protected routes. Obtain independent review before any live OAuth configuration.
+
+
+## Final read-back and branch provenance
+
+- Read-back confirmed contract blob `3cab6581f88a37d6090aeda5df1fb7157f749f84` and workflow blob `47d3afecc918df0926a63b5cf2a6de473356f5d6`.
+- Report blob before this verification append: `ac83161c641e2e71fd8a97bc903ca4af7575b30b`; checkpoint blob before final append: `ca3c3c96d3f8de5e36d28973cfa62ace7dd40170`.
+- Branch snapshot after report/checkpoint publication: `a15680a46b508b2fe205547e363a4aaba3c0e10e`, 44 ahead / 0 behind base. The last two commits after CI HEAD `8f8613eebb4a37e3a1c2296b66e9f7b53090d1ae` are report/checkpoint-only; no exact-head workflow runs were returned for `a15680a...`. CI is VERIFIED for the API/workflow changes at `8f8613e...`; latest docs-only successor CI NOT VERIFIED.
+- Formal PR #24 reviews / inline threads remain 0 / 0.
