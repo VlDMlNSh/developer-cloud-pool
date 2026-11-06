@@ -23,6 +23,17 @@ function isSafeRepository(value) {
     /^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/.test(value);
 }
 
+function isGitHubHtmlUrl(value) {
+  if (typeof value !== "string") return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.origin === "https://github.com" &&
+      !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 function validEtag(value) {
   return typeof value === "string" &&
     value.length <= 220 &&
@@ -92,7 +103,7 @@ function projectRepository(data) {
     full_name: typeof data.full_name === "string" ? data.full_name.slice(0, 201) : null,
     default_branch: typeof data.default_branch === "string" ? data.default_branch.slice(0, 200) : null,
     private: typeof data.private === "boolean" ? data.private : null,
-    html_url: typeof data.html_url === "string" && data.html_url.startsWith("https://github.com/") ? data.html_url.slice(0, 300) : null
+    html_url: isGitHubHtmlUrl(data.html_url) ? data.html_url.slice(0, 300) : null
   };
 }
 
@@ -103,7 +114,7 @@ function projectIssues(data) {
     title: typeof item?.title === "string" ? item.title.slice(0, 300) : null,
     state: item?.state === "open" || item?.state === "closed" ? item.state : null,
     updated_at: typeof item?.updated_at === "string" ? item.updated_at.slice(0, 40) : null,
-    html_url: typeof item?.html_url === "string" && item.html_url.startsWith("https://github.com/") ? item.html_url.slice(0, 300) : null
+    html_url: isGitHubHtmlUrl(item?.html_url) ? item.html_url.slice(0, 300) : null
   }));
 }
 
@@ -123,7 +134,7 @@ function projectWorkflowRuns(data) {
       run_number: Number.isSafeInteger(item?.run_number) ? item.run_number : null,
       created_at: typeof item?.created_at === "string" ? item.created_at.slice(0, 40) : null,
       updated_at: typeof item?.updated_at === "string" ? item.updated_at.slice(0, 40) : null,
-      html_url: typeof item?.html_url === "string" && item.html_url.startsWith("https://github.com/") ? item.html_url.slice(0, 300) : null
+      html_url: isGitHubHtmlUrl(item?.html_url) ? item.html_url.slice(0, 300) : null
     }))
   };
 }
