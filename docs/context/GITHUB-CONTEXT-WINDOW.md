@@ -666,3 +666,15 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Next bounded step: local-only D1 ledger implementation and adversarial concurrent consume tests, without cloud provisioning. Only after local tests, obtain independent security review and separately verify no-card Free activation before any disposable cloud test.
 
 Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-free-transactional-state-store-assessment.md
+
+
+## Engineering pass — 2026-11-06 — local single-use ledger prototype
+
+- Fresh baseline: production `Основной` HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #32 OPEN/DRAFT/UNMERGED, head `75c83a288d865f1bbeda4905cf817e00084bcc2d`; reviews 0; inline threads 0.
+- Exact-head PR #32 authorization run `42236017811` / job `127953700048`: COMPLETED/FAILURE (8/8 negative assertions fail); Pool Contract Validation `42236017724` success is not security qualification.
+- Added local-only reference prototype `tests/prototypes/sqlite-single-use-ledger-reference.test.py`, commit `5ad35ae1b677a589cb6790264f8406821e013691`. Local Python sqlite3 unittest: 7/7 passed. A barrier-synchronized 12-way concurrent consume produced exactly one acceptance and 11 rejections. Replay, mismatched owner/repository/Issue/SHA/profile/envelope, expiry, duplicate ID, unknown ID and unavailable DB were tested.
+- Prototype transaction is a conditional UPDATE in `BEGIN IMMEDIATE`, matching all immutable fields, expiry and unconsumed state. This is a local SQLite reference only; D1-specific behavior is NOT VERIFIED. It does not prove caller identity or owner-approval provenance.
+- Report: [Local single-use ledger prototype](../reports/2026-11-06-local-single-use-ledger-prototype.md).
+- No D1/DO resources, cloud deployments, production changes, dispatches, provider/model calls, paid resources or secrets access. No payment/billing action.
+- Status: local SQLite reference SUCCEEDED (7/7); D1 qualification NOT RUN; Cloudflare Free/no-card NOT VERIFIED; GitHub caller/owner authorization NOT IMPLEMENTED/NOT VERIFIED; PR #32 independent review NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement D1-specific adapter and migrations with official Workers/D1 test runtime; verify atomic concurrent consume, affected-row semantics, rollback and ambiguous-response recovery. Keep cloud provisioning blocked until no-card Free eligibility is independently proven and a separately authorized disposable test is approved.
