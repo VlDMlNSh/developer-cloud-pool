@@ -40,6 +40,7 @@ test("GitHub Authorization Code + PKCE S256 works with form-body client authenti
       assert.equal(options.method, "POST");
       assert.equal(options.body instanceof URLSearchParams, true);
       assert.equal(options.headers.accept, "application/json");
+      assert.match(options.headers["content-type"], /^application\\/x-www-form-urlencoded/i);
       assert.equal(options.headers.authorization, undefined);
       const body = options.body;
       assert.equal(body.get("grant_type"), "authorization_code");
@@ -49,9 +50,11 @@ test("GitHub Authorization Code + PKCE S256 works with form-body client authenti
       assert.equal(body.get("redirect_uri"), redirectUri);
       assert.equal(body.get("code_verifier"), codeVerifier);
       tokenRequestObserved = true;
-      return new Response(JSON.stringify({
+      const response = new Response(JSON.stringify({
         access_token: "synthetic-access-token", token_type: "bearer", scope: ""
       }), { status: 200, headers: { "content-type": "application/json" } });
+      Object.defineProperty(response, "url", { value: tokenEndpoint });
+      return response;
     } }
   );
   assert.equal(tokenRequestObserved, true);
