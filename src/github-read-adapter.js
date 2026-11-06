@@ -19,8 +19,11 @@ function failure(error, details = {}) {
 }
 
 function isSafeRepository(value) {
-  return typeof value === "string" &&
-    /^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/.test(value);
+  if (typeof value !== "string" ||
+      !/^[A-Za-z0-9_.-]{1,100}\/[A-Za-z0-9_.-]{1,100}$/.test(value)) return false;
+  const [owner, repo] = value.split("/");
+  // URL normalizes dot segments before the request is sent (e.g. /repos/../user).
+  return owner !== "." && owner !== ".." && repo !== "." && repo !== "..";
 }
 
 function isGitHubHtmlUrl(value) {
