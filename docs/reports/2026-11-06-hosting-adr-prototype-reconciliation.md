@@ -64,3 +64,11 @@ After CI completes, add isolated, secret-free authentication policy tests on the
 - Child workflows exist on main: Agent 1 blob `155a02159912ca371e6f826c51325ca269857aad`, Agent 2 `fff1820a6b97d379b23674f36bd62227b7d4dec2`, Agent 3 `781df56e8aa7c75ba453c08378611857862b2e44`. No dispatch was performed.
 - PR #437 is merged/closed. PR #441 remains OPEN / non-draft / unmerged at `9f40b90c3106662cfcc337c48f29e4794fa713dc`; its exact-head PR workflow query returned no runs and reviews/threads are 0/0. Do not infer acceptance.
 - SentinelX Free plan exposes one operational host `host_5f7264034bdf0b51` (hostname `Voktors-Mini.Dlink`), already occupying the only active slot. It is not identified as Alamo/Server 3; Claude Code and browser work were NOT RUN.
+
+
+## Latest branch CI recheck — 2026-11-06
+
+- Branch snapshot `7c48323ff9bf2d118cb995668d73550cf2b3ba11`: 53 ahead / 0 behind base.
+- Exact-head OpenAPI Validation run `42187773805` SUCCEEDED; job `127792102143`, Node 24 setup and Redocly validation step completed successfully.
+- Exact-head Pool Contract Validation run `42187774177` SUCCEEDED; job `127792103675`, workflow YAML parse, dispatch-disabled invariant and pool security contract steps completed successfully.
+- These checks validate the current exact branch head before this final report/checkpoint-only publication.
