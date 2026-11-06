@@ -34,8 +34,8 @@ export function buildRunnerCapacityCandidate(snapshot, {
   assert(Number.isInteger(snapshot.validUntil) && snapshot.validUntil > now, "probe evidence is expired or invalid");
   assert(typeof snapshot.repository === "string" && snapshot.repository.length > 0, "repository is required");
   assert(typeof snapshot.commitSha === "string" && /^[a-f0-9]{40,64}$/i.test(snapshot.commitSha), "commitSha must be immutable");
-  assert(typeof snapshot.runId === "string" && /^\\d+$/.test(snapshot.runId), "runId is required");
-  assert(typeof snapshot.runAttempt === "string" && /^\\d+$/.test(snapshot.runAttempt), "runAttempt is required");
+  assert(typeof snapshot.runId === "string" && /^[0-9]+$/.test(snapshot.runId), "runId is required");
+  assert(typeof snapshot.runAttempt === "string" && /^[0-9]+$/.test(snapshot.runAttempt), "runAttempt is required");
   assert(snapshot.runner && typeof snapshot.runner === "object", "runner metadata is required");
   const raw = snapshot.raw;
   assert(raw && typeof raw === "object", "raw resource measurements are required");
