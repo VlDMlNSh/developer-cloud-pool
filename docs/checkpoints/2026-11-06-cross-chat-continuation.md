@@ -158,3 +158,17 @@ Prepare a small no-secret authentication compatibility test for pinned oauth4web
 ## 11. Cross-chat resume instruction
 
 When the owner writes /next, resume from this checkpoint, refresh live GitHub state first, and continue the next bounded engineering step. Do not ask the owner to restate project context. If a newer checkpoint/report or merged PR supersedes this file, follow newer evidence and update this checkpoint.
+
+
+## Live refresh — 2026-11-06 15:01 UTC+3
+
+- Repository metadata: public, default branch `Основной`; default HEAD re-read as `64d2636d4500127e635c214ccfb722c6b3fcda80`. Branch API reports `protected=false` and protection disabled for this branch; do not assume branch protection is effective. Repository has admin/push permissions for the connected identity.
+- README re-read (blob `fea44c2485b604432ab9ee20293c3e1f7ee8bdec`): Supervisor/Worker remain scaffold/NOT RUN; DSH evaluation and runner probe NOT RUN; deployment NOT RUN; general agent execution and durable checkpoint/resume NOT IMPLEMENTED.
+- PR #24 current head `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6`, OPEN/DRAFT/UNMERGED. Its prior named CI runs remain historical; exact current-head run evidence not refreshed in this pass. OAuth/session, deployment and independent review remain outstanding.
+- PR #25 current head `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`, OPEN/DRAFT/UNMERGED. Historical CI evidence is recorded in the PR body; no current-head run was confirmed in this pass. Auth/session, live GitHub adapter, browser QA and deployment remain NOT IMPLEMENTED/NOT RUN.
+- PR #27 (this context branch) head `683178e56c5f3fb51d1559053c5069d24c0a48c3`, OPEN/DRAFT/UNMERGED. Combined status and PR-triggered workflow-run query both returned empty: CI NOT VERIFIED. Do not treat docs-only absence as a pass.
+- PR #28 account-isolated routing design head `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, OPEN/DRAFT/UNMERGED; docs-only CI NOT RUN/NOT VERIFIED.
+- PR #29 quota ledger / slot admission head `34fc78921b16359d136db553d8a51b4a4716995d`, OPEN/DRAFT/UNMERGED. Exact-head Pool Contract Validation run `42211525076`, job `127871048179`, COMPLETED/SUCCESS; job steps include dispatch-disabled assertion, YAML parse and pool security contract validation. Formal review list empty. This is not independent review, qualification, provider routing or runtime execution.
+- Issue #26 remains the account-isolated routing design gate; distinct credential references must not be assumed to represent distinct upstream quota domains without provider evidence. No secret values/presence were inspected.
+- Current immediate engineering priority remains web console, not provider routing: secure OAuth/session + live fixed-origin GitHub read adapter, independent security review, verified free hosting entitlement and iPhone/browser QA. Model-routing work remains parallel and must not delay web access.
+- No workflow dispatch, DSH/runner probe, provider/model call, secret access, deployment, billing action, merge or agent dispatch occurred in this pass.
