@@ -282,3 +282,12 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Local proof validates one-winner consume and fail-closed cases, but not delivery after consume. A crash after consume can strand the task; ambiguous response must be resolved by same claim ID, never blind fresh consume. End-to-end exactly-once not established.
 - Plan: [D1 claim + outbox recovery qualification plan](../reports/2026-11-06-d1-claim-outbox-recovery-qualification-plan.md), commit `551b9b1023f471d47d03478baeaf964348be8bac`. Cloudflare D1 batch is transactional; exact SQL still needs real backend test. No provisioning/deployment/billing/dispatch.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: versioned contract/schema proposal and deterministic local tests for atomic claim+outbox, retry idempotency, leases and fencing.
+
+
+## 2026-11-06 — D1 contract 0.1
+
+- Refreshed Issue #38 and PR #36/#37. Both PRs OPEN/DRAFT/UNMERGED; exact-head CI runs remain SUCCESS; review/inline threads 0/0. Default HEAD last recorded `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (repository listing did not return a matching object, so not freshly verified).
+- Created proposed [D1 Claim + Transactional Outbox Contract 0.1](../contracts/D1-CLAIM-OUTBOX-CONTRACT-0.1.md), commit `ca84a120edc2e8941bd4db7b660b340497728c6b`. Specifies signed approval, atomic claim+outbox, event ledger, retry/idempotency, leases/fencing, and C01–C18 adversarial tests. Design only; no implementation or deployment.
+- Existing PR #36 schema lacks signed issuer, outbox, lease/fencing and event ledger. Its caller-supplied owner/time remains test-only and is not production trust.
+- Dispatch disabled. Entitlement NOT VERIFIED; real D1 NOT RUN; independent review NOT RUN. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: isolated proof-branch schema/state-machine implementation and local C01–C18 fault-injection tests, with no production wiring.
