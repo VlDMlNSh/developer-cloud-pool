@@ -40,7 +40,7 @@ test("GitHub Authorization Code + PKCE S256 works with form-body client authenti
       assert.equal(options.method, "POST");
       assert.equal(options.body instanceof URLSearchParams, true);
       assert.equal(options.headers.accept, "application/json");
-      assert.match(options.headers["content-type"], /^application\\/x-www-form-urlencoded/i);
+      assert.ok(options.headers["content-type"].startsWith("application/x-www-form-urlencoded"));
       assert.equal(options.headers.authorization, undefined);
       const body = options.body;
       assert.equal(body.get("grant_type"), "authorization_code");
