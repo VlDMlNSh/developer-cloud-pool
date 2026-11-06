@@ -170,3 +170,15 @@ Obtain exact-head CI/test evidence for PR #31 and independent review. If verifie
 - PR #32 final branch HEAD `dd3de21690e921bfccf207efd919cfd63be53e60`; test/code head `6bb7d8c6ac1ccde77a24b8e2fcb609aaea6e08f1`; successor is documentation-only.
 - PR remains OPEN / DRAFT / UNMERGED, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, reviews 0, threads 0.
 - Updated integrated authorization contract and evidence report; exact test evidence remains run `42234855260` (7/7 failing expected baseline) and Pool Contract Validation `42234855109` SUCCESS.
+
+
+## 2026-11-06 — Reusable workflow identity / durable consume feasibility
+- Default branch latest commit: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (revert of misplaced report only; production workflow blobs unchanged).
+- PR #32 head `75c83a288d865f1bbeda4905cf817e00084bcc2d`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; OPEN / DRAFT / UNMERGED; reviews 0, threads 0.
+- Test harness adds an eighth assertion for separate caller and callee identity contexts. Test blob `6bf7cf9583766fb57972a0b82ec27cc2b6e90eeb`; contract blob `efb2fa99346d8020361cb41c4fc03786da2e36be`.
+- Correct semantics: `github.workflow_ref/workflow_sha` and `github.repository/repository_id` are caller context; `job.workflow_repository/workflow_file_path/workflow_sha` identify the called reusable workflow. Official docs: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts.
+- Latest exact-head CI: NOT VERIFIED (no run returned for final head). Earlier run `42235842885` / job `127953095784` failed 8/8 at a preceding head; caller-context assertion had a regex escaping defect and was corrected later. Do not treat that run as final-head evidence. Pool Contract Validation run `42235843082` SUCCESS on preceding head is not authorization qualification.
+- Tag rulesets support separate create/update/delete restrictions in GitHub docs, but repository-specific tag ruleset and Actions token permissions remain NOT VERIFIED. No disposable tag test or settings mutation. Durable consume remains BLOCKED / NOT VERIFIED.
+- Report: [reusable workflow identity and consume feasibility](../reports/2026-11-06-reusable-workflow-identity-and-consume-feasibility.md).
+- No production source change, dispatch, Worker/DSH, provider/model, secret/config mutation, paid resource or deployment.
+- Next: verify exact-head CI, then authorized read-only ruleset and Actions permission metadata. Keep execution disabled.
