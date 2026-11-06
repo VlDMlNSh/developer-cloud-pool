@@ -54,7 +54,7 @@ test("Supervisor does not grant Actions write permission", () => {
 });
 
 test("Supervisor invokes Worker through a statically declared reusable workflow, not REST dispatch", () => {
-  assert.match(supervisorWorkflow, /^\\s+uses:\\s+\\.\\/\\.github\\/workflows\\/pool-worker\\.yml(?:@[^\\s]+)?\\s*$/m);
+  assert.match(supervisorWorkflow, /^\s+uses:\s+\.\/\.github\/workflows\/pool-worker\.yml(?:@[^\s]+)?\s*$/m);
   assert.doesNotMatch(supervisorScript, /\/actions\/workflows\/[^\s"'`]+\/dispatch/);
   assert.doesNotMatch(supervisorScript, /workflow_dispatch/);
 });
