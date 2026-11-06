@@ -274,3 +274,11 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Default branch still contains the old privileged dispatch chain; PR #37 not merged. Issue #38 single-use claim remains NOT QUALIFIED: Issue labels not CAS; local D1 proof not live resource and lacks production issuer/identity/clock/audit/restore qualification. Latest recorded Ruleset audit: approvals 0, CODEOWNERS false (not freshly re-queried).
 - Report: [PR #37 identity contract review](../reports/2026-11-06-pr37-reusable-workflow-identity-contract-review.md), commit `64696d44e3bc68ef75e234409adc4db88e323c5a`.
 - Next: bounded real-backend qualification plan for Issue #38 candidate C, no provisioning or dispatch. Contour A BLOCKED; Contour B DEFERRED.
+
+
+## 2026-11-06 — D1 claim/outbox/recovery qualification plan
+
+- PR #36 current head `1e278b1601b8a77131118aa5c627c07d663b0e51`, OPEN/DRAFT. Exact-head D1 run `42276981988` / job `128095703539` and contract run `42276982111` / job `128095703972` SUCCESS.
+- Local proof validates one-winner consume and fail-closed cases, but not delivery after consume. A crash after consume can strand the task; ambiguous response must be resolved by same claim ID, never blind fresh consume. End-to-end exactly-once not established.
+- Plan: [D1 claim + outbox recovery qualification plan](../reports/2026-11-06-d1-claim-outbox-recovery-qualification-plan.md), commit `551b9b1023f471d47d03478baeaf964348be8bac`. Cloudflare D1 batch is transactional; exact SQL still needs real backend test. No provisioning/deployment/billing/dispatch.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: versioned contract/schema proposal and deterministic local tests for atomic claim+outbox, retry idempotency, leases and fencing.
