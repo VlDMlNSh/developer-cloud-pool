@@ -891,3 +891,14 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Local D1 proof VERIFIED for exact tested SHA only. Production integration, account-specific Workers Free/card-free eligibility, live quota/backup recovery and owner/caller provenance remain NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - No cloud resources, deployment, billing changes, secrets, provider calls or dispatch were used.
 - Next: commit the inspected lockfile into PR #36, then request independent security review. Do not merge/deploy until all remaining gates pass.
+
+
+## D1 source review and current rerun — 2026-11-06
+
+- Proof branch latest source/report head: `9598a41ed9ec0c890c4fc68149bad6702eb33587`.
+- Exact-head D1 workflow run `42273038071` / job `128082231960`: RUNNING at checkpoint update time. This run is triggered by the latest report commit; prior green CI at `07f555788730f1d67acf3c11013e6d9c85894062` does not automatically qualify the new head.
+- Retrieved final lock artifact `13530006379`; archive SHA-256 `92b2094bc1bc3d6734d7b6709ae58b235d9193245dde89ed9035072027b9d755`; extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`, lockfileVersion 3, 160 package entries. Versions match the recorded package inventory.
+- Lockfile remains NOT COMMITTED. It was verified in the current session's file runtime, but no supported GitHub Contents API file-transfer path was available to stage these extracted bytes. Do not claim committed.
+- Bounded source review recorded in proof report. Key production blockers: caller identity not independently authenticated; approval row/owner approval provenance not cryptographically verified; caller-supplied `now` must be replaced with trusted server time; issuance/revocation, audit, quotas, backup/restore and live account-limit tests absent; placeholder profile is not production-approved. This was a source-level review, NOT independent security review.
+- PR #36 remains draft/open, no reviews or inline threads previously observed. No merge/deployment.
+- Next: verify run `42273038071`; solve exact lockfile commit path; obtain independent security review. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
