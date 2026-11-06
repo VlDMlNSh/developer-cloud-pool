@@ -481,3 +481,16 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - Report: [Cloud Pool PR #31 CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
 - Next: enable path-filtered exact-head tests for `src/**` and `tests/**` from the PR base branch, execute PR #31 tests, and obtain independent review. In parallel, maintain coherent Supervisor/Worker authorization remediation and fresh governance read-back before any runtime.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 26. PR #31 exact-head CI activation and adapter hardening — 2026-11-06
+
+- Corrected prior diagnosis: PR #31's CI was not excluded by Pool Contract Validation. Its applicable `jarvis-web-validation.yml` already covered `src/**` and `tests/**`; the `pull_request.branches` target filter omitted PR #31's Hono feature base branch.
+- Added `feat/jarvis-hono-web-prototype-2026-11-06` to that pull_request filter on the base branch. Workflow commit / PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; workflow blob `cb935cc92272f09576604ed0365d5e7bf92903a0`.
+- PR #25 exact-head CI after workflow correction: run `42228269689` Pool Contract Validation SUCCESS; run `42228269676` Jarvis Web Prototype Validation SUCCESS.
+- PR #31 adapter hardening: ETag validator now accepts only HTTP entity-tag opaque-tag character ranges (with optional weak prefix); malformed spaces, tabs, controls, DEL and out-of-range Unicode rejected before fetch. Regression test added. Source blob `9df448c7817a62d9eca86b91697eb593be23855e`; test blob `04a7acb6173625f50934ba59e87ab55d7001ecc0`.
+- PR #31 exact head `907bf6c819bf0744473dfc96027fedc3a82e475a`; run `42228343320` COMPLETED/SUCCESS; job `127927472859` SUCCESS; logs: npm test 22/22 pass, 0 fail; runtime check, npm ci, static checks and dashboard contract all passed.
+- PR #31 remains OPEN/DRAFT/UNMERGED; reviews 0; review threads 0. Exact-head CI VERIFIED, independent review NOT RUN. Adapter is still not mounted in Hono.
+- Supervisor/Worker authorization blockers persist. Historical dispatch variable read-back false from 2026-11-04 only; current value not freshly read. No dispatch, Worker, DSH, Resource Probe, Gemini, Claude Code, provider/model calls, secret reads or deployment.
+- Report: [PR #31 exact-head CI audit](../reports/2026-11-06-cloud-pool-pr31-ci-audit.md).
+- Next: independent review of PR #31; then continue Supervisor/Worker authorization remediation and fresh ruleset/Actions-variable read-back before runtime. Contour A NOT ACCEPTED; Contour B DEFERRED.
