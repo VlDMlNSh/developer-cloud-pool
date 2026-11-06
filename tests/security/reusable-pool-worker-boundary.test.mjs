@@ -1,3 +1,5 @@
+  assert.match(worker, /EXPECTED_REPOSITORY_ID: "1445644538"/);
+  assert.match(worker, /CALLER_WORKFLOW_SHA !== e.CALLEE_WORKFLOW_SHA/);
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
