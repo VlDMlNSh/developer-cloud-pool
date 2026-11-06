@@ -82,7 +82,7 @@ test("returns only bounded issue fields and validates same-origin pagination lin
         body: "large untrusted issue body must not be returned"
       }], {
         headers: {
-          link: '<https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues?per_page=20&page=2>; rel="next"',
+          link: '<https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues?state=open&per_page=20&page=2>; rel="next"',
           etag: '"issues-page-1"'
         }
       });
