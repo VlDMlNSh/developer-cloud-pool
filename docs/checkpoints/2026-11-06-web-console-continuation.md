@@ -181,3 +181,15 @@ The workers.dev namespace `jarvis-developer-cloud-pool` was provisioned and read
 - Updated files read back: ADR blob `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`; checkpoint blob before this final update `6739e919aa1ed2d5ace853a603c5948e0e408d96`; report blob `2209c84b7133e649d23b1f4402b59a5fc7035806`.
 - Exact-head CI query for documentation-only HEAD returned no PR-triggered workflow runs: NOT VERIFIED, not PASS. PR #24 formal reviews and inline review threads remain 0/0.
 - OAuth/session implementation NOT IMPLEMENTED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN; dispatch BLOCKED / FAIL-CLOSED.
+
+
+## 2026-11-06 — PR/Issue metadata alignment
+
+The PR #24 description and Issue #22 were stale: both still described Cloudflare Access as the preferred authentication path even though the ADR and OpenAPI contract had been corrected to application-level GitHub OAuth/session. Updated both control-plane descriptions to match the current no-card architecture and explicitly mark OAuth implementation as NOT IMPLEMENTED.
+
+- PR #24 description now documents server-side GitHub OAuth, one-time state, immutable numeric owner-ID allowlist and `__Host-jarvis_session`; it remains OPEN / DRAFT / UNMERGED.
+- Issue #22 hosting/authentication text now reflects the same design. The stale Cloudflare prerequisite block was replaced: `jarvis-developer-cloud-pool.workers.dev` namespace is PROVISIONED / VERIFIED; Worker scripts remain empty; Access is disabled/not required; no zone is attached; Workers Free entitlement NOT VERIFIED because Billing Read is unavailable.
+- Evidence report: [2026-11-06 web-console metadata alignment](../reports/2026-11-06-web-console-metadata-alignment.md).
+- ADR blob: `45f759ede025bb9c98e3f471c1398fe3b2ce931c`; OpenAPI blob: `2b45f7db2e84c4585cf05b515f9bdd01fa4adc4b`.
+- PR #24 and #25 reviews/threads: 0/0 at recheck. Exact-head CI for documentation-only successor NOT VERIFIED. No deployment, OAuth credentials, dispatch, Gemini or Claude execution.
+- Next: validate OpenAPI 3.1 with a pinned parser; implement a no-secret local auth fixture and negative tests. Keep production routes fail-closed.
