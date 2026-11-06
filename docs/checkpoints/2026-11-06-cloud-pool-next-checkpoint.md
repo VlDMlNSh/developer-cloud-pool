@@ -143,3 +143,10 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Status: CI VERIFIED; governance independent-review enforcement INSUFFICIENT; runtime NOT QUALIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review plus durable conditional claim/receipt design; keep PR draft and both dispatch gates fail-closed.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Durable claim-store candidate — 2026-11-06
+
+- GitHub Create a reference endpoint is a candidate reservation primitive (201/409/422) but requires `Contents: write`: https://docs.github.com/en/rest/git/refs#create-a-reference .
+- Formal atomicity is not guaranteed by the cited docs; candidate needs contention testing and isolated authority design. Do not add `contents: write` to current Supervisor.
+- No ref/permission change. DESIGN ONLY / NOT QUALIFIED.
