@@ -52,5 +52,7 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - GitHub-hosted runner location and data residency are managed by GitHub; this design does not promise a selected execution country.
 
 ## Latest engineering report
+- [Cross-chat continuation checkpoint — 2026-11-06](docs/checkpoints/2026-11-06-cross-chat-continuation.md)
+- [Cross-chat continuation report — 2026-11-06](docs/reports/2026-11-06-cross-chat-continuation-report.md)
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
