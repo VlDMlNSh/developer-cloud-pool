@@ -407,3 +407,14 @@ Compared against current default HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae:
 - PR #36 formal reviews 0; inline threads 0. Combined commit status API returned empty statuses (NOT a substitute for the two successful Actions runs). No independent security review.
 - Live ruleset #26550182 re-read: active on `refs/heads/Основной`; PR required but required approvals = 0, CODEOWNERS review false, last-push approval false, thread resolution true, bypass actors empty. Governance does not enforce independent review.
 - Contract v1 remains PROPOSED only. No schema migration, claim/outbox code, real D1, deployment, secret/billing access or dispatch.
+
+
+## Latest continuation — 2026-11-07: exact-head CI and claim-gate reconciliation
+
+- Report: [2026-11-07 Cloud Pool /next reconciliation](../reports/2026-11-07-pool-next-reconciliation.md); checkpoint: [2026-11-06 Cloud Pool next checkpoint](../checkpoints/2026-11-06-cloud-pool-next-checkpoint.md).
+- Default branch `Основной` HEAD observed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Context branch `docs/github-context-window-2026-11-06` is 76 ahead / 0 behind; it remains a working, unmerged documentation branch.
+- PR #36 HEAD `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`: exact-head D1 run `42293956647` / job `128154248534` and Pool Contract run `42293956578` / job `128154248111` both COMPLETED/SUCCESS. Local D1 proof only; PR OPEN/DRAFT; no independent review.
+- PR #37 HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946`: boundary run `42284051309` / job `128122653104` and Pool Contract run `42284051311` / job `128120184802` both COMPLETED/SUCCESS. Reusable identity boundary remains unmerged and does not prove durable atomic task claims; no independent review.
+- Issue #38 remains OPEN. Next bounded work: implement/test the claim + transactional outbox contract on an isolated local proof branch, including idempotent retry, lease/fencing and crash recovery; no production wiring.
+- Latest recorded live Ruleset audit: #26550182 active on `refs/heads/Основной`, but approvals=0 and CODEOWNERS review=false. Independent approval governance remains a blocker. This pass did not freshly read live variables or secret metadata.
+- Pool runtime, DSH, Resource Probe, live D1, web Experience OAuth/session and deployment remain NOT RUN. Dispatch remains fail-closed. Gemini Agents 1–3 NOT RUN. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
