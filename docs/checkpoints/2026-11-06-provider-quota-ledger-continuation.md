@@ -1,88 +1,65 @@
-# Cloud Pool continuation checkpoint — provider quota ledger — 2026-11-06
+# Cloud Pool continuation checkpoint — provider quota and placement — 2026-11-06
 
 ## Active workstream
 
-Continue Developer Cloud Pool account-isolated AI model routing and agents with resumable quota behavior. This checkpoint supersedes no canonical branch state; all implementation described below remains in an unmerged PR.
+Continue Developer Cloud Pool account-isolated AI model routing, quota-resumable agents and resource-efficient runner placement. All work described here remains in an unmerged PR branch until review and acceptance.
 
 ## Canonical baseline
 
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-- Default branch: `Основной`
-- Canonical HEAD verified during this pass: `64d2636d4500127e635c214ccfb722c6b3fcda80`
-- The canonical branch was not modified.
+- Default branch: Основной
+- Canonical HEAD at start of current pass: 64d2636d4500127e635c214ccfb722c6b3fcda80
+- Working branch: feat/quota-ledger-state-machine-2026-11-06
+- Parent HEAD at start of current pass: 3e84946b146704e471806c96f23b8ea6b9a12ccb
+- PR #29: OPEN / DRAFT / UNMERGED before this pass.
 
-## Current PRs
+## Placement model
 
-- [PR #28 — account-isolated Model Router architecture](https://github.com/VlDMlNSh/developer-cloud-pool/pull/28): OPEN / DRAFT / UNMERGED. Design and report blobs previously read back as `cde7c12ebcffb42b1ed8d308f3b1598a68272103` and `f88470e23ce24eb22dbe6fcd3f036274bb04b807`. CI and review NOT VERIFIED.
-- [PR #29 — pure provider quota ledger](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29): OPEN / DRAFT / UNMERGED. Head at report creation `b2fcad10cb532b235534ccf9aca67b81dc72883d`. Exact-head status pending with zero check-runs; tests wired but NOT RUN / NOT VERIFIED. Reviews/comments empty.
+Three separate units must not be conflated:
 
-## Implemented in PR #29 only
+1. Credential slot — provider route identity and quota/cooldown state. It does not require a dedicated VM. Pool hard limit of 20 active credential route leases applies only here.
+2. Runner slot — one ephemeral GitHub Actions job environment. Planning concurrency ceiling 20 is a separate dimension and needs current account/platform confirmation before deployment.
+3. Agent workload/function — logical runtime process. Multiple functions may share one process reservation; multiple compatible workloads may share one runner when resource and security controls permit.
 
-- `scripts/provider-quota-ledger.mjs`: pure, provider-independent state transition module.
-- `scripts/provider-quota-ledger.test.mjs`: deterministic test suite.
-- `.github/workflows/pool-contract-validation.yml`: invokes the new Node test suite.
-- No actual provider keys, secret access, network calls, DB/cache, live gateway, or dispatch.
+Local API-client footprint may be small because inference runs on the provider side. Runner capacity is still bounded by measured peak CPU, RAM, runtime bundle disk and per-workload scratch disk. API key size does not measure agent runtime footprint.
 
-## Architecture invariants
+## Added in this pass
 
-1. Credential slots have distinct route IDs.
-2. Multiple keys are considered one upstream quota domain only with explicit evidence and the same quota-domain ID.
-3. Never infer independent quotas from key names, suffixes, provider identity or registry cost labels.
-4. 401/403 suspend route authentication; 402 blocks billing; no paid fallback.
-5. 429 with Retry-After creates a bounded cooldown; 429 without authoritative reset evidence enters reconciliation.
-6. Local timer expiry is not proof of provider quota renewal.
-7. Provider-authoritative evidence is required to apply a quota reset.
-8. Internal task budget and upstream provider quota are separate domains.
-9. Agents must receive scoped gateway capabilities, never raw provider credentials.
-10. Pool dispatch remains fail-closed.
+- config/agent-placement-policy.json
+- scripts/agent-placement.mjs
+- scripts/agent-placement.test.mjs
+- Updated .github/workflows/pool-contract-validation.yml to execute the placement tests and validate config-path changes.
+- Updated docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md with the three-unit terminology, security constraints and resource packing model.
+- Detailed pass report: docs/reports/2026-11-06-agent-placement-and-runner-packing.md
 
-## Next exact action
+## Safety invariants
 
-Verify PR #29 exact-head CI, inspect test output and run independent review. After successful evidence, proceed to no-secret LiteLLM proof-of-fit; do not connect actual provider credentials or enable agent dispatch yet.
+- All workloads in a placement plan use the same task ID, immutable target SHA, trust domain, isolation class, platform, architecture, network class and separate workspace.
+- Require explicit co-location consent, measured resource envelopes and pinned SHA-256 runtime bundle.
+- Reuse runtime bundle disk once per digest per runner slot; scratch disk, CPU and memory are reserved per workload.
+- Each process/container must keep separate workspace and per-workload gateway capability. Raw provider keys never enter placement metadata or worker environments.
+- Independent review/security audit is exclusive and never shares a runner with implementation.
+- No resource overcommit. Missing measurements reject co-location or keep work queued for isolated fallback.
 
-## References
+## Current status
 
-- [Issue #26 — account-isolated multi-provider routing and quota ledger](https://github.com/VlDMlNSh/developer-cloud-pool/issues/26)
-- [PR #28 — architecture](https://github.com/VlDMlNSh/developer-cloud-pool/pull/28)
-- [PR #29 — implementation](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29)
-- [Canonical repository](https://github.com/VlDMlNSh/developer-cloud-pool)
+- Pure placement planner: IMPLEMENTED in PR branch; exact-head CI status to be recorded after run.
+- Runtime multi-agent supervisor/containers: NOT IMPLEMENTED.
+- Host resource probe: existing manual workflow; NOT RUN in this pass.
+- Durable placement/credential lease store: NOT IMPLEMENTED.
+- Provider quota-domain reconciliation: next bounded workstream.
+- PR #29: OPEN / DRAFT / UNMERGED; independent review NOT RUN.
+- Canonical branch: unchanged at start of pass; verify final ref after commit.
+- Provider calls, secret access, agent dispatch and paid fallback: NOT RUN.
 
-## 2026-11-06 follow-up — normalized inventory and evidence-gated scope
+## Project references
 
-- MediaHub registry source was re-read from `docs/mediahub-chat-tree-map-20261012`; its `selection_order` contains 24 cloud slots. Local `ollama-local-1` is excluded from the cloud inventory.
-- Added `config/provider-slot-inventory.json`, derived from the registry with opaque symbolic credential references only. All account/quota-domain references remain null; evidence status is unknown; credential presence was not checked; billing eligibility is not verified.
-- Added `scripts/provider-slot-inventory.test.mjs` and wired it into Pool Contract Validation.
-- Hardened quota-domain cooldown propagation: a caller-supplied `scope: quota_domain` is no longer sufficient. Sibling slots are affected only when a provider-authoritative scope evidence reference is supplied. Added tests for both rejected unverified scope and accepted evidenced scope.
-- PR #29 latest tested target before documentation-only follow-up: `0b7c5e0e5887fb675c3c638fc3366747f888ff89`.
-- Exact-head Actions run [#208](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206843613): SUCCEEDED. The workflow's single validation step ran both `node scripts/validate-pool-contract.mjs` and `node --test scripts/provider-quota-ledger.test.mjs scripts/provider-slot-inventory.test.mjs` under `set -euo pipefail`; the job succeeded.
-- Inventory blob SHA: `42789e7408ba688b4af323deffe63eb2e15f50b8`.
-- Ledger blob SHA: `2662c5d6c73b4193edb9532748290acbe0ad9c18`.
-- Quota tests blob SHA: `257efb123f3a9393c04ba64586931733f2648e11`.
-- Inventory tests blob SHA: `1289bb057ae22e31b893d8e306cc980d5f20467e`.
-- Workflow blob SHA: `a9913f89e20f5c2e3eadda3120719b9fc1231ae7`.
-- PR #29 remains OPEN / DRAFT / UNMERGED; independent review remains NOT RUN.
-- No secrets, secret-presence metadata, provider calls, paid services, database/cache resources, or agent dispatch were used.
-- Account identity and quota-domain independence remain NOT VERIFIED for all 24 slots. This inventory is not an instruction to resolve or fetch the symbolic secret references.
+- PR #29: https://github.com/VlDMlNSh/developer-cloud-pool/pull/29
+- Issue #26: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
+- Runner architecture: https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/quota-ledger-state-machine-2026-11-06/docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md
+- Quota assessment: https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/quota-ledger-state-machine-2026-11-06/docs/architecture/SLOT-ACTIVATION-AND-DAILY-QUOTA-ASSESSMENT-2026-11-06.md
+- Continuation checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/quota-ledger-state-machine-2026-11-06/docs/checkpoints/2026-11-06-provider-quota-ledger-continuation.md
 
-## Next bounded step
+## Next step
 
-Build a no-secret LiteLLM proof-of-fit and a provider adapter contract fixture using only synthetic non-routable placeholders and blocked provider egress. Do not read secret values or presence, provision PostgreSQL/Redis, or enable provider execution. Separately plan how account references can be supplied by an authorized owner-side process without moving credentials between repositories.
-
-
-## Final exact-head validation
-
-- Latest code target: `ad210f0c3f2da7c734c31f44ad7883c4822ba40f`.
-- Latest quota-ledger blob: `4ea35b4ee565fc97b7ee437a521170d38c2b46b1`.
-- Exact-head Actions run #210: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42206967591 — SUCCEEDED.
-- Check run `Validate workflow syntax and security invariants` completed with conclusion `success` on the same SHA.
-- PR #29 remains OPEN / DRAFT / UNMERGED; independent review NOT RUN.
-
-
-## 2026-11-06 — lazy slot activation follow-up
-
-- Unbounded registered inventory with pool-wide maximum 20 active slots is now specified in `config/provider-slot-capacity-policy.json`.
-- Pure admission planner and tests are in `scripts/provider-slot-admission.mjs` and `scripts/provider-slot-admission.test.mjs`. Exact tested target `94166dce9fc68d07918ea6fb6461bbd587b4258d`; Actions run #214 SUCCEEDED: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42207313455.
-- This is a deterministic planner, not a production lease manager. Atomic durable lease acquisition and secret-broker integration remain NOT IMPLEMENTED.
-- Quota assessment: potential published subtotal up to 120k tokens/day from Aion Labs + LLM7 only, conditional on active free accounts and independent quota domains. Actual GitHub-stored credential quota remains NOT VERIFIED. Cloudflare neuron quota is separate; NaraRouter's public allowance is contradictory (5M docs / 7M pricing), so excluded.
-- Full analysis: `docs/architecture/SLOT-ACTIVATION-AND-DAILY-QUOTA-ASSESSMENT-2026-11-06.md`.
-- PR #29 OPEN / DRAFT / UNMERGED. Canonical `Основной` unchanged. Independent review NOT RUN. Combined commit status API is still empty/pending although exact-head Actions check-run passed.
+Finalize the placement tests through exact-head CI, then calibrate profile envelopes with a read-only runner probe. Implement quota-domain reconciliation afterward. Do not enable agent/worker dispatch or use provider credentials until lease, isolation, budget and governance gates qualify.

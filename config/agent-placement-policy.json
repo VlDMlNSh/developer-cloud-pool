@@ -1,0 +1,53 @@
+{
+  "schema": "developer-cloud-pool.agent-placement-policy.v1",
+  "runner_slots": {
+    "meaning": "One ephemeral GitHub Actions job environment; not a credential slot and not one logical agent",
+    "planning_hard_limit": 20,
+    "limit_source": "Current pool design ceiling; actual account concurrency and GitHub limits must be rechecked before deployment"
+  },
+  "agent_workloads": {
+    "count_limit": null,
+    "placement_strategy": "best-fit-decreasing-multidimensional",
+    "resource_dimensions": ["cpu_millicores", "memory_mib", "scratch_disk_mib", "runtime_bundle_disk_mib"],
+    "resource_source": "Measured workload peak plus explicit safety reserve; unknown envelopes are not eligible for co-location",
+    "shared_runtime_disk": "Count a pinned immutable runtime bundle once per runner slot and digest; retain per-agent scratch disk",
+    "multiple_functions": "Functions may share one agent workload reservation when they execute within the same runtime process",
+    "multiple_agents": "Distinct agent workloads may share a runner only when all placement and isolation checks pass"
+  },
+  "co_location_requirements": [
+    "same task_id and immutable target_sha",
+    "same trust_domain_id and isolation_class",
+    "same platform, architecture, network_class and workspace_isolation",
+    "workspace_isolation=separate for every workload",
+    "co_location_allowed=true for every workload",
+    "not exclusive; independent reviewers and security auditors are exclusive by default",
+    "each workload has measured CPU, RAM and scratch-disk reservations",
+    "runtime bundle is pinned by SHA-256 digest",
+    "required capabilities are available on the runner template"
+  ],
+  "credential_boundary": {
+    "allowed_modes": ["none", "gateway_scoped"],
+    "raw_provider_credentials_allowed": false,
+    "credential_material_in_placement_manifest": false,
+    "gateway_scope": "Per-workload short-lived capability; never share one agent's credential context with another agent"
+  },
+  "isolation": {
+    "workspace": "Separate working directory and per-workload scratch space",
+    "runtime_bundle": "Immutable read-only shared bundle may be mounted once per digest",
+    "process": "Separate process or container per workload; no shared environment files",
+    "trust": "Never co-locate different task trust domains or independent review with implementation",
+    "host": "Ephemeral runner; destroy after the GitHub Actions job"
+  },
+  "failure_policy": {
+    "unknown_resource_envelope": "reject co-location; require measurement or isolated fallback",
+    "resource_overflow": "create another runner slot up to the pool cap; otherwise leave queued",
+    "lease_or_measurement_store_unavailable": "fail closed",
+    "resource_overcommit": false
+  },
+  "separation_from_credential_slots": {
+    "registered_credential_slots": "Unbounded inventory metadata",
+    "active_credential_slots": 20,
+    "active_credential_slot_limit_applies_to": "Provider credential route leases only, not agents or runner slots",
+    "runner_job_slots": "Separate execution concurrency dimension"
+  }
+}
