@@ -259,3 +259,10 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Report: [Integrated Cloud Pool / Web Console / MH 3 reconciliation](../reports/2026-11-06-integrated-pool-web-console-host-reconciliation.md).
 - Next: keep MH 3 blocked; reconcile web-console PR branches against default; synthetic OAuth compatibility tests; independent security review; verify Workers Free/card-free entitlement through authorized non-secret evidence. No deployment/dispatch.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+## 2026-11-06 — Voktors-Mini authorized read-only inventory
+
+- Exact host `host_5f7264034bdf0b51` / Voktors-Mini.Dlink explicitly authorized by owner for this pass; macOS 14.7.4 arm64, SentinelX 0.23.30. Ping, capabilities summary, state and temporary read-only inventory succeeded.
+- Safari + safaridriver present; Chrome/Chromium/Firefox absent; node/npm/agent-browser CLI absent. Agent-browser requires Chrome/Chromium CDP, so browser QA NOT RUN. No installs or host configuration changes.
+- Report: [Voktors-Mini read-only inventory](../reports/2026-11-06-voktors-mini-readonly-host-and-browser-inventory.md). Report commit `28275f4d4a4815c3ab1bd43e2a8ae05d88212fb7`.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B DEFERRED. Continue safe GitHub PR base reconciliation and validation; no deploy/dispatch.
