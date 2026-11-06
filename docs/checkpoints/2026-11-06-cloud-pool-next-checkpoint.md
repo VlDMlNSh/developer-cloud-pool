@@ -117,3 +117,14 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Latest branch head: `5b45a29ed7869c091741c0037c68bfcd6640de7d`; exact-head CI NOT VERIFIED. Prior tested head `8d848629511ac1b8c379fd6c8d20cc17496f6f54` has both workflows SUCCESS.
 - Live `POOL_AUTHORIZATION_CONTRACT_ACCEPTED`: NOT VERIFIED; not read or changed. PR #37 remains draft/unmerged with no reviews.
 - Next: obtain exact-head CI for the new guard commit, then independent security review and live governance verification. Keep dispatch fail-closed.
+
+## Final exact-head verification — 2026-11-06
+
+- Current PR #37 head: `5b45a29ed7869c091741c0037c68bfcd6640de7d`.
+- Reusable Pool Worker Boundary Validation run `42280875294`: COMPLETED / SUCCESS; exact-head checkout, Node setup, Supervisor syntax and authorization tests all passed.
+- Pool Contract Validation run `42280875365`: COMPLETED / SUCCESS; YAML parsing and updated pool contract validator passed.
+- Run `42280875365` environment read-back: `POOL_DISPATCH_ENABLED=false`; `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` empty/unset. Both non-secret gates are fail-closed. No secrets read.
+- This supersedes the previous exact-head NOT VERIFIED note for the follow-up gate commit.
+- Independent review remains NOT RUN. Issue #1 latest stored Ruleset snapshot (2026-11-05) has 0 required approvals and CODEOWNERS review disabled; live Ruleset not freshly read through API. PR #37 remains DRAFT / OPEN / UNMERGED.
+- No Worker execution, DSH, Resource Probe, provider/model call or deployment.
+- Next: independent security review and live Ruleset verification; keep PR draft and gates unchanged.
