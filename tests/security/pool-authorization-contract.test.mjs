@@ -67,9 +67,9 @@ test("Supervisor never requeues an expired or failed claim using the same approv
 });
 
 test("Worker binds execution to the actual reusable-workflow caller identity", () => {
-  assert.match(workerWorkflow, /job\\.workflow_repository/);
-  assert.match(workerWorkflow, /job\\.workflow_file_path/);
-  assert.match(workerWorkflow, /job\\.workflow_ref/);
-  assert.match(workerWorkflow, /job\\.workflow_sha/);
-  assert.match(workerWorkflow, /github\\.repository_id/);
+  assert.match(workerWorkflow, /job\.workflow_repository/);
+  assert.match(workerWorkflow, /job\.workflow_file_path/);
+  assert.match(workerWorkflow, /job\.workflow_ref/);
+  assert.match(workerWorkflow, /job\.workflow_sha/);
+  assert.match(workerWorkflow, /github\.repository_id/);
 });
