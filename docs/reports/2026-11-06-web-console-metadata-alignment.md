@@ -36,6 +36,14 @@ The source documents had moved from Cloudflare Access to application-level GitHu
 - Production dispatch: BLOCKED / FAIL-CLOSED.
 - No Gemini or Claude agent was dispatched. The required Gemini controller workflow was not found on the default branch.
 
+## Read-back and provenance verification
+
+- Report blob read back: `72470abbd5e0a8956ebbe06216bf5cae9cb0e61c`.
+- Checkpoint blob read back: `bc2b731658333019af009661a646ebab4d8867ec`.
+- Branch compare at checkpoint commit `dd09e9b77a56e1d68f943fa77f0d6eb516f439da`: 38 ahead / 0 behind base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Exact-head CI lookup returned no PR-triggered runs; this docs-only head is NOT VERIFIED by CI.
+- Issue #22 Cloudflare readiness section was subsequently corrected to remove stale provisioning prerequisites and record the verified workers.dev namespace and unresolved Workers Free entitlement.
+
 ## Next bounded step
 
 Validate the OpenAPI 3.1 document with a pinned parser and build a no-secret local auth fixture with negative tests. Do not create credentials or deploy until exact-head CI, independent security review, no-cost hosting entitlement and explicit authorization are all verified.
