@@ -68,3 +68,16 @@ Persist the current Cloud Pool project state and all material decisions from the
 ## Next step
 
 Resume by refreshing GitHub state, then pursue independent security review for PR #24/#25 and build a synthetic no-secret oauth4webapi/GitHub OAuth compatibility test. Keep the Worker protected routes fail-closed and do not deploy until OAuth/session implementation, security review and Workers Free entitlement gates pass.
+
+
+## Live refresh — 2026-11-06 15:01 UTC+3
+
+- Re-read default branch `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`; repository metadata reports the default branch itself as unprotected. Treat effective governance as NOT VERIFIED until ruleset enforcement is independently confirmed.
+- Refreshed current open PRs #24, #25, #27, #28 and #29. #24/#25 remain draft web-console design/prototype. #27 remains draft context persistence with empty combined status and no PR-triggered runs. #28 remains draft routing/quota design. #29 remains draft quota-ledger implementation.
+- PR #29 exact-head Pool Contract Validation run `42211525076` and job `127871048179` completed SUCCESS. Job confirms dispatch-disabled assertion, YAML parsing and pool security contract validation. PR formal review list is empty. No independent review or runtime qualification.
+- Re-read README: 20-slot architecture DESIGN; Supervisor/Worker scaffold NOT RUN; DSH evaluation, runner probe and deployment NOT RUN; general-purpose agent execution and durable checkpoint/resume NOT IMPLEMENTED.
+- No source/runtime change, dispatch, secret access, provider/model call, deployment, billing action, merge or agent dispatch was performed. This pass is a repository-state and evidence refresh plus durable-context maintenance only.
+
+## Next bounded step
+
+Prioritize the secure web console. Inspect the current PR #25 auth and API boundaries against PR #24's OAuth/API contract; produce a no-secret synthetic GitHub OAuth compatibility test for the selected protocol library, or a concrete security review package if independent reviewers can be requested. Keep protected reads fail-closed and do not deploy while Workers Free entitlement and authentication remain unverified.
