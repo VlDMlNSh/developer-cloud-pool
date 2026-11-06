@@ -10,7 +10,7 @@ Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B remains DEFE
 
 ## Latest pass
 
-Official Cloudflare docs were reviewed. SQLite-backed Durable Objects are available on Workers Free, with hard daily limits (100k requests, 13k GB-s, 5m rows read, 100k rows written, 5 GB SQL storage). Free limit exhaustion fails operations; never introduce paid fallback. Local Miniflare/Workers Vitest integration is available for testing Durable Object bindings without production deployment.
+Official Cloudflare docs were reviewed. SQLite-backed Durable Objects are available on Workers Free, with hard daily limits (100k requests, 13k GB-s, 5m rows read, 100k rows written, 5 GB SQL storage). Free limit exhaustion fails operations; never introduce paid fallback. Local Miniflare/Workers Vitest integration is available for testing Durable Object bindings without production deployment. Reconciled with the prior store assessment: D1 remains the preferred first proof candidate; Durable Objects are secondary.
 
 ADR: [Durable state and single-use authorization](../architecture/2026-11-06-durable-state-and-single-use-authorization-adr.md).
 
@@ -27,4 +27,4 @@ No DO implementation, D1, resource creation, deployment, account/billing changes
 
 ## Next action
 
-Inspect existing package/test conventions and pinned dependency policy. Then implement a local-only SQLite-backed Durable Object proof and Vitest tests on an isolated branch rooted at the exact current default SHA. Keep it unmounted from Hono and production workflows. Require exact-head CI and independent review before any integration.
+Inspect existing package/test conventions and pinned dependency policy. Then continue with a local-only D1 adapter/transaction proof on an isolated branch rooted at the exact current default SHA. Keep it unmounted from Hono and production workflows. Consider Durable Objects only if the proof identifies a specific need for per-approval serialized actors. Require exact-head CI and independent review before any integration.
