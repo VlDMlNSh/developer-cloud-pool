@@ -276,3 +276,15 @@ Effective 2026-11-06. This section resolves source conflicts between the Cloud P
 7. **Bootstrap rule:** when MediaHub Bootstrap/Map/Checkpoint/Roadmap is read for cross-project context, extract only product constraints and compatible shared security invariants. Do not import its Cloud Pool implementation mandates wholesale. For Cloud Pool /next, this Context Window and Cloud Pool primary refs are authoritative for cloud-environment work.
 
 Source comparison used: Cloud Pool Context Window blob 0dcba5a910070fcdc59cf3f07949310c725ef7ae; Cloud Pool PRs #7, #19, #20, #24–#30 refreshed 2026-11-06; MediaHub Bootstrap blob 75f30750183efe8c6877368e9f0ada48f8e81ea7; MediaHub checkpoint blob fd312ded05dd1898bd36d776a9669bb02920720d (latest indexed wave observed: 477, 2026-10-30). MediaHub checkpoint is older than the 2026-11-06 Cloud Pool decisions and is not a source for superseding them.
+
+
+## 15. Latest engineering pass — 2026-11-06 GitHub read adapter correction
+
+- PR #31: OPEN / DRAFT / UNMERGED; branch `feat/github-read-adapter-synthetic-2026-11-06`; base is PR #25 feature branch at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`; PR head `633cc2c8a2f7a70f996ccc7c5d03070b0899aa06`.
+- Corrected HTTP 304 ordering (conditional ETag response before generic 3xx redirect rejection), added `state=open` to issue pagination fixture, and made oversized stream cancellation best-effort while preserving `RESPONSE_TOO_LARGE`.
+- Source blob `2b7199ce4a5cf394ee44738b29f03014830632c1`; test blob `e9881aa8a1654769e13c11f271d81b8219ee5d68`; read-back confirmed.
+- Exact-head workflow lookup returned no runs; CI NOT VERIFIED. Formal reviews empty; independent review NOT RUN. Local Node test execution NOT RUN.
+- Adapter remains unmounted; synthetic fixtures only. No live GitHub API, OAuth, credentials, provider calls, dispatch, deployment or paid resources.
+- Report: [2026-11-06 adapter correction](../reports/2026-11-06-github-read-adapter-correction.md).
+- Next: obtain exact-head CI and independent review for PR #31; then assess integration into PR #25 only after governance/security review. Do not merge or mount prematurely.
+- Contour A: NOT ACCEPTED; Contour B remains deferred.
