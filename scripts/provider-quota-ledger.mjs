@@ -1,7 +1,8 @@
 /**
  * Provider quota ledger primitives.
  *
- * Pure, secret-free state transitions. This module is not a credential broker,
+ * Pure, secret-free state transitions. Shared quota-domain effects require
+ * provider-authoritative scope evidence. This module is not a credential broker,
  * provider client, billing oracle, or task/issuer authority.
  */
 
