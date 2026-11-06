@@ -154,3 +154,14 @@ Review classification: useful source-level engineering review only; NOT an indep
 - Lockfile remains NOT COMMITTED. Verified artifact bytes are preserved, but no supported direct file-to-GitHub-Contents transfer was available. Do not merge while absent.
 - PR #36 remains OPEN / DRAFT; 0 submitted reviews and 0 inline threads. Independent security review NOT RUN.
 - Local proof VERIFIED for this PR head only. Production blockers and exclusions remain unchanged; no cloud resource, deployment, billing change, secret, provider call, dispatch or production integration.
+
+
+## Current PR head qualification — 2026-11-06
+
+- Exact current PR head at this check: `55c2817119bfd86fb3a19ac842de5af68901e064`.
+- D1 workflow run `42274008085`, job `128085530286`: COMPLETED / SUCCESS; 13/13 Workers-runtime tests passed.
+- Pool Contract Validation run `42274008111`, job `128085530690`: COMPLETED / SUCCESS.
+- Exact-head lock artifact `13531517951`; ZIP SHA-256 `f5472244c7a94a26f0a1be94eca66caf7e9ad223d3187fa7e2516ff8c723241d`; downloaded and inspected. Extracted lockfile SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 package entries; dependency versions match earlier inventory.
+- A verified copy of the exact package-lock is prepared for transfer to `proofs/d1-ledger/package-lock.json`; it is still NOT COMMITTED.
+- PR #36 remains draft/open; no submitted reviews or inline threads. Independent security review NOT RUN.
+- Production security gaps and exclusions remain unchanged. Local proof only; no cloud resource, deployment, billing change, secret access, provider call, dispatch or production integration.
