@@ -17,7 +17,7 @@ assert.match(html, /Демонстрационный режим/, "Demo warning 
 assert.match(html, /API не подключён/, "No-live-API state must be explicit");
 assert.match(html, /<main\b[^>]*id="main"/i, "Main landmark and skip-link target are required");
 assert.match(html, /<a class="skip-link" href="#main">/i, "Keyboard skip link is required");
-assert.ok(headers.startsWith("/*\\n"), "Static asset security headers must cover all paths");
+assert.ok(headers.startsWith("/*\n"), "Static asset security headers must cover all paths");
 for (const header of [
   "Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   "X-Content-Type-Options: nosniff",
