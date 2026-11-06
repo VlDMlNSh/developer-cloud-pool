@@ -53,3 +53,14 @@ ADR blob after read-back: `b5fbb978f6e61e91e2ebcff41dc9bb4f7de6d3ee`.
 ## Next bounded step
 
 After CI completes, add isolated, secret-free authentication policy tests on the Hono branch (OAuth state single-use/expiry, exact numeric owner ID normalization, opaque session expiry/revocation, cookie flags, Origin/CSRF and fixed upstream allowlist). Do not wire real OAuth credentials or enable protected routes until independent security review and exact-head tests pass.
+
+
+## Cross-project governance read-back
+
+- Canonical MediaHub map content was recovered by fetching blob SHA `75f62685459ec99ebf8be478f4e9096cdb842b1d` (1,204,915 characters). This supersedes the earlier empty Contents API response; the blob is readable and includes the current map inventory through Wave 477. Canonical map link: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+- Current default-branch Gemini controller exists at `.github/workflows/gemini-batch-dispatch-controller.yml`, blob `0a1246f6755020faf8b7e48d07bfff790bbaece3`. The earlier 404 was specific to the documentation ref, not the current main branch.
+- Controller contract requires workflow_dispatch mode/explicit confirm or a qualifying OWNER `/next` comment on Issue #301, `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, and secrets `MEDIAHUB_GITHUB_TOKEN` + `MEDIAHUB_DISPATCH_HMAC_KEY`. Secret values were not accessed; presence/scope is NOT VERIFIED. This ChatGPT `/next` message is not a GitHub issue_comment event and does not authorize controller dispatch.
+- Controller has a first-page `per_page=100` issue-comment history query for duplicate suppression; no pagination/completeness check was found in the inspected code. Treat full-history duplicate suppression as NOT VERIFIED / potential replay-control gap. Issue #301 still lists A0 issuer/ingress/lease/cancel/recovery and R-06 authority gates, runner manifest acceptance, schema meta-validation and independent review as ordered prerequisites.
+- Child workflows exist on main: Agent 1 blob `155a02159912ca371e6f826c51325ca269857aad`, Agent 2 `fff1820a6b97d379b23674f36bd62227b7d4dec2`, Agent 3 `781df56e8aa7c75ba453c08378611857862b2e44`. No dispatch was performed.
+- PR #437 is merged/closed. PR #441 remains OPEN / non-draft / unmerged at `9f40b90c3106662cfcc337c48f29e4794fa713dc`; its exact-head PR workflow query returned no runs and reviews/threads are 0/0. Do not infer acceptance.
+- SentinelX Free plan exposes one operational host `host_5f7264034bdf0b51` (hostname `Voktors-Mini.Dlink`), already occupying the only active slot. It is not identified as Alamo/Server 3; Claude Code and browser work were NOT RUN.
