@@ -26,7 +26,7 @@ function isSafeRepository(value) {
 function validEtag(value) {
   return typeof value === "string" &&
     value.length <= 220 &&
-    /^(?:W\/)?"[^"\r\n]*"$/.test(value);
+    /^(?:W\/)?"[\x21\x23-\x7E\x80-\xFF]*"$/.test(value);
 }
 
 function readRateLimit(headers) {
