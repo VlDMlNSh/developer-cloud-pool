@@ -2,10 +2,11 @@ import { readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 
 const root = new URL("../web/jarvis-dashboard/", import.meta.url);
-const [html, css, js] = await Promise.all([
+const [html, css, js, headers] = await Promise.all([
   readFile(new URL("index.html", root), "utf8"),
   readFile(new URL("styles.css", root), "utf8"),
   readFile(new URL("app.js", root), "utf8"),
+  readFile(new URL("_headers", root), "utf8"),
 ]);
 
 const requiredSections = ["overview", "tasks", "agents", "pool", "activity"];
@@ -16,6 +17,16 @@ assert.match(html, /Демонстрационный режим/, "Demo warning 
 assert.match(html, /API не подключён/, "No-live-API state must be explicit");
 assert.match(html, /<main\b[^>]*id="main"/i, "Main landmark and skip-link target are required");
 assert.match(html, /<a class="skip-link" href="#main">/i, "Keyboard skip link is required");
+assert.match(headers, /^\\/\\*\\n/m, "Static asset security headers must cover all paths");
+for (const header of [
+  "Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+  "X-Content-Type-Options: nosniff",
+  "X-Frame-Options: DENY",
+  "Referrer-Policy: no-referrer",
+  "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+  "Cross-Origin-Opener-Policy: same-origin",
+  "Cross-Origin-Resource-Policy: same-origin",
+]) assert.ok(headers.includes(header), "Missing static security header: " + header);
 assert.match(html, /<nav class="mobile-nav"/i, "Mobile navigation is required");
 
 for (const id of requiredSections) {
@@ -38,4 +49,4 @@ assert.doesNotMatch(js, /\b(?:localStorage|sessionStorage|document\.cookie)\b/, 
 assert.doesNotMatch(js, /github\.com\/|api\.github\.com\//i, "GitHub API access is forbidden");
 
 console.log("JARVIS_STATIC_UI_VALIDATION=PASS");
-console.log("Validated: HTML structure, demo boundary, navigation anchors, local assets, mobile CSS and offline-only JavaScript.");
+console.log("Validated: HTML structure, demo boundary, navigation anchors, local assets, mobile CSS, offline-only JavaScript and static asset security headers.");
