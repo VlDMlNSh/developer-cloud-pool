@@ -71,3 +71,13 @@ This is static contract verification only. No Worker, DSH runtime, Resource Prob
 Rebase PR #7 onto current `Основной`, rerun exact-head CI, obtain an independent security review of the Worker/Supervisor event and replay checks, then separately qualify a no-secret DSH probe only after all governance gates are satisfied. Rebase PR #8 onto the accepted PR #7 result afterward.
 
 No merge, dispatch, secret access, provider call, model call, deployment or qualification occurred in this pass.
+
+
+## Documentation alignment — 2026-11-06
+
+After the code verification, README and architecture guidance were corrected to match the implemented trigger boundary: owner `pool:ready` issue events can dispatch; scheduled, `workflow_run` and manual Supervisor runs are reconciliation-only.
+
+- `README.md` blob: `d545b025a12af4c0a8c3637f785e812b50d5f4b4`
+- `docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md` blob: `e136c06669a4387dac56988f37b3356e117c4d3b`
+
+These are documentation-only commits after the verified code head. No code changed after the exact-head CI run; the path-filtered contract workflow was not triggered by these documentation-only updates.
