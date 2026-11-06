@@ -32,3 +32,20 @@
 ## Next
 
 Open a new draft PR from this branch, wait for exact-head Workers-runtime D1 tests, inspect and commit the generated lockfile, then request independent security review.
+
+## Corrected exact-head CI evidence
+
+- The first run on superseded PR #35 failed before tests because the Wrangler compatibility date exceeded the pinned workerd runtime's supported date. That PR was closed, not merged.
+- Corrected the local-only Wrangler compatibility date to `2026-10-26`, the maximum supported by the resolved workerd binary `1.20261019.1`.
+- Superseding Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/36
+- Exact tested branch HEAD: `38748cac9d2f6464995459b45db9e4f97d07d755`.
+- D1 workflow run: `42271632317` — COMPLETED / SUCCESS.
+- D1 job: `128077381562` — COMPLETED / SUCCESS.
+- Pool Contract Validation run: `42271632320` — COMPLETED / SUCCESS.
+- Vitest output: 1 test file passed; 13 tests passed; duration 840 ms.
+- Covered: 12 concurrent contenders / exactly one winner; replay; owner/repository/issue/SHA/profile/envelope mismatches; expiry; malformed binding; unavailable storage; ambiguous storage exception; D1 batch rollback.
+- Generated dependency lock artifact: `d1-ledger-proof-package-lock`, artifact ID `13531380206`, ZIP SHA-256 `4e8fcea9dda6887e480169456d1770527eba2357997fe834876f632075b08f4a`, expires 2026-11-13.
+- Lock artifact inspection: 160 package entries; direct pins plugin 1.4.7 and Vitest 4.1.12; resolved workerd 1.20261019.1, Miniflare 5.20261019.2-beta, Wrangler 4.152.0. Plugin peer range accepts Vitest ^4.1.0 or ^5.0.0.
+- Dependency lockfile is not committed. Artifact review is possible, but PR remains NOT MERGE-READY until the lockfile is committed and reviewed. No artifact content was copied into the repository.
+- PR #36 reviews: 0; inline review threads: 0; independent security review NOT RUN.
+- Successful local D1 proof is not production qualification and does not prove account-specific Workers Free/card-free entitlement, caller identity, owner approval provenance, quotas under live account limits, backup/restore or deployment.
