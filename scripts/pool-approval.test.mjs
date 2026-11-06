@@ -112,6 +112,12 @@ test("Worker requires owner ready event and latest bot-authored claimed transiti
     { event: "labeled", label: { name: "pool:claimed" }, actor: { login: "github-actions[bot]" }, created_at: "2026-11-06T10:02:02Z" }
   ];
   assert.equal(hasOwnerReadyEvent(events, "VlDMlNSh", runTime), true);
+  assert.equal(hasOwnerReadyEvent([
+    { event: "labeled", label: { name: "pool:ready" }, actor: { login: "VlDMlNSh" }, created_at: "2026-10-01T10:01:00Z" }
+  ], "VlDMlNSh", runTime), true);
+  assert.equal(hasOwnerReadyEvent([
+    { event: "labeled", label: { name: "pool:ready" }, actor: { login: "VlDMlNSh" }, created_at: "2026-11-06T10:03:00Z" }
+  ], "VlDMlNSh", runTime), false);
   assert.equal(hasCurrentBotClaimEvent(events, runTime), true);
   const forged = [...events, {
     event: "labeled", label: { name: "pool:claimed" }, actor: { login: "contributor" }, created_at: "2026-11-06T10:03:00Z"
