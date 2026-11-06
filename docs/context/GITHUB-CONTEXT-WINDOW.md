@@ -507,3 +507,15 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 - CI steps for lockfile install, static checks, API negative/fail-closed tests, and dashboard contract all succeeded. No numeric test count was returned by the job-step API.
 - PR formal reviews and inline threads remain empty; independent review NOT RUN. Adapter remains unmounted.
 - Updated report and checkpoint record this evidence. Next: obtain independent security review and recheck effective governance before any merge or mounting.
+
+
+## 2026-11-06 — Negative-first integrated authorization test harness
+
+- Re-read production baseline `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`: Worker workflow blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still has `workflow_dispatch`, Worker report `issues:write` and queue mutation; Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still has privileged `workflow_run` and `actions:write`; Supervisor script blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` still uses REST dispatch and stale-claim return to `pool:ready`.
+- Created isolated branch `design/integrated-pool-authorization-contract-2026-11-06` from the recorded default SHA. Integrated contract: `docs/architecture/2026-11-06-integrated-pool-authorization-contract.md`, blob `ce42dd0095ca67166b9872b50ecaa90373b2e8ac`.
+- Added `tests/security/pool-authorization-contract.test.mjs` with seven negative-first Node built-in tests against actual production workflow/script files. Final test blob `c482c9921774261e97de6aaa5beae3c5a7a4659b`; latest test commit `52151b23669f7b37a8c4d61c17a0bf61ba86f426`.
+- Tests cover Worker workflow_call-only, no Worker issue-write/mutations, no Supervisor workflow_run/actions:write, static local reusable Worker call/no REST dispatch, and no stale/failed requeue to pool:ready.
+- Test file read-back VERIFIED. Test execution and CI: NOT RUN / NOT VERIFIED; no CI job was wired and no workflow was dispatched. Production workflows unchanged.
+- Report: [2026-11-06 negative-first pool authorization tests](../reports/2026-11-06-negative-first-pool-authorization-tests.md), commit `e90a70d23391a862fd1493d4ac022dcf8bb7d319`.
+- No secrets, variables, Environment/rulesets, dispatch, Worker/DSH, provider/model calls, paid resources or deployment touched. Independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add a least-privilege read-only CI job for these tests on the isolated design branch, run against the recorded baseline and capture expected failures; then implement the integrated remediation. Do not enable dispatch or merge.
