@@ -69,12 +69,12 @@ export async function claimAndEnqueue(db, binding, now) {
     if (existing?.claim_id !== claimId ||
         existing?.outbox_id !== outboxId ||
         existing?.envelope_digest !== binding.envelopeDigest) {
-      return deny(result?.success === true && result?.meta?.changes === 1
+      return deny(result?.success === true && result?.meta?.changes > 0
         ? "CLAIM_TRIGGER_DID_NOT_CREATE_COMPLETE_PAIR"
         : "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED");
     }
 
-    if (result?.success === true && result?.meta?.changes === 1) {
+    if (result?.success === true && result?.meta?.changes > 0) {
       return {
         decision: "CLAIMED_ONCE",
         state: existing.status,
