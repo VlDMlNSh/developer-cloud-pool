@@ -398,3 +398,17 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Source read-back confirms migration 0001 precedes 0002; trigger-backed transition and adapter remain source-inspected only. No local tests were executed.
 - No PR retarget, workflow dispatch/change, merge, deployment, D1 provisioning, secrets, provider/model calls or paid resources.
 - Next: retain stacked PR base and create a separately reviewed CI strategy that validates the combined parent+child tree at an immutable SHA; then exact-head Workers-runtime tests and independent security review. Do not extend lease/fencing until those gates pass.
+
+
+## Live checkpoint — 2026-11-07 05:31 Europe/Vilnius — D1 Workers-runtime CI pass
+
+- Report: [D1 claim/outbox Workers-runtime CI qualification](../reports/2026-11-07-d1-claim-outbox-workers-ci-qualification.md).
+- Parent PR #36 branch head: `e11fc90e50bd20b166207af64551c49cfa80ffb4`; child PR #39 head: `68e62e5f85da195b3ef2938622e1af00353e1bae`; child base remains PR #36 proof branch. Default branch HEAD last observed `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #39 remains OPEN / DRAFT / UNMERGED. Issue #38 remains OPEN. No merge or independent review.
+- Workflow trigger corrected on parent/child proof branches: push to exact isolated proof branches and pull_request base filter accepts `Основной` plus parent proof branch. No manual dispatch.
+- Runtime findings: first run `42329448502` failed 15/18 due to trigger-inclusive D1 changes count and FK cleanup order; second `42329512608` failed 2/18 because consume adapter retained exact-count assumption. Both defects corrected.
+- Final child validation: run `42329557589`, job `128272709580`, SUCCESS; exact child head `68e62e5f85da195b3ef2938622e1af00353e1bae`; tested PR merge tree `63605b63cc1049716cb660a9d76f1ff85a17f902`; syntax SUCCESS; 2 files / 18 tests PASSED. Lockfile artifact ID `13556573871`, digest `sha256:c5d5436b4e26fa02b25ba2126a57770a86bd2e1097a43a2e17a7b37348914d50`.
+- Parent PR #36 D1 workflow run `42329438351`, job `128272331352`: SUCCESS.
+- Current source blobs: workflow `cb31bda7588137baf84a8141aec11024461cf818`; migration `44b8f7e0658296d287269770c5e91b1c3e25973c`; claim adapter `6eb5fed315307cd644f9bdb15ad45a6ef7a88beb`; consume adapter `f71e559a7c13b9a0242a7f619eba998c5906d95e`; claim tests `4711bb7a5186807d6618d6dc59af10809caec6f3`; consume tests `ef502247683239d50d3c781240cc5b2595aa0696`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `faac8cacf27d58362c2acf16006acf8ab973e421`.
+- Scope is local Workers-runtime proof only. Production D1, issuer trust, authenticated identity, trusted clock, lease/fencing/recovery/dead-letter, Supervisor integration and dispatch remain unqualified/not implemented. Independent security review NOT RUN. No secrets, deployment, provisioning, dispatch, provider/model calls or paid resources.
+- Next: obtain independent security review of trigger/adapter transaction boundary and idempotent retry; review stacked PR diff and governance. Keep dispatch disabled. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
