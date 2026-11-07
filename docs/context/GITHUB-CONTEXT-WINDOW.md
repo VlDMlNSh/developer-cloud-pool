@@ -482,3 +482,16 @@ New adversarial coverage: pre-consumed approval with the same timestamp; synthet
 Updated PR #39 head: `f33f552f396e878e80a7f383e5436080cb668cb0`, 11 commits ahead / 0 behind the immutable parent `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Current blobs: migration `44b8f7e0658296d287269770c5e91b1c3e25973c`; adapter `253bf5c6c9dcfca9c9c2666b21c1a77101766cba`; tests `4711bb7a5186807d6618d6dc59af10809caec6f3`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `faac8cacf27d58362c2acf16006acf8ab973e421`.
 
 Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/threads 0/0. No local test execution claimed. Trigger-backed semantics still require Workers-runtime CI and independent security review. Lease/fencing/recovery remain unimplemented. No production integration, D1 provisioning, dispatch, secrets or provider/model calls.
+
+
+## Live reconciliation — 2026-11-07 05:26 Europe/Vilnius
+
+- Dated report: [PR #39 CI trigger diagnosis](../reports/2026-11-07-pr39-ci-trigger-diagnosis.md).
+- Default branch remains `Основной`; compare endpoint observes HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #39 remains OPEN / DRAFT / UNMERGED. Immutable head `f33f552f396e878e80a7f383e5436080cb668cb0`; base is PR #36 proof branch at `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Five changed files; reviews/threads 0/0. Issue #38 remains OPEN.
+- Exact-head workflow query and combined status are empty: CI NOT VERIFIED.
+- CI trigger cause confirmed from workflow source: `pull_request.branches: ["Основной"]` excludes PR #39 because its base is the PR #36 proof branch. The absence of a run is a trigger/base mismatch, not successful verification. Do not retarget the stacked PR to default or manually dispatch as a shortcut.
+- Re-read migration 0001, migration 0002, adapter, test setup, Vitest/Wrangler config and workflow. Trigger-backed claim/outbox remains source-inspected only; local tests NOT RUN.
+- Report/checkpoint updated on documentation branch; canonical default branch unchanged. No secrets, dispatch, D1 provisioning, Worker/DSH/Resource Probe, deployment, provider/model calls or paid fallback.
+- Next: design a separately reviewed validation route for the combined parent+child tree at immutable SHA while preserving stacked PR scope. Then exact-head Workers-runtime CI and independent security review. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
+
