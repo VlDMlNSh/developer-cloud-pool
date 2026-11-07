@@ -544,3 +544,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 
 ### Next bounded step
 - Obtain a genuinely independent security review on immutable PR #39 head and review the stacked PR #36/#39 governance boundary. Do not merge or begin lease/fencing implementation until the independent review and exact-head CI are available. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
+
+
+## Live state refresh — 2026-11-07 13:47 Europe/Vilnius
+
+- Dated report: [PR #39 live CI and governance refresh](../reports/2026-11-07-pr39-live-refresh-1347.md).
+- Repo default branch `Основной` HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 OPEN/DRAFT/UNMERGED @ `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #37 OPEN/DRAFT/UNMERGED @ `5587a4e013507b5be330fd0c49ce1fc836faa946`; PR #39 OPEN/DRAFT/UNMERGED @ `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, base PR #36 branch @ `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`; Issue #38 OPEN.
+- PR #39 exact-head CI: PR run `42329993548` / job `128274072508` SUCCESS; push run `42329991471` / job `128274065481` SUCCESS. Steps npm ci, syntax, Workers-runtime tests and artifact upload all SUCCESS; 2 files / 19 tests. Tested merge tree `77b3ce30a3c90ad564db892cae82076b5c0774c9`.
+- PR #39 reviews/threads/requested reviewers 0/0/none. Independent security review NOT RUN. Ruleset `26550182` still has required approvals 0, CODEOWNERS false, and targets only `refs/heads/Основной`.
+- Gemini controller absent from default branch; Gemini NOT RUN. SentinelX one active Free host `host_5f7264034bdf0b51`, one-slot limit occupied; mh-dev-01 and mh-dev-02 disabled. No Claude execution.
+- Keep dispatch false. Remote D1 and production qualification NOT RUN; durable Supervisor claims NOT QUALIFIED; Cloud Development Pool BLOCKED; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: secure independent security review and review stacked PR #36/#39 governance before merge or lease/fencing work.
