@@ -447,3 +447,17 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 
 ### Next bounded step
 - Obtain a genuinely independent security review on immutable PR #39 head and review the stacked PR #36/#39 governance boundary. Do not merge or begin lease/fencing implementation until the independent review and exact-head CI are available. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
+
+
+## Live refresh — 2026-11-07 13:47 Europe/Vilnius
+
+- Report: [PR #39 live CI and governance refresh](../reports/2026-11-07-pr39-live-refresh-1347.md).
+- Default branch `Основной` HEAD remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 remains OPEN/DRAFT/UNMERGED at `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #37 remains OPEN/DRAFT/UNMERGED at `5587a4e013507b5be330fd0c49ce1fc836faa946`.
+- PR #39 remains OPEN/DRAFT/UNMERGED at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, stacked on PR #36 branch at base SHA `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Issue #38 OPEN.
+- Exact-head PR run `42329993548` / job `128274072508` and push run `42329991471` / job `128274065481`: COMPLETED / SUCCESS; syntax, npm ci, Workers-runtime tests and artifact upload all succeeded. PR merge tree `77b3ce30a3c90ad564db892cae82076b5c0774c9`; 2 files / 19 tests passed. Combined commit status list is empty; do not treat that as additional check evidence.
+- PR #39 reviews/threads/requested reviewers: 0/0/none. Independent security review NOT RUN.
+- Ruleset `26550182` targets only default branch; approval count 0, CODEOWNERS review false, no required reviewers. No governance changes.
+- Gemini controller absent from default branch (contents API 404), so Gemini NOT RUN. SentinelX only active Free host is `host_5f7264034bdf0b51`, one-slot limit occupied; mh-dev-01 and mh-dev-02 disabled. No Claude execution.
+- Exact-head local Workers-runtime proof VERIFIED; remote D1/production qualification NOT RUN; durable Supervisor claims NOT QUALIFIED; Cloud Development Pool BLOCKED; Contour A NOT ACCEPTED; Contour B DEFERRED. Dispatch remains false.
+- Next: obtain independent security review and stacked PR governance review before merge or lease/fencing work. No secrets, provisioning, deployment, dispatch, provider/model calls or paid resources.
