@@ -461,3 +461,13 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Gemini controller absent from default branch (contents API 404), so Gemini NOT RUN. SentinelX only active Free host is `host_5f7264034bdf0b51`, one-slot limit occupied; mh-dev-01 and mh-dev-02 disabled. No Claude execution.
 - Exact-head local Workers-runtime proof VERIFIED; remote D1/production qualification NOT RUN; durable Supervisor claims NOT QUALIFIED; Cloud Development Pool BLOCKED; Contour A NOT ACCEPTED; Contour B DEFERRED. Dispatch remains false.
 - Next: obtain independent security review and stacked PR governance review before merge or lease/fencing work. No secrets, provisioning, deployment, dispatch, provider/model calls or paid resources.
+
+
+## Issue #38 — single-use claim backend decision — 2026-11-07 13:51 Europe/Vilnius
+
+- Decision report: [single-use claim backend decision](../reports/2026-11-07-single-use-claim-backend-decision.md).
+- Compared: (A) serialized Supervisor + Issue labels, (B) dedicated GitHub state repository + immutable per-task refs, (C) conditional-write store / Cloudflare D1.
+- Decision: no backend is currently admitted for dispatch. A is only a fail-closed interim pattern and is not database-grade CAS. B remains a GitHub-native candidate but requires a separate state repository, narrow credential and demonstrated immutability/contention; do not grant Contents write to the current Supervisor. C is the preferred transactional target only if Free/card-free eligibility and remote D1 behavior can be independently qualified.
+- PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; exact-head PR run `42329993548` / job `128274072508` and push run `42329991471` / job `128274065481` COMPLETED / SUCCESS; 2 files / 19 Workers-runtime tests. PR #39 and #36 submitted reviews remain zero; independent review NOT RUN.
+- Issue #38 remains OPEN. Remote D1, Cloudflare Free/card-free eligibility, GitHub ref CAS/immutability and durable Supervisor claim protocol remain NOT VERIFIED / NOT QUALIFIED. Keep both dispatch gates fail-closed. No secrets, provisioning, dispatch, Worker/DSH/Resource Probe, provider calls or deployment.
+- Next: obtain independent review for PR #36/#39 and verify Cloudflare Free/card-free eligibility via non-secret account metadata; then qualify remote D1 or run the isolated GitHub ref-reservation proof.
