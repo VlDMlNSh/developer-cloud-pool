@@ -1,8 +1,19 @@
 name: Isolated D1 Ledger Proof
 
 on:
+  # Run on pushes to the two isolated proof branches. This makes the
+  # validation workflow executable before either stacked PR is merged.
+  push:
+    branches:
+      - "proof/d1-single-use-ledger-retry-2026-11-06"
+      - "proof/d1-claim-outbox-atomic-2026-11-07"
+    paths:
+      - "proofs/d1-ledger/**"
+      - ".github/workflows/d1-ledger-proof-validation.yml"
   pull_request:
-    branches: ["Основной"]
+    branches:
+      - "Основной"
+      - "proof/d1-single-use-ledger-retry-2026-11-06"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
