@@ -218,3 +218,23 @@ Commit the inspected lockfile to PR #36 and obtain independent security review. 
 - Therefore Workers Free entitlement, payment-method requirement for this specific account, and any subscription status remain NOT VERIFIED. Public pricing docs describing a Free tier do not prove this account is eligible or provisionable without card.
 - No Worker, D1, OAuth app, billing profile, payment method, secret, or deployment was created/changed. No paid fallback or dispatch.
 - Next: pursue an authorized read-only billing entitlement evidence path or independently qualify a persistent no-card host; do not request payment details or change account settings. Keep deployment blocked until eligibility and auth/security gates are proven.
+
+
+## Daily live refresh — 2026-11-07 19:39 Europe/Vilnius
+
+- Latest report: [Cloud Development Pool daily status and evidence](../reports/2026-11-07-cloud-pool-daily-status.md).
+- Default branch `Основной`: HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Active ruleset `26550182`: exact default-branch selector, PR required, but 0 approvals / CODEOWNERS review false / no required reviewers. Independent review is not enforced.
+- Issues #1, #22, #26, #38 remain OPEN. #38 decision: no backend admitted for dispatch.
+- PR #24/#25 exact-head web/API CI passed but branches are each 2 commits behind default. PR #30 synthetic OAuth CI passed but proves no live OAuth. PR #31 adapter CI passed, adapter remains unmounted. The path-segment fix branch `fix/github-read-adapter-path-segments-2026-11-06` is two commits beyond PR #31 and rejects dot-segment allowlist slugs, but has no PR, no exact-head CI and no independent review.
+- PR #36 current HEAD `e11fc90e50bd20b166207af64551c49cfa80ffb4`: exact-head D1 + Pool Contract CI passed. PR #37 current HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946`: exact-head boundary + contract CI passed, but remains draft/unmerged; default Supervisor/Worker still contain the old privileged dispatch chain.
+- PR #39 current HEAD `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: D1 PR/push CI passed (19 tests), but PR run base is stale `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, one commit behind current PR #36 head. Current stacked parent+child integration NOT VERIFIED; no Pool Contract run for child HEAD.
+- PR reviews 0 for #24/#25/#30/#31/#36/#37/#39; independent security review NOT RUN.
+- Default workflow list contains no Gemini batch-dispatch controller. SentinelX: one active Free host `Voktors-Mini.Dlink`, 1/1 slots used; mh-dev-01 and mh-dev-02 disabled. No host task was run.
+- Last authorized Cloudflare read (2026-11-06): Worker scripts empty; Workers Free/card-free entitlement NOT VERIFIED due Billing Read 403. No D1/Worker deployment.
+- Last PR #37 CI read-back showed `POOL_DISPATCH_ENABLED=false` and authorization gate unset; current variable values NOT VERIFIED. No dispatch, DSH, Resource Probe, provider/model call, secret read, billing change, governance mutation or production resource creation.
+- Status: local proof CI may be VERIFIED only for its immutable tested SHA/tree; production runtime NOT RUN; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+### Next action
+
+Reconcile PR #39 with current PR #36 parent and obtain exact-head PR + contract CI for the resulting merge tree; submit the adapter path-segment fix as a stacked reviewable PR with exact-head CI; secure independent security review; qualify persistent no-card hosting through authorized non-secret evidence. Keep dispatch gates fail-closed.
