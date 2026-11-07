@@ -386,3 +386,15 @@ New adversarial coverage: pre-consumed approval with the same timestamp; synthet
 Updated PR #39 head: `f33f552f396e878e80a7f383e5436080cb668cb0`, 11 commits ahead / 0 behind the immutable parent `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Current blobs: migration `44b8f7e0658296d287269770c5e91b1c3e25973c`; adapter `253bf5c6c9dcfca9c9c2666b21c1a77101766cba`; tests `4711bb7a5186807d6618d6dc59af10809caec6f3`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `faac8cacf27d58362c2acf16006acf8ab973e421`.
 
 Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/threads 0/0. No local test execution claimed. Trigger-backed semantics still require Workers-runtime CI and independent security review. Lease/fencing/recovery remain unimplemented. No production integration, D1 provisioning, dispatch, secrets or provider/model calls.
+
+
+## 2026-11-07 05:26 Europe/Vilnius — PR #39 CI trigger diagnosis
+
+- Dated report: [PR #39 CI trigger diagnosis](../reports/2026-11-07-pr39-ci-trigger-diagnosis.md).
+- Refreshed repository metadata: default branch `Основной`; compare endpoint still observes default HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #39 remains OPEN / DRAFT / UNMERGED, head `f33f552f396e878e80a7f383e5436080cb668cb0`, base PR #36 branch at `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`; five changed files; reviews/threads 0/0. Issue #38 OPEN.
+- Exact-head workflow query and combined status returned empty arrays: CI NOT VERIFIED.
+- Diagnosed deterministic trigger mismatch: `.github/workflows/d1-ledger-proof-validation.yml` listens to pull_request only when the target branch is `Основной`, but PR #39 targets the PR #36 proof branch. This explains why the child PR receives no run. It is not a test pass.
+- Source read-back confirms migration 0001 precedes 0002; trigger-backed transition and adapter remain source-inspected only. No local tests were executed.
+- No PR retarget, workflow dispatch/change, merge, deployment, D1 provisioning, secrets, provider/model calls or paid resources.
+- Next: retain stacked PR base and create a separately reviewed CI strategy that validates the combined parent+child tree at an immutable SHA; then exact-head Workers-runtime tests and independent security review. Do not extend lease/fencing until those gates pass.
