@@ -33,6 +33,10 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
+  // The claim/outbox suite shares the same D1 test database. Remove
+  // dependent rows before deleting their approval-ledger parent rows.
+  await env.POOL_DB.prepare("DELETE FROM pool_task_outbox").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
   await seed();
 });

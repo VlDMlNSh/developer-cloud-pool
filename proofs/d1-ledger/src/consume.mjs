@@ -73,7 +73,7 @@ export async function consumeApproval(db, binding, now) {
       now
     ).run();
 
-    if (result?.success === true && result?.meta?.changes === 1) {
+    if (result?.success === true && result?.meta?.changes > 0) {
       return {
         decision: "ALLOW_ONCE",
         state: "consumed",
