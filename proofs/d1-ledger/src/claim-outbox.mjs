@@ -60,15 +60,24 @@ export async function claimAndEnqueue(db, binding, now) {
     ).run();
 
     const existing = await db.prepare(`
-      SELECT c.claim_id, c.envelope_digest, c.status, o.outbox_id, o.status AS outbox_status
+      SELECT c.claim_id, c.envelope_digest, c.status,
+             o.outbox_id, o.status AS outbox_status,
+             a.owner_numeric_id, a.repository_id, a.issue_number,
+             a.target_sha, a.profile
         FROM pool_task_claims c
         JOIN pool_task_outbox o ON o.approval_id = c.approval_id
+        JOIN pool_approval_ledger a ON a.approval_id = c.approval_id
        WHERE c.approval_id = ?
     `).bind(binding.approvalId).first();
 
     if (existing?.claim_id !== claimId ||
         existing?.outbox_id !== outboxId ||
-        existing?.envelope_digest !== binding.envelopeDigest) {
+        existing?.envelope_digest !== binding.envelopeDigest ||
+        existing?.owner_numeric_id !== binding.ownerNumericId ||
+        existing?.repository_id !== binding.repositoryId ||
+        existing?.issue_number !== binding.issueNumber ||
+        existing?.target_sha !== binding.targetSha ||
+        existing?.profile !== binding.profile) {
       return deny(result?.success === true && result?.meta?.changes > 0
         ? "CLAIM_TRIGGER_DID_NOT_CREATE_COMPLETE_PAIR"
         : "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED");
