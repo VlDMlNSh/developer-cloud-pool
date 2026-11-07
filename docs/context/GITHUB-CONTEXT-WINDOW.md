@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-06 (UTC+3) — governance read-path pass
+Last refreshed: 2026-11-07 19:39 Europe/Vilnius — daily live-state audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest documentation update commit: `09e187983335e61c2ed26d4cd20baee95047f27a` (this branch remains unmerged)
+Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -1026,3 +1026,20 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Therefore Workers Free entitlement, payment-method requirement for this specific account, and any subscription status remain NOT VERIFIED. Public pricing docs describing a Free tier do not prove this account is eligible or provisionable without card.
 - No Worker, D1, OAuth app, billing profile, payment method, secret, or deployment was created/changed. No paid fallback or dispatch.
 - Next: pursue an authorized read-only billing entitlement evidence path or independently qualify a persistent no-card host; do not request payment details or change account settings. Keep deployment blocked until eligibility and auth/security gates are proven.
+
+
+## Daily live refresh — 2026-11-07 19:39 Europe/Vilnius
+
+- Dated report: [Cloud Development Pool daily status and evidence](../reports/2026-11-07-cloud-pool-daily-status.md); report commit `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185`; report blob `92bd0b8a3ea6ee9892b6ff01225447e8eef3b98f`.
+- Default branch `Основной` remains at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Active ruleset `26550182` is enabled for exact ref `refs/heads/Основной`, but required approvals remain 0, CODEOWNERS review false and no required reviewers. Classic branch API still reports `protected=false`.
+- Issues #1, #22, #26 and #38 remain OPEN. Issue #38's backend decision is NO BACKEND ADMITTED FOR DISPATCH.
+- PR #24 HEAD `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6` (59 ahead / 2 behind); PR #25 HEAD `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85` (29 ahead / 2 behind). Both are DRAFT/UNMERGED; exact-head OpenAPI/Prototype and Pool Contract CI passed.
+- PR #30 HEAD `ad9f9ac598a2414b5209b6923094b16be64630ae`: synthetic OAuth compatibility CI passed; live OAuth/session NOT IMPLEMENTED. PR #31 HEAD `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: exact-head prototype CI passed; adapter remains unmounted and independent review NOT RUN. PRs #30/#31 still target stale PR #25 base `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`, one commit behind current PR #25.
+- Path fix branch `fix/github-read-adapter-path-segments-2026-11-06` HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, two commits beyond PR #31; source blob `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63`, test blob `bd8ac8d97cdd673bb170a22d67ce08697cf46789`. It rejects dot-segment allowlist slugs. No PR, no exact-head CI and no independent review; NOT VERIFIED.
+- PR #36 HEAD `e11fc90e50bd20b166207af64551c49cfa80ffb4`: D1 and Pool Contract exact-head CI passed. PR #37 HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946`: boundary/contract exact-head CI passed. PR #39 HEAD `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: D1 PR/push CI passed (19 tests), but actual PR run base SHA is stale `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, while current PR #36 head is `e11fc90...`; current parent+child merge integration is NOT VERIFIED. No Pool Contract run exists for PR #39 child head.
+- Submitted reviews remain 0 for PRs #24/#25/#30/#31/#36/#37/#39. Independent security review NOT RUN.
+- Default production Supervisor/Worker source at HEAD still contains privileged chain: Supervisor workflow `workflow_run` + `actions: write`; Worker `workflow_dispatch` + `issues: write`; Supervisor script REST dispatch and stale requeue. PR #37's correction is draft-only and unmerged.
+- Default workflow set has no Gemini batch-dispatch controller. SentinelX inventory: one active Free host `Voktors-Mini.Dlink`, 1/1 slots used; `mh-dev-01` and `mh-dev-02` disabled. No executor operation was run.
+- Last authorized Cloudflare read (2026-11-06): one standard account, Workers scripts empty, `default_usage_model=standard`; Billing profile/subscriptions returned 403 due missing Billing Read. Workers Free/card-free eligibility remains NOT VERIFIED. No Worker/D1 deployment.
+- Last recorded PR #37 CI read-back showed `POOL_DISPATCH_ENABLED=false` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` unset (2026-11-06); current variable values NOT VERIFIED. No dispatch, DSH, Resource Probe, provider/model call, secret read, billing or governance mutation.
+- Overall: Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile PR #39 against current PR #36 parent, submit path-fix branch as a reviewable stacked PR with exact-head CI, obtain independent review, and qualify no-card persistent hosting without changing runtime/security boundaries.
