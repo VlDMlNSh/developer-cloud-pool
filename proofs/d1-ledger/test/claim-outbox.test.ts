@@ -69,6 +69,20 @@ describe("atomic D1 claim and transactional outbox", () => {
     });
   });
 
+  it("denies retries whose immutable binding differs from the existing claim", async () => {
+    const first = await claimAndEnqueue(env.POOL_DB, approval, NOW);
+    expect(first.decision).toBe("CLAIMED_ONCE");
+
+    const mismatchedRetry = await claimAndEnqueue(
+      env.POOL_DB, { ...approval, ownerNumericId: "99999" }, NOW
+    );
+    expect(mismatchedRetry).toMatchObject({
+      decision: "DENY",
+      dispatch: false,
+      reason: "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED"
+    });
+  });
+
   it("does not create a claim for a binding mismatch", async () => {
     const result = await claimAndEnqueue(
       env.POOL_DB, { ...approval, targetSha: "c".repeat(40) }, NOW
