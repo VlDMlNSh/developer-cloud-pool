@@ -412,3 +412,38 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Current source blobs: workflow `cb31bda7588137baf84a8141aec11024461cf818`; migration `44b8f7e0658296d287269770c5e91b1c3e25973c`; claim adapter `6eb5fed315307cd644f9bdb15ad45a6ef7a88beb`; consume adapter `f71e559a7c13b9a0242a7f619eba998c5906d95e`; claim tests `4711bb7a5186807d6618d6dc59af10809caec6f3`; consume tests `ef502247683239d50d3c781240cc5b2595aa0696`; package `398e49660a3dd082299eebc2facd027385e2fd6c`; README `faac8cacf27d58362c2acf16006acf8ab973e421`.
 - Scope is local Workers-runtime proof only. Production D1, issuer trust, authenticated identity, trusted clock, lease/fencing/recovery/dead-letter, Supervisor integration and dispatch remain unqualified/not implemented. Independent security review NOT RUN. No secrets, deployment, provisioning, dispatch, provider/model calls or paid resources.
 - Next: obtain independent security review of trigger/adapter transaction boundary and idempotent retry; review stacked PR diff and governance. Keep dispatch disabled. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
+
+
+## Live reconciliation — security-focused follow-up — 2026-11-07 05:36 Europe/Vilnius
+
+### Scope and immutable target
+- PR #39 head: `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; parent PR #36 head: `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #39 remains stacked on PR #36's proof branch.
+- This was an implementation-side source review and targeted correction, NOT an independent security review.
+
+### Finding and correction
+- Finding: on an idempotent retry, the adapter previously confirmed an existing claim/outbox pair by approval ID, claim/outbox IDs and envelope digest only. If the caller supplied a different owner/repository/issue/target/profile binding but retained the same approval ID and digest, the existing pair could be classified as `ALREADY_ENQUEUED` rather than denied.
+- Correction: the existing-pair query now joins the approval ledger and verifies owner numeric ID, repository ID, issue number, target SHA, profile and envelope digest against the retry binding before returning a success-shaped idempotent result. A mismatched immutable-binding retry returns DENY; dispatch remains false.
+- Added a regression test that creates the original claim and retries with a different owner numeric ID. The adapter and test were re-read after commit.
+
+### Exact-head CI evidence
+- Child head: `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- Pull-request run `42329993548`, job `128274072508`: COMPLETED / SUCCESS.
+- Push run `42329991471`, job `128274065481`: COMPLETED / SUCCESS.
+- Syntax check: SUCCESS; Workers-runtime suite: 2 files / 19 tests PASSED.
+- Artifact `d1-ledger-proof-package-lock`, ID `13556707882`, digest `sha256:d3e513aa0445047d74b20c65dda1d7275c5a31cfc0f5be25110c3b0791859eaa`, expires 2026-11-14.
+- Current changed source blobs: claim adapter `96ee60a06e7d37b51b999829fa223eba7488d9e4`; claim tests `eb02a8edd0a748fb2c645457bded3be61dd87d60`. Workflow remains `cb31bda7588137baf84a8141aec11024461cf818`; migration 0002 remains `44b8f7e0658296d287269770c5e91b1c3e25973c`.
+
+### Governance observation
+- Active repository ruleset `26550182` targets only `refs/heads/Основной`. It requires PR and resolved review threads, but `required_approving_review_count=0`, CODEOWNERS review is false, and no required reviewers are configured. It therefore does not independently enforce a human/security approval count.
+- PR #39 targets the PR #36 proof branch, so the default-branch ruleset is not direct protection for the stacked child PR. PR #36 is the eventual merge into `Основной` and is subject to that ruleset, but the configured approval count is zero.
+- PR #39 currently has zero submitted reviews and zero inline review threads. Independent security review remains NOT RUN.
+
+### Remaining security/qualification limits
+- This proof uses local Workers-runtime/Miniflare D1, not a provisioned remote D1 database. It does not qualify production D1 contention or operational failure semantics.
+- Identity fields remain caller-supplied values in this local adapter; no issuer signature verification, authenticated owner derivation, repository authorization, trusted server clock, key rotation/revocation or production trust boundary is implemented.
+- Lease acquisition/reclaim, generation/fencing, stale acknowledgements, crash recovery, dead-letter, Supervisor integration and dispatch are not implemented/qualified. Keep dispatch fail-closed.
+- Independent reviewer/Agent 3 was not dispatched. Gemini controller gates/approved workflow were not established in this pass; no alternate route was used. SentinelX host availability is one active Free slot on Voktors-Mini.Dlink and no spare host slot; not used for this source review.
+- No secrets, deployment, D1 provisioning, Worker/Supervisor execution, DSH, Resource Probe, provider/model calls or paid resources.
+
+### Next bounded step
+- Obtain a genuinely independent security review on immutable PR #39 head and review the stacked PR #36/#39 governance boundary. Do not merge or begin lease/fencing implementation until the independent review and exact-head CI are available. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
