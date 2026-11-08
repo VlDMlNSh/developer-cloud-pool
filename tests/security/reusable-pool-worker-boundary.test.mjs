@@ -77,3 +77,30 @@ test("Worker rejects conflicting or duplicate managed task states", () => {
   assert.match(worker, /const managedStates = \["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"\]/);
   assert.match(worker, /activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/);
 });
+
+const finalizerPolicy = fs.readFileSync("scripts/pool-finalizer.mjs", "utf8");
+const finalizerRunner = fs.readFileSync("scripts/pool-finalizer-runner.mjs", "utf8");
+
+test("Supervisor exports immutable envelope and unique run-attempt claim generation", () => {
+  assert.match(script, /createHash\("sha256"\)/);
+  assert.match(script, /pool:claim-.*runId.*runAttempt/);
+  assert.match(script, /setOutput\("envelope_digest"/);
+  assert.match(script, /setOutput\("claim_generation"/);
+});
+
+test("Worker requires the exact claim generation before executing the probe", () => {
+  assert.match(worker, /claim_generation:/);
+  assert.match(worker, /CLAIM_GENERATION: \$\{\{ inputs\.claim_generation \}\}/);
+  assert.match(worker, /generations\[0\] !== e\.CLAIM_GENERATION/);
+  assert.match(supervisor, /claim_generation: \$\{\{ needs\.reconcile\.outputs\.claim_generation \}\}/);
+});
+
+test("Finalizer binds issue, body digest, open state, unique claim generation and claimed state", () => {
+  assert.match(finalizerPolicy, /issue\.state !== "open"/);
+  assert.match(finalizerPolicy, /envelopeDigest\(String\(issue\.body/);
+  assert.match(finalizerPolicy, /generations\.length !== 1/);
+  assert.match(finalizerPolicy, /states\.length !== 1 \|\| states\[0\] !== "pool:claimed"/);
+  assert.match(finalizerRunner, /buildFinalizationPlan\(current, expected\)/);
+  assert.match(finalizerRunner, /readback\.body !== current\.body/);
+  assert.match(finalizerRunner, /does not provide an atomic compare-and-swap/);
+});
