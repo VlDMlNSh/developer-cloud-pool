@@ -1255,3 +1255,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 ### Documentation branch ancestry note — 2026-11-08
 - Compare of `docs/cross-chat-continuation-2026-11-06` against current default `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` reports DIVERGED: 190 commits ahead / 2 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
 - This is a working documentation/context branch, not canonical accepted default content. Do not merge it wholesale or treat its HEAD as product/default state. Any future documentation promotion requires a bounded diff review and conflict/provenance check; investigate the two default-only commits before considering synchronization.
+
+
+## 2026-11-08 — Autonomous-First development and acceptance policy adopted
+
+- Decision record: `docs/policies/AUTONOMOUS-FIRST-DEVELOPMENT-AND-ACCEPTANCE.md`; commit `49247ae3c54f5a9fa4bd5e00a2bc82c66be8762d`.
+- Dated report: `docs/reports/2026-11-08-autonomous-first-policy-adoption.md`; commit `b3447d5f0932de401b8af2b4b2575bfca6360982`.
+- Project rule adopted: external independent APPROVE is not a blanket prerequisite for every engineering iteration or bounded, fail-closed qualification step. Continue test-first remediation, exact-head CI, least-privilege analysis, provenance and staged tests without waiting for routine external review.
+- This supersedes prior continuation notes that treated external independent review as a universal development gate. Historical review findings remain evidence; this policy does not erase them.
+- The running pool is expected to conduct structured multi-role audits after safe activation. Self-audit is qualification evidence, not proof of organizational independence, authority, or final acceptance.
+- Non-negotiable: no dispatch/provider/model invocation/deployment/privileged execution until operation-specific authorization and security gates pass; no secret access/disclosure; durable claims, fencing, recovery, Finalizer correctness and isolation must be qualified before dispatch.
+- Final Contour A ACCEPTED remains separate and requires actual web UI access, real Worker execution, safe routing, quotas, secret isolation, durable state/recovery and governance evidence. No agent may self-assign ACCEPTED. Contour B remains deferred.
+- Current PR #37 remains OPEN/DRAFT/UNMERGED at `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `Основной` at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Issue #38 remains OPEN / design not qualified. Dispatch remains fail-closed.
+- Next: continue test-first resolution of Issue #38 durable single-use claims and PR #37 Finalizer F2; use bounded tests and exact-head CI, without requiring external APPROVE merely to implement safe remediation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
