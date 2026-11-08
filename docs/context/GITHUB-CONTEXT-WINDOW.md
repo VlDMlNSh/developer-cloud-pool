@@ -735,3 +735,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Keep dispatch fail-closed. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define F2 durable claim ID, attempt/run binding, envelope digest, approval reference, generation/fencing token, and immutable execution receipt; add synthetic stale/duplicate/foreign completion tests before any runtime execution.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Mature component-first architecture review
+
+- Mandatory rule reaffirmed for every Contour A subsystem: search maintained GitHub projects before custom implementation; compare license, maintenance/release activity, security posture, tests, runtime compatibility, free-tier limits, operational burden, data portability and governance fit. Stars alone are not maturity evidence. Record selected/rejected alternatives and rationale.
+- Cloudflare Workflows is the strongest initial candidate for orchestration on the current platform. Official documentation says it is available on Free and Paid plans and provides durable multi-step execution, persisted state, retries, waits for external events/approvals, and observability: https://developers.cloudflare.com/workflows/ and https://developers.cloudflare.com/workflows/get-started/guide/ . Candidate only: exact free-plan limits, failure/replay semantics, cancellation, data retention and integration with the existing D1 ledger must be verified before adoption. It does not replace domain-specific authority, immutable identity, capability checks, provenance, audit, quotas or provider-routing controls.
+- Restate (https://github.com/restatedev/restate) is a relevant open-source durable-execution comparator with TypeScript SDK and stateful durable handlers, but its separately operated server/runtime may conflict with the zero-cost GitHub/Workers target. Not selected at this stage.
+- Temporal (https://github.com/temporalio/temporal) is a mature general-purpose comparator, but requires a separately operated service/cluster; not selected for the initial free Cloudflare Workers deployment absent a proven zero-cost hosting plan.
+- Architecture direction: do not build a bespoke general-purpose workflow engine or generic retry scheduler. Prefer platform-native durable orchestration where fit is verified; retain only project-specific security/governance and ledger semantics that the platform does not provide.
+- No source-code changes, dispatch, secrets access, remote D1 mutation, deployment or merge in this pass. PR #51 remains a proof branch/stack, not accepted. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify exact current PR #51/stack heads and workflow configuration; perform a focused Cloudflare Workflows fit-gap against Task/Attempt/lease/reconciliation contracts and free-tier quotas; publish an ADR before implementation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
