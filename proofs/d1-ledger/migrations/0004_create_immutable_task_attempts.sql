@@ -107,7 +107,7 @@ BEGIN
   SELECT
     'lease-acquired:' || NEW.current_attempt_id || ':' || NEW.lease_generation,
     NEW.task_key, NEW.current_attempt_id, 'lease.acquired',
-    lower(hex(randomblob(32))), NEW.updated_at
+    (SELECT input_digest FROM pool_attempts WHERE attempt_id = NEW.current_attempt_id), NEW.updated_at
   WHERE EXISTS (
     SELECT 1 FROM pool_attempts
      WHERE attempt_id = NEW.current_attempt_id
@@ -149,4 +149,15 @@ CREATE TRIGGER pool_attempt_events_no_delete
 BEFORE DELETE ON pool_attempt_events
 BEGIN
   SELECT RAISE(ABORT, 'ATTEMPT_EVENTS_APPEND_ONLY');
+END;
+
+CREATE TRIGGER pool_attempts_indeterminate_event
+AFTER UPDATE OF status ON pool_attempts
+WHEN NEW.status = 'indeterminate' AND OLD.status = 'running'
+BEGIN
+  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
+  VALUES (
+    'attempt-indeterminate:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
+    'attempt.indeterminate', NEW.input_digest, NEW.started_at
+  );
 END;
