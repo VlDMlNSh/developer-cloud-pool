@@ -1269,3 +1269,8 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Current PR #37 remains OPEN/DRAFT/UNMERGED at `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `Основной` at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Issue #38 remains OPEN / design not qualified. Dispatch remains fail-closed.
 - Next: continue test-first resolution of Issue #38 durable single-use claims and PR #37 Finalizer F2; use bounded tests and exact-head CI, without requiring external APPROVE merely to implement safe remediation.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Correction — documentation branch ancestry after final evidence commits
+- Recomputed after all documentation updates: `docs/cross-chat-continuation-2026-11-06` vs `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` is DIVERGED, **195 ahead / 2 behind**, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This supersedes the immediately preceding 190-ahead count, which was measured before the final documentation commits.
+- Do not merge wholesale; current documentation branch is evidence/context only. Investigate the two default-only commits and perform a bounded documentation diff review before any promotion.
