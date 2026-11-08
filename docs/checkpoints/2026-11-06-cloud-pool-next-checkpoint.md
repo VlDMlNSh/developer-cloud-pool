@@ -7,9 +7,9 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 ## Current GitHub refs
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
-- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical).
+- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest commit `91c93725020f7aae052a85d5a665609f35b70945`.
 - Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only successor commit: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`.
-- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
+- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; current head `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report-only successor CI NOT VERIFIED.
 - Latest explicit Workflow restart report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
 - Duplicate-trigger report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
 - Composed retry report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
