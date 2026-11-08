@@ -1,86 +1,64 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — composed Workflow+D1 commit-then-timeout proof and exact-head CI success
+**Updated:** 2026-11-08 — deterministic Workflow instance identity and duplicate-trigger suppression proof; exact-head CI success
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
-**Priority:** Cloud pool and its secure browser Experience plane first. Native iOS/local mobile assistant and external servers are later Contour B work.
+**Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
 
 ## Canonical repository state
 
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-- Default branch: Основной
-- Latest observed default HEAD: 864213e2ff5b4fa956ba405dea8137a44d812f49 (2026-11-08).
-- This context window is maintained on working branch docs/github-context-window-2026-11-06. It is unmerged and is not canonical on the default branch.
-- Latest proof branch: proof/cloudflare-workflows-vitest-2026-11-08 @ 4eb4aea106787c70039cd7110f1ca7a260628b57.
-- Latest proof PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52 — OPEN / DRAFT / UNMERGED; base PR #25 Hono branch.
-- Latest report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
-- Previous checkpoint: docs/checkpoints/2026-11-06-cloud-pool-next-checkpoint.md.
+- Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- This Context Window is on `docs/github-context-window-2026-11-06`; that documentation branch is unmerged and noncanonical.
+- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `784a2288fe3c42deb53c6e585c9180264c16b91b`.
+- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52 — OPEN / DRAFT / UNMERGED; base PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
+- Latest proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
+- Previous composed retry report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
 
-## Contour A — cloud execution pool
+## Current Contour A baseline
 
-### Runtime baseline
+- README baseline: Supervisor/Worker scaffold / NOT RUN; DSH evaluation NOT RUN; Resource Probe NOT RUN; cloud runtime deployment/profile qualification NOT RUN; general-purpose agent execution/checkpoint-resume not implemented.
+- PR #25 Hono console prototype: OPEN / DRAFT / UNMERGED. It remains service-only health + fail-closed protected reads + mutation rejection. No authenticated live console, OAuth/session runtime, deployment or device QA.
+- Issue #22 (secure remote web console): OPEN.
+- Issue #26 (provider/account-isolated routing and quota ledger): OPEN / DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED.
+- PR #51 (indeterminate reconciliation queue): OPEN / DRAFT / UNMERGED; no production adoption.
+- PR #52 (Workflow/D1 proof): OPEN / DRAFT / UNMERGED; reviews 0, review threads 0. Independent security/provenance review NOT RUN.
 
-Default-branch README still reports:
-- Supervisor/Worker: IMPLEMENTED SCAFFOLD / NOT RUN.
-- DSH evaluation: NOT RUN.
-- Resource Probe: IMPLEMENTED / NOT RUN.
-- Cloud runtime deployment/profile qualification: NOT RUN.
-- General-purpose agent execution, checkpoint/resume and automatic continuation: NOT IMPLEMENTED.
+## Governance, dispatch and agent controller
 
-Do not infer a running pool from workflow definitions, queued runs, static profiles or a successful static contract check. Runtime acceptance requires actual permitted execution evidence and independent review.
+- Issue #1 remains OPEN.
+- Ruleset 26550182 is ACTIVE on `refs/heads/Основной`; pull requests are required, but required approving reviews = 0, CODEOWNERS review = false, extra approval for unattributed changes = false. Thread resolution is required; bypass actors are empty. This does NOT enforce independent review.
+- Issue #1 records `POOL_DISPATCH_ENABLED=false` as verified on 2026-11-04. Current values of `POOL_DISPATCH_ENABLED` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` have NOT been re-read in this pass; treat current state as NOT VERIFIED and keep dispatch fail-closed. No secret or variable values were accessed.
+- The approved `.github/workflows/gemini-batch-dispatch-controller.yml` was NOT FOUND in the workflow directory on either default branch `Основной` or PR #25 base branch `feat/jarvis-hono-web-prototype-2026-11-06`. Gemini dispatch is NOT RUN; do not bypass or recreate the controller as a shortcut.
+- Current Desktop Commander device Voktors-Mini.Dlink is online. It was used only for local proof tests and Git push; this does not qualify it as a pool worker or as the approved SentinelX host for Claude Code.
+- No DSH, Resource Probe, model/provider calls, dispatch, deployment, remote D1 or paid fallback were used.
 
-### Governance and dispatch
+## Workflow + D1 proof — 2026-11-08
 
-- Governance issue #1: OPEN — https://github.com/VlDMlNSh/developer-cloud-pool/issues/1
-- Latest recorded live Ruleset 26550182: ACTIVE on refs/heads/Основной, PR required, zero required approvals, CODEOWNERS review false, unattributed-change extra approval false. This is not independent review enforcement.
-- Current Actions variables endpoint was rejected by the approved read connector; POOL_DISPATCH_ENABLED and POOL_AUTHORIZATION_CONTRACT_ACCEPTED remain NOT VERIFIED.
-- Keep dispatch fail-closed. Do not change dispatch variables, dispatch workflows, run DSH/Resource Probe or access provider credentials until current governance and execution authorization are verified.
-- No governance, secret, variable or dispatch setting was changed.
-
-## Phase B — authenticated remote web console
-
-- Controlling issue #22: OPEN — https://github.com/VlDMlNSh/developer-cloud-pool/issues/22.
-- V1 remains read-only. No direct browser-to-GitHub privileged API access, no browser-side workflow dispatch, no task mutations.
-- Existing graphite dashboard prototype retained.
-- Hono 4.13.16 prototype on PR #25 remains OPEN / DRAFT / UNMERGED; exact-head CI was previously verified, independent review remains NOT VERIFIED.
-- OAuth/session runtime, Workers Free eligibility, deployment and browser/device QA remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
-- Protected API reads remain fail-closed; mutation requests rejected. Never publish an unauthenticated dashboard.
-
-## D1 + Workflows composed retry proof — 2026-11-08
-
-- Branch: proof/cloudflare-workflows-vitest-2026-11-08.
-- Exact head: 4eb4aea106787c70039cd7110f1ca7a260628b57; parent c108f52957d4ad3964e57e72cda0f5a4fa721721.
-- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; base feat/jarvis-hono-web-prototype-2026-11-06 @ 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85.
-- Upstream Cloudflare Workers SDK fixture baseline pinned at ab086218678b1bf311b158bcc6cb6b7437a7839.
-- Local runtime on Voktors-Mini.Dlink: Node 22.23.3 / npm 10.9.9; @cloudflare/vitest-plugin 1.6.0, Vitest 4.1.12, Wrangler 4.158.0.
-- Local checks after fresh npm ci: npm run check PASS; npm test 11/11 PASS; npm run validate:ui PASS; npm run test:workflow 6/6 PASS (4 D1 ledger, 2 composed Workflow); git diff --check PASS.
-- D1 adapter exercises insert-if-absent attempt identity, exact task/attempt/generation fencing, durable receipt first-write-wins replay, and needs_review no-retry. Data is synthetic local Miniflare D1 only.
-- The composed Workflow step performs a D1 receipt commit, then consumes a persistent local one-shot fault that fails the step after commit. The Workflow retries; assertions prove two callback invocations, exactly one original receipt row, completed attempt at the exact generation, and consumed fault counter. The concurrent local D1 test proves duplicate claims/competing receipt writers converge on one first-writer receipt.
-- GitHub PR workflow run 42503077168 (Jarvis Web Prototype Validation) completed SUCCESS on exact head 4eb4aea106787c70039cd7110f1ca7a260628b57; job 128799814431. All steps completed successfully, including the new Cloudflare Workflow and D1 local proof suite. This verifies the local composed proof on CI, not live Cloudflare account behavior.
-- PR #52 reviews/threads: 0/0. Independent review NOT RUN.
-- No remote D1, secrets, OAuth credentials, providers/models, workflow dispatch, deployment or production mutations.
-- Workflows adoption NOT QUALIFIED / NOT ADOPTED. Worker-process restart, regional failover, distributed concurrency stress, live Cloudflare account semantics, duplicate Workflow creation/event suppression, external side-effect idempotency and authority bridge remain NOT VERIFIED.
-- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B deferred.
-
-## Cross-project boundary
-
-- MediaHub OS is a historical source of requirements/contracts, not permission to expand cloud-pool scope.
-- Contour B, iOS, local inference, media assistant and external server integration remain deferred until Contour A acceptance.
-- Preserve historical IDs and authority boundaries. Do not mix Jarvis, ASTRA A0 and MediaHub Product State Authority; do not bypass issuer/capability controls.
-- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Official Workers SDK fixture baseline pinned at `cloudflare/workers-sdk@ab086218678b1bf311b158bcc6cb6b7437a7839`; reused official `@cloudflare/vitest-plugin` / Miniflare harness.
+- Local runtime: Node 22.23.3, npm 10.9.9, `@cloudflare/vitest-plugin@1.6.0`, Vitest 4.1.12, Wrangler 4.158.0.
+- Exact final proof head: `784a2288fe3c42deb53c6e585c9180264c16b91b`.
+- Implementation commit for deterministic instance identity and duplicate-trigger test: `1b4643fabd59ba68e88110dba8b98b22f9529b83`.
+- Local checks: `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` PASS; `npm run check` PASS; `npm test` 11/11 PASS; `npm run validate:ui` PASS; `npm run test:workflow` 7/7 PASS (4 D1 ledger + 3 Workflow runtime); `git diff --check` PASS.
+- Existing composed Workflow test proves a D1 receipt commit followed by a synthetic one-shot post-commit timeout; same step retries, two callback invocations, one durable first-writer receipt.
+- New duplicate-trigger proof derives stable local Workflow ID `attempt-<attemptId>-<generation>`. Second create with the same ID rejects as `instance.already_exists`; introspection shows one Workflow instance and D1 has one attempt + one receipt.
+- Exact-head GitHub Actions run `42505104946`, job `128805935587`, Jarvis Web Prototype Validation: COMPLETED / SUCCESS on exact SHA `784a2288fe3c42deb53c6e585c9180264c16b91b`. Read-back confirms all steps completed successfully, including Cloudflare Workflow and D1 local proof.
+- Evidence is local synthetic Miniflare only. No Cloudflare account behavior, worker process crash/restart, regional failover, distributed stress, production retention, external side-effect idempotency or authority bridge has been proven.
+- Deterministic ID format remains proof-only; production design still needs bounded ID validation, canonical idempotency-key derivation, payload-conflict handling and D1/Workflow reconciliation.
 
 ## Next bounded actions
 
-1. Read back PR #52 exact-head CI run 42500316035 and job steps; treat any missing result as NOT VERIFIED.
-2. Compose the D1 adapter inside a synthetic Workflow step and test commit-then-timeout replay using official Workflow mocks.
-3. Verify concurrent attempt claims and stale-generation fencing under local D1; test pending-indeterminate no-retry.
-4. Re-run exact-head CI after changes and obtain independent security review; keep PR draft and unmerged.
-5. Re-read current governance before any execution; dispatch stays fail-closed.
+1. Inspect official Cloudflare Workflow Vitest APIs and determine whether they can model replay/recovery after a simulated worker restart; do not label harness replay as a real process restart.
+2. Verify the full workflow/attempt/indeterminate reconciliation chain against PR #51 and its base; keep all work synthetic/local.
+3. Resolve the missing approved Gemini controller and governance evidence only through authorized repository changes and documented gates; until then Gemini dispatch remains NOT RUN and dispatch stays fail-closed.
+4. Continue the authenticated remote web console work only after the runtime/gateway dependencies are understood; do not deploy the current prototype.
+5. Keep PR #52 DRAFT / UNMERGED; no production adoption or Contour A acceptance.
 
 ## Canonical source links
 
 - Repository README: https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/README.md
 - Pool Supervisor architecture: https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md
+- Governance issue #1: https://github.com/VlDMlNSh/developer-cloud-pool/issues/1
 - Web-console issue #22: https://github.com/VlDMlNSh/developer-cloud-pool/issues/22
 - Provider routing issue #26: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
