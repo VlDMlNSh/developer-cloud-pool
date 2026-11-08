@@ -1509,3 +1509,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Remaining: evidence-authorized indeterminate reconciliation; Supervisor/Worker identity bridge; independent review PR #50; remote D1/runtime/deployment qualification. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: `docs/reports/2026-11-08-attempt-finalization-idempotency-implementation.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Durable indeterminate reconciliation queue
+
+- PR #51: https://github.com/VlDMlNSh/developer-cloud-pool/pull/51; head branch `feat/indeterminate-reconciliation-queue-2026-11-08`; exact head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`; base PR #49 proof branch `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`; OPEN / DRAFT / UNMERGED. PR #51 includes PR #50 changes as ancestor and is a stacked aggregate diff.
+- Migration `0005_create_attempt_reconciliation_queue.sql` atomically creates one durable pending reconciliation row on running→indeterminate, preserving task/attempt IDs, input digest, expired lease generation/owner and timestamp. Queue does not authorize retry, lease clearing or terminal outcome.
+- Initial CI run 42495635689 failed because fixture teardown omitted the new FK-dependent queue table; cleanup corrected. Exact-head run 42495716401 / job 128777501915 COMPLETED / SUCCESS; syntax check passed; Workers-runtime suite 35/35. Artifact 13623665401, 18,253 bytes, SHA256 `8380de93ae870e28f35abf7df7c94cd9c734da565761a977f251d8d2a60768f7`.
+- Blobs: migration `7a19897f6197c79517170e101e4cbf1db233cac6`; test `32d8900246a3c2d45a568f84927acf4cfa821711`; workflow `a3ae41bc2d73ee5e6aaed65a8f43097a623f9ce6`.
+- Next: define trusted reconciliation capability and implement atomic evidence-backed resolver; add adversarial tests for authority, evidence, replay and rollback; then connect Supervisor/Worker to Attempt identities. Dispatch, remote D1, secrets, provider/model calls and deployment remain NOT RUN.
+- Report: `docs/reports/2026-11-08-indeterminate-reconciliation-queue-implementation.md`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
