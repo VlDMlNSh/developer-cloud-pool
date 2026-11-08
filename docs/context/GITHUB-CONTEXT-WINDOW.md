@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — corrected issuer-governance crosswalk; Wave 486 decisions exist, Wave 487 remains draft\n**Latest synchronized Context Window/checkpoint snapshot:** `c8d43a9284124492687f5b12d5dfed48e7a9ab14`; docs branch remains unmerged/noncanonical.
+**Updated:** 2026-11-08 — corrected issuer-governance crosswalk; Wave 486 decisions exist, Wave 487 remains draft\n**Latest synchronized Context Window/checkpoint snapshot:** `44d3fe9ff43f5d9c36732130151cf30853c47db0`; docs branch remains unmerged/noncanonical.
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
@@ -80,7 +80,7 @@
 
 ## A0 issuer governance correction and Cloud Pool crosswalk — 2026-11-08
 
-- Corrective report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/COMMIT/docs/reports/2026-11-08-a0-issuer-governance-cloud-pool-crosswalk.md.
+- Corrective report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/44d3fe9ff43f5d9c36732130151cf30853c47db0/docs/reports/2026-11-08-a0-issuer-governance-cloud-pool-crosswalk.md.
 - Correction: prior Cloud Pool report understated existing governance work. Wave 486 already selected owner-directed WB-05 Option A (dedicated Security Issuer Authority) and preserves owner-approved DEC-DEV-02 Option C. This is a selected target disposition, not normative acceptance or deployed authority.
 - MediaHub PR #599 remains OPEN/DRAFT/UNMERGED at `824bb2568b2ac8bb3dceb3608366668e99bab95e`; decision blob `13e6745463dbc05a7c188423bb45ffb2b210c789`.
 - MediaHub PR #600 remains OPEN/DRAFT/UNMERGED at `05a873e82760d63c8b26dc496b43d3309f4cfbf9`; amended Wave 487 contract blob `1200d343139c8e67a826902b3ade09d4987c537d`. Requester provenance correction Wave 524 blob `adc77565e502dd47ccdfa93c96cb237fcc073f5e`.
