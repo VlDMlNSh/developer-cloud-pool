@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — issuer/capability contract gap confirmed; no resolver authorized
+**Updated:** 2026-11-08 — issuer/capability contract gap confirmed; no resolver authorized\n**Latest synchronized Context Window/checkpoint snapshot:** `4501a55f1a67cf793ead691115844db73a5368f7`; docs branch remains unmerged/noncanonical.
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
