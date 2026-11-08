@@ -359,6 +359,13 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       "SELECT attempt_number, attempt_count, lease_generation FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
     expect(task).toMatchObject({ attempt_number: 1, attempt_count: 0, lease_generation: 2 });
+    const leaseEvents = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_events WHERE task_key = ? AND event_type = 'lease.acquired' ORDER BY lease_generation"
+    ).bind(taskKey).all();
+    expect(leaseEvents.results).toEqual([
+      { actor_id: "worker-a", lease_generation: 1 },
+      { actor_id: "worker-b", lease_generation: 2 }
+    ]);
 
     const stale = await renewAttemptLease(
       env.POOL_DB, taskKey, "attempt-1", "worker-a", 1, NOW + 13, 10
@@ -399,6 +406,10 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(events.results.map((x) => x.event_type)).toEqual([
       "attempt.created", "lease.acquired", "attempt.finalized"
     ]);
+    const terminalEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_events WHERE event_type = 'attempt.finalized' AND attempt_id = ?"
+    ).bind("attempt-1").first();
+    expect(terminalEvent).toEqual({ actor_id: "worker-final", lease_generation: 1 });
     const replay = await finalizeTaskAttempt(env.POOL_DB, {
       taskKey, attemptId: "attempt-1", workerId: "worker-final",
       generation: lease.generation, status: "succeeded",
@@ -440,6 +451,10 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     await acquireAttemptLease(env.POOL_DB, taskKey, "worker-unknown", NOW + 2, 5);
     const indeterminate = await markAttemptIndeterminate(env.POOL_DB, taskKey, "attempt-1", NOW + 7);
     expect(indeterminate.decision).toBe("ATTEMPT_INDETERMINATE");
+    const indeterminateEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_events WHERE event_type = 'attempt.indeterminate' AND attempt_id = ?"
+    ).bind("attempt-1").first();
+    expect(indeterminateEvent).toEqual({ actor_id: "worker-unknown", lease_generation: 1 });
     const deniedTakeover = await acquireAttemptLease(
       env.POOL_DB, taskKey, "worker-replay", NOW + 8, 10, { resumable: true }
     );
