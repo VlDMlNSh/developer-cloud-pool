@@ -1629,3 +1629,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - #50 head `65233f57038a9996e4a6e939abde3642a33d467d`; #51 head `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`. PR #51 PR-triggered run `42533777096` SUCCESS exact head; 2 files / 35 tests passed; URL https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42533777096. PR #50 run `42533097813` SUCCESS exact head.
 - Both PRs remain OPEN/DRAFT/UNMERGED. This is local Workers-runtime/Miniflare code qualification, not remote D1. Independent security review NOT RUN/NOT VERIFIED; no secrets/dispatch/provider/runtime/deployment. F2 remains partial. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: A-only contract/security audit across #36/#39/#40/#49/#51, including migration ordering, reconciliation trigger invariants, fencing, outbox, workflow provenance and F2 non-CAS race; require independent review evidence before merge/dispatch. Exclude #52. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — A-only D1 identity/attempt/review-gap audit
+
+- Report: [D1 identity, attempt and review-gap audit](../reports/2026-11-09-d1-identity-attempt-review-gap-audit.md), commit `dd6632571d40a4ff4316c0975bf7c65973cced34`.
+- Refs: #36 head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; #40 `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; #49 `b9067dc7d06245893cd4e208f6215438efe5ca64`; #51 `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`. All OPEN/DRAFT/UNMERGED.
+- Positive: canonical logical task key + unique task-level outbox in #40/#51 addresses prior duplicate-per-approval gap locally. Test proves two different approval IDs concurrently attach to one task / one outbox. This does NOT meet Issue #38's >=50 contender real-backend requirement.
+- Blocking: `acquireAttemptLease` allows expired-running takeover based on caller-provided `resumable: true`; not authenticated capability/evidence. Local-only adapter; no trusted issuer/owner/clock, resolver, quota/revocation or production executor integration.
+- Review status: #36/#39 contain COMMENTED reviews from maxkorolskiy88-ship-it, not APPROVED; organizational independence/authorized approver NOT VERIFIED. #40/#49/#51 formal review lists empty. Ruleset previously recorded as requiring 0 approvals; stacked branch enforcement NOT VERIFIED.
+- CI: #49 exact head run `42533086378` SUCCESS; #51 exact head run `42533777096` SUCCESS, 2 files/35 tests. Local Workers-runtime only; hosted D1 NOT RUN.
+- Issue #38: 2-approval local proof only; 50 contenders NOT RUN; hosted backend NOT RUN; authorized independent review NOT VERIFIED. F2 non-CAS issue-label race remains separate blocker.
+- No merge/dispatch/secrets/provider calls/remote D1/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add local adversarial test for 50 distinct approvals contending on one logical task/outbox; design capability-gated reconciliation resolver; no hosted qualification without explicit authorization. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
