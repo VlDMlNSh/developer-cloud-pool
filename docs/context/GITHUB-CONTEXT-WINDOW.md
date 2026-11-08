@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — deterministic Workflow instance identity and duplicate-trigger suppression proof; exact-head CI success
+**Updated:** 2026-11-08 — explicit Workflow restart proof, exact-head CI, PR #51 reconciliation-chain verification
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
@@ -10,9 +10,10 @@
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - This Context Window is on `docs/github-context-window-2026-11-06`; that documentation branch is unmerged and noncanonical.
-- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `784a2288fe3c42deb53c6e585c9180264c16b91b`.
+- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `34cdf68d44aac22c10871bf42ddf1cbadf31082e`.
 - Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52 — OPEN / DRAFT / UNMERGED; base PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
-- Latest proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
+- Latest proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
+- Previous duplicate-trigger report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
 - Previous composed retry report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
 
 ## Current Contour A baseline
@@ -21,38 +22,60 @@
 - PR #25 Hono console prototype: OPEN / DRAFT / UNMERGED. It remains service-only health + fail-closed protected reads + mutation rejection. No authenticated live console, OAuth/session runtime, deployment or device QA.
 - Issue #22 (secure remote web console): OPEN.
 - Issue #26 (provider/account-isolated routing and quota ledger): OPEN / DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED.
-- PR #51 (indeterminate reconciliation queue): OPEN / DRAFT / UNMERGED; no production adoption.
+- PR #51 (indeterminate reconciliation queue): OPEN / DRAFT / UNMERGED; exact-head push CI verified, no production adoption, independent review NOT RUN.
 - PR #52 (Workflow/D1 proof): OPEN / DRAFT / UNMERGED; reviews 0, review threads 0. Independent security/provenance review NOT RUN.
 
 ## Governance, dispatch and agent controller
 
 - Issue #1 remains OPEN.
 - Ruleset 26550182 is ACTIVE on `refs/heads/Основной`; pull requests are required, but required approving reviews = 0, CODEOWNERS review = false, extra approval for unattributed changes = false. Thread resolution is required; bypass actors are empty. This does NOT enforce independent review.
-- Issue #1 records `POOL_DISPATCH_ENABLED=false` as verified on 2026-11-04. Current values of `POOL_DISPATCH_ENABLED` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` have NOT been re-read in this pass; treat current state as NOT VERIFIED and keep dispatch fail-closed. No secret or variable values were accessed.
+- Issue #1 records `POOL_DISPATCH_ENABLED=false` as verified on 2026-11-04. Current values of `POOL_DISPATCH_ENABLED` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` have NOT been re-read; treat current state as NOT VERIFIED and keep dispatch fail-closed. No secret or variable values were accessed.
 - The approved `.github/workflows/gemini-batch-dispatch-controller.yml` was NOT FOUND in the workflow directory on either default branch `Основной` or PR #25 base branch `feat/jarvis-hono-web-prototype-2026-11-06`. Gemini dispatch is NOT RUN; do not bypass or recreate the controller as a shortcut.
-- Current Desktop Commander device Voktors-Mini.Dlink is online. It was used only for local proof tests and Git push; this does not qualify it as a pool worker or as the approved SentinelX host for Claude Code.
+- Voktors-Mini.Dlink was used only for local proof tests and Git push; this does not qualify it as a pool worker or as the approved SentinelX host for Claude Code.
 - No DSH, Resource Probe, model/provider calls, dispatch, deployment, remote D1 or paid fallback were used.
 
 ## Workflow + D1 proof — 2026-11-08
 
 - Official Workers SDK fixture baseline pinned at `cloudflare/workers-sdk@ab086218678b1bf311b158bcc6cb6b7437a7839`; reused official `@cloudflare/vitest-plugin` / Miniflare harness.
 - Local runtime: Node 22.23.3, npm 10.9.9, `@cloudflare/vitest-plugin@1.6.0`, Vitest 4.1.12, Wrangler 4.158.0.
-- Exact final proof head: `784a2288fe3c42deb53c6e585c9180264c16b91b`.
-- Implementation commit for deterministic instance identity and duplicate-trigger test: `1b4643fabd59ba68e88110dba8b98b22f9529b83`.
-- Local checks: `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` PASS; `npm run check` PASS; `npm test` 11/11 PASS; `npm run validate:ui` PASS; `npm run test:workflow` 7/7 PASS (4 D1 ledger + 3 Workflow runtime); `git diff --check` PASS.
+- Exact final proof head: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`.
+- Local checks: `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` PASS; `npm run check` PASS; `npm test` 11/11 PASS; `npm run validate:ui` PASS; `npm run test:workflow` 8/8 PASS (4 D1 ledger + 4 Workflow runtime); `git diff --check` PASS.
 - Existing composed Workflow test proves a D1 receipt commit followed by a synthetic one-shot post-commit timeout; same step retries, two callback invocations, one durable first-writer receipt.
-- New duplicate-trigger proof derives stable local Workflow ID `attempt-<attemptId>-<generation>`. Second create with the same ID rejects as `instance.already_exists`; introspection shows one Workflow instance and D1 has one attempt + one receipt.
-- Exact-head GitHub Actions run `42505104946`, job `128805935587`, Jarvis Web Prototype Validation: COMPLETED / SUCCESS on exact SHA `784a2288fe3c42deb53c6e585c9180264c16b91b`. Read-back confirms all steps completed successfully, including Cloudflare Workflow and D1 local proof.
-- Evidence is local synthetic Miniflare only. No Cloudflare account behavior, worker process crash/restart, regional failover, distributed stress, production retention, external side-effect idempotency or authority bridge has been proven.
-- Deterministic ID format remains proof-only; production design still needs bounded ID validation, canonical idempotency-key derivation, payload-conflict handling and D1/Workflow reconciliation.
+- Duplicate-trigger proof derives stable local Workflow ID `attempt-<attemptId>-<generation>`. Second create with same ID rejects as `instance.already_exists`; introspection shows one Workflow instance and D1 has one attempt + one receipt.
+- New explicit restart test calls official `WorkflowInstance.restart()` after completion. Workflow reruns from the beginning; local D1 retains exactly one unchanged receipt, Attempt remains completed, callback count becomes two and output remains the original receipt.
+- Cloudflare documents that explicit Workflow restart cancels in-progress steps, erases intermediate Workflow state and treats the instance as a first run. This is NOT a Worker-process crash/restart. The official Vitest test APIs provide Workflow introspection/modifiers but no documented worker-process restart control.
+- Local explicit-restart test emits Workerd `outputGateBroken` cancellation diagnostics (`User called restart`); the test passes and all D1/output assertions pass. This diagnostic is preserved in the report.
+- Exact-head GitHub Actions run `42505474727`, job `128807039896`, Jarvis Web Prototype Validation: COMPLETED / SUCCESS on exact SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`. Every job step completed successfully, including Workflow/D1 local proof.
+- Evidence remains synthetic local Miniflare. No real Cloudflare account D1 semantics, worker process crash/restart, regional failover, distributed concurrency stress, production retention, external side-effect idempotency or authority bridge has been proven.
+- Deterministic Workflow ID remains proof-only; production design needs bounded ID validation, canonical idempotency-key derivation, payload-conflict handling and D1/Workflow reconciliation.
+
+## PR #51 reconciliation-chain inspection
+
+- PR #51 exact head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`; base PR #50 exact head `6e6870e5463f3f67e87a305112b208401d95022d`.
+- PR #51 migration 0005 adds unique pending reconciliation work on running -> indeterminate, preserving task key, attempt ID, input digest, lease generation, expired lease owner and timestamp.
+- Trigger validates that task current attempt and lease generation still match. It does not clear the lease, create a retry or authorize terminalization.
+- PR #51 includes exact terminal-finalization replay recognition from PR #50. Exact replay requires matching immutable terminal projection and audit actor/generation; conflicting replay remains denied and no second terminal event is appended.
+- Exact-head push CI run `42495716401`, job `128777501915`: COMPLETED / SUCCESS on exact SHA `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`. Steps include install, syntax, Workers-runtime D1 tests and artifact upload.
+- CI artifact `d1-ledger-proof-package-lock`, ID `13623665401`, SHA-256 `8380de93ae870e28f35abf7df7c94cd9c734da565761a977f251d8d2a60768f7`, retained through 2026-11-15.
+- PR #50 exact-head push CI run `42495440869` completed SUCCESS on `6e6870e5463f3f67e87a305112b208401d95022d`.
+- PR #51 is a persistence boundary, not an authority resolver. It has no trusted evidence/capability verification and no retry/lease-takeover permission. Reviews/threads are 0/0; independent review NOT RUN. PR remains OPEN / DRAFT / UNMERGED.
+
+## Remaining limitations and blockers
+
+- No Worker-process crash/restart test, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge.
+- PR #25 remains OPEN / DRAFT / UNMERGED; authenticated OAuth/session runtime, Workers Free eligibility, deployment and browser/device QA remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
+- PR #51 remains OPEN / DRAFT / UNMERGED; reconciliation queue is not production-qualified.
+- PR #52 remains OPEN / DRAFT / UNMERGED; no independent review.
+- Issue #22 remains OPEN; Issue #26 remains DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED.
+- Gemini controller is missing from known refs; dispatch NOT RUN. Current dispatch variables NOT VERIFIED.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
 
 ## Next bounded actions
 
-1. Inspect official Cloudflare Workflow Vitest APIs and determine whether they can model replay/recovery after a simulated worker restart; do not label harness replay as a real process restart.
-2. Verify the full workflow/attempt/indeterminate reconciliation chain against PR #51 and its base; keep all work synthetic/local.
-3. Resolve the missing approved Gemini controller and governance evidence only through authorized repository changes and documented gates; until then Gemini dispatch remains NOT RUN and dispatch stays fail-closed.
-4. Continue the authenticated remote web console work only after the runtime/gateway dependencies are understood; do not deploy the current prototype.
-5. Keep PR #52 DRAFT / UNMERGED; no production adoption or Contour A acceptance.
+1. Evaluate whether the official Miniflare/Workflow harness can persist its local backing store across two distinct OS processes. If supported, run a bounded process-stop/recreate experiment against an isolated fixture; do not call it Cloudflare production recovery.
+2. If local Workflow state cannot survive process recreation, record that limitation and define a separate Cloudflare account-level qualification test plan without deploying or using secrets.
+3. Continue verifying reconciliation queue integration only after PR #51's full migration chain is inspected against the exact base. No authority resolver or retries until issuer/capability contract is approved.
+4. Keep PR #52 and PR #51 DRAFT / UNMERGED. No production adoption or Contour A acceptance.
 
 ## Canonical source links
 
