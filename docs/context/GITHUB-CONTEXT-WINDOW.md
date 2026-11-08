@@ -1250,3 +1250,8 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: run `42329993548` Isolated D1 Ledger Proof COMPLETED/SUCCESS.
 - Reviews: PR #36 3 COMMENTED; PR #37 3 CHANGES_REQUESTED + 1 COMMENTED; PR #39 3 COMMENTED. All are by the same linked account `maxkorolskiy88-ship-it`; inline review threads 0/0/0. No independent organizational approval evidenced.
 - Report was updated and read back; latest report blob `a58ec1732be30703327124e1306911d6b899e177`. CI evidence is limited to the named workflow runs; it does not qualify remote D1 or integrated production authorization.
+
+
+### Documentation branch ancestry note — 2026-11-08
+- Compare of `docs/cross-chat-continuation-2026-11-06` against current default `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` reports DIVERGED: 190 commits ahead / 2 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- This is a working documentation/context branch, not canonical accepted default content. Do not merge it wholesale or treat its HEAD as product/default state. Any future documentation promotion requires a bounded diff review and conflict/provenance check; investigate the two default-only commits before considering synchronization.
