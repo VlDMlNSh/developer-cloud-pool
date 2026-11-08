@@ -47,3 +47,10 @@ Status: PARTIAL IMPLEMENTATION; CI FAILED ON INTERMEDIATE HEAD; LATEST HEAD NOT 
 Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Subsequent CI readback (supersedes latest-head note above)
+
+- Run `42489792549` checked head `430bc60a2df27fed7b569d4744d94b4616c91b68`: FAILED; job `128759455724`.
+- 26/27 tests passed. Conflict rollback test now passed, confirming the pre-check denial and unchanged READY ledger under conflicting task binding.
+- Remaining failing test: fixed five-attempt dead-letter expectation. Result remained `TASK_NOT_LEASEABLE` rather than `ATTEMPT_LIMIT_REACHED`; the actual final task row was not emitted in logs, so the exact state causing this remains unresolved.
+- Follow-up code commit `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` adds explicit handling when a task is already in `dead` at the cap. Exact-head workflow query for this newest head returned no run. It remains NOT VERIFIED.
