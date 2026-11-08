@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — independent two-process Workflow/D1 persistence repeat; exact-head CI SUCCESS
+**Updated:** 2026-11-08 — in-progress Workflow sleep resumed after abrupt local process recreation; exact-head CI SUCCESS
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
@@ -10,9 +10,10 @@
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - This Context Window is on `docs/github-context-window-2026-11-06`; that documentation branch is unmerged and noncanonical. Latest synchronized Context Window/checkpoint update commit: `a716887e46bd7091d37601146494c7f8c628a1eb`; checkpoint blob: `f25ec55c23d5e0835c4a7159fb3bc1dcea025e10`. The Context Window is the current file on this branch; the branch remains unmerged and noncanonical.
-- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` — implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; latest report-only successor commit `1eb3be17d9146d57a4335b511804946e097651ae` (previous report commit `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`).
-- Local process-recreation report (including independent repeat): https://github.com/VlDMlNSh/developer-cloud-pool/blob/1eb3be17d9146d57a4335b511804946e097651ae/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
-- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52 — OPEN / DRAFT / UNMERGED; current head `1eb3be17d9146d57a4335b511804946e097651ae`; base PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report-only commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d` and `1eb3be17d9146d57a4335b511804946e097651ae` also have exact-head CI SUCCESS (runs `42506472721` and `42506744722`).
+- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` — implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; latest report-only successor commit `c430fe4beecf93a20052f0c3efedb5f8539e4faa` (previous report commit `1eb3be17d9146d57a4335b511804946e097651ae`).
+- Local completed-instance process-recreation report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/1eb3be17d9146d57a4335b511804946e097651ae/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
+- Local in-progress Workflow process-recovery report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/c430fe4beecf93a20052f0c3efedb5f8539e4faa/docs/reports/2026-11-08-workflow-inprogress-process-recovery-proof.md.
+- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52 — OPEN / DRAFT / UNMERGED; current head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; base PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report-only commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and `c430fe4beecf93a20052f0c3efedb5f8539e4faa` have exact-head CI SUCCESS (runs `42506472721`, `42506744722` and `42507524428`).
 - Latest proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
 - Previous duplicate-trigger report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
 - Previous composed retry report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
@@ -24,7 +25,7 @@
 - Issue #22 (secure remote web console): OPEN.
 - Issue #26 (provider/account-isolated routing and quota ledger): OPEN / DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED.
 - PR #51 (indeterminate reconciliation queue): OPEN / DRAFT / UNMERGED; exact-head push CI verified, no production adoption, independent review NOT RUN.
-- PR #52 (Workflow/D1 proof): OPEN / DRAFT / UNMERGED; reviews 0, review threads 0. Independent security/provenance review NOT RUN. Report-only commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d` and `1eb3be17d9146d57a4335b511804946e097651ae` have exact-head CI SUCCESS (runs `42506472721` and `42506744722`); independent security/provenance review remains NOT RUN.
+- PR #52 (Workflow/D1 proof): OPEN / DRAFT / UNMERGED; current head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; reviews 0, review threads 0. Independent security/provenance review NOT RUN. Report-only commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and `c430fe4beecf93a20052f0c3efedb5f8539e4faa` have exact-head CI SUCCESS (runs `42506472721`, `42506744722` and `42507524428`); independent security/provenance review remains NOT RUN.
 
 ## Governance, dispatch and agent controller
 
@@ -47,12 +48,12 @@
 - Cloudflare documents that explicit Workflow restart cancels in-progress steps, erases intermediate Workflow state and treats the instance as a first run. This is NOT a Worker-process crash/restart. The official Vitest test APIs provide Workflow introspection/modifiers but no documented worker-process restart control.
 - Local explicit-restart test emits Workerd `outputGateBroken` cancellation diagnostics (`User called restart`); the test passes and all D1/output assertions pass.
 - New bounded process-recreation proof (report-only; implementation remains at `34cdf68d44aac22c10871bf42ddf1cbadf31082e`): ran the existing Worker under Wrangler `4.158.0` with `--local --persist-to /tmp/cdp-process-restart-state`; applied the local D1 migration; completed Attempt `attempt-process-restart-2` at generation 32 with one step invocation and one receipt; terminated Wrangler PID 66614; restarted a distinct Wrangler process PID 67553 against the same persistence directory; replayed the same Workflow create and received the expected `instance.already_exists`; queried D1 after restart and confirmed status completed, generation 32, invocation_count 1, receipt_count 1, unchanged receipt JSON. This verifies local persistence of a completed Workflow instance identity and D1 receipt across two OS processes.
-- The process was stopped only after Workflow completion. In-progress Workflow resumption after abrupt process termination remains NOT VERIFIED. Initial pre-migration request emitted `D1_ERROR: no such table: pool_attempts`; after applying the migration, a distinct attempt succeeded. npm install exited 0 but emitted non-fatal optional-package TAR_ENTRY_ERROR warnings. This diagnostic is preserved in the report.
+- A separate controlled in-progress process-recovery proof is now VERIFIED locally (details below). The earlier completed-instance experiment remains separate and does not itself prove in-progress recovery. Initial pre-migration request emitted `D1_ERROR: no such table: pool_attempts`; after applying the migration, a distinct attempt succeeded. npm install exited 0 but emitted non-fatal optional-package TAR_ENTRY_ERROR warnings. This diagnostic is preserved in the report.
 - Exact-head GitHub Actions run `42505474727`, job `128807039896`, Jarvis Web Prototype Validation: COMPLETED / SUCCESS on exact SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`. Every job step completed successfully, including Workflow/D1 local proof.
 - Report-only process-proof commit `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`: exact-head run `42506472721`, job `128810086646`, COMPLETED / SUCCESS.
 - Independent-repeat report commit `1eb3be17d9146d57a4335b511804946e097651ae`: exact-head run `42506744722`, job `128810903390`, COMPLETED / SUCCESS; all steps passed, including Workflow/D1 local proof.
 - Completed-instance local process recreation has been repeated independently using a second isolated persistence directory and a different Attempt ID/generation. Both repetitions preserve the completed Workflow identity and D1 receipt across two OS processes.
-- Evidence remains synthetic local Miniflare. No real Cloudflare account D1 semantics, in-progress Workflow recovery after abrupt process termination, regional failover, distributed concurrency stress, production retention, external side-effect idempotency or authority bridge has been proven.
+- Evidence remains synthetic local Miniflare. In-progress recovery is VERIFIED only for the tested persisted `step.sleep()` scenario across abrupt local process termination. No real Cloudflare account D1/Workflow semantics, regional failover, distributed concurrency stress, production retention, arbitrary external side-effect idempotency or authority bridge has been proven.
 - Deterministic Workflow ID remains proof-only; production design needs bounded ID validation, canonical idempotency-key derivation, payload-conflict handling and D1/Workflow reconciliation.
 
 ## PR #51 reconciliation-chain inspection
@@ -66,9 +67,19 @@
 - PR #50 exact-head push CI run `42495440869` completed SUCCESS on `6e6870e5463f3f67e87a305112b208401d95022d`.
 - PR #51 is a persistence boundary, not an authority resolver. It has no trusted evidence/capability verification and no retry/lease-takeover permission. Reviews/threads are 0/0; independent review NOT RUN. PR remains OPEN / DRAFT / UNMERGED.
 
+## In-progress Workflow process-recovery proof — 2026-11-08
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/c430fe4beecf93a20052f0c3efedb5f8539e4faa/docs/reports/2026-11-08-workflow-inprogress-process-recovery-proof.md.
+- Temporary proof-only input added a 60-second named `step.sleep()` before the D1 receipt step; it was reverted after the test. No runtime source change is part of report commit `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
+- Attempt `attempt-inprogress-recovery2`, generation 42, was `claimed` with zero receipt rows after approximately 35 seconds inside the sleep. The first Wrangler/Workerd process set was terminated abruptly with SIGKILL.
+- A distinct Wrangler/Workerd process started against the exact same local persistence directory. Wrangler's local Workflow CLI showed the same instance still `Running`, with the original sleep step and original start timestamp (58 seconds elapsed), rather than a new sleep from the second process start.
+- The Workflow completed at the original 60-second end time. Final D1 readback: Attempt `completed`, generation 42, `invocation_count=1`, `receipt_count=1`, unchanged receipt JSON. This verifies local resumption for the tested persisted-sleep scenario only.
+- Exact-head GitHub Actions run `42507524428`, job `128813275338`: COMPLETED / SUCCESS on exact SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; every step passed, including Cloudflare Workflow and D1 local proof.
+- The preliminary 25-second trial was excluded because it completed before termination; only the 60-second controlled trial is counted.
+
 ## Remaining limitations and blockers
 
-- No in-progress Workflow recovery after abrupt process termination, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge. Completed-instance local process-recreation persistence is VERIFIED in two independent local repetitions.
+- In-progress Workflow recovery after abrupt process termination is VERIFIED locally for one persisted-sleep scenario; completed-instance local process-recreation persistence is VERIFIED in two independent repetitions. Hosted Cloudflare account D1/Workflow semantics, regional failover, distributed concurrency stress, production Workflow retention, arbitrary external side-effect idempotency and authority bridge remain NOT VERIFIED.
 - PR #25 remains OPEN / DRAFT / UNMERGED; authenticated OAuth/session runtime, Workers Free eligibility, deployment and browser/device QA remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
 - PR #51 remains OPEN / DRAFT / UNMERGED; reconciliation queue is not production-qualified.
 - PR #52 remains OPEN / DRAFT / UNMERGED; no independent review.
@@ -78,8 +89,7 @@
 
 ## Next bounded actions
 
-1. Completed-instance local Workflow/D1 persistence across two Wrangler processes is VERIFIED in two independent repetitions. Next bounded action: run a separate controlled in-progress Workflow fixture, terminate the Wrangler process during a wait, restart against the same isolated persistence directory, and test whether the Workflow resumes exactly once. Do not call this Cloudflare production recovery.
-2. If in-progress recovery is unsupported or inconclusive, record the limitation and define a separate Cloudflare account-level qualification test plan without deploying or using secrets.
+1. Local in-progress Workflow sleep recovery across abrupt process recreation is VERIFIED for one controlled scenario. Next bounded action: define a Cloudflare account-level qualification plan covering real D1/Workflow state, retries, duplicate creation, interruption and receipt idempotency. Do not deploy, enable remote bindings or access secret values until governance/authorization gates are separately verified.
 3. Continue verifying reconciliation queue integration only after PR #51's full migration chain is inspected against the exact base. No authority resolver or retries until issuer/capability contract is approved.
 4. Keep PR #52 and PR #51 DRAFT / UNMERGED. No production adoption or Contour A acceptance.
 
