@@ -1521,3 +1521,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: `docs/reports/2026-11-08-indeterminate-reconciliation-queue-implementation.md`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Reusable components scan: durable orchestration
+
+- Reaffirmed project rule: search and qualify maintained GitHub projects/platform primitives before implementing each subsystem; adopt mature components where they meet constraints; write only missing MediaHub policy/adapters/contracts.
+- Initial scan completed for current durable orchestration/reconciliation gap. Candidates: Cloudflare Workers Workflows, Restate, Temporal TypeScript, Inngest, Trigger.dev.
+- Provisional first prototype candidate: Cloudflare Workflows because it is native to current Workers + D1 proof and official docs list Free and Paid plan availability. It has CPU/request/storage/step billing dimensions (step/storage charges effective 2026-08-10), plan limits and a restriction against Workers for Platforms namespaces. It is NOT yet adopted or proven to satisfy our complete constraints. Keep D1 as authorization, immutable Attempt identity, fencing and audit authority; Workflows must not authorize retries by itself.
+- Alternatives: Restate provides durable runtime/queues/virtual objects but core runtime BSL and separate runtime ops; Temporal TypeScript SDK is MIT but production requires a Temporal Service and SDK README does not claim regular Cloudflare Workers testing; Inngest and Trigger.dev offer durable workflow/task features but exact free infrastructure, licensing/compatibility requirements still need qualification.
+- Report: `docs/reports/2026-11-08-reusable-components-durable-orchestration-assessment.md`.
+- Repository status rechecked: PR #37 OPEN/DRAFT at `1be8672c1be1a720b6c813dcafff5c020b6456ae` (mergeable=false); PR #40 OPEN/DRAFT at `2b7e30aeb8c404d84b2fe8bc16520aaa783520fb`; PR #49 OPEN/DRAFT at `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`; PR #50 OPEN/DRAFT at `6e6870e5463f3f67e87a305112b208401d95022d`; PR #51 OPEN/DRAFT at `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`. PR #49–#51 reviews empty; independent review NOT RUN. PR #51 exact-head CI run 42495716401 SUCCESS, 35/35.
+- Next: inspect Cloudflare Workflows SDK/docs and execute a local Workers-runtime compatibility spike for replay, pause/resume, idempotent D1 ledger interaction and retry boundaries. No provider calls, dispatch, secrets or deployment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
