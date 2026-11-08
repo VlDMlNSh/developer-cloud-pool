@@ -660,3 +660,16 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - No source/workflow/runtime/config/secret/variable/ruleset/dispatch changes; no tests run locally; no worker, remote D1, deployment or provider/model execution.
 - Next: obtain genuinely independent authorized protocol/security review; then correct F1 and implement task-wide claim, lease/fencing, immutable execution receipt and idempotent Finalizer with exact-SHA runtime/regression evidence. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next PR #37 supply-chain and exact-head CI reconciliation — 2026-11-08
+
+- Report: [Latest PR #37 supply-chain and exact-head CI reconciliation](../reports/2026-11-08-latest-pr37-supply-chain-and-ci-reconciliation.md), commit `e5792c8fbe133b8881c0fe35c17601499c387cf3`, blob `f5b05fb8344fdb4dc7f173519a08a3d6047fbb0a`.
+- Live PRs #36/#37/#39 remain OPEN/DRAFT/UNMERGED at heads `e11fc90e50bd20b166207af64551c49cfa80ffb4`, `5587a4e013507b5be330fd0c49ce1fc836faa946`, `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833` respectively.
+- Exact-head named CI: #36 runs `42329438308` and `42329438351` SUCCESS; #37 runs `42284051311` and `42284051309` SUCCESS; #39 run `42329993548` SUCCESS. Bounded checks only.
+- Latest PR #37 discussion adds F9 (MEDIUM / NOT VERIFIED): reproducible transitive dependency closure, npm lifecycle policy and effective runner credential isolation are not established. This is not evidence of malicious execution or secret leakage. No install, DSH run, token read or provider request.
+- Reviews remain #36 three COMMENTED, #37 two CHANGES_REQUESTED + two COMMENTED, #39 three COMMENTED; all from `maxkorolskiy88-ship-it`; no APPROVED review or second reviewer identity. Independent authority NOT VERIFIED.
+- F1/F2 remain open; F3/F4/F5/F6/F7/F8/F9/F10/F11 remain unresolved or not qualified as detailed in the report. Dispatch remains fail-closed.
+- No code/workflow/config/secret/variable/ruleset/dispatch changes, no remote D1, worker, deployment or paid-resource operations.
+- Next: authorized independent review; implement and test F1/F2/task-wide claim/fencing/receipt/recovery; close F9 with locked dependency closure, reviewed lifecycle policy and synthetic credential-isolation tests; reconcile F10/F11. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
