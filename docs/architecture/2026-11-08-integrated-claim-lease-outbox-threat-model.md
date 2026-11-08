@@ -201,3 +201,34 @@ Until gates pass: NOT IMPLEMENTED / NOT QUALIFIED / NOT AUTHORIZED; dispatch dis
 - Issue #38: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38
 - Existing storage ADR: ./2026-11-06-durable-state-and-single-use-authorization-adr.md
 - Context Window: ../context/GITHUB-CONTEXT-WINDOW.md
+
+
+## 13. Mandatory alternatives analysis from Issue #38
+
+Issue #38 requires comparison of three bounded claim designs. The D1 protocol above is a candidate design, not an exclusive decision, until this comparison and its evidence gates are satisfied.
+
+| Option | Atomicity / contention guarantee | Privilege and operational cost | Recovery / audit | Current disposition |
+|---|---|---|---|---|
+| A. Serialized Supervisor + Issue labels | Workflow concurrency serializes only runs in the same group. Issue label GET/PATCH/read-back is not CAS and cannot prevent another actor/workflow changing labels. A single-writer governance rule reduces but does not eliminate races unless every writer is technically constrained. | Lowest infrastructure cost; requires strict control of every label writer and workflow identity. | GitHub issue history is useful but label state is mutable; interrupted claim reconciliation remains ambiguous. | REJECTED as an authoritative single-use claim primitive. May remain a presentation/intake layer only. |
+| B. Dedicated state repository + immutable per-task reservation refs | Git ref creation has documented create semantics (201 success, 409 conflict, 422 validation failure), making create-only unique refs a plausible one-winner reservation primitive. It is not yet qualified as a formal CAS contract for this protocol. | Requires a separate repository, narrowly scoped Contents: write authority, and a credential/token boundary. Do not grant Contents: write to the existing Supervisor as a shortcut. | Must define deterministic ref name, immutable object content, binding digest, expiry/no-expiry, retry after ambiguous response, deletion/recreation prevention, audit and garbage collection. Ref deletion/recreation or force-update must be technically prevented, not merely discouraged. | CANDIDATE ONLY; NOT QUALIFIED. Requires isolated prototype, permission design and adversarial contention/recovery tests. |
+| C. Conditional-write durable store (D1 candidate) | D1 conditional SQL updates, uniqueness constraints and a transaction can implement atomic consume + claim + outbox. Existing local Workers-runtime tests are not remote-backend proof. | Workers/D1 bindings and isolated database scope; account-specific Free/no-card entitlement and quota/isolation remain unverified. | Best relational fit for claims, leases, outbox, audit and recovery, provided remote transaction semantics and all failure paths are qualified. | PREFERRED CANDIDATE, NOT SELECTED FOR PRODUCTION and NOT QUALIFIED. |
+
+### Decision rule
+
+1. Keep Option A out of the authority path. A single-writer policy is a mitigation, not a durable CAS guarantee.
+2. Evaluate Option B only as a bounded isolated proof. Do not broaden the current Supervisor's permissions; a separate state repository and narrowly scoped writer identity would be required. Test create races, duplicate retries, ambiguous HTTP response, deletion/recreation, ref mutation, repository transfer, stale reservation and recovery.
+3. Continue Option C as the preferred local proof because the existing storage ADR selected D1 as the simplest relational candidate. This preference is provisional and does not override account eligibility, quota, security or real-backend gates.
+4. Compare evidence, not feature descriptions. The chosen backend must demonstrate one-winner behavior under concurrent attempts, immutable binding, replay resistance, interruption recovery, auditability and least privilege.
+5. If neither B nor C passes all gates, record the explicit decision **NO QUALIFIED CLAIM BACKEND — DISPATCH MUST REMAIN DISABLED**. Do not fall back to labels or paid infrastructure.
+
+### Required comparative qualification evidence
+
+- A common test contract runs the same logical scenarios against each viable candidate: concurrent first claim, duplicate same-binding retry, conflicting-binding retry, lost response after commit, interrupted claimant, stale worker, expiry, revocation, recovery, deletion/tamper attempt and audit reconstruction.
+- For the selected backend, run at least 50 simultaneous contenders against one approval/reservation and prove exactly one durable winner. Repeat across independent approvals and repositories to test isolation.
+- For ref reservations, prove server-side prevention of update/delete/recreate and define how branch/ref namespace permissions are enforced. If those guarantees cannot be enforced, reject Option B.
+- For D1, run the concurrency/recovery suite against a disposable remote D1 instance only after Free/no-card entitlement, resource isolation and quota scope are verified. Local Miniflare results alone do not qualify it.
+- Document residual risks and operational recovery procedures for each viable option. Independent reviewer must approve the comparative decision before implementation or dispatch.
+
+### Issue #38 traceability
+
+This section addresses the explicit three-design comparison and the prohibition on granting Contents: write to the current Supervisor. It does not close Issue #38: real backend contention, recovery tests, independent review and exact-head CI remain outstanding. The issue must remain open until its acceptance criteria are evidenced.
