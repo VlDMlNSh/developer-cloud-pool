@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - "Основной"
+      - "fix/pr37-f2-finalizer-fencing-2026-11-08"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
