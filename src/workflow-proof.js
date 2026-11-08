@@ -51,7 +51,9 @@ export default {
       return new Response("not found", { status: 404 });
     }
     const payload = await request.json();
-    const instance = await env.PROOF_WORKFLOW.create({ params: payload });
+    // Stable instance identity suppresses duplicate triggers for the same attempt generation.
+    const instanceId = `attempt-${payload.attemptId}-${payload.generation}`;
+    const instance = await env.PROOF_WORKFLOW.create({ id: instanceId, params: payload });
     return Response.json({ id: instance.id });
   }
 };

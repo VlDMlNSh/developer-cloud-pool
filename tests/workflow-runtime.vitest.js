@@ -91,3 +91,41 @@ it("retries the same Workflow step after D1 commit then timeout and returns the 
   ).bind(payload.attemptId).first();
   expect(fault.remaining_failures).toBe(0);
 });
+
+it("rejects a duplicate trigger for the same attempt generation", async () => {
+  await resetLedger();
+  await using introspector = await introspectWorkflow(env.PROOF_WORKFLOW);
+  await introspector.modifyAll(async (mock) => {
+    await mock.disableSleeps();
+  });
+
+  const payload = {
+    taskId: "task-duplicate-trigger",
+    attemptId: "attempt-duplicate-trigger",
+    generation: 9,
+    receipt: { sideEffectId: "duplicate-trigger-effect", result: "accepted-once" }
+  };
+  const request = () => new Request("https://proof-worker.local/create", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload)
+  });
+
+  const firstResponse = await exports.default.fetch(request());
+  expect(firstResponse.status).toBe(200);
+  const first = await firstResponse.json();
+  expect(first.id).toBe(`attempt-${payload.attemptId}-${payload.generation}`);
+
+  await expect(exports.default.fetch(request())).rejects.toThrow();
+
+  const instances = await introspector.get();
+  expect(instances).toHaveLength(1);
+  await instances[0].waitForStatus("complete");
+
+  const attempts = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM pool_attempts WHERE attempt_id = ?"
+  ).bind(payload.attemptId).first();
+  const receipts = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM pool_attempt_receipts WHERE attempt_id = ?"
+  ).bind(payload.attemptId).first();
+  expect(attempts.count).toBe(1);
+  expect(receipts.count).toBe(1);
+});
