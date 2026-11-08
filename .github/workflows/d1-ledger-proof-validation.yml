@@ -1,7 +1,7 @@
 name: Isolated D1 Ledger Proof
 
 on:
-  # Run on pushes to the two isolated proof branches. This makes the
+  # Run on pushes to the isolated proof branches. This makes the
   # validation workflow executable before either stacked PR is merged.
   push:
     branches:
