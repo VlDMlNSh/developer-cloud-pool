@@ -80,7 +80,7 @@
 
 ## Issuer/capability contract source review — 2026-11-08
 
-- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/COMMIT/docs/reports/2026-11-08-issuer-capability-contract-source-review.md (commit ref will be synchronized in the following checkpoint commit).
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/e06c82751f69c95afcda17f27b6551da580420ac/docs/reports/2026-11-08-issuer-capability-contract-source-review.md.
 - Reviewed immutable Cloud Pool default SHA `864213e2ff5b4fa956ba405dea8137a44d812f49`, PR #51 head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`, MediaHub snapshot `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
 - MH-12 defines bounded capability semantics; Compute Wire Protocol v1 defines signed envelopes, authority epoch, admission, lease/fencing, idempotency and revocation conceptually. Issue #301 remains OPEN; Wave 205 explicitly identifies issuer/capability authority as P0 and says governance must settle issuer/key semantics.
 - PR #51 migration 0005 is a pending-only durable reconciliation record. It contains no verified issuer/principal/capability, signed grant, policy version, authority epoch, revocation reference or evidence-verification result. It cannot authorize resolver/retry/terminalization.
