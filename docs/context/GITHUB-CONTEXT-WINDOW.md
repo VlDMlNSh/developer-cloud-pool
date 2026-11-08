@@ -578,3 +578,13 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - PR #39 OPEN/DRAFT/UNMERGED at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; exact-head PR run `42329993548` SUCCESS. PR #36/#37/#39 reviews remain zero. Issue #38 OPEN.
 - D1 Free availability VERIFIED from official docs; account D1 inventory VERIFIED empty; card-free eligibility NOT VERIFIED; remote D1 NOT RUN; independent review NOT RUN; governance acceptance BLOCKED. Keep both dispatch gates fail-closed. No secrets, paid resources, DB provisioning, deployment, dispatch, Worker/DSH/Resource Probe or provider calls.
 - Next: independent review of PR #36/#39/#37; governance change requiring independent approval; then remote D1 qualification only after explicit free-only gate and card-free status resolved.
+
+
+## Live reconciliation — 2026-11-08 (independent verification)
+
+- Dated report: [Contour A independent verification reconciliation](../reports/2026-11-08-contour-a-independent-verification-reconciliation.md).
+- Independent review activity is present: PR #36/#39 COMMENTED, PR #37 CHANGES_REQUESTED. Reviewer account differs from PR author, but reviewer authorization and full organizational independence are NOT VERIFIED; comments are not approvals.
+- PR #37 audited head `5587a4e013507b5be330fd0c49ce1fc836faa946` fails workflow validation in run `42284042173` because `job.*` context is used at job-level env; earlier successful run at `5b45a29...` is not exact-head evidence for the later head. Finalizer immutable-envelope/claim binding finding remains open.
+- PR #36 and #39 local proof CI evidence is 13/13 and 19/19 tests respectively; not remote D1 or production qualification.
+- Ruleset 26550182 requires zero approvals and does not enforce independent review. Current `POOL_DISPATCH_ENABLED` value remains NOT VERIFIED. Dispatch remains fail-closed.
+- No live Worker/Supervisor execution, remote D1, deployed web UI, model routing/quota qualification, secret-isolation end-to-end test, or durable persistence/restore evidence. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B deferred.
