@@ -597,3 +597,16 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Next: design/read-only hosted identity probe, no dispatch/DSH/provider execution; then F2 durable claim/fencing/receipt/finalizer/recovery.
 - Documentation branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Resume checkpoint — 2026-11-08 PR #37 F1 context placement
+
+- Report: [PR #37 F1 context placement verification](../reports/2026-11-08-pr37-f1-context-placement-verification.md).
+- F1 correction in PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`: `job.workflow_*` properties moved to validation step-level env; tests/validator reject job-level placement.
+- Exact-head run `42484039940` and Pool Contract Validation run `42484039932`: SUCCESS. Boundary job log confirms 9/9 tests passed. Static validation only; live hosted Worker identity NOT VERIFIED.
+- PR #37 OPEN/DRAFT/UNMERGED; review identity still not independent. PR #29/#36/#39 remain OPEN/DRAFT/UNMERGED.
+- F2 durable claim-bound receipt/fencing remains the next engineering target. F3–F10 unresolved/not qualified; F11 pure planner fix remains on PR #29 branch.
+- No dispatch, provider request, DSH install, secrets access, remote D1, deployment or paid resources. Keep dispatch fail-closed.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Documentation branch remains `docs/github-context-window-2026-11-06`, not merged into default branch `Основной`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
