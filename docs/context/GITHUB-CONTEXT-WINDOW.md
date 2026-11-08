@@ -1230,3 +1230,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: F1 corrected + exact-head CI VERIFIED; F2 BLOCKING; independent authorized review NOT VERIFIED; remote D1 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: test-first F2 remediation with immutable envelope + claim-generation binding and negative mutation/stale-claim fixtures; exact-head CI and authorized independent review before any merge or execution.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Gemini controller routing gap for Cloud Pool review
+
+- Report: [Gemini controller routing gap for Cloud Pool independent review](../reports/2026-11-08-gemini-controller-cloud-pool-review-routing-gap.md); report commit `cd90dcb3b9c51238fb19d261dc3ff6c43c2c08e5`.
+- Re-read MediaHub canonical map (Contents response empty; blob `75f62685459ec99ebf8be478f4e9096cdb842b1d` fetched/read), Bootstrap blob `75f30750183efe8c6877368e9f0ada48f8e81ea7`, accepted Baseline 2.0 blob `1147ecd39cfe6f0e6ba2d7a62b6bf68c71c0e24f`, and approved controller on MediaHub main blob `0a1246f6755020faf8b7e48d07bfff790bbaece3`.
+- Critical routing constraint: controller `review` mode is hard-pinned to MediaHub FCC target `074f20eb495666946a14410ab88d566aaa754f24` and PR #506/#508 only; its fixed child requires repository `VlDMlNSh/mediahub-os`, trusted main, base main and contour-a. It cannot review Cloud Pool PR #36/#37/#39. Controller `agents` mode is likewise hard-coded to MediaHub Issue #301 tasks. OWNER `/next` bridge applies only to an exact comment on MediaHub Issue #301, not this ChatGPT turn.
+- Controller references batch-admission variable and two secrets, but their values/presence/scope were not read. No secrets accessed. No controller workflow dispatched; no Gemini child run or provider/model call.
+- Current Cloud Pool PR heads re-read: #36 `e11fc90e50bd20b166207af64551c49cfa80ffb4`, #37 `1be8672c1be1a720b6c813dcafff5c020b6456ae`, #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; all OPEN/DRAFT/UNMERGED. Issue #38 OPEN.
+- Cloud Pool-specific Gemini review route: NOT IMPLEMENTED / NOT AUTHORIZED. Independent review NOT RUN. Remote D1 NOT QUALIFIED. Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: authorized owner/governance decision for a narrowly scoped read-only Cloud Pool review task and trusted controller route; pin repo + immutable PR/base/head SHAs, read-only tool permissions, no-secret scope, artifact provenance and allowed outputs. Do not alter the fixed FCC review route or use alternate Gemini transport.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
