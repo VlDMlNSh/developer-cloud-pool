@@ -1390,3 +1390,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: obtain exact-head CI on latest branch; resolve attempt-cap behavior with runtime evidence; confirm rollback assertions; then add restart/recovery and durable audit tests and obtain independent review.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Subsequent exact-head validation update — 2026-11-08
+
+- Run `42489792549` on `430bc60a2df27fed7b569d4744d94b4616c91b68` FAILED; 26/27 tests passed. Conflict rollback test passed. The bounded-attempt/dead-letter test still returned `TASK_NOT_LEASEABLE` instead of expected `ATTEMPT_LIMIT_REACHED`; logs do not expose the final task row, so cause remains unresolved.
+- Latest code commit `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` adds explicit response handling for already-dead exhausted tasks. No exact-head workflow run was returned for this SHA; latest code NOT VERIFIED.
+- Report updated: `docs/reports/2026-11-08-task-identity-hardening-followup.md`, commit `e9d0e27a1702e60f6fca700df7f3d33d8da550ab`, blob `96c8eb441d927dca6808bc8d28ef71cdbc02484f`.
+- PR #40 remains OPEN/DRAFT/UNMERGED, no independent reviews or inline threads.
+- Next: verify the exact state/attempt_count/expiry values in the runtime test, repair dead-letter transition and rerun CI; do not merge.
