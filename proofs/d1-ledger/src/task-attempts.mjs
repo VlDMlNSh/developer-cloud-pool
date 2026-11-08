@@ -197,12 +197,16 @@ export async function finalizeTaskAttempt(db, {
           prior.result_digest === resultDigest &&
           prior.provenance_digest === provenanceDigest &&
           prior.terminal_reason === terminalReason &&
-          prior.completed_at === now &&
+          Number.isSafeInteger(prior.completed_at) &&
+          prior.completed_at > 0 &&
           prior.lease_generation === generation &&
           event?.actor_id === workerId &&
           event?.lease_generation === generation &&
           event?.event_digest === (resultDigest || provenanceDigest)) {
-        return { decision: "ATTEMPT_ALREADY_FINALIZED", taskKey, attemptId, status, dispatch: false };
+        return {
+          decision: "ATTEMPT_ALREADY_FINALIZED", taskKey, attemptId, status,
+          completedAt: prior.completed_at, dispatch: false
+        };
       }
       return deny("STALE_OR_EXPIRED_ATTEMPT_FINALIZER");
     }
