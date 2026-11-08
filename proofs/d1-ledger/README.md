@@ -52,7 +52,7 @@ Migration `0004_create_immutable_task_attempts.sql` and `src/task-attempts.mjs` 
 - Lease generation remains a fencing counter on the logical task. Lease takeover does not increment `attempt_number` or legacy `attempt_count`.
 - An expired lease does not prove the previous executor stopped. Takeover is denied unless the caller explicitly declares the attempt resumable; an indeterminate attempt blocks both blind takeover and retry.
 - Successful finalization, failed-attempt closure and task projection are committed through the same D1 statement/trigger transaction. A new retry creates a distinct attempt while retaining the old terminal row.
-- Attempt events are append-only and locally persisted. They are not yet a production audit pipeline and do not prove exactly-once external side effects.
+- Attempt events are append-only and locally persisted with the lease actor and generation captured at acquisition, indeterminate transition, and finalization. They are not yet a production audit pipeline and do not prove exactly-once external side effects.
 - All adapter responses retain `dispatch: false`. No provider, model, GitHub dispatch, secret, remote D1, or deployed Worker integration is present.
 
 This is a proof extension only. The previous `attempt_count` field remains a legacy lease-acquisition counter for the older adapter; it is not backfilled into fabricated attempt history. The new adapter uses `attempt_number` and `pool_attempts`. Do not mix the old `task-lease.mjs` API with the new attempt lifecycle when assessing retry semantics.
