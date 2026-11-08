@@ -1161,3 +1161,19 @@ The PRs are independent local/static proofs, not an integrated production author
 - No code/runtime/workflow/permission/secret/variable/resource/deployment/dispatch changes. No provider/model calls or Worker/DSH/Resource Probe execution.
 - Status: research and PR-ref recheck VERIFIED within scope; remote D1 qualification NOT RUN; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: authorized independent architecture/security review of the integrated claim/lease/outbox threat model and A/B/C alternatives; resolve findings before isolated backend qualification. Keep both dispatch gates fail-closed.
+
+
+## 2026-11-08 — PR #36/#37/#39 exact-head and default-branch boundary recheck
+
+- Report: [PR #36/#37/#39 exact-head and default-branch boundary recheck](../reports/2026-11-08-pr36-pr37-pr39-exact-head-and-default-boundary-recheck.md).
+- Default HEAD rechecked: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Default Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still has `workflow_run: completed`, `actions: write` and `issues: write`; default Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still has `workflow_dispatch` and an issue-writing report job. This is the legacy privileged chain on default branch.
+- PR #37 draft replacement at `5b45a29ed7869c091741c0037c68bfcd6640de7d` is narrower (`workflow_call` only, no `workflow_run`/Supervisor `actions: write`), but remains OPEN/DRAFT/UNMERGED and has zero formal reviews/threads.
+- PR #36 exact head `1e278b1601b8a77131118aa5c627c07d663b0e51`: D1 run `42276981988` and Pool Contract run `42276982111` COMPLETED/SUCCESS; reviews/threads 0/0.
+- PR #37 exact head `5b45a29ed7869c091741c0037c68bfcd6640de7d`: reusable Worker run `42280875294` and Pool Contract run `42280875365` COMPLETED/SUCCESS; reviews/threads 0/0.
+- PR #39 exact head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: Isolated D1 Ledger Proof run `42329993548` COMPLETED/SUCCESS; tested merge tree `77b3ce30a3c90ad564db892cae82076b5c0774c9`; reviews/threads 0/0. This is local Workers-runtime/Miniflare evidence only, not remote D1 qualification.
+- Combined commit-status contexts are empty for all queried refs; named workflow runs are the positive CI evidence. Empty statuses are not a pass. Default HEAD had no PR-triggered runs/status contexts in queried endpoints.
+- Current live `POOL_DISPATCH_ENABLED` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` values were not read; NOT VERIFIED. Historical Issue #1 false readback from 2026-11-04 is stale for present-tense claims. No dispatch attempted.
+- PR #39 binding identity remains caller-supplied in the local proof; signed issuer, authenticated principal derivation, trusted clock, lease/fencing, dispatcher and recovery are not integrated. Issue #38 remains open.
+- No code, workflow, permissions, secrets, variables, rulesets, cloud resources or deployments changed. No Worker/DSH/Resource Probe/provider/model execution.
+- Status: exact named workflow runs VERIFIED at stated SHAs; independent review NOT RUN; remote D1 NOT RUN; live gate values NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only source review of PR #37 and combined PR #36/#39 authorization chain against threat model; obtain authorized independent security review before merge or implementation. Keep dispatch fail-closed.
