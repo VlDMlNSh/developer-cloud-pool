@@ -120,8 +120,8 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
       generation: row.lease_generation, expiresAt: row.lease_expires_at,
       dispatch: false
     };
-  } catch {
-    return deny("ATTEMPT_LEASE_ACQUIRE_AMBIGUOUS");
+  } catch (error) {
+    return deny(`ATTEMPT_LEASE_ACQUIRE_AMBIGUOUS:${String(error?.message || error).slice(0, 160)}`);
   }
 }
 
