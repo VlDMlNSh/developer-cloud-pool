@@ -33,3 +33,6 @@ No Cloudflare account API, D1 provisioning, billing, deployment, GitHub dispatch
 The migration helper is imported from the package public entrypoint (`@cloudflare/vitest-plugin`), matching the current official D1 Vitest fixture.
 
 Final validation note: D1 proof CI completed successfully with 13/13 tests on the immediately preceding source revision; report metadata is also recorded in `docs/reports/2026-11-06-d1-ledger-proof-implementation.md`.
+
+- Experimental logical-task identity migration (0003) introduces a canonical SHA-256 task key separate from approval IDs, permits multiple individually audited approvals to attach to one task, and enforces one task-level outbox row per task key. The `claimLogicalTask` adapter remains local-only and returns `dispatch: false`.
+- This is an isolated proof extension, not a production schema decision. Lease acquire/renew/reclaim and fencing are not implemented. Verify the SQL and concurrency behavior with the pinned Workers Vitest runtime before treating the proof as valid.
