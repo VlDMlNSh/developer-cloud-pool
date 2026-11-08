@@ -54,3 +54,26 @@ Use `@cloudflare/vitest-plugin` (not the renamed legacy `@cloudflare/vitest-pool
 ## Next implementation action
 
 Inspect the current official SDK Workflow and D1 fixtures at immutable upstream commit SHAs, select the minimal compatible test configuration, then implement only the isolated local proof. Do not use mutable `main` references as evidence in the final acceptance record; record the exact upstream commit SHAs used.
+
+
+## Pinned upstream fixture inspection (2026-11-08)
+
+**Upstream repository:** `cloudflare/workers-sdk`  
+**Immutable upstream commit:** `ab086218678b1bf311b158bcc6cb6b7437a7839`  
+**Commit page:** https://github.com/cloudflare/workers-sdk/commit/ab086218678b1bf311b158bcc6cb6b7437a7839
+
+Inspected at that exact commit:
+
+- `fixtures/vitest-plugin-examples/workflows/README.md`: confirms separate unit and integration workflow suites.
+- `fixtures/vitest-plugin-examples/workflows/wrangler.jsonc`: minimal Workflow binding shape; class `ModeratorWorkflow`, binding `MODERATOR`.
+- `fixtures/vitest-plugin-examples/workflows/vitest.config.ts`: uses `cloudflareTest({ wrangler: { configPath } })`.
+- `fixtures/vitest-plugin-examples/workflows/test/unit.test.ts`: uses `introspectWorkflowInstance`, `disableSleeps`, `mockStepResult`, `mockStepError`, waits for named step results and terminal status.
+- `fixtures/vitest-plugin-examples/workflows/test/integration.test.ts`: uses `introspectWorkflow` and the Worker's exported fetch handler to test creation and instance lifecycle.
+- `fixtures/vitest-plugin-examples/workflows/src/index.ts`: useful API illustration only; it uses `Math.random()` and placeholder side effects, so it MUST NOT be copied as deterministic production-like test logic.
+- `fixtures/vitest-plugin-examples/d1/vitest.config.ts`: uses `readD1Migrations`, `cloudflareTest`, a test-only `TEST_MIGRATIONS` binding and a setup file.
+- `fixtures/vitest-plugin-examples/d1/test/apply-migrations.ts`: uses `applyD1Migrations`; comments explain setup may run more than once and migration application is idempotent.
+- `fixtures/vitest-plugin-examples/d1/wrangler.jsonc`: fixture config declares a zero UUID placeholder D1 database ID under an environment. Do not copy its `production` environment naming; create a clearly test-only environment/config with no deploy target or credentials.
+
+**Important fit-gap:** Cloudflare's current SDK examples demonstrate the Workflow runtime test APIs and D1 migration fixture separately; they do not demonstrate atomic idempotency across a D1 commit followed by a Workflow step timeout, nor Task/Attempt fencing or authority semantics. Those remain project-specific proof obligations. The official example's retry mocks prove the framework can retry a step, not that our side effects are safe to retry.
+
+**Reuse decision:** reuse the official Vitest plugin configuration and introspection APIs; reuse the D1 migration setup pattern; author only the project-specific synthetic D1 schema, transaction/CAS logic and assertions needed for the acceptance cases. Keep the Workflow implementation minimal and free of real external side effects.
