@@ -73,7 +73,7 @@ test("duplicate or conflicting claim generations are rejected", () => {
 
 test("duplicate finalization is rejected after the claim state has been consumed", () => {
   assert.throws(() => buildFinalizationPlan(issue({
-    labels: [{ name: "pool:probe-complete" }]
+    labels: [{ name: "pool:probe-complete" }, { name: generation }]
   }), expected), /claimed/i);
 });
 
