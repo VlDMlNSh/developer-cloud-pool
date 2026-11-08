@@ -634,3 +634,16 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - No tests run and no source/workflow/runtime/config/secret/ruleset/dispatch changes. This was a static design-to-source review, not independent organizational approval.
 - Required order: authorized independent contract/threat-model approval → F1 runtime identity correction → task-wide conditional claim + lease/fencing/outbox consumer → immutable receipt/finalizer → regression and remote backend qualification after free-only/governance gates.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed.
+
+
+## /next live recheck — 2026-11-08 (second reconciliation)
+
+- Report: [second live Contour A reconciliation](../reports/2026-11-08-next-live-recheck-2.md), commit `06770a32bc5dc14f401ad4bed3a06f96431643c6`.
+- Live PR metadata re-read: #36 OPEN/DRAFT/UNMERGED head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; #37 OPEN/DRAFT/UNMERGED head `5587a4e013507b5be330fd0c49ce1fc836faa946`; #39 OPEN/DRAFT/UNMERGED head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, stacked on #36 branch. Base/default SHA observed: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head named CI re-read: #36 `42329438308` and `42329438351` SUCCESS; #37 `42284051311` and `42284051309` SUCCESS; #39 `42329993548` SUCCESS. These results qualify only their named static/local test scopes.
+- Review lists re-read: all submissions across #36/#37/#39 are from `maxkorolskiy88-ship-it`; states include COMMENTED and CHANGES_REQUESTED; no APPROVED review and no second reviewer identity. Organizational independence and reviewer authority NOT VERIFIED.
+- Re-read PR #37 Worker blob `4f57e8eef4a40d14b8d1df467cfac07e39e490a2` and Supervisor blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`. F1 remains OPEN: `job.workflow_*` expressions are in job-level env; green static checks do not prove runtime context availability. F2 remains OPEN: finalizer checks label presence only and lacks immutable claim/envelope/run/generation/fencing receipt binding.
+- Existing immutable execution receipt/fenced claim contract remains design-only. No source/workflow implementation, settings, variables, rulesets, secrets, dispatch, remote D1, deployment, provider/model calls or paid resources changed/used.
+- Dispatch remains fail-closed. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent authorized review of the contract/threat model, then F1/F2 + task-wide claim/receipt/fencing implementation with exact-SHA regression/integration tests. No merge or runtime qualification before governance gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
