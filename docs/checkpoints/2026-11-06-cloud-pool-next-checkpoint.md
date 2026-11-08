@@ -573,3 +573,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Next: obtain independent authorized review; fix F1/F2 and implement claim/fencing/receipt/recovery; close F9/F10/F11 with exact-head regression evidence.
 - Docs branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Resume checkpoint — 2026-11-08 PR #29 F11 fix
+
+- Report: [PR #29 F11 remediation and exact-head verification](../reports/2026-11-08-pr29-f11-remediation-and-verification.md).
+- F11 fixed in PR #29 branch `feat/quota-ledger-state-machine-2026-11-06`; new head `576510b4df47008b212884df361306b7d848277d`. Shared eligibility predicate validates active and new routes; invalid active/unknown slots still consume capacity; empty billing allowlist fails closed.
+- Exact-head Actions run `42483338728` / job `128739794680` SUCCESS; logs confirm 43/43 tests passed. Local focused synthetic regression 5/5 passed.
+- PR #29 remains OPEN/DRAFT/UNMERGED; no independent reviewer/approval. F11 fixed in draft branch only, not production-qualified.
+- F1/F2/F3/F4/F5/F6/F7/F8/F9/F10 remain open/not qualified. Keep dispatch disabled; no merge or Contour A acceptance.
+- Next: independent authorized review of PR #29 exact head; continue F1/F2 durable claim/lease/fencing/receipt/finalizer/recovery, then F9/F10.
+- Documentation branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
