@@ -1127,3 +1127,16 @@ The PRs are independent local/static proofs, not an integrated production author
 - Read-only live ruleset `26550182` is active for `refs/heads/Основной`; it blocks deletion/non-fast-forward and requires PR/thread resolution, but `required_approving_review_count=0`, CODEOWNERS review=false and required_reviewers=[]; no bypass actors. Independent-review enforcement remains a governance blocker.
 - SentinelX current inventory: only `Voktors-Mini.Dlink` (`host_5f7264034bdf0b51`) is operational; Free plan slot 1/1 occupied, no available slots. `mh-dev-01` and `mh-dev-02` are disabled. This does not establish server-3 identity or Claude Code authorization; no host operation was run.
 - These checks do not authorize executor dispatch or change any gate. No Gemini controller run, Claude Code run, Worker execution or server-side task was performed.
+
+
+## 2026-11-08 — Issue #38 alternatives analysis correction
+
+- Re-read Issue #38 and identified a required three-design comparison not explicitly completed in the initial integrated protocol ADR.
+- Updated [integrated claim/lease/outbox threat model](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md), blob SHA `31c951b76e18741410a1349281a578438d53f25a`, update commit `d09d04fe86de1e0d077693f6741e6bf210afe84a`.
+- Added comparison: A) serialized Supervisor + Issue labels (rejected as authoritative CAS); B) dedicated state repository + immutable reservation refs (candidate only, requires separate narrow writer identity and delete/recreate protections; do not grant Contents: write to current Supervisor); C) conditional-write D1 (preferred candidate, not production-selected/qualified).
+- Explicit fail-closed decision rule: if neither B nor C proves one-winner contention, immutable binding, replay resistance, recovery, audit and least privilege, record NO QUALIFIED CLAIM BACKEND and keep dispatch disabled; no labels or paid fallback.
+- Added comparative test matrix, remote D1 eligibility/qualification gates, ref reservation adversarial tests and Issue #38 traceability.
+- Report: [durable claim alternatives review](../reports/2026-11-08-durable-claim-alternatives-review.md).
+- This remains documentation-only. Option B proof NOT RUN; remote D1 qualification NOT RUN; account Free/no-card entitlement NOT VERIFIED; independent review NOT RUN. Issue #38 remains OPEN. PR #27 exact-head CI and reviews require current verification.
+- Status: design comparison UPDATED; implementation NOT RUN; backend qualification NOT RUN; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed.
+- Next: authorized independent architecture/security review, then isolated qualification of the selected candidate only.
