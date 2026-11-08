@@ -38,3 +38,11 @@ The owner/governance authority must approve a narrowly scoped Cloud Pool review 
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 Cloud Pool context: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
+
+
+## Cloud Pool exact-head and reviewer recheck
+- PR #36 exact head `e11fc90e50bd20b166207af64551c49cfa80ffb4`: Pool Contract run `42329438308` and Isolated D1 Ledger Proof run `42329438351`, both COMPLETED/SUCCESS.
+- PR #37 exact head `1be8672c1be1a720b6c813dcafff5c020b6456ae`: Reusable Pool Worker Boundary Validation run `42484039940` and Pool Contract Validation run `42484039932`, both COMPLETED/SUCCESS.
+- PR #39 exact head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: Isolated D1 Ledger Proof run `42329993548`, COMPLETED/SUCCESS.
+- Formal review submissions: PR #36 = 3 COMMENTED; PR #37 = 3 CHANGES_REQUESTED + 1 COMMENTED; PR #39 = 3 COMMENTED. All observed submissions are by the same linked account `maxkorolskiy88-ship-it`; inline review threads = 0 on all three. These are not independent organizational approvals.
+- Therefore named exact-head CI is VERIFIED for the listed workflows only; independent review remains NOT RUN / NOT VERIFIED. Green CI does not close authorization, provenance, durable claim, lease/fencing, outbox recovery or remote D1 qualification.
