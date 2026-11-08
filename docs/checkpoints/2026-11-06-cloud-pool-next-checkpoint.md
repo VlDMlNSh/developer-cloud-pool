@@ -8,9 +8,9 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical).
-- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `c108f52957d4ad3964e57e72cda0f5a4fa721721`.
+- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `4eb4aea106787c70039cd7110f1ca7a260628b57`.
 - Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
-- Detailed proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/c108f52957d4ad3964e57e72cda0f5a4fa721721/docs/reports/2026-11-08-d1-ledger-workflows-local-proof.md.
+- Detailed proof report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
 
 ## Completed in this pass
 
@@ -21,13 +21,15 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 - `npm run check`: PASS.
 - `npm test`: 11/11 PASS.
 - `npm run validate:ui`: PASS.
-- `npm run test:workflow`: 4/4 PASS (Workflow runtime 1/1; D1 ledger 3/3).
+- `npm run test:workflow`: 6/6 PASS (Workflow runtime/composed retry 2/2; D1 ledger 4/4).
 - `git diff --check`: PASS.
 - GitHub exact-head CI run `42500316035`, job `128791438767`, Jarvis Web Prototype Validation: COMPLETED / SUCCESS. Read-back shows checkout, runtime, lockfile install, static checks, API tests and UI validation all successful.
 
+- Exact-head GitHub Actions run `42503077168`, job `128799814431`: COMPLETED / SUCCESS on `4eb4aea106787c70039cd7110f1ca7a260628b57`. All steps including Workflow/D1 proof passed.
+
 ## Remaining limitations
 
-- Workflow runtime smoke and D1 ledger tests are separate. A composed Workflow step performing a D1 receipt commit followed by injected timeout/retry remains NOT RUN.
+- Composed Workflow step now performs a D1 receipt commit, then consumes a persistent local one-shot fault causing a failure after commit. The Workflow retries; assertions show two invocations and exactly one original receipt. Concurrent local D1 claim/commit test also passes.
 - Concurrency stress, real Cloudflare D1 account semantics, duplicate Workflow trigger suppression, external side-effect idempotency and authority bridge remain NOT VERIFIED.
 - PR #52 reviews/threads 0/0; independent security review NOT RUN.
 - PR #52 remains OPEN / DRAFT / UNMERGED. Do not merge.
@@ -36,7 +38,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## Next bounded action
 
-Compose the D1 adapter into the synthetic Workflow step and use official Vitest Workflow mocks to inject a failure after durable commit. Verify retry returns the original receipt and does not create a second effect. Add concurrent duplicate-attempt and stale-generation tests. Run local suites, push to the same proof branch, read back exact-head GitHub CI, then obtain independent security review. No deployment or production dispatch.
+Prove duplicate Workflow creation/event suppression and process-restart recovery using official SDK test APIs, then obtain independent security review. Keep PR draft and unmerged. No deployment or production dispatch.
 
 ## Canonical MediaHub map
 
