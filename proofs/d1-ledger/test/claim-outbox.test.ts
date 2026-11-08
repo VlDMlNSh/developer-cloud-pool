@@ -416,7 +416,21 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
       terminalReason: "completed", now: NOW + 3
     });
-    expect(replay).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER" });
+    expect(replay).toMatchObject({ decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded" });
+
+    const conflictingReplay = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-final",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "a".repeat(64), provenanceDigest: "f".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(conflictingReplay).toMatchObject({
+      decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER"
+    });
+    const eventCount = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    expect(eventCount.n).toBe(1);
   });
 
   it("preserves failed attempt history and creates a distinct retry attempt", async () => {
