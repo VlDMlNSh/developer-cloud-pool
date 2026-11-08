@@ -29,18 +29,23 @@ export function planSlotActivation({
   if (active.length > maxActiveSlots) {
     return { admitted: false, reason: "active_limit_already_exceeded", usableSlotIds: [], activateSlotIds: [] };
   }
+
   const byId = new Map(slots.map((slot) => [slot.slotId, slot]));
-  const activeMatching = active.filter((id) => {
-    const slot = byId.get(id);
-    return slot && slot.models?.includes(requestedModel);
-  });
+  // Apply the same current eligibility policy to active and new routes. An invalid
+  // active slot remains in the active count until its durable lease is actually released.
+  const isEligible = (slot) =>
+    Boolean(slot) &&
+    slot.qualificationStatus === "accepted" &&
+    slot.credentialStatus === "available" &&
+    slot.routeState === "ready" &&
+    Array.isArray(slot.models) &&
+    slot.models.includes(requestedModel) &&
+    allowedBillingClasses.includes(slot.billingClass);
+
+  const activeMatching = active.filter((id) => isEligible(byId.get(id)));
   const eligible = slots
     .filter((slot) => !active.includes(slot.slotId))
-    .filter((slot) => slot.qualificationStatus === "accepted")
-    .filter((slot) => slot.credentialStatus === "available")
-    .filter((slot) => slot.routeState === "ready")
-    .filter((slot) => Array.isArray(slot.models) && slot.models.includes(requestedModel))
-    .filter((slot) => allowedBillingClasses.includes(slot.billingClass))
+    .filter(isEligible)
     .sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100) || a.slotId.localeCompare(b.slotId));
 
   const capacity = Math.max(0, maxActiveSlots - active.length);
