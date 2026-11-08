@@ -24,7 +24,8 @@ export async function acquireProjectionDelivery(db, outboxId, workerId, now, lea
            OR (status = 'leased' AND lease_expires_at <= ?))
     `).bind(workerId, now + leaseSeconds, now, outboxId, now).run();
     if (result?.success !== true || result?.meta?.changes !== 1) {
-      return deny("PROJECTION_NOT_LEASEABLE");
+      const current = await db.prepare("SELECT status, lease_owner, lease_generation_delivery, lease_expires_at FROM pool_attempt_projection_outbox WHERE outbox_id = ?").bind(outboxId).first();
+      return { ...deny("PROJECTION_NOT_LEASEABLE"), diagnostic: { success: result?.success, changes: result?.meta?.changes, current } };
     }
     const row = await db.prepare(`
       SELECT outbox_id, task_key, attempt_id, repository_id, issue_number,
