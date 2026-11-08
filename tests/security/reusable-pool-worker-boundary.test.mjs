@@ -92,6 +92,9 @@ test("Worker requires the exact claim generation before executing the probe", ()
   assert.match(worker, /claim_generation:/);
   assert.match(worker, /CLAIM_GENERATION: \$\{\{ inputs\.claim_generation \}\}/);
   assert.match(worker, /generations\[0\] !== e\.CLAIM_GENERATION/);
+  assert.match(worker, /createHash\("sha256"\)/);
+  assert.match(worker, /digest\(\) !== e\.ENVELOPE_DIGEST/);
+  assert.match(supervisor, /envelope_digest: \$\{\{ needs\.reconcile\.outputs\.envelope_digest \}\}/);
   assert.match(supervisor, /claim_generation: \$\{\{ needs\.reconcile\.outputs\.claim_generation \}\}/);
 });
 
