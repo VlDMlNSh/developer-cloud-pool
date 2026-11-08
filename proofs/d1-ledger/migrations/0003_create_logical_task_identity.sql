@@ -40,6 +40,16 @@ CREATE TABLE IF NOT EXISTS pool_task_delivery_outbox (
 
 CREATE INDEX IF NOT EXISTS pool_tasks_pending ON pool_tasks(state, created_at);
 
+-- Terminalize exhausted tasks and their undelivered intent in the same transaction.
+CREATE TRIGGER IF NOT EXISTS pool_task_dead_marks_outbox_dead
+AFTER UPDATE OF state ON pool_tasks
+WHEN NEW.state = 'dead' AND OLD.state <> 'dead'
+BEGIN
+  UPDATE pool_task_delivery_outbox
+     SET status = 'dead'
+   WHERE task_key = NEW.task_key AND status = 'pending';
+END;
+
 DROP TRIGGER IF EXISTS pool_approval_consumed_creates_claim_outbox;
 CREATE TRIGGER pool_approval_consumed_creates_claim_outbox
 AFTER UPDATE OF state ON pool_approval_ledger
@@ -56,16 +66,17 @@ BEGIN
     'pending', NEW.consumed_at, NEW.consumed_at
   ) ON CONFLICT(task_key) DO NOTHING;
 
-  INSERT INTO pool_task_approvals (task_key, approval_id, envelope_digest, attached_at)
-  SELECT NEW.task_key, NEW.approval_id, NEW.envelope_digest, NEW.consumed_at
-  WHERE EXISTS (
+  SELECT CASE WHEN NOT EXISTS (
     SELECT 1 FROM pool_tasks
     WHERE task_key = NEW.task_key
       AND repository_id = NEW.repository_id
       AND issue_number = NEW.issue_number
       AND target_sha = NEW.target_sha
       AND profile = NEW.profile
-  );
+  ) THEN RAISE(ABORT, 'TASK_KEY_BINDING_CONFLICT') END;
+
+  INSERT INTO pool_task_approvals (task_key, approval_id, envelope_digest, attached_at)
+  VALUES (NEW.task_key, NEW.approval_id, NEW.envelope_digest, NEW.consumed_at);
 
   INSERT INTO pool_task_delivery_outbox (outbox_id, task_key, event_type, status, created_at)
   SELECT 'pool-task-ready:' || NEW.task_key, NEW.task_key, 'pool.task.ready', 'pending', NEW.consumed_at
