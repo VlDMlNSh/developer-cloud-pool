@@ -220,3 +220,13 @@
 - Final recheck: PR #54 exact head `e1b7a526badf2dbfdbe013889a070affe238f653`, run `42536179023`, job `128900870199`, COMPLETED / SUCCESS. All steps including Workers-runtime D1 tests, artifact upload and cleanup succeeded. The earlier IN_PROGRESS status was transient and is superseded by this terminal result.
 - PR #51 exact head `201ccb1282e4e1cd246d6587322ca9379bc166ca`, run `42536163699`, job `128900822479`, COMPLETED / SUCCESS.
 - Both PRs remain OPEN/DRAFT/UNMERGED; CI validates local proof only, not hosted D1. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
+
+
+## D1 ambiguous finalization response recovery — 2026-11-09
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/30b1717757ddf3f261bb55b6082998bc122d1861/docs/reports/2026-11-09-d1-finalization-ambiguous-response-recovery.md
+- Added fault-injection test to PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145` and PR #54 head `ded780c6aeea6cdd88b253a2087692eecbbce7c7`. Test commits D1 finalization transaction, injects caller-observed lost response, retries with fresh clock, and asserts exact replay returns original completedAt with one terminal audit event and completed task state.
+- PR #51 CI run `42536377720` / job `128901478596`: COMPLETED SUCCESS. PR #54 CI run `42536381713` / job `128901491911`: COMPLETED SUCCESS. Both include syntax, Workers-runtime D1 tests, lockfile artifact and cleanup.
+- Reused existing official `@cloudflare/vitest-plugin@1.4.7` and local Miniflare/workerd fixture; no new framework/runtime. This verifies local deterministic fault injection only, not a real network partition or hosted D1.
+- PR #51/#54 remain OPEN/DRAFT/UNMERGED. Remote D1 and least-privilege authority NOT QUALIFIED. Issue #38 OPEN; PR #53 split-write/non-CAS remains blocked. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: audit and design a durable finalization intent/outbox plus idempotent GitHub projection and recovery path to address PR #53 F2-R1/F2-R2 without granting broad Contents:write to Supervisor. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
