@@ -198,3 +198,12 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - Proposal separates authoritative task state/audit from GitHub projections, adds transactional projection outbox, fenced delivery leases, deterministic comment marker and reconciliation. Explicitly does NOT claim exactly-once GitHub comments; ambiguous POST can produce duplicate comments under delayed visibility. D1 remains unqualified candidate.
 - PR #53 head `b8a253f06418841d5f0250c9fd550bf3247db040`; Issue #38 OPEN. Branch protection read returned 403, NOT VERIFIED. No code or runtime changes; F2-R1/R2 NOT FIXED; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
 - Next: implement isolated D1 projection-outbox proof only after reviewing the proposed state machine; test transaction rollback, concurrent single-winner lease, stale-generation ack, lost/late GitHub response reconciliation and duplicate markers. No production workflow wiring or dispatch. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-09 — local D1 terminal projection outbox proof
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-09-local-d1-terminal-projection-outbox-proof.md
+- PR #54 branch exact head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`: migration 0006 creates transactional projection intent on terminal audit insertion; adapter provides fenced lease/reclaim, retryable, delivered ack with readback; 3 new local tests cover 20-way single winner, stale generation rejection, retryable append-only log.
+- Exact-head CI run `42537241204`, job `128904147572`: COMPLETED SUCCESS, 2 files / 40 tests, syntax check and lockfile artifact successful. Artifact ID `13639658349`, SHA-256 `178698c55de4e903fe3a181f5ff742144482532de8ec5112686519d7161be526`. Initial run failed and was corrected; report records details.
+- Local-only; no GitHub sender/reconciler or hosted D1. PR #54 OPEN/DRAFT/UNMERGED; Issue #38 OPEN; PR #53 F2-R1/R2 remain NOT FIXED; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
+- Next: fake GitHub projection sender/reconciler tests for ambiguous POST, delayed marker visibility, duplicate marker and digest conflict; keep real write access absent. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
