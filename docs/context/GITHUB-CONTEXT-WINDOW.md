@@ -1347,3 +1347,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: diagnose absent PR workflow event/checks, obtain exact-head runtime validation, then cover restart recovery and bounded retries/dead-letter.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### CI result update — PR #40 exact head
+
+- Workflow run `42489375654` (run 44), exact PR #40 head `84e9b98a249924846ab29debdb7d32608d87e77c`: SUCCESS.
+- Job `Local Workers-runtime D1 adversarial tests`: SUCCESS. Steps for pinned Node.js, `npm ci`, syntax check, Workers-runtime D1 tests and lockfile artifact upload all succeeded.
+- This is local Workers/Miniflare runtime proof only; not remote D1 deployment or production qualification.
+- Run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489375654
+- Updated report `docs/reports/2026-11-08-generation-fenced-task-lease-proof.md`, commit `0dbf862bc6e06978125bf1199d4376188c295e8c`.
+- PR #40 remains OPEN/DRAFT/UNMERGED and stacked on PR #39. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
