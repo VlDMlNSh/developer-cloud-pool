@@ -1140,3 +1140,11 @@ The PRs are independent local/static proofs, not an integrated production author
 - This remains documentation-only. Option B proof NOT RUN; remote D1 qualification NOT RUN; account Free/no-card entitlement NOT VERIFIED; independent review NOT RUN. Issue #38 remains OPEN. PR #27 exact-head CI and reviews require current verification.
 - Status: design comparison UPDATED; implementation NOT RUN; backend qualification NOT RUN; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed.
 - Next: authorized independent architecture/security review, then isolated qualification of the selected candidate only.
+
+
+### Live ref and CI recheck — 2026-11-08 (alternatives pass)
+- PR #27 is OPEN / DRAFT / UNMERGED; base `Основной` @ `64d2636d4500127e635c214ccfb722c6b3fcda80`; head `docs/cross-chat-continuation-2026-11-06` @ `8ecc71265809e149e6d22b31f06522f678ee1ac8`; mergeable=true. Compare to current observed default branch: diverged, 160 commits ahead / 2 behind, 37 changed files. This is a documentation/prototype continuation branch, not accepted default content.
+- PR #27 exact-head workflow lookup for `8ecc71265809e149e6d22b31f06522f678ee1ac8` returned no PR-triggered workflow runs: CI NOT VERIFIED. Formal reviews 0; inline review threads 0.
+- PR #36 OPEN / DRAFT / UNMERGED head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #37 OPEN / DRAFT / UNMERGED head `5587a4e013507b5be330fd0c49ce1fc836faa946`; PR #39 OPEN / DRAFT / UNMERGED head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. Exact-head CI on those historical heads remains limited to previously recorded successes; do not treat them as integrated qualification.
+- New ADR blob `31c951b76e18741410a1349281a578438d53f25a`; alternatives report blob `1205bcc49556242bb8029144cff58168ca806b6f`; Context Window blob before this recheck addendum `a6706915ebebae75c090267d7de60f541c34c751`; checkpoint blob `07be8b99ba776f5b4ecd145fdd020e2c67f5310d`. All four were read back successfully.
+- Issue #38 remains OPEN; its three-option comparison is now documented, but no backend qualification or independent review is evidenced.
