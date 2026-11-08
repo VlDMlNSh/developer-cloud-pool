@@ -201,7 +201,7 @@ export async function markAttemptIndeterminate(db, taskKey, attemptId, now) {
   try {
     const result = await db.prepare(`
       UPDATE pool_attempts
-         SET status = 'indeterminate'
+         SET status = 'indeterminate', indeterminate_at = ?
        WHERE attempt_id = ? AND task_key = ? AND status = 'running'
          AND EXISTS (
            SELECT 1 FROM pool_tasks t
@@ -210,7 +210,7 @@ export async function markAttemptIndeterminate(db, taskKey, attemptId, now) {
               AND t.state = 'leased' AND t.lease_expires_at <= ?
               AND t.lease_generation = pool_attempts.lease_generation
          )
-    `).bind(attemptId, taskKey, now).run();
+    `).bind(now, attemptId, taskKey, now).run();
     return result?.success === true && result?.meta?.changes === 1
       ? { decision: "ATTEMPT_INDETERMINATE", taskKey, attemptId, dispatch: false }
       : deny("ATTEMPT_NOT_EXPIRED_OR_NOT_CURRENT");
