@@ -527,3 +527,13 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Contract was read back from the documentation branch and blob SHA verified. No source/workflow/runtime code, secrets, variables, rulesets, dispatch, remote D1, deployment, provider/model calls or paid resources changed/used.
 - Documentation branch `docs/github-context-window-2026-11-06` remains an unmerged working branch, not accepted/default state. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: have an actually independent, authorized reviewer approve/reject this protocol and threat model; then implement F1/F2 and task-wide claim/fencing on an isolated implementation branch with exact-head integration/regression CI. Keep dispatch fail-closed.
+
+
+## Protocol-to-implementation gap review — 2026-11-08
+
+- Report: [Protocol-to-implementation gap review](../reports/2026-11-08-protocol-to-implementation-gap-review.md), commit `89b8328e67bf5fb74116d7d7b67b0ad2d31c11da`.
+- Re-read immutable contract blob `435534e4c02e62e19758428611eee9941ec85abc`, PR #37 Worker blob `4f57e8eef4a40d14b8d1df467cfac07e39e490a2`, Supervisor workflow blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`, and Supervisor script blob `2d0611851ff738b2aeb377f464e5fa7d821f3696`.
+- Confirmed F1 remains in job-level env; F2 remains label-only finalization. Additional gaps: job conclusion is not a structured claim-bound execution receipt; PR #39 approval-scoped claim/outbox does not enforce task-wide single-active-attempt across distinct approvals; lease/reclaim/fencing/outbox consumer lifecycle remain design-only.
+- No tests run and no source/workflow/runtime/config/secret/ruleset/dispatch changes. This was a static design-to-source review, not independent organizational approval.
+- Required order: authorized independent contract/threat-model approval → F1 runtime identity correction → task-wide conditional claim + lease/fencing/outbox consumer → immutable receipt/finalizer → regression and remote backend qualification after free-only/governance gates.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed.
