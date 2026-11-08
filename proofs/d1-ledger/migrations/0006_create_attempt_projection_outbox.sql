@@ -17,6 +17,7 @@ CREATE TABLE pool_attempt_projection_outbox (
   lease_expires_at INTEGER,
   delivery_attempts INTEGER NOT NULL DEFAULT 0 CHECK (delivery_attempts >= 0),
   created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL,
   delivered_at INTEGER,
   CHECK (
     (status = 'leased' AND lease_owner IS NOT NULL AND lease_expires_at IS NOT NULL) OR
@@ -51,7 +52,7 @@ BEGIN
   SELECT
     NEW.event_id, NEW.task_key, NEW.attempt_id, t.repository_id, t.issue_number,
     t.target_sha, t.profile, NEW.lease_generation, a.status, NEW.event_digest,
-    'pending', NEW.created_at
+    'pending', NEW.created_at, NEW.created_at
   FROM pool_tasks t
   JOIN pool_attempts a ON a.attempt_id = NEW.attempt_id AND a.task_key = NEW.task_key
   WHERE t.task_key = NEW.task_key;
@@ -66,13 +67,13 @@ BEGIN
   ) VALUES (
     'delivery-leased:' || NEW.outbox_id || ':' || NEW.lease_generation_delivery,
     NEW.outbox_id, 'delivery.leased', NEW.lease_generation_delivery,
-    NEW.lease_owner, NEW.created_at
+    NEW.lease_owner, NEW.updated_at
   );
 END;
 
 CREATE TRIGGER pool_attempt_projection_status_event
 AFTER UPDATE OF status ON pool_attempt_projection_outbox
-WHEN NEW.status <> OLD.status
+WHEN NEW.status <> OLD.status AND NEW.status <> 'leased'
 BEGIN
   INSERT INTO pool_attempt_projection_events (
     delivery_event_id, outbox_id, event_type, lease_generation, actor_id, created_at
@@ -85,7 +86,7 @@ BEGIN
       WHEN 'dead_letter' THEN 'delivery.dead_letter'
       ELSE 'delivery.leased'
     END,
-    NEW.lease_generation_delivery, NEW.lease_owner, COALESCE(NEW.delivered_at, NEW.created_at)
+    NEW.lease_generation_delivery, NEW.lease_owner, NEW.updated_at
   );
 END;
 
