@@ -1315,3 +1315,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement a minimal local-only task-wide uniqueness proof for two distinct approvals racing on one logical identity, then add lease generation/reclaim and stale-worker rejection. Run exact-head CI and read back evidence before integration.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Logical task identity local proof pass
+
+- Draft PR #40 opened: https://github.com/VlDMlNSh/developer-cloud-pool/pull/40
+- Branch `proof/task-identity-fencing-design-2026-11-08`, parent/base immutable PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; PR #40 head `f83b2ae92898784e03feaebf54bf74563f570079`; base is PR #39 branch, not default.
+- Added migration 0003 with canonical logical task key, one task row per identity, multiple individually audited approval attachments, and one task-level outbox row. Added `claimLogicalTask` adapter and behavioral tests for two distinct approvals racing on one identity, distinct target SHA, and exact retry. Existing per-approval adapter/test path retained via a legacy trigger.
+- PR #40 files: contract, proof README, migration 0003, claim adapter, claim/outbox tests. No workflow/production integration.
+- Re-read blobs: migration `7d8fb746c34527300dfab423106a7b7b9b316623`; adapter `37d75e2b31d9214b04398527eb08dce296f1ff27`; tests `c8b6d753a653da665f848a53a280e7bcba7416ae`.
+- Exact-head workflow query for `f83b2ae92898784e03feaebf54bf74563f570079` returned no runs on two reads. CI = NOT VERIFIED; test execution NOT RUN in this pass.
+- Lease fencing/reclaim and stale-worker/finalizer rejection remain NOT IMPLEMENTED. No remote D1 qualification, secrets, resources, dispatch, deployment, provider calls or Gemini execution.
+- Report: `docs/reports/2026-11-08-logical-task-identity-local-proof.md`, commit `1a8c68588f7b8dd26020187d746af2dde9308eb3`.
+- PR #40 remains OPEN/DRAFT/UNMERGED and stacked on PR #39. Do not merge into default or integrate with PR #37 before runtime proof and lifecycle alignment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: secure exact-head CI execution for PR #40 and fix any migration/runtime issues; then implement generation-based lease fencing and stale-worker rejection.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
