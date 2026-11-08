@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { claimAndEnqueue, claimLogicalTask } from "../src/claim-outbox.mjs";
+import { acquireTaskLease, renewTaskLease, finalizeTaskLease } from "../src/task-lease.mjs";
 
 const NOW = 1_800_000_000;
 const approval = {
@@ -188,5 +189,55 @@ describe("canonical task identity across independent approvals", () => {
     expect(retry.decision).toBe("TASK_ALREADY_ATTACHED");
     const outbox = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_delivery_outbox").first();
     expect(outbox.n).toBe(1);
+  });
+});
+
+
+describe("generation-fenced logical task leases", () => {
+  async function createTask() {
+    const item = { ...approval, approvalId: "approval-lease-test", envelopeDigest: "9".repeat(64) };
+    await seed(item);
+    const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
+    expect(claimed.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    return claimed.taskKey;
+  }
+
+  it("increments generation on reclaim and rejects stale renewals and finalizers", async () => {
+    const taskKey = await createTask();
+    const first = await acquireTaskLease(env.POOL_DB, taskKey, "worker-a", NOW, 30);
+    expect(first.decision).toBe("LEASE_ACQUIRED");
+    expect(first.generation).toBe(1);
+
+    const second = await acquireTaskLease(env.POOL_DB, taskKey, "worker-b", NOW + 31, 30);
+    expect(second.decision).toBe("LEASE_ACQUIRED");
+    expect(second.generation).toBe(2);
+
+    const staleRenew = await renewTaskLease(env.POOL_DB, taskKey, "worker-a", 1, NOW + 32, 30);
+    const staleFinish = await finalizeTaskLease(env.POOL_DB, taskKey, "worker-a", 1, NOW + 32);
+    expect(staleRenew).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_LEASE" });
+    expect(staleFinish).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_FINALIZER" });
+
+    const currentRenew = await renewTaskLease(env.POOL_DB, taskKey, "worker-b", 2, NOW + 32, 30);
+    expect(currentRenew.decision).toBe("LEASE_RENEWED");
+    const currentFinish = await finalizeTaskLease(env.POOL_DB, taskKey, "worker-b", 2, NOW + 33);
+    expect(currentFinish.decision).toBe("TASK_COMPLETED");
+    const row = await env.POOL_DB.prepare("SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?")
+      .bind(taskKey).first();
+    expect(row).toMatchObject({ state: "completed", lease_generation: 2 });
+  });
+
+  it("does not allow a second worker to steal a live lease", async () => {
+    const taskKey = await createTask();
+    const first = await acquireTaskLease(env.POOL_DB, taskKey, "worker-a", NOW, 60);
+    const second = await acquireTaskLease(env.POOL_DB, taskKey, "worker-b", NOW + 1, 60);
+    expect(first.generation).toBe(1);
+    expect(second).toMatchObject({ decision: "DENY", reason: "TASK_NOT_LEASEABLE" });
+  });
+
+  it("rejects renewal after lease expiry even when owner and generation match", async () => {
+    const taskKey = await createTask();
+    const lease = await acquireTaskLease(env.POOL_DB, taskKey, "worker-a", NOW, 10);
+    const result = await renewTaskLease(env.POOL_DB, taskKey, "worker-a", lease.generation, NOW + 10, 10);
+    expect(result).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_LEASE" });
   });
 });
