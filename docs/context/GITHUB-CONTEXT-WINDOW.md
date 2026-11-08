@@ -1472,3 +1472,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No remote D1, worker execution, provider/model call, secret read or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement the proposal as an isolated local-only migration/adapter delta on a new work branch, after verifying exact branch/base and existing package scripts; keep dispatch false and add adversarial D1 runtime tests. Do not merge until exact-head CI and independent review are available.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Immutable Task / Attempt / Lease implementation pass
+
+- Implemented a local-only proof on `proof/immutable-task-attempts-final-ci-2026-11-08`, exact source head `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`, stacked on PR #40 head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`. PR #49 is OPEN / DRAFT / UNMERGED; no merge/dispatch.
+- Migration 0004 blob `0ad590ffdd2589f857257739275c15ed2d54d729` creates immutable `pool_attempts`, separates `attempt_number` from legacy `attempt_count`, guards task/attempt identity and pointer, fences lease mutations by generation, and creates append-only attempt events with actor ID + generation.
+- Adapter `src/task-attempts.mjs` supports idempotent attempt creation, lease acquisition, explicitly resumable takeover, renewal, terminal finalization and indeterminate marking. Expiry does not automatically authorize retry. All outcomes keep `dispatch:false`.
+- Workers-runtime exact-head CI: runs `42492657024` / job `128768175405` and `42492663954` / job `128768195844` both COMPLETED / SUCCESS. Syntax check passed; D1 suite 35/35 tests passed (13 + 22). Artifact 13622435809 SHA-256 `04f47480b47477ccabdd4400b4545461692f7a3c917b8b8e86d0190eada48e42`; duplicate run artifact 13621657946 SHA-256 `d1232b88b690a31dac00b7b5029ee8f27d583fd8b208d55917ee7d95572d6526`.
+- Report: `docs/reports/2026-11-08-immutable-task-attempt-lifecycle-implementation.md` (created in this pass; commit below).
+- PR #41–#48 are closed / unmerged validation iterations; PR #49 is the current draft. Independent review remains NOT RUN; no review submissions or inline threads observed for PR #49.
+- Remote D1, production Supervisor/Worker integration, model/provider calls, secret access, deployment, and target-environment recovery are NOT RUN / NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Default-branch write correction disclosure: commit `864ca5c1eb7f1e9c871a84b6bbb6b252c6921b32` temporarily added the test file because one update omitted the explicit branch; commit `4d07526589676c6a381426db189c5a5c1528e1a3` immediately deleted it. Fresh default read returned 404. The file is absent from the resulting default tree; commits remain visible in history. No production source, workflow, secret or runtime setting changed.
+- Next: authorized independent review of PR #49 exact head; reconcile with PR #40 and PR #37 before any merge. Then resolve production integration/recovery and governance gates before remote D1 qualification. Dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
