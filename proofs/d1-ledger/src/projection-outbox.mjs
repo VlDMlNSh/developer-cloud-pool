@@ -50,7 +50,7 @@ export async function markProjectionRetryable(db, outboxId, workerId, generation
          SET status = 'retryable', lease_owner = NULL, lease_expires_at = NULL, updated_at = ?
        WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
          AND lease_generation_delivery = ? AND lease_expires_at > ?
-    `).bind(now, now, outboxId, workerId, generation, now).run();
+    `).bind(now, outboxId, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
       ? { decision: "PROJECTION_RETRYABLE", outboxId, generation, dispatch: false }
       : deny("STALE_OR_EXPIRED_PROJECTION_LEASE");
@@ -70,7 +70,7 @@ export async function acknowledgeProjectionDelivered(db, outboxId, workerId, gen
              lease_expires_at = NULL, delivered_at = ?, updated_at = ?
        WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
          AND lease_generation_delivery = ? AND lease_expires_at > ?
-    `).bind(now, outboxId, workerId, generation, now).run();
+    `).bind(now, now, outboxId, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
       ? { decision: "PROJECTION_DELIVERED", outboxId, generation, dispatch: false }
       : deny("STALE_OR_EXPIRED_PROJECTION_LEASE");
