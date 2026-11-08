@@ -1274,3 +1274,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 ### Correction — documentation branch ancestry after final evidence commits
 - Recomputed after all documentation updates: `docs/cross-chat-continuation-2026-11-06` vs `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` is DIVERGED, **195 ahead / 2 behind**, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`. This supersedes the immediately preceding 190-ahead count, which was measured before the final documentation commits.
 - Do not merge wholesale; current documentation branch is evidence/context only. Investigate the two default-only commits and perform a bounded documentation diff review before any promotion.
+
+
+## 2026-11-08 — Autonomous-First PR #37 / PR #39 source inspection
+
+- Report: `docs/reports/2026-11-08-autonomous-first-pr37-pr39-source-inspection.md`; commit `edab8c59d961216b4077090c39c0ae73dfe66cd2`.
+- Re-read exact PR #37 source: Supervisor workflow blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`, Worker workflow blob `04d63d815d2f7d15cfa80c932b614d559385ff0a`, Supervisor script blob `2d0611851ff738b2aeb377f464e5fa7d821f3696`, boundary tests blob `9667f4cab3d9312425e6818fc1e8bc8fb5b3419c`. F2 remains: Finalizer only checks `pool:claimed`, then performs label PATCH, read-back, and a separate audit comment; no immutable envelope/claim-generation/worker-run fencing or atomic finalization. Existing security tests are static source assertions, not behavioral race/failure tests.
+- PR #39 source review confirms a useful local SQLite/Miniflare proof: conditional ready->consumed, trigger-created claim+outbox in the same transaction, deterministic IDs, binding mismatch/pre-consumed replay checks, 12-way one-winner test, and rollback test. Adapter always returns `dispatch:false`.
+- PR #39 is explicitly a synthetic local D1 binding proof; remote D1 entitlement, live binding, ACL, quotas, migrations and deployment remain NOT VERIFIED. Do not treat local proof as remote qualification.
+- Next: test-first shared immutable claim-envelope/lifecycle contract linking PR #39 ledger identity/digest/generation to PR #37 Supervisor/Worker/Finalizer. Add behavioral mutation-after-claim, stale-generation, wrong-worker-run, duplicate-finalizer and audit/outbox failure tests; then implement integration.
+- No source/workflow/secret/resource/dispatch/deployment changes; no Gemini/provider/model calls. PRs remain unmerged and dispatch fail-closed. F2 OPEN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Autonomous-First policy remains adopted: no routine external APPROVE prerequisite for safe engineering iteration; security gates and final acceptance criteria remain.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
