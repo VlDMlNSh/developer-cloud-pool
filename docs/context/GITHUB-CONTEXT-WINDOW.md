@@ -1098,3 +1098,16 @@ The PRs are independent local/static proofs, not an integrated production author
 - Remote D1 qualification, deployment and worker execution: NOT RUN.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Both dispatch gates remain fail-closed. Next: formal design decision + threat model for integrated claim/lease/outbox, then independent review and real-backend qualification.
+
+
+## 2026-11-08 — Integrated claim/lease/outbox protocol design
+
+- Report: [integrated claim/lease/outbox design pass](../reports/2026-11-08-integrated-claim-lease-outbox-design-pass.md).
+- New architecture/threat model: [integrated single-use claim, lease and outbox protocol](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md); creation commit `24fe227fda3cdd327d674020c84c7f616c723451`.
+- The existing storage ADR (blob `6dae6f90b078fd12ba8e9cf52151817c7adf93dd`) addresses D1 vs Durable Objects selection but not integrated issuer, lease/fencing, outbox delivery or Worker acknowledgement. New document defines authority boundaries, canonical signed envelope, trusted time, atomic consume+claim+outbox+audit, monotonic fencing generations, at-least-once delivery/idempotency, crash recovery, dead-letter, threat matrix, test matrix, rollout gates and kill switches.
+- This is design-only. No code, workflows, permissions, secrets, variables, cloud resources, billing, deployment or dispatch changed. No implementation is authorized.
+- PR #37's Issue label GET/PATCH remains non-CAS and labels are explicitly presentation only. PR #36 caller-supplied binding/time remains unacceptable for production. PR #39 pending outbox remains without consumer/lease/recovery. Issue #38 remains the tracking issue.
+- Independent security/architecture review NOT RUN; remote D1 contention/recovery qualification NOT RUN; account Free/no-card eligibility NOT VERIFIED. Dispatch gates remain fail-closed; current live values NOT re-read in this pass.
+- PR #27 remains OPEN / DRAFT / UNMERGED; exact-head CI for the new documentation head and review state must be re-read. No merge.
+- Status: design CREATED; implementation NOT RUN; independent review NOT RUN; remote qualification NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain authorized independent review of the integrated protocol; resolve findings before any local implementation planning.
