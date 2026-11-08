@@ -345,6 +345,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     const taskKey = await createLogicalTask("approval-takeover");
     await createAttempt(taskKey);
     const first = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-a", NOW + 2, 10);
+    if (first.decision !== "ATTEMPT_LEASE_ACQUIRED") throw new Error(`acquireAttemptLease failed: ${JSON.stringify(first)}`);
     expect(first).toMatchObject({ decision: "ATTEMPT_LEASE_ACQUIRED", generation: 1, attemptId: "attempt-1" });
 
     const denied = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-b", NOW + 12, 10);
