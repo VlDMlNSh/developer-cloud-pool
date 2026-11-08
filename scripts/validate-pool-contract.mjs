@@ -71,7 +71,7 @@ if (!/CALLEE_REPOSITORY: \$\{\{ job\.workflow_repository \}\}/.test(worker)) fai
 if (!/CALLEE_FILE_PATH: \$\{\{ job\.workflow_file_path \}\}/.test(worker)) fail("Worker must inspect reusable callee path");
 if (!/CALLEE_WORKFLOW_SHA: \$\{\{ job\.workflow_sha \}\}/.test(worker)) fail("Worker must inspect reusable callee SHA");
 if (/^      CALLEE_(?:REPOSITORY|FILE_PATH|WORKFLOW_SHA):/m.test(worker)) fail("job.workflow_* contexts must not be referenced in job-level env");
-if (!/^          CALLEE_REPOSITORY: \\$\\{\\{ job\\.workflow_repository \\}\\}$/m.test(worker) || !/^          CALLEE_FILE_PATH: \\$\\{\\{ job\\.workflow_file_path \\}\\}$/m.test(worker) || !/^          CALLEE_WORKFLOW_SHA: \\$\\{\\{ job\\.workflow_sha \\}\\}$/m.test(worker)) fail("job.workflow_* contexts must be mapped in step-level env");
+if (!worker.includes("          CALLEE_REPOSITORY: ${{ job.workflow_repository }}") || !worker.includes("          CALLEE_FILE_PATH: ${{ job.workflow_file_path }}") || !worker.includes("          CALLEE_WORKFLOW_SHA: ${{ job.workflow_sha }}")) fail("job.workflow_* contexts must be mapped in step-level env");
 if (!/CALLER_WORKFLOW_SHA !== e\.CALLEE_WORKFLOW_SHA/.test(worker)) fail("Worker must require caller and callee to share the immutable invocation SHA");
 if (!/pool:claimed/.test(worker)) fail("Worker must require Supervisor claim state");
 if (!/activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/.test(worker)) fail("Worker must reject conflicting or duplicate managed task states");
