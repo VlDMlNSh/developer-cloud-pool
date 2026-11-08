@@ -610,3 +610,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Documentation branch remains `docs/github-context-window-2026-11-06`, not merged into default branch `Основной`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Cloudflare Workflows local runtime smoke — 2026-11-08
+
+- Report: [Cloudflare Workflows local runtime smoke](../reports/2026-11-08-cloudflare-workflows-runtime-smoke.md).
+- Immutable proof checkout: `8e3cd9dd4d2a650c0b37042ff896fb5c0f282f1e`; no code promoted to GitHub.
+- Official SDK fixture source pinned at `ab086218678b1bf311b158bcc62cc6b7437a7839`; dependency compatibility locally established with `@cloudflare/vitest-plugin@1.6.0`, `vitest@4.1.12`, `wrangler@4.158.0`.
+- Clean local install with `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` succeeded. Syntax check PASS; existing Node suite 11/11 PASS; static UI validator PASS; local Workflow smoke 1/1 PASS.
+- Smoke covers only local Workflow instance creation, step result and completion. D1, idempotency, retries, lease fencing, indeterminate behavior and duplicate triggers remain unproved.
+- GitHub exact-head CI NOT VERIFIED; independent review NOT RUN; no deployment, Cloudflare account operation, secret access, dispatch or provider/model calls.
+- Next: add synthetic D1 migrations and prove atomic commit-then-timeout deduplication plus stale-generation fencing. Keep Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED and Contour B deferred.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
