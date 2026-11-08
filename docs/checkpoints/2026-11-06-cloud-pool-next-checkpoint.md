@@ -8,8 +8,8 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest commit `91c93725020f7aae052a85d5a665609f35b70945`.
-- Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only successor commit: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`.
-- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; current head `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report-only successor CI NOT VERIFIED.
+- Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only commits: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d` and latest `1eb3be17d9146d57a4335b511804946e097651ae`.
+- Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; current head `1eb3be17d9146d57a4335b511804946e097651ae`; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d` and `1eb3be17d9146d57a4335b511804946e097651ae` exact-head CI SUCCESS (runs `42506472721` and `42506744722`).
 - Latest explicit Workflow restart report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
 - Duplicate-trigger report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
 - Composed retry report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4eb4aea106787c70039cd7110f1ca7a260628b57/docs/reports/2026-11-08-composed-workflow-d1-retry-proof.md.
@@ -48,15 +48,15 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## New local process-recreation proof — 2026-11-08
 
-- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4db46c78e57c4af1b995b1cebeb6c12203e6ab3d/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/1eb3be17d9146d57a4335b511804946e097651ae/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
 - Under Wrangler 4.158.0 with `--local --persist-to /tmp/cdp-process-restart-state`, completed Workflow instance `attempt-attempt-process-restart-2-32` and its D1 receipt were persisted across termination of one Wrangler process and startup of a second process using the same persistence directory.
 - After restart, duplicate create returned `WorkflowError: (instance.already_exists)`. D1 readback showed Attempt completed, generation 32, invocation_count 1, exactly one unchanged receipt.
-- This verifies completed-instance metadata and D1 state across two local OS processes. It does NOT prove in-progress Workflow recovery after abrupt process termination.
-- Report-only commit `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`; CI query returned no PR-triggered workflow runs for that commit, so report-commit CI NOT VERIFIED.
+- This verifies completed-instance metadata and D1 state across two local OS processes. A second independent repetition using a different persistence directory, Attempt ID and generation also passed; it confirmed `invocation_count=1` and one unchanged receipt after process recreation. It does NOT prove in-progress Workflow recovery after abrupt process termination.
+- Report-only commit `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`: run `42506472721`, job `128810086646`, SUCCESS. Independent-repeat report commit `1eb3be17d9146d57a4335b511804946e097651ae`: run `42506744722`, job `128810903390`, SUCCESS.
 
 ## Remaining limitations
 
-- No in-progress Workflow recovery after abrupt process termination, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge. Completed-instance local process-recreation persistence is separately VERIFIED.
+- No in-progress Workflow recovery after abrupt process termination, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge. Completed-instance local process-recreation persistence is VERIFIED in two independent local repetitions.
 - Deterministic Workflow ID remains proof-only; production adoption needs bounded ID validation, canonical idempotency-key derivation, payload-conflict handling and D1/Workflow reconciliation.
 - PR #25 remains OPEN / DRAFT / UNMERGED; authenticated OAuth/session runtime, Workers Free eligibility, deployment and browser/device QA remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
 - PR #51 remains OPEN / DRAFT / UNMERGED; reconciliation queue not production-qualified.
@@ -66,7 +66,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## Next bounded action
 
-Completed-instance Workflow/D1 state persistence across two local Wrangler processes is VERIFIED. Next, attempt a separate controlled in-progress Workflow process-stop/recreate test. If unsupported or inconclusive, record the limitation and prepare a separate Cloudflare account-level qualification plan without deploying or using secrets. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
+Completed-instance Workflow/D1 state persistence across two local Wrangler processes is VERIFIED in two independent repetitions. Next, attempt a separate controlled in-progress Workflow process-stop/recreate test. If unsupported or inconclusive, record the limitation and prepare a separate Cloudflare account-level qualification plan without deploying or using secrets. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
 
 ## Canonical MediaHub map
 
