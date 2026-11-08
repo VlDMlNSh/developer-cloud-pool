@@ -262,7 +262,7 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
     `).bind(taskKey, "999999", item.issueNumber, item.targetSha, item.profile, NOW, NOW).run();
 
     const result = await claimLogicalTask(env.POOL_DB, item, NOW);
-    expect(result).toMatchObject({ decision: "DENY", reason: "TASK_CLAIM_OUTCOME_AMBIGUOUS" });
+    expect(result).toMatchObject({ decision: "DENY", reason: "TASK_KEY_BINDING_CONFLICT" });
     const ledger = await env.POOL_DB.prepare(
       "SELECT state, consumed_at FROM pool_approval_ledger WHERE approval_id = ?"
     ).bind(item.approvalId).first();
