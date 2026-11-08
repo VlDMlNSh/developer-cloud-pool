@@ -493,3 +493,13 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - PR #36/#39 local runtime test evidence: 13/13 and 19/19 respectively; neither is remote D1 or production qualification. Their review state is COMMENTED, not approval.
 - Active ruleset 26550182 requires zero approvals; independent approval is not technically enforced. `POOL_DISPATCH_ENABLED` current value remains NOT VERIFIED. Dispatch stays fail-closed.
 - Live Worker/Supervisor execution, remote D1, deployed web UI, model routing/quotas, secret isolation, and persistence/restore remain NOT RUN or NOT VERIFIED. Contour A NOT ACCEPTED; Contour B deferred.
+
+
+## 2026-11-08 — independent review reconciliation
+
+- Report: [Independent review reconciliation](../reports/2026-11-08-independent-review-reconciliation.md).
+- PR #36/#37/#39 now have review submissions, correcting stale 0-review notes: #36 two COMMENTED; #37 two CHANGES_REQUESTED; #39 two COMMENTED. All are from the same reviewer account; repeated submissions are not independent reviewers. No APPROVED review. Full organizational independence and authorized approver status NOT VERIFIED.
+- Exact-head named CI read-back: #36 `42329438308`/`42329438351` SUCCESS; #37 `42284051311`/`42284051309` SUCCESS; #39 `42329993548` SUCCESS. #37's earlier failed run is superseded as latest named CI evidence, but F1 remains unresolved because job-level env still references `job.workflow_*` and runtime context values are not tested.
+- F2 Finalizer binding remains unresolved. Ruleset 26550182 requires zero approvals; independent review is not enforced. Live dispatch gates NOT VERIFIED.
+- Next: genuinely independent authorized reviewer; remediate F1/F2; agree unified issuer/claim/lease/outbox/finalizer/recovery contract; enforce independent approval; then separately qualify remote D1 and integrated runtime/UI/routing/secrets/persistence. Dispatch/deployment remain prohibited until gates pass.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
