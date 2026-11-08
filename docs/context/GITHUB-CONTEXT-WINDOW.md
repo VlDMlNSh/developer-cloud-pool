@@ -192,3 +192,14 @@
 - F2-R3 MEDIUM: 9 pure policy tests do not execute runner/API failure injection, competing writer, comment failure/lost response, or recovery.
 - Disposition: PR #53 remains OPEN/DRAFT; do not merge/enable dispatch on this evidence. Remediation should introduce durable finalization intent/outbox in qualified authoritative store, idempotent comment delivery/reconciliation, recoverable FINALIZING, runner-level fault injection and real backend fencing. Issue #38 remains OPEN; dispatch fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## D1 finalization replay time-coupling audit — 2026-11-09
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/6c451f32fab82402a053a86ae9d7ac44995bc4e5/docs/reports/2026-11-09-d1-finalization-replay-time-coupling-audit.md.
+- Audited PR #50 head `65233f57038a9996e4a6e939abde3642a33d467d` (CI run `42533097813`, job `128891421839`, SUCCESS) and PR #51 head `f50e8fc09a6442b4ca3088194c9d7284c7ffce55` (CI run `42533777096`, job `128893481500`, SUCCESS). PR #39 baseline run `42329993548` / job `128274072508` SUCCESS. All local Workers-runtime/Miniflare only; PRs remain OPEN/DRAFT.
+- Positive: D1 attempt finalization updates attempt state, append-only audit event and task projection through SQLite triggers in one transaction. PR #51 adds durable indeterminate reconciliation queue. No dispatch; local proof only.
+- New finding D1-FINALIZE-REPLAY-01 (MEDIUM): `finalizeTaskAttempt` accepts prior terminal replay only if `prior.completed_at === now`. Existing replay test passes the identical timestamp `NOW+3`; fresh-time retry is not tested. A retry with a new trusted clock reading may be denied despite identical immutable result/actor/generation. Defect hypothesis pending regression test; not claimed as proven runtime failure. Fix: define immutable finalization identity independent of retry timestamp, return stored original completed_at on exact replay, deny conflicting payload; add later-time replay + lost-response tests.
+- PR #53 GitHub-label finalizer remains separate and blocked by split audit write/non-CAS. Local D1 pattern is not integrated or remotely qualified.
+- PR #50/#51 stay OPEN/DRAFT; Issue #38 OPEN; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
