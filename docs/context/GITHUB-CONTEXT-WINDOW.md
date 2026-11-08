@@ -1299,3 +1299,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/workflow/secret/dispatch/deployment changes; no Gemini/provider/model calls. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement backend-independent lifecycle state machine and behavioral tests in isolated proof layer, then qualify one real backend before integration with PR #37.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Task identity and fenced delivery gap analysis
+
+- Refreshed default HEAD: `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 OPEN/DRAFT/UNMERGED head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; exact-head runs `42329438308` and `42329438351` SUCCESS.
+- PR #37 OPEN/DRAFT/UNMERGED head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; exact-head runs `42484039940` and `42484039932` SUCCESS.
+- PR #39 OPEN/DRAFT/UNMERGED head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, stacked on PR #36 base `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`; exact-head run `42329993548` SUCCESS.
+- Source inspection found task-wide uniqueness is not proven: current claim/outbox schema enforces one pair per approval ID, while 12-way contention tests reuse one approval ID. Distinct approvals with the same (repository_id, issue_number, target_sha, profile) could create separate claims.
+- Isolated design branch `proof/task-identity-fencing-design-2026-11-08` created from PR #39 immutable head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. Design contract `docs/contracts/TASK-IDENTITY-AND-FENCED-DELIVERY-PROOF.md`, commit `1fd7acd77510ceab348dac4a191002677acbc811`. It specifies canonical task_key, one active logical task, multi-approval audit attachment, outbox idempotency, lease generation fencing, stale-worker denial and 15 behavioral tests.
+- Report: `docs/reports/2026-11-08-task-identity-fenced-delivery-gap-analysis.md`, commit `0084a9daa7c83ae6afc34e8c9275ac00f0457f16`.
+- Design-only: no implementation/migration/test/workflow/resource/secret/dispatch/deployment changes; no tests run on design branch. Do not call it VERIFIED.
+- PR #39 remains stacked and unmerged; the new branch is also isolated and not integrated with default or PR #37. Exact-head CI success on existing PRs does not qualify remote D1 or production.
+- Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement a minimal local-only task-wide uniqueness proof for two distinct approvals racing on one logical identity, then add lease generation/reclaim and stale-worker rejection. Run exact-head CI and read back evidence before integration.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
