@@ -561,3 +561,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Docs branch `docs/github-context-window-2026-11-06` is still an unmerged working branch; the default branch has not been modified.
 - Keep dispatch fail-closed. Next: obtain independent authorized review; then implement and exact-SHA test F1, task-wide claim uniqueness, lease/fencing, immutable receipt and idempotent Finalizer. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Resume checkpoint — 2026-11-08 PR #37 supply-chain and exact-head CI recheck
+
+- Latest report: [PR #37 supply-chain and exact-head CI reconciliation](../reports/2026-11-08-latest-pr37-supply-chain-and-ci-reconciliation.md).
+- PR #36/#37/#39 remain OPEN/DRAFT/UNMERGED at the recorded exact heads; exact-head named CI remains SUCCESS for the bounded test scopes.
+- PR #37 F9 is MEDIUM / NOT VERIFIED: no reviewed immutable transitive dependency closure, no explicit lifecycle-script policy, and effective runner credential isolation not proven. No malicious package or secret leak is asserted; no DSH/npm execution was performed.
+- All review submissions remain by `maxkorolskiy88-ship-it`; no APPROVED review or second reviewer. Independent authority NOT VERIFIED.
+- F1/F2 remain unresolved. F3–F11 remain unresolved/not qualified per report. Keep dispatch fail-closed; no merge or production qualification.
+- Next: obtain independent authorized review; fix F1/F2 and implement claim/fencing/receipt/recovery; close F9/F10/F11 with exact-head regression evidence.
+- Docs branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
