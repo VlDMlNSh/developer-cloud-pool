@@ -1459,3 +1459,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: design/accept exact attempt-vs-reclaim state machine and adversarial matrix before changing PR #40. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Task / Attempt / Lease state machine proposal
+
+- Re-read PR #40 exact-head sources: `task-lease.mjs` blob `b41edf89cdf960b2c007f38ba16554dc179f021a`; migration `0003_create_logical_task_identity.sql` blob `49b0798871429d7961e81eb1d86ad892dba0b9b9`; tests `claim-outbox.test.ts`. Target remains PR #40 HEAD `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- Confirmed current implementation has one mutable lease slot, increments `attempt_count` and `lease_generation` on every successful acquisition/reclaim, and stores no immutable attempt records. Lease expiry is not proof that old external execution stopped.
+- Published design proposal: `docs/contracts/2026-11-08-task-attempt-lease-state-machine-proposal.md`. Commit: `7b9b481f8d65444c27c512e8fd283f8ba66bb56c`. Proposal separates immutable Task identity, immutable Attempt execution intent, and mutable Lease fencing/ownership. Lease takeover does not consume retry budget; each new execution attempt creates a new immutable attempt record. Expired/unknown in-flight work enters reconciliation; no blind retry. Includes states, atomicity, migration constraints, 15 adversarial acceptance cases and implementation gates.
+- This is a proposal only: not implemented, not approved for production, dispatch remains disabled.
+- PR #37 fresh status: OPEN / DRAFT / UNMERGED; HEAD `1be8672c1be1a720b6c813dcafff5c020b6456ae`. Exact-head validation runs `42484039940` and `42484039932` both COMPLETED / SUCCESS. These are static/boundary validations; reusable Worker runtime invocation NOT RUN.
+- PR #37 review submissions re-read: 4 observed submissions, all by `maxkorolskiy88-ship-it`, with CHANGES_REQUESTED / COMMENTED states; no approval and no independent reviewer. Inline review threads returned empty. Independence NOT VERIFIED.
+- No remote D1, worker execution, provider/model call, secret read or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the proposal as an isolated local-only migration/adapter delta on a new work branch, after verifying exact branch/base and existing package scripts; keep dispatch false and add adversarial D1 runtime tests. Do not merge until exact-head CI and independent review are available.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
