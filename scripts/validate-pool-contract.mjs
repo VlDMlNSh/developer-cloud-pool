@@ -12,6 +12,7 @@ const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const finalizerPolicy = read("scripts/pool-finalizer.mjs");
+const finalizerRunner = read("scripts/pool-finalizer-runner.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const validation = read(".github/workflows/reusable-pool-worker-boundary-validation.yml");
@@ -99,6 +100,7 @@ if (!/needs\.worker\.result/.test(supervisor)) fail("Supervisor finalizer must c
 if (!/pool:needs-review/.test(finalizerPolicy)) fail("Finalizer policy must route non-success to needs-review");
 if (!/pool:claim-/.test(supervisorScript) || !/envelope_digest/.test(supervisorScript)) fail("Supervisor must bind claims to a unique generation and immutable envelope digest");
 if (!/generations\.length !== 1/.test(finalizerPolicy) || !/envelopeDigest\(String\(issue\.body/.test(finalizerPolicy)) fail("Finalizer must verify the unique claim generation and immutable issue envelope");
+if (!/buildFinalizationPlan\(current, expected\)/.test(finalizerRunner) || !/readback\.body !== current\.body/.test(finalizerRunner)) fail("Finalizer runner must revalidate immediately before write and verify terminal readback");
 if (failures.length === 0) pass("Supervisor uses reusable invocation, dual fail-closed gates and one-task claim/read-back");
 
 for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resource]]) {
