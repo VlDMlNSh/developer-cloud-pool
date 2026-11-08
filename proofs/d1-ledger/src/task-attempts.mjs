@@ -103,7 +103,7 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
          )
     `).bind(workerId, now + leaseSeconds, now, taskKey, now, resumable ? 1 : 0).run();
 
-    if (result?.success !== true || result?.meta?.changes !== 1) {
+    if (result?.success !== true || !(result?.meta?.changes >= 1)) {
       return deny(`ATTEMPT_NOT_LEASEABLE:${JSON.stringify({
         success: result?.success, changes: result?.meta?.changes,
         state: snapshot.state, attemptId: snapshot.current_attempt_id,
@@ -182,7 +182,7 @@ export async function finalizeTaskAttempt(db, {
       status, resultDigest, provenanceDigest, terminalReason, now,
       attemptId, taskKey, generation, workerId, generation, now
     ).run();
-    if (result?.success !== true || result?.meta?.changes !== 1) {
+    if (result?.success !== true || !(result?.meta?.changes >= 1)) {
       return deny("STALE_OR_EXPIRED_ATTEMPT_FINALIZER");
     }
     const row = await db.prepare(
@@ -219,7 +219,7 @@ export async function markAttemptIndeterminate(db, taskKey, attemptId, now) {
               AND t.lease_generation = pool_attempts.lease_generation
          )
     `).bind(now, attemptId, taskKey, now).run();
-    return result?.success === true && result?.meta?.changes === 1
+    return result?.success === true && result?.meta?.changes >= 1
       ? { decision: "ATTEMPT_INDETERMINATE", taskKey, attemptId, dispatch: false }
       : deny("ATTEMPT_NOT_EXPIRED_OR_NOT_CURRENT");
   } catch {
