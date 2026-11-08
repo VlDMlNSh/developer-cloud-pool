@@ -62,3 +62,6 @@ Latest 2026-11-08 pass: [Gemini controller routing gap for Cloud Pool independen
 
 
 Documentation branch note: compare against current default `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` reports DIVERGED (190 ahead / 2 behind; merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`). Keep this branch as a working context/evidence branch; do not merge wholesale or treat it as accepted default content. See authoritative Context Window for the full evidence.
+
+
+Correction after final evidence commits: the current compare is DIVERGED, 195 ahead / 2 behind (merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`). This supersedes the earlier 190-ahead note. Keep the branch as working context only; do not merge wholesale.
