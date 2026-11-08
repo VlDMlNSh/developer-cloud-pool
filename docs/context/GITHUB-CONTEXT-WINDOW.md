@@ -841,3 +841,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Dispatch remains fail-closed. Contour B remains deferred.
 - Next: implement and test synthetic D1 atomic idempotency plus attempt-generation fencing in the isolated proof harness; only then promote code to GitHub and require exact-head CI.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Live GitHub and governance revalidation — 2026-11-08
+
+- Default branch `Основной` HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Documentation branch HEAD after this pass: `bdf5c044462d51fb1ea436d0aaa44f4155db600b`.
+- Proof branch HEAD after plan update: `cceee5924c9994b58705e530beb74da6314fc0a6`.
+- PR #25: OPEN / DRAFT, head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, base `Основной`. Exact-head workflow runs `42228269689` and `42228269676`: COMPLETED / SUCCESS. Review list empty; combined status endpoint empty. CI is VERIFIED from the two exact-head run records; independent review NOT VERIFIED.
+- PR #51: OPEN / DRAFT, head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`, base `proof/immutable-task-attempts-audit-ci-2026-11-08`. Exact-head workflow runs empty, review list empty, combined status empty. CI and independent review NOT VERIFIED.
+- Live repository Ruleset `26550182` read back ACTIVE and scoped to `refs/heads/Основной`. It requires a PR but `required_approving_review_count=0`, CODEOWNERS review false, extra approval for unattributed changes false; review-thread resolution is required. This does not enforce independent review.
+- Approved GitHub read endpoint rejected the Actions variables endpoint; live `POOL_DISPATCH_ENABLED` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` remain NOT VERIFIED. No variable or secret was read or changed. Keep dispatch fail-closed.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B deferred.
