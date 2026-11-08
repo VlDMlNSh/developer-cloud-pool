@@ -1043,3 +1043,15 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - Last authorized Cloudflare read (2026-11-06): one standard account, Workers scripts empty, `default_usage_model=standard`; Billing profile/subscriptions returned 403 due missing Billing Read. Workers Free/card-free eligibility remains NOT VERIFIED. No Worker/D1 deployment.
 - Last recorded PR #37 CI read-back showed `POOL_DISPATCH_ENABLED=false` and `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` unset (2026-11-06); current variable values NOT VERIFIED. No dispatch, DSH, Resource Probe, provider/model call, secret read, billing or governance mutation.
 - Overall: Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile PR #39 against current PR #36 parent, submit path-fix branch as a reviewable stacked PR with exact-head CI, obtain independent review, and qualify no-card persistent hosting without changing runtime/security boundaries.
+
+
+## 2026-11-08 — Context PR and governance revalidation
+- Report: [cross-chat context and governance recheck](../reports/2026-11-08-cross-chat-context-and-governance-recheck.md).
+- Default branch `Основной` read-only ref remains `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #27 remains OPEN/DRAFT/UNMERGED at `682ced3dbf629627b7964ff3aaec5da1332a5c79`, based on older `Основной` SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`. Exact-head workflow lookup returned no PR-triggered runs: CI NOT VERIFIED. Reviews 0. Its 23 KB checkpoint duplicates history despite PR description promising a short pointer; reconcile and deduplicate before merge.
+- Active ruleset `26550182` still requires 0 approving reviews and disables CODEOWNERS review. Verified governance gap; connector exposed read-only ruleset access in this pass, no mutation attempted.
+- PR #36/#37/#39 remain draft/open/unmerged; independent reviews 0. PR #39 exact-head CI run `42329993548` job `128274072508` SUCCESS (19 Workers-runtime tests); no production qualification.
+- Cloudflare D1 inventory empty. Workers Free published D1 availability confirmed; account-specific card-free onboarding NOT VERIFIED because Billing Read scope unavailable (403). No DB created.
+- SentinelX: Voktors-Mini.Dlink operational, Free slot 1/1 occupied; mh-dev-01 and mh-dev-02 disabled. No host execution.
+- Keep both dispatch gates fail-closed; no remote D1, Worker/DSH/Resource Probe, provider/model call, secret access, deployment or paid resource. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #27 base and checkpoint, then exact-head CI and independent review; resolve ruleset approval requirement through authorized governance path.
