@@ -8,7 +8,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical).
-- Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` @ `34cdf68d44aac22c10871bf42ddf1cbadf31082e`.
+- Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only successor commit: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`.
 - Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`.
 - Latest explicit Workflow restart report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
 - Duplicate-trigger report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/784a2288fe3c42deb53c6e585c9180264c16b91b/docs/reports/2026-11-08-workflow-duplicate-trigger-proof.md.
@@ -46,6 +46,14 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 - Voktors-Mini.Dlink was used only for local tests and Git push; it is not qualified as a pool worker or approved Claude Code host.
 - No secrets, model/provider calls, DSH, Resource Probe, dispatch, deployment, remote D1 or paid fallback were used.
 
+## New local process-recreation proof — 2026-11-08
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/4db46c78e57c4af1b995b1cebeb6c12203e6ab3d/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
+- Under Wrangler 4.158.0 with `--local --persist-to /tmp/cdp-process-restart-state`, completed Workflow instance `attempt-attempt-process-restart-2-32` and its D1 receipt were persisted across termination of one Wrangler process and startup of a second process using the same persistence directory.
+- After restart, duplicate create returned `WorkflowError: (instance.already_exists)`. D1 readback showed Attempt completed, generation 32, invocation_count 1, exactly one unchanged receipt.
+- This verifies completed-instance metadata and D1 state across two local OS processes. It does NOT prove in-progress Workflow recovery after abrupt process termination.
+- Report-only commit `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`; CI query returned no PR-triggered workflow runs for that commit, so report-commit CI NOT VERIFIED.
+
 ## Remaining limitations
 
 - No Worker-process crash/restart, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge.
@@ -58,7 +66,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## Next bounded action
 
-Evaluate whether official Miniflare/Workflow local backing storage can persist across two distinct OS processes. If supported, run an isolated fixture process-stop/recreate experiment; do not call it Cloudflare production recovery. If unsupported, record the limitation and prepare a separate Cloudflare account-level qualification plan without deploying or using secrets. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
+Completed-instance Workflow/D1 state persistence across two local Wrangler processes is VERIFIED. Next, attempt a separate controlled in-progress Workflow process-stop/recreate test. If unsupported or inconclusive, record the limitation and prepare a separate Cloudflare account-level qualification plan without deploying or using secrets. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
 
 ## Canonical MediaHub map
 
