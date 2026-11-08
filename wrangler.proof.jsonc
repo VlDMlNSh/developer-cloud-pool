@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cloudflare-workflow-local-proof",
+  "main": "src/workflow-proof.js",
+  "compatibility_date": "2026-11-06",
+  "workflows": [
+    {
+      "name": "proof-workflow",
+      "binding": "PROOF_WORKFLOW",
+      "class_name": "ProofWorkflow"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "synthetic-proof-only",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
