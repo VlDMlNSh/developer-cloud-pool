@@ -824,3 +824,20 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Updated proof plan on branch `proof/cloudflare-workflows-vitest-2026-11-08`: latest commit `8e3cd9dd4d2a650c0b37042ff896fb5c0f282f1e`; file blob `62f25226d210f42b7f4fe60a54e4ee5ce7304fba`; read-back verified pinned SHA and fit-gap section. Plan remains documentation only; runtime code/tests NOT RUN.
 - Next: establish a real local execution path or safe CI-only test harness; only then implement project-specific synthetic D1 tests. No deployment, credentials, live D1, provider/model calls, dispatch or paid resources.
 - Contour A BLOCKED / NOT ACCEPTED; dispatch fail-closed; Contour B deferred. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Cloudflare Workflows local runtime smoke — 2026-11-08
+
+- Dated report: [Cloudflare Workflows local runtime smoke](../reports/2026-11-08-cloudflare-workflows-runtime-smoke.md).
+- Proof branch `proof/cloudflare-workflows-vitest-2026-11-08` remains at immutable HEAD `8e3cd9dd4d2a650c0b37042ff896fb5c0f282f1e`; no proof source files have been committed.
+- Reused Cloudflare's official Workers SDK Workflow/Vitest fixture APIs at upstream commit `ab086218678b1bf311b158bcc62cc6b7437a7839`. Local compatibility set: `@cloudflare/vitest-plugin@1.6.0`, `vitest@4.1.12`, existing `wrangler@4.158.0`, Miniflare `5.20261104.0-beta).
+- On Voktors-Mini.Dlink (Desktop Commander device `e264f341-2e21-4dfc-9f97-9b95cd08bcd3`), Node 22.23.3/npm 10.9.9: clean `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` succeeded; `npm run check` PASS; `npm test` 11/11 PASS; `npm run validate:ui` PASS; local Cloudflare Workflow smoke via Vitest 4.1.12 1/1 PASS.
+- The smoke creates a local Workflow, waits for `complete`, and asserts its named persisted step result and output. This verifies only the local runtime/test harness compatibility, not D1 or orchestration safety.
+- Test-discovery constraint: Node's `node --test` auto-discovers `.test.js`; Vitest-only tests using the official `await using` introspector pattern must use a distinct suffix such as `.vitest.js` and explicit Vitest include.
+- npm lockfile generation without legacy peer handling failed with npm internal `edgesOut` error; installation and lockfile generation succeeded using `--legacy-peer-deps`. CI must reproduce this flag unless later disproved.
+- Local scratch files under `/tmp/developer-cloud-pool-proof-20261108`; not committed. Exact local file hashes and boundaries are in the dated report.
+- SentinelX session returned transient `duplicate_session`; Desktop Commander host was online. Free SentinelX host slot limit is 1; Voktors-Mini.Dlink occupies it; mh-dev-01 and mh-dev-02 remain disabled. No host configuration changed.
+- D1 synthetic binding/migrations, commit-then-timeout idempotency, lease fencing, indeterminate no-retry, duplicate-trigger suppression, GitHub CI, independent review and Workflow adoption remain NOT VERIFIED / NOT RUN.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Dispatch remains fail-closed. Contour B remains deferred.
+- Next: implement and test synthetic D1 atomic idempotency plus attempt-generation fencing in the isolated proof harness; only then promote code to GitHub and require exact-head CI.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
