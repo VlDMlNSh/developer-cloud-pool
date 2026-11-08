@@ -1374,3 +1374,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent contract/security review and extend proof for restart recovery, bounded retries/dead-letter; reconcile lifecycle with Supervisor/Worker/Finalizer before integration.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Task identity conflict and bounded-attempt hardening follow-up
+
+- PR #40 remains OPEN/DRAFT/UNMERGED, stacked on PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; do not merge to default.
+- Revalidated baseline exact-head run `42489375654` SUCCESS on `84e9b98a249924846ab29debdb7d32608d87e77c`; this does not cover new hardening.
+- Found task identity trigger conflict path could consume approval without attachment. Migration 0003 now adds `RAISE(ABORT, 'TASK_KEY_BINDING_CONFLICT')` before attachment; adapter pre-check returns explicit conflict denial.
+- Added fixed maximum five lease attempts and dead-letter transition trigger for pending outbox. Added tests for rollback and bounded attempts.
+- Hardening exact-head run `42489686559` on `4d490e4c345f5e313ef5a956ba5b0d73f1afeef7` FAILED: syntax passed; 25/27 tests passed. Conflict test expected generic ambiguous reason but actual pre-check returned `TASK_KEY_BINDING_CONFLICT`; expectation corrected. Attempt-cap test returned `TASK_NOT_LEASEABLE` instead of `ATTEMPT_LIMIT_REACHED`; diagnostic branch added, root cause unresolved.
+- Latest implementation head at report time: `430bc60a2df27fed7b569d4744d94b4616c91b68`; exact-head workflow query returned no run. Latest hardening delta NOT VERIFIED.
+- Report: `docs/reports/2026-11-08-task-identity-hardening-followup.md`, commit `823b1d55add4b677c1135a2ae6461bfe88e738ab`.
+- Readback blobs: migration `49b0798871429d7961e81eb1d86ad892dba0b9b9`; lease adapter `f44f9f9ffb3d16a4ace869ea25892648bed332e1`; tests `723411c806fdc9afa97b1d81f3097e28fa52ed58`; README `a364fb31ff340970d15658f3cf4ee5502696d4ef`.
+- No secrets, cloud resources, deployment, dispatch, provider execution or Gemini controller.
+- Next: obtain exact-head CI on latest branch; resolve attempt-cap behavior with runtime evidence; confirm rollback assertions; then add restart/recovery and durable audit tests and obtain independent review.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
