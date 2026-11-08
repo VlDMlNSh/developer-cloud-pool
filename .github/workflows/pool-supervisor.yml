@@ -26,6 +26,10 @@ jobs:
       task_issue: ${{ steps.intake.outputs.task_issue }}
       target_sha: ${{ steps.intake.outputs.target_sha }}
       profile: ${{ steps.intake.outputs.profile }}
+      envelope_digest: ${{ steps.intake.outputs.envelope_digest }}
+      claim_generation: ${{ steps.intake.outputs.claim_generation }}
+      run_id: ${{ steps.intake.outputs.run_id }}
+      run_attempt: ${{ steps.intake.outputs.run_attempt }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
@@ -68,52 +72,17 @@ jobs:
       TASK_ISSUE: ${{ needs.reconcile.outputs.task_issue }}
       TARGET_SHA: ${{ needs.reconcile.outputs.target_sha }}
       WORKER_RESULT: ${{ needs.worker.result }}
-      SUPERVISOR_RUN_ID: ${{ github.run_id }}
+      SUPERVISOR_RUN_ID: ${{ needs.reconcile.outputs.run_id }}
+      SUPERVISOR_RUN_ATTEMPT: ${{ needs.reconcile.outputs.run_attempt }}
+      CLAIM_GENERATION: ${{ needs.reconcile.outputs.claim_generation }}
+      ENVELOPE_DIGEST: ${{ needs.reconcile.outputs.envelope_digest }}
     steps:
+      - name: Checkout finalizer code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
       - name: Set terminal state and append provenance
         shell: bash
         run: |
           set -euo pipefail
-          node --input-type=module <<'NODE'
-          const e = process.env;
-          const base = "https://api.github.com/repos/" + e.GITHUB_REPOSITORY + "/issues/" + e.TASK_ISSUE;
-          const headers = {
-            Accept: "application/vnd.github+json",
-            Authorization: "Bearer " + e.GITHUB_TOKEN,
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Content-Type": "application/json"
-          };
-          const get = await fetch(base, { headers });
-          if (!get.ok) throw new Error("Cannot read task before finalization: HTTP " + get.status);
-          const issue = await get.json();
-          const labels = (issue.labels || []).map(label => label.name);
-          if (!labels.includes("pool:claimed")) throw new Error("Claim mismatch; refusing ambiguous finalization.");
-          const success = e.WORKER_RESULT === "success";
-          const terminal = success ? "pool:probe-complete" : "pool:needs-review";
-          const managed = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"];
-          const retained = labels.filter(label => !managed.includes(label));
-          const patch = await fetch(base, {
-            method: "PATCH", headers,
-            body: JSON.stringify({ labels: [...new Set([...retained, terminal])] })
-          });
-          if (!patch.ok) throw new Error("Cannot set terminal state: HTTP " + patch.status);
-          const readback = await fetch(base, { headers });
-          if (!readback.ok) throw new Error("Cannot verify terminal state: HTTP " + readback.status);
-          const finalIssue = await readback.json();
-          const finalLabels = (finalIssue.labels || []).map(label => label.name);
-          if (!finalLabels.includes(terminal) || finalLabels.includes("pool:claimed") || finalLabels.includes("pool:ready")) {
-            throw new Error("Terminal state read-back mismatch; manual review required.");
-          }
-          const body = [
-            success ? "**POOL_WORKER_COMPLETE**" : "**POOL_WORKER_NEEDS_REVIEW**",
-            "",
-            "- Supervisor run: " + e.SUPERVISOR_RUN_ID,
-            "- Target SHA: " + e.TARGET_SHA,
-            "- Worker reusable workflow result: " + e.WORKER_RESULT,
-            "- Provider credentials: none",
-            "- Production qualification: NOT CLAIMED"
-          ].join("\n");
-          const posted = await fetch(base + "/comments", { method: "POST", headers, body: JSON.stringify({ body }) });
-          if (!posted.ok) throw new Error("Cannot append audit comment: HTTP " + posted.status);
-          console.log("Task #" + e.TASK_ISSUE + " finalized as " + terminal + ".");
-          NODE
+          node scripts/pool-finalizer.mjs
