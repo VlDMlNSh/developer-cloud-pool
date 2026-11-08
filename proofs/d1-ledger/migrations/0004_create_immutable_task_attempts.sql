@@ -17,11 +17,13 @@ CREATE TABLE pool_attempts (
   created_at INTEGER NOT NULL,
   started_at INTEGER,
   completed_at INTEGER,
+  indeterminate_at INTEGER,
   UNIQUE (task_key, attempt_number),
   CHECK (
     (status IN ('succeeded', 'failed', 'abandoned') AND completed_at IS NOT NULL) OR
     (status NOT IN ('succeeded', 'failed', 'abandoned') AND completed_at IS NULL)
-  )
+  ),
+  CHECK ((status = 'indeterminate' AND indeterminate_at IS NOT NULL) OR status <> 'indeterminate')
 );
 
 CREATE TABLE pool_attempt_events (
