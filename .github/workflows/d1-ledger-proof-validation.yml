@@ -7,6 +7,7 @@ on:
     branches:
       - "proof/d1-single-use-ledger-retry-2026-11-06"
       - "proof/d1-claim-outbox-atomic-2026-11-07"
+      - "proof/task-identity-fencing-design-2026-11-08"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
