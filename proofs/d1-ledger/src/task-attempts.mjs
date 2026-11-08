@@ -104,7 +104,11 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
     `).bind(workerId, now + leaseSeconds, now, taskKey, now, resumable ? 1 : 0).run();
 
     if (result?.success !== true || result?.meta?.changes !== 1) {
-      return deny("ATTEMPT_NOT_LEASEABLE");
+      return deny(`ATTEMPT_NOT_LEASEABLE:${JSON.stringify({
+        success: result?.success, changes: result?.meta?.changes,
+        state: snapshot.state, attemptId: snapshot.current_attempt_id,
+        attemptStatus: snapshot.attempt_status, expiresAt: snapshot.lease_expires_at
+      })}`);
     }
     const row = await db.prepare(`
       SELECT lease_generation, lease_expires_at, current_attempt_id, lease_attempt_id
