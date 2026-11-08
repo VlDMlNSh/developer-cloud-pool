@@ -687,3 +687,20 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Other F1/F2/F3/F4/F5/F6/F7/F8/F9/F10 remain open or not qualified. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
 - Next: independent authorized review of exact PR #29 head; then continue F1/F2 durable claim/lease/fencing/receipt/finalizer/recovery and close F9/F10.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next PR #37 F1 context-scope correction — 2026-11-08
+
+- Report: [PR #37 F1 context-scope correction](../reports/2026-11-08-pr37-f1-context-scope-correction.md), commit `ae7d20fc5fa3dc4ed5717f56fbc3358f07e8b371`, blob `8ce9d4b40646890ec98469422840b672ac2376ef`.
+- PR #37 branch `feat/reusable-pool-worker-boundary-2026-11-06`; final exact head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; base `Основной` at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- F1 finding precision: GitHub.com documents `job.workflow_*` properties (announced 2026-09-03); they are allowed in step-level env but not listed for job-level env. The prior Worker used them in job-level env. Moved CALLEE_REPOSITORY / CALLEE_FILE_PATH / CALLEE_WORKFLOW_SHA into the validation step env.
+- Final blobs: Worker `04d63d815d2f7d15cfa80c932b614d559385ff0a`; boundary tests `9667f4cab3d9312425e6818fc1e8bc8fb5b3419c`; contract validator `5bc08d827b0fcbbcc1c3a036fd0dd201bdacff35`.
+- Exact-head CI: Pool Contract Validation run `42484039932` SUCCESS; Reusable Pool Worker Boundary Validation run `42484039940` SUCCESS; job `128741929176` confirms 9/9 tests passed. Intermediate failing runs due to malformed static assertions were inspected and corrected; final runs are on final head.
+- PR #37 remains OPEN/DRAFT/UNMERGED. Review identities remain same account `maxkorolskiy88-ship-it`; independent approval absent.
+- Runtime availability/non-empty values and actual caller/callee SHA behavior are NOT VERIFIED. Need read-only hosted identity probe, no dispatch/DSH/provider work.
+- Default branch legacy Supervisor still has `workflow_run` and `actions: write`; dispatch stays disabled. F2 and F3–F10 remain open/not qualified.
+- No secrets, credentials, providers, remote D1, deployment or paid resources touched.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement a read-only hosted identity probe with no dispatch; obtain independent review; then address F2 durable claim/fencing/receipt/finalizer/recovery.
+- GitHub context docs: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability and https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#job-context
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
