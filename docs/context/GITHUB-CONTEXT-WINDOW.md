@@ -673,3 +673,17 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - No code/workflow/config/secret/variable/ruleset/dispatch changes, no remote D1, worker, deployment or paid-resource operations.
 - Next: authorized independent review; implement and test F1/F2/task-wide claim/fencing/receipt/recovery; close F9 with locked dependency closure, reviewed lifecycle policy and synthetic credential-isolation tests; reconcile F10/F11. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next PR #29 F11 remediation — 2026-11-08
+
+- Report: [PR #29 F11 remediation and exact-head verification](../reports/2026-11-08-pr29-f11-remediation-and-verification.md), commit `ce69b0041025e49ee9810039f064ff7e08f52e94`, blob `1b0a49974660464e8be9023f5de3e8c641989e09`.
+- PR #29 branch `feat/quota-ledger-state-machine-2026-11-06`; base `Основной` at `64d2636d4500127e635c214ccfb722c6b3fcda80`; original audited head `34fc78921b16359d136db553d8a51b4a4716995d`; new head `576510b4df47008b212884df361306b7d848277d`.
+- F11 correction: shared eligibility predicate now validates active and new slots against qualification, credential, route, model and task billing allowlist. Invalid active/unknown slots remain capacity-consuming until durable lease release; empty allowlist fails closed.
+- Source commit/blob: `787af11a999fe0067adf49509561b47bd635650d` / `d45791b32571cca4ce4a6f92cec89c70ec296747`; test commit/blob: `576510b4df47008b212884df361306b7d848277d` / `26310fc17f819b06172f4d443d34e7f476028c33`.
+- Exact-head GitHub Actions run `42483338728`, job `128739794680`: COMPLETED / SUCCESS. Retrieved log confirms 43/43 Node tests passed, including new regression cases 30–33. Focused local synthetic harness 5/5 passed.
+- PR #29 remains OPEN/DRAFT/UNMERGED. Review remains CHANGES_REQUESTED from `maxkorolskiy88-ship-it`; independent reviewer/approval not present.
+- No secrets/credentials/provider requests, remote D1, dispatch, deployment or paid resources. F11 is fixed in PR branch only; no production runtime qualification.
+- Other F1/F2/F3/F4/F5/F6/F7/F8/F9/F10 remain open or not qualified. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
+- Next: independent authorized review of exact PR #29 head; then continue F1/F2 durable claim/lease/fencing/receipt/finalizer/recovery and close F9/F10.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
