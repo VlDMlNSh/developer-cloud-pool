@@ -71,3 +71,13 @@ No GitHub source code was changed in this pass; the scratch files above have not
 ## Next bounded action
 
 Extend the local-only fixture with a synthetic D1 binding and migration setup, then prove the atomic commit-then-timeout deduplication case and lease-generation fencing. Keep the proof branch isolated; only after these cases pass should the complete harness be committed and opened as a draft PR targeting PR #25's branch for exact-head CI. No deployment or Workflow adoption follows automatically.
+
+
+## Live GitHub and governance revalidation
+
+- Default branch HEAD at final re-read: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #25 remains OPEN/DRAFT at exact head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; runs `42228269689` and `42228269676` are COMPLETED/SUCCESS at that exact SHA. Review list empty.
+- PR #51 remains OPEN/DRAFT at `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`; exact-head runs/statuses/reviews returned empty. NOT VERIFIED.
+- Ruleset `26550182` is ACTIVE on default branch but requires zero approvals; CODEOWNERS and extra unattributed-change approvals are disabled. It does not enforce independent review.
+- Actions variable endpoint is not available through the approved read connector; live dispatch variable values remain NOT VERIFIED. No changes made.
+- Final proof branch HEAD `cceee5924c9994b58705e530beb74da6314fc0a6`; documentation branch HEAD `bdf5c044462d51fb1ea436d0aaa44f4155db600b`.
