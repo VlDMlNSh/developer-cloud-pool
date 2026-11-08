@@ -173,3 +173,10 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - PR #54 cumulative head updated `e1b7a526badf2dbfdbe013889a070affe238f653`; run `42536179023` / job `128900870199` test and artifact steps SUCCESS but run still IN_PROGRESS at final poll; overall NOT VERIFIED.
 - PR #51/#54 OPEN/DRAFT/UNMERGED; Issue #38 OPEN; dispatch fail-closed; hosted D1 not qualified; Contour A BLOCKED; Contour B DEFERRED.
 - Next: verify PR #54 terminal CI status; add fault-injection test for committed DB transaction + ambiguous caller response. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+### PR #54 CI completion correction — 2026-11-09
+
+- PR #54 exact head `e1b7a526badf2dbfdbe013889a070affe238f653`, run `42536179023`, job `128900870199`: COMPLETED / SUCCESS; all steps including Workers-runtime D1 tests, artifact upload and cleanup succeeded. Earlier IN_PROGRESS poll was transient.
+- PR #51 exact head `201ccb1282e4e1cd246d6587322ca9379bc166ca`, run `42536163699`, job `128900822479`: COMPLETED / SUCCESS.
+- Both PRs remain OPEN/DRAFT/UNMERGED; no hosted D1 qualification. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
