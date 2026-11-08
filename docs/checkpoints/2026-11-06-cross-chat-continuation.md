@@ -37,3 +37,7 @@ Latest 2026-11-08 follow-up: [PR #36/#37/#39 authorization composition audit](..
 
 Latest correction: [PR #39 stack graph/content/CI correction](../reports/2026-11-08-pr39-stack-graph-content-and-ci-correction.md). Although graph compare is 17 ahead / 1 behind, parent and child D1 validation workflow blobs are identical (`cb31bda...`) and PR #39's combined merge tree `77b3ce30...` passed run `42329993548`; do not synchronize/rebase solely to normalize graph. No merge authorization: independent review 0, remote D1 and lease/outbox runtime NOT QUALIFIED. Contour A BLOCKED.
 
+
+
+Latest pass: author-side pre-review of the integrated claim/lease/outbox threat model is documented in [2026-11-08 integrated claim protocol pre-review gap analysis](../reports/2026-11-08-integrated-claim-protocol-pre-review-gap-analysis.md). It is not independent review. PR #36/#37/#39 named exact-head CI remains SUCCESS on recorded heads; formal reviews remain 0. Issue #38 is an Issue, not PR. Implementation, remote D1 qualification and dispatch remain NOT RUN. Contour A BLOCKED; Contour B DEFERRED.
+
