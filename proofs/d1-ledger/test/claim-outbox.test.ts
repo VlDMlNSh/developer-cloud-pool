@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
-import { claimAndEnqueue } from "../src/claim-outbox.mjs";
+import { claimAndEnqueue, claimLogicalTask } from "../src/claim-outbox.mjs";
 
 const NOW = 1_800_000_000;
 const approval = {
@@ -28,6 +28,9 @@ async function seed(overrides = {}) {
 
 beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_task_approvals").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_tasks").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
@@ -128,5 +131,62 @@ describe("atomic D1 claim and transactional outbox", () => {
     expect(ledger.state).toBe("ready");
     expect(ledger.consumed_at).toBeNull();
     expect(claims.n).toBe(0);
+  });
+});
+
+
+describe("canonical task identity across independent approvals", () => {
+  const approvalFor = (approvalId: string, digest: string) => ({
+    ...approval, approvalId, envelopeDigest: digest.repeat(64)
+  });
+
+  it("attaches two independently consumed approvals to one task and one task-level outbox", async () => {
+    const first = approvalFor("approval-task-a", "c");
+    const second = approvalFor("approval-task-b", "d");
+    await seed(first);
+    await seed(second);
+
+    const results = await Promise.all([
+      claimLogicalTask(env.POOL_DB, first, NOW),
+      claimLogicalTask(env.POOL_DB, second, NOW)
+    ]);
+
+    expect(results.every((r) => r.decision === "TASK_CREATED_OR_ATTACHED")).toBe(true);
+    expect(results[0].taskKey).toBe(results[1].taskKey);
+    expect(results[0].outboxId).toBe(results[1].outboxId);
+    expect(results.every((r) => r.dispatch === false)).toBe(true);
+
+    const tasks = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_tasks").first();
+    const approvals = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_approvals").first();
+    const outbox = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_delivery_outbox").first();
+    expect(tasks.n).toBe(1);
+    expect(approvals.n).toBe(2);
+    expect(outbox.n).toBe(1);
+  });
+
+  it("preserves distinct task identities for a different target SHA", async () => {
+    const first = approvalFor("approval-task-sha-a", "e");
+    const second = { ...approvalFor("approval-task-sha-b", "f"), targetSha: "c".repeat(40) };
+    await seed(first);
+    await seed(second);
+
+    const [a, b] = await Promise.all([
+      claimLogicalTask(env.POOL_DB, first, NOW),
+      claimLogicalTask(env.POOL_DB, second, NOW)
+    ]);
+    expect(a.taskKey).not.toBe(b.taskKey);
+    const tasks = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_tasks").first();
+    expect(tasks.n).toBe(2);
+  });
+
+  it("returns the same task identity on an exact retry without creating another outbox", async () => {
+    const item = approvalFor("approval-task-retry", "a");
+    await seed(item);
+    const first = await claimLogicalTask(env.POOL_DB, item, NOW);
+    const retry = await claimLogicalTask(env.POOL_DB, item, NOW);
+    expect(first.taskKey).toBe(retry.taskKey);
+    expect(retry.decision).toBe("TASK_ALREADY_ATTACHED");
+    const outbox = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_delivery_outbox").first();
+    expect(outbox.n).toBe(1);
   });
 });
