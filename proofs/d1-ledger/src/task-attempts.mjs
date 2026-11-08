@@ -54,8 +54,8 @@ export async function createTaskAttempt(db, {
       return deny("ATTEMPT_POINTER_READBACK_MISMATCH");
     }
     return { decision: "ATTEMPT_CREATED", attemptId, attemptNumber, dispatch: false };
-  } catch (error) {
-    return deny(`ATTEMPT_CREATE_AMBIGUOUS:${String(error?.message || error).slice(0, 160)}`);
+  } catch {
+    return deny("ATTEMPT_CREATE_AMBIGUOUS");
   }
 }
 
@@ -104,11 +104,7 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
     `).bind(workerId, now + leaseSeconds, now, taskKey, now, resumable ? 1 : 0).run();
 
     if (result?.success !== true || !(result?.meta?.changes >= 1)) {
-      return deny(`ATTEMPT_NOT_LEASEABLE:${JSON.stringify({
-        success: result?.success, changes: result?.meta?.changes,
-        state: snapshot.state, attemptId: snapshot.current_attempt_id,
-        attemptStatus: snapshot.attempt_status, expiresAt: snapshot.lease_expires_at
-      })}`);
+      return deny("ATTEMPT_NOT_LEASEABLE");
     }
     const row = await db.prepare(`
       SELECT lease_generation, lease_expires_at, current_attempt_id, lease_attempt_id
@@ -124,8 +120,8 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
       generation: row.lease_generation, expiresAt: row.lease_expires_at,
       dispatch: false
     };
-  } catch (error) {
-    return deny(`ATTEMPT_LEASE_ACQUIRE_AMBIGUOUS:${String(error?.message || error).slice(0, 160)}`);
+  } catch {
+    return deny("ATTEMPT_LEASE_ACQUIRE_AMBIGUOUS");
   }
 }
 
