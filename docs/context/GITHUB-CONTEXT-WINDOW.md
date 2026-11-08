@@ -719,3 +719,19 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - PR #29 F11 remains fixed only in its draft branch; F2/F3/F4/F5/F6/F7/F8/F9/F10 remain open/not qualified. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define and run a safe, non-privileged runtime proof for reusable workflow context propagation and caller/callee SHA semantics; independently review PR #37. Do not enable dispatch or merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next PR #37 F1 context placement — 2026-11-08
+
+- Report: [PR #37 F1 context placement verification](../reports/2026-11-08-pr37-f1-context-placement-verification.md), commit `25735a9f2e2f0501d46639549b2f93c0138e54fc`, blob `e000161f02a032e553c20160a543b72ed7a80876`.
+- PR #37 exact head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, OPEN/DRAFT/UNMERGED.
+- F1 source correction: reusable Worker maps `job.workflow_repository`, `job.workflow_file_path`, `job.workflow_sha` in validation step-level env, not job-level env. Boundary test and contract validator reject job-level placement. GitHub official context reference documents these properties as step-accessible in reusable workflows: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts
+- Exact-head run `42484039940` Reusable Pool Worker Boundary Validation SUCCESS; job `128741929176` log confirms 9/9 tests passed and Supervisor syntax check passed. Pool Contract Validation run `42484039932` SUCCESS. These are static checks only; hosted runtime identity remains NOT VERIFIED.
+- Worker workflow blob `04d63d815d2f7d15cfa80c932b614d559385ff0a`; test blob `9667f4cab3d9312425e6818fc1e8bc8fb5b3419c`; validator blob `5bc08d827b0fcbbcc1c3a036fd0dd201bdacff35`.
+- PR #29 remains OPEN/DRAFT/UNMERGED at `576510b4df47008b212884df361306b7d848277d`; PR #36 at `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #39 at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. All remain drafts.
+- PR #37 reviews remain from `maxkorolskiy88-ship-it`, latest CHANGES_REQUESTED; independent approval NOT VERIFIED.
+- F1 source/static correction VERIFIED; runtime NOT VERIFIED. F2 durable claim-bound receipt/fencing remains OPEN; F3–F10 unresolved/not qualified except F11 pure planner correction on PR #29.
+- No live worker dispatch, provider/DSH request, secrets access, remote D1, deployment or paid resource.
+- Keep dispatch fail-closed. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define F2 durable claim ID, attempt/run binding, envelope digest, approval reference, generation/fencing token, and immutable execution receipt; add synthetic stale/duplicate/foreign completion tests before any runtime execution.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
