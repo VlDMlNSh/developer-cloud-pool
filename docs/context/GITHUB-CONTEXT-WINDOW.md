@@ -1601,3 +1601,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No dispatch, worker execution, secrets, provider/model calls, remote DB, deployment or resources. Runtime NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: compose A-only #36 → #39 → #40 → #49 merge tree; layer #50 or #51 separately and require PR-triggered exact merge-tree CI. Keep #52 out of Contour A and dispatch fail-closed.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — PR #50 exact merge-tree CI activation
+
+- Report: [PR #50 exact merge-tree CI qualification](../reports/2026-11-09-pr50-exact-merge-tree-ci-qualification.md), report commit `6197172c5e51400bbd0b78378f4ff712d906244f`.
+- Root cause: workflow `pull_request.branches` filters the PR base branch; it omitted PR #50's base branch `proof/immutable-task-attempts-audit-ci-2026-11-08`. Earlier push-only green runs did not qualify the PR merge tree.
+- Corrected workflow on #49 base branch: commit `b9067dc7d06245893cd4e208f6215438efe5ca64`, blob `78caf3b5333fef475c7f90f6a4f163eb52b38e17`. Corrected #50 head branch: commit/exact head `65233f57038a9996e4a6e939abde3642a33d467d`, blob `8891e212f3779e5f36222e0066ed21ba2eea5e49`.
+- PR #49 trigger run `42533086378` SUCCESS exact head `b9067dc7d06245893cd4e208f6215438efe5ca64`. PR #50 trigger run `42533097813` SUCCESS exact head `65233f57038a9996e4a6e939abde3642a33d467d`; push run `42533091887` also SUCCESS. Job steps incl. Workers-runtime tests and artifact upload all SUCCESS. PR #50 remains OPEN/DRAFT/UNMERGED; mergeable=true.
+- This is PR-triggered local Workers-runtime/Miniflare validation, not remote D1 qualification. PR #51 sibling still requires its own PR-triggered CI. Independent security review NOT RUN; remote D1 NOT RUN; F2 partial; no dispatch/secrets/provider calls/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: correct and verify PR #51's base-branch trigger, then assess the composed A-only lineage. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
