@@ -213,3 +213,10 @@
 - PR #54 cumulative branch updated to `e1b7a526badf2dbfdbe013889a070affe238f653`; run `42536179023`, job `128900870199`: test and artifact steps succeeded but final poll showed run IN_PROGRESS during cleanup; overall CI NOT VERIFIED.
 - Both PRs remain OPEN/DRAFT/UNMERGED. Local Workers-runtime only; remote D1/authority/quotas/recovery remain NOT QUALIFIED. Issue #38 OPEN; dispatch FAIL-CLOSED; PR #53 still split-write/non-CAS; Contour A BLOCKED; Contour B DEFERRED.
 - Next: confirm PR #54 exact-head run reaches terminal conclusion; then add fault-injection test for committed transaction with caller-observed ambiguous response and re-check the finalizer projection design. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+### PR #54 CI completion correction — 2026-11-09
+
+- Final recheck: PR #54 exact head `e1b7a526badf2dbfdbe013889a070affe238f653`, run `42536179023`, job `128900870199`, COMPLETED / SUCCESS. All steps including Workers-runtime D1 tests, artifact upload and cleanup succeeded. The earlier IN_PROGRESS status was transient and is superseded by this terminal result.
+- PR #51 exact head `201ccb1282e4e1cd246d6587322ca9379bc166ca`, run `42536163699`, job `128900822479`, COMPLETED / SUCCESS.
+- Both PRs remain OPEN/DRAFT/UNMERGED; CI validates local proof only, not hosted D1. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
