@@ -1,4 +1,5 @@
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
+const MAX_ATTEMPTS = 5;
 
 function deny(reason) {
   return { decision: "DENY", dispatch: false, reason };
@@ -16,15 +17,26 @@ export async function acquireTaskLease(db, taskKey, workerId, now, leaseSeconds)
     return deny("INVALID_LEASE_REQUEST");
   }
   try {
+    const exhausted = await db.prepare(`
+      UPDATE pool_tasks
+         SET state = 'dead', lease_owner = NULL,
+             lease_expires_at = NULL, updated_at = ?
+       WHERE task_key = ? AND attempt_count >= ?
+         AND (state = 'pending' OR (state = 'leased' AND lease_expires_at <= ?))
+    `).bind(now, taskKey, MAX_ATTEMPTS, now).run();
+    if (exhausted?.success === true && exhausted?.meta?.changes === 1) {
+      return deny("ATTEMPT_LIMIT_REACHED");
+    }
+
     const result = await db.prepare(`
       UPDATE pool_tasks
          SET state = 'leased', lease_owner = ?,
              lease_generation = lease_generation + 1,
              lease_expires_at = ?, attempt_count = attempt_count + 1,
              updated_at = ?
-       WHERE task_key = ?
+       WHERE task_key = ? AND attempt_count < ?
          AND (state = 'pending' OR (state = 'leased' AND lease_expires_at <= ?))
-    `).bind(workerId, now + leaseSeconds, now, taskKey, now).run();
+    `).bind(workerId, now + leaseSeconds, now, taskKey, MAX_ATTEMPTS, now).run();
     if (result?.success !== true || result?.meta?.changes !== 1) {
       return deny("TASK_NOT_LEASEABLE");
     }
