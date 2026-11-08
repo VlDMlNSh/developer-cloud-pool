@@ -14,3 +14,6 @@ Current branch heads:
 All three PRs have zero formal reviews and zero inline review threads. The local D1 consume and claim/outbox proofs are not integrated with the Supervisor/Worker path. PR #37 still relies on a non-CAS GitHub Issue label claim. No trusted issuer/owner model, signed approval verification, trusted clock, lease/fencing, outbox consumer, recovery protocol or remote D1 qualification has been accepted.
 
 Next bounded action: write a formal integrated claim/lease/outbox design decision and threat model; obtain independent security review before implementation or dispatch. No production dispatch/deployment.
+
+
+Latest pass: [integrated claim/lease/outbox design pass](../reports/2026-11-08-integrated-claim-lease-outbox-design-pass.md). The proposed protocol is documented in [integrated claim/lease/outbox threat model](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md). Design only; implementation, independent review and remote qualification NOT RUN. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed. Next: authorized independent review before implementation planning.
