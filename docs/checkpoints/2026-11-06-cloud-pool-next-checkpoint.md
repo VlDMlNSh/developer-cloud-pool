@@ -180,3 +180,12 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - PR #54 exact head `e1b7a526badf2dbfdbe013889a070affe238f653`, run `42536179023`, job `128900870199`: COMPLETED / SUCCESS; all steps including Workers-runtime D1 tests, artifact upload and cleanup succeeded. Earlier IN_PROGRESS poll was transient.
 - PR #51 exact head `201ccb1282e4e1cd246d6587322ca9379bc166ca`, run `42536163699`, job `128900822479`: COMPLETED / SUCCESS.
 - Both PRs remain OPEN/DRAFT/UNMERGED; no hosted D1 qualification. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
+
+
+## 2026-11-09 — D1 ambiguous finalization response recovery
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/30b1717757ddf3f261bb55b6082998bc122d1861/docs/reports/2026-11-09-d1-finalization-ambiguous-response-recovery.md
+- Added fault injection to PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145` and PR #54 head `ded780c6aeea6cdd88b253a2087692eecbbce7c7`: actual D1 statement commits, wrapper simulates lost response, replay at a fresh clock returns original completion time; one terminal audit event and completed task asserted.
+- PR #51 run `42536377720` / job `128901478596`: COMPLETED SUCCESS. PR #54 run `42536381713` / job `128901491911`: COMPLETED SUCCESS. Existing official Cloudflare Vitest plugin and Miniflare/workerd fixture reused.
+- Local deterministic fault-injection proof only; no real network or hosted D1 qualification. PR #51/#54 OPEN/DRAFT/UNMERGED; Issue #38 OPEN; PR #53 split-write/non-CAS risks remain; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
+- Next: design durable finalization intent/outbox + idempotent GitHub projection/recovery addressing PR #53 F2-R1/F2-R2 without broad Supervisor Contents:write. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
