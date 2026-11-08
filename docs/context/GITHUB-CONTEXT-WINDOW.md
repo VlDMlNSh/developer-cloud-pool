@@ -168,3 +168,15 @@
 - Exact-head run `42534388259` SUCCESS; formal reviews 0; review threads 0. Local contention proof VERIFIED; hosted real-backend contention NOT VERIFIED.
 - No branch rewrite, base change or merge. PR #54 remains OPEN/DRAFT/UNMERGED; dispatch fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED.
 - Next: resolve Issue #38's real-backend one-winner protocol under least-privilege constraints. No Cloudflare provisioning/secrets until Q0 governance/account gates pass; if no approved backend exists, record no-go and retain disabled dispatch.
+
+
+## Issue #38 backend candidate + Cloudflare Q0 requalification — 2026-11-09
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/7730c3251daa8ed6beca67a5754aada0bf8e1b9b/docs/reports/2026-11-09-issue38-backend-q0-requalification.md.
+- Current default branch remains `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`; Issue #38 OPEN. Open PRs #54/#53/#52/#51/#50/#49/#40/#39/#37 and others remain DRAFT/OPEN; no merge or acceptance in this pass.
+- Cloudflare read-only identity/account: one accessible standard account; account member list shows one accepted Super Administrator - All Privileges role. This is overprivileged for project runtime authority. Inventory: zero D1 databases, zero Durable Object namespaces, zero Worker scripts. Subscriptions endpoint 403 (OAuth lacks Billing Read/Billing Write); exact plan/card-free entitlement NOT VERIFIED. No billing profile/payment method inspected; no resources provisioned.
+- Current Cloudflare docs: D1 Free availability; 5M rows read/day, 100K rows written/day, 5GB SQL storage, 10 DBs. Free quota excess causes query errors until midnight UTC. D1 batch runs sequentially in one SQL transaction and rolls back on statement failure. SQLite Durable Objects provide global uniqueness per object ID and transactional strongly consistent storage, but introduce a new runtime/binding/state model.
+- Decision: retain existing D1 implementation as primary technical candidate for further LOCAL qualification; not selected/qualified for production. DO remains an alternative only if a concrete D1 limitation appears. Do not provision or deploy until account Free/card-free entitlement and dedicated least-privilege identity are established. Never use the broad Super Administrator identity for runtime authority.
+- Autonomous-First policy is adopted: no blanket external-review gate for routine iterations; later separated-role audits required after safe activation; no self-assigned ACCEPTED. Continue local test-first issuer provenance, authenticated owner identity, trusted clock, revocation, quota and recovery work.
+- Dispatch remains fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
