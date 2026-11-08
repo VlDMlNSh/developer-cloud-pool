@@ -17,3 +17,6 @@ Next bounded action: write a formal integrated claim/lease/outbox design decisio
 
 
 Latest pass: [integrated claim/lease/outbox design pass](../reports/2026-11-08-integrated-claim-lease-outbox-design-pass.md). The proposed protocol is documented in [integrated claim/lease/outbox threat model](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md). Design only; implementation, independent review and remote qualification NOT RUN. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed. Next: authorized independent review before implementation planning.
+
+
+Latest 2026-11-08 pass: Issue #38's required alternatives comparison was added to [integrated claim/lease/outbox threat model](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md), with report [durable claim alternatives review](../reports/2026-11-08-durable-claim-alternatives-review.md). Labels are rejected as authoritative CAS; dedicated state-repo refs are candidate-only; D1 remains preferred but unqualified. If neither backend passes real contention/recovery/security gates, dispatch remains disabled. Implementation, remote backend qualification and independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
