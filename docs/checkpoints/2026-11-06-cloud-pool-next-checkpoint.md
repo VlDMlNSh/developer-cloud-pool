@@ -585,3 +585,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Next: independent authorized review of PR #29 exact head; continue F1/F2 durable claim/lease/fencing/receipt/finalizer/recovery, then F9/F10.
 - Documentation branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Resume checkpoint — 2026-11-08 PR #37 F1 context-scope correction
+
+- Report: [PR #37 F1 context-scope correction](../reports/2026-11-08-pr37-f1-context-scope-correction.md).
+- PR #37 final head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; `job.workflow_*` values moved to validation step-level env because GitHub context availability allows `job` there, not at job-level env.
+- Exact-head CI: run `42484039932` Pool Contract Validation SUCCESS; run `42484039940` Reusable Pool Worker Boundary Validation SUCCESS; 9/9 boundary tests passed.
+- PR #37 remains OPEN/DRAFT/UNMERGED. Runtime values and caller/callee SHA behavior NOT VERIFIED; independent review absent.
+- Keep dispatch disabled. Default branch still has legacy `workflow_run` + `actions: write`. F2 and F3–F10 remain open/not qualified.
+- Next: design/read-only hosted identity probe, no dispatch/DSH/provider execution; then F2 durable claim/fencing/receipt/finalizer/recovery.
+- Documentation branch `docs/github-context-window-2026-11-06` remains unmerged; default branch unchanged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
