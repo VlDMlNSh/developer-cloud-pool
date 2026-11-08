@@ -72,3 +72,25 @@ BEGIN
   WHERE EXISTS (SELECT 1 FROM pool_task_approvals WHERE approval_id = NEW.approval_id)
   ON CONFLICT(task_key) DO NOTHING;
 END;
+
+-- Preserve the original per-approval proof path for historical regression tests.
+CREATE TRIGGER IF NOT EXISTS pool_approval_consumed_legacy_claim_outbox
+AFTER UPDATE OF state ON pool_approval_ledger
+WHEN OLD.state = 'ready'
+ AND NEW.state = 'consumed'
+ AND OLD.consumed_at IS NULL
+ AND NEW.consumed_at IS NOT NULL
+ AND NEW.task_key IS NULL
+BEGIN
+  INSERT INTO pool_task_claims (
+    approval_id, claim_id, envelope_digest, status, created_at
+  ) VALUES (
+    NEW.approval_id, NEW.approval_id, NEW.envelope_digest, 'pending', NEW.consumed_at
+  );
+  INSERT INTO pool_task_outbox (
+    outbox_id, approval_id, event_type, envelope_digest, status, created_at
+  ) VALUES (
+    'pool-task:' || NEW.approval_id, NEW.approval_id,
+    'pool.task.claimed', NEW.envelope_digest, 'pending', NEW.consumed_at
+  );
+END;
