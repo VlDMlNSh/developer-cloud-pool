@@ -415,9 +415,12 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       taskKey, attemptId: "attempt-1", workerId: "worker-final",
       generation: lease.generation, status: "succeeded",
       resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
-      terminalReason: "completed", now: NOW + 3
+      terminalReason: "completed", now: NOW + 30
     });
-    expect(replay).toMatchObject({ decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded" });
+    expect(replay).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
 
     const conflictingReplay = await finalizeTaskAttempt(env.POOL_DB, {
       taskKey, attemptId: "attempt-1", workerId: "worker-final",
