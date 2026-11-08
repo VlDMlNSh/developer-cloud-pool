@@ -230,3 +230,13 @@
 - Reused existing official `@cloudflare/vitest-plugin@1.4.7` and local Miniflare/workerd fixture; no new framework/runtime. This verifies local deterministic fault injection only, not a real network partition or hosted D1.
 - PR #51/#54 remain OPEN/DRAFT/UNMERGED. Remote D1 and least-privilege authority NOT QUALIFIED. Issue #38 OPEN; PR #53 split-write/non-CAS remains blocked. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: audit and design a durable finalization intent/outbox plus idempotent GitHub projection and recovery path to address PR #53 F2-R1/F2-R2 without granting broad Contents:write to Supervisor. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## Durable finalization outbox design — 2026-11-09
+
+- Design record: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/architecture/DURABLE-FINALIZATION-OUTBOX-DESIGN.md
+- Refreshed PR #53 head `b8a253f06418841d5f0250c9fd550bf3247db040`, Issue #38 OPEN, PR #51 head `32c88e50e173e6b19bc6c61723ab6479bc166ca` (verify actual PR head on API), PR #54 head `ded780c6aeea6cdd88b253a2087692eecbbce7c7`. Default branch `Основной` HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; branch protection endpoint returned 403 to this integration, so protection NOT VERIFIED.
+- Audited PR #53 runner: GitHub label PATCH + readback + comment POST is a split write, without durable intent/recovery; GitHub labels are not CAS. Existing local D1 attempt terminal trigger atomically records terminal audit event and task projection. Existing local transactional outbox precedent exists for task claim delivery.
+- Wrote design-only proposal: authoritative conditional-write ledger + transactional projection outbox; GitHub labels/comments are projections. Comment delivery explicitly at-least-once with deterministic marker/reconciliation, not exactly-once. Do not grant current Supervisor broad Contents:write. D1 remains candidate only, not production-selected or qualified.
+- No code, workflows, permissions, secrets, deployments, dispatch, or remote resources changed. F2-R1/R2 NOT FIXED in PR #53. Issue #38 OPEN; PR #53 OPEN/DRAFT/UNMERGED; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: if design is accepted as a bounded proof direction, implement isolated D1 projection-outbox schema and lease/reconcile adapter with fault-injection tests on existing proof branch; do not connect it to production workflows or enable dispatch. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
