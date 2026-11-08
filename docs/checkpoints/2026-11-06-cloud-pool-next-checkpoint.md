@@ -549,3 +549,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Keep dispatch fail-closed. Do not merge, deploy, provision remote D1 or run Worker/DSH/provider workloads.
 - Next: secure authorized independent review of contract/threat model; then implement F1/F2/task-wide uniqueness/fencing/receipt and run exact-SHA regression. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Resume checkpoint — 2026-11-08 default-versus-PR37 boundary recheck
+
+- Latest report: [Default-branch versus reusable Worker boundary recheck](../reports/2026-11-08-default-vs-pr37-boundary-recheck.md).
+- Default branch `Основной` remains at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; legacy Supervisor workflow still declares `workflow_run` and `actions: write`. Dispatch variable was not read; keep dispatch disabled.
+- PR #37 exact target head `5587a4e013507b5be330fd0c49ce1fc836faa946`; runs `42284051309` and `42284051311` SUCCESS for bounded static/contract tests only.
+- F1 Worker job-level `job.workflow_*` context use remains unresolved. F2 label-only Finalizer remains unresolved.
+- Reviews #36/#37/#39 all come from `maxkorolskiy88-ship-it`; no APPROVED review or second reviewer identity. Independent authority NOT VERIFIED.
+- Docs branch `docs/github-context-window-2026-11-06` is still an unmerged working branch; the default branch has not been modified.
+- Keep dispatch fail-closed. Next: obtain independent authorized review; then implement and exact-SHA test F1, task-wide claim uniqueness, lease/fencing, immutable receipt and idempotent Finalizer. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
