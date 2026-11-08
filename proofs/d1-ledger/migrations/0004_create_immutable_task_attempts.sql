@@ -118,6 +118,37 @@ BEGIN
   );
 END;
 
+
+CREATE TRIGGER pool_attempts_guard_terminal
+BEFORE UPDATE OF status ON pool_attempts
+WHEN NEW.status IN ('succeeded', 'failed', 'abandoned')
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (
+    SELECT 1 FROM pool_tasks t
+     WHERE t.task_key = NEW.task_key
+       AND t.current_attempt_id = NEW.attempt_id
+       AND t.lease_attempt_id = NEW.attempt_id
+       AND t.state = 'leased'
+       AND t.lease_generation = NEW.lease_generation
+       AND t.lease_owner IS NOT NULL
+       AND t.lease_expires_at > NEW.completed_at
+  ) THEN RAISE(ABORT, 'ATTEMPT_FINALIZATION_NOT_FENCED') END;
+END;
+
+CREATE TRIGGER pool_attempts_guard_indeterminate
+BEFORE UPDATE OF status ON pool_attempts
+WHEN NEW.status = 'indeterminate'
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (
+    SELECT 1 FROM pool_tasks t
+     WHERE t.task_key = NEW.task_key
+       AND t.current_attempt_id = NEW.attempt_id
+       AND t.state = 'leased'
+       AND t.lease_generation = NEW.lease_generation
+       AND t.lease_expires_at <= NEW.indeterminate_at
+  ) THEN RAISE(ABORT, 'ATTEMPT_NOT_EXPIRED') END;
+END;
+
 CREATE TRIGGER pool_attempts_terminal_projection
 AFTER UPDATE OF status ON pool_attempts
 WHEN NEW.status IN ('succeeded', 'failed', 'abandoned')
