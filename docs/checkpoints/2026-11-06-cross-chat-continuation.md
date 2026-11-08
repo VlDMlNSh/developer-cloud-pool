@@ -33,3 +33,7 @@ Latest 2026-11-08 follow-up: [PR #36/#37/#39 authorization composition audit](..
 
 2026-11-08 branch synchronization update: [branch provenance audit](../reports/2026-11-08-pr36-pr37-pr39-branch-provenance-and-stack-sync-audit.md). PR #36 live branch resolves to `e11fc90e50bd20b166207af64551c49cfa80ffb4`; its PR body head `7571f82...` is stale. PR #37 current head `5587a4e...`. PR #39 `ecc7193...` is based at `9ef7e4a...` and is 17 ahead/0 behind that base, but diverges from current PR #36 parent `e11fc90...` by 17 ahead/1 behind; the missing parent commit only updates D1 validation workflow push triggers. All named exact-head CI runs succeeded at their recorded SHAs, but no formal reviews or inline threads exist. Independent security review NOT RUN. No dispatch/config/code/deployment changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: independent review, then synchronize PR #39 to current parent and rerun exact-head CI.
 
+
+
+Latest correction: [PR #39 stack graph/content/CI correction](../reports/2026-11-08-pr39-stack-graph-content-and-ci-correction.md). Although graph compare is 17 ahead / 1 behind, parent and child D1 validation workflow blobs are identical (`cb31bda...`) and PR #39's combined merge tree `77b3ce30...` passed run `42329993548`; do not synchronize/rebase solely to normalize graph. No merge authorization: independent review 0, remote D1 and lease/outbox runtime NOT QUALIFIED. Contour A BLOCKED.
+
