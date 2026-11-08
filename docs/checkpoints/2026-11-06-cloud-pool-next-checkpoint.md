@@ -131,3 +131,14 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - No branch rewrite, base change, merge, provisioning, secret access or dispatch. PR #54 OPEN/DRAFT/UNMERGED. Issue #38 OPEN. Dispatch fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED.
 - Next: compare permitted real-backend claim primitives for Issue #38 with least-privilege controls. Cloudflare Q0 still blocked; if no already-authorized backend is available, formalize no-go and keep both dispatch gates disabled.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-09 — Issue #38 backend candidate + Cloudflare Q0 requalification
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/7730c3251daa8ed6beca67a5754aada0bf8e1b9b/docs/reports/2026-11-09-issue38-backend-q0-requalification.md.
+- Cloudflare read-only: one accessible standard account, one accepted Super Administrator member (too broad for runtime); zero D1 databases, zero DO namespaces, zero Worker scripts. Subscription GET 403 due to absent Billing Read/Billing Write. Plan/card-free eligibility NOT VERIFIED. No billing profile/payment method inspected and no resources created.
+- Candidate decision: keep D1 as primary candidate for local qualification due to existing code and atomic SQL batch transaction semantics. Durable Objects SQLite has global uniqueness/strong transactional storage and Free availability, but is a new runtime/binding/state model; retain as alternative only if a concrete D1 limitation is shown. Neither remote backend exists or is qualified.
+- Public Free quotas reviewed: D1 5M row reads/day, 100K row writes/day, 5GB, 10 databases; over-limit queries fail until daily reset. No paid fallback.
+- Autonomous-First policy adopted: no blanket external review for each iteration; separated-role audits after safe activation; no self-acceptance. Continue local test-first issuer/identity/trusted-clock/revocation/quota/recovery work.
+- Dispatch fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED. No provisioning, secrets, permission changes, dispatch or deployment.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
