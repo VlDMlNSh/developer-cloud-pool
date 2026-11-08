@@ -503,3 +503,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - F2 Finalizer binding remains unresolved. Ruleset 26550182 requires zero approvals; independent review is not enforced. Live dispatch gates NOT VERIFIED.
 - Next: genuinely independent authorized reviewer; remediate F1/F2; agree unified issuer/claim/lease/outbox/finalizer/recovery contract; enforce independent approval; then separately qualify remote D1 and integrated runtime/UI/routing/secrets/persistence. Dispatch/deployment remain prohibited until gates pass.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Live /next recheck — 2026-11-08
+
+- Latest reconciliation report: [independent review reconciliation](../reports/2026-11-08-independent-review-reconciliation.md), appended live PR/F1/F2 read-back; report commit `73ccdec36df882b3c94dfe7013feeae6385acd6e`, blob `970e924656f75b97bfbf887a2c5e3e6ca02dcc5f`.
+- Live PR metadata: #36 OPEN/DRAFT head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; #37 OPEN/DRAFT head `5587a4e013507b5be330fd0c49ce1fc836faa946`; #39 OPEN/DRAFT head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. All UNMERGED. PR #36 body contains stale head references; trust live PR metadata.
+- Exact-head named CI re-read: #36 `42329438308`/`42329438351` SUCCESS; #37 `42284051311`/`42284051309` SUCCESS; #39 `42329993548` SUCCESS. This does not establish remote D1 or production runtime qualification.
+- Reviews: #36 three COMMENTED; #37 two CHANGES_REQUESTED + one COMMENTED; #39 three COMMENTED. All from `maxkorolskiy88-ship-it`; no APPROVED and no second reviewer. Independence/authority NOT VERIFIED.
+- F1 confirmed in Worker blob `4f57e8eef4a40d14b8d1df467cfac07e39e490a2`: job-level env reads `job.workflow_repository/file_path/sha`; runtime context availability not proven. F2 confirmed in Supervisor blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`: Finalizer checks `pool:claimed` only and does not bind result to immutable claim/envelope, worker run, generation/attempt or fencing token. Both OPEN.
+- No code/config/secret/variable/ruleset writes, dispatch, production resource, deployment, Worker/DSH/provider execution.
+- Next: formalize immutable execution receipt/claim protocol, then implement/test F1/F2 on a dedicated branch; independently obtain authorized reviewer and governance approval enforcement. Keep dispatch fail-closed.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
