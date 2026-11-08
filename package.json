@@ -4,14 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "check": "node --check src/index.js && node --check tests/api.test.js && node --check web/jarvis-dashboard/app.js",
+    "check": "node --check src/index.js && node --check tests/api.test.js && node --check web/jarvis-dashboard/app.js && node --check src/attempt-ledger.js && node --check tests/attempt-ledger.vitest.js",
     "test": "node --test",
+    "test:workflow": "vitest run --config vitest.config.js",
     "validate:ui": "node scripts/validate-jarvis-dashboard.mjs"
   },
   "dependencies": {
     "hono": "4.13.16"
   },
   "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.6.0",
+    "vitest": "4.1.12",
     "wrangler": "4.158.0"
   }
 }
