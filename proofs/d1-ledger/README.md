@@ -42,3 +42,17 @@ Final validation note: D1 proof CI completed successfully with 13/13 tests on th
 
 - Hardening pass: task-key binding mismatch now raises a SQLite abort inside the approval-consumption trigger, rolling back the ledger transition rather than leaving a consumed unattached approval. Lease acquisition is capped at five attempts; an expired/pending exhausted task transitions to `dead` and its pending outbox row is dead-lettered in the same database trigger transaction.
 - Added tests for conflict rollback and five-attempt dead-letter behavior. Treat these as pending validation until CI runs on the resulting exact head.
+
+
+## Immutable logical-task attempt lifecycle (experimental)
+
+Migration `0004_create_immutable_task_attempts.sql` and `src/task-attempts.mjs` add an isolated local proof for immutable execution attempts, separate from lease fencing:
+
+- Each execution attempt has an immutable `attempt_id`, per-task `attempt_number`, input digest and unique execution idempotency key.
+- Lease generation remains a fencing counter on the logical task. Lease takeover does not increment `attempt_number` or legacy `attempt_count`.
+- An expired lease does not prove the previous executor stopped. Takeover is denied unless the caller explicitly declares the attempt resumable; an indeterminate attempt blocks both blind takeover and retry.
+- Successful finalization, failed-attempt closure and task projection are committed through the same D1 statement/trigger transaction. A new retry creates a distinct attempt while retaining the old terminal row.
+- Attempt events are append-only and locally persisted. They are not yet a production audit pipeline and do not prove exactly-once external side effects.
+- All adapter responses retain `dispatch: false`. No provider, model, GitHub dispatch, secret, remote D1, or deployed Worker integration is present.
+
+This is a proof extension only. The previous `attempt_count` field remains a legacy lease-acquisition counter for the older adapter; it is not backfilled into fabricated attempt history. The new adapter uses `attempt_number` and `pool_attempts`. Do not mix the old `task-lease.mjs` API with the new attempt lifecycle when assessing retry semantics.
