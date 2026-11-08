@@ -2,13 +2,16 @@ name: Reusable Pool Worker Boundary Validation
 
 on:
   push:
-    branches: [feat/reusable-pool-worker-boundary-2026-11-06]
+    branches: [feat/reusable-pool-worker-boundary-2026-11-06, fix/pr37-f2-finalizer-fencing-2026-11-08]
   pull_request:
     branches: [Основной]
     paths:
       - ".github/workflows/pool-worker.yml"
       - ".github/workflows/pool-supervisor.yml"
       - "scripts/pool-supervisor.mjs"
+      - "scripts/pool-finalizer.mjs"
+      - "scripts/pool-finalizer-runner.mjs"
+      - "tests/security/pool-finalizer-fencing.test.mjs"
       - "tests/security/reusable-pool-worker-boundary.test.mjs"
       - ".github/workflows/reusable-pool-worker-boundary-validation.yml"
 
@@ -38,3 +41,5 @@ jobs:
         run: node --check scripts/pool-supervisor.mjs
       - name: Run authorization boundary tests
         run: node --test tests/security/reusable-pool-worker-boundary.test.mjs
+      - name: Run finalizer fencing adversarial tests
+        run: node --test tests/security/pool-finalizer-fencing.test.mjs
