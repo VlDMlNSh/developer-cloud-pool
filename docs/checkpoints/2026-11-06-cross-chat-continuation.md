@@ -20,3 +20,6 @@ Latest pass: [integrated claim/lease/outbox design pass](../reports/2026-11-08-i
 
 
 Latest 2026-11-08 pass: Issue #38's required alternatives comparison was added to [integrated claim/lease/outbox threat model](../architecture/2026-11-08-integrated-claim-lease-outbox-threat-model.md), with report [durable claim alternatives review](../reports/2026-11-08-durable-claim-alternatives-review.md). Labels are rejected as authoritative CAS; dedicated state-repo refs are candidate-only; D1 remains preferred but unqualified. If neither backend passes real contention/recovery/security gates, dispatch remains disabled. Implementation, remote backend qualification and independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+Latest 2026-11-08 pass: [D1 Free-tier feasibility and PR #27 recheck](../reports/2026-11-08-d1-free-tier-feasibility-and-pr27-recheck.md). Published Workers Free/D1 limits are documented, but account-specific entitlement remains NOT VERIFIED. PR #27 exact-head CI NOT VERIFIED; independent review NOT RUN. D1 remains preferred candidate only, not production-selected or qualified. No remote DB, implementation, dispatch or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: authorized independent architecture/security review before backend qualification.
