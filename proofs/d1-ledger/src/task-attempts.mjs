@@ -50,8 +50,8 @@ export async function createTaskAttempt(db, {
       return deny("ATTEMPT_POINTER_READBACK_MISMATCH");
     }
     return { decision: "ATTEMPT_CREATED", attemptId, attemptNumber, dispatch: false };
-  } catch {
-    return deny("ATTEMPT_CREATE_AMBIGUOUS");
+  } catch (error) {
+    return deny(`ATTEMPT_CREATE_AMBIGUOUS:${String(error?.message || error).slice(0, 160)}`);
   }
 }
 
