@@ -7,7 +7,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 ## Current GitHub refs
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
-- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest synchronized commit `52bbec34e3841fb7ad362466dad7532edf9a7415`.
+- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest synchronized commit pending final synchronization; previous `d1b5d1c045486dfb854dde81bbab0414b0dbe6dd`.
 - Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only commits: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and latest `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
 - Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; current head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and `c430fe4beecf93a20052f0c3efedb5f8539e4faa` exact-head CI SUCCESS (runs `42506472721`, `42506744722` and `42507524428`).
 - Latest explicit Workflow restart report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
@@ -63,6 +63,16 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 - Exact-head CI run `42507524428`, job `128813275338`, SUCCESS on report SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
 - This verifies local recovery for one persisted-sleep scenario only; it is not hosted Cloudflare qualification.
 
+## Hosted Cloudflare account-level qualification plan — 2026-11-08
+
+- Plan: https://github.com/VlDMlNSh/developer-cloud-pool/blob/67fd2ef1af5fc577c045d4ecce68e9b94959c82e/docs/qualification/CLOUDFLARE-ACCOUNT-LEVEL-QUALIFICATION-PLAN-2026-11-08.md.
+- Plan commit `67fd2ef1af5fc577c045d4ecce68e9b94959c82e`; file blob `ae9d7de65e82f438a6b000b34237aaa149f64159`.
+- Defines gated Q0 read-only preflight and Q1-Q7 disposable hosted qualification for D1 schema/invariants, Workflow duplicate/retry/sleep behavior, bounded concurrency, retention/recovery, security and teardown.
+- Reuses Cloudflare Workers + Workflows + D1 and official Workers Vitest/Miniflare test harness; no alternative runtime or custom engine introduced.
+- Current official docs Free limits: Workflows 100,000 executions/day, 100 concurrent running instances, 100,000 queued instances, 3-day completed-state retention, 1 MiB event payload, 100 MB state per instance, 10 ms active CPU/step. D1 Free: 10 databases/account, 500 MB/database, 5 GB account storage, 7-day Time Travel, 50 read subrequests/Worker invocation. Account quota must be checked at Q0; published limits do not prove remaining account capacity.
+- No Cloudflare account API operation or resource creation was performed. No remote D1, deployment, secret access, provider/model call, dispatch or paid action. Plan is NOT AUTHORIZED FOR PROVISIONING / NOT EXECUTED.
+- Exact-head CI for plan commit `67fd2ef1af5fc577c045d4ecce68e9b94959c82e` was not found in the Actions inventory; CI NOT VERIFIED.
+
 ## Remaining limitations
 
 - Regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, arbitrary external side-effect idempotency and authority bridge remain NOT VERIFIED. Completed-instance persistence is VERIFIED in two independent local repetitions; in-progress sleep recovery is VERIFIED in one controlled local process-recreation scenario.
@@ -75,7 +85,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## Next bounded action
 
-Completed-instance Workflow/D1 persistence is VERIFIED in two independent local repetitions, and in-progress persisted-sleep recovery is VERIFIED in one controlled local process-recreation scenario. Next, define a Cloudflare account-level qualification plan for real D1/Workflow semantics, interruption, retries, duplicate creation and receipt idempotency. Do not deploy, enable remote bindings or access secret values until governance/authorization gates are separately verified. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
+Completed-instance Workflow/D1 persistence is VERIFIED in two independent local repetitions, and in-progress persisted-sleep recovery is VERIFIED in one controlled local process-recreation scenario. Hosted qualification plan is published. Next: Q0 read-only account/plan/resource preflight only after governance and account-scope gates are available. Do not provision, deploy, enable remote bindings or access secret values until all hard-stop gates pass. Continue reconciliation integration only after PR #51's full migration chain is checked against the exact base. No authority resolver or retries until issuer/capability contract is approved.
 
 ## Canonical MediaHub map
 
