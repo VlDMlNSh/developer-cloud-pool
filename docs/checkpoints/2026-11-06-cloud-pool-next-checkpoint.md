@@ -105,7 +105,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 
 ## Next bounded action
 
-Issuer/capability source reconciliation confirms a P0 governance gap. MH-12 and Compute Wire Protocol v1 are useful normative sources but do not prove an implemented Cloud Pool issuer/key/revocation lifecycle. PR #51 only persists pending reconciliation work. Next: obtain the governance-owned Cloud Pool ↔ MediaHub issuer/capability contract decision. Do not implement resolver, retry, lease release, terminalization or dispatch before that decision. Keep PR #51/#52 Draft and unmerged; independent review NOT RUN. Hosted Cloudflare Q0 remains blocked by governance/account-scope gates.
+Correction: MediaHub Wave 486 already selected the owner-directed target (WB-05 Option A dedicated Security Issuer Authority; DEC-DEV-02 Option C preserved). Wave 487 is an amended format-neutral contract candidate, still DRAFT / NOT ACCEPTED / NOT IMPLEMENTED. Wave 528 records a recommended Identity/Protocol/Trust/Audit ADR direction, not an accepted ADR. Next: create that separate ADR candidate on a child documentation branch from PR #600 head `05a873e82760d63c8b26dc496b43d3309f4cfbf9`; retain R-06 named operational ownership/retention and KMS/audit sink qualification as blockers. PR #51 remains a pending-only reconciliation queue; do not implement resolver/retry/lease release/terminalization/dispatch. PR #51/#52 independent review NOT RUN. Hosted Cloudflare Q0 blocked by governance/account-scope gates.
 
 ## Canonical MediaHub map
 

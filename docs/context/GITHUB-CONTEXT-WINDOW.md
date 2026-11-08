@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — issuer/capability contract gap confirmed; no resolver authorized\n**Latest synchronized Context Window/checkpoint snapshot:** `4501a55f1a67cf793ead691115844db73a5368f7`; docs branch remains unmerged/noncanonical.
+**Updated:** 2026-11-08 — corrected issuer-governance crosswalk; Wave 486 decisions exist, Wave 487 remains draft\n**Latest synchronized Context Window/checkpoint snapshot:** `c8d43a9284124492687f5b12d5dfed48e7a9ab14`; docs branch remains unmerged/noncanonical.
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
@@ -78,6 +78,17 @@
 - Exact-head GitHub Actions run `42507524428`, job `128813275338`: COMPLETED / SUCCESS on exact SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; every step passed, including Cloudflare Workflow and D1 local proof.
 - The preliminary 25-second trial was excluded because it completed before termination; only the 60-second controlled trial is counted.
 
+## A0 issuer governance correction and Cloud Pool crosswalk — 2026-11-08
+
+- Corrective report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/COMMIT/docs/reports/2026-11-08-a0-issuer-governance-cloud-pool-crosswalk.md.
+- Correction: prior Cloud Pool report understated existing governance work. Wave 486 already selected owner-directed WB-05 Option A (dedicated Security Issuer Authority) and preserves owner-approved DEC-DEV-02 Option C. This is a selected target disposition, not normative acceptance or deployed authority.
+- MediaHub PR #599 remains OPEN/DRAFT/UNMERGED at `824bb2568b2ac8bb3dceb3608366668e99bab95e`; decision blob `13e6745463dbc05a7c188423bb45ffb2b210c789`.
+- MediaHub PR #600 remains OPEN/DRAFT/UNMERGED at `05a873e82760d63c8b26dc496b43d3309f4cfbf9`; amended Wave 487 contract blob `1200d343139c8e67a826902b3ade09d4987c537d`. Requester provenance correction Wave 524 blob `adc77565e502dd47ccdfa93c96cb237fcc073f5e`.
+- Wave 528 PR #600 comment contains phase-1 ADR recommendations (GitHub OIDC workload authentication, JWS candidate, RFC 8785 JCS digest, managed KMS/HSM interface, PostgreSQL authoritative state/outbox, separate audit sink). These are recommendations, not accepted ADR. R-06 operational ownership/retention and concrete products remain open.
+- Crosswalk confirms PR #51 migration 0005 is only a pending indeterminate-attempt queue. Its input digest, attempt ID and lease generation are not issuer proof, requester authorization, revocation freshness or A0 ingress acceptance. Keep `dispatch: false`; no resolver/retry/terminalization.
+- Cloud Pool PR #51 exact-head CI run `42495716401` SUCCESS; PR #52 run `42507524428` SUCCESS. PR #51/#52 formal reviews = 0; independent review NOT RUN. MediaHub PR #600 exact-head CI runs = 0, formal reviews = 0, threads = 0. No dispatch, secret read, provider call, remote deployment or merge.
+- Next: create a separate source-pinned Identity/Protocol/Trust/Audit ADR candidate on a child documentation branch from current PR #600 head; do not reopen already selected Wave 486 decisions. Keep unresolved R-06, KMS/audit service selection and independent A3 review as hard gates.
+
 ## Issuer/capability contract source review — 2026-11-08
 
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/e06c82751f69c95afcda17f27b6551da580420ac/docs/reports/2026-11-08-issuer-capability-contract-source-review.md.
@@ -121,9 +132,10 @@
 
 ## Next bounded actions
 
-1. Obtain the governance-owned issuer/capability contract decision for the Cloud Pool ↔ MediaHub compute boundary. Do not design or implement resolver, retry, lease release or terminalization before the ten unresolved contract topics in the latest report are settled.
-2. Keep PR #51 and PR #52 OPEN / DRAFT / UNMERGED; independent review remains NOT RUN.
-3. Hosted Cloudflare Q0 remains blocked until governance and account-scope gates are available. No provisioning, remote D1, secret access or deployment.
+1. Create the separate A0 Identity / Protocol / Trust / Audit ADR candidate on a child documentation branch from MediaHub PR #600 exact head `05a873e82760d63c8b26dc496b43d3309f4cfbf9`, reusing Wave 528 recommendations without treating them as accepted decisions. Keep R-06 named operational ownership/retention and KMS/audit service qualification as blockers.
+2. Obtain independent A3 review of the exact amended Wave 487 contract and ADR before canonical schema/protocol implementation.
+3. Keep Cloud Pool PR #51/#52 OPEN / DRAFT / UNMERGED; independent review NOT RUN. Keep reconciliation queue pending-only and `dispatch: false`.
+4. Hosted Cloudflare Q0 remains blocked until governance and account-scope gates are available. No provisioning, remote D1, secret access or deployment.
 
 ## Canonical source links
 
