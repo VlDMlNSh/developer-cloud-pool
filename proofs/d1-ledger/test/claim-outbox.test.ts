@@ -30,6 +30,8 @@ async function seed(overrides = {}) {
 
 beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
@@ -38,6 +40,8 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DELETE FROM pool_task_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_events_no_update BEFORE UPDATE ON pool_attempt_events BEGIN SELECT RAISE(ABORT, 'ATTEMPT_EVENTS_APPEND_ONLY'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_events_no_delete BEFORE DELETE ON pool_attempt_events BEGIN SELECT RAISE(ABORT, 'ATTEMPT_EVENTS_APPEND_ONLY'); END").run();
   await seed();
 });
 
