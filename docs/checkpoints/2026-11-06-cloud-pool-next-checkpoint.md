@@ -163,3 +163,13 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - Finding D1-FINALIZE-REPLAY-01: replay branch requires persisted `completed_at === now`; existing test reuses exact timestamp. Later retry with a fresh timestamp is untested and may be denied. Define replay identity independent of retry clock; return original stored timestamp; add NOW+30 replay and lost-response tests. Treat as MEDIUM test gap / plausible defect pending test.
 - PR #50/#51 OPEN/DRAFT; PR #53 label finalizer still split-write/non-CAS. Issue #38 OPEN; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-09 — D1 finalization replay clock-independence fix
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/eb758912c250ed2c96369221213ee699fff14d50/docs/reports/2026-11-09-d1-finalization-replay-clock-independence-fix.md
+- PR #51 updated head `201ccb1282e4e1cd246d6587322ca9379bc166ca`; exact-head CI `42536163699` / job `128900822479` COMPLETED SUCCESS.
+- Removed retry-clock equality from exact terminal replay. Replay compares terminal payload, actor, generation and immutable audit event, then returns original `completedAt`. Regression test: initial NOW+3, replay NOW+30, original timestamp retained; conflicting replay denied.
+- PR #54 cumulative head updated `e1b7a526badf2dbfdbe013889a070affe238f653`; run `42536179023` / job `128900870199` test and artifact steps SUCCESS but run still IN_PROGRESS at final poll; overall NOT VERIFIED.
+- PR #51/#54 OPEN/DRAFT/UNMERGED; Issue #38 OPEN; dispatch fail-closed; hosted D1 not qualified; Contour A BLOCKED; Contour B DEFERRED.
+- Next: verify PR #54 terminal CI status; add fault-injection test for committed DB transaction + ambiguous caller response. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
