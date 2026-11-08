@@ -1357,3 +1357,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489375654
 - Updated report `docs/reports/2026-11-08-generation-fenced-task-lease-proof.md`, commit `0dbf862bc6e06978125bf1199d4376188c295e8c`.
 - PR #40 remains OPEN/DRAFT/UNMERGED and stacked on PR #39. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-08 — Exact-head CI verification for task identity + fenced lease proof
+
+- Authoritative update supersedes earlier notes saying PR #40 CI was NOT VERIFIED / tests NOT RUN.
+- Draft PR #40 exact checked head: `84e9b98a249924846ab29debdb7d32608d87e77c`; base remains PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, not default.
+- Workflow run `42489375654`: Isolated D1 Ledger Proof; completed / success on exact PR #40 head.
+- Job `Local Workers-runtime D1 adversarial tests`: completed / success. Workflow steps include pinned Node.js, npm ci, syntax check and npm test.
+- Artifact `d1-ledger-proof-package-lock`, digest `sha256:2f824d07fb74d06beb80fc8fdbfcfe3185231921366c72a33176288f3ee2fc16`, size 18,253 bytes.
+- PR #40 has no review submissions and no inline review threads; CI success is not independent review.
+- Implementation now includes task identity, multi-approval task/outbox uniqueness and standalone generation-fenced lease acquire/reclaim/renew/finalize adapter. Tests cover identity collision/retry, distinct SHA, generation increment, stale worker/finalizer rejection, live lease non-stealing and expiry rejection.
+- PR #40 changed files: workflow, task identity contract, README, migration 0003, package.json, claim adapter, task-lease adapter, tests. Exact head remains OPEN/DRAFT/UNMERGED.
+- Important boundary: CI validates local Workers-runtime D1 simulation only. Remote Cloudflare D1, real Worker/Supervisor integration, durable restart recovery, bounded retry/dead-letter, production issuer/quota/clock, production dispatch/deployment remain NOT VERIFIED or NOT IMPLEMENTED.
+- Verification report updated: `docs/reports/2026-11-08-logical-task-identity-local-proof.md`, commit `b704cbec0ca6014272ea69021037318528e3371b`, blob `3fc5aadf838304a02aa17b7a887c86906c58ad7e`.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent contract/security review and extend proof for restart recovery, bounded retries/dead-letter; reconcile lifecycle with Supervisor/Worker/Finalizer before integration.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
