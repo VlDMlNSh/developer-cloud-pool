@@ -483,6 +483,25 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       "SELECT status FROM pool_attempts WHERE attempt_id = ?"
     ).bind("attempt-1").first();
     expect(row.status).toBe("indeterminate");
+
+    const reconciliation = await env.POOL_DB.prepare(`
+      SELECT status, task_key, attempt_id, input_digest, lease_generation, expired_lease_owner
+        FROM pool_attempt_reconciliations WHERE attempt_id = ?
+    `).bind("attempt-1").first();
+    expect(reconciliation).toMatchObject({
+      status: "pending", task_key: taskKey, attempt_id: "attempt-1",
+      input_digest: "d".repeat(64), lease_generation: 1,
+      expired_lease_owner: "worker-unknown"
+    });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_generation, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    // Expiry creates durable reconciliation work; it does not prove that
+    // the executor stopped or authorize clearing the lease / retrying.
+    expect(task).toMatchObject({
+      state: "leased", lease_owner: "worker-unknown",
+      lease_generation: 1, lease_expires_at: NOW + 7
+    });
   });
 
   it("rejects mutation of immutable attempt identity and cross-attempt lease renewal", async () => {
