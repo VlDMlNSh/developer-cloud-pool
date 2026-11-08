@@ -622,3 +622,13 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - GitHub exact-head CI NOT VERIFIED; independent review NOT RUN; no deployment, Cloudflare account operation, secret access, dispatch or provider/model calls.
 - Next: add synthetic D1 migrations and prove atomic commit-then-timeout deduplication plus stale-generation fencing. Keep Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED and Contour B deferred.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Live GitHub and governance revalidation — 2026-11-08
+
+- Default HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; docs branch HEAD `bdf5c044462d51fb1ea436d0aaa44f4155db600b`; proof branch HEAD `cceee5924c9994b58705e530beb74da6314fc0a6`.
+- PR #25 exact head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`: exact-head runs `42228269689` and `42228269676` SUCCESS; review list empty.
+- PR #51 exact head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`: no workflow runs, no reviews, no combined statuses; NOT VERIFIED.
+- Ruleset 26550182 ACTIVE on default branch but requires zero approvals and no CODEOWNERS review. Actions variables cannot be read through the approved GitHub read endpoint; both dispatch-related variable values NOT VERIFIED. Keep dispatch disabled/fail-closed.
+- Full local Workflows smoke details and hashes are in the dated report. No cloud deployment, account mutation, secret access or dispatch.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
