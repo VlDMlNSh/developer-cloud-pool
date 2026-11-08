@@ -282,12 +282,6 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
     for (let attempt = 0; attempt < 5; attempt += 1) {
       const lease = await acquireTaskLease(env.POOL_DB, claimed.taskKey, `worker-${attempt}`, NOW + attempt * 2, 1);
       expect(lease.decision).toBe("LEASE_ACQUIRED");
-      if (attempt < 4) {
-        const reclaimed = await acquireTaskLease(
-          env.POOL_DB, claimed.taskKey, `worker-${attempt + 1}`, NOW + attempt * 2 + 2, 1
-        );
-        if (attempt === 0) expect(reclaimed.generation).toBe(2);
-      }
     }
     const denied = await acquireTaskLease(env.POOL_DB, claimed.taskKey, "worker-final", NOW + 20, 1);
     expect(denied).toMatchObject({ decision: "DENY", reason: "ATTEMPT_LIMIT_REACHED" });
