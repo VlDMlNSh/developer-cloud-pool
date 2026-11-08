@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-07 19:39 Europe/Vilnius — daily live-state audit
+Last refreshed: 2026-11-08 — PR #27 ancestry and context consistency audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -1055,3 +1055,15 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - SentinelX: Voktors-Mini.Dlink operational, Free slot 1/1 occupied; mh-dev-01 and mh-dev-02 disabled. No host execution.
 - Keep both dispatch gates fail-closed; no remote D1, Worker/DSH/Resource Probe, provider/model call, secret access, deployment or paid resource. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #27 base and checkpoint, then exact-head CI and independent review; resolve ruleset approval requirement through authorized governance path.
+
+
+## 2026-11-08 — PR #27 ancestry and context consistency correction
+
+- Report: [PR #27 context ancestry and consistency audit](../reports/2026-11-08-pr27-context-ancestry-and-consistency-audit.md).
+- Default branch remains `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Compare from merge base `64d2636d4500127e635c214ccfb722c6b3fcda80` to `Основной` returns 2 commits ahead and **zero changed files**: commit `1d464da...` added a misplaced audit report and `197ba98...` reverted it. Therefore the two graph-only commits do not create a tree conflict with PR #27.
+- PR #27 branch `docs/cross-chat-continuation-2026-11-06` remains 143 commits ahead / 2 behind by graph ancestry; its changed-file diff remains 32 documentation/prototype files, with no production workflow/runtime files. Do not perform a rebase or retarget solely because of the two reverted commits.
+- Default branch still does not contain `docs/context/GITHUB-CONTEXT-WINDOW.md` (contents API 404). The unified context remains proposed on PR #27, not canonical on the default branch.
+- The cross-chat continuation pointer is 788 characters (blob `0131e8f1a98d13f51a99eeaeaa6b3ffd11a771b2`) and is already deduplicated. The separate 25,542-character `durable-state-candidate` checkpoint is a technical evidence log, not the continuation pointer; retain as supporting history pending separate review. This supersedes the earlier stale statement that the continuation pointer itself was ~23 KB.
+- PR #27 exact-head workflow lookup for `bc780cd35dd9ec6dd11bde0d378830cf4e74a51b` returned no PR-triggered runs: CI NOT VERIFIED. Formal reviews: 0; independent review NOT RUN. PR remains OPEN / DRAFT / UNMERGED.
+- PR #36/#37/#39 remain draft proposals; local proof CI is not production qualification. D1 remote provisioning, production issuer/identity, recovery, quota/audit, card-free account eligibility and live runtime remain NOT VERIFIED / NOT RUN. Both dispatch gates stay fail-closed.
+- Overall: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: exact-head CI and authorized independent review for PR #27; resolve governance approval gap before merge. No production dispatch/deployment.
