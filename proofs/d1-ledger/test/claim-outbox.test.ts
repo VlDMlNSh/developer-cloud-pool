@@ -33,8 +33,12 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_projection_events_no_update").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_projection_events_no_delete").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_projection_events_no_update BEFORE UPDATE ON pool_attempt_projection_events BEGIN SELECT RAISE(ABORT, 'PROJECTION_EVENTS_APPEND_ONLY'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_projection_events_no_delete BEFORE DELETE ON pool_attempt_projection_events BEGIN SELECT RAISE(ABORT, 'PROJECTION_EVENTS_APPEND_ONLY'); END").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
@@ -666,7 +670,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       acquireProjectionDelivery(env.POOL_DB, outboxId, `projection-worker-${i}`, NOW + 4, 30)
     ));
     const winners = contenders.filter(x => x.decision === "PROJECTION_LEASE_ACQUIRED");
-    expect(winners).toHaveLength(1);
+    expect(winners, JSON.stringify(contenders)).toHaveLength(1);
     expect(contenders.every(x => x.dispatch === false)).toBe(true);
     const eventCount = await env.POOL_DB.prepare(
       "SELECT COUNT(*) AS n FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.leased'"
