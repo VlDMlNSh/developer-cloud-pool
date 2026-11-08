@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #27 ancestry and context consistency audit
+Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -1067,3 +1067,34 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - At the start of this audit, PR #27 source head `bc780cd35dd9ec6dd11bde0d378830cf4e74a51b` had no PR-triggered workflow runs and no submitted reviews. This pass then added a dated report, corrected Context Window, and refreshed pointer checkpoint (documentation-only commits); the resulting latest branch head is not CI-verified. Formal reviews remain 0; independent review NOT RUN. PR remains OPEN / DRAFT / UNMERGED.
 - PR #36/#37/#39 remain draft proposals; local proof CI is not production qualification. D1 remote provisioning, production issuer/identity, recovery, quota/audit, card-free account eligibility and live runtime remain NOT VERIFIED / NOT RUN. Both dispatch gates stay fail-closed.
 - Overall: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: exact-head CI and authorized independent review for PR #27; resolve governance approval gap before merge. No production dispatch/deployment.
+
+
+## 2026-11-08 — PR #36/#37/#39 authorization composition audit
+
+Detailed report: [PR #36/#37/#39 authorization and durable-claim composition audit](../reports/2026-11-08-pr36-pr37-pr39-authorization-composition-audit.md).
+
+### Live refs and exact-head CI
+- Default branch `Основной`: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 branch `proof/d1-single-use-ledger-retry-2026-11-06`: live HEAD `e11fc90e50bd20b166207af64551c49cfa80ffb4`; Pool Contract Validation `42329438308` SUCCESS; D1 Ledger Proof `42329438351` SUCCESS.
+- PR #37 branch `feat/reusable-pool-worker-boundary-2026-11-06`: live HEAD `5587a4e013507b5be330fd0c49ce1fc836faa946`; Pool Contract Validation `42284051311` SUCCESS; Worker Boundary Validation `42284051309` SUCCESS.
+- PR #39 branch `proof/d1-claim-outbox-atomic-2026-11-07`: live HEAD `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; D1 Ledger Proof `42329993548` SUCCESS; PR record documents combined tree `77b3ce30a3c90ad564db892cae82076b5c0774c9`, 2 files / 19 Workers-runtime tests passed.
+- Formal reviews and inline review threads: 0 for each PR. Independent security review NOT RUN.
+- PR #36/#37 descriptions contain stale HEAD metadata (`1e278b...` and `5b45a29...` respectively); live branch refs above are later. PR descriptions were not edited.
+
+### Architecture findings
+- PR #36 conditionally consumes an approval row against a strict binding, but owner/repository/approval fields and `now` are function arguments in the proof. Signed issuer verification, authenticated owner derivation, trusted clock, issuance/revocation/audit, key lifecycle and production trust are absent.
+- PR #39 adds a SQLite AFTER UPDATE trigger so approval ready→consumed, claim row and pending outbox row are one transaction. Tests prove one winner among 12 local attempts, deterministic retry, mismatch denial and rollback on outbox insert failure. Lease columns are only schema; no lease acquisition/renewal/fencing, outbox delivery, retries, dead-letter, crash recovery or consumer is implemented. Adapter always returns `dispatch: false`.
+- PR #37 Supervisor claim is Issue label GET/PATCH/read-back, not compare-and-swap. Concurrency serializes only the Supervisor workflow group. Worker checks claimed label/task fields and caller/callee workflow identity, but does not verify a consumed D1 approval or outbox event. D1 and Supervisor/Worker remain unintegrated.
+- PR #39 is 17 commits ahead / 1 behind current PR #36 by ancestry. The D1 workflow blob is identical on both branch heads (`cb31bda7588137baf84a8141aec11024461cf818`), so the one-commit ancestry difference currently creates no content conflict in that file. Revalidate combined-tree CI after any branch change.
+- Default branch still contains the pre-PR #37 Supervisor path because PR #37 remains unmerged. Issue #38 tracks this risk and the single-use claim qualification requirements.
+
+### Decision and gates
+The PRs are independent local/static proofs, not an integrated production authorization pipeline. Do not wire the D1 adapter into the Supervisor without a reviewed design for authenticated issuer/owner, trusted time, canonical approval envelope, one authoritative claim state machine, lease/fencing, outbox consumer/retry/dead-letter/crash recovery, idempotent Worker acknowledgement and least-privilege authority.
+- Local D1 consume proof: VERIFIED within test scope.
+- Local atomic claim/outbox proof: VERIFIED within test scope.
+- Supervisor/Worker static boundary: VERIFIED within exact-head CI scope; label claim remains non-CAS.
+- Integrated pipeline: NOT IMPLEMENTED / NOT QUALIFIED.
+- Independent security review: NOT RUN.
+- Remote D1 qualification, deployment and worker execution: NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Both dispatch gates remain fail-closed. Next: formal design decision + threat model for integrated claim/lease/outbox, then independent review and real-backend qualification.
