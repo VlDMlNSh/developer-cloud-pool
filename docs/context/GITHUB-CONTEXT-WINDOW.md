@@ -1286,3 +1286,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source/workflow/secret/resource/dispatch/deployment changes; no Gemini/provider/model calls. PRs remain unmerged and dispatch fail-closed. F2 OPEN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Autonomous-First policy remains adopted: no routine external APPROVE prerequisite for safe engineering iteration; security gates and final acceptance criteria remain.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Shared Immutable Claim Lifecycle contract
+
+- Contract: `docs/contracts/SHARED-IMMUTABLE-CLAIM-LIFECYCLE-CONTRACT.md`; commit `10e6ba327769292919f7d39f94e6bf658a6dfd81`.
+- Report: `docs/reports/2026-11-08-shared-claim-lifecycle-contract-design.md`; commit `525a53bd75d797524e6c757526166d3e2e425066`.
+- Current metadata recheck: PR #37 OPEN/DRAFT/UNMERGED, head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; exact-head PR CI runs `42484039940` and `42484039932` SUCCESS. PR #39 OPEN/DRAFT/UNMERGED, head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, base `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`; exact-head PR CI run `42329993548` SUCCESS. PR #39 is stacked and not integrated into default or PR #37.
+- Issue #38 remains OPEN. Its original acceptance text requiring independent external review is superseded for routine engineering progression by the adopted Autonomous-First policy. No blanket external APPROVE gate; security gates, autonomous multi-role audit after safe activation, and evidence-based final ACCEPTED decision remain.
+- Shared contract is backend-neutral: authenticated immutable envelope, canonical digest, monotonically increasing fencing generation, atomic claim+outbox, bounded lease/recovery, Worker capability bound to exact SHA/run, fenced idempotent Finalizer, durable audit. Behavioral tests are specified for contention, mutation, expiry/revocation, issuer authenticity, stale generations, wrong run, duplicate finalization, audit failure, recovery and quotas.
+- Backend not selected: Issue-label PATCH is not CAS; Git-ref option requires separate least-privilege threat model; D1 remains a candidate only. PR #39 proves local SQLite/Miniflare behavior, not remote D1 availability/entitlement/deployment. No resources provisioned.
+- No code/workflow/secret/dispatch/deployment changes; no Gemini/provider/model calls. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement backend-independent lifecycle state machine and behavioral tests in isolated proof layer, then qualify one real backend before integration with PR #37.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
