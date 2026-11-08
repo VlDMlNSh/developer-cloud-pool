@@ -47,7 +47,7 @@ WHEN NEW.event_type = 'attempt.finalized'
 BEGIN
   INSERT INTO pool_attempt_projection_outbox (
     outbox_id, task_key, attempt_id, repository_id, issue_number, target_sha,
-    profile, lease_generation, terminal_status, event_digest, status, created_at
+    profile, lease_generation, terminal_status, event_digest, status, created_at, updated_at
   )
   SELECT
     NEW.event_id, NEW.task_key, NEW.attempt_id, t.repository_id, t.issue_number,
