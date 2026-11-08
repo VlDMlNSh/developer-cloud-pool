@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { claimAndEnqueue, claimLogicalTask } from "../src/claim-outbox.mjs";
 import { acquireTaskLease, renewTaskLease, finalizeTaskLease } from "../src/task-lease.mjs";
+import { createTaskAttempt, acquireAttemptLease, renewAttemptLease, finalizeTaskAttempt, markAttemptIndeterminate } from "../src/task-attempts.mjs";
 
 const NOW = 1_800_000_000;
 const approval = {
@@ -29,6 +30,8 @@ async function seed(overrides = {}) {
 
 beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_approvals").run();
   await env.POOL_DB.prepare("DELETE FROM pool_tasks").run();
@@ -293,5 +296,167 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
       "SELECT status FROM pool_task_delivery_outbox WHERE task_key = ?"
     ).bind(claimed.taskKey).first();
     expect(outbox).toMatchObject({ status: "dead" });
+  });
+});
+
+
+describe("immutable task attempts and fenced lease lifecycle", () => {
+  async function createLogicalTask(approvalId = "approval-attempt-ledger") {
+    const item = { ...approval, approvalId, envelopeDigest: "c".repeat(64) };
+    await seed(item);
+    const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
+    expect(claimed.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    return claimed.taskKey;
+  }
+
+  async function createAttempt(taskKey, attemptNumber = 1, attemptId = `attempt-${attemptNumber}`) {
+    return createTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId, attemptNumber, inputDigest: "d".repeat(64),
+      executionIdempotencyKey: `exec-${attemptId}`, now: NOW + attemptNumber
+    });
+  }
+
+  it("creates one immutable attempt and makes exact create retries idempotent", async () => {
+    const taskKey = await createLogicalTask();
+    const first = await createAttempt(taskKey);
+    const replay = await createAttempt(taskKey);
+    expect(first).toMatchObject({ decision: "ATTEMPT_CREATED", attemptNumber: 1 });
+    expect(replay).toMatchObject({ decision: "ATTEMPT_ALREADY_CREATED", attemptNumber: 1 });
+    const attempts = await env.POOL_DB.prepare(
+      "SELECT attempt_id, attempt_number, status FROM pool_attempts WHERE task_key = ?"
+    ).bind(taskKey).all();
+    expect(attempts.results).toHaveLength(1);
+    expect(attempts.results[0]).toMatchObject({ attempt_id: "attempt-1", attempt_number: 1, status: "prepared" });
+    const events = await env.POOL_DB.prepare(
+      "SELECT event_type FROM pool_attempt_events WHERE task_key = ?"
+    ).bind(taskKey).all();
+    expect(events.results.map((x) => x.event_type)).toEqual(["attempt.created"]);
+  });
+
+  it("keeps lease takeover separate from attempt count and denies expiry-only takeover", async () => {
+    const taskKey = await createLogicalTask("approval-takeover");
+    await createAttempt(taskKey);
+    const first = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-a", NOW + 2, 10);
+    expect(first).toMatchObject({ decision: "ATTEMPT_LEASE_ACQUIRED", generation: 1, attemptId: "attempt-1" });
+
+    const denied = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-b", NOW + 12, 10);
+    expect(denied).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_REQUIRED" });
+
+    const takeover = await acquireAttemptLease(
+      env.POOL_DB, taskKey, "worker-b", NOW + 12, 10, { resumable: true }
+    );
+    expect(takeover).toMatchObject({ decision: "ATTEMPT_LEASE_ACQUIRED", generation: 2, attemptId: "attempt-1" });
+    const task = await env.POOL_DB.prepare(
+      "SELECT attempt_number, attempt_count, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(task).toMatchObject({ attempt_number: 1, attempt_count: 0, lease_generation: 2 });
+
+    const stale = await renewAttemptLease(
+      env.POOL_DB, taskKey, "attempt-1", "worker-a", 1, NOW + 13, 10
+    );
+    expect(stale).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_LEASE" });
+  });
+
+  it("allows only one concurrent initial lease acquisition", async () => {
+    const taskKey = await createLogicalTask("approval-concurrent-attempt");
+    await createAttempt(taskKey);
+    const results = await Promise.all(
+      Array.from({ length: 10 }, (_, i) =>
+        acquireAttemptLease(env.POOL_DB, taskKey, `parallel-${i}`, NOW + 2, 20)
+      )
+    );
+    expect(results.filter((x) => x.decision === "ATTEMPT_LEASE_ACQUIRED")).toHaveLength(1);
+    expect(results.filter((x) => x.decision === "DENY")).toHaveLength(9);
+  });
+
+  it("finalizes attempt and task state with one terminal audit event", async () => {
+    const taskKey = await createLogicalTask("approval-finalize-attempt");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-final", NOW + 2, 30);
+    const finish = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-final",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(finish).toMatchObject({ decision: "ATTEMPT_FINALIZED", status: "succeeded" });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(task).toMatchObject({ state: "completed", lease_owner: null, lease_expires_at: null });
+    const events = await env.POOL_DB.prepare(
+      "SELECT event_type FROM pool_attempt_events WHERE attempt_id = ? ORDER BY rowid"
+    ).bind("attempt-1").all();
+    expect(events.results.map((x) => x.event_type)).toEqual([
+      "attempt.created", "lease.acquired", "attempt.finalized"
+    ]);
+    const replay = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-final",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(replay).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER" });
+  });
+
+  it("preserves failed attempt history and creates a distinct retry attempt", async () => {
+    const taskKey = await createLogicalTask("approval-retry-attempt");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-retry", NOW + 2, 30);
+    const failed = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-retry",
+      generation: lease.generation, status: "failed",
+      resultDigest: "1".repeat(64), provenanceDigest: "2".repeat(64),
+      terminalReason: "executor_failed", now: NOW + 3
+    });
+    expect(failed.decision).toBe("ATTEMPT_FINALIZED");
+    const retry = await createTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-2", attemptNumber: 2,
+      inputDigest: "3".repeat(64), executionIdempotencyKey: "exec-attempt-2",
+      now: NOW + 4
+    });
+    expect(retry).toMatchObject({ decision: "ATTEMPT_CREATED", attemptNumber: 2 });
+    const rows = await env.POOL_DB.prepare(
+      "SELECT attempt_id, attempt_number, status FROM pool_attempts WHERE task_key = ? ORDER BY attempt_number"
+    ).bind(taskKey).all();
+    expect(rows.results).toEqual([
+      { attempt_id: "attempt-1", attempt_number: 1, status: "failed" },
+      { attempt_id: "attempt-2", attempt_number: 2, status: "prepared" }
+    ]);
+  });
+
+  it("marks an expired execution indeterminate and blocks blind takeover/retry", async () => {
+    const taskKey = await createLogicalTask("approval-indeterminate-attempt");
+    await createAttempt(taskKey);
+    await acquireAttemptLease(env.POOL_DB, taskKey, "worker-unknown", NOW + 2, 5);
+    const indeterminate = await markAttemptIndeterminate(env.POOL_DB, taskKey, "attempt-1", NOW + 7);
+    expect(indeterminate.decision).toBe("ATTEMPT_INDETERMINATE");
+    const deniedTakeover = await acquireAttemptLease(
+      env.POOL_DB, taskKey, "worker-replay", NOW + 8, 10, { resumable: true }
+    );
+    expect(deniedTakeover).toMatchObject({ decision: "DENY", reason: "ATTEMPT_NOT_LEASEABLE" });
+    const deniedRetry = await createTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-2", attemptNumber: 2,
+      inputDigest: "4".repeat(64), executionIdempotencyKey: "exec-attempt-2",
+      now: NOW + 9
+    });
+    expect(deniedRetry.decision).toBe("DENY");
+    const row = await env.POOL_DB.prepare(
+      "SELECT status FROM pool_attempts WHERE attempt_id = ?"
+    ).bind("attempt-1").first();
+    expect(row.status).toBe("indeterminate");
+  });
+
+  it("rejects mutation of immutable attempt identity and cross-attempt lease renewal", async () => {
+    const taskKey = await createLogicalTask("approval-immutable-attempt");
+    await createAttempt(taskKey);
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempts SET input_digest = ? WHERE attempt_id = ?"
+    ).bind("5".repeat(64), "attempt-1").run()).rejects.toThrow();
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-immutable", NOW + 2, 30);
+    const wrongAttempt = await renewAttemptLease(
+      env.POOL_DB, taskKey, "another-attempt", "worker-immutable", lease.generation, NOW + 3, 10
+    );
+    expect(wrongAttempt).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_LEASE" });
   });
 });
