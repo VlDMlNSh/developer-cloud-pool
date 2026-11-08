@@ -147,3 +147,14 @@ Latest pass: [D1 proof-line topology and exact-head CI audit](../reports/2026-11
 - Local Workers-runtime/Miniflare only. Hosted D1 NOT RUN. PR #54 OPEN/DRAFT/UNMERGED; independent review NOT VERIFIED. Caller-supplied resumable boolean and F2 non-CAS race remain blockers. No secrets/dispatch/provider/remote D1/deployment. Issue #38 remains open. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [PR #54 50-way contention proof](../reports/2026-11-09-pr54-50-way-contention-proof.md), commit `f3e1ad7d0548c7038e5b7709f61a551376e4405a`.
 - Next: audit PR #54 exact diff/test isolation, then capability-gated reconciliation contract; no hosted test without authorized target/budget. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — Reconciliation authority contract design
+
+- Read-only source audit: `src/task-attempts.mjs` blob `cfbce80efbf8e19fd667770ec3a8f86cd17dc865`, migration 0005 blob `7a19897f6197c79517170e101e4cbf1db233cac6`, README blob `d46f42c00906fa817bc8a73385d4612a53897753`, all at immutable source SHA `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`.
+- Finding: `acquireAttemptLease` trusts caller-supplied `resumable: true` for expired-running takeover. This is not an authenticated capability. Indeterminate attempts are denied even with true, but safe authorization for expired-running attempts is not established.
+- Design report: [Reconciliation authority contract](../reports/2026-11-09-reconciliation-authority-contract.md), commit `fe440086badf7009e687875a4aaab4e6a9341db6`.
+- Contract requires a trusted signed capability or opaque authoritative single-use ledger; binding to repository/task/attempt/input digest/generation/owner/expiry/reconciliation ID/action/evidence; issuer authorization, expiry, revocation, quota, atomic consume, readback, audit and external execution evidence. Negative and positive test matrices recorded.
+- Status DESIGN RECORDED / IMPLEMENTATION NOT STARTED / NOT QUALIFIED. No runtime changes, dispatch, secrets, remote D1, provider calls, deployment or merge. PR #51 and #54 remain OPEN/DRAFT/UNMERGED; Issue #38 open. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: identify a trustworthy issuer/authority source from existing repo architecture before implementing a local capability ledger/resolver proof. Do not invent an issuer.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
