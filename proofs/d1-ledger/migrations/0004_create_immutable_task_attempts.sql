@@ -201,3 +201,31 @@ BEGIN
     'attempt.indeterminate', NEW.input_digest, NEW.indeterminate_at
   );
 END;
+
+CREATE TRIGGER pool_tasks_immutable_identity
+BEFORE UPDATE OF task_key, repository_id, issue_number, target_sha, profile, created_at
+ON pool_tasks
+BEGIN
+  SELECT RAISE(ABORT, 'TASK_IDENTITY_IMMUTABLE');
+END;
+
+CREATE TRIGGER pool_tasks_attempt_pointer_guard
+BEFORE UPDATE OF current_attempt_id, attempt_number ON pool_tasks
+WHEN NEW.current_attempt_id IS NOT OLD.current_attempt_id
+  OR NEW.attempt_number <> OLD.attempt_number
+BEGIN
+  SELECT CASE WHEN NOT EXISTS (
+    SELECT 1 FROM pool_attempts a
+     WHERE a.attempt_id = NEW.current_attempt_id
+       AND a.task_key = NEW.task_key
+       AND a.attempt_number = NEW.attempt_number
+  ) THEN RAISE(ABORT, 'TASK_ATTEMPT_POINTER_INVALID') END;
+END;
+
+CREATE TRIGGER pool_tasks_lease_attempt_guard
+BEFORE UPDATE OF lease_attempt_id ON pool_tasks
+WHEN NEW.lease_attempt_id IS NOT NULL
+ AND NEW.lease_attempt_id <> NEW.current_attempt_id
+BEGIN
+  SELECT RAISE(ABORT, 'LEASE_ATTEMPT_MISMATCH');
+END;
