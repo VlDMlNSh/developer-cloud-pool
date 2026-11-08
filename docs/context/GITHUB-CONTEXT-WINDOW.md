@@ -1497,3 +1497,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: implement evidence-authorized indeterminate reconciliation, then idempotent create/finalize replay and adversarial Workers-runtime tests. Only after that design the Supervisor/Worker identity bridge. Dispatch remains false; no remote D1, secrets, provider/model calls, or deployment.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Attempt finalization replay idempotency
+
+- Created stacked PR #50: https://github.com/VlDMlNSh/developer-cloud-pool/pull/50; base is PR #49 branch at `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`; current PR #50 head `6e6870e5463f3f67e87a305112b208401d95022d`; OPEN / DRAFT / UNMERGED.
+- Adapter now recognizes an exact terminal finalization replay only after matching immutable Attempt fields and terminal audit actor/generation/digest. Conflicting replay is denied without another event. Test covers exact replay, conflicting replay, and one terminal event.
+- Exact-head Actions run 42495440869 / job 128776662958: COMPLETED / SUCCESS; npm ci, syntax check, Workers-runtime D1 suite 35/35. Artifact 13623411245, 18,253 bytes, SHA256 `5c65c1d6663e0f796606e01e2fa799853ffa53592e013b7fbd8fc67cb8175c5c`.
+- Changed blobs: adapter `cfbce80efbf8e19fd667770ec3a8f86cd17dc865`; tests `e259ce028eff89448ebd40881f15c7c410877686`; D1 workflow `ef37fb2f4e77d5c103445b3135711c7eedd45e89`. Workflow allowlists this proof branch for push CI only; dispatch remains disabled.
+- Correction: previous report's claim that historical create-attempt replay fails after pointer advancement was inaccurate; existing adapter already returns ATTEMPT_ALREADY_CREATED for exact immutable replay. Withdrawn.
+- Remaining: evidence-authorized indeterminate reconciliation; Supervisor/Worker identity bridge; independent review PR #50; remote D1/runtime/deployment qualification. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-08-attempt-finalization-idempotency-implementation.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
