@@ -464,3 +464,19 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(wrongAttempt).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_LEASE" });
   });
 });
+
+
+  it("keeps attempt audit events append-only", async () => {
+    const taskKey = await createLogicalTask("approval-append-only-events");
+    await createAttempt(taskKey);
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_events SET event_type = 'lease.acquired' WHERE event_id = ?"
+    ).bind("attempt-created:attempt-1").run()).rejects.toThrow();
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_attempt_events WHERE event_id = ?"
+    ).bind("attempt-created:attempt-1").run()).rejects.toThrow();
+    const count = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(count.n).toBe(1);
+  });
