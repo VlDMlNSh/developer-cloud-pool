@@ -36,3 +36,6 @@ Final validation note: D1 proof CI completed successfully with 13/13 tests on th
 
 - Experimental logical-task identity migration (0003) introduces a canonical SHA-256 task key separate from approval IDs, permits multiple individually audited approvals to attach to one task, and enforces one task-level outbox row per task key. The `claimLogicalTask` adapter remains local-only and returns `dispatch: false`.
 - This is an isolated proof extension, not a production schema decision. Lease acquire/renew/reclaim and fencing are not implemented. Verify the SQL and concurrency behavior with the pinned Workers Vitest runtime before treating the proof as valid.
+
+- Experimental task lease proof (`src/task-lease.mjs`) adds conditional lease acquisition, expiry-based reclaim with monotonically incremented generation, generation/owner-fenced renewal, and generation/owner/expiry-fenced completion. It is not integrated into a Worker and cannot dispatch work.
+- Added local runtime tests for reclaim generation increment, stale worker renewal/finalizer rejection, live-lease non-stealing, and expired lease renewal denial. These tests are authored but remain NOT RUN until exact-head CI returns.
