@@ -1242,3 +1242,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Cloud Pool-specific Gemini review route: NOT IMPLEMENTED / NOT AUTHORIZED. Independent review NOT RUN. Remote D1 NOT QUALIFIED. Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: authorized owner/governance decision for a narrowly scoped read-only Cloud Pool review task and trusted controller route; pin repo + immutable PR/base/head SHAs, read-only tool permissions, no-secret scope, artifact provenance and allowed outputs. Do not alter the fixed FCC review route or use alternate Gemini transport.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Exact-head CI/reviewer recheck — 2026-11-08
+- PR #36 `e11fc90e50bd20b166207af64551c49cfa80ffb4`: runs `42329438308` Pool Contract Validation and `42329438351` Isolated D1 Ledger Proof COMPLETED/SUCCESS.
+- PR #37 `1be8672c1be1a720b6c813dcafff5c020b6456ae`: runs `42484039940` Reusable Pool Worker Boundary Validation and `42484039932` Pool Contract Validation COMPLETED/SUCCESS.
+- PR #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: run `42329993548` Isolated D1 Ledger Proof COMPLETED/SUCCESS.
+- Reviews: PR #36 3 COMMENTED; PR #37 3 CHANGES_REQUESTED + 1 COMMENTED; PR #39 3 COMMENTED. All are by the same linked account `maxkorolskiy88-ship-it`; inline review threads 0/0/0. No independent organizational approval evidenced.
+- Report was updated and read back; latest report blob `a58ec1732be30703327124e1306911d6b899e177`. CI evidence is limited to the named workflow runs; it does not qualify remote D1 or integrated production authorization.
