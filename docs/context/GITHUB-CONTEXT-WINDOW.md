@@ -1589,3 +1589,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No secret reads, remote D1 operations, deployment, Worker/DSH execution, provider/model calls or dispatch occurred.
 - Current phase: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: resolve envelope-digest/task-identity policy and add concurrent mismatch regression tests on the existing #40/#49 proof lineage; rerun exact-head D1 CI and read back source/tests.
+
+
+## 2026-11-09 — D1 proof-line topology and exact-head CI audit
+
+- Report: [D1 proof-line topology and CI audit](../reports/2026-11-09-d1-proof-line-topology-and-ci-audit.md), report commit `f390af9afc766850fee918a311312e47558828b9`.
+- Reused existing D1 work rather than recreating it. Proof stack is #36 → #39 → #40 → #49, with #50 and #51 as sibling children of #49. PR #39 combined merge tree `77b3ce30a3c90ad564db892cae82076b5c0774c9` passed 19/19; #40 exact-head run `42489887940` SUCCESS; #49 exact-head runs `42492657024` and `42492663954` SUCCESS (35/35); #50 push run `42495440869` and #51 push run `42495716401` SUCCESS (35/35). For current #50/#51 heads, PR-triggered composed merge-tree CI was not returned and remains NOT VERIFIED.
+- PR #52 is OPEN/DRAFT at `c430fe4beecf93a20052f0c3efedb5f8539e4faa`, based on `feat/jarvis-hono-web-prototype-2026-11-06` (Contour B/product-facing line), with Jarvis Web Prototype Validation run `42507524428` SUCCESS. Do not import this branch into Contour A. If any Workflow proof is reusable, extract/rebase it to an A-only branch and rerun exact-head CI.
+- PR #53 remains OPEN/DRAFT at `b8a253f06418841d5f0250c9fd550bf3247db040`; F2 remains partial because GitHub issue label PATCH is non-CAS. PRs #49–#53 have 0 formal reviews; active ruleset `26550182` still requires 0 approvals. Independent security review NOT RUN / NOT VERIFIED.
+- D1 tests remain local Workers-runtime/Miniflare proof; remote D1, account Free/no-card entitlement and hosted contention/recovery NOT VERIFIED. Issue #38 remains OPEN.
+- No dispatch, worker execution, secrets, provider/model calls, remote DB, deployment or resources. Runtime NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: compose A-only #36 → #39 → #40 → #49 merge tree; layer #50 or #51 separately and require PR-triggered exact merge-tree CI. Keep #52 out of Contour A and dispatch fail-closed.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
