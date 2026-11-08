@@ -153,3 +153,13 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - F2-R3 MEDIUM: tests cover pure policy only, not runner API faults, lost responses, concurrent writers, or recovery.
 - Keep PR draft, do not merge or enable dispatch. Issue #38 OPEN; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED. No code, permissions, secrets, deployment or dispatch changes.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-09 — D1 finalization replay time-coupling audit
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/6c451f32fab82402a053a86ae9d7ac44995bc4e5/docs/reports/2026-11-09-d1-finalization-replay-time-coupling-audit.md.
+- PR #50 exact head `65233f57038a9996e4a6e939abde3642a33d467d`: CI `42533097813` / job `128891421839` SUCCESS. PR #51 exact head `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`: CI `42533777096` / job `128893481500` SUCCESS. Local Workers-runtime only.
+- Positive: local D1 terminal attempt update, append-only audit event and task projection occur via SQLite triggers in one transaction; indeterminate queue exists.
+- Finding D1-FINALIZE-REPLAY-01: replay branch requires persisted `completed_at === now`; existing test reuses exact timestamp. Later retry with a fresh timestamp is untested and may be denied. Define replay identity independent of retry clock; return original stored timestamp; add NOW+30 replay and lost-response tests. Treat as MEDIUM test gap / plausible defect pending test.
+- PR #50/#51 OPEN/DRAFT; PR #53 label finalizer still split-write/non-CAS. Issue #38 OPEN; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
