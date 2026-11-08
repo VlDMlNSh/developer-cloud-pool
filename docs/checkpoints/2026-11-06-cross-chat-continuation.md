@@ -59,3 +59,6 @@ Latest 2026-11-08 pass: [PR #37 latest-head finalizer review](../reports/2026-11
 
 
 Latest 2026-11-08 pass: [Gemini controller routing gap for Cloud Pool independent review](../reports/2026-11-08-gemini-controller-cloud-pool-review-routing-gap.md). The approved MediaHub controller's review mode is fixed to FCC PR #506/#508 and target SHA `074f20eb495666946a14410ab88d566aaa754f24`; its agents mode is scoped to MediaHub Issue #301. It cannot currently review Cloud Pool PR #36/#37/#39. No Gemini dispatch or secret access. Cloud Pool-specific independent review route NOT IMPLEMENTED / NOT AUTHORIZED; independent review NOT RUN; remote D1 NOT QUALIFIED; dispatch fail-closed. Context Window is authoritative and updated; next: authorized review-route contract/governance decision. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+Documentation branch note: compare against current default `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae` reports DIVERGED (190 ahead / 2 behind; merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`). Keep this branch as a working context/evidence branch; do not merge wholesale or treat it as accepted default content. See authoritative Context Window for the full evidence.
