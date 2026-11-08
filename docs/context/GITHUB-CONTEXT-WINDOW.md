@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — hosted qualification plan published; PR #51 bounded review recorded
+**Updated:** 2026-11-08 — issuer/capability contract gap confirmed; no resolver authorized
 **Phase:** Contour A — cloud pool launch and authenticated remote web access
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED
 **Priority:** Cloud pool and secure browser Experience plane first. Contour B remains deferred.
@@ -78,6 +78,17 @@
 - Exact-head GitHub Actions run `42507524428`, job `128813275338`: COMPLETED / SUCCESS on exact SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; every step passed, including Cloudflare Workflow and D1 local proof.
 - The preliminary 25-second trial was excluded because it completed before termination; only the 60-second controlled trial is counted.
 
+## Issuer/capability contract source review — 2026-11-08
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/COMMIT/docs/reports/2026-11-08-issuer-capability-contract-source-review.md (commit ref will be synchronized in the following checkpoint commit).
+- Reviewed immutable Cloud Pool default SHA `864213e2ff5b4fa956ba405dea8137a44d812f49`, PR #51 head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`, MediaHub snapshot `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- MH-12 defines bounded capability semantics; Compute Wire Protocol v1 defines signed envelopes, authority epoch, admission, lease/fencing, idempotency and revocation conceptually. Issue #301 remains OPEN; Wave 205 explicitly identifies issuer/capability authority as P0 and says governance must settle issuer/key semantics.
+- PR #51 migration 0005 is a pending-only durable reconciliation record. It contains no verified issuer/principal/capability, signed grant, policy version, authority epoch, revocation reference or evidence-verification result. It cannot authorize resolver/retry/terminalization.
+- MediaHub AuthorizationContext allow-list seam has no evidenced authenticated FileTaskIngress source edge. Separate node-specific HMAC command signer is not proven to be the general Cloud Pool capability contract.
+- Mature components evaluated as candidates: Cedar for policy evaluation; libmacaroons for attenuable capability tokens; LiteLLM remains only a provider gateway candidate. None installed/adopted; neither Cedar nor Macaroons resolves governance/issuer/key lifecycle.
+- Decision: NO resolver, retry, lease release, terminalization or provider dispatch until governance-owned contract resolves issuer trust, principal binding, exact grant scope, expiry/replay, revocation, attenuation, epochs/fencing, evidence/audit, authority separation and fail-closed outages.
+- PR #51 exact-head CI run `42495716401` SUCCESS; PR remains OPEN/DRAFT/UNMERGED; zero reviews; independent review NOT RUN. No secrets, dispatch, remote Cloudflare, provider calls, deployment or merge.
+
 ## PR #51 bounded reconciliation-queue review — 2026-11-08
 
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/7cec4821f0710cf7dac823fe5948b4d613042564/docs/reports/2026-11-08-pr51-reconciliation-queue-bounded-review.md
@@ -110,9 +121,9 @@
 
 ## Next bounded actions
 
-1. PR #51 bounded review is recorded; exact-head local CI is SUCCESS, but independent review remains NOT RUN and PR remains Draft/unmerged. Next: separately review the issuer/capability contract before designing any reconciliation resolver.
-2. Hosted Cloudflare qualification plan is published. Q0 read-only account/plan/resource preflight remains blocked until governance and account-scope gates are available. Do not provision, deploy, bind remote D1 or access secret values until every hard-stop gate passes.
-3. Keep PR #52 and PR #51 DRAFT / UNMERGED. No production adoption or Contour A acceptance.
+1. Obtain the governance-owned issuer/capability contract decision for the Cloud Pool ↔ MediaHub compute boundary. Do not design or implement resolver, retry, lease release or terminalization before the ten unresolved contract topics in the latest report are settled.
+2. Keep PR #51 and PR #52 OPEN / DRAFT / UNMERGED; independent review remains NOT RUN.
+3. Hosted Cloudflare Q0 remains blocked until governance and account-scope gates are available. No provisioning, remote D1, secret access or deployment.
 
 ## Canonical source links
 
