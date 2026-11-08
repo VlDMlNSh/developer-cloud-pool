@@ -314,10 +314,14 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
   }
 
   async function createAttempt(taskKey, attemptNumber = 1, attemptId = `attempt-${attemptNumber}`) {
-    return createTaskAttempt(env.POOL_DB, {
+    const result = await createTaskAttempt(env.POOL_DB, {
       taskKey, attemptId, attemptNumber, inputDigest: "d".repeat(64),
       executionIdempotencyKey: `exec-${attemptId}`, now: NOW + attemptNumber
     });
+    if (!["ATTEMPT_CREATED", "ATTEMPT_ALREADY_CREATED"].includes(result.decision)) {
+      throw new Error(`createTaskAttempt failed: ${JSON.stringify(result)}`);
+    }
+    return result;
   }
 
   it("creates one immutable attempt and makes exact create retries idempotent", async () => {
