@@ -647,3 +647,16 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Dispatch remains fail-closed. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent authorized review of the contract/threat model, then F1/F2 + task-wide claim/receipt/fencing implementation with exact-SHA regression/integration tests. No merge or runtime qualification before governance gates.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next default-versus-PR37 boundary recheck — 2026-11-08
+
+- Report: [Default-branch versus reusable Worker boundary recheck](../reports/2026-11-08-default-vs-pr37-boundary-recheck.md), report commit `cc74d3e12aa14a0c7f8e7f113b454f0576385077`; report blob `86e761d1bb91067846f86c94a5f9663ef608bfee`.
+- Current default branch remains `Основной` at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Its Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still has the legacy `workflow_run` trigger and `actions: write`; current live dispatch-variable value was not read and is NOT VERIFIED. Keep dispatch disabled.
+- PR #37 proposed branch head `5587a4e013507b5be330fd0c49ce1fc836faa946` remains OPEN/DRAFT/UNMERGED. Named exact-head runs `42284051309` (reusable Worker boundary) and `42284051311` (pool contract validation) both COMPLETED/SUCCESS; this is bounded static/contract CI, not runtime qualification.
+- Static re-read confirms F1 remains: Worker uses `job.workflow_repository/file_path/sha` in job-level env. F2 remains: Finalizer checks `pool:claimed` label only, without durable claim/receipt/fencing binding.
+- Fresh review lists: #36 three COMMENTED, #37 four (CHANGES_REQUESTED/COMMENTED), #39 three COMMENTED; all submissions are by `maxkorolskiy88-ship-it`. No APPROVED review or second reviewer identity; independent authority NOT VERIFIED.
+- Connected repository metadata reports admin/push permission for the linked identity. Documentation write access is available; this does not grant reviewer independence or production authority.
+- No source/workflow/runtime/config/secret/variable/ruleset/dispatch changes; no tests run locally; no worker, remote D1, deployment or provider/model execution.
+- Next: obtain genuinely independent authorized protocol/security review; then correct F1 and implement task-wide claim, lease/fencing, immutable execution receipt and idempotent Finalizer with exact-SHA runtime/regression evidence. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
