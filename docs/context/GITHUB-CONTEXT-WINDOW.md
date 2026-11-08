@@ -180,3 +180,15 @@
 - Autonomous-First policy is adopted: no blanket external-review gate for routine iterations; later separated-role audits required after safe activation; no self-assigned ACCEPTED. Continue local test-first issuer provenance, authenticated owner identity, trusted clock, revocation, quota and recovery work.
 - Dispatch remains fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## PR #53 F2 finalizer recoverability audit — 2026-11-09
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/da923850993b6d38c220ad6fb19eee8eebeb5401/docs/reports/2026-11-09-pr53-f2-finalizer-recoverability-audit.md.
+- Immutable PR #53 head `b8a253f06418841d5f0250c9fd550bf3247db040`, base `feat/reusable-pool-worker-boundary-2026-11-06` @ `1be8672c1be1a720b6c813dcafff5c020b6456ae`; OPEN/DRAFT/UNMERGED, mergeable true.
+- Exact-head CI SUCCESS: boundary run `42513724733` / job `128832083652` (syntax + authorization + finalizer tests); contract run `42513724707` / job `128832072329` (dispatch-disabled assertion, YAML parse, contract checks). Formal reviews 0, inline threads 0. CI is unit/static only.
+- F2-R1 HIGH: runner mutates terminal labels/removes claim generation, verifies readback, then separately POSTs audit comment. If comment POST fails or response is lost, task is terminal without provenance; retry fails because planner requires the now-removed claimed state and generation. No audit outbox/idempotent recovery. Violates lifecycle contract requirement for atomic terminal/audit or recoverable FINALIZING.
+- F2-R2 HIGH: complete label-set PATCH is not CAS; external writer can race after final read and stale finalizer can overwrite newer state. Readback is detection, not atomic fencing.
+- F2-R3 MEDIUM: 9 pure policy tests do not execute runner/API failure injection, competing writer, comment failure/lost response, or recovery.
+- Disposition: PR #53 remains OPEN/DRAFT; do not merge/enable dispatch on this evidence. Remediation should introduce durable finalization intent/outbox in qualified authoritative store, idempotent comment delivery/reconciliation, recoverable FINALIZING, runner-level fault injection and real backend fencing. Issue #38 remains OPEN; dispatch fail-closed; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
