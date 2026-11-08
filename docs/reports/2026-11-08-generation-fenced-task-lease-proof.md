@@ -1,7 +1,7 @@
 # Generation-Fenced Task Lease Proof Pass
 
 Date: 2026-11-08
-Status: IMPLEMENTED IN DRAFT PR; CI NOT VERIFIED; TESTS NOT RUN
+Status: IMPLEMENTED IN DRAFT PR; EXACT-HEAD CI SUCCEEDED
 
 ## Immutable target
 
@@ -51,3 +51,12 @@ Investigate why PR #40 exact-head workflow is not appearing despite workflow pat
 Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI verification update
+
+- Exact PR head `84e9b98a249924846ab29debdb7d32608d87e77c` has workflow run `42489375654` (run number 44), workflow `Isolated D1 Ledger Proof`, conclusion SUCCESS.
+- Job `Local Workers-runtime D1 adversarial tests`: SUCCESS.
+- Confirmed successful steps: pinned Node.js setup, `npm ci`, proof syntax check, Workers-runtime D1 tests, lockfile artifact upload.
+- This validates the local Workers/Miniflare D1 proof on the PR merge checkout. It does NOT prove remote D1 provisioning/deployment or production integration.
+- CI run URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489375654
