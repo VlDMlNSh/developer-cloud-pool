@@ -1486,3 +1486,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Default-branch write correction disclosure: commit `864ca5c1eb7f1e9c871a84b6bbb6b252c6921b32` temporarily added the test file because one update omitted the explicit branch; commit `4d07526589676c6a381426db189c5a5c1528e1a3` immediately deleted it. Fresh default read returned 404. The file is absent from the resulting default tree; commits remain visible in history. No production source, workflow, secret or runtime setting changed.
 - Next: authorized independent review of PR #49 exact head; reconcile with PR #40 and PR #37 before any merge. Then resolve production integration/recovery and governance gates before remote D1 qualification. Dispatch remains disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Supervisor / Worker ↔ Attempt integration gap audit
+
+- Rechecked PR #37 HEAD `1be8672c1be1a720b6c813dcafff5c020b6456ae`, PR #40 HEAD `2b7e30aeb8c404d84b2fe8bc16554dc179f021a`, and PR #49 HEAD `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`; all remain OPEN / DRAFT / UNMERGED. PR #49 is stacked on PR #40, PR #40 on PR #39. PR #49 exact-head D1 CI runs 42492657024 and 42492663954 SUCCESS, 35/35 each. PR #49 review submissions and threads are empty.
+- Static source audit confirms PR #37 Supervisor→Worker carries only Issue number, target SHA and profile. It does not pass immutable task/attempt IDs, lease generation/owner, run IDs, input digest or dispatch idempotency key. Finalizer writes GitHub labels and a separate comment, not the D1 Attempt ledger. Integration NOT IMPLEMENTED.
+- Found lifecycle gaps in PR #49: (1) `markAttemptIndeterminate` leaves Task in expired `leased` state; adapter finalization only accepts `running`, and SQL terminal guard requires a live lease, so evidence-backed reconciliation has no implemented route. (2) replaying create for a historical attempt after pointer advances returns pointer mismatch, not idempotent historical result. (3) repeated exact finalization after terminal commit is denied rather than read back as idempotent.
+- Full audit report: `docs/reports/2026-11-08-supervisor-worker-attempt-integration-gap-audit.md` (commit/blob below). These are source-level findings, not live runtime reproductions.
+- Next: implement evidence-authorized indeterminate reconciliation, then idempotent create/finalize replay and adversarial Workers-runtime tests. Only after that design the Supervisor/Worker identity bridge. Dispatch remains false; no remote D1, secrets, provider/model calls, or deployment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
