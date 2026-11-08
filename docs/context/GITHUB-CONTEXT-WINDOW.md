@@ -1428,3 +1428,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: define authoritative immutable task-attempt/finalization record and idempotent recoverable terminal+audit operation; add stale/edited/closed task, old generation/run, duplicate result and split-write failure tests. Keep dispatch fail-closed.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Task Attempt / Finalizer / Durable Audit contract proposal
+
+- Re-read PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, Supervisor script/workflow and Worker workflow. Re-read PR #40 local D1 lease adapter at `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- Confirmed PR #37 Supervisor claims by GitHub Issue label PATCH + readback and passes only issue number/target SHA/profile to Worker. Finalizer checks presence of `pool:claimed`, PATCHes terminal labels, readbacks, then separately POSTs a comment. No immutable attempt ID, lease owner/generation or D1 authoritative finalization is bound in this path.
+- PR #40 `task-lease.mjs` has generation/owner/expiry fencing and max-five attempt logic but is isolated local-only; it returns `dispatch: false`. It is not wired into PR #37.
+- Authored proposal `docs/contracts/2026-11-08-task-attempt-finalization-contract-proposal.md`, commit `04b0d9eecc78f0ebbeeba8883193de37b67740ff`. It defines task vs approval vs attempt identities, proposed durable records, transactionally idempotent finalization, audit/outbox projection, failure recovery, adversarial tests and gated integration sequence.
+- Important design decision proposed, NOT ACCEPTED: a new immutable attempt per retry, while lease generation fences takeover within an attempt. This must be reconciled with current PR #40 task-level attempt_count/lease adapter before implementation; do not silently mix retry models.
+- No code/workflow changes, dispatch, Worker execution, DSH, remote D1, secrets, provider calls or deployment.
+- Next: compare proposal line-by-line with the actual PR #40 schema/migration, claim/outbox adapter and tests; choose one retry/attempt model and produce a migration/test delta on an isolated branch only after resolving schema contracts.
+- PR #37 OPEN/DRAFT/UNMERGED; PR #40 OPEN/DRAFT/UNMERGED and stacked on PR #39. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
