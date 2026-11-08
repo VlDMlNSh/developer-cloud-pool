@@ -65,7 +65,7 @@
 
 ## Remaining limitations and blockers
 
-- No Worker-process crash/restart test, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge.
+- No in-progress Workflow recovery after abrupt process termination, regional failover, real Cloudflare account D1/Workflow semantics, distributed concurrency stress, production Workflow retention, external side-effect idempotency or authority bridge. Completed-instance local process-recreation persistence is separately VERIFIED.
 - PR #25 remains OPEN / DRAFT / UNMERGED; authenticated OAuth/session runtime, Workers Free eligibility, deployment and browser/device QA remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
 - PR #51 remains OPEN / DRAFT / UNMERGED; reconciliation queue is not production-qualified.
 - PR #52 remains OPEN / DRAFT / UNMERGED; no independent review.
@@ -75,8 +75,8 @@
 
 ## Next bounded actions
 
-1. Evaluate whether the official Miniflare/Workflow harness can persist its local backing store across two distinct OS processes. If supported, run a bounded process-stop/recreate experiment against an isolated fixture; do not call it Cloudflare production recovery.
-2. If local Workflow state cannot survive process recreation, record that limitation and define a separate Cloudflare account-level qualification test plan without deploying or using secrets.
+1. Completed-instance local Workflow/D1 persistence across two Wrangler processes is VERIFIED. Next bounded action: run a separate controlled in-progress Workflow fixture, terminate the Wrangler process during a wait, restart against the same isolated persistence directory, and test whether the Workflow resumes exactly once. Do not call this Cloudflare production recovery.
+2. If in-progress recovery is unsupported or inconclusive, record the limitation and define a separate Cloudflare account-level qualification test plan without deploying or using secrets.
 3. Continue verifying reconciliation queue integration only after PR #51's full migration chain is inspected against the exact base. No authority resolver or retries until issuer/capability contract is approved.
 4. Keep PR #52 and PR #51 DRAFT / UNMERGED. No production adoption or Contour A acceptance.
 
