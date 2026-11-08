@@ -1412,3 +1412,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: inspect restart/recovery and audit coverage, then reconcile lease lifecycle with Supervisor/Worker/Finalizer before integration. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Verification report: `docs/reports/2026-11-08-task-identity-hardening-followup.md`.
+
+
+## 2026-11-08 — PR #37 current-head reconciliation
+
+- Fresh PR API: PR #37 OPEN / DRAFT / UNMERGED; base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; current head `1be8672c1be1a720b6c813dcafff5c020b6456ae` on `feat/reusable-pool-worker-boundary-2026-11-06`.
+- This supersedes prior reliance on PR #37 head `5587a4e013507b5be330fd0c49ce1fc836faa946` as current.
+- F1 source remediation observed: `job.workflow_repository`, `job.workflow_file_path`, `job.workflow_sha` moved from job-level env into the validation step-level env. Current worker blob `04d63d815d2f7d15cfa80c932b614d559385ff0a`.
+- Exact-head Reusable Pool Worker Boundary Validation run `42484039940` / job `128741929176`: SUCCESS. Exact-head Pool Contract Validation run `42484039932` / job `128741928922`: SUCCESS.
+- Both runs are static/boundary checks; they do not execute an actual reusable Worker invocation or DSH. F1 = SOURCE-REMEDIATED / STATIC-CI-VERIFIED; live invocation NOT RUN.
+- Current Supervisor blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc` still has F2/F10 finalizer limitations: only checks presence of `pool:claimed`, then separately PATCHes labels and POSTs audit comment. No immutable attempt/run/generation binding or atomic/recoverable audit transition is evidenced. Stale task/race and state-vs-comment divergence remain open.
+- PR #37 reviews re-read: CHANGES_REQUESTED / COMMENTED, no APPROVED review observed. Organizational independence and authorized approver status remain NOT VERIFIED.
+- No source change was made in this pass; the attempt to patch F1 was deliberately abandoned after fresh branch read showed it was already remediated in current branch. No dispatch, Worker/DSH, Resource Probe, provider/model call, remote D1, secret read or deployment.
+- New report: `docs/reports/2026-11-08-pr37-current-head-reconciliation.md`, commit `430ee4d0e94fb93c0e2a856a5a7b0d8082d04aea`.
+- Next: define authoritative immutable task-attempt/finalization record and idempotent recoverable terminal+audit operation; add stale/edited/closed task, old generation/run, duplicate result and split-write failure tests. Keep dispatch fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
