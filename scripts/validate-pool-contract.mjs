@@ -75,6 +75,8 @@ if (/^      CALLEE_(?:REPOSITORY|FILE_PATH|WORKFLOW_SHA):/m.test(worker)) fail("
 if (!worker.includes("          CALLEE_REPOSITORY: ${{ job.workflow_repository }}") || !worker.includes("          CALLEE_FILE_PATH: ${{ job.workflow_file_path }}") || !worker.includes("          CALLEE_WORKFLOW_SHA: ${{ job.workflow_sha }}")) fail("job.workflow_* contexts must be mapped in step-level env");
 if (!/CALLER_WORKFLOW_SHA !== e\.CALLEE_WORKFLOW_SHA/.test(worker)) fail("Worker must require caller and callee to share the immutable invocation SHA");
 if (!/pool:claimed/.test(worker)) fail("Worker must require Supervisor claim state");
+if (!/createHash\("sha256"\)/.test(worker) || !/digest\(\) !== e\.ENVELOPE_DIGEST/.test(worker)) fail("Worker must verify the immutable task envelope digest");
+if (!/generations\[0\] !== e\.CLAIM_GENERATION/.test(worker)) fail("Worker must verify the exact claim generation");
 if (!/activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/.test(worker)) fail("Worker must reject conflicting or duplicate managed task states");
 if (failures.length === 0) pass("Worker is reusable-only, read-only, identity-bound and has no issue mutation authority");
 
