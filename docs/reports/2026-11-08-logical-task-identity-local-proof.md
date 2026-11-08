@@ -1,50 +1,54 @@
-# Logical Task Identity Local Proof — Implementation Pass
+# Logical Task Identity and Fenced Lease Local Proof — Verification Update
 
 Date: 2026-11-08
-Status: IMPLEMENTED IN ISOLATED DRAFT PR; CI NOT VERIFIED
+Status: EXACT-HEAD CI SUCCEEDED; LOCAL WORKERS-RUNTIME TEST JOB SUCCEEDED; REMOTE D1 / PRODUCTION NOT VERIFIED
 
-## Immutable base and ancestry
+## Immutable PR ancestry
 
-- Implementation branch: `proof/task-identity-fencing-design-2026-11-08`.
-- Parent PR #39 head / base commit: `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
 - Draft PR #40: https://github.com/VlDMlNSh/developer-cloud-pool/pull/40
-- PR #40 head at publication: `f83b2ae92898784e03feaebf54bf74563f570079`.
-- PR #40 base: `proof/d1-claim-outbox-atomic-2026-11-07` @ `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
-- PR #40 OPEN/DRAFT/UNMERGED. Changed files: contract, README, migration 0003, claim adapter, behavioral tests.
+- Branch: `proof/task-identity-fencing-design-2026-11-08`
+- Exact checked head: `84e9b98a249924846ab29debdb7d32608d87e77c`
+- Base: PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, not default.
+- PR #40 remains OPEN / DRAFT / UNMERGED.
 
-## Implementation
+## Implementation scope
 
-- Migration `0003_create_logical_task_identity.sql`: canonical task table keyed by SHA-256 task identity; many approval rows may attach to one task; one task-level delivery outbox row per task key. Legacy per-approval proof trigger is retained for existing tests.
-- `claimLogicalTask`: canonicalizes versioned identity from repository ID, issue number, target SHA, profile and task revision; computes SHA-256; conditionally consumes an individual approval and uses transactional SQL triggers to create/attach the logical task and one outbox event.
-- Adapter returns `dispatch:false`; no provider, GitHub dispatch, credentials, or production integration.
-- Added tests: two distinct approvals racing for same logical task; different target SHA creates a distinct task; exact retry reuses task/outbox.
-- Existing per-approval proof remains available for regression coverage.
+- Migration 0003 adds canonical logical task identity, multi-approval audit attachment and one task-level outbox row.
+- `claimLogicalTask` computes a versioned SHA-256 identity and atomically attaches an individually consumed approval using SQL triggers.
+- `task-lease.mjs` adds lease acquisition from pending/expired states, monotonic generation increment on acquisition/reclaim, owner+generation+expiry-fenced renewal and completion.
+- Tests cover independent approvals on one identity, distinct target SHA, exact retry, lease generation increment, stale worker renewal/finalizer rejection, live lease non-stealing and expired renewal denial.
+- Every proof adapter retains `dispatch:false`. No Worker/Supervisor production integration.
 
-## Evidence
+## Exact-head CI evidence
+
+- Workflow: Isolated D1 Ledger Proof.
+- Run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489375654
+- Exact commit: `84e9b98a249924846ab29debdb7d32608d87e77c`.
+- Job: `Local Workers-runtime D1 adversarial tests` — completed / success.
+- Job executes pinned Node setup, `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test`.
+- Artifact `d1-ledger-proof-package-lock` uploaded; SHA-256 digest `2f824d07fb74d06beb80fc8fdbfcfe3185231921366c72a33176288f3ee2fc16`; artifact size 18,253 bytes.
+- PR #40 review submissions: none; inline review threads: none. CI success is not independent review or approval.
+
+## Source readback
 
 - Migration blob: `7d8fb746c34527300dfab423106a7b7b9b316623`.
-- Adapter blob: `37d75e2b31d9214b04398527eb08dce296f1ff27`.
-- Test blob: `c8b6d753a653da665f848a53a280e7bcba7416ae`.
-- README blob was re-read after publication; PR changed-file list confirms the intended five files.
-- Exact-head workflow query for PR #40 head returned an empty list twice. Treat CI as NOT VERIFIED, not as pass.
+- Claim adapter blob: `37d75e2b31d9214b04398527eb08dce296f1ff27`.
+- Test blob after lease tests: `6e41077173e0caa2ba2de6857a1ee86820744e59`.
+- Lease module commit: `ddd609c1fbc4428701a807fb659463c6e6834681`.
+- Workflow blob after branch filter updates: `130b7a18599f2674f53c1d062d5fbb0ccdec879e`.
+- PR #40 changed files: workflow, task identity contract, proof README, migration 0003, package.json, claim adapter, lease module, tests.
 
-## Limitations and risks
+## Boundaries and remaining gaps
 
-- No local command/test runner was available in this GitHub-only pass; test execution is NOT RUN.
-- SQL migration and concurrent behavior have not yet been validated by the pinned Workers Vitest runtime.
-- Lease acquire/renew/reclaim, generation increment, stale Worker/Finalizer rejection, durable audit and bounded delivery retries remain NOT IMPLEMENTED.
-- Task key uses a versioned canonical tuple. A future explicit rerun must define task_revision semantics and fresh authorization.
-- This is synthetic local proof only, not remote D1 or production qualification.
-- PR #40 is stacked on PR #39 and must not merge independently into default. No merge performed.
+- This is a local Workers-runtime D1 simulation/test proof, not remote Cloudflare D1 deployment or service qualification.
+- No authenticated remote issuer, trusted clock, production quota integration, durable recovery across real deployments, bounded retries/dead-letter proof, external delivery semantics, or Worker/Supervisor/Finalizer integration.
+- The lease API is currently a standalone local adapter. It has not been wired into the shared immutable claim lifecycle or production task execution.
+- PR #40 is stacked on PR #39. Do not merge it into default independently or integrate with PR #37 before review and contract reconciliation.
+- No secrets, billing, cloud resources, provider calls, Gemini controller, production dispatch or deployment were used.
 
-## Safety and project status
+## Project status and next step
 
-- No secrets, keys, account billing, cloud resources, dispatch, deployment, provider/model calls or Gemini controller used.
-- PR #36/#37/#39 remain unmerged; PR #40 is a draft proof layer.
+- PR #36/#37/#39/#40 remain unmerged; #40 remains draft.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
-
-## Next
-
-Obtain exact-head CI execution on PR #40 and resolve any SQL/runtime failures. Then implement lease generation fencing and stale-worker rejection as a separate bounded pass. Do not integrate with PR #37 until the claim/task identity and Supervisor/Worker/Finalizer contract align.
-
-Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Next bounded step: review SQL edge cases and lease fencing semantics; add restart/recovery, bounded attempt and dead-letter tests; obtain independent security/contract review; reconcile Supervisor/Worker/Finalizer contract before integration.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
