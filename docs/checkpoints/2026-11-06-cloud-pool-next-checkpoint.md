@@ -537,3 +537,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - No tests run and no source/workflow/runtime/config/secret/ruleset/dispatch changes. This was a static design-to-source review, not independent organizational approval.
 - Required order: authorized independent contract/threat-model approval → F1 runtime identity correction → task-wide conditional claim + lease/fencing/outbox consumer → immutable receipt/finalizer → regression and remote backend qualification after free-only/governance gates.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED. Dispatch remains fail-closed.
+
+
+## Resume checkpoint — 2026-11-08 second live recheck
+
+- Latest report: [second live Contour A reconciliation](../reports/2026-11-08-next-live-recheck-2.md).
+- Current observed PR heads: #36 `e11fc90e50bd20b166207af64551c49cfa80ffb4`; #37 `5587a4e013507b5be330fd0c49ce1fc836faa946`; #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833` (stacked on #36). All OPEN/DRAFT/UNMERGED.
+- Exact-head named CI: #36 runs `42329438308`, `42329438351` SUCCESS; #37 `42284051311`, `42284051309` SUCCESS; #39 `42329993548` SUCCESS. Scope-limited; not production qualification.
+- All review submissions remain concentrated in `maxkorolskiy88-ship-it`; no APPROVED review or second reviewer. Independence/authority NOT VERIFIED.
+- F1 Worker job-level `job.workflow_*` env expressions and F2 label-only finalizer remain unresolved. Unified receipt/fenced-claim contract is design-only.
+- Keep dispatch fail-closed. Do not merge, deploy, provision remote D1 or run Worker/DSH/provider workloads.
+- Next: secure authorized independent review of contract/threat model; then implement F1/F2/task-wide uniqueness/fencing/receipt and run exact-SHA regression. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
