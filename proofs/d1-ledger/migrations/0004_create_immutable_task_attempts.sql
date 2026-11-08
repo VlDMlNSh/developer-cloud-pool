@@ -98,12 +98,19 @@ WHEN NEW.state = 'leased'
  AND NEW.lease_generation > OLD.lease_generation
 BEGIN
   UPDATE pool_attempts
-     SET status = CASE WHEN status = 'prepared' THEN 'running' ELSE status END,
+     SET status = 'running',
          started_at = COALESCE(started_at, NEW.updated_at),
          lease_generation = NEW.lease_generation
    WHERE attempt_id = NEW.current_attempt_id
      AND task_key = NEW.task_key
-     AND status IN ('prepared', 'running');
+     AND status = 'prepared';
+
+  UPDATE pool_attempts
+     SET lease_generation = NEW.lease_generation
+   WHERE attempt_id = NEW.current_attempt_id
+     AND task_key = NEW.task_key
+     AND status = 'running'
+     AND lease_generation < NEW.lease_generation;
 
   INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
   SELECT
