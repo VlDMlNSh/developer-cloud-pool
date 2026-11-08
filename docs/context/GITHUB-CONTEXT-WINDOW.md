@@ -1331,3 +1331,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: secure exact-head CI execution for PR #40 and fix any migration/runtime issues; then implement generation-based lease fencing and stale-worker rejection.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — Generation-fenced task lease proof pass
+
+- Extended draft PR #40: https://github.com/VlDMlNSh/developer-cloud-pool/pull/40
+- PR #40 head `84e9b98a249924846ab29debdb7d32608d87e77c`; base remains PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. OPEN/DRAFT/UNMERGED; stacked, not default.
+- Added `proofs/d1-ledger/src/task-lease.mjs`: lease acquisition from pending/expired only; increment generation on acquisition/reclaim; renewal fenced by task key + owner + generation + unexpired lease; completion fenced by same tuple and expiry.
+- Added tests for generation increment on reclaim, stale worker renewal/finalizer rejection, live lease non-stealing and expired renewal denial. Tests are authored but NOT RUN.
+- Updated syntax check, proof README, and D1 proof workflow push/pull_request branch filters to include task identity branch and PR #40 base branch.
+- Lease module commit `ddd609c1fbc4428701a807fb659463c6e6834681`; tests blob `6e41077173e0caa2ba2de6857a1ee86820744e59`; workflow blob `130b7a18599f2674f53c1d062d5fbb0ccdec879e`.
+- Exact-head workflow query still returns no runs after trigger correction. CI NOT VERIFIED; test execution NOT RUN.
+- No Worker/Supervisor/Finalizer integration, remote D1, dispatch, secrets, cloud resources or provider calls.
+- Report: `docs/reports/2026-11-08-generation-fenced-task-lease-proof.md`, commit `4807fd3ba7b4230ff236996c9998d39d8275b617`.
+- Next: diagnose absent PR workflow event/checks, obtain exact-head runtime validation, then cover restart recovery and bounded retries/dead-letter.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
