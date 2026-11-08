@@ -1193,3 +1193,9 @@ Latest bounded report: [branch provenance and stack synchronization audit](../re
 - Default branch remains on legacy privileged Supervisor/Worker chain. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review, then update stacked PR #39 from current #36 parent and rerun exact-head CI. Keep dispatch disabled.
 
+
+
+## 2026-11-08 correction — PR #39 stack graph vs content
+
+The earlier branch-provenance report correctly observed graph divergence (PR #39 is 17 ahead / 1 behind current PR #36), but over-prescribed child synchronization. [Correction report](../reports/2026-11-08-pr39-stack-graph-content-and-ci-correction.md) records that the D1 workflow file at both current branch heads is byte-identical (blob `cb31bda7588137baf84a8141aec11024461cf818`) and PR #39's combined merge-tree `77b3ce30a3c90ad564db892cae82076b5c0774c9` has successful exact PR run `42329993548` / job `128274072508`, plus push run `42329991471` / job `128274065481`. Do not rebase/synchronize child solely to eliminate graph divergence. Recheck combined merge-tree CI only after future source changes or retargeting. This does not authorize merge: independent review is NOT RUN; all three PRs have 0 reviews / 0 threads; remote D1 and integrated lease/outbox qualification remain NOT RUN. Contour A BLOCKED; dispatch stays fail-closed.
+
