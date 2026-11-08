@@ -30,10 +30,6 @@ jobs:
       claim_generation: ${{ steps.intake.outputs.claim_generation }}
       run_id: ${{ steps.intake.outputs.run_id }}
       run_attempt: ${{ steps.intake.outputs.run_attempt }}
-      envelope_digest: ${{ steps.intake.outputs.envelope_digest }}
-      claim_generation: ${{ steps.intake.outputs.claim_generation }}
-      run_id: ${{ steps.intake.outputs.run_id }}
-      run_attempt: ${{ steps.intake.outputs.run_attempt }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
@@ -59,6 +55,7 @@ jobs:
       task_issue: ${{ needs.reconcile.outputs.task_issue }}
       target_sha: ${{ needs.reconcile.outputs.target_sha }}
       profile: ${{ needs.reconcile.outputs.profile }}
+      claim_generation: ${{ needs.reconcile.outputs.claim_generation }}
     permissions:
       contents: read
       issues: read
