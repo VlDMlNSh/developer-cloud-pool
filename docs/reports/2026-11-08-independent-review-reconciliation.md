@@ -63,3 +63,16 @@ However, source blob `4f57e8eef4a40d14b8d1df467cfac07e39e490a2` at the same PR #
 - Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next live recheck — 2026-11-08 (PR metadata, reviews, F1/F2)
+
+- Re-read PR metadata directly. #36 is OPEN/DRAFT/UNMERGED, base `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, actual head `e11fc90e50bd20b166207af64551c49cfa80ffb4`. #37 is OPEN/DRAFT/UNMERGED, same base, head `5587a4e013507b5be330fd0c49ce1fc836faa946`. #39 is OPEN/DRAFT/UNMERGED, base proof branch @ `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- PR #36 description contains historical/stale branch-head statements (including `7571f82...`); current PR metadata is authoritative and reports `e11fc90...`. Treat any report-only branch-head narrative that conflicts with live PR metadata as stale until reconciled.
+- Exact-head PR-triggered runs re-read: #36 `42329438308` Pool Contract Validation SUCCESS and `42329438351` Isolated D1 Ledger Proof SUCCESS; #37 `42284051311` Pool Contract Validation SUCCESS and `42284051309` Reusable Pool Worker Boundary Validation SUCCESS; #39 `42329993548` Isolated D1 Ledger Proof SUCCESS. These are named CI checks only, not remote D1/runtime qualification.
+- Review submissions re-read: #36 three COMMENTED; #37 two CHANGES_REQUESTED plus one COMMENTED; #39 three COMMENTED. Every submission is by `maxkorolskiy88-ship-it`. No APPROVED review, no second reviewer identity, no requested reviewer. Independent authorization/COI remain NOT VERIFIED.
+- F1 re-confirmed from Worker workflow blob `4f57e8eef4a40d14b8d1df467cfac07e39e490a2` at PR #37 branch: job-level `env` references `job.workflow_repository`, `job.workflow_file_path`, and `job.workflow_sha`. Existing static/contract CI does not prove these values are available in that context at runtime. F1 NOT RESOLVED / NOT RUNTIME-VERIFIED.
+- F2 re-confirmed from Supervisor workflow blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`: Finalizer checks only presence of `pool:claimed`, then writes terminal label and comment. It does not bind finalization to immutable envelope digest, claim owner, worker run ID, attempt/generation or fencing token. F2 NOT RESOLVED.
+- No code, settings, secrets, variables, rulesets, dispatch, production resources or deployments changed. No runtime/DSH/provider execution performed.
+- Next bounded engineering action: design a single immutable execution receipt/claim contract (issuer + envelope digest + claim ID/owner + worker run/attempt + generation/fencing + terminal result) and update F1/F2 implementation/tests on a dedicated branch only after contract review. In parallel, obtain an actually independent authorized reviewer and governance enforcement; do not merge or enable dispatch.
+- Status remains: independent audit activity COMPLETE for current reviewer account; independent organizational acceptance NOT VERIFIED; F1/F2 OPEN; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
