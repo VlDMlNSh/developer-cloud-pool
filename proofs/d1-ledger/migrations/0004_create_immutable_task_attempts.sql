@@ -160,6 +160,6 @@ BEGIN
   INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
   VALUES (
     'attempt-indeterminate:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
-    'attempt.indeterminate', NEW.input_digest, NEW.started_at
+    'attempt.indeterminate', NEW.input_digest, NEW.indeterminate_at
   );
 END;
