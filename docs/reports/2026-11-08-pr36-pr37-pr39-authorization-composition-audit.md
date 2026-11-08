@@ -80,3 +80,20 @@ Until then, both dispatch gates must remain fail-closed.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
 Next bounded step: produce a formal design decision and threat model for one integrated claim/lease/outbox protocol; keep production dispatch disabled. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Follow-up verification — 2026-11-08
+
+A fresh pass re-resolved the PR #37 branch to `5587a4e013507b5be330fd0c49ce1fc836faa946` (29 ahead / 0 behind default), and fetched exact-head workflow job details:
+- Boundary Validation run `42284051309`, job `128122653104`: checkout exact PR head, Node setup, Supervisor syntax and authorization boundary tests all SUCCESS.
+- Contract Validation run `42284051311`, job `128120184802`: dispatch-disabled guard, workflow YAML parse and pool contract validation all SUCCESS.
+- Review submissions and inline threads were freshly queried: 0 / 0 for PRs #36, #37 and #39. Combined commit-status arrays are empty and remain NOT VERIFIED.
+
+The source-level conclusion remains unchanged: PR #37 uses a non-CAS Issue label transition; issue body and labels do not prove signed owner approval; D1 consume/claim/outbox proofs are not integrated; no lease/fencing or outbox consumer exists. The default branch is unchanged and retains the legacy privileged chain.
+
+Branch graph recheck:
+- `proof/d1-single-use-ledger-retry-2026-11-06` compares 39 ahead / 0 behind default.
+- `proof/d1-claim-outbox-atomic-2026-11-07` compares 55 ahead / 0 behind default.
+- PR #39 remains a stacked proof; its reported combined-tree CI is not remote D1 qualification.
+
+No code or configuration was changed. No dispatch, Worker execution, provider/model call, secret-value read, resource creation or deployment occurred.
