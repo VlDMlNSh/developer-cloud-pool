@@ -18,11 +18,11 @@ export async function acquireProjectionDelivery(db, outboxId, workerId, now, lea
          SET status = 'leased', lease_owner = ?,
              lease_generation_delivery = lease_generation_delivery + 1,
              lease_expires_at = ?, delivery_attempts = delivery_attempts + 1,
-             created_at = created_at
+             updated_at = ?
        WHERE outbox_id = ?
          AND (status IN ('pending', 'retryable')
            OR (status = 'leased' AND lease_expires_at <= ?))
-    `).bind(workerId, now + leaseSeconds, outboxId, now).run();
+    `).bind(workerId, now + leaseSeconds, now, outboxId, now).run();
     if (result?.success !== true || result?.meta?.changes !== 1) {
       return deny("PROJECTION_NOT_LEASEABLE");
     }
@@ -47,10 +47,10 @@ export async function markProjectionRetryable(db, outboxId, workerId, generation
   try {
     const result = await db.prepare(`
       UPDATE pool_attempt_projection_outbox
-         SET status = 'retryable', lease_owner = NULL, lease_expires_at = NULL
+         SET status = 'retryable', lease_owner = NULL, lease_expires_at = NULL, updated_at = ?
        WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
          AND lease_generation_delivery = ? AND lease_expires_at > ?
-    `).bind(outboxId, workerId, generation, now).run();
+    `).bind(now, now, outboxId, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
       ? { decision: "PROJECTION_RETRYABLE", outboxId, generation, dispatch: false }
       : deny("STALE_OR_EXPIRED_PROJECTION_LEASE");
@@ -67,7 +67,7 @@ export async function acknowledgeProjectionDelivered(db, outboxId, workerId, gen
     const result = await db.prepare(`
       UPDATE pool_attempt_projection_outbox
          SET status = 'delivered', lease_owner = NULL,
-             lease_expires_at = NULL, delivered_at = ?
+             lease_expires_at = NULL, delivered_at = ?, updated_at = ?
        WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
          AND lease_generation_delivery = ? AND lease_expires_at > ?
     `).bind(now, outboxId, workerId, generation, now).run();
