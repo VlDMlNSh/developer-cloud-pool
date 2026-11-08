@@ -30,6 +30,9 @@ export async function acquireTaskLease(db, taskKey, workerId, now, leaseSeconds)
     const snapshot = await db.prepare(
       "SELECT state, attempt_count, lease_expires_at FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
+    if (snapshot && snapshot.attempt_count >= MAX_ATTEMPTS && snapshot.state === "dead") {
+      return deny("ATTEMPT_LIMIT_REACHED");
+    }
     if (snapshot && snapshot.attempt_count >= MAX_ATTEMPTS &&
         (snapshot.state === "pending" || (snapshot.state === "leased" && snapshot.lease_expires_at <= now))) {
       return deny("ATTEMPT_LIMIT_TRANSITION_NOT_APPLIED");
