@@ -54,3 +54,21 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - 26/27 tests passed. Conflict rollback test now passed, confirming the pre-check denial and unchanged READY ledger under conflicting task binding.
 - Remaining failing test: fixed five-attempt dead-letter expectation. Result remained `TASK_NOT_LEASEABLE` rather than `ATTEMPT_LIMIT_REACHED`; the actual final task row was not emitted in logs, so the exact state causing this remains unresolved.
 - Follow-up code commit `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` adds explicit handling when a task is already in `dead` at the cap. Exact-head workflow query for this newest head returned no run. It remains NOT VERIFIED.
+
+
+## Exact-head CI verification update — 2026-11-08
+
+This update supersedes the prior statement that head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` had no exact-head workflow run.
+
+- Immutable PR #40 head: `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- Workflow run: [42489887940](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489887940), Isolated D1 Ledger Proof, completed / SUCCESS.
+- Job `128759748692`, Local Workers-runtime D1 adversarial tests: SUCCESS.
+- Successful steps: checkout PR merge commit, pinned Node.js setup, exact dependency install, adapter syntax check, Workers-runtime D1 tests, lockfile artifact preservation.
+- Artifact `d1-ledger-proof-package-lock`, ID `13620723665`, SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`, 18,253 bytes; expires 2026-11-15.
+- Run metadata confirms head branch `proof/task-identity-fencing-design-2026-11-08` and exact head SHA above.
+- Therefore the latest attempt-cap hardening delta has exact-head local Workers/Miniflare CI VERIFIED. The prior 26/27 failure is superseded for this head.
+- This proves only the isolated local Workers-runtime D1 tests. It does not prove remote Cloudflare D1 behavior, production durability, restart recovery, real Worker/Supervisor/Finalizer integration, provider execution, or deployment.
+- PR #40 reviews and inline review threads were queried and both returned empty. Independent security/contract review remains NOT RUN.
+- PR #40 remains OPEN / DRAFT / UNMERGED, stacked on PR #39. No merge, production resource, secret, dispatch, provider call or Gemini controller execution occurred.
+- Next bounded step: inspect and extend restart/recovery + bounded retry/dead-letter audit coverage, then align lease lifecycle with Supervisor/Worker/Finalizer contracts before any integration. Keep dispatch fail-closed.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
