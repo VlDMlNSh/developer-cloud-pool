@@ -77,3 +77,21 @@ Inspected at that exact commit:
 **Important fit-gap:** Cloudflare's current SDK examples demonstrate the Workflow runtime test APIs and D1 migration fixture separately; they do not demonstrate atomic idempotency across a D1 commit followed by a Workflow step timeout, nor Task/Attempt fencing or authority semantics. Those remain project-specific proof obligations. The official example's retry mocks prove the framework can retry a step, not that our side effects are safe to retry.
 
 **Reuse decision:** reuse the official Vitest plugin configuration and introspection APIs; reuse the D1 migration setup pattern; author only the project-specific synthetic D1 schema, transaction/CAS logic and assertions needed for the acceptance cases. Keep the Workflow implementation minimal and free of real external side effects.
+
+
+## Local Workflow runtime smoke — 2026-11-08
+
+**Sub-result:** local runtime/test-plugin compatibility VERIFIED; full proof remains PLANNED.
+
+- Target checkout remains `8e3cd9dd4d2a650c0b37042ff896fb5c0f282f1e`; no source code committed yet.
+- Tested exact local versions: `@cloudflare/vitest-plugin@1.6.0`, `vitest@4.1.12`, existing `wrangler@4.158.0`; plugin transitive Miniflare `5.20261104.0-beta`.
+- A scratch Worker with a Workflow binding ran entirely through Miniflare using official `cloudflareTest` and `introspectWorkflow`; one test passed, asserting completion and the named step result/output.
+- Clean install and baseline checks passed: `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund`, syntax checks, Node suite 11/11, UI validator PASS, Workflow smoke 1/1.
+- Lockfile generation needed `--legacy-peer-deps`; CI install must carry the same flag. A Vitest-only file must not match Node's `*.test.js` auto-discovery pattern; use `.vitest.js`.
+- Scratch experiment lives at `/tmp/developer-cloud-pool-proof-20261108`, not in Git. File hashes and detailed evidence are in [the dated report](../reports/2026-11-08-cloudflare-workflows-runtime-smoke.md).
+- This does not yet test D1, persisted D1 effects, timeout/retry deduplication, Task/Attempt fencing, indeterminate handling, duplicate triggers or production boundaries.
+- No Cloudflare account access, deployment, secrets, provider calls or dispatch. No adoption decision.
+
+### Next implementation action
+
+Add a synthetic-only D1 binding and idempotent migration setup using the official Workers SDK D1 fixture pattern. First prove a commit-then-timeout retry is deduplicated by an atomic unique/conditional write; then add stale Attempt/lease-generation fencing. Keep all tests local and no external side effects.
