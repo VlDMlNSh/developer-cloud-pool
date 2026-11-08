@@ -11,6 +11,7 @@ on:
       - "scripts/pool-supervisor.mjs"
       - "scripts/pool-finalizer.mjs"
       - "scripts/pool-finalizer-runner.mjs"
+      - "scripts/validate-pool-contract.mjs"
       - "tests/security/pool-finalizer-fencing.test.mjs"
       - "tests/security/reusable-pool-worker-boundary.test.mjs"
       - ".github/workflows/reusable-pool-worker-boundary-validation.yml"
