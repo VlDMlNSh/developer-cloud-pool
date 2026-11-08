@@ -30,13 +30,14 @@ jobs:
       EXPECTED_REPOSITORY_ID: "1445644538"
       CALLER_WORKFLOW_REF: ${{ github.workflow_ref }}
       CALLER_WORKFLOW_SHA: ${{ github.workflow_sha }}
-      CALLEE_REPOSITORY: ${{ job.workflow_repository }}
-      CALLEE_FILE_PATH: ${{ job.workflow_file_path }}
-      CALLEE_WORKFLOW_SHA: ${{ job.workflow_sha }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Validate caller/callee and claimed task
         shell: bash
+        env:
+          CALLEE_REPOSITORY: ${{ job.workflow_repository }}
+          CALLEE_FILE_PATH: ${{ job.workflow_file_path }}
+          CALLEE_WORKFLOW_SHA: ${{ job.workflow_sha }}
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
