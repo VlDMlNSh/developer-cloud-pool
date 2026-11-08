@@ -56,7 +56,7 @@ Do not infer a running pool from workflow definitions, queued runs, static profi
 - Local checks: npm run check PASS; npm test 11/11 PASS; npm run validate:ui PASS; npm run test:workflow 4/4 PASS; git diff --check PASS.
 - D1 adapter exercises insert-if-absent attempt identity, exact task/attempt/generation fencing, durable receipt first-write-wins replay, and needs_review no-retry. Data is synthetic local Miniflare D1 only.
 - Workflow runtime smoke and D1 ledger tests are separate. A composed Workflow-step commit-then-timeout/retry proof remains NOT RUN.
-- GitHub PR workflow run 42500316035 (Jarvis Web Prototype Validation) was observed IN_PROGRESS on exact head c108f52957d4ad3964e57e72cda0f5a4fa721721. Exact-head CI remains RUNNING / NOT VERIFIED until completion and job-step read-back. No other run was returned at the initial query.
+- GitHub PR workflow run 42500316035 (Jarvis Web Prototype Validation) completed SUCCESS on exact head c108f52957d4ad3964e57e72cda0f5a4fa721721; job 128791438767. Read-back confirms checkout, runtime, lockfile install, static checks, API tests and UI validation all completed successfully. This verifies the configured Jarvis Web workflow only; it does not prove the composed Workflow+D1 retry behavior.
 - PR #52 reviews/threads: 0/0. Independent review NOT RUN.
 - No remote D1, secrets, OAuth credentials, providers/models, workflow dispatch, deployment or production mutations.
 - Workflows adoption NOT QUALIFIED / NOT ADOPTED. External side-effect idempotency, concurrent claim stress, live Cloudflare semantics, authority bridge and retry recovery remain NOT VERIFIED.
