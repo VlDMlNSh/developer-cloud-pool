@@ -5,7 +5,7 @@
 Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
+Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (2026-11-08 live read-back; latest commit is documentation-only)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -1550,3 +1550,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No dispatch, DSH, Resource Probe, provider/model calls, secret reads, deployment, billing/variable/ruleset changes or production resources. Read-only audit SUCCEEDED; production runtime NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: test-first PR #37 F2 finalizer binding against immutable envelope + claim/run generation with mutation/stale-claim negative tests; exact-head CI and authorized independent review. Keep dispatch fail-closed.
 - Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 21:27 Europe/Vilnius — live F2 recheck
+
+- Report: [Cloud Pool F2 live recheck 21:27](../reports/2026-11-08-cloud-pool-f2-live-recheck-2127.md), report commit `ce2f821078bb41cb27846e7afb4481ae69fd7ed1`.
+- Default `Основной` HEAD refreshed to `864213e2ff5b4fa956ba405dea8137a44d812f49`; this supersedes the older observed HEAD at the top of this Context Window. Latest default commit is documentation-only. Active ruleset `26550182` is active but requires zero approvals and has no required reviewers/CODEOWNERS approval; independent-review governance remains insufficient.
+- PR #37 remains OPEN/DRAFT at `1be8672c1be1a720b6c813dcafff5c020b6456ae`. Three exact-head check-runs are COMPLETED/SUCCESS (runs `42484039940`, `42484037514`, `42484039932`). Source re-read confirms F2: finalizer checks only `pool:claimed` before terminal label mutation; no binding to immutable envelope digest, issue open state, current Supervisor run/attempt or unique claim generation. Static finding; live race NOT RUN. Existing CHANGES_REQUESTED review targets an older head; current authorized independent review NOT VERIFIED.
+- PR #52 OPEN/DRAFT at `c430fe4beecf93a20052f0c3efedb5f8539e4faa`, exact PR run `42507524428` SUCCESS. Local Workflow/D1 tests include completed-instance persistence across two local processes, not in-progress process-crash recovery or hosted Cloudflare qualification; this does not resolve F2.
+- PR #51 remains isolated proof at `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`, exact-head run `42495716401` SUCCESS. No remote D1/production qualification.
+- No current variable readback, dispatch, Worker/DSH execution, provider/model calls, secret reads, deployment or resource creation. Cloud Pool dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded implementation: test-first PR #37 F2 remediation on a new branch from the immutable PR #37 head, binding finalization to the original envelope and a run/attempt claim generation; add negative mutation/stale-claim/closed-issue/duplicate-finalizer tests. Keep fail-closed and do not merge/dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
