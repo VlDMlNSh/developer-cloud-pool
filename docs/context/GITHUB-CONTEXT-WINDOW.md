@@ -1,6 +1,6 @@
 # Developer Cloud Pool — GitHub Context Window
 
-**Updated:** 2026-11-08 — latest live reconciliation and protocol design pass  
+**Updated:** 2026-11-08 — local Workflow runtime smoke and live governance reconciliation  
 **Phase:** Contour A — cloud pool launch and authenticated remote web access  
 **Disposition:** BLOCKED / NOT QUALIFIED / NOT ACCEPTED  
 **Priority:** Cloud pool and its secure browser Experience plane first. Native iOS/local mobile assistant and external servers are later Contour B work.
@@ -9,9 +9,9 @@
 
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 - Default branch: Основной
-- Latest observed default HEAD: 197ba98d0dc7d8437d759dd25bee8750d02e59ae (compare endpoint, 2026-11-06 pass).
+- Latest observed default HEAD: 864213e2ff5b4fa956ba405dea8137a44d812f49 (Git ref read, 2026-11-08).
 - This context window is maintained on working branch docs/github-context-window-2026-11-06. It is unmerged and is not canonical on the default branch.
-- Latest report: [GitHub read adapter audit and path hardening](../reports/2026-11-06-github-read-adapter-audit.md).
+- Latest report: [Cloudflare Workflows local runtime smoke](../reports/2026-11-08-cloudflare-workflows-runtime-smoke.md).
 - Latest checkpoint: [Cloud Pool next checkpoint](../checkpoints/2026-11-06-cloud-pool-next-checkpoint.md).
 
 ## Contour A — cloud execution pool
@@ -830,7 +830,7 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 
 - Dated report: [Cloudflare Workflows local runtime smoke](../reports/2026-11-08-cloudflare-workflows-runtime-smoke.md).
 - Proof branch `proof/cloudflare-workflows-vitest-2026-11-08` remains at immutable HEAD `8e3cd9dd4d2a650c0b37042ff896fb5c0f282f1e`; no proof source files have been committed.
-- Reused Cloudflare's official Workers SDK Workflow/Vitest fixture APIs at upstream commit `ab086218678b1bf311b158bcc62cc6b7437a7839`. Local compatibility set: `@cloudflare/vitest-plugin@1.6.0`, `vitest@4.1.12`, existing `wrangler@4.158.0`, Miniflare `5.20261104.0-beta).
+- Reused Cloudflare's official Workers SDK Workflow/Vitest fixture APIs at upstream commit `ab086218678b1bf311b158bcc62cc6b7437a7839`. Local compatibility set: `@cloudflare/vitest-plugin@1.6.0`, `vitest@4.1.12`, existing `wrangler@4.158.0`, Miniflare `5.20261104.0-beta`.
 - On Voktors-Mini.Dlink (Desktop Commander device `e264f341-2e21-4dfc-9f97-9b95cd08bcd3`), Node 22.23.3/npm 10.9.9: clean `npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund` succeeded; `npm run check` PASS; `npm test` 11/11 PASS; `npm run validate:ui` PASS; local Cloudflare Workflow smoke via Vitest 4.1.12 1/1 PASS.
 - The smoke creates a local Workflow, waits for `complete`, and asserts its named persisted step result and output. This verifies only the local runtime/test harness compatibility, not D1 or orchestration safety.
 - Test-discovery constraint: Node's `node --test` auto-discovers `.test.js`; Vitest-only tests using the official `await using` introspector pattern must use a distinct suffix such as `.vitest.js` and explicit Vitest include.
@@ -846,7 +846,7 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 ## Live GitHub and governance revalidation — 2026-11-08
 
 - Default branch `Основной` HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
-- Documentation branch HEAD after this pass: `bdf5c044462d51fb1ea436d0aaa44f4155db600b`.
+- Dated report creation commit: `bdf5c044462d51fb1ea436d0aaa44f4155db600b`; the report was subsequently revalidated and amended on the same documentation branch.
 - Proof branch HEAD after plan update: `cceee5924c9994b58705e530beb74da6314fc0a6`.
 - PR #25: OPEN / DRAFT, head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, base `Основной`. Exact-head workflow runs `42228269689` and `42228269676`: COMPLETED / SUCCESS. Review list empty; combined status endpoint empty. CI is VERIFIED from the two exact-head run records; independent review NOT VERIFIED.
 - PR #51: OPEN / DRAFT, head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7`, base `proof/immutable-task-attempts-audit-ci-2026-11-08`. Exact-head workflow runs empty, review list empty, combined status empty. CI and independent review NOT VERIFIED.
