@@ -55,11 +55,11 @@ Do not infer a running pool from workflow definitions, queued runs, static profi
 - Local runtime on Voktors-Mini.Dlink: Node 22.23.3 / npm 10.9.9; @cloudflare/vitest-plugin 1.6.0, Vitest 4.1.12, Wrangler 4.158.0.
 - Local checks after fresh npm ci: npm run check PASS; npm test 11/11 PASS; npm run validate:ui PASS; npm run test:workflow 6/6 PASS (4 D1 ledger, 2 composed Workflow); git diff --check PASS.
 - D1 adapter exercises insert-if-absent attempt identity, exact task/attempt/generation fencing, durable receipt first-write-wins replay, and needs_review no-retry. Data is synthetic local Miniflare D1 only.
-- Workflow runtime smoke and D1 ledger tests are separate. A composed Workflow-step commit-then-timeout/retry proof remains NOT RUN.
+- The composed Workflow step performs a D1 receipt commit, then consumes a persistent local one-shot fault that fails the step after commit. The Workflow retries; assertions prove two callback invocations, exactly one original receipt row, completed attempt at the exact generation, and consumed fault counter. The concurrent local D1 test proves duplicate claims/competing receipt writers converge on one first-writer receipt.
 - GitHub PR workflow run 42503077168 (Jarvis Web Prototype Validation) completed SUCCESS on exact head 4eb4aea106787c70039cd7110f1ca7a260628b57; job 128799814431. All steps completed successfully, including the new Cloudflare Workflow and D1 local proof suite. This verifies the local composed proof on CI, not live Cloudflare account behavior.
 - PR #52 reviews/threads: 0/0. Independent review NOT RUN.
 - No remote D1, secrets, OAuth credentials, providers/models, workflow dispatch, deployment or production mutations.
-- Workflows adoption NOT QUALIFIED / NOT ADOPTED. External side-effect idempotency, concurrent claim stress, live Cloudflare semantics, authority bridge and retry recovery remain NOT VERIFIED.
+- Workflows adoption NOT QUALIFIED / NOT ADOPTED. Worker-process restart, regional failover, distributed concurrency stress, live Cloudflare account semantics, duplicate Workflow creation/event suppression, external side-effect idempotency and authority bridge remain NOT VERIFIED.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B deferred.
 
 ## Cross-project boundary
