@@ -1177,3 +1177,19 @@ The PRs are independent local/static proofs, not an integrated production author
 - No code, workflow, permissions, secrets, variables, rulesets, cloud resources or deployments changed. No Worker/DSH/Resource Probe/provider/model execution.
 - Status: exact named workflow runs VERIFIED at stated SHAs; independent review NOT RUN; remote D1 NOT RUN; live gate values NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only source review of PR #37 and combined PR #36/#39 authorization chain against threat model; obtain authorized independent security review before merge or implementation. Keep dispatch fail-closed.
+
+
+## 2026-11-08 follow-up — PR branch provenance and stacked synchronization
+
+Latest bounded report: [branch provenance and stack synchronization audit](../reports/2026-11-08-pr36-pr37-pr39-branch-provenance-and-stack-sync-audit.md).
+
+- Default `Основной`: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- PR #36 live branch resolves to `e11fc90e50bd20b166207af64551c49cfa80ffb4` (0 ahead / 0 behind when compared to its branch ref). Exact-head Contract Validation `42329438308` and D1 Proof `42329438351` SUCCESS. Its PR description's `7571f82...` head statement is stale relative to live branch resolution.
+- PR #37: `5587a4e013507b5be330fd0c49ce1fc836faa946`, 29 ahead / 0 behind. Exact-head Contract Validation `42284051311` and Boundary Validation `42284051309` SUCCESS. PR body still references older `5b45a29...`; Issue #38 has newer head.
+- PR #39: `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, based on PR #36 at `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`. Child is 17 ahead / 0 behind its declared base, but relative to current parent `e11fc90...` it is DIVERGED 17 ahead / 1 behind. The parent-only commit adds push triggers to the D1 validation workflow. Synchronize child only after independent review, inspect diff and rerun exact-head CI.
+- PR #39 exact-head D1 proof run `42329993548` SUCCESS. These are named workflow results; combined status contexts empty / NOT VERIFIED.
+- PRs #36/#37/#39 all OPEN/DRAFT/UNMERGED; formal reviews 0 and inline threads 0. Independent security review NOT RUN.
+- No code/config/secrets/variables/rulesets/resources/deployments changed; no dispatch or provider/model execution. Current dispatch gate values NOT VERIFIED.
+- Default branch remains on legacy privileged Supervisor/Worker chain. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review, then update stacked PR #39 from current #36 parent and rerun exact-head CI. Keep dispatch disabled.
+
