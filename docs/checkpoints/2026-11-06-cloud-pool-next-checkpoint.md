@@ -189,3 +189,12 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 - PR #51 run `42536377720` / job `128901478596`: COMPLETED SUCCESS. PR #54 run `42536381713` / job `128901491911`: COMPLETED SUCCESS. Existing official Cloudflare Vitest plugin and Miniflare/workerd fixture reused.
 - Local deterministic fault-injection proof only; no real network or hosted D1 qualification. PR #51/#54 OPEN/DRAFT/UNMERGED; Issue #38 OPEN; PR #53 split-write/non-CAS risks remain; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
 - Next: design durable finalization intent/outbox + idempotent GitHub projection/recovery addressing PR #53 F2-R1/F2-R2 without broad Supervisor Contents:write. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-09 — durable finalization outbox design
+
+- Design: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/architecture/DURABLE-FINALIZATION-OUTBOX-DESIGN.md
+- PR #53 runner audit confirms non-atomic GitHub Issue label PATCH followed by comment POST; GitHub labels are not CAS. Existing local D1 attempt trigger atomically records terminal event + task projection; existing local claim outbox provides a reusable precedent.
+- Proposal separates authoritative task state/audit from GitHub projections, adds transactional projection outbox, fenced delivery leases, deterministic comment marker and reconciliation. Explicitly does NOT claim exactly-once GitHub comments; ambiguous POST can produce duplicate comments under delayed visibility. D1 remains unqualified candidate.
+- PR #53 head `b8a253f06418841d5f0250c9fd550bf3247db040`; Issue #38 OPEN. Branch protection read returned 403, NOT VERIFIED. No code or runtime changes; F2-R1/R2 NOT FIXED; dispatch fail-closed; Contour A BLOCKED; Contour B DEFERRED.
+- Next: implement isolated D1 projection-outbox proof only after reviewing the proposed state machine; test transaction rollback, concurrent single-winner lease, stale-generation ack, lost/late GitHub response reconciliation and duplicate markers. No production workflow wiring or dispatch. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
