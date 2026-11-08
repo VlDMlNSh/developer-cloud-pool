@@ -129,3 +129,49 @@ it("rejects a duplicate trigger for the same attempt generation", async () => {
   expect(attempts.count).toBe(1);
   expect(receipts.count).toBe(1);
 });
+
+it("replays a completed Workflow through the explicit restart API while retaining the D1 receipt", async () => {
+  await resetLedger();
+  await using introspector = await introspectWorkflow(env.PROOF_WORKFLOW);
+  await introspector.modifyAll(async (mock) => {
+    await mock.disableSleeps();
+    await mock.disableRetryDelays();
+  });
+
+  const payload = {
+    taskId: "task-explicit-restart",
+    attemptId: "attempt-explicit-restart",
+    generation: 12,
+    receipt: { sideEffectId: "restart-stable-effect", result: "durable-before-restart" }
+  };
+  const response = await exports.default.fetch(new Request("https://proof-worker.local/create", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload)
+  }));
+  expect(response.status).toBe(200);
+  const { id } = await response.json();
+  const [introspected] = await introspector.get();
+  await introspected.waitForStatus("complete");
+
+  const workflowInstance = await env.PROOF_WORKFLOW.get(id);
+  await workflowInstance.restart();
+  await introspected.waitForStatus("complete");
+
+  const receipt = await env.DB.prepare(
+    "SELECT COUNT(*) AS count, MIN(receipt_json) AS receipt_json FROM pool_attempt_receipts WHERE attempt_id = ?"
+  ).bind(payload.attemptId).first();
+  expect(receipt.count).toBe(1);
+  expect(JSON.parse(receipt.receipt_json)).toEqual(payload.receipt);
+
+  const attempt = await env.DB.prepare(
+    "SELECT status, lease_generation FROM pool_attempts WHERE attempt_id = ?"
+  ).bind(payload.attemptId).first();
+  expect(attempt).toEqual({ status: "completed", lease_generation: payload.generation });
+
+  const invocations = await env.DB.prepare(
+    "SELECT invocation_count FROM pool_attempt_step_invocations WHERE attempt_id = ?"
+  ).bind(payload.attemptId).first();
+  expect(invocations.invocation_count).toBe(2);
+  expect(await introspected.getOutput()).toEqual({
+    outcome: "COMMITTED", receipt: payload.receipt
+  });
+});
