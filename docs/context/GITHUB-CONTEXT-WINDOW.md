@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-09 — D1 Attempt / Workflow proof composition audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (2026-11-08 live read-back; latest commit is documentation-only)
@@ -1573,3 +1573,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - F2 is **PARTIALLY IMPLEMENTED, NOT FULLY CLOSED**: GitHub Issues label PATCH has no atomic compare-and-swap in this implementation. Double-read/revalidation/readback narrow but do not eliminate the external concurrent mutation race between final read and PATCH. Do not merge or dispatch. Next: qualify an atomic durable fencing authority (candidate D1 conditional transaction/unique claim ledger) with stale-generation, duplicate-finalizer, mutation, replay and rollback tests; integrate only after hosted semantics are verified.
 - Independent authorized review NOT RUN / NOT VERIFIED; ruleset still requires zero approvals. No dispatch, Worker/DSH, provider/model calls, secret reads, deployment, remote D1 or production resources. Runtime NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — D1 Attempt / Workflow proof composition audit
+
+- Latest report: [D1 Attempt / Workflow proof composition audit](../reports/2026-11-09-d1-attempt-workflow-proof-composition-audit.md).
+- Reuse-first finding: do not restart D1 implementation. Existing draft proof line is #36 → #39 → #40 → #49, with sibling extensions #50 and #51, plus parallel Workflow composition proof #52.
+- Exact local CI evidence: #36 code head `9815da8fd316d8263b59f3493d076d4623c4c925` runs 42274484200 and 42274484234 SUCCESS; #39 tested merge tree `77b3ce30a3c90ad564db892cae82076b5c0774c9` run 42329993548 SUCCESS (19/19); #40 head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` run 42489887940 SUCCESS; #49 head `4ab0fdc4d649736a171faf95b9ab3a24b17217e8` runs 42492657024 and 42492663954 SUCCESS (35/35); #50 head `6e6870e5463f3f67e87a305112b208401d95022d` run 42495440869 SUCCESS; #51 head `4d83a77c3d97dccdac8f87ad0fda9182d4fd3ee7` run 42495716401 SUCCESS; #52 current PR API head `c430fe4beecf93a20052f0c3efedb5f8539e4faa` run 42507524428 SUCCESS.
+- #52 description also references report-only SHA `1eb3be17d9146d57a4335b511804946e097651ae` / run 42506744722; live PR API head currently reports `c430fe4beecf93a20052f0c3efedb5f8539e4faa`. Treat c430... as current PR head and do not conflate the two.
+- Scope is strictly local Workers-runtime/Miniflare. Hosted D1, Cloudflare Free/card-free entitlement, remote restore, and production Workflow behavior remain NOT VERIFIED.
+- Concrete integration gaps: no Supervisor/Worker/Finalizer integration; caller-supplied issuer identity and time are not trusted authority; no live outbox consumer/downstream idempotency or real executor side-effect proof; #51's indeterminate queue intentionally does not grant retry/takeover authority.
+- Open contract ambiguity: #40 logical task key excludes envelope digest while the proof attaches approvals with different envelope digests to the same task/outbox. Since the F2 task envelope digest binds the full Issue body, explicitly decide whether digest mismatch must DENY or require a new task revision. Add a concurrent negative test before integration.
+- Governance recheck: active ruleset 26550182 applies only to `refs/heads/Основной`; requires PR and review-thread resolution but zero approvals, no required reviewers, and no required status checks. PR #37 has CHANGES_REQUESTED reviews; PR #53 has zero reviews. Independent authorized organizational security approval remains NOT VERIFIED.
+- PR #36/#39/#40/#49/#50/#51/#52 and PR #53 remain OPEN/DRAFT/UNMERGED. PR #53 F2 GitHub label PATCH race remains unresolved. Keep dispatch fail-closed.
+- No secret reads, remote D1 operations, deployment, Worker/DSH execution, provider/model calls or dispatch occurred.
+- Current phase: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: resolve envelope-digest/task-identity policy and add concurrent mismatch regression tests on the existing #40/#49 proof lineage; rerun exact-head D1 CI and read back source/tests.
