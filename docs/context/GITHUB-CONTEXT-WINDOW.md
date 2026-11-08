@@ -588,3 +588,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - PR #36 and #39 local proof CI evidence is 13/13 and 19/19 tests respectively; not remote D1 or production qualification.
 - Ruleset 26550182 requires zero approvals and does not enforce independent review. Current `POOL_DISPATCH_ENABLED` value remains NOT VERIFIED. Dispatch remains fail-closed.
 - No live Worker/Supervisor execution, remote D1, deployed web UI, model routing/quota qualification, secret-isolation end-to-end test, or durable persistence/restore evidence. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B deferred.
+
+
+## 2026-11-08 — independent review reconciliation (supersedes stale review counts)
+
+- Report: [Independent review reconciliation](../reports/2026-11-08-independent-review-reconciliation.md).
+- Current PR heads: #36 `e11fc90e50bd20b166207af64551c49cfa80ffb4`; #37 `5587a4e013507b5be330fd0c49ce1fc836faa946`; #39 `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- Review records now exist: #36 two COMMENTED; #37 two CHANGES_REQUESTED; #39 two COMMENTED. All six are from the same account `maxkorolskiy88-ship-it`; the second submission is explicitly a continuation, not a second reviewer. Reviewer authorization/full organizational independence NOT VERIFIED; no APPROVED review exists. Prior statements of 0 formal reviews are superseded.
+- Exact-head named CI: #36 runs `42329438308`/`42329438351` SUCCESS; #37 `42284051311`/`42284051309` SUCCESS; #39 `42329993548` SUCCESS. Jobs/steps read back successful. This corrects the stale note that #37's latest exact-head CI is failed; it does not resolve F1 because the current Worker source still references `job.workflow_repository/file_path/sha` in job-level env and the tests do not prove runtime context availability.
+- F2 remains open: Finalizer checks `pool:claimed` but does not bind finalization to immutable envelope, claim owner, worker run, attempt/generation or fencing token.
+- Active ruleset 26550182 still has zero required approvals and no CODEOWNERS requirement; governance does not enforce independent approval. Current dispatch gate values NOT VERIFIED.
+- Required next: authorized independent reviewer; resolve F1/F2; unified issuer/claim/lease/outbox/finalizer/recovery protocol; governance-enforced approval; only then remote D1/runtime and UI/routing/secret/persistence qualification. No dispatch/deploy/provision/provider calls. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
