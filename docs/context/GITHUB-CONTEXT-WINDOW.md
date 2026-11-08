@@ -110,8 +110,8 @@
 
 ## Next bounded actions
 
-1. PR #51 bounded review is recorded; exact-head local CI is SUCCESS, but independent review remains NOT RUN and PR remains Draft/unmerged. Next: separately review the issuer/capability contract before designing any reconciliation resolver.\n2. Hosted Cloudflare qualification plan is published. Q0 read-only account/plan/resource preflight remains blocked until governance and account-scope gates are available. Do not provision, deploy, bind remote D1 or access secret values until every hard-stop gate passes.
-2. Continue verifying reconciliation queue integration only after PR #51's full migration chain is inspected against the exact base. No authority resolver or retries until issuer/capability contract is approved.
+1. PR #51 bounded review is recorded; exact-head local CI is SUCCESS, but independent review remains NOT RUN and PR remains Draft/unmerged. Next: separately review the issuer/capability contract before designing any reconciliation resolver.
+2. Hosted Cloudflare qualification plan is published. Q0 read-only account/plan/resource preflight remains blocked until governance and account-scope gates are available. Do not provision, deploy, bind remote D1 or access secret values until every hard-stop gate passes.
 3. Keep PR #52 and PR #51 DRAFT / UNMERGED. No production adoption or Contour A acceptance.
 
 ## Canonical source links
