@@ -437,6 +437,69 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(eventCount.n).toBe(1);
   });
 
+  it("recovers an exact finalization after commit succeeds but the caller loses the response", async () => {
+    const taskKey = await createLogicalTask("approval-finalize-ambiguous-response");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-ambiguous", NOW + 2, 30);
+    const originalPrepare = env.POOL_DB.prepare.bind(env.POOL_DB);
+    let loseResponse = true;
+    const ambiguousDb = {
+      prepare(sql) {
+        const statement = originalPrepare(sql);
+        if (loseResponse && sql.includes("UPDATE pool_attempts")) {
+          return {
+            bind(...values) {
+              const bound = statement.bind(...values);
+              return {
+                async run() {
+                  const committed = await bound.run();
+                  loseResponse = false;
+                  if (committed?.success !== true || !(committed?.meta?.changes >= 1)) {
+                    throw new Error("fault injection expected committed finalization");
+                  }
+                  throw new Error("simulated lost response after commit");
+                }
+              };
+            }
+          };
+        }
+        return statement;
+      }
+    };
+
+    const first = await finalizeTaskAttempt(ambiguousDb, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(first).toMatchObject({
+      decision: "DENY", reason: "ATTEMPT_FINALIZATION_AMBIGUOUS"
+    });
+
+    const recovered = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 30
+    });
+    expect(recovered).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
+
+    const terminalEvents = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(terminalEvents.n).toBe(1);
+    expect(task).toMatchObject({
+      state: "completed", lease_owner: null, lease_expires_at: null
+    });
+  });
+
   it("preserves failed attempt history and creates a distinct retry attempt", async () => {
     const taskKey = await createLogicalTask("approval-retry-attempt");
     await createAttempt(taskKey);
