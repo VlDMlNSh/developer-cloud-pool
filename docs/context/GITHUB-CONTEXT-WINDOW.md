@@ -1217,3 +1217,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Independent security review NOT RUN; remote D1 qualification NOT RUN; implementation/integration NOT AUTHORIZED / NOT RUN; dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: secure an authorized independent reviewer and a governance-enforced approval requirement through the authorized path; no merge, dispatch, resource creation or deployment before gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — PR #37 latest-head finalizer review
+
+- Report: [PR #37 latest-head follow-up — workflow identity correction and finalizer gap](../reports/2026-11-08-pr37-latest-head-finalizer-review.md); report commit `6df464af6a386f3d70fba8bd5cf0d3a371aa6f9a`.
+- Live PR #37 head is now `1be8672c1be1a720b6c813dcafff5c020b6456ae`, OPEN/DRAFT/UNMERGED. Current worker workflow blob `04d63d815d2f7d15cfa80c932b614d559385ff0a`; Supervisor workflow blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc`; Supervisor script blob `2d0611851ff738b2aeb377f464e5fa7d821f3696`.
+- Prior F1 placement defect is corrected: `job.workflow_*` values are now step-scoped. Exact-head Boundary Validation run `42484039940` / job `128741929176` SUCCESS; Pool Contract Validation run `42484039932` / job `128741928922` SUCCESS.
+- F2 remains open: Finalizer checks only `pool:claimed`; it does not bind terminal state write to the current immutable envelope, issue open/body/profile, claim owner/run identity or generation/fencing token. A task body mutation after Worker validation can therefore be finalized against a different target. Static source finding only; live race reproduction NOT RUN. Issue-label PATCH is not CAS.
+- Existing reviews remain CHANGES_REQUESTED/COMMENTED; no authorized organizationally independent APPROVE established. Current ruleset and live dispatch variables were not re-read in this pass. PR #37 remains unmerged; default branch still has legacy privileged Supervisor/Worker chain.
+- No source/workflow/gate/secret/resource changes, no Gemini controller run, no Worker/DSH execution, no provider/model calls, no deployment. Dispatch remains fail-closed.
+- Status: F1 corrected + exact-head CI VERIFIED; F2 BLOCKING; independent authorized review NOT VERIFIED; remote D1 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: test-first F2 remediation with immutable envelope + claim-generation binding and negative mutation/stale-claim fixtures; exact-head CI and authorized independent review before any merge or execution.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
