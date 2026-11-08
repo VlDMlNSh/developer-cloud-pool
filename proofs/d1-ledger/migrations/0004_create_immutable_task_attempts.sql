@@ -32,6 +32,8 @@ CREATE TABLE pool_attempt_events (
   attempt_id TEXT NOT NULL REFERENCES pool_attempts(attempt_id),
   event_type TEXT NOT NULL CHECK (event_type IN ('attempt.created', 'lease.acquired', 'attempt.indeterminate', 'attempt.finalized')),
   event_digest TEXT NOT NULL CHECK (length(event_digest) = 64),
+  actor_id TEXT,
+  lease_generation INTEGER NOT NULL DEFAULT 0 CHECK (lease_generation >= 0),
   created_at INTEGER NOT NULL
 );
 
@@ -65,10 +67,10 @@ BEGIN
          updated_at = NEW.created_at
    WHERE task_key = NEW.task_key;
 
-  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
+  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, actor_id, lease_generation, created_at)
   VALUES (
     'attempt-created:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
-    'attempt.created', NEW.input_digest, NEW.created_at
+    'attempt.created', NEW.input_digest, NULL, 0, NEW.created_at
   );
 END;
 
@@ -112,11 +114,12 @@ BEGIN
      AND status = 'running'
      AND lease_generation < NEW.lease_generation;
 
-  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
+  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, actor_id, lease_generation, created_at)
   SELECT
     'lease-acquired:' || NEW.current_attempt_id || ':' || NEW.lease_generation,
     NEW.task_key, NEW.current_attempt_id, 'lease.acquired',
-    (SELECT input_digest FROM pool_attempts WHERE attempt_id = NEW.current_attempt_id), NEW.updated_at
+    (SELECT input_digest FROM pool_attempts WHERE attempt_id = NEW.current_attempt_id),
+    NEW.lease_owner, NEW.lease_generation, NEW.updated_at
   WHERE EXISTS (
     SELECT 1 FROM pool_attempts
      WHERE attempt_id = NEW.current_attempt_id
@@ -161,6 +164,16 @@ AFTER UPDATE OF status ON pool_attempts
 WHEN NEW.status IN ('succeeded', 'failed', 'abandoned')
  AND OLD.status <> NEW.status
 BEGIN
+  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, actor_id, lease_generation, created_at)
+  SELECT
+    'attempt-finalized:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
+    'attempt.finalized',
+    COALESCE(NEW.result_digest, NEW.provenance_digest, NEW.input_digest),
+    t.lease_owner, t.lease_generation, NEW.completed_at
+  FROM pool_tasks t
+  WHERE t.task_key = NEW.task_key
+    AND t.current_attempt_id = NEW.attempt_id;
+
   UPDATE pool_tasks
      SET state = CASE WHEN NEW.status = 'succeeded' THEN 'completed' ELSE 'pending' END,
          lease_owner = NULL,
@@ -169,14 +182,6 @@ BEGIN
          updated_at = NEW.completed_at
    WHERE task_key = NEW.task_key
      AND current_attempt_id = NEW.attempt_id;
-
-  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
-  VALUES (
-    'attempt-finalized:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
-    'attempt.finalized',
-    COALESCE(NEW.result_digest, NEW.provenance_digest, NEW.input_digest),
-    NEW.completed_at
-  );
 END;
 
 CREATE TRIGGER pool_attempt_events_no_update
@@ -195,11 +200,12 @@ CREATE TRIGGER pool_attempts_indeterminate_event
 AFTER UPDATE OF status ON pool_attempts
 WHEN NEW.status = 'indeterminate' AND OLD.status = 'running'
 BEGIN
-  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, created_at)
-  VALUES (
+  INSERT INTO pool_attempt_events(event_id, task_key, attempt_id, event_type, event_digest, actor_id, lease_generation, created_at)
+  SELECT
     'attempt-indeterminate:' || NEW.attempt_id, NEW.task_key, NEW.attempt_id,
-    'attempt.indeterminate', NEW.input_digest, NEW.indeterminate_at
-  );
+    'attempt.indeterminate', NEW.input_digest, t.lease_owner, t.lease_generation, NEW.indeterminate_at
+  FROM pool_tasks t
+  WHERE t.task_key = NEW.task_key AND t.current_attempt_id = NEW.attempt_id;
 END;
 
 CREATE TRIGGER pool_tasks_immutable_identity
