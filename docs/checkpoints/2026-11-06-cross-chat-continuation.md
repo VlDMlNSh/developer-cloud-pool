@@ -41,3 +41,15 @@ Latest correction: [PR #39 stack graph/content/CI correction](../reports/2026-11
 
 Latest pass: author-side pre-review of the integrated claim/lease/outbox threat model is documented in [2026-11-08 integrated claim protocol pre-review gap analysis](../reports/2026-11-08-integrated-claim-protocol-pre-review-gap-analysis.md). It is not independent review. PR #36/#37/#39 named exact-head CI remains SUCCESS on recorded heads; formal reviews remain 0. Issue #38 is an Issue, not PR. Implementation, remote D1 qualification and dispatch remain NOT RUN. Contour A BLOCKED; Contour B DEFERRED.
 
+
+
+## 2026-11-08 — governance and independent-review gate refresh
+
+- Report: [governance and independent-review gate refresh](../reports/2026-11-08-governance-and-review-gate-refresh.md), blob `efb791bc81ec684b5dd060c37e0ba4c5f811590f`; report commit `ea992fb3133eeb173d0329bba38501384d95747e`.
+- Default branch `Основной` remains at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Active ruleset ID `26550182` applies to this branch, but requires **zero** approving reviews, has no required reviewers and disables CODEOWNERS review/extra approval for unattributed changes. Bypass actors empty; current-user bypass never. Classic branch endpoint still reports protected=false. This is not sufficient governance enforcement for an independent security gate.
+- Default Supervisor at this SHA still has `workflow_run: completed`, `issues: write`, `actions: write`; default Worker still exposes `workflow_dispatch`. PR #37's replacement remains draft/unmerged.
+- Exact-head CI remains named SUCCESS for PR #36 (`42329438308`, `42329438351`), #37 (`42284051311`, `42284051309`) and #39 (`42329993548`). All three have 0 formal reviews and 0 inline threads. Combined commit-status contexts empty / NOT VERIFIED.
+- Issue #38 remains OPEN. Live dispatch variable values remain NOT VERIFIED; historical Issue #1 readback is stale and was not used as current evidence.
+- Independent security review NOT RUN; remote D1 qualification NOT RUN; implementation/integration NOT AUTHORIZED / NOT RUN; dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: secure an authorized independent reviewer and a governance-enforced approval requirement through the authorized path; no merge, dispatch, resource creation or deployment before gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
