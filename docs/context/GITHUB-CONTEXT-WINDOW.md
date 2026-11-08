@@ -9,7 +9,7 @@
 
 - Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
-- This Context Window is on `docs/github-context-window-2026-11-06`; that documentation branch is unmerged and noncanonical. Latest synchronized Context Window/checkpoint update commit: `21218bc18ba107e38d9452a25d673ae114c24404`; Context Window blob `cb231771abdf1723bf6898a9a8eb9a076c9db6ae`; checkpoint blob `3dd941fe5eb79bfcc7df93539916e37ad5e10ecd`. The Context Window is the current file on this branch; the branch remains unmerged and noncanonical.
+- This Context Window is on `docs/github-context-window-2026-11-06`; that documentation branch is unmerged and noncanonical. Latest synchronized Context Window/checkpoint update commit: `c42489a51b21a96a10d6b045d940abeeeba590dd`; Context Window blob `d215c1ae09a3a7ec591ad4efd87a4b71f8b7f76e`; checkpoint blob `e25e085f2dbdccae669d92801816ea0a1ffbae0a`. The Context Window is the current file on this branch; the branch remains unmerged and noncanonical.
 - Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08` — implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; latest report-only successor commit `c430fe4beecf93a20052f0c3efedb5f8539e4faa` (previous report commit `1eb3be17d9146d57a4335b511804946e097651ae`).
 - Local completed-instance process-recreation report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/1eb3be17d9146d57a4335b511804946e097651ae/docs/reports/2026-11-08-workflow-process-recreation-proof.md.
 - Local in-progress Workflow process-recovery report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/c430fe4beecf93a20052f0c3efedb5f8539e4faa/docs/reports/2026-11-08-workflow-inprogress-process-recovery-proof.md.

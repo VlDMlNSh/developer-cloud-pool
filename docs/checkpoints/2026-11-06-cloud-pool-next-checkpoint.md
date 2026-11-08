@@ -7,7 +7,7 @@ Contour A — cloud development pool and authenticated remote web console. Conto
 ## Current GitHub refs
 
 - Default branch: `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
-- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest synchronized commit `21218bc18ba107e38d9452a25d673ae114c24404`.
+- Context documentation branch: `docs/github-context-window-2026-11-06` (unmerged, noncanonical), latest synchronized commit `c42489a51b21a96a10d6b045d940abeeeba590dd`.
 - Proof branch implementation: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`; report-only commits: `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and latest `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
 - Draft PR #52: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52; current head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; base PR #25 branch @ `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`. Original implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e` exact-head CI SUCCESS; report commits `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`, `1eb3be17d9146d57a4335b511804946e097651ae` and `c430fe4beecf93a20052f0c3efedb5f8539e4faa` exact-head CI SUCCESS (runs `42506472721`, `42506744722` and `42507524428`).
 - Latest explicit Workflow restart report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/34cdf68d44aac22c10871bf42ddf1cbadf31082e/docs/reports/2026-11-08-workflow-explicit-restart-proof.md.
