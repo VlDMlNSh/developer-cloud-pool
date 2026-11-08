@@ -532,4 +532,45 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     ).bind(taskKey).first();
     expect(count.n).toBe(1);
   });
+
+  it("attaches 50 distinct concurrent approvals to exactly one logical task and one delivery outbox", async () => {
+    const contenders = Array.from({ length: 50 }, (_, index) => ({
+      ...approval,
+      approvalId: `approval-contention-${String(index + 1).padStart(3, "0")}`,
+      envelopeDigest: (index + 1).toString(16).padStart(2, "0").repeat(32)
+    }));
+
+    await Promise.all(contenders.map((item) => seed(item)));
+    const results = await Promise.all(
+      contenders.map((item) => claimLogicalTask(env.POOL_DB, item, NOW))
+    );
+
+    expect(results).toHaveLength(50);
+    expect(results.every((result) =>
+      result.decision === "TASK_CREATED_OR_ATTACHED" ||
+      result.decision === "TASK_ALREADY_ATTACHED"
+    )).toBe(true);
+    expect(results.every((result) => result.dispatch === false)).toBe(true);
+    expect(new Set(results.map((result) => result.taskKey)).size).toBe(1);
+    expect(new Set(results.map((result) => result.outboxId)).size).toBe(1);
+
+    const tasks = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_tasks"
+    ).first();
+    const approvals = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_task_approvals"
+    ).first();
+    const outbox = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_task_delivery_outbox"
+    ).first();
+    const consumed = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_approval_ledger WHERE state = 'consumed'"
+    ).first();
+
+    expect(tasks.n).toBe(1);
+    expect(approvals.n).toBe(50);
+    expect(outbox.n).toBe(1);
+    expect(consumed.n).toBe(50);
+  });
+
 });
