@@ -46,3 +46,19 @@ The evidence is local and synthetic. It demonstrates persistence of a completed 
 - Keep PR #52 DRAFT / UNMERGED.
 - Next bounded proof, if pursued: create a separate in-progress Workflow fixture with a controlled wait, terminate the Wrangler process while the Workflow is running, recreate it against the same local persistence directory, and verify whether the Workflow resumes exactly once. Do not call that Cloudflare production recovery.
 - Real Cloudflare account qualification remains a separate future gate requiring authorized account-level execution; no credentials, secrets, remote D1, provider calls, deployment, or dispatch were used here.
+
+## Independent repeat — same bounded contract, separate persistence directory
+
+A second isolated repetition was run during a later `/next` pass to independently confirm the same completed-instance persistence behavior. It used a different temporary persistence directory and a different Attempt/Workflow identity:
+
+- Persistence directory: `/tmp/dcp-miniflare-process-restart-final`.
+- Wrangler: `4.158.0`; Miniflare resolved by the pinned Wrangler install.
+- Local D1 migration `0001_attempt_ledger.sql` was applied before the Worker started.
+- First process created Workflow ID `attempt-attempt-process-restart-final-18`, Attempt `attempt-process-restart-final`, generation `18`, with receipt `{"sideEffectId":"process-restart-effect-final","result":"persisted-before-process-stop"}`.
+- Before process stop, D1 readback confirmed Attempt `completed` at generation 18 and one receipt.
+- The first Wrangler/Workerd process pair was terminated with SIGTERM; a new Wrangler process was started on the same local persistence directory.
+- Replaying the same create request after restart returned HTTP 500 with `WorkflowError: (instance.already_exists)` for the exact Workflow ID.
+- After restart, D1 readback again confirmed Attempt `completed`, generation 18, `invocation_count=1`, and exactly one unchanged receipt JSON.
+- The test server was stopped after verification. No production account, remote D1, secret, provider call, deployment, or dispatch was involved.
+
+This is an independent local repeat of completed-instance persistence across two OS processes. It does not extend the qualification boundary: in-progress Workflow recovery after abrupt process termination remains NOT VERIFIED.
