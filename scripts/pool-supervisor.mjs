@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { createHash } from "node:crypto";
 
 const repo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
@@ -87,18 +88,34 @@ if (!protectedDefaultRef || !dispatchEnabled || !authorizationAccepted) {
       await replaceLabels(issue, ["pool:ready"], ["pool:invalid"]);
       log("Rejected task #" + issue.number + ": invalid target SHA or unsupported profile.");
     } else {
-      await replaceLabels(issue, ["pool:ready"], ["pool:claimed"]);
+      const runId = process.env.GITHUB_RUN_ID;
+      const runAttempt = process.env.GITHUB_RUN_ATTEMPT;
+      if (!/^[0-9]+$/.test(runId || "") || !/^[0-9]+$/.test(runAttempt || "")) {
+        throw new Error("Supervisor run/attempt identity is unavailable; refusing claim.");
+      }
+      const claimGeneration = "pool:claim-" + runId + "-" + runAttempt;
+      await ensureLabel(claimGeneration, "5319e7", "Fenced claim generation for one Supervisor attempt");
+      const digest = createHash("sha256").update(String(issue.body || ""), "utf8").digest("hex");
+      await replaceLabels(issue, ["pool:ready"], ["pool:claimed", claimGeneration]);
       const readback = await request("/repos/" + repo + "/issues/" + issue.number);
       const labels = (readback.labels || []).map(label => label.name);
+      const generations = labels.filter(label => /^pool:claim-[0-9]+-[0-9]+$/.test(label));
       if (!labels.includes("pool:claimed") || labels.includes("pool:ready") ||
+          generations.length !== 1 || generations[0] !== claimGeneration ||
+          createHash("sha256").update(String(readback.body || ""), "utf8").digest("hex") !== digest ||
           extract(readback.body, "Target SHA", /^[0-9a-f]{40}$/) !== targetSha ||
-          extract(readback.body, "Worker profile", /^DSH headless probe$/) !== profile) {
+          extract(readback.body, "Worker profile", /^DSH headless probe$/) !== profile ||
+          readback.state !== "open") {
         throw new Error("Claim read-back was ambiguous; reusable Worker will not be called.");
       }
       setOutput("task_issue", String(issue.number));
       setOutput("target_sha", targetSha);
       setOutput("profile", "dsh-headless-probe");
-      log("Claimed one task #" + issue.number + " after exact read-back; awaiting reusable Worker.");
+      setOutput("envelope_digest", digest);
+      setOutput("claim_generation", claimGeneration);
+      setOutput("run_id", runId);
+      setOutput("run_attempt", runAttempt);
+      log("Claimed one task #" + issue.number + " with fenced generation after exact read-back; awaiting reusable Worker.");
     }
   }
 }
