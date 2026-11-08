@@ -32,7 +32,7 @@ export async function createTaskAttempt(db, {
         : deny("ATTEMPT_IDENTITY_CONFLICT");
     }
 
-    const inserted = await db.prepare(`
+    await db.prepare(`
       INSERT INTO pool_attempts (
         attempt_id, task_key, attempt_number, status, input_digest,
         execution_idempotency_key, created_at
@@ -40,12 +40,16 @@ export async function createTaskAttempt(db, {
       VALUES (?, ?, ?, 'prepared', ?, ?, ?)
     `).bind(attemptId, taskKey, attemptNumber, inputDigest, executionIdempotencyKey, now).run();
 
-    if (inserted?.success !== true || inserted?.meta?.changes !== 1) {
-      return deny("ATTEMPT_INSERT_NOT_CONFIRMED");
-    }
+    const row = await db.prepare(`
+      SELECT task_key, attempt_number, input_digest, execution_idempotency_key, status
+        FROM pool_attempts WHERE attempt_id = ?
+    `).bind(attemptId).first();
     const current = await db.prepare(
       "SELECT current_attempt_id, attempt_number FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
+    if (!row || row.task_key !== taskKey || row.attempt_number !== attemptNumber ||
+        row.input_digest !== inputDigest || row.execution_idempotency_key !== executionIdempotencyKey ||
+        row.status !== "prepared") return deny("ATTEMPT_INSERT_READBACK_MISMATCH");
     if (current?.current_attempt_id !== attemptId || current?.attempt_number !== attemptNumber) {
       return deny("ATTEMPT_POINTER_READBACK_MISMATCH");
     }
