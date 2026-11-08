@@ -471,3 +471,15 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; exact-head PR run `42329993548` / job `128274072508` and push run `42329991471` / job `128274065481` COMPLETED / SUCCESS; 2 files / 19 Workers-runtime tests. PR #39 and #36 submitted reviews remain zero; independent review NOT RUN.
 - Issue #38 remains OPEN. Remote D1, Cloudflare Free/card-free eligibility, GitHub ref CAS/immutability and durable Supervisor claim protocol remain NOT VERIFIED / NOT QUALIFIED. Keep both dispatch gates fail-closed. No secrets, provisioning, dispatch, Worker/DSH/Resource Probe, provider calls or deployment.
 - Next: obtain independent review for PR #36/#39 and verify Cloudflare Free/card-free eligibility via non-secret account metadata; then qualify remote D1 or run the isolated GitHub ref-reservation proof.
+
+
+## Cloudflare D1 Free-tier/account check — 2026-11-08
+
+- Report: [Cloudflare D1 Free-tier eligibility and account-state check](../reports/2026-11-08-cloudflare-d1-free-tier-check.md).
+- Official Cloudflare docs (D1 page updated 2026-10-30; Workers pricing updated 2026-10-02) explicitly state D1 is available on Workers Free. Included Free quotas: 5m rows read/day, 100k rows written/day, 5 GB total storage, 10 databases; Free tier supports prototyping/experimentation without Paid upgrade.
+- Connected account: read-only account metadata returns one standard account. Read-only D1 inventory returns zero databases. No D1 was created.
+- Card-free onboarding remains NOT VERIFIED. Read-only subscriptions endpoint was blocked HTTP 403 because OAuth connection lacks Billing Read/Billing Write; did not attempt alternate credentials or access billing details. Do not equate documented Free availability with card-free signup eligibility.
+- Default branch HEAD freshly verified: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Active ruleset `26550182` targets only `Основной`, requires 0 approvals, CODEOWNERS review false, no required reviewers: governance gap BLOCKED.
+- PR #39 OPEN/DRAFT/UNMERGED at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; exact-head PR run `42329993548` SUCCESS. PR #36/#37/#39 reviews remain zero. Issue #38 OPEN.
+- D1 Free availability VERIFIED from official docs; account D1 inventory VERIFIED empty; card-free eligibility NOT VERIFIED; remote D1 NOT RUN; independent review NOT RUN; governance acceptance BLOCKED. Keep both dispatch gates fail-closed. No secrets, paid resources, DB provisioning, deployment, dispatch, Worker/DSH/Resource Probe or provider calls.
+- Next: independent review of PR #36/#39/#37; governance change requiring independent approval; then remote D1 qualification only after explicit free-only gate and card-free status resolved.
