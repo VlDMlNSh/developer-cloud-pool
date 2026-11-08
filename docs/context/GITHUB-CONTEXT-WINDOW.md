@@ -1441,3 +1441,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: compare proposal line-by-line with the actual PR #40 schema/migration, claim/outbox adapter and tests; choose one retry/attempt model and produce a migration/test delta on an isolated branch only after resolving schema contracts.
 - PR #37 OPEN/DRAFT/UNMERGED; PR #40 OPEN/DRAFT/UNMERGED and stacked on PR #39. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-08 — PR #40 lease lifecycle / immutable attempt reconciliation
+
+- Fresh PR metadata: #40 OPEN / DRAFT / UNMERGED; branch `proof/task-identity-fencing-design-2026-11-08`; exact head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; base PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, not default.
+- Exact-head local D1/Workers CI run `42489887940` / job `128759748692`: SUCCESS. Artifact `13620723665`, SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`.
+- Inspected actual patch files at immutable head: migration `proofs/d1-ledger/migrations/0003_create_logical_task_identity.sql`; adapter `proofs/d1-ledger/src/claim-outbox.mjs`; lease adapter `proofs/d1-ledger/src/task-lease.mjs`; tests `proofs/d1-ledger/test/claim-outbox.test.ts`.
+- Confirmed schema has one mutable lease slot in `pool_tasks` (`attempt_count`, `lease_generation`, owner, expiry) and no immutable `pool_attempts` table, `attempt_id`, `attempt_number` or `attempt_nonce`.
+- `acquireTaskLease` increments both generation and attempt_count on every successful acquisition; expiry reclaim updates the same task row. The five-attempt cap therefore counts acquisitions/reclaims, while no per-attempt durable history exists. Generation fencing rejects the stale worker, but is not the same as immutable attempt records.
+- `finalizeTaskLease` directly marks the task completed and clears the lease; it does not bind result digest, Supervisor/Worker run IDs/attempts, workflow SHAs, attempt ID or append-only terminal audit. No terminal finalization idempotency/outbox is implemented.
+- Existing tests prove generation fencing and five-acquisition dead-letter, but not immutable attempt history, restart recovery or transactional terminal audit.
+- Contract proposal `docs/contracts/2026-11-08-task-attempt-finalization-contract-proposal.md` blob `7ba7b5285d564c43eb8d97e5901265d405aa75d5` specifies immutable attempt per retry and separate generation fencing. This is NOT the model implemented by PR #40. Compatibility remains INCOMPLETE; do not treat the two as equivalent.
+- Recommended next implementation direction, NOT YET ACCEPTED: immutable `pool_attempts` rows, new attempt on retry after old attempt is marked abandoned, generation fencing retained for stale-worker denial, plus transactional terminal result + append-only audit/outbox. First explicitly define expiry takeover vs retry semantics, then migration/tests.
+- Report: `docs/reports/2026-11-08-pr40-lease-lifecycle-reconciliation.md` (created in this pass; see commit below).
+- No PR #40 source change, remote D1, dispatch, Worker execution, secret access, provider call or deployment. Independent review NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design/accept exact attempt-vs-reclaim state machine and adversarial matrix before changing PR #40. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
