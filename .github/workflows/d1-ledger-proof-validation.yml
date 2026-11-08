@@ -10,6 +10,7 @@ on:
       - "proof/task-identity-fencing-design-2026-11-08"
       - "proof/immutable-task-attempts-2026-11-08"
       - "fix/attempt-finalization-idempotency-2026-11-08"
+      - "feat/indeterminate-reconciliation-queue-2026-11-08"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
