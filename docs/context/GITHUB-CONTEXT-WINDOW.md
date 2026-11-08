@@ -1111,3 +1111,13 @@ The PRs are independent local/static proofs, not an integrated production author
 - PR #27 remains OPEN / DRAFT / UNMERGED; exact-head CI for the new documentation head and review state must be re-read. No merge.
 - Status: design CREATED; implementation NOT RUN; independent review NOT RUN; remote qualification NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain authorized independent review of the integrated protocol; resolve findings before any local implementation planning.
+
+
+### Read-back and review verification — 2026-11-08
+- Integrated protocol document blob SHA: `6ea4144c3c38cc7e028a59909bee9a3c50860cd6`.
+- Design-pass report blob SHA: `0e5bf8c0b901411ea05c08811a826b7b608886f1`.
+- Context Window blob SHA before this verification addendum: `388f2d81a1f14c890c78f725c3fc6f32397e11f3`; checkpoint blob SHA: `0eee92fc1c52ad6d5636450ebcd40728c002be71`. All four files were fetched back successfully.
+- Latest branch commit at verification time: `3afb63d01bce966dc75148e91ef0c4ed52327e0a`. PR #27 exact-head workflow lookup returned no PR-triggered runs: CI NOT VERIFIED.
+- Submitted reviews / inline review threads: PR #27 0/0; PR #36 0/0; PR #37 0/0; PR #39 0/0. Independent security review NOT RUN.
+- Exact-head workflow results for previously recorded PR #36/#37/#39 heads remain: PR #36 runs `42329438308` and `42329438351` SUCCESS; PR #37 runs `42284051311` and `42284051309` SUCCESS; PR #39 run `42329993548` SUCCESS. These results are limited to those recorded SHAs and do not qualify the integrated protocol.
+- No merge, implementation, dispatch, deployment or remote D1 qualification.
