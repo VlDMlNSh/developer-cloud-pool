@@ -704,3 +704,18 @@ Exact-head CI query and combined status remain empty: NOT VERIFIED. Reviews/thre
 - Next: implement a read-only hosted identity probe with no dispatch; obtain independent review; then address F2 durable claim/fencing/receipt/finalizer/recovery.
 - GitHub context docs: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability and https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#job-context
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next PR #37 F1 validator reconciliation — 2026-11-08
+
+- Report: [PR #37 F1 validator reconciliation](../reports/2026-11-08-pr37-f1-validator-reconciliation.md), commit `3226f70e2eccedfc03e2b1729b3e5f0b1e3b45bc`, blob `a3abba47d786a11e732f7d2a3c07d1d6954a5cf6`.
+- PR #37 latest verified head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, OPEN/DRAFT/UNMERGED.
+- At prior head `8d78604cb651607da5e26f3148fab79cb58619e1`, Pool Contract Validation failed due to malformed regex in `scripts/validate-pool-contract.mjs` (Node SyntaxError: Invalid regular expression flags), not a YAML syntax failure.
+- Latest head replaces malformed regex with explicit string checks in contract validator and security test. Worker maps reusable job context values into step-level env.
+- Exact-head runs: Pool Contract Validation `42484039932` SUCCESS; Reusable Pool Worker Boundary Validation `42484039940` SUCCESS; job `128741929176` all steps SUCCESS.
+- Blobs: Worker `04d63d815d2f7d15cfa80c932b614d559385ff0a`; validator `5bc08d827b0fcbbcc1c3a036fd0dd201bdacff35`; security tests `9667f4cab3d9312425e6818fc1e8bc8fb5b3419c`.
+- F1 disposition: STATIC CONTRACT FIX VERIFIED; runtime caller/callee identity values and SHA equality NOT QUALIFIED. A non-privileged runtime probe without provider calls/secrets is still needed.
+- No secrets/credentials, provider calls, dispatch, remote D1, deployment or paid resources used. PR #37 remains draft/unmerged; no independent authorized approval verified. Keep dispatch disabled.
+- PR #29 F11 remains fixed only in its draft branch; F2/F3/F4/F5/F6/F7/F8/F9/F10 remain open/not qualified. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define and run a safe, non-privileged runtime proof for reusable workflow context propagation and caller/callee SHA semantics; independently review PR #37. Do not enable dispatch or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
