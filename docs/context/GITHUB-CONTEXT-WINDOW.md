@@ -1399,3 +1399,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report updated: `docs/reports/2026-11-08-task-identity-hardening-followup.md`, commit `e9d0e27a1702e60f6fca700df7f3d33d8da550ab`, blob `96c8eb441d927dca6808bc8d28ef71cdbc02484f`.
 - PR #40 remains OPEN/DRAFT/UNMERGED, no independent reviews or inline threads.
 - Next: verify the exact state/attempt_count/expiry values in the runtime test, repair dead-letter transition and rerun CI; do not merge.
+
+
+## 2026-11-08 — PR #40 exact-head hardening CI update
+
+- Supersedes the prior context/report note that PR #40 head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` had no workflow run.
+- Exact head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`: Isolated D1 Ledger Proof run `42489887940`, completed / SUCCESS; job `128759748692` passed pinned Node setup, exact dependency install, syntax check, Workers-runtime D1 tests and lockfile artifact upload.
+- Artifact `13620723665`, SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`, 18,253 bytes; expires 2026-11-15.
+- Run metadata confirms the exact branch and head SHA. The bounded-attempt hardening delta is now local Workers-runtime CI VERIFIED; earlier failure at `430bc60a...` is superseded for the newer head.
+- PR #40 reviews and inline threads both returned empty: independent security/contract review NOT RUN.
+- PR #40 remains OPEN/DRAFT/UNMERGED, stacked on PR #39. Remote D1, production restart recovery, Supervisor/Worker/Finalizer integration and deployment remain NOT VERIFIED / NOT IMPLEMENTED. No dispatch, secrets, provider calls or Gemini execution.
+- Next: inspect restart/recovery and audit coverage, then reconcile lease lifecycle with Supervisor/Worker/Finalizer before integration. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Verification report: `docs/reports/2026-11-08-task-identity-hardening-followup.md`.
