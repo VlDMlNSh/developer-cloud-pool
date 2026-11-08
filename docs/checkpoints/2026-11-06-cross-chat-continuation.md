@@ -105,3 +105,12 @@ Latest pass: [D1 proof-line topology and exact-head CI audit](../reports/2026-11
 - PR #49 trigger run `42533086378` SUCCESS exact head `b9067dc7d06245893cd4e208f6215438efe5ca64`. PR #50 trigger run `42533097813` SUCCESS exact head `65233f57038a9996e4a6e939abde3642a33d467d`; push run `42533091887` also SUCCESS. Job steps incl. Workers-runtime tests and artifact upload all SUCCESS. PR #50 remains OPEN/DRAFT/UNMERGED; mergeable=true.
 - This is PR-triggered local Workers-runtime/Miniflare validation, not remote D1 qualification. PR #51 sibling still requires its own PR-triggered CI. Independent security review NOT RUN; remote D1 NOT RUN; F2 partial; no dispatch/secrets/provider calls/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: correct and verify PR #51's base-branch trigger, then assess the composed A-only lineage. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — PR #51 exact merge-tree CI qualification
+
+- Report: [PR #51 exact merge-tree CI qualification](../reports/2026-11-09-pr51-exact-merge-tree-ci-qualification.md), report commit `816e99f85a449fed0bdfb80f295469f3dc839141`.
+- PR #51 workflow target filter corrected: include actual base branch `proof/immutable-task-attempts-audit-ci-2026-11-08` in `pull_request.branches`. Commit/exact head `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`; workflow blob `6b34e923bd4a9e801467f6a90a09702e8b876d38`.
+- PR-triggered run `42533777096` COMPLETED/SUCCESS exact head `f50e8fc09a6442b4ca3088194c9d7284c7ffce55`; job `128893481500` success; 2 test files / 35 tests passed; npm ci/check/test and artifact upload successful. URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42533777096
+- PR #51 OPEN/DRAFT/UNMERGED; mergeable=true. No formal independent review in retrieved timeline (NOT RUN/NOT VERIFIED). #50 and #51 are siblings based on #49; individual green runs do not qualify composed tree. Remote D1 NOT RUN; no dispatch/secrets/provider/deployment/merge. F2 partial. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create a disposable A-only composed integration branch from #49, layer #50 and #51, resolve/inspect code conflicts, and require PR-triggered exact merge-tree CI. Exclude #52 Jarvis/Hono. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
