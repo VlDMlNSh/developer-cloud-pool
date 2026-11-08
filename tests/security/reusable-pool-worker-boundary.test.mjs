@@ -47,7 +47,7 @@ test("Supervisor requires both dispatch and authorization acceptance gates", () 
 
 test("Supervisor claims one task and verifies exact read-back before emitting outputs", () => {
   assert.match(script, /const issue = candidates\[0\]/);
-  assert.match(script, /await replaceLabels\(issue, \["pool:ready"\], \["pool:claimed"\]\)/);
+  assert.match(script, /await replaceLabels\(issue, \["pool:ready"\], \["pool:claimed", claimGeneration\]\)/);
   assert.match(script, /Claim read-back was ambiguous/);
   assert.match(script, /setOutput\("task_issue"/);
 });
