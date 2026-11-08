@@ -1148,3 +1148,16 @@ The PRs are independent local/static proofs, not an integrated production author
 - PR #36 OPEN / DRAFT / UNMERGED head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; PR #37 OPEN / DRAFT / UNMERGED head `5587a4e013507b5be330fd0c49ce1fc836faa946`; PR #39 OPEN / DRAFT / UNMERGED head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`. Exact-head CI on those historical heads remains limited to previously recorded successes; do not treat them as integrated qualification.
 - New ADR blob `31c951b76e18741410a1349281a578438d53f25a`; alternatives report blob `1205bcc49556242bb8029144cff58168ca806b6f`; Context Window blob before this recheck addendum `a6706915ebebae75c090267d7de60f541c34c751`; checkpoint blob `07be8b99ba776f5b4ecd145fdd020e2c67f5310d`. All four were read back successfully.
 - Issue #38 remains OPEN; its three-option comparison is now documented, but no backend qualification or independent review is evidenced.
+
+
+## 2026-11-08 — D1 Free-tier feasibility and PR #27 exact-head recheck
+
+- Report: [D1 Free-tier feasibility and PR #27 recheck](../reports/2026-11-08-d1-free-tier-feasibility-and-pr27-recheck.md).
+- PR #27 branch HEAD re-read: `8ecc71265809e149e6d22b31f06522f678ee1ac8`; current default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; compare is 160 ahead / 2 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Exact-head PR workflow lookup for PR #27 returned no PR-triggered runs; combined status contexts empty; formal reviews 0; inline threads 0. CI NOT VERIFIED; independent review NOT RUN. PR remains OPEN / DRAFT / UNMERGED.
+- Official Cloudflare D1 documentation (limits page last updated 2026-10-30) states Free limits: 10 databases/account, 500 MB/database, 5 GB total, 5M rows read/day, 100K rows written/day, 7-day Time Travel, 50 read subrequests per Worker invocation and 30-second SQL query duration. A D1 database is single-threaded. Official FAQ says Workers Free includes D1 prototyping/experimentation.
+- These are published global plan limits, not proof of this account's eligibility or no-card onboarding. Connected Cloudflare Billing Read remains unavailable; account-specific entitlement NOT VERIFIED. No database provisioned, no billing/payment settings accessed.
+- D1 remains preferred candidate only, NOT selected for production / NOT QUALIFIED. The 50-contender one-winner test must also measure queueing/latency, quota exhaustion, overload, ambiguous commit and fail-closed recovery. Bound audit retention and storage growth; no paid fallback.
+- No code/runtime/workflow/permission/secret/variable/resource/deployment/dispatch changes. No provider/model calls or Worker/DSH/Resource Probe execution.
+- Status: research and PR-ref recheck VERIFIED within scope; remote D1 qualification NOT RUN; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: authorized independent architecture/security review of the integrated claim/lease/outbox threat model and A/B/C alternatives; resolve findings before isolated backend qualification. Keep both dispatch gates fail-closed.
