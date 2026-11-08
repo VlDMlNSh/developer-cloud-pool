@@ -463,8 +463,6 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     );
     expect(wrongAttempt).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_LEASE" });
   });
-});
-
 
   it("keeps attempt audit events append-only", async () => {
     const taskKey = await createLogicalTask("approval-append-only-events");
@@ -480,3 +478,4 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     ).bind(taskKey).first();
     expect(count.n).toBe(1);
   });
+});
