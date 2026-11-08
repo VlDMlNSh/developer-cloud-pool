@@ -32,6 +32,7 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
@@ -414,9 +415,89 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       taskKey, attemptId: "attempt-1", workerId: "worker-final",
       generation: lease.generation, status: "succeeded",
       resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
+      terminalReason: "completed", now: NOW + 30
+    });
+    expect(replay).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
+
+    const conflictingReplay = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-final",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "a".repeat(64), provenanceDigest: "f".repeat(64),
       terminalReason: "completed", now: NOW + 3
     });
-    expect(replay).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER" });
+    expect(conflictingReplay).toMatchObject({
+      decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER"
+    });
+    const eventCount = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    expect(eventCount.n).toBe(1);
+  });
+
+  it("recovers an exact finalization after commit succeeds but the caller loses the response", async () => {
+    const taskKey = await createLogicalTask("approval-finalize-ambiguous-response");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-ambiguous", NOW + 2, 30);
+    const originalPrepare = env.POOL_DB.prepare.bind(env.POOL_DB);
+    let loseResponse = true;
+    const ambiguousDb = {
+      prepare(sql) {
+        const statement = originalPrepare(sql);
+        if (loseResponse && sql.includes("UPDATE pool_attempts")) {
+          return {
+            bind(...values) {
+              const bound = statement.bind(...values);
+              return {
+                async run() {
+                  const committed = await bound.run();
+                  loseResponse = false;
+                  if (committed?.success !== true || !(committed?.meta?.changes >= 1)) {
+                    throw new Error("fault injection expected committed finalization");
+                  }
+                  throw new Error("simulated lost response after commit");
+                }
+              };
+            }
+          };
+        }
+        return statement;
+      }
+    };
+
+    const first = await finalizeTaskAttempt(ambiguousDb, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(first).toMatchObject({
+      decision: "DENY", reason: "ATTEMPT_FINALIZATION_AMBIGUOUS"
+    });
+
+    const recovered = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 30
+    });
+    expect(recovered).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
+
+    const terminalEvents = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(terminalEvents.n).toBe(1);
+    expect(task).toMatchObject({
+      state: "completed", lease_owner: null, lease_expires_at: null
+    });
   });
 
   it("preserves failed attempt history and creates a distinct retry attempt", async () => {
@@ -469,6 +550,25 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       "SELECT status FROM pool_attempts WHERE attempt_id = ?"
     ).bind("attempt-1").first();
     expect(row.status).toBe("indeterminate");
+
+    const reconciliation = await env.POOL_DB.prepare(`
+      SELECT status, task_key, attempt_id, input_digest, lease_generation, expired_lease_owner
+        FROM pool_attempt_reconciliations WHERE attempt_id = ?
+    `).bind("attempt-1").first();
+    expect(reconciliation).toMatchObject({
+      status: "pending", task_key: taskKey, attempt_id: "attempt-1",
+      input_digest: "d".repeat(64), lease_generation: 1,
+      expired_lease_owner: "worker-unknown"
+    });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_generation, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    // Expiry creates durable reconciliation work; it does not prove that
+    // the executor stopped or authorize clearing the lease / retrying.
+    expect(task).toMatchObject({
+      state: "leased", lease_owner: "worker-unknown",
+      lease_generation: 1, lease_expires_at: NOW + 7
+    });
   });
 
   it("rejects mutation of immutable attempt identity and cross-attempt lease renewal", async () => {

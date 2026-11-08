@@ -179,6 +179,35 @@ export async function finalizeTaskAttempt(db, {
       attemptId, taskKey, generation, workerId, generation, now
     ).run();
     if (result?.success !== true || !(result?.meta?.changes >= 1)) {
+      // A lost response may cause an exact terminal request to be replayed.
+      // Accept only a byte-for-byte equivalent terminal projection and audit
+      // actor/generation; never rewrite a terminal record or accept conflicts.
+      const prior = await db.prepare(`
+        SELECT status, result_digest, provenance_digest, terminal_reason,
+               completed_at, lease_generation
+          FROM pool_attempts
+         WHERE attempt_id = ? AND task_key = ?
+      `).bind(attemptId, taskKey).first();
+      const event = await db.prepare(`
+        SELECT actor_id, lease_generation, event_digest
+          FROM pool_attempt_events
+         WHERE event_id = ?
+      `).bind("attempt-finalized:" + attemptId).first();
+      if (prior?.status === status &&
+          prior.result_digest === resultDigest &&
+          prior.provenance_digest === provenanceDigest &&
+          prior.terminal_reason === terminalReason &&
+          Number.isSafeInteger(prior.completed_at) &&
+          prior.completed_at > 0 &&
+          prior.lease_generation === generation &&
+          event?.actor_id === workerId &&
+          event?.lease_generation === generation &&
+          event?.event_digest === (resultDigest || provenanceDigest)) {
+        return {
+          decision: "ATTEMPT_ALREADY_FINALIZED", taskKey, attemptId, status,
+          completedAt: prior.completed_at, dispatch: false
+        };
+      }
       return deny("STALE_OR_EXPIRED_ATTEMPT_FINALIZER");
     }
     const row = await db.prepare(
