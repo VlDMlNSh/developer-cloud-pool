@@ -1121,3 +1121,9 @@ The PRs are independent local/static proofs, not an integrated production author
 - Submitted reviews / inline review threads: PR #27 0/0; PR #36 0/0; PR #37 0/0; PR #39 0/0. Independent security review NOT RUN.
 - Exact-head workflow results for previously recorded PR #36/#37/#39 heads remain: PR #36 runs `42329438308` and `42329438351` SUCCESS; PR #37 runs `42284051311` and `42284051309` SUCCESS; PR #39 run `42329993548` SUCCESS. These results are limited to those recorded SHAs and do not qualify the integrated protocol.
 - No merge, implementation, dispatch, deployment or remote D1 qualification.
+
+
+### Governance and executor refresh — 2026-11-08
+- Read-only live ruleset `26550182` is active for `refs/heads/Основной`; it blocks deletion/non-fast-forward and requires PR/thread resolution, but `required_approving_review_count=0`, CODEOWNERS review=false and required_reviewers=[]; no bypass actors. Independent-review enforcement remains a governance blocker.
+- SentinelX current inventory: only `Voktors-Mini.Dlink` (`host_5f7264034bdf0b51`) is operational; Free plan slot 1/1 occupied, no available slots. `mh-dev-01` and `mh-dev-02` are disabled. This does not establish server-3 identity or Claude Code authorization; no host operation was run.
+- These checks do not authorize executor dispatch or change any gate. No Gemini controller run, Claude Code run, Worker execution or server-side task was performed.
