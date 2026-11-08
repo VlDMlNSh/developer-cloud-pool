@@ -67,3 +67,36 @@ it("keeps indeterminate attempts in needs_review without granting retry authorit
     ...identity, receipt: { result: "must-not-authorize" }
   })).toEqual({ outcome: "DENY", reason: "ATTEMPT_NOT_CLAIMED_OR_FENCED" });
 });
+
+it("serializes concurrent duplicate claims and commits one first-writer receipt", async () => {
+  const db = await freshDb();
+  const identity = { taskId: "task-synthetic-concurrent", attemptId: "attempt-synthetic-concurrent", generation: 12 };
+
+  const claims = await Promise.all([
+    claimAttempt(db, identity),
+    claimAttempt(db, identity)
+  ]);
+  expect(claims).toEqual([
+    { outcome: "ALLOW", status: "claimed" },
+    { outcome: "ALLOW", status: "claimed" }
+  ]);
+
+  const results = await Promise.all([
+    commitAttemptReceipt(db, {
+      ...identity,
+      receipt: { sideEffectId: "concurrent-effect-a", result: "writer-a" }
+    }),
+    commitAttemptReceipt(db, {
+      ...identity,
+      receipt: { sideEffectId: "concurrent-effect-b", result: "writer-b" }
+    })
+  ]);
+  expect(results[0]).toEqual(results[1]);
+
+  const rows = await db.prepare(
+    "SELECT COUNT(*) AS count, MIN(receipt_json) AS receipt_json FROM pool_attempt_receipts WHERE attempt_id = ?"
+  ).bind(identity.attemptId).first();
+  expect(rows.count).toBe(1);
+  expect(JSON.parse(rows.receipt_json)).toEqual(results[0].receipt);
+  expect(["writer-a", "writer-b"]).toContain(results[0].receipt.result);
+});

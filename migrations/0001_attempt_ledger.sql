@@ -14,3 +14,15 @@ CREATE TABLE IF NOT EXISTS pool_attempt_receipts (
   PRIMARY KEY (attempt_id, lease_generation),
   FOREIGN KEY (attempt_id) REFERENCES pool_attempts(attempt_id)
 );
+
+CREATE TABLE IF NOT EXISTS pool_attempt_step_invocations (
+  attempt_id TEXT PRIMARY KEY,
+  invocation_count INTEGER NOT NULL CHECK (invocation_count > 0),
+  FOREIGN KEY (attempt_id) REFERENCES pool_attempts(attempt_id)
+);
+
+-- Local proof fault injection only. This table is not part of the production pool schema.
+CREATE TABLE IF NOT EXISTS pool_test_faults (
+  attempt_id TEXT PRIMARY KEY,
+  remaining_failures INTEGER NOT NULL CHECK (remaining_failures >= 0)
+);

@@ -7,7 +7,10 @@ on:
       - "feat/jarvis-hono-web-prototype-2026-11-06"
     paths:
       - "package.json"
+      - "package-lock.json"
       - "wrangler.jsonc"
+      - "wrangler.proof.jsonc"
+      - "migrations/**"
       - "src/**"
       - "tests/**"
       - "web/jarvis-dashboard/**"
@@ -18,7 +21,10 @@ on:
       - "feat/jarvis-hono-web-prototype-2026-11-06"
     paths:
       - "package.json"
+      - "package-lock.json"
       - "wrangler.jsonc"
+      - "wrangler.proof.jsonc"
+      - "migrations/**"
       - "src/**"
       - "tests/**"
       - "web/jarvis-dashboard/**"
@@ -47,7 +53,7 @@ jobs:
         run: node --version && npm --version
 
       - name: Install from committed lockfile
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund
 
       - name: Static checks
         run: npm run check
@@ -57,3 +63,6 @@ jobs:
 
       - name: Static dashboard contract
         run: npm run validate:ui
+
+      - name: Cloudflare Workflow and D1 local proof
+        run: npm run test:workflow
