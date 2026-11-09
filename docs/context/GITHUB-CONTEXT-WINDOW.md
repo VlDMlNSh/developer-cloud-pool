@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-09 — D1 Attempt / Workflow proof composition audit
+Last refreshed: 2026-11-09 — trusted authority inventory for reconciliation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (2026-11-08 live read-back; latest commit is documentation-only)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest documentation branch commit after this pass: `687ec85e9996c465f7dfab74c8a11e5ba5298553`
+Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest documentation branch commit after this pass: `7319b53a956cec194049f585f151238053b37bc5`
 Latest daily report commit: `74f46f0f40804d57f9ec1ac56c8d0fe624822391` (2026-11-09 D1/Workflow proof composition audit; this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -1663,4 +1663,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contract requires a trusted signed capability or opaque authoritative single-use ledger; binding to repository/task/attempt/input digest/generation/owner/expiry/reconciliation ID/action/evidence; issuer authorization, expiry, revocation, quota, atomic consume, readback, audit and external execution evidence. Negative and positive test matrices recorded.
 - Status DESIGN RECORDED / IMPLEMENTATION NOT STARTED / NOT QUALIFIED. No runtime changes, dispatch, secrets, remote D1, provider calls, deployment or merge. PR #51 and #54 remain OPEN/DRAFT/UNMERGED; Issue #38 open. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: identify a trustworthy issuer/authority source from existing repo architecture before implementing a local capability ledger/resolver proof. Do not invent an issuer.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-09 — trusted authority inventory for reconciliation
+
+- Report: [Trusted authority inventory for reconciliation](../reports/2026-11-09-trusted-authority-inventory-reconciliation.md), file blob `30852d6236ecada41e9c443551d8868870083c7d`, report commit `7319b53a956cec194049f585f151238053b37bc5`.
+- Read-only source audit found no production cryptographic issuer/key registry or capability-minting service in the reviewed source tree. Existing integrated authorization contract (design branch `75c83a288d865f1bbeda4905cf817e00084bcc2d`) identifies the repository owner by immutable numeric GitHub user ID and requires a canonical owner-originated issue event/comment, exact event ID and full approval envelope re-fetch. This is a human policy-authority candidate only; design branch is unmerged and production Supervisor remains legacy.
+- D1 is a durable single-use storage candidate, not an issuer. Caller-supplied owner/time, worker ID, digest, and `resumable: true` do not authenticate authority.
+- Reconciliation disposition: no automatic resume/retry/terminalization. A new action requires fresh owner approval with a new unique approval ID, bound to repository/task/attempt/input digest/generation/expired owner/expiry/reconciliation ID/action/evidence digest, validated by trusted Supervisor and atomically consumed in D1. If numeric actor provenance cannot be demonstrated, keep `needs-review` manual.
+- Current ruleset #26550182 is active only on `refs/heads/Основной`, requires PR but 0 approvals; no tag-target ruleset appeared in current collection. PR #51 and #54 remain OPEN/DRAFT/UNMERGED. #51 exact-head runs `42536377720` and `42536374566` SUCCESS at `32c88e50e173e6b19bc6c61723ab6474a3c08145`; #54 exact-head run `42537241204` SUCCESS at `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. Formal reviews for both remain empty.
+- Production issuer: NOT FOUND / NOT VERIFIED. Owner-event authority: DESIGN ONLY / NOT IMPLEMENTED. Hosted D1 and external execution evidence: NOT RUN. No secrets, dispatch, provider calls, runtime execution, resource creation, deployment or merge.
+- Next: map the fresh owner-event envelope to the existing D1 schema and identify the exact trusted Supervisor code path that attests numeric actor ID before implementing a local-only action-scoped consume adapter. All resolver outcomes remain `dispatch: false`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
