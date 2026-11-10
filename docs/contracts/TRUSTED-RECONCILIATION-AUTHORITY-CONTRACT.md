@@ -249,3 +249,28 @@ Until every gate passes: `RESOLVER_AUTHORITY=DISABLED`, `DISPATCH=false`, no ret
 - Cloudflare Workflows API: https://developers.cloudflare.com/api/resources/workflows/
 - Cloudflare Workflow Workers API: https://developers.cloudflare.com/workflows/build/workers-api/
 - Cloudflare Workflow trigger/restart semantics: https://developers.cloudflare.com/workflows/build/trigger-workflows/
+
+
+## 14. GitHub Actions read-only run-attempt evidence adapter proof (2026-11-10)
+
+A separate proof package is maintained in PR #57:
+https://github.com/VlDMlNSh/developer-cloud-pool/pull/57
+
+The transport contract is the official attempt-specific endpoint:
+
+`GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}`
+
+For private repositories, the fine-grained credential needs Actions repository permission `read`; do not use Actions: write, contents: write or workflow-dispatch scopes. Public repository reads may be unauthenticated. Use the fixed GitHub API origin, explicit API version and GET only. Do not follow caller-supplied URLs or redirects to arbitrary origins.
+
+The adapter must bind and compare the complete returned tuple:
+`repository.id`, `id`, `run_attempt`, `workflow_id`, `path`, `event`, `head_sha`.
+The GitHub API example formats `path` with its ref suffix (for example `.github/workflows/build.yml@main`); compare the exact full returned value rather than reducing it to a filename. Also retain `referenced_workflows[]` (path/ref/SHA) for reusable workflow qualification; any required referenced-workflow mismatch is unresolved.
+
+The pure verifier currently returns:
+- `STILL_ACTIVE` for recognized nonterminal statuses;
+- `TERMINAL_EXECUTOR_ONLY` for recognized completed conclusions, with `sideEffects=UNKNOWN`, `retryAuthorized=false`, and `dispatch=false`;
+- `UNRESOLVED` for API errors/non-200, missing or malformed fields, identity mismatches, stale/future observations and unknown future status/conclusion values.
+
+The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Initial exact-head fixture CI passed on the initial PR #57 head, but a follow-up correction tightened workflow path binding to the API's ref-qualified value. The corrected SHA must receive its own exact-head CI before that proof is marked VERIFIED.
+
+Official endpoint and response schema: https://docs.github.com/en/rest/actions/workflow-runs
