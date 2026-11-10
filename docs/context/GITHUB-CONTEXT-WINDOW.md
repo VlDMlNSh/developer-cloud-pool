@@ -1761,3 +1761,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: specify canonical GitHub approval-event evidence adapter and extend schema design with event/comment identity, fresh API verification, actor/owner anchoring, issuer/policy version, trusted time/revocation, quota reservation, provenance and audit outbox. Then negative-first synthetic API fixture tests; dispatch remains false.
 - Local D1 proof VERIFIED at exact PR head; issuer NOT IMPLEMENTED; remote D1/account entitlement NOT VERIFIED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Canonical GitHub approval-event adapter contract
+
+- Contract: [CANONICAL-GITHUB-APPROVAL-EVENT-ADAPTER-CONTRACT.md](../contracts/CANONICAL-GITHUB-APPROVAL-EVENT-ADAPTER-CONTRACT.md), commit `d0629b4a3f798e1cac6ac618ef4eba2de330b22a`.
+- Report: [canonical GitHub approval-event adapter contract report](../reports/2026-11-10-canonical-github-approval-event-adapter-contract.md), commit `d5bbd626aed776a920971d0ec781d629978add5e`.
+- Live state rechecked: default `Основной` HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; PR #39 OPEN/DRAFT at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; PR #37 OPEN/DRAFT at `1be8672c1be1a720b6c813dcafff5c020b6456ae`; PR #53 OPEN/DRAFT at `b8a253f06418841d5f0250c9fd550bf3247db040`; PR #54 OPEN/DRAFT at `ec3f3266ca28c4fb5633a9475cc6f396a4677974`.
+- Exact-head runs rechecked: PR #39 `42329993548` SUCCESS; PR #37 `42484039940` and `42484039932` SUCCESS; PR #54 `42537241204` SUCCESS. All remain branch-local evidence, not deployment/production qualification.
+- Ruleset #26550182 remains active only on `Основной`; PR required, approving reviews count 0, CODEOWNERS review disabled, thread resolution required. Autonomous-First policy is current; routine external review is not a prerequisite for every iteration, but no agent can self-assign final ACCEPTED.
+- Reused mature GitHub-maintained Octokit.js / actions/github-script as REST transport candidates based on GitHub's official recommendation. These clients do not authenticate owner intent or create authority.
+- New design-only contract accepts only native `issue_comment.created` as locator; re-fetches repository, Issue and comment by canonical resource IDs; validates numeric actor/owner and exact body/time/association; rejects edited/deleted/mismatched/bot/API-error/ambiguous cases; defines exact command grammar, immutable envelope, RFC 8785 + SHA-256, trusted backend clock, provenance fields, negative-first test matrix and explicit GitHub↔D1 cross-system race limitation.
+- No source/workflow/permission/secret/variable/D1 schema/resource/dispatch/provider/deployment changes. No secret values read. Contract is NOT IMPLEMENTED and not executable verification.
+- Next: verify exact GitHub REST response/permission semantics against official API docs, resolve protected approver policy and grammar, then implement isolated negative-first API fixture adapter with no dispatch capability.
+- Canonical owner-event verifier NOT IMPLEMENTED; issuer-to-D1 integration NOT IMPLEMENTED; remote D1 NOT VERIFIED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
