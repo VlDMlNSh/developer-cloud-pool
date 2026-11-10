@@ -1720,3 +1720,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Required correction: use existing module, but split pure policy from canonical GitHub API evidence adapter and real single-use consume; until integrated and independently verified, every input (including success-shaped consume objects) must yield `dispatch: false`. Add negative tests for forged IDs/receipts, edited/deleted comments, expiry, pagination truncation, API errors and ambiguous writes.
 - No source/runtime/workflow/secrets/variables/dispatch/provider/deployment/merge changes. Canonical owner-event adapter NOT IMPLEMENTED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — PR #34 authorization boundary CI failure triage
+
+- Report: [PR #34 authorization boundary CI failure triage](../reports/2026-11-10-pr34-authorization-ci-failure-triage.md), commit `2b971f1d3cc2fe9ec612f690a65a9faad0ecaacb`.
+- PR #34 remains OPEN/DRAFT/UNMERGED at head `43f48f9f4d0947f102b5f0c3170ee05186fe90e0`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; current default HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`. Reviews empty.
+- Retrieved exact failed job log for run `42267827737`, job `128064261403`: decision model unit tests 13/13 PASS; production-source contract tests 0/8 PASS. Other run `42267827757` syntax/security invariants SUCCESS.
+- Seven concrete source-level contract failures: Worker still workflow_dispatch (not reusable workflow); Worker report job still has issues:write and mutates issue; Supervisor still has privileged workflow_run trigger and actions:write; Supervisor still REST-dispatches Worker; stale-claim recovery can return claim to pool:ready after 15m, reusing approval. Eighth static assertion expects explicit `github.repository` text; equivalent identity comparison is not demonstrated and needs semantic validation.
+- Do not weaken/remove tests to green CI. Correct production boundary on isolated branch, reconcile stale PR base, retain fail-closed dispatch. Decision model tests do not validate trusted consume provenance.
+- No runtime/dispatch/hosted D1/secrets/provider/deployment/merge/source changes. CI triage VERIFIED; production boundary FAILED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare and implement a bounded source migration plan for Supervisor/Worker authority boundary on current default baseline; preserve owner-event adapter + real D1 consume prerequisites, no auto retry, no dispatch gate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
