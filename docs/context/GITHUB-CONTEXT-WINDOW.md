@@ -1891,3 +1891,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision: keep both dispatch gates disabled. Next: verify an already-available free-tier durable backend, ownership, isolation, quotas and narrow credential scope before any disposable real-backend contention/recovery test. If no eligible backend/credential exists, explicitly retain disabled dispatch rather than expanding Supervisor permissions or claiming local CI is sufficient.
 - Status: PR #54 local proof CI SUCCESS / remote qualification NOT RUN / independent review NOT RUN; PR #51 local proof CI SUCCESS / remote qualification NOT RUN / independent review NOT RUN; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — durable backend access inventory
+
+- Report: [Durable backend access inventory](../reports/2026-11-10-durable-backend-access-inventory.md), report commit `43a861d4f4ea1350bcb8b43f6ff0dc55871ba4a8`, report blob `844267f8f71c0e81717b45ac06f155841b056d5b`; re-fetched and content checks passed.
+- Rechecked Cloud Pool default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`; open PR inventory still includes #55, #54, #51 and other draft work; Issue #38 remains open.
+- Read-only Cloudflare inventory: authenticated profile and one standard account visible; D1 database list empty; Workers script list empty. Both list calls succeeded. No IDs or secrets disclosed.
+- Neon: one organization on `free` plan; zero projects.
+- Supabase: one organization; zero projects.
+- No existing connector-visible durable backend found for an isolated real-backend contention test. This does not prove there are no resources under other identities/accounts and does not verify GitHub Actions secrets/variables.
+- No resources created/modified/deleted; no secret values read; no dispatch, provider invocation, or deployment.
+- Decision: no new backend/resource/credential issuance autonomously. Keep both dispatch gates disabled. Hosted contention/recovery qualification NOT RUN; independent review NOT RUN. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: owner-authorized disposable free-tier backend (prefer dedicated D1 only after exact plan/quota/ownership and narrow token scope are confirmed), then bounded isolated contention/recovery qualification. If unavailable, retain disabled dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
