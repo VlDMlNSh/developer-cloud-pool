@@ -2197,3 +2197,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Production Supervisor/Worker integration, hosted D1, resolver authority, claim CAS/fencing and side-effect reconciliation remain NOT QUALIFIED. Issue #38 OPEN. No dispatch, provider/model calls, secret access, hosted resource, deployment, merge or paid resource.
 - Next bounded step: inspect the existing finalization/idempotency proof (PR #54 and branch `fix/attempt-finalization-idempotency-2026-11-08`) against the current immutable claim contract; derive whether it can safely supply the conditional terminal transition without duplicating D1 logic. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 22:05 Europe/Vilnius — finalization proof reuse audit
+
+- Report: [finalization proof reuse audit](../reports/2026-11-10-finalization-proof-reuse-audit.md), commit `ae6f8f7605351a0868f8e537fb50145e9bd75562`.
+- Clarification: PR #54 is the 50-approval logical-task contention proof, head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; it is not the finalization-idempotency branch. Its run `42537241204` is not CI evidence for the latter.
+- Candidate branch `fix/attempt-finalization-idempotency-2026-11-08`: source blob `cfbce80efbf8e19fd667770ec3a8f86cd17dc865`, tests blob `e259ce028eff89448ebd40881f15c7c410877686`, package blob `b16fce67dd3c9ddd50bc440ddd1f2ca86b56e5ea`, workflow blob `8891e212f3779e5f36222e0066ed21ba2eea5e49`.
+- Candidate finalizer provides a useful conditional worker-terminal update requiring current running attempt, matching task/attempt/worker/generation and unexpired lease; tests cover terminal event, exact replay and conflicting replay denial.
+- Branch lineage is stale: 1 ahead / 8 behind PR #51 current head; it lacks PR #51 reconciliation queue / projection-outbox migrations. Candidate exact-head CI NOT VERIFIED. PR #54 CI must not be attributed to it.
+- Not sufficient as resolver: no immutable approval/envelope digest, issuer, claim ID, native repository/workflow/run_id/run_attempt binding or resolver capability; no resolution of indeterminate attempts or external effect reconciliation.
+- Contract section 17 appended to `TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md`, commit `1ddd145ae2f869c6429b15c12870b9ba545f658f`, blob `32bce214a8a3577584f058fb5679b8cecf5f3309`.
+- PR #56 exact-head CI correction remains valid: actual head `0769b6b...`, run `42825872826` SUCCESS; PR body and report corrected. No dispatch, secrets, provider calls, remote resources, deployment, merge or paid resource.
+- Next: reconstruct current PR #51/#56 migration + trigger graph, then port only the worker-finalization conditional semantics with envelope/claim/run_attempt binding and adversarial tests. Keep indeterminate resolver separate; no production wiring/dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
