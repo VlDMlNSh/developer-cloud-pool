@@ -42,7 +42,9 @@ const policy = {
   expectedTargetSha: sha
 };
 
-function fakeOctokit({ repo = repository, issueReads = [issue], commentReads = [comment], failAt } = {}) {
+function fakeOctokit({ repo = repository, issue: issueOverride, comment: commentOverride, issueReads, commentReads, failAt } = {}) {
+  const issues = issueReads ?? [issueOverride ?? issue];
+  const comments = commentReads ?? [commentOverride ?? comment];
   let issueIndex = 0;
   let commentIndex = 0;
   return {
@@ -54,11 +56,11 @@ function fakeOctokit({ repo = repository, issueReads = [issue], commentReads = [
       issues: {
         get: async () => {
           if (failAt === "issue") throw new Error("synthetic API error");
-          return { data: issueReads[Math.min(issueIndex++, issueReads.length - 1)] };
+          return { data: issues[Math.min(issueIndex++, issues.length - 1)] };
         },
         getComment: async () => {
           if (failAt === "comment") throw new Error("synthetic API error");
-          return { data: commentReads[Math.min(commentIndex++, commentReads.length - 1)] };
+          return { data: comments[Math.min(commentIndex++, comments.length - 1)] };
         }
       }
     }
