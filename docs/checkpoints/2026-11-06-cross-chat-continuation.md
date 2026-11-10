@@ -354,3 +354,16 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - No dispatch, provider/model calls, secrets, remote resources, deployment, merge or paid resource. Issue #38 OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect PR #54 / `fix/attempt-finalization-idempotency-2026-11-08` against the immutable claim lifecycle contract; test whether its local D1 finalizer can support a conditional terminal transition without duplicating state logic. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 22:05 — finalization proof reuse audit
+
+- Report: [finalization proof reuse audit](../reports/2026-11-10-finalization-proof-reuse-audit.md), commit `ae6f8f7605351a0868f8e537fb50145e9bd75562`.
+- PR #54 is the separate 50-approval contention proof (head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`); run `42537241204` is not finalizer-branch evidence.
+- Candidate `fix/attempt-finalization-idempotency-2026-11-08` contains a useful worker-finalization CAS/replay primitive and adversarial tests (source blob `cfbce80efbf8e19fd667770ec3a8f86cd17dc865`, test blob `e259ce028eff89448ebd40881f15c7c410877686`), but branch is 1 ahead / 8 behind PR #51 and lacks current reconciliation queue/projection-outbox migrations. Candidate exact-head CI NOT VERIFIED.
+- Primitive binds task/attempt/worker/generation and unexpired running lease; does not bind approval/envelope digest, claim ID, native repository/workflow/run_id/run_attempt or resolver capability; cannot resolve indeterminate state or side effects.
+- Trusted reconciliation contract section 17 added, commit `1ddd145ae2f869c6429b15c12870b9ba545f658f`, blob `32bce214a8a3577584f058fb5679b8cecf5f3309`.
+- Context update commit `166801c544f981ed262a1bdbe940cf681cc138d2`, blob `cc8a5d6d728932e387579fae2f97094ad4649f6f`.
+- No dispatch, provider/model calls, secret access, remote resources, deployment, merge or paid resource. PR #56 exact-head CI VERIFIED; production reconciliation NOT QUALIFIED. Issue #38 OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconstruct PR #51/#56 current D1 migrations/triggers and port the minimal worker-finalization conditional transition with immutable envelope/claim/run_attempt binding. Keep indeterminate resolver separate and dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
