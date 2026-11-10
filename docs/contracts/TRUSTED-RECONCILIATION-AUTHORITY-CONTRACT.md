@@ -292,3 +292,21 @@ Synthetic tests instantiate actual Octokit with an injected fetch and verify exa
 Source blobs: manifest `67a338f6fc3173b3f8f2c98ceece41bdc46b74ca`; lock `69bc37ff0e2b655d38fd15e1d0866699d8807088`; adapter `c29b7e69e682919f98e768321b9391b750c07abf`; tests `23bc525074fd623189e5cebb028473716f044074`.
 
 The workflow remains `contents: read`, checkout credentials are not persisted, and no Actions write permission, secret, live API credential or dispatch is used. PR #57 is OPEN/DRAFT; reviews and inline threads are zero. Independent review NOT RUN. Resolver, live API qualification, trusted clock, effect reconciliation and hosted State Authority remain NOT QUALIFIED.
+
+
+## 16. Composed attempt evidence check and Supervisor integration boundary (2026-11-10)
+
+PR #57 adds `src/evidence-check.mjs`, composing the pinned Octokit attempt-specific reader with the pure `verifyWorkflowRunAttempt` function. The factory pins owner, repository and repository ID in trusted deployment configuration. Per-call binding supplies run ID and exact run attempt; caller-provided repository/clock values are not consumed. The injected host clock is sampled after transport and passed to the pure verifier. Transport failure, clock failure, stale/future/backwards observation and non-authoritative HTTP response all fail closed. The composition library cannot prove the provenance of the injected clock; production clock qualification remains a separate gate.
+
+Final exact PR head `7a06a663de5431ebb79dc2e1297d66491c9d6d0f` passed fixture run `42837090182`, job `129902075346`, 23/23 tests, and Pool Contract Validation run `42837090501`. Artifact `13773817882`, digest `sha256:cef61a9a5d346913c94e6e36e6f8e03f9b233f8d259f2c8459c19e3273d7bb3d`. Source blobs: composition `f7b04e8dcf966a1cc37be9261fe31158eb9a3281`; tests `52227c2bdede82c54a6bd70d77d27fd11c7ea444`.
+
+Read-only inspection of the default-branch Supervisor found it is not ready for integration:
+- Workflow `pool-supervisor.yml` blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` supplies run ID, SHA, title and conclusion, but no exact run_attempt or full immutable workflow/repository binding.
+- `scripts/pool-supervisor.mjs` blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` lists workflow runs and heuristically matches display title + creation time. It does not bind attempt-specific response identity or referenced workflows.
+- If no matching run appears after 15 minutes, it resets `pool:claimed` to `pool:ready`. List absence is not authoritative proof the executor did not start or cannot produce side effects; this transition is unsafe for future automatic retry/reconciliation until replaced by a qualified resolver.
+- It uses ambient `Date.now()`, not a qualified trusted clock provider.
+- Workflow permissions include `actions:write` and `issues:write`; dispatch remains behind the literal `POOL_DISPATCH_ENABLED=true` gate. Do not enable or invoke it.
+
+No production Supervisor/Worker files were modified. No dispatch, live API request, credential, provider call, DSH, remote provisioning, deployment or merge occurred. Adapter remains isolated read-only proof code. Current statuses: composition synthetic CI VERIFIED; production trusted clock NOT QUALIFIED; Supervisor integration NOT IMPLEMENTED; authoritative side-effect reconciliation NOT QUALIFIED; Resolver NOT IMPLEMENTED; PR #57 OPEN/DRAFT; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next: define and test native `workflow_run` event binding including exact run_attempt and immutable repository/workflow identity, and prove inconclusive API/list results cannot transition claimed→ready. Keep dispatch disabled.
