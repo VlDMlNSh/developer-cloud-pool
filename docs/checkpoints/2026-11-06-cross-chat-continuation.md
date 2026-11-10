@@ -302,3 +302,17 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - No secrets, credentials, dispatch, agents/providers, DSH, resource probe, remote provisioning, deployment, merge or paid resources.
 - Next: define native workflow_run event binding including run_attempt and exact repo/workflow identity; prove ambiguous/missing evidence cannot transition claimed→ready.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — native workflow_run binding + claim retention
+
+- PR #57 final exact head 2c263e8a9915f0bc8e0698cde816e87cb2376538; OPEN/DRAFT/UNMERGED; base Основной @ 864213e2ff5b4fa956ba405dea8137a44d812f49.
+- Added native completed workflow_run event-to-binding pure helper (exact repository/workflow/run/run_attempt/head/referenced workflows) and hold-only policy (never release CLAIMED, dispatch or retry from lifecycle evidence alone).
+- Exact final-head fixture run 42838193384 / job 129905939447 SUCCESS, 33/33; Pool Contract Validation 42838193405 / job 129905939738 SUCCESS.
+- Report: [native workflow_run binding and claim retention proof](../reports/2026-11-10-native-workflow-run-binding-and-claim-retention-proof.md), commit 242603cf6f7a96d300b81aacf75e769aff3094c7.
+- Contract update commit b922fcee0588a6fd7ccfc1e9379c70be8b9e522f.
+- Supervisor/Worker integration remains NOT IMPLEMENTED. Default Supervisor still privileged workflow_run/actions:write; default Worker workflow_dispatch/issues:write. PR #37 exact-head CI passed but remains draft; finalizer not bound to immutable envelope/claim generation/run attempt and label claim is not CAS. No new independent approval; earlier CHANGES_REQUESTED review remains on record.
+- Event provenance and trusted host clock NOT QUALIFIED; claim CAS/fencing/effect reconciliation NOT QUALIFIED; live API NOT RUN; PR #57 review 0; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- No secrets, dispatch, providers, DSH, Resource Probe, remote provisioning, deployment, merge or paid resource.
+- Next: define immutable reconciliation envelope + claim generation + execution run/attempt + side-effect receipt, then prove CAS terminal transition and stale-finalizer rejection against local D1/claim proof stack. No production wiring/dispatch before gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
