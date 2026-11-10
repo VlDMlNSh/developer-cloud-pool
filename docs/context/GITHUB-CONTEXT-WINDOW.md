@@ -1995,3 +1995,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Implementation of F-1/F-2/F-3: NOT STARTED. Hosted backend/real contention: NOT RUN. Issue #38 OPEN / NOT QUALIFIED. Dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement minimal F-1 removal of caller-controlled resumability on a new draft branch based on verified source, with tests. Preserve PR #49–51 proof heads and keep resolver disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — F-1 expired attempt lease takeover denied (PR #56)
+
+- Implementation report: [F-1 lease takeover denial implementation](../reports/2026-11-10-f1-lease-takeover-denial-implementation.md), report commit `a9d4bb4a895cbb67efc23f36293a1dcd173a57ba`.
+- New draft PR #56: https://github.com/VlDMlNSh/developer-cloud-pool/pull/56
+- Branch: `fix/deny-attempt-lease-takeover-2026-11-10`; current head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; base PR #51 exact head `32c88e50e173e6b19bc6c61723ab6474a3c08145`.
+- Source `proofs/d1-ledger/src/task-attempts.mjs` blob `d9e5f97b94f0873fbec542a71bc90ea3b62e0e30`: removed caller-controlled `resumable`; removed expired-running takeover branch; only pending + prepared current attempts can acquire leases.
+- Regression test `proofs/d1-ledger/test/claim-outbox.test.ts` blob `911945bed6449b45f421786808d57e994d160e71`: ordinary expiry and forged extra args (`resumable: true`, `executorStopped: true`) are denied; lease owner/generation/audit history remain unchanged.
+- Workflow `.github/workflows/d1-ledger-proof-validation.yml` blob `27e3fe1d02181f53fd778f8cb24187be47cd2a37`: push branch and PR base filters updated.
+- Post-write GitHub readback confirms exact source/test/workflow blobs and expected content.
+- Exact-head PR Actions lookup returned no workflow runs; combined status returned empty. Exact-head CI and test execution are **NOT VERIFIED**, not pass. PR #56 reports mergeable=false; no merge attempted.
+- PR #49/#50/#51 re-read and remain OPEN/DRAFT/UNMERGED at their pinned heads; no historical proof PR modified.
+- No migration change, hosted D1 operation, secrets access, provider/model call, dispatch, deployment or privileged execution.
+- F-1: IMPLEMENTED ON DRAFT PR #56; source readback VERIFIED; tests/CI NOT VERIFIED.
+- F-2/F-3: design defined, implementation NOT STARTED. Backend NOT SELECTED; D1 candidate only. Issue #38 OPEN / NOT QUALIFIED. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain exact-head CI evidence for PR #56; if absent, diagnose Actions event filters/state. Then implement F-3 separately; keep F-2 transactional create work separate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
