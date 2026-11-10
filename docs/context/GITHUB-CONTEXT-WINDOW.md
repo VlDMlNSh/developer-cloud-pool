@@ -2013,3 +2013,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - F-2/F-3: design defined, implementation NOT STARTED. Backend NOT SELECTED; D1 candidate only. Issue #38 OPEN / NOT QUALIFIED. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain exact-head CI evidence for PR #56; if absent, diagnose Actions event filters/state. Then implement F-3 separately; keep F-2 transactional create work separate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### PR #56 exact-head CI follow-up — 2026-11-10
+
+- The initial empty CI lookup was transient. Subsequent exact-head Actions lookup found run `42825872826`, workflow **Isolated D1 Ledger Proof**, COMPLETED / SUCCESS.
+- Job `129862892371`, **Local Workers-runtime D1 adversarial tests**, COMPLETED / SUCCESS.
+- Job log confirms Node 24.9.0, dependency install with scripts/audit/funding disabled, source syntax check, and `npm test`: 2 files passed, 36 tests passed (13 + 23).
+- Artifact `13769536309`, `d1-ledger-proof-package-lock`, SHA-256 `df55c8379d63b06d9107e3d05424f9793e04b37b85db18f7cf7432083178c119`; artifact metadata explicitly binds run to branch `fix/deny-attempt-lease-takeover-2026-11-10` and exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`.
+- Therefore F-1 exact-head local Workers-runtime CI is VERIFIED. This does not qualify hosted D1 or production executor fencing.
+- PR #56 remains OPEN/DRAFT/UNMERGED; no merge. Combined status contexts remain empty (no extra statuses evidenced).
+- Report updated: [F-1 implementation and CI evidence](../reports/2026-11-10-f1-lease-takeover-denial-implementation.md), latest report commit `e4ba54a2e3f4e3fa7f44026394a15a483ddd4c37`, blob `10b7618c8def96f504e7baf24c7ca23c28ae1b72`.
+- Next: inspect PR #56 diff/provenance and workflow trigger semantics once more; then proceed to F-3 as a separate small patch. Keep F-2 separate.
