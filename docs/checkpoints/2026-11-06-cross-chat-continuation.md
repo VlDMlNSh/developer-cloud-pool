@@ -186,3 +186,16 @@ Cross-project refs re-read 2026-11-10: MediaHub Issue #301 OPEN; PR #441 OPEN; P
 ## 2026-11-10 — Octokit component selection
 
 Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier surface is compatible by source inspection. Integration was deferred because no npm execution is available to generate and verify the transitive package lock. No code, workflow, credentials or permissions changed. Next: canonical lockfile + narrow read-only adapter + real Octokit with synthetic fetch and exact GET/path assertions, then npm ci/test. No network egress or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Report: [Octokit transport component selection](../reports/2026-11-10-octokit-transport-component-selection.md). Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Trusted reconciliation authority audit
+
+- PR #51 queue proof head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; exact-head D1 run `42536377720` / job `128901478596` SUCCESS. Durable pending reconciliation row verified in local Workers-runtime D1; this is queue materialization only, not resolver authority. Reviews/threads 0/0.
+- PR #56 takeover remediation head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; exact-head D1 run `42825872826` / job `129862892371` SUCCESS. Caller-controlled `resumable` takeover removed; expired/running/indeterminate attempt cannot be reclaimed by caller metadata. Reviews/threads 0/0.
+- PR #51 still contains earlier resumable takeover code in its parent tree; do not merge or qualify it separately from #56 and combined stacked-tree validation.
+- Reconciliation queue does not record immutable executor run identity or resolver capability, and has no resolution lifecycle/audit receipt. Expiry is not evidence of executor termination or external side-effect safety.
+- Default branch remains uncleared: Supervisor still has privileged workflow_run/actions:write/issues:write; Worker still has workflow_dispatch/issues:write. Active ruleset 26550182 has required approvals=0. Dispatch remains fail-closed; current variable not freshly read.
+- Report: [2026-11-10 trusted reconciliation queue audit](../reports/2026-11-10-trusted-reconciliation-queue-audit.md), report commit `74a67974f36d35e0d50c4cbf97d158568ebba6f5`.
+- Context Window refreshed in commit `51e5ca4e59979a72069d31bf7c506e00342d2968`, blob `c7202b579098f0afa24e4af935bd6529ffd4ca2b`.
+- Next: backend-neutral trusted reconciliation authority contract; compare immutable GitHub Actions run metadata with existing Cloudflare Workflows proof. No resolver implementation/dispatch/provisioning.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
