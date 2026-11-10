@@ -6,7 +6,7 @@
 - Branch: `proof/github-actions-run-evidence-adapter-2026-11-10`
 - Base default HEAD at branch creation: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Initial PR head: `4576d7dbf686f06894c4c785510634af2934fa84`.
-- Follow-up path/ref identity correction head: `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`.
+- Follow-up path/ref identity correction head: `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`. Final reusable-workflow binding + fixture repair head: `f92e4bb0931318fd47a252e874ea50bdfc448655`.
 - PR #57 remains OPEN/DRAFT/UNMERGED. No review or inline threads recorded at the last read.
 
 ## Work completed
@@ -21,7 +21,7 @@ The verifier is pure and read-only. It accepts a single attempt-specific workflo
 - numeric repository ID, run ID and exact run_attempt;
 - workflow ID and exact workflow path including its ref suffix;
 - event and immutable head SHA;
-- allowlisted status/conclusion values;
+- exact `referenced_workflows[]` path/SHA/ref tuple (including SHA-pinned entries where the optional ref is absent);\n- allowlisted status/conclusion values;
 - trusted observation timestamp and freshness window.
 
 Outcomes:
@@ -37,7 +37,7 @@ Initial implementation head `4576d7dbf686f06894c4c785510634af2934fa84`:
 - Run `42833283887`, workflow **GitHub Actions Run Evidence Fixture Tests**, event pull_request, run_attempt 1, exact head SHA confirmed in the native run payload.
 - Job `129888681560`, `node-fixtures`, COMPLETED/SUCCESS; checkout without persisted credentials and synthetic evidence fixture test step both SUCCESS.
 
-After the initial CI run, source and tests were amended to require the API's full ref-qualified `path` value (GitHub response example uses `.github/workflows/build.yml@main`), not merely a workflow filename. New exact head is `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`. The synchronize-triggered exact-head run subsequently completed successfully: run `42833466801`, job `129889327476`, event `pull_request`, run_attempt `1`, head SHA `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`; the job's checkout and synthetic fixture test steps both COMPLETED/SUCCESS. The final amended head's fixture CI is therefore VERIFIED.
+After the initial CI run, source and tests were amended to require the API's full ref-qualified `path` value (GitHub response example uses `.github/workflows/build.yml@main`), not merely a workflow filename. New exact head is `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`. The ref-qualified-path-only head `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d` passed run `42833466801` / job `129889327476`. During reusable-workflow binding expansion, intermediate CI exposed a fixture omission (binding lacked an explicit empty `referencedWorkflows` array); the failure was inspected in job logs and corrected. The final head `f92e4bb0931318fd47a252e874ea50bdfc448655` passed fixture run `42834033274` / job `129891348351`, with all 11 tests passing, and Pool Contract Validation run `42834033256` / job `129891356582`, COMPLETED/SUCCESS.
 
 Official endpoint:
 - `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}`
@@ -67,11 +67,11 @@ Do not introduce a custom REST transport or retry client. Reuse official Octokit
 
 - Pure verifier and synthetic fixtures: IMPLEMENTED on PR #57.
 - Initial exact-head fixture CI: SUCCESS on initial SHA only.
-- Final amended SHA exact-head CI: VERIFIED — run `42833466801`, job `129889327476`, COMPLETED/SUCCESS.
+- Final SHA exact-head CI: VERIFIED — run `42834033274`, job `129891348351`, 11/11 tests passed; Pool Contract Validation run `42834033256`, job `129891356582`, SUCCESS.
 - Live GitHub API transport with real Octokit + synthetic fetch: NOT IMPLEMENTED.
 - Resolver capability/effect reconciliation/hosted State Authority: NOT IMPLEMENTED / NOT QUALIFIED.
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED.
 
-Next: verify exact-head CI on `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`, then review the full PR #57 diff and extend the synthetic adapter to assert attempt-specific URL/method and no network egress using a pinned Octokit dependency only after a verified lockfile is available.
+Next: review the full PR #57 diff and implement the transport proof: pinned Octokit with injected synthetic fetch, exact attempt-specific GET URL/method assertions and zero network egress, only after a verified lockfile is available.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
