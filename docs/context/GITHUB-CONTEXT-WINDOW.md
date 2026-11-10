@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-10 — trusted reconciliation contract and GitHub Actions run-attempt evidence proof
+Last refreshed: 2026-11-10 19:22 Europe/Vilnius — live repository reconciliation and PR #57 Octokit transport audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (2026-11-08 live read-back; latest commit is documentation-only)
+Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (re-read 2026-11-10; latest default commit remains documentation-only)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
-Latest daily report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732` (2026-11-10 GitHub Actions run evidence adapter proof; documentation branch remains unmerged)
+Latest daily report commit: `11fe2c4248b226b5ee62079c4882aab3f283cae1` (2026-11-10 live audit; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2154,3 +2154,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No secrets, dispatch, providers, DSH, Resource Probe, remote resources, deployment, merge or paid resource.
 - Next: design immutable reconciliation envelope binding task digest, issuer/approval, claim generation, workflow identity/run attempt and side-effect receipt; test CAS terminal transition and stale-finalizer rejection in existing local D1/claim proof stack. Dispatch stays disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-10 19:22 Europe/Vilnius — live reconciliation and PR #57 transport audit
+
+- Re-read this Context Window, continuation checkpoint and prior PR #57/#55/#56 reports before refreshing live GitHub state.
+- Default branch `Основной` remains at `864213e2ff5b4fa956ba405dea8137a44d812f49`. Repository ruleset `26550182` is active for `refs/heads/Основной`, but required approvals=0 and CODEOWNERS review=false; independent review is not enforced. Branch API `protected=false` is not a substitute for ruleset inspection.
+- Issues #1, #22, #26 and #38 remain OPEN. PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, zero formal reviews. #24/#25 are 5 commits behind default; #30/#31 remain stacked on the stale Hono base `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`, while PR #25 head is one commit ahead of that base.
+- Path-segment correction branch remains `dee17350864cb49e8c5dd41cf61859d77d3affca`, 2 ahead / 0 behind PR #31 head; no separate PR or exact-head CI.
+- New proof PRs: #55 `edff010388897f23f58bceb92e5180a09970fdff` (two exact-head CI runs SUCCESS, reviews 0); #56 `0769b6b5d5eda9c7821804b93db21ded6e0985ef` (D1 exact-head CI SUCCESS, reviews 0); #57 `2c263e8a9915f0bc8e0698cde816e87cb2376538` (fixture + Contract exact-head CI SUCCESS, reviews 0). #53 CI two SUCCESS/reviews 0. #54 local D1 CI SUCCESS; one inline comment is authored by repository owner, not an independent review.
+- Bounded source audit of current PR #57 found Octokit 22.0.1 with lockfile integrity entries, fixed attempt-specific GET template, no retry, synthetic-fetch URL/method/error tests and a fail-closed evidence wrapper. Exact-head runs: 42838193384/job 129905939447 and 42838193405/job 129905939738, both SUCCESS. Source/lock/workflow blobs and limitations are recorded in [2026-11-10 daily audit](../reports/2026-11-10-cloud-pool-daily-status.md).
+- Remaining PR #57 gaps: no single production composition root joining authenticated native workflow_run event-file provenance, fixed-origin/Actions:read Octokit configuration, trusted clock and verifier; clock and client provenance remain external. Fixture workflow does not pin Node version. Synthetic fetch only; no live API or resolver.
+- Default Supervisor workflow still includes `workflow_run`, `actions: write`, `issues: write`; default Worker still has `workflow_dispatch`. Supervisor source is guarded by `POOL_DISPATCH_ENABLED === "true"`, but current variable value was not read: NOT VERIFIED. Scheduled run 42796863116 completed successfully but is not runtime qualification or proof of current variable state.
+- Executor/host availability and Cloudflare billing eligibility were not refreshed in this pass: NOT VERIFIED. No workflow/agent/DSH/Resource Probe/provider/model call, secret read, deployment, hosted resource, merge, billing or ruleset/variable mutation was initiated.
+- Status: repository audit SUCCEEDED; PR #57 exact-head CI VERIFIED (proof scope only); independent review NOT RUN; web console/auth/deployment NOT RUN; persistent hosted state, trusted resolver and account-isolated routing NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: compose native workflow_run event fixture → immutable binding → fixed-origin/least-privilege Octokit client → trusted clock → attempt verifier in a pure no-network test; pin Node. Keep claim retained and `dispatch:false`. Separately open the path-segment fix as a PR with exact-head CI.
+- Daily report: `docs/reports/2026-11-10-cloud-pool-daily-status.md`, report commit `11fe2c4248b226b5ee62079c4882aab3f283cae1`, blob `3784dcef86ddc47a456a0c1124b9cc3637a25d87`.
