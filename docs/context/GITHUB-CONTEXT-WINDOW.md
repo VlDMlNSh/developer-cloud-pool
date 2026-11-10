@@ -1930,3 +1930,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: re-read PR #54 after correction to review ID `5841304151`, verify actor attribution and tests on the new immutable head, then re-run exact-head D1 proof. Do not merge or enable dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — PR #54/#55 follow-up recheck
+
+- Follow-up report updated: [2026-11-10 PR #54 projection actor provenance audit](../reports/2026-11-10-pr54-projection-actor-provenance-audit.md), commit `b184db1c931b0dcc10c598bb746309edd7372cd1`, report blob `143296ad2effe93349ea6fff4734656e3787999b`.
+- PR #54 re-read: OPEN/DRAFT/UNMERGED; branch `test/50-approval-logical-task-contention-2026-11-09`; HEAD unchanged at `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. No author response/correction; COMMENT review `5841304151` and unresolved/non-outdated thread `PRRT_kwDOVirI-s61rjeP` remain. Migration blob `660fa9de99ed78fe083bb627d6a61dbf0bd65c25` still records `NEW.lease_owner`; finding remains OPEN. Exact-head local CI run `42537241204` SUCCESS; hosted D1 and actor-identity assertions NOT VERIFIED.
+- PR #55 re-read: OPEN/DRAFT/UNMERGED; HEAD unchanged at `edff010388897f23f58bceb92e5180a09970fdff`. Exact-head runs `42797001864` and `42797001989` SUCCESS; no formal reviews/comments. Synthetic/read-only proof only; production authorization NOT QUALIFIED.
+- No repeated review comment, source changes, workflow changes, permission changes, secrets/variables access, D1 resource use, dispatch, provider/model call, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Keep dispatch disabled.
+- Next: wait for a new PR #54 head before re-reviewing the finding; meanwhile audit another open Contour A proof lane, without promoting local Miniflare evidence to hosted D1 qualification.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
