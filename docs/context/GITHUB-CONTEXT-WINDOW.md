@@ -2090,3 +2090,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Trusted reconciliation contract update commit `9650d55017a87b0d8cb43d9fabb9b91bc7f89107`, blob `79dbe66f52f96ca94b5e1ef06ce5da11ac01284d`.
 - Remaining limitation: no actual Octokit transport, no synthetic-fetch URL/method assertion, no network egress proof. Octokit is a mature selected candidate, but integration is deferred until the npm lockfile can be generated and integrity-verified.
 - PR #57 reviews=0 and threads=0; no merge. Final exact-head CI is verified for pure fixtures only.
+
+## 2026-11-10 — PR #57 source review and CI requalification
+
+- PR #57 current head: f92e4bb0931318fd47a252e874ea50bdfc448655; OPEN/DRAFT/UNMERGED; base Основной @ 864213e2ff5b4fa956ba405dea8137a44d812f49; 4 files changed; reviews 0, inline threads 0.
+- Full source review completed. Pure verifier binds repository ID, run ID, exact run_attempt, workflow ID/path/ref, event, head SHA and referenced_workflows path/ref/SHA; returns STILL_ACTIVE, TERMINAL_EXECUTOR_ONLY (sideEffects UNKNOWN, retry false, dispatch false) or UNRESOLVED.
+- CI history: intermediate head b726fe3b04cec693409fc1bf0042bcf3b210d9c6 failed run 42833795808 / job 129890486122 because test binding omitted referencedWorkflows after verifier made it mandatory. Corrected fixture now includes explicit empty binding and retained evidence assertion.
+- Final exact-head run 42834033274 / job 129891348351 on f92e4bb0931318fd47a252e874ea50bdfc448655: COMPLETED/SUCCESS; checkout and fixture step SUCCESS. Do not treat intermediate CI as final-head proof.
+- Report: [PR #57 source review and CI requalification](../reports/2026-11-10-pr57-source-review-and-ci-requalification.md), commit 3eef409b1e38c66d1ba93e36c29361662a6bb3f1.
+- Existing Octokit candidate @octokit/rest@22.0.1 remains selected from prior report. No npm integrity lockfile generated; local npm registry access timed out, so no dependency fabricated. Transport integration NOT RUN.
+- Review caveats: trusted time remains transport-injected, not established by pure verifier; referenced_workflows comparison is order-sensitive and future normalizer must be deterministic without dropping duplicates/missing refs.
+- No secret, token, dispatch, provider/model, DSH, Resource Probe, remote D1/Worker, deployment, merge or paid resource used.
+- Status: pure verifier source review COMPLETED; final fixture CI VERIFIED; live transport NOT IMPLEMENTED; Octokit lock NOT VERIFIED; Resolver NOT IMPLEMENTED; hosted State Authority NOT QUALIFIED; Issue #38 OPEN; PR #57 OPEN/DRAFT; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: generate integrity-verified @octokit/rest lock in a trusted npm-capable GitHub-hosted build, then inject synthetic fetch and assert exact attempt-specific GET URL/method with zero egress. No write permission or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
