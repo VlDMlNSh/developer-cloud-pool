@@ -1853,3 +1853,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #55 exact head remains `edff010388897f23f58bceb92e5180a09970fdff`, OPEN/DRAFT/UNMERGED; exact-head fixture and contract runs `42797001989`, `42797001864` remain SUCCESS; reviews/threads 0.
 - Next: keep PR CI synthetic/read-only, threat-model the future default-branch-only event handler, and continue transport qualification on unprivileged PR CI. No source/workflow/security permissions/dispatch changes made. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — native issue_comment handler threat model
+
+- Report: [Native issue_comment handler threat model](../reports/2026-11-10-native-issue-comment-handler-threat-model.md), report blob `943f6ef1e8c2f4795f821bf2454e2d39caf64a27`, commit `22df5b6cef608315a8f1b83a4f59d3700b44dabb`; report was re-fetched from the documentation branch and its complete content was verified.
+- Immutable review target: default branch `Основной` HEAD observed `864213e2ff5b4fa956ba405dea8137a44d812f49`; PR #55 head `edff010388897f23f58bceb92e5180a09970fdff`.
+- Rechecked PR #55 remains OPEN / DRAFT / UNMERGED. Exact-head fixture run `42797001989` and Pool Contract run `42797001864` both SUCCESS. Formal reviews 0; inline review threads 0.
+- Threat model defines trust boundaries for event envelope, default-branch code, canonical REST resources, protected policy, durable replay/consumption store and dispatch capability. It records threats and fail-closed controls for PR comments, repository/owner/actor mismatch, edits/deletions, issue substitution, mutable SHA, replay, expiry/clock, policy substitution, privilege escalation, API errors, transport redirects, concurrent deliveries and evidence/authority confusion.
+- Required sequence and admission checklist prohibit `pull_request_target`, PR-head checkout/execution in privileged event context, PR artifacts in trusted runtime, and dispatch from evidence-only success. Requires pinned Octokit + synthetic Fetch GET-only transport tests, protected policy provenance, trusted expiry, durable atomic nonce consumption, least-privilege runtime permission proof and independent review.
+- This is documentation-only. No source, workflow, branch protection, permission, secret, variable, D1, dispatch, provider/model or deployment changes. No native event workflow was added. Transport integration remains NOT RUN because npm registry/clone access was previously unavailable; no lockfile fabricated.
+- Status: threat model DOCUMENTED / STATIC DESIGN; PR #55 independent review NOT RUN; native event integration NOT IMPLEMENTED; real Octokit transport NOT RUN; replay/expiry/protected policy NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain canonical lockfile and real Octokit synthetic-fetch proof using an approved PR-only GitHub-hosted runner with npm registry access, without adding privileged event handling or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
