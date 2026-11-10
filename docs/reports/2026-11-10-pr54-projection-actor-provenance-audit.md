@@ -51,3 +51,15 @@ A COMMENT review with an inline finding was successfully submitted to PR #54, an
 Re-read PR #54 after the author addresses review ID `5841304151`; verify trigger actor attribution and tests on the new immutable head, then re-run exact-head D1 proof. Do not merge or enable dispatch. Keep hosted D1 qualification blocked until an already-authorized, isolated free-tier backend and narrow credential scope are evidenced.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Live follow-up recheck — 2026-11-10 12:56 UTC
+
+- PR #54 metadata re-read: OPEN / DRAFT / UNMERGED; branch `test/50-approval-logical-task-contention-2026-11-09`; HEAD remains `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; base remains `proof/immutable-task-attempts-audit-ci-2026-11-08` at `b9067dc7d06245893cd4e208f6215438efe5ca64`.
+- No author response or correction is present in the PR timeline. Review `5841304151` remains the only submitted review; inline thread `PRRT_kwDOVirI-s61rjeP` remains unresolved and non-outdated.
+- Re-read migration blob `660fa9de99ed78fe083bb627d6a61dbf0bd65c25` from the exact PR head. The status trigger still stores `NEW.lease_owner`; the provenance defect remains unchanged.
+- Exact-head CI remains run `42537241204`, COMPLETED / SUCCESS. It does not cover hosted D1 or actor identity assertions; no newer exact-head run exists in the returned commit workflow list.
+- PR #55 metadata re-read: OPEN / DRAFT / UNMERGED; HEAD remains `edff010388897f23f58bceb92e5180a09970fdff`. Exact-head runs `42797001864` and `42797001989` remain COMPLETED / SUCCESS. No reviews or comments are recorded. Scope remains synthetic/read-only; production integration is not qualified.
+- No repeated comment was posted. No code, workflow, permission, secret, variable, D1 resource, dispatch, provider/model call, deployment or merge was changed.
+- Status: PR #54 actor provenance finding OPEN; PR #54 local proof CI SUCCESS; hosted D1 qualification NOT RUN. PR #55 synthetic fixture CI VERIFIED; production authorization NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: when PR #54 receives a new head, inspect the SQL trigger and transition functions, require actor-identity assertions for retryable and delivered, then verify exact-head D1 proof. Until then, avoid duplicate review noise and continue with another bounded Contour A audit lane.
