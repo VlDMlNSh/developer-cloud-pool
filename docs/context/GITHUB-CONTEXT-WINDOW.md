@@ -2120,3 +2120,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No secrets, live API credentials, dispatch, agents, providers, DSH, Resource Probe, remote provisioning, deployment, merge or paid resources.
 - Next: compose transport adapter with pure verifier using synthetic API response and injected trusted clock; inspect Supervisor/Worker integration seams. No live credential or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — composed attempt evidence check + Supervisor seam review
+
+- PR #57 final head: 7a06a663de5431ebb79dc2e1297d66491c9d6d0f; OPEN/DRAFT/UNMERGED; base Основной 864213e2ff5b4fa956ba405dea8137a44d812f49; formal reviews=0, threads=0.
+- Added evidence composition module `proofs/github-actions-run-evidence-adapter/src/evidence-check.mjs` (blob f7b04e8dcf966a1cc37be9261fe31158eb9a3281) and tests (blob 52227c2bdede82c54a6bd70d77d27fd11c7ea444). Pins owner/repo/repositoryId at composition; passes exact runId/runAttempt to fixed Octokit reader; caller cannot provide alternate repository or clock; injected host clock sampled after transport; transport/clock/HTTP/stale/future/backwards cases fail closed.
+- Exact-head fixture run 42837090182 / job 129902075346 SUCCESS, 23/23 tests; Pool Contract Validation 42837090501 SUCCESS. Artifact 13773817882 digest sha256:cef61a9a5d346913c94e6e36e6f8e03f9b233f8d259f2c8459c19e3273d7bb3d.
+- Clock provenance is NOT QUALIFIED; composition code explicitly cannot prove the injected provider's provenance.
+- Read-only Supervisor seam inspection: workflow blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; Worker workflow blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4; supervisor script blob 52bf03ca889edd92fd10c71ae96a2e35e106d43f; architecture doc blob 3ac28f2f105a20a4eed5d93168bbe84d2d5273b8.
+- Integration blockers: supervisor event env passes run ID/SHA/title/conclusion but not exact run_attempt/full identity; script lists runs and heuristically matches title + created_at; after 15 minutes without matching list entry it changes claimed→ready; list absence is not authoritative no-executor/no-side-effects evidence; uses ambient Date.now. No production files changed.
+- Supervisor permissions include actions:write/issues:write; dispatch gate remains literal POOL_DISPATCH_ENABLED=true. Do not enable/invoke until resolver, clock, issuer/capability and side-effect gates qualified.
+- Report: [2026-11-10 composed evidence + Supervisor seam review](../reports/2026-11-10-composed-run-evidence-and-supervisor-seam-review.md), commit 72b0830259b8f773d53b4e54f91485d0463abb2a.
+- Contract addendum commit 4c2fc4c194b7279d9c6cf9cdfde6aa1fd99d9148.
+- PR #57 OPEN/DRAFT; reviews 0; independent review NOT RUN; Issue #38 OPEN. Live API NOT RUN; production clock NOT QUALIFIED; supervisor integration NOT IMPLEMENTED; authoritative reconciliation NOT QUALIFIED; Resolver NOT IMPLEMENTED; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- No secrets, live API credentials, dispatch, agents/providers, DSH, Resource Probe, remote D1/Worker provisioning, deployment, merge or paid resources.
+- Next: define native workflow_run event binding with exact run_attempt + immutable repo/workflow identity and prove inconclusive evidence cannot transition claimed→ready. Dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
