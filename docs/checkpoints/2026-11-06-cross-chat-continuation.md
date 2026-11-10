@@ -216,3 +216,24 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Status: contract CREATED/DOCUMENTED; adapter implementation NOT RUN; hosted authority NOT QUALIFIED; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only GitHub Actions evidence adapter contract and synthetic fixtures for exact run_attempt identity, mismatches, API failures and unknown statuses; no token or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — GitHub Actions run-attempt evidence adapter
+
+- Re-read project context, issue #38, trusted reconciliation contract, Autonomous-First policy, and MediaHub bootstrap/map/checkpoint/master roadmap references. The MediaHub map Contents response was empty; retrieved its blob by SHA `75f62685459ec99ebf8be478f4e9096cdb842b1d`. No Contour B work started.
+- Default Cloud Pool branch `Основной` HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`. Ruleset `26550182`: active, but approvals=0 and CODEOWNERS review=false; no bypass actors.
+- Existing PR #55 approval event verifier exact-head CI: runs `42797001864` / job `129764618337` and `42797001989` / job `129764618860` SUCCESS. It verifies approval issue_comment provenance only, not Workflow run/attempt lifecycle.
+- Created draft PR #57: https://github.com/VlDMlNSh/developer-cloud-pool/pull/57. Branch `proof/github-actions-run-evidence-adapter-2026-11-10`, final head `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`, base `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Implemented pure verifier and Node built-in synthetic fixtures. It binds repository ID, run ID, exact run_attempt, workflow ID, full ref-qualified path, event and head SHA. It distinguishes STILL_ACTIVE, TERMINAL_EXECUTOR_ONLY (sideEffects UNKNOWN; no retry/dispatch), and UNRESOLVED. API non-200/errors, stale/future observations, missing fields, identity mismatch and unknown status/conclusion fail closed.
+- Fixture workflow is PR-only, `contents: read`, pinned checkout, persist-credentials=false. No HTTP client, token, secret, D1, dispatch, provider/model, deployment or resolver included.
+- Final exact-head CI: run `42833466801`, job `129889327476`, run_attempt 1, event pull_request, exact head SHA `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`, COMPLETED/SUCCESS. Checkout and synthetic fixture step SUCCESS. Earlier initial SHA CI run `42833283887` also passed, but final qualification is on the amended head.
+- Official endpoint: `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}`; fine-grained token needs Actions: read for private repos. Response fields include run_attempt, workflow_id, ref-qualified path, event, head_sha, status, conclusion, referenced_workflows and repository.id. Docs: https://docs.github.com/en/rest/actions/workflow-runs
+- Report: [2026-11-10 GitHub Actions run evidence adapter proof](../reports/2026-11-10-github-actions-run-evidence-adapter-proof.md), commit `f8edaa6866b22fac5c7b41667e833805ad3daea3`.
+- Trusted Reconciliation contract update commit `365913d0c35be86a75dd6d01da58394dd213a379`.
+- Context Window update commit `7f835bcfc9d554f6f912a749f8d6e2e9e2201460`.
+- PR #57 reviews=0, threads=0; remains OPEN/DRAFT/UNMERGED. No merge.
+- Octokit remains selected mature candidate from previous report; actual transport integration is not implemented because verified lockfile + synthetic fetch transport proof remains outstanding.
+- No secret values, dispatch, DSH, Resource Probe, provider/model, remote D1/Worker provisioning, deployment, merge or paid resource. Resolver disabled; dispatch fail-closed.
+- Status: pure verifier + fixtures IMPLEMENTED; final exact-head CI VERIFIED; live API transport NOT IMPLEMENTED; resolver NOT IMPLEMENTED; hosted State Authority NOT QUALIFIED; Issue #38 OPEN/NOT QUALIFIED; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: full source/edge-case review of PR #57, then pinned Octokit integration with injected synthetic fetch, exact attempt-specific GET URL/method assertions and no network egress. No Actions write permission or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
