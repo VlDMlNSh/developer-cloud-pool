@@ -2077,3 +2077,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: pure verifier + synthetic fixtures IMPLEMENTED; final exact-head CI VERIFIED; live API transport NOT IMPLEMENTED; resolver NOT IMPLEMENTED; hosted State Authority NOT QUALIFIED; Issue #38 OPEN/NOT QUALIFIED; Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: review full PR #57 source and edge cases; then build a pinned Octokit transport fixture with injected synthetic fetch, exact attempt-specific GET URL/method assertions and zero network egress. Do not grant Actions write or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### 2026-11-10 follow-up — reusable workflow identity + final CI
+
+- PR #57 final head advanced to `f92e4bb0931318fd47a252e874ea50bdfc448655`; still OPEN/DRAFT/UNMERGED, base `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Adapter now also requires exact `referenced_workflows[]` path/SHA/ref binding. A SHA-pinned referenced workflow may omit `ref`; this absence is normalized to null, while valid immutable SHA and exact path remain mandatory. The normalized referenced-workflow evidence is retained in the immutable result.
+- Final exact-head fixture run `42834033274`, job `129891348351`, head SHA `f92e4bb0931318fd47a252e874ea50bdfc448655`, COMPLETED/SUCCESS; job log reports 11 tests, 11 passed, 0 failed.
+- Exact-head Pool Contract Validation run `42834033256`, job `129891356582`, same head, COMPLETED/SUCCESS; dispatch-disabled assertion, YAML syntax and pool security contracts all passed.
+- Intermediate failing run `42833795808` / job `129890486122` and `42833890337` / job `129890815665` exposed an omitted `referencedWorkflows: []` field in the default synthetic expected binding. Failure was read from job logs, fixture corrected, and final head passed. The transient failed runs are retained as audit evidence, not hidden.
+- Report updated: [2026-11-10 GitHub Actions run evidence adapter proof](../reports/2026-11-10-github-actions-run-evidence-adapter-proof.md), latest report commit `0df58f639d02aa386e86ced0b7d4bff571d51732`, blob `936447788eaef7d440d9a96668f34693418ffb62`.
+- Trusted reconciliation contract update commit `9650d55017a87b0d8cb43d9fabb9b91bc7f89107`, blob `79dbe66f52f96ca94b5e1ef06ce5da11ac01284d`.
+- Remaining limitation: no actual Octokit transport, no synthetic-fetch URL/method assertion, no network egress proof. Octokit is a mature selected candidate, but integration is deferred until the npm lockfile can be generated and integrity-verified.
+- PR #57 reviews=0 and threads=0; no merge. Final exact-head CI is verified for pure fixtures only.
