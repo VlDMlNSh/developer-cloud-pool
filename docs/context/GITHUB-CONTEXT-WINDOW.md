@@ -1843,3 +1843,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Local Node/npm are present, but shallow clone of the immutable PR branch failed before transfer because DNS could not resolve `github.com`. npm registry/lockfile generation and real transport tests therefore remain NOT RUN. No lockfile fabricated and no code/dependency/workflow changes made.
 - Next: generate/verify lockfile and real Octokit synthetic-fetch tests on an approved runner with npm registry access, still PR-only and read-only; keep approval consumption and dispatch disabled.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — native issue_comment event trust-boundary review
+
+- Report: [Native issue_comment event trust boundary](../reports/2026-11-10-issue-comment-event-trust-boundary.md).
+- Official GitHub Actions event docs confirm `issue_comment` uses the default-branch SHA/ref and triggers only when its workflow file exists on the default branch. The event covers issue and PR comments; the handler must explicitly filter PR comments.
+- Implication: PR #55 cannot validate native issue_comment behavior by adding the trigger only to its unmerged branch. A privileged default-branch handler must run only reviewed default-branch code; do not use pull_request_target or checkout/execute unreviewed PR-head code from that handler.
+- PR #55 exact head remains `edff010388897f23f58bceb92e5180a09970fdff`, OPEN/DRAFT/UNMERGED; exact-head fixture and contract runs `42797001989`, `42797001864` remain SUCCESS; reviews/threads 0.
+- Next: keep PR CI synthetic/read-only, threat-model the future default-branch-only event handler, and continue transport qualification on unprivileged PR CI. No source/workflow/security permissions/dispatch changes made. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
