@@ -1746,3 +1746,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: test-first design of trusted issuer + real D1 claim/Finalizer adapter: canonical approval envelope, atomic consume+outbox, fencing generation, terminal+audit outbox. GitHub Issue labels/comments remain projections only.
 - Production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Issue #38 local D1 approval provenance/schema audit
+
+- Report: [Issue #38 D1 approval provenance/schema audit](../reports/2026-11-10-issue38-d1-approval-provenance-schema-audit.md), report commit `961e9c611775001881da236ddd022d4dc20f0303`.
+- Default `Основной` remains `864213e2ff5b4fa956ba405dea8137a44d812f49`. PR #39 local D1 proof remains OPEN/DRAFT at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- Exact run `42329993548`, job `128274072508`: SUCCESS; pinned official `@cloudflare/vitest-plugin@1.4.7`, Vitest `4.1.12`, Node `24.9.0`, `npm ci`, local Workers-runtime D1 tests. No remote D1/deployment.
+- Reused official Cloudflare Workers Vitest integration; repository searches found no mature turnkey approval issuer/outbox component that satisfies this project's GitHub provenance and authority constraints.
+- Schema #39 stores approval ID, owner/repository/issue, SHA/profile/digest, expiry and state. Missing canonical event/comment ID, issuer identity/type, trusted actor provenance, policy version, trusted clock, revocation provenance, quota reservation and finalization audit outbox. Adapter values/time are caller-supplied and merely compared with stored rows; no canonical GitHub owner-event verifier exists.
+- Migration #0002 uses an AFTER UPDATE trigger to atomically create one deterministic claim and one outbox row when approval transitions ready→consumed. 12-way local contention: one CLAIMED_ONCE, 11 ALREADY_ENQUEUED; trigger failure rolls back consume/claim; exact retry is idempotent. Adapter always returns dispatch:false.
+- Hardening note: both consume adapters currently accept D1 `meta.changes > 0`, not exact `=== 1`; primary-key predicate bounds updates to one row, so no multi-row issue is demonstrated, but exact-row assertion should be added in future test revision. Wrangler database ID is all-zero placeholder, correctly indicating no deployable resource.
+- D1 remains leading backend candidate, not selected/qualified production backend. No source changes, resource provisioning, secret reads, dispatch, provider/model calls or deployment.
+- Next: specify canonical GitHub approval-event evidence adapter and extend schema design with event/comment identity, fresh API verification, actor/owner anchoring, issuer/policy version, trusted time/revocation, quota reservation, provenance and audit outbox. Then negative-first synthetic API fixture tests; dispatch remains false.
+- Local D1 proof VERIFIED at exact PR head; issuer NOT IMPLEMENTED; remote D1/account entitlement NOT VERIFIED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
