@@ -274,3 +274,21 @@ The pure verifier currently returns:
 The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Final PR #57 head `f92e4bb0931318fd47a252e874ea50bdfc448655` passed exact-head fixture CI run `42834033274`, job `129891348351`, with 11/11 tests passing; Pool Contract Validation run `42834033256`, job `129891356582`, also COMPLETED/SUCCESS. The fixtures compare referenced-workflow identities including SHA-pinned entries with absent ref normalized to null. This verifies only the pure response verifier and synthetic fixtures, not a live API transport or resolver.
 
 Official endpoint and response schema: https://docs.github.com/en/rest/actions/workflow-runs
+
+
+## 15. Octokit attempt-specific transport proof (2026-11-10)
+
+PR #57 now includes a narrow adapter around the real GitHub-maintained `@octokit/rest@22.0.1` client:
+https://github.com/VlDMlNSh/developer-cloud-pool/pull/57
+
+The dependency lock was generated on a GitHub-hosted `ubuntu-24.04` runner with Node 22.23.4 / npm 10.9.9. Lockfile v3 contains 20 transitive package entries; all 20 include resolved registry tarball URLs and SHA-512 integrity values. The committed lock's SHA-256 is `d60947765a0643454d8a09c087cc6a15d37aa5efb9772ebd52277d44e24e2820`. The exact committed lock passed `npm ci --ignore-scripts` on final PR head `6de267caa82c9a2247b531abb12f8c9ee1514a37`.
+
+The transport adapter fixes the request route to:
+`GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}`
+It validates owner/repo and positive safe integer run/attempt identifiers, accepts no arbitrary URL/method/auth/options from caller input, sets API version `2022-11-28`, and explicitly sets `request.retries: 0`. An HTTP status is preserved only when Octokit exposes an HTTP response; a network error without response is propagated so the composition boundary can map it to UNRESOLVED. No retry, dispatch or fallback is permitted.
+
+Synthetic tests instantiate actual Octokit with an injected fetch and verify exact full URL + GET, fixed route despite malicious extra caller properties, HTTP errors without retry, and a network failure with one fetch only. Final exact-head run `42835449098` / job `129896303135`: 16 tests passed, 0 failed; exact-head Pool Contract Validation run `42835449180`: SUCCESS. This is synthetic transport proof, not a live API call.
+
+Source blobs: manifest `67a338f6fc3173b3f8f2c98ceece41bdc46b74ca`; lock `69bc37ff0e2b655d38fd15e1d0866699d8807088`; adapter `c29b7e69e682919f98e768321b9391b750c07abf`; tests `23bc525074fd623189e5cebb028473716f044074`.
+
+The workflow remains `contents: read`, checkout credentials are not persisted, and no Actions write permission, secret, live API credential or dispatch is used. PR #57 is OPEN/DRAFT; reviews and inline threads are zero. Independent review NOT RUN. Resolver, live API qualification, trusted clock, effect reconciliation and hosted State Authority remain NOT QUALIFIED.
