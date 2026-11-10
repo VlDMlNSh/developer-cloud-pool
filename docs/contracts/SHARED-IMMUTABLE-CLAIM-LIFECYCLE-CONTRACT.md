@@ -153,3 +153,18 @@ The adopted Autonomous-First policy applies: routine external APPROVE is not a p
 - It does not claim remote D1 availability or free-tier entitlement.
 - It does not merge PR #36, #37 or #39.
 - It does not authorize Contour B / MediaHub product development.
+
+
+## 9. Trusted reconciliation authority extension
+
+The detailed, backend-neutral extension is maintained in [TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md](TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md).
+
+Normative boundary:
+- Lease expiry, missing heartbeat, absent Workflow instance, or executor terminal status alone never authorizes takeover or retry.
+- Bind each attempt to immutable native executor identity, including GitHub Actions `run_id` + exact `run_attempt` + repository/workflow/path/event/SHA, or Cloudflare account/workflow/instance/version identity.
+- Use read-only fixed-origin evidence adapters. Missing, stale, inaccessible, mismatched or unknown status is `UNRESOLVED`.
+- Resolver capability is separate from owner approval, worker execution and dispatch. It is short-lived, audience/scope/subject/binding/policy/revocation/jti constrained and single-use.
+- External effects require destination-level idempotency/fencing or authoritative receipts. A terminal run is not proof that an effect did not commit.
+- Resolution is a conditional atomic state transition plus append-only receipt/outbox. A retry-candidate receipt is not a new approval or a dispatch authorization.
+- Cloudflare Workflows remains an orchestration/evidence candidate, not the claim ledger. Its local Miniflare proof is not hosted qualification; explicit restart cancels in-progress steps and erases intermediate state.
+- Until selected hosted backend and all evidence, contention, interruption, side-effect, security and governance gates are qualified: resolver authority disabled and dispatch false.
