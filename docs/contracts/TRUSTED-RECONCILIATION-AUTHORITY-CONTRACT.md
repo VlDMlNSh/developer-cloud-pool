@@ -310,3 +310,18 @@ Read-only inspection of the default-branch Supervisor found it is not ready for 
 No production Supervisor/Worker files were modified. No dispatch, live API request, credential, provider call, DSH, remote provisioning, deployment or merge occurred. Adapter remains isolated read-only proof code. Current statuses: composition synthetic CI VERIFIED; production trusted clock NOT QUALIFIED; Supervisor integration NOT IMPLEMENTED; authoritative side-effect reconciliation NOT QUALIFIED; Resolver NOT IMPLEMENTED; PR #57 OPEN/DRAFT; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
 
 Next: define and test native `workflow_run` event binding including exact run_attempt and immutable repository/workflow identity, and prove inconclusive API/list results cannot transition claimed→ready. Keep dispatch disabled.
+
+
+## 16. Native workflow_run binding and hold-only policy (2026-11-10)
+
+PR #57 adds two pure contract modules:
+- `workflow-run-event-binding.mjs`: derives the immutable binding from a native completed `workflow_run` payload and deployment-pinned repository/workflow configuration. It requires exact repository ID (root/run/head repository), workflow ID/path, originating event, run ID, `run_attempt`, head SHA and referenced-workflow array; missing/forked/mismatched identity is rejected. Blob `793e5dbbf86e18075fc3586ea81a1064d71dd98a`.
+- `workflow-run-reconciliation-policy.mjs`: maps STILL_ACTIVE and UNRESOLVED to KEEP_CLAIMED; TERMINAL_EXECUTOR_ONLY to HOLD_FOR_EFFECT_RECONCILIATION. Every result preserves CLAIMED, disables dispatch and retry, and has no ready-release outcome. Module commit `5d4129480fd7e4e6da16c0d28834ae269a61b7bd`.
+
+Final exact-head fixture CI `42838193384` / job `129905939447`: SUCCESS, 33/33 tests; Pool Contract Validation `42838193405` / job `129905939738`: SUCCESS. Final PR #57 head `2c263e8a9915f0bc8e0698cde816e87cb2376538`.
+
+These tests do not authenticate the runner or prove provenance of `GITHUB_EVENT_PATH`; they do not wire the helper into Supervisor or implement atomic state transitions. The policy is not a production release mechanism.
+
+Default Supervisor still has privileged `workflow_run` + `actions:write` (workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`); default Worker still uses `workflow_dispatch` with issue-write reporting (blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`). PR #37 proposes reusable workflow_call, exact head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, exact-head runs `42484039940` and `42484039932` SUCCESS; but PR #37 remains OPEN/DRAFT, base `197ba98...` is stale relative to default HEAD `864213e...`, and its Finalizer still checks only `pool:claimed` before label transition. Envelope digest, claim generation/owner and run/attempt are not bound; label claim is not CAS. Formal CHANGES_REQUESTED review remains on record from earlier head; no new independent approval is established.
+
+Disposition: pure event binding + hold-only policy VERIFIED under synthetic tests; native event provenance NOT QUALIFIED; production wiring NOT IMPLEMENTED; claim CAS/fencing/effect reconciliation NOT QUALIFIED; PR #57 independent review NOT RUN; Contour A NOT ACCEPTED.
