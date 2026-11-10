@@ -43,6 +43,7 @@ test("matching attempt yields lifecycle evidence only, never retry or dispatch",
   assert.equal(result.retryAuthorized, false);
   assert.equal(result.sideEffects, "UNKNOWN");
   assert.equal(result.evidence.runAttempt, 2);
+  assert.deepEqual(result.evidence.referencedWorkflows, []);
 });
 test("exact run_attempt is mandatory even when run_id matches", () => {
   assert.equal(verify({ response: { ...base, run_attempt: 1 } }).reason, "RUN_ATTEMPT_MISMATCH");
