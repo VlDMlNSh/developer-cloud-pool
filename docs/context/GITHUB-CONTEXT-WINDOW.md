@@ -1953,3 +1953,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/workflow changes, comments, secret access, hosted D1/resource creation, dispatch, provider/model calls, deployment or merge. Issue #38 OPEN/NOT QUALIFIED; dispatch remains fail-closed. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: complete the Issue #38 three-option decision analysis (serialized single-writer labels with residual race; dedicated state repository with immutable refs; verified free conditional-write store), including authority and recovery semantics. Do not expand Supervisor permissions or enable dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Issue #38 durable claim backend decision
+
+- Decision report: [Issue #38 D1 backend decision](../reports/2026-11-10-issue38-d1-backend-decision.md), report commit `0d6fdcdc85897059dc815c0ef28cf91c087db16b`, verified report blob `bf26297f5d76df13b6d0392dbb58effca83f886c`.
+- Issue #38 three-option assessment completed. GitHub Issue labels are rejected as the durable one-winner primitive because workflow concurrency is not a global lock and label PATCH is not CAS. Dedicated immutable Git refs are rejected for current Supervisor because Create Reference requires Contents: write; a separate broker would add a new authority boundary. D1 is selected as the preferred candidate for qualification, not production-qualified.
+- Cloudflare docs confirm D1 is single-threaded per database and `batch()` executes sequential statements transactionally with rollback on statement failure. Free-tier documentation currently lists 5m rows read/day, 100k rows written/day and 5 GB stored data; daily quota exhaustion causes query failures. Free tier supports prototyping/experimentation, but this does not prove this account's plan or hosted resource access. D1 limits must fail closed; no paid fallback or alternate claim authority.
+- Durable Objects are a technically valid alternative with global uniqueness and strongly consistent transactional storage, but introducing a second coordination authority beside the current D1 ledger would add complexity without evidence D1 is insufficient.
+- Cloudflare connector identity was confirmed; no plan, resource inventory, secret, token value or credential was inspected. No D1 resource was created or modified.
+- PR #50 head `65233f57038a9996e4a6e939abde3642a33d467d`, PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; both remain OPEN/DRAFT/UNMERGED. PR #51 local Workers-runtime CI run `42536377720` is supporting evidence only.
+- Hosted D1 plan/resource qualification, real-backend contention, full recovery lifecycle and independent security review: NOT RUN / NOT QUALIFIED. Issue #38 remains OPEN / NOT QUALIFIED. Both dispatch gates remain fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- No code/workflow changes, secrets access, hosted D1 mutation, dispatch, provider/model call, deployment or merge.
+- Next: inspect D1 ledger schema and claim implementation across the stacked proof PRs, then design a bounded hosted-D1 qualification harness and recovery test matrix. Do not create resources or enable dispatch during inspection.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
