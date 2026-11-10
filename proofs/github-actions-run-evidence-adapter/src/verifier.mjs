@@ -19,11 +19,13 @@ const normalizeReferencedWorkflows = (items) => {
   const normalized = [];
   for (const item of items) {
     if (!item || typeof item.path !== "string" || !item.path ||
-        !validSha(item.sha) || typeof item.ref !== "string" || !item.ref) return null;
+        !validSha(item.sha) ||
+        (item.ref !== undefined && item.ref !== null &&
+          (typeof item.ref !== "string" || !item.ref))) return null;
     normalized.push(Object.freeze({
       path: item.path,
       sha: item.sha.toLowerCase(),
-      ref: item.ref
+      ref: item.ref ?? null
     }));
   }
   return Object.freeze(normalized);
