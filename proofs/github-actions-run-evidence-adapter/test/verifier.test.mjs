@@ -86,6 +86,14 @@ test("requires exact referenced workflow path, ref and SHA bindings", () => {
   assert.equal(verify({ binding: expected, response: { ...response, referenced_workflows: [] } }).reason, "REFERENCED_WORKFLOWS_MISMATCH");
   assert.equal(verify({ binding: expected, response: { ...response, referenced_workflows: [{ ...referenced, sha: "d".repeat(40) }] } }).reason, "REFERENCED_WORKFLOWS_MISMATCH");
   assert.equal(verify({ response: { ...base, referenced_workflows: [{ ...referenced, ref: "" }] } }).reason, "INVALID_REFERENCED_WORKFLOWS");
+  const shaPinned = {
+    path: "VlDMlNSh/developer-cloud-pool/.github/workflows/pinned.yml@sha",
+    sha: "e".repeat(40)
+  };
+  assert.equal(verify({
+    binding: { ...binding, referencedWorkflows: [shaPinned] },
+    response: { ...base, referenced_workflows: [shaPinned] }
+  }).decision, "TERMINAL_EXECUTOR_ONLY");
 });
 test("unknown statuses and conclusions fail closed", () => {
   assert.equal(verify({ response: { ...base, status: "future_state" } }).reason, "UNKNOWN_RUN_STATUS");
