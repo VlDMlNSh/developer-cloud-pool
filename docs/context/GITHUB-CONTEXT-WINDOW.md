@@ -1878,3 +1878,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: add a separate unprivileged PR-only real-Octokit proof using a pinned release and lockfile with synthetic GET-only Fetch transport; verify fixed API origin and method constraints. Do not claim zero network egress without measurement. Keep native issue_comment activation, protected policy, expiry, replay consumption and dispatch separately gated.
 - Status: PR #55 synthetic CI SUCCESS; independent review NOT RUN; native event execution NOT RUN; real transport NOT RUN; replay/freshness NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — real-backend claim contention qualification gate review
+
+- Report: [Real-backend claim contention gate review](../reports/2026-11-10-real-backend-claim-contention-gate-review.md), blob `bdefe8077ed78d009c8b2524cd6a3ade4c1ff171`, report commit `2925d634d536832593b77f3856ca0e9ed41ca585`; report re-fetched and complete-content checks passed.
+- Rechecked default-branch HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #54 exact head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`, OPEN/DRAFT/UNMERGED; exact-head local D1 run `42537241204` SUCCESS; formal reviews 0; inline threads 0.
+- PR #51 exact head `32c88e50e173e6b19bc6c61723ab6474a3c08145`, base `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`, OPEN/DRAFT/UNMERGED; exact-head local D1 run `42536377720` SUCCESS; formal reviews 0; inline threads 0.
+- Issue #38 requires real-backend concurrent one-winner qualification or an explicit decision to keep dispatch disabled. PR #54 proves 50-way logical-task contention only in local Workers/Miniflare D1; PR #51's reconciliation is also local. Neither qualifies hosted D1 or any other real backend.
+- No remote D1/account/database/credential was accessed. No secret, dispatch, provider/model, production resource, workflow, source code or deployment was changed.
+- Decision: keep both dispatch gates disabled. Next: verify an already-available free-tier durable backend, ownership, isolation, quotas and narrow credential scope before any disposable real-backend contention/recovery test. If no eligible backend/credential exists, explicitly retain disabled dispatch rather than expanding Supervisor permissions or claiming local CI is sufficient.
+- Status: PR #54 local proof CI SUCCESS / remote qualification NOT RUN / independent review NOT RUN; PR #51 local proof CI SUCCESS / remote qualification NOT RUN / independent review NOT RUN; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
