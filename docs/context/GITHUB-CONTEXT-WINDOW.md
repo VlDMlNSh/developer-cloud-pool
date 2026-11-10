@@ -1790,3 +1790,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: implement isolated Octokit-based read-only API fixture harness with exact-pinned dependency and synthetic negative tests. No dispatch method; keep D1 disconnected.
 - REST fields/permission matrix VERIFIED against official docs; executable verifier NOT IMPLEMENTED; credential permission smoke test NOT RUN; issuer-to-D1 NOT IMPLEMENTED; remote D1 NOT VERIFIED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Read-only GitHub approval-event verifier fixture proof
+
+- Report: [GitHub approval event verifier fixture proof](../reports/2026-11-10-github-approval-event-verifier-fixture-proof.md), commit `217c646af84848329b4828d4e38f39ad2635d0cd`.
+- PR #55: https://github.com/VlDMlNSh/developer-cloud-pool/pull/55 — OPEN / DRAFT / UNMERGED. Branch `proof/github-approval-event-adapter-2026-11-10`; exact head `edff010388897f23f58bceb92e5180a09970fdff`; base/default `Основной` remains `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Added isolated read-only verifier, Node built-in fixture tests and least-privilege fixture workflow. Native runner loader reads GITHUB_EVENT_PATH and no longer accepts caller-supplied environment overrides. It rejects non-issue_comment/created, PR comments, repo/owner mismatch, missing/mismatched approver policy, non-allowlisted/closed Issue, edited comment, invalid command/SHA/profile/nonce, changed second reads, incomplete API responses and API failures.
+- API access is through Octokit-compatible method injection (`repos.get`, `issues.get`, `issues.getComment`); no custom HTTP/pagination/retry client. Tests use synthetic fixtures, not an instantiated Octokit runtime. Real Octokit dependency/client pin and credential permission smoke test NOT RUN. GitHub-maintained actions/github-script v9 immutable SHA candidate: `3a2844b7e9c422d3c10d287c895573f7108da1b3`; not yet adopted.
+- All outputs, including positive `VERIFIED_EVENT_EVIDENCE`, have `dispatch:false`; no dispatch/D1/capability/provider/model/secret/deployment API is present.
+- Exact-head run `42797001989`, job `129764618860`: SUCCESS, 11/11 tests passed. Existing pool contract validation run `42797001864`, job `129764618337`: SUCCESS. Both on exact PR #55 head `edff010388897f23f58bceb92e5180a09970fdff`.
+- PR #55 remains unmerged. No production workflow, secret, variable, D1 resource, permission, provider route or deployment changed.
+- Remaining: pinned real Octokit transport integration, actual native issue_comment workflow integration, protected approver/Issue configuration, trusted clock/expiry/revocation, RFC 8785 envelope digest, D1 consume/outbox and runtime permission smoke test. Keep dispatch gates disabled.
+- Read-only fixture verifier and contract CI: VERIFIED on PR head only. Real Octokit runtime: NOT RUN. Native event workflow integration: NOT IMPLEMENTED. Protected policy config: NOT VERIFIED. Issuer-to-D1: NOT IMPLEMENTED. Remote D1: NOT VERIFIED. Production dispatch: NOT RUN. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: bind verifier to pinned GitHub-maintained Octokit transport in isolated read-only workflow, without exposing write token to PR-controlled code; perform read-only permission smoke test only after protected policy is established.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
