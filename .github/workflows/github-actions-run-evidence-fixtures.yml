@@ -16,12 +16,29 @@ concurrency:
 jobs:
   node-fixtures:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout immutable source without persisting credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-      - name: Run synthetic evidence fixtures
+      - name: Generate and verify pinned Octokit dependency lock
         working-directory: proofs/github-actions-run-evidence-adapter
-        run: node --test
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          npm --version
+          npm install --package-lock-only --ignore-scripts --save-exact @octokit/rest@22.0.1 --no-audit --no-fund
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test
+          node --input-type=module -e 'import fs from "node:fs"; import { createHash } from "node:crypto"; const lock=fs.readFileSync("package-lock.json"); console.log("LOCKFILE_BASE64_BEGIN"); console.log(lock.toString("base64")); console.log("LOCKFILE_BASE64_END"); console.log("LOCKFILE_SHA256_BEGIN"); console.log(createHash("sha256").update(lock).digest("hex")); console.log("LOCKFILE_SHA256_END");'
+      - name: Upload generated package manifest and lock
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: octokit-lockfile-bootstrap
+          path: |
+            proofs/github-actions-run-evidence-adapter/package.json
+            proofs/github-actions-run-evidence-adapter/package-lock.json
+          if-no-files-found: error
+          retention-days: 7
