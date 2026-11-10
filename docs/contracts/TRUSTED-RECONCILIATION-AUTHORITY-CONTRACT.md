@@ -325,3 +325,16 @@ These tests do not authenticate the runner or prove provenance of `GITHUB_EVENT_
 Default Supervisor still has privileged `workflow_run` + `actions:write` (workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`); default Worker still uses `workflow_dispatch` with issue-write reporting (blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`). PR #37 proposes reusable workflow_call, exact head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, exact-head runs `42484039940` and `42484039932` SUCCESS; but PR #37 remains OPEN/DRAFT, base `197ba98...` is stale relative to default HEAD `864213e...`, and its Finalizer still checks only `pool:claimed` before label transition. Envelope digest, claim generation/owner and run/attempt are not bound; label claim is not CAS. Formal CHANGES_REQUESTED review remains on record from earlier head; no new independent approval is established.
 
 Disposition: pure event binding + hold-only policy VERIFIED under synthetic tests; native event provenance NOT QUALIFIED; production wiring NOT IMPLEMENTED; claim CAS/fencing/effect reconciliation NOT QUALIFIED; PR #57 independent review NOT RUN; Contour A NOT ACCEPTED.
+
+
+## 17. Existing local finalization primitive reuse boundary (2026-11-10)
+
+The branch `fix/attempt-finalization-idempotency-2026-11-08` contains a useful `finalizeTaskAttempt` local D1 primitive. Its conditional update binds taskKey, attemptId, workerId, generation, current attempt/lease attempt, leased state, running attempt and unexpired lease. It supports exact terminal replay and denies conflicting/stale finalization. Source blob `cfbce80efbf8e19fd667770ec3a8f86cd17dc865`; test blob `e259ce028eff89448ebd40881f15c7c410877686`.
+
+This primitive is **worker finalization only**, not trusted reconciliation authority:
+- It does not bind the immutable approval/envelope digest, issuer, claim ID, repository/workflow identity, Actions run_id/run_attempt or resolver capability.
+- It requires a current unexpired running lease; it does not resolve an indeterminate attempt.
+- The candidate branch is stale relative to PR #51 by 8 commits and lacks the reconciliation-queue / projection-outbox migrations currently present on the newer lineage. Do not merge/stack it as-is.
+- Exact-head CI for the candidate branch was not established. PR #54's successful run belongs to its separate 50-approval contention branch and must not be attributed to this finalizer branch.
+
+Reuse only the conditional-update and exact-replay semantics after porting them to the current PR #51/#56 migration graph, extending the binding with immutable envelope/claim and exact executor run/attempt identity, and adding adversarial tests. Keep resolver decisions and external side-effect reconciliation as a separate authority path. No production wiring or dispatch until exact-head tests and all authority/effect gates pass.
