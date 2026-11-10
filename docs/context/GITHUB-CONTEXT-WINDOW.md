@@ -2172,3 +2172,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: repository audit SUCCEEDED; PR #57 exact-head CI VERIFIED (proof scope only); independent review NOT RUN; web console/auth/deployment NOT RUN; persistent hosted state, trusted resolver and account-isolated routing NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: compose native workflow_run event fixture → immutable binding → fixed-origin/least-privilege Octokit client → trusted clock → attempt verifier in a pure no-network test; pin Node. Keep claim retained and `dispatch:false`. Separately open the path-segment fix as a PR with exact-head CI.
 - Daily report: `docs/reports/2026-11-10-cloud-pool-daily-status.md`, report commit `11fe2c4248b226b5ee62079c4882aab3f283cae1`, blob `3784dcef86ddc47a456a0c1124b9cc3637a25d87`.
+
+
+## 2026-11-10 21:27 Europe/Vilnius — PR #56 exact-head CI revalidation
+
+- Report: [PR #56 current-head CI revalidation](../reports/2026-11-10-pr56-current-head-ci-revalidation.md), report commit `856ca028a1e52b9b30a7194219309bab18d524f6`.
+- PR #56 branch current head `eeb359d7a7564fc15ad1c86bc8c3ecbe975ed48a`. This head changes only `.github/workflows/d1-ledger-proof-validation.yml` to add the PR #56 branch to push and pull_request filters; read-back workflow blob `27e3fe1d02181f53fd778f8cb24187be47cd2a37`.
+- Current exact-head workflow query returned no PR-triggered runs; combined commit status returned no contexts. Therefore PR #56 exact-head CI is **NOT VERIFIED**. Earlier successful D1 run `42825872826` / job `129862892371` belongs to older source head `0769b6b5d5eda9c7821804b93db21ded6e0985ef` and does not qualify the new workflow commit.
+- PR #56 formal reviews=0, inline threads=0. PR #57 remains `2c263e8a9915f0bc8e0698cde816e87cb2376538`, exact-head fixture 33/33 and Pool Contract Validation SUCCESS; reviews=0.
+- Re-read default Supervisor/Worker: Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still contains privileged `workflow_run`, `actions:write`, `issues:write`; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` still contains `workflow_dispatch`, no `workflow_call`, and `issues:write`.
+- No dispatch, Worker execution, provider/model call, secret access, remote D1, deployment, merge or paid resource. Issue #38 remains OPEN. Claim CAS/fencing/effect reconciliation NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain exact PR-triggered CI for PR #56 head `eeb359d...`; inspect exact merge-tree result. Then resume immutable reconciliation-envelope / conditional-transition design against existing D1 proof stack. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
