@@ -199,3 +199,20 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Context Window refreshed in commit `51e5ca4e59979a72069d31bf7c506e00342d2968`, blob `c7202b579098f0afa24e4af935bd6529ffd4ca2b`.
 - Next: backend-neutral trusted reconciliation authority contract; compare immutable GitHub Actions run metadata with existing Cloudflare Workflows proof. No resolver implementation/dispatch/provisioning.
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Trusted Reconciliation Authority contract
+
+- Fresh exact refs: default HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; PR #56 head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
+- PR #52 exact-head CI run `42507524428` / job `128813275338` SUCCESS, all steps including Workflow + D1 local proof. Reviews 0, threads 0. Local Miniflare only.
+- New backend-neutral contract: [TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md](../contracts/TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md), creation commit `9f59fc858470b664ceef66b93cde11ea8001b954`.
+- Shared immutable lifecycle contract extended with reconciliation link/normative boundary: commit `ed16aeb77bcb07ad71f3ca2f36f93898bbdd38c6`.
+- Backend comparison: GitHub Actions API is read-only native run evidence (must bind exact run_attempt + repository/workflow/path/event/head SHA); Cloudflare Workflows is a candidate orchestration/evidence source with local-only process-recovery proof. Neither terminal status proves external effects absent. Cloudflare explicit restart cancels in-progress steps and erases intermediate state; no restart/terminate shortcut.
+- Resolver capability separate from owner approval/worker/dispatch; immutable binding, single-use jti, expiry/audience/scope/revocation/policy; conditional atomic resolution + append-only receipt; destination idempotency/fencing; unresolved by default. Resolver cannot create attempt or dispatch.
+- Report: [2026-11-10 trusted reconciliation authority contract](../reports/2026-11-10-trusted-reconciliation-authority-contract.md), commit `58d5da3a9c822e26b4eff63292ae6b1f12f0c1d9`.
+- Context Window updated commit `957971e07a69b0dc9b09495d67073e634e6e1522`, blob `59f59e4aca42ee88b39f1e21f7be9db322c3dbb3`.
+- Ruleset `26550182` remains active but approvals=0 and CODEOWNERS review disabled. No independent review gate.
+- No code, permissions, secrets, runtime, dispatch, provider calls, deployment, merge or remote provisioning changed.
+- Status: contract CREATED/DOCUMENTED; adapter implementation NOT RUN; hosted authority NOT QUALIFIED; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only GitHub Actions evidence adapter contract and synthetic fixtures for exact run_attempt identity, mismatches, API failures and unknown statuses; no token or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
