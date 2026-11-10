@@ -1967,3 +1967,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/workflow changes, secrets access, hosted D1 mutation, dispatch, provider/model call, deployment or merge.
 - Next: inspect D1 ledger schema and claim implementation across the stacked proof PRs, then design a bounded hosted-D1 qualification harness and recovery test matrix. Do not create resources or enable dispatch during inspection.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — D1 attempt lifecycle authority-boundary audit
+
+- Read-only source audit report: [D1 attempt lifecycle authority audit](../reports/2026-11-10-d1-attempt-lifecycle-authority-audit.md), latest report commit `e058323f42df23be4c0bf39e050fb022045901f3`, verified report blob `0f616b87d4b73228b22c8e128723f37d523dda52`.
+- Refreshed exact stacked PR heads: PR #49 `b9067dc7d06245893cd4e208f6215438efe5ca64`; PR #50 `65233f57038a9996e4a6e939abde3642a33d467d`; PR #51 `32c88e50e173e6b19bc6c61723ab6474a3c08145`. All OPEN/DRAFT/UNMERGED. PR #51 exact-head Workers-runtime run `42536377720` COMPLETED/SUCCESS.
+- Source-level blocker F-1: `acquireAttemptLease(..., {resumable:true})` trusts a caller boolean to permit expired-running-attempt takeover and increment lease generation. Adapter does not authenticate issuer/capability, bind a trusted reconciliation decision, or prove old executor is stopped/fenced at external sinks. A caller boolean is not authority. No production exploit/deployment is claimed; do not enable dispatch.
+- Hardening F-2: `createTaskAttempt()` uses separate SELECT/INSERT/readbacks rather than one transaction. Unique constraints prevent duplicate durable attempt IDs, but concurrent exact retries can yield ambiguous denial instead of idempotent success; response-loss recovery is not explicitly proven. Add conditional transactional insert and exact/conflicting replay fault tests.
+- Schema consistency F-3: migration 0004 allows `prepared -> failed` in status transition matrix, but terminal guard requires an active matching lease, so that transition is rejected. Align matrix or define separately authorized pre-execution cancellation.
+- Positive local evidence: conditional fenced lease UPDATE; 10-way initial lease test with one winner; append-only attempt events; migration 0005 creates unique reconciliation row in same status transition; PR #50/#51 exact terminal replay and post-commit lost-response test. All remain local Workers-runtime evidence.
+- Reconciliation resolver lifecycle is NOT IMPLEMENTED. Hosted D1, real-backend contention, quota failure, worker restart/redeploy, executor fencing/termination and independent security review remain NOT RUN / NOT QUALIFIED.
+- Issue #38 OPEN / NOT QUALIFIED. Dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- No code/workflow changes, secrets access, Cloudflare resource mutation, dispatch, provider/model calls, deployment or merge.
+- Next: prepare minimal remediation design for F-1/F-2/F-3 against pinned PR #51 source. Do not implement until trusted issuer/capability and executor fencing semantics are explicit.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
