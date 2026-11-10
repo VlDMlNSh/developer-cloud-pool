@@ -1816,3 +1816,10 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/runtime/permissions/secrets/variables/D1 resources/dispatch/provider/deployment changes. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add a pinned GitHub-maintained Octokit transport to the isolated synthetic fixture proof, assert HTTP method/URL and read-only behavior, and keep native approval consumption blocked until protected policy provenance, replay and expiry semantics are resolved. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — cross-project source refresh
+
+- MediaHub canonical map, Bootstrap, continuation checkpoint and Master Roadmap were re-read on `docs/mediahub-chat-tree-map-20261012`; blob SHAs respectively `75f62685459ec99ebf8be478f4e9096cdb842b1d`, `75f30750183efe8c6877368e9f0ada48f8e81ea7`, `fd312ded05dd1898bd36d776a9669bb02920720d`, `ea7e94e921045253f3e6494438e197c4bafae3a0`.
+- MediaHub Issue #301 remains OPEN. PR #441 remains OPEN. PR #437 is CLOSED in the current Issue API read; the endpoint did not expose its merged boolean in this response, so no new merged-state claim is made here.
+- Cloud Pool remains the engineering authority for Contour A; MediaHub references are used only for compatible product/security boundaries. No MediaHub workflow, executor, host, secret or product code was changed.
