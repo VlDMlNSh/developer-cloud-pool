@@ -2184,3 +2184,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No dispatch, Worker execution, provider/model call, secret access, remote D1, deployment, merge or paid resource. Issue #38 remains OPEN. Claim CAS/fencing/effect reconciliation NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain exact PR-triggered CI for PR #56 head `eeb359d...`; inspect exact merge-tree result. Then resume immutable reconciliation-envelope / conditional-transition design against existing D1 proof stack. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 21:46 Europe/Vilnius — PR #56 actual-head correction and exact CI verification
+
+- Fresh GitHub PR API re-read confirms PR #56 actual head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, not `eeb359d...`; the latter is an ancestor. PR description corrected and read-back confirmed.
+- Exact-head D1 workflow run `42825872826`: COMPLETED / SUCCESS; job `129862892371` (`Local Workers-runtime D1 adversarial tests`). Artifact `d1-ledger-proof-package-lock` exists, not expired, 18,253 bytes.
+- PR #56 base PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; compare: 4 ahead / 0 behind. PR remains OPEN/DRAFT/UNMERGED; reviews=0, inline threads=0.
+- Read-back blobs: source `d9e5f97b94f0873fbec542a71bc90ea3b62e0e30`, test `911945bed6449b45f421786808d57e994d160e71`, workflow `27e3fe1d02181f53fd778f8cb24187be47cd2a37`. Lease function accepts only pending task + prepared current attempt; no caller-controlled `resumable`; forged extra arguments denied, lease generation/owner/event history unchanged.
+- Pull-request branch filter correctly matches PR base branch `feat/indeterminate-reconciliation-queue-2026-11-08`; push filter includes the remediation head branch. Exact-head CI is VERIFIED for the local D1 proof scope.
+- Report correction commit `691c3e4a873d7e7daff2f2c3627773a9ad91c901`, report blob `8b3b319f7aeb3388546cb401b2d552a14083cfc5`.
+- Production Supervisor/Worker integration, hosted D1, resolver authority, claim CAS/fencing and side-effect reconciliation remain NOT QUALIFIED. Issue #38 OPEN. No dispatch, provider/model calls, secret access, hosted resource, deployment, merge or paid resource.
+- Next bounded step: inspect the existing finalization/idempotency proof (PR #54 and branch `fix/attempt-finalization-idempotency-2026-11-08`) against the current immutable claim contract; derive whether it can safely supply the conditional terminal transition without duplicating D1 logic. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
