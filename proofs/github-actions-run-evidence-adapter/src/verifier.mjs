@@ -14,6 +14,20 @@ const unresolved = (reason) => Object.freeze({
 
 const validPositiveInt = (value) => Number.isSafeInteger(value) && value > 0;
 const validSha = (value) => typeof value === "string" && /^[0-9a-f]{40}$/i.test(value);
+const normalizeReferencedWorkflows = (items) => {
+  if (!Array.isArray(items)) return null;
+  const normalized = [];
+  for (const item of items) {
+    if (!item || typeof item.path !== "string" || !item.path ||
+        !validSha(item.sha) || typeof item.ref !== "string" || !item.ref) return null;
+    normalized.push(Object.freeze({
+      path: item.path,
+      sha: item.sha.toLowerCase(),
+      ref: item.ref
+    }));
+  }
+  return Object.freeze(normalized);
+};
 
 /**
  * Pure verifier for a single GitHub Actions attempt-specific run response.
@@ -41,7 +55,10 @@ export function verifyWorkflowRunAttempt({
       !validPositiveInt(binding.workflowId) ||
       typeof binding.workflowPath !== "string" || (!binding.workflowPath.startsWith(".github/workflows/") || !binding.workflowPath.includes("@")) ||
       typeof binding.event !== "string" || !binding.event ||
-      !validSha(binding.headSha)) return unresolved("INVALID_EXPECTED_BINDING");
+      !validSha(binding.headSha) ||
+      !Array.isArray(binding.referencedWorkflows)) return unresolved("INVALID_EXPECTED_BINDING");
+  const expectedReferencedWorkflows = normalizeReferencedWorkflows(binding.referencedWorkflows);
+  if (!expectedReferencedWorkflows) return unresolved("INVALID_EXPECTED_REFERENCED_WORKFLOWS");
 
   if (!Number.isFinite(observedAtMs) || !Number.isFinite(nowMs) ||
       !Number.isSafeInteger(maxObservationAgeMs) || maxObservationAgeMs <= 0 ||
@@ -57,7 +74,10 @@ export function verifyWorkflowRunAttempt({
       typeof response.path !== "string" ||
       typeof response.event !== "string" ||
       !validSha(response.head_sha) ||
-      typeof response.status !== "string") return unresolved("INCOMPLETE_RUN_METADATA");
+      typeof response.status !== "string" ||
+      !Array.isArray(response.referenced_workflows)) return unresolved("INCOMPLETE_RUN_METADATA");
+  const actualReferencedWorkflows = normalizeReferencedWorkflows(response.referenced_workflows);
+  if (!actualReferencedWorkflows) return unresolved("INVALID_REFERENCED_WORKFLOWS");
 
   if (response.id !== binding.runId) return unresolved("RUN_ID_MISMATCH");
   if (response.run_attempt !== binding.runAttempt) return unresolved("RUN_ATTEMPT_MISMATCH");
@@ -66,6 +86,9 @@ export function verifyWorkflowRunAttempt({
   if (response.path !== binding.workflowPath) return unresolved("WORKFLOW_PATH_MISMATCH");
   if (response.event !== binding.event) return unresolved("EVENT_MISMATCH");
   if (response.head_sha.toLowerCase() !== binding.headSha.toLowerCase()) return unresolved("HEAD_SHA_MISMATCH");
+  if (JSON.stringify(actualReferencedWorkflows) !== JSON.stringify(expectedReferencedWorkflows)) {
+    return unresolved("REFERENCED_WORKFLOWS_MISMATCH");
+  }
 
   if (!ALLOWED_STATUSES.has(response.status)) return unresolved("UNKNOWN_RUN_STATUS");
 
