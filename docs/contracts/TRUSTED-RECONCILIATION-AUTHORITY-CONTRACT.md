@@ -271,6 +271,6 @@ The pure verifier currently returns:
 - `TERMINAL_EXECUTOR_ONLY` for recognized completed conclusions, with `sideEffects=UNKNOWN`, `retryAuthorized=false`, and `dispatch=false`;
 - `UNRESOLVED` for API errors/non-200, missing or malformed fields, identity mismatches, stale/future observations and unknown future status/conclusion values.
 
-The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Initial exact-head fixture CI passed on the initial PR #57 head, but a follow-up correction tightened workflow path binding to the API's ref-qualified value. The corrected SHA must receive its own exact-head CI before that proof is marked VERIFIED.
+The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Final amended PR #57 head `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d` passed exact-head fixture CI run `42833466801`, job `129889327476`, COMPLETED/SUCCESS. This verifies only the pure response verifier and synthetic fixtures, not a live API transport or resolver.
 
 Official endpoint and response schema: https://docs.github.com/en/rest/actions/workflow-runs
