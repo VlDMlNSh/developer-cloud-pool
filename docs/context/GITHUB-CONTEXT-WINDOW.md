@@ -1708,3 +1708,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision: DO NOT implement resolver against current schema; keep indeterminate attempts manual `needs-review`; no expiry-based automatic resume. Next safe unit: negative-first local verifier interface backed by a future canonical GitHub API adapter; all denials `dispatch: false`. Then remediate Supervisor/Worker authority boundary in isolation.
 - No runtime/source/workflow/secrets/variables/ruleset/dispatch/provider/hosted D1/deployment/merge changes. Owner-event provenance NOT IMPLEMENTED / NOT VERIFIED; reconciliation adapter NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Authorization decision model trust-boundary audit
+
+- Report: [Authorization decision model trust-boundary audit](../reports/2026-11-10-authorization-decision-trust-boundary-audit.md), commit `1c0ea68b34aed4a5f266db3330d5e4d187039b76`.
+- Existing PR #34 branch `fix/integrated-pool-authorization-2026-11-06` head `43f48f9f4d0947f102b5f0c3170ee05186fe90e0`; PR OPEN/DRAFT/UNMERGED, base stale at `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, reviews empty.
+- Existing decision module blob `a6238f64b826de80af2f17d64fb30c2837c746a8`; tests blob `9811eed0c75f24e79bdf4f4627a0dfe7968117c2`. Do not duplicate this module.
+- Critical finding: `decidePoolAuthorization` returns `dispatch: true` for a caller-supplied plain object with `consume.status === "created"` and matching `markerApprovalEventId`. It does not prove the object came from a trusted D1 adapter or canonical GitHub owner-event verifier. Positive unit test fabricates the same object. This is a design-level trust defect; module must not be wired to production dispatch.
+- PR #34 exact-head checks: run `42267827757` syntax/security invariants SUCCESS; run `42267827737` production authorization boundary FAILED. Exact failed assertions not inspected; do not infer root cause from conclusion alone. Formal reviews empty.
+- Required correction: use existing module, but split pure policy from canonical GitHub API evidence adapter and real single-use consume; until integrated and independently verified, every input (including success-shaped consume objects) must yield `dispatch: false`. Add negative tests for forged IDs/receipts, edited/deleted comments, expiry, pagination truncation, API errors and ambiguous writes.
+- No source/runtime/workflow/secrets/variables/dispatch/provider/deployment/merge changes. Canonical owner-event adapter NOT IMPLEMENTED; production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
