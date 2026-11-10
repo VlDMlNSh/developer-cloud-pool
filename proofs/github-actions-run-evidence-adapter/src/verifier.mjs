@@ -39,7 +39,7 @@ export function verifyWorkflowRunAttempt({
       !validPositiveInt(binding.runId) ||
       !validPositiveInt(binding.runAttempt) ||
       !validPositiveInt(binding.workflowId) ||
-      typeof binding.workflowPath !== "string" || !binding.workflowPath.startsWith(".github/workflows/") ||
+      typeof binding.workflowPath !== "string" || (!binding.workflowPath.startsWith(".github/workflows/") || !binding.workflowPath.includes("@")) ||
       typeof binding.event !== "string" || !binding.event ||
       !validSha(binding.headSha)) return unresolved("INVALID_EXPECTED_BINDING");
 
