@@ -102,6 +102,7 @@ export function verifyWorkflowRunAttempt({
     workflowPath: response.path,
     event: response.event,
     headSha: response.head_sha.toLowerCase(),
+    referencedWorkflows: actualReferencedWorkflows,
     status: response.status,
     observedAtMs
   });
