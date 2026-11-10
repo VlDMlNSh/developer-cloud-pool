@@ -25,7 +25,8 @@ export function createWorkflowRunAttemptReader(octokit) {
         repo,
         run_id: runId,
         attempt_number: runAttempt,
-        headers: { "X-GitHub-Api-Version": "2022-11-28" }
+        headers: { "X-GitHub-Api-Version": "2022-11-28" },
+        request: { retries: 0 }
       });
       return Object.freeze({
         httpStatus: result.status,
@@ -35,7 +36,7 @@ export function createWorkflowRunAttemptReader(octokit) {
       // Preserve authoritative HTTP failures as evidence for the pure verifier.
       // Network/transport failures have no status and are rethrown; callers
       // must map them to UNRESOLVED and must not retry or dispatch.
-      if (Number.isSafeInteger(error?.status)) {
+      if (Number.isSafeInteger(error?.status) && error.status >= 100 && error.status <= 599) {
         return Object.freeze({
           httpStatus: error.status,
           response: error.response?.data ?? null
