@@ -1917,3 +1917,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - D1 suitability DOCUMENTATION-ASSESSED / NOT QUALIFIED; actual hosted test NOT RUN; independent review NOT RUN; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: owner authorization for one disposable free-tier D1 database and one test-only Worker, after confirming free-tier allowance, quota budget, resource isolation, and least-privilege credential path. If not authorized/available, keep dispatch fail-closed.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-10 — PR #54 projection actor provenance finding / PR #55 CI recheck
+
+- Report: [PR #54 projection actor provenance audit](../reports/2026-11-10-pr54-projection-actor-provenance-audit.md), report commit `00edfe41021768d1b3260fc630bd666d3f0c17d1`.
+- PR #55 exact head `edff010388897f23f58bceb92e5180a09970fdff`, base `Основной` at `864213e2ff5b4fa956ba405dea8137a44d812f49`, OPEN/DRAFT/UNMERGED. Exact-head Pool Contract run `42797001864` / job `129764618337` SUCCESS; fixture run `42797001989` / job `129764618860` SUCCESS. Reviews 0; inline threads 0. These workflows remain synthetic/read-only, not native event or real Octokit runtime qualification.
+- PR #54 exact head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, base `proof/immutable-task-attempts-audit-ci-2026-11-08` at `b9067dc7d06245893cd4e208f6215438efe5ca64`, OPEN/DRAFT/UNMERGED. Exact-head local Workers/Miniflare D1 run `42537241204` / job `128904147572` SUCCESS. 50-approval contention asserts one logical task/one delivery outbox; 20-way projection lease asserts one winner. Hosted D1 qualification remains NOT RUN.
+- Source audit finding: `proofs/d1-ledger/migrations/0006_create_attempt_projection_outbox.sql:89` records `NEW.lease_owner` as actor_id on status transitions. Both retryable and delivered transition functions clear lease_owner in the same UPDATE, so `delivery.retryable` and `delivery.delivered` events lose actor provenance (`actor_id=NULL`). Existing tests do not assert actor identity.
+- COMMENT review successfully submitted to PR #54, review ID `5841304151`, anchored to exact head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. Requested use of prior lease owner/explicit transition actor and assertions for retryable/delivered event actor. This is not an approval or independent review.
+- No code, workflow, permissions, secrets, variables, D1 resources, dispatch, provider/model calls, deployment or merge changed. Dispatch remains prohibited pending all gates.
+- PR #55 synthetic CI VERIFIED on exact head; native event integration, real Octokit transport and production authorization NOT QUALIFIED. PR #54 local D1 proof CI SUCCESS; provenance finding OPEN; hosted D1 and independent review NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: re-read PR #54 after correction to review ID `5841304151`, verify actor attribution and tests on the new immutable head, then re-run exact-head D1 proof. Do not merge or enable dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
