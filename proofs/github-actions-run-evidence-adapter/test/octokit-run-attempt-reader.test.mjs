@@ -70,10 +70,10 @@ test("network failure is propagated after one synthetic fetch; no retry occurs",
   assert.equal(calls, 1);
 });
 
-test("caller cannot supply arbitrary URL, method, auth or request options", async () => {
-  let calls = 0;
-  const reader = createWorkflowRunAttemptReader(makeOctokit(async () => {
-    calls += 1;
+test("caller cannot override the fixed route, method, auth or request options", async () => {
+  const requests = [];
+  const reader = createWorkflowRunAttemptReader(makeOctokit(async (url, options = {}) => {
+    requests.push({ url: String(url), method: options.method });
     return new Response(JSON.stringify(payload), {
       status: 200,
       headers: { "content-type": "application/json" }
@@ -83,11 +83,14 @@ test("caller cannot supply arbitrary URL, method, auth or request options", asyn
     reader({ owner: "acme", repo: "pool", runId: 0, runAttempt: 2 }),
     /Invalid immutable workflow run identity/
   );
-  await assert.rejects(
-    reader({ owner: "acme", repo: "pool", runId: 123456, runAttempt: 2, url: "https://attacker.invalid" }),
-    /Invalid immutable workflow run identity/
-  );
-  assert.equal(calls, 0);
+  const result = await reader({
+    owner: "acme", repo: "pool", runId: 123456, runAttempt: 2,
+    url: "https://attacker.invalid", method: "POST", auth: "untrusted"
+  });
+  assert.equal(result.httpStatus, 200);
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].method, "GET");
+  assert.equal(requests[0].url, "https://api.github.com/repos/acme/pool/actions/runs/123456/attempts/2");
 });
 
 test("reader requires an Octokit request client", () => {
