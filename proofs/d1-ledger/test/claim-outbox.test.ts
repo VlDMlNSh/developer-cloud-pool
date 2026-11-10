@@ -342,36 +342,29 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(events.results.map((x) => x.event_type)).toEqual(["attempt.created"]);
   });
 
-  it("keeps lease takeover separate from attempt count and denies expiry-only takeover", async () => {
-    const taskKey = await createLogicalTask("approval-takeover");
+  it("never reclaims an expired running attempt, regardless of caller metadata", async () => {
+    const taskKey = await createLogicalTask("approval-no-takeover");
     await createAttempt(taskKey);
     const first = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-a", NOW + 2, 10);
-    if (first.decision !== "ATTEMPT_LEASE_ACQUIRED") throw new Error(`acquireAttemptLease failed: ${JSON.stringify(first)}`);
     expect(first).toMatchObject({ decision: "ATTEMPT_LEASE_ACQUIRED", generation: 1, attemptId: "attempt-1" });
 
     const denied = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-b", NOW + 12, 10);
-    expect(denied).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_REQUIRED" });
+    expect(denied).toMatchObject({ decision: "DENY", reason: "ATTEMPT_NOT_LEASEABLE" });
 
-    const takeover = await acquireAttemptLease(
-      env.POOL_DB, taskKey, "worker-b", NOW + 12, 10, { resumable: true }
+    // Extra JavaScript arguments are ignored; caller assertions cannot grant takeover authority.
+    const forged = await acquireAttemptLease(
+      env.POOL_DB, taskKey, "worker-b", NOW + 12, 10, { resumable: true, executorStopped: true }
     );
-    expect(takeover).toMatchObject({ decision: "ATTEMPT_LEASE_ACQUIRED", generation: 2, attemptId: "attempt-1" });
+    expect(forged).toMatchObject({ decision: "DENY", reason: "ATTEMPT_NOT_LEASEABLE" });
+
     const task = await env.POOL_DB.prepare(
-      "SELECT attempt_number, attempt_count, lease_generation FROM pool_tasks WHERE task_key = ?"
+      "SELECT attempt_number, attempt_count, lease_generation, lease_owner FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
-    expect(task).toMatchObject({ attempt_number: 1, attempt_count: 0, lease_generation: 2 });
+    expect(task).toMatchObject({ attempt_number: 1, attempt_count: 0, lease_generation: 1, lease_owner: "worker-a" });
     const leaseEvents = await env.POOL_DB.prepare(
       "SELECT actor_id, lease_generation FROM pool_attempt_events WHERE task_key = ? AND event_type = 'lease.acquired' ORDER BY lease_generation"
     ).bind(taskKey).all();
-    expect(leaseEvents.results).toEqual([
-      { actor_id: "worker-a", lease_generation: 1 },
-      { actor_id: "worker-b", lease_generation: 2 }
-    ]);
-
-    const stale = await renewAttemptLease(
-      env.POOL_DB, taskKey, "attempt-1", "worker-a", 1, NOW + 13, 10
-    );
-    expect(stale).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_LEASE" });
+    expect(leaseEvents.results).toEqual([{ actor_id: "worker-a", lease_generation: 1 }]);
   });
 
   it("allows only one concurrent initial lease acquisition", async () => {
@@ -537,7 +530,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     ).bind("attempt-1").first();
     expect(indeterminateEvent).toEqual({ actor_id: "worker-unknown", lease_generation: 1 });
     const deniedTakeover = await acquireAttemptLease(
-      env.POOL_DB, taskKey, "worker-replay", NOW + 8, 10, { resumable: true }
+      env.POOL_DB, taskKey, "worker-replay", NOW + 8, 10
     );
     expect(deniedTakeover).toMatchObject({ decision: "DENY", reason: "ATTEMPT_NOT_LEASEABLE" });
     const deniedRetry = await createTaskAttempt(env.POOL_DB, {
