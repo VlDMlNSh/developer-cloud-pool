@@ -1732,3 +1732,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime/dispatch/hosted D1/secrets/provider/deployment/merge/source changes. CI triage VERIFIED; production boundary FAILED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare and implement a bounded source migration plan for Supervisor/Worker authority boundary on current default baseline; preserve owner-event adapter + real D1 consume prerequisites, no auto retry, no dispatch gate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — PR #37 / PR #53 Supervisor–Worker boundary and Finalizer audit
+
+- Report: [PR #37 / PR #53 boundary and Finalizer audit](../reports/2026-11-10-pr37-pr53-boundary-finalizer-audit.md), report commit `352742271f0fa73a6927a097ab4b4ac0097be069`.
+- Rechecked default `Основной` HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`. PR #37 OPEN/DRAFT head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, stale base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #53 OPEN/DRAFT head `b8a253f06418841d5f0250c9fd550bf3247db040`, stacked on PR #37. PR #39 local D1 proof head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. Issue #38 OPEN.
+- PR #37 exact-head runs `42484039940` and `42484039932` SUCCESS. PR #53 exact-head run `42513724733`, job `128832083652`, SUCCESS including finalizer fencing tests.
+- PR #37 replaces privileged Supervisor workflow_run/REST Worker dispatch with reusable workflow_call and read-only Worker Issue access; caller/callee identity, target SHA, profile, managed-state and claim generation checks added. Supervisor and Finalizer still require Issues write. Claim is GitHub Issue label PATCH with read-back, not atomic compare-and-swap; no durable single-winner guarantee.
+- PR #53 adds Finalizer validation of issue number, full body SHA-256, Supervisor run/attempt generation label and unique claimed state; re-read/write/read-back checks and adversarial tests. Residual race remains because label PATCH is not atomic CAS; audit comment is separate from terminal state; generation is a projection of workflow run identity, not a D1 fencing token. It does not authenticate an owner approval event or issuer.
+- PR #39/#54 local Workers-runtime/Miniflare tests are not remote D1 qualification. Remote D1 and free-tier entitlement remain NOT VERIFIED.
+- Disposition: PR #37 boundary and PR #53 finalizer are useful candidates but NOT QUALIFIED for dispatch. Keep gates fail-closed; do not merge/rebase stacked PRs without a planned reconciliation to current default. No dispatch/DSH/model/provider/secrets/provisioning/deployment/merge/source changes.
+- Next: test-first design of trusted issuer + real D1 claim/Finalizer adapter: canonical approval envelope, atomic consume+outbox, fencing generation, terminal+audit outbox. GitHub Issue labels/comments remain projections only.
+- Production dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
