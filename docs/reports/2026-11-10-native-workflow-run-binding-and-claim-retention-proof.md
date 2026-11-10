@@ -9,11 +9,11 @@
 ## New pure modules
 
 1. `src/workflow-run-event-binding.mjs` derives an immutable run binding only from a completed native `workflow_run` event payload. It requires deployment-pinned repository ID, workflow ID, exact workflow path and expected originating event; checks event action/status, top-level and run repository IDs, head repository ID (rejects forked/missing head repository), run ID, exact `run_attempt`, 40-hex head SHA and referenced-workflow array.
-   - Blob: `793e5dbbf86e18075fc3586ea81a1064d71dd98a`
-   - Tests blob: `691d56c6306328efa132a7f50cba5ad301d331ec` is the commit that added the tests; test file blob verified by current branch read-back after commit.
+   - Blob: `e85fddcd22a8154fb5896ca5038a2581316322ee` (file commit `793e5dbbf86e18075fc3586ea81a1064d71dd98a`)
+   - Tests blob: `3041cad0825489301b24441d39a87a7134ad3404` (file commit `691d56c6306328efa132a7f50cba5ad301d331ec`).
 2. `src/workflow-run-reconciliation-policy.mjs` maps lifecycle evidence to a hold-only policy. `STILL_ACTIVE` and `UNRESOLVED` preserve CLAIMED; `TERMINAL_EXECUTOR_ONLY` preserves CLAIMED and requires separate effect reconciliation. Every outcome has `dispatch=false` and `retryAuthorized=false`; there is no release-to-ready outcome.
-   - Module commit: `5d4129480fd7e4e6da16c0d28834ae269a61b7bd`
-   - Tests commit: `2c263e8a9915f0bc8e0698cde816e87cb2376538`
+   - Module blob: `760846ec78b5ec1e6c31b1e2059eb8c0cfe15264` (file commit `5d4129480fd7e4e6da16c0d28834ae269a61b7bd`)
+   - Tests blob: `cd4900fd066a3b97d904f03759455ef551626c0d` (file commit `2c263e8a9915f0bc8e0698cde816e87cb2376538`)
 
 These are pure contract proofs. The event helper explicitly cannot authenticate the runner or prove `GITHUB_EVENT_PATH` provenance; trusted host composition must source native environment values and pinned config. The policy helper is not wired to the production Supervisor and cannot prove atomic state transitions.
 
