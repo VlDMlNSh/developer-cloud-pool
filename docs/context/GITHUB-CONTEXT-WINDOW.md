@@ -1941,3 +1941,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Keep dispatch disabled.
 - Next: wait for a new PR #54 head before re-reviewing the finding; meanwhile audit another open Contour A proof lane, without promoting local Miniflare evidence to hosted D1 qualification.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — PR #51 indeterminate reconciliation audit
+
+- Audit report: [PR #51 indeterminate reconciliation queue audit](../reports/2026-11-10-pr51-indeterminate-reconciliation-audit.md), latest commit `64de9b2381e4ce6e2ca5f61bcf3976941a04c1e6`, report blob `8080a90839313e9ad6e1d7e123fbf228dd8239cf`.
+- PR #51 remains OPEN/DRAFT/UNMERGED at immutable head `32c88e50e173e6b19bc6c61723ab6474a3c08145`, base `proof/immutable-task-attempts-audit-ci-2026-11-08` @ `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`. Exact-head local Workers-runtime run `42536377720` COMPLETED/SUCCESS. Reviews/comments/threads: 0/0/0.
+- Read-back blobs: reconciliation migration `7a19897f6197c79517170e101e4cbf1db233cac6`; `task-attempts.mjs` `6cb028e048569700ed623d93462ef55e2392a084`; `claim-outbox.test.ts` `0af5366564dfb3458ccda656c802ff039ead2418`; workflow `d1-ledger-proof-validation.yml` `6b34e923bd4a9e801467f6a90a09702e8b876d38`.
+- Audit conclusion: bounded local proof supports transition to indeterminate and atomically materializes one pending reconciliation row preserving attempt/task/input digest/lease generation/expired lease owner/time. Test confirms expired lease is not automatically cleared, retried or taken over after indeterminate. PR #51 inherits exact terminal-finalization replay recovery from PR #50, including a lost-response fault-injection test and conflict rejection.
+- Qualification boundary: no reconciliation resolver/claim/lease/terminal lifecycle exists; no hosted D1, real-backend contention, restart/redeploy recovery, actual executor-failure recovery, or independent security review. No correctness defect established within declared PR #51 scope; no approval submitted. Local CI is not production qualification.
+- No code/workflow changes, comments, secret access, hosted D1/resource creation, dispatch, provider/model calls, deployment or merge. Issue #38 OPEN/NOT QUALIFIED; dispatch remains fail-closed. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: complete the Issue #38 three-option decision analysis (serialized single-writer labels with residual race; dedicated state repository with immutable refs; verified free conditional-write store), including authority and recovery semantics. Do not expand Supervisor permissions or enable dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
