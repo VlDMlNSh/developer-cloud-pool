@@ -1823,3 +1823,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - MediaHub canonical map, Bootstrap, continuation checkpoint and Master Roadmap were re-read on `docs/mediahub-chat-tree-map-20261012`; blob SHAs respectively `75f62685459ec99ebf8be478f4e9096cdb842b1d`, `75f30750183efe8c6877368e9f0ada48f8e81ea7`, `fd312ded05dd1898bd36d776a9669bb02920720d`, `ea7e94e921045253f3e6494438e197c4bafae3a0`.
 - MediaHub Issue #301 remains OPEN. PR #441 remains OPEN. PR #437 is CLOSED in the current Issue API read; the endpoint did not expose its merged boolean in this response, so no new merged-state claim is made here.
 - Cloud Pool remains the engineering authority for Contour A; MediaHub references are used only for compatible product/security boundaries. No MediaHub workflow, executor, host, secret or product code was changed.
+
+
+## 2026-11-10 — Octokit transport component selection
+
+- Report: [Octokit transport component selection](../reports/2026-11-10-octokit-transport-component-selection.md), commit `e36f2d0bd4f4f1b67a1070c741dd203c210bae76`.
+- Selected mature candidate: GitHub-maintained `octokit/rest.js`, `@octokit/rest@22.0.1` (official repository/release and npm metadata checked). Existing verifier method surface matches `repos.get`, `issues.get`, `issues.getComment`; current proof package has no dependencies/lockfile and only fake Octokit fixtures.
+- Integration intentionally NOT implemented: no local npm execution is available to generate and verify package-lock integrity hashes. A manually fabricated lockfile or unverified transitive graph is rejected. No source/workflow/dependency changes.
+- Next: generate canonical lockfile with npm; add narrow read-only adapter; instantiate real Octokit with synthetic fetch; assert GET-only exact paths, response/error behavior and zero network egress; run `npm ci && npm test` in PR-only workflow with contents:read/issues:read. Keep approval consumption and dispatch disabled.
+- Component/API surface VERIFIED by source inspection; lockfile and real transport NOT VERIFIED/NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
