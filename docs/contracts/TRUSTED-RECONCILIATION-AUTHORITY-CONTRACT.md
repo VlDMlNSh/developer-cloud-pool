@@ -315,8 +315,8 @@ Next: define and test native `workflow_run` event binding including exact run_at
 ## 16. Native workflow_run binding and hold-only policy (2026-11-10)
 
 PR #57 adds two pure contract modules:
-- `workflow-run-event-binding.mjs`: derives the immutable binding from a native completed `workflow_run` payload and deployment-pinned repository/workflow configuration. It requires exact repository ID (root/run/head repository), workflow ID/path, originating event, run ID, `run_attempt`, head SHA and referenced-workflow array; missing/forked/mismatched identity is rejected. Blob `793e5dbbf86e18075fc3586ea81a1064d71dd98a`.
-- `workflow-run-reconciliation-policy.mjs`: maps STILL_ACTIVE and UNRESOLVED to KEEP_CLAIMED; TERMINAL_EXECUTOR_ONLY to HOLD_FOR_EFFECT_RECONCILIATION. Every result preserves CLAIMED, disables dispatch and retry, and has no ready-release outcome. Module commit `5d4129480fd7e4e6da16c0d28834ae269a61b7bd`.
+- `workflow-run-event-binding.mjs`: derives the immutable binding from a native completed `workflow_run` payload and deployment-pinned repository/workflow configuration. It requires exact repository ID (root/run/head repository), workflow ID/path, originating event, run ID, `run_attempt`, head SHA and referenced-workflow array; missing/forked/mismatched identity is rejected. Blob `e85fddcd22a8154fb5896ca5038a2581316322ee` (file commit `793e5dbbf86e18075fc3586ea81a1064d71dd98a`).
+- `workflow-run-reconciliation-policy.mjs`: maps STILL_ACTIVE and UNRESOLVED to KEEP_CLAIMED; TERMINAL_EXECUTOR_ONLY to HOLD_FOR_EFFECT_RECONCILIATION. Every result preserves CLAIMED, disables dispatch and retry, and has no ready-release outcome. Module blob `760846ec78b5ec1e6c31b1e2059eb8c0cfe15264` (file commit `5d4129480fd7e4e6da16c0d28834ae269a61b7bd`).
 
 Final exact-head fixture CI `42838193384` / job `129905939447`: SUCCESS, 33/33 tests; Pool Contract Validation `42838193405` / job `129905939738`: SUCCESS. Final PR #57 head `2c263e8a9915f0bc8e0698cde816e87cb2376538`.
 
