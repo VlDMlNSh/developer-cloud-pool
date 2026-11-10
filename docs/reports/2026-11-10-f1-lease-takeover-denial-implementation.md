@@ -45,8 +45,9 @@ File: `.github/workflows/d1-ledger-proof-validation.yml`
 - Source inspection confirms no `resumable` parameter and no expired-running takeover SQL predicate.
 - Test source inspection confirms the forged-metadata negative regression case exists.
 - PR #56 created as OPEN/DRAFT/UNMERGED. Its current head is `0769b6b5d5eda9c7821804b93db21ded6e0985ef`.
-- Exact-head workflow lookup returned no PR-triggered workflow runs. Combined commit status returned an empty status list. These are **NOT VERIFIED**, not success.
-- No local Workers-runtime test command was executed in this pass. Do not claim the regression tests passed.
+- Exact-head Actions run `42825872826` (Isolated D1 Ledger Proof), completed SUCCESS. Job `129862892371` (Local Workers-runtime D1 adversarial tests) completed SUCCESS. Artifact `13769536309`, `d1-ledger-proof-package-lock`, SHA-256 `df55c8379d63b06d9107e3d05424f9793e04b37b85db18f7cf7432083178c119`. Artifact metadata binds the run to branch `fix/deny-attempt-lease-takeover-2026-11-10` and head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`.
+- Job log confirms Node `24.9.0`, `npm ci --ignore-scripts --no-audit --no-fund`, adapter syntax check, and `npm test`: 2 test files passed, 36 tests passed (13 consume + 23 claim-outbox). The updated takeover regression is in claim-outbox test file. Exact-head Actions evidence is VERIFIED for this local Workers-runtime test suite.
+- Combined commit status API still returns an empty status-context list; this does not negate the named Actions run, but no other status checks are evidenced.
 - PR mergeability currently reports false; no merge attempted. Investigate mergeability only after exact-head CI is visible and compare merge-base/conflicts without changing the historical proof PRs.
 
 ## Safety boundaries
@@ -63,8 +64,8 @@ File: `.github/workflows/d1-ledger-proof-validation.yml`
 
 - F-1 code change: IMPLEMENTED ON DRAFT PR #56.
 - Source/readback verification: VERIFIED.
-- Regression test execution: NOT VERIFIED.
-- Exact-head CI: NOT VERIFIED (no run/status evidence returned).
+- Regression test execution: VERIFIED (36/36 tests).
+- Exact-head CI: VERIFIED via run 42825872826 / job 129862892371.
 - PR #49–51: OPEN/DRAFT/UNMERGED; immutable proof history preserved.
 - Issue #38: OPEN / NOT QUALIFIED.
 - F-2 and F-3: design defined; implementation NOT STARTED.
