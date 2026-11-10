@@ -271,3 +271,19 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Issue #38 progress comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38#issuecomment-6769907427
 - Context Window header/ref refresh commit: `8eb91b3fe723a355e98e8fba174c6825893ac671`, blob `441e127233a54aa48cb7fb694bb7e1c28bb05fdc`.
 - Final docs branch still unmerged and separate from default branch. No changes to default branch.
+
+
+## 2026-11-10 — Octokit lockfile + attempt transport proof
+
+- PR #57 final exact head 6de267caa82c9a2247b531abb12f8c9ee1514a37; OPEN/DRAFT/UNMERGED; base Основной @ 864213e2ff5b4fa956ba405dea8137a44d812f49.
+- GitHub-hosted npm lock generated for @octokit/rest@22.0.1 (Node 22.23.4/npm 10.9.9). Lock v3, 20 transitive entries, all resolved URLs and SHA-512 integrity; SHA-256 d60947765a0643454d8a09c087cc6a15d37aa5efb9772ebd52277d44e24e2820. Committed and byte-for-byte read back; exact-head npm ci passed.
+- Actual Octokit adapter + injected synthetic fetch now tests fixed attempt-specific GET path, method, caller URL/method/auth override ignored, HTTP error mapping and zero retries. Network errors without HTTP response propagate.
+- Final exact-head fixture run 42835449098/job 129896303135 SUCCESS, 16/16; Pool Contract Validation run 42835449180 SUCCESS. Artifact 13773621404 digest sha256:5458390fa81360e068b457fc211b6e02279f8876affb29afac95488f591faff6.
+- Intermediate failure 42835136648 inspected: two test expectations incorrect, corrected; intermediate cancelled run not counted. Final head verified.
+- Report: [2026-11-10 Octokit lockfile and transport proof](../reports/2026-11-10-octokit-lockfile-and-transport-proof.md), commit 9e91681d716a2daadaa4fc8bc27c1fa707320da5.
+- Trusted reconciliation contract addendum commit d06b5e170c1b392cc40dd18cc5b7869a36167b06.
+- PR reviews/threads=0; active ruleset still approvals=0, CODEOWNERS review=false. Independent review NOT RUN.
+- Live GitHub API NOT RUN; Resolver NOT IMPLEMENTED; hosted State Authority NOT QUALIFIED; Issue #38 OPEN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- No secrets, live API credentials, dispatch, agents/providers, DSH, Resource Probe, remote resources, deployment, merge or paid resources.
+- Next: compose adapter with pure verifier under synthetic API response and trusted clock; inspect Supervisor/Worker integration seams. No live API credentials or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
