@@ -341,3 +341,16 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Next: obtain exact PR-triggered CI for #56 current head, then continue the immutable reconciliation-envelope/CAS proof. Keep dispatch disabled.
 - Context Window latest update commit: `1a147cf9f2a2cea760ba2d721c8d1f976c9548bd`, blob `3060206050db55c3dabc0c0cc1ee06036dc964b1`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 21:46 — PR #56 actual-head correction and exact CI verification
+
+- Fresh GitHub PR API confirms actual PR #56 head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; `eeb359d...` is its ancestor, not current head. PR description corrected.
+- Exact-head D1 run `42825872826`: COMPLETED/SUCCESS; job `129862892371`, Workers-runtime adversarial tests. Lockfile artifact exists, not expired (18,253 bytes).
+- PR #56 base is PR #51 head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; 4 commits ahead, 0 behind. OPEN/DRAFT/UNMERGED; reviews/threads 0.
+- Read-back source/test/workflow blobs: `d9e5f97b94f0873fbec542a71bc90ea3b62e0e30`, `911945bed6449b45f421786808d57e994d160e71`, `27e3fe1d02181f53fd778f8cb24187be47cd2a37`. The lease API denies all expired/running/indeterminate takeover; no caller-controlled resumable; forged extra args denied and prior owner/generation/event history retained.
+- Exact-head local D1 CI: VERIFIED. Hosted D1 and production qualification: NOT QUALIFIED.
+- Corrected report commit `691c3e4a873d7e7daff2f2c3627773a9ad91c901`, blob `8b3b319f7aeb3388546cb401b2d552a14083cfc5`. Context commit `79a17c9550c8cf8758014a22b99960dbc10d20a5`, blob `86546e38cf4471daf6fad0e80f93fa0dbaaa7248`.
+- No dispatch, provider/model calls, secrets, remote resources, deployment, merge or paid resource. Issue #38 OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect PR #54 / `fix/attempt-finalization-idempotency-2026-11-08` against the immutable claim lifecycle contract; test whether its local D1 finalizer can support a conditional terminal transition without duplicating state logic. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
