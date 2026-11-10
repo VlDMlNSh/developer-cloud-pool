@@ -1982,3 +1982,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/workflow changes, secrets access, Cloudflare resource mutation, dispatch, provider/model calls, deployment or merge.
 - Next: prepare minimal remediation design for F-1/F-2/F-3 against pinned PR #51 source. Do not implement until trusted issuer/capability and executor fencing semantics are explicit.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — F-1/F-2/F-3 remediation design and backend status correction
+
+- Remediation design: [D1 attempt remediation design](../reports/2026-11-10-d1-attempt-remediation-design.md), commit `2eab2bffb14002bc5f211c9381ebff7c2ed3dd7f`, verified blob `dde50c97f9f379c262fd5fec85f3c464de7f73ec`.
+- F-1: remove caller-controlled `resumable` boolean; expired/indeterminate attempt remains blocked. No takeover without authenticated trusted resolution envelope and concrete proof prior executor is stopped/fenced at all side-effect sinks. Workflow cancellation or lease expiry alone is insufficient.
+- F-2: replace SELECT/INSERT/readback race with a single conditional transactional operation (D1 batch only if D1 later selected/deployed), exact idempotent replay, conflicting payload denial, and response-loss/fault-injection tests.
+- F-3: remove generic `prepared -> failed` transition because terminal guard requires an active matching lease; if pre-execution cancellation is needed, define a separate authenticated/audited abandon operation.
+- **Backend status correction:** canonical shared lifecycle contract says backend selection is deferred; prior Cloudflare account audit found no D1 database/Worker scripts and account plan/card-free eligibility NOT VERIFIED. Therefore D1 is a candidate only; backend is NOT SELECTED. The prior 2026-11-10 "D1 selected for qualification" phrasing is superseded by this explicit correction. No resource provisioning is authorized.
+- Current PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; PR #49 `b9067dc7d06245893cd4e208f6215438efe5ca64`; PR #50 `65233f57038a9996e4a6e939abde3642a33d467d`; PR #51 `32c88e50e173e6b19bc6c61723ab6474a3c08145`. All remain OPEN/DRAFT/UNMERGED.
+- Implementation of F-1/F-2/F-3: NOT STARTED. Hosted backend/real contention: NOT RUN. Issue #38 OPEN / NOT QUALIFIED. Dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement minimal F-1 removal of caller-controlled resumability on a new draft branch based on verified source, with tests. Preserve PR #49–51 proof heads and keep resolver disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
