@@ -17,7 +17,7 @@ Changed files:
 - `proofs/d1-ledger/test/claim-outbox.test.ts`
 
 Read-back blobs:
-- migration: not independently returned in this pass's focused fetch; patch content reviewed from PR #51.
+- migration `0005_create_attempt_reconciliation_queue.sql`: `7a19897f6197c79517170e101e4cbf1db233cac6`.
 - source `task-attempts.mjs`: `6cb028e048569700ed623d93462ef55e2392a084`
 - test `claim-outbox.test.ts`: `0af5366564dfb3458ccda656c802ff039ead2418`
 - workflow `d1-ledger-proof-validation.yml`: `6b34e923bd4a9e801467f6a90a09702e8b876d38`
