@@ -1905,3 +1905,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision: no new backend/resource/credential issuance autonomously. Keep both dispatch gates disabled. Hosted contention/recovery qualification NOT RUN; independent review NOT RUN. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: owner-authorized disposable free-tier backend (prefer dedicated D1 only after exact plan/quota/ownership and narrow token scope are confirmed), then bounded isolated contention/recovery qualification. If unavailable, retain disabled dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — Cloudflare D1 suitability assessment
+
+- Report: [Cloudflare D1 suitability for claim qualification](../reports/2026-11-10-cloudflare-d1-suitability-for-claim-qualification.md), commit `43b3bcb61f304f9c1e7e392add4945171602b5fc`, blob `872397f7a9a52b3c3b755827c38c12acd23d0831`; read-back verified.
+- Official Cloudflare documentation confirms Workers Free D1 limits (5m rows read/day, 100k rows written/day, 5 GB total storage, 10 databases/account), daily reset at 00:00 UTC, per-database single-threaded query execution, queued concurrency with overload behavior, and sequential transactional `batch()` rollback on statement failure.
+- Assessment: D1 is a plausible candidate for a real claim qualification because serialized execution + transaction + UNIQUE constraint/conditional write can form a testable atomic claim design. These platform facts do not prove application-level exactly-once behavior.
+- Proposed qualification: disposable dedicated D1 + test-only Worker, unique canonical task key, atomic conditional write, bounded concurrent contenders, durable winner/outbox verification, injected interruption/recovery, restart replay, low quota budget, and artifact provenance.
+- No D1 or Worker exists in the connector-visible Cloudflare account inventory; no resource created, no SQL run, no secrets read, no paid fallback.
+- D1 suitability DOCUMENTATION-ASSESSED / NOT QUALIFIED; actual hosted test NOT RUN; independent review NOT RUN; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: owner authorization for one disposable free-tier D1 database and one test-only Worker, after confirming free-tier allowance, quota budget, resource isolation, and least-privilege credential path. If not authorized/available, keep dispatch fail-closed.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
