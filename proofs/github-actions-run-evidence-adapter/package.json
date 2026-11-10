@@ -2,6 +2,13 @@
   "name": "pool-github-actions-run-evidence-adapter-proof",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test" },
-  "engines": { "node": ">=20" }
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@octokit/rest": "22.0.1"
+  }
 }
