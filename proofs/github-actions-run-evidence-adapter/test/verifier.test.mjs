@@ -8,7 +8,7 @@ const binding = Object.freeze({
   runId: 987654321,
   runAttempt: 2,
   workflowId: 407204864,
-  workflowPath: ".github/workflows/pool-worker.yml",
+  workflowPath: ".github/workflows/pool-worker.yml@refs/heads/main",
   event: "workflow_dispatch",
   headSha: "a".repeat(40)
 });
@@ -50,7 +50,7 @@ test("rejects repository, run, workflow id, workflow path, event and SHA mismatc
     [{ id: base.id + 1 }, "RUN_ID_MISMATCH"],
     [{ repository: { id: binding.repositoryId + 1 } }, "REPOSITORY_ID_MISMATCH"],
     [{ workflow_id: binding.workflowId + 1 }, "WORKFLOW_ID_MISMATCH"],
-    [{ path: ".github/workflows/other.yml" }, "WORKFLOW_PATH_MISMATCH"],
+    [{ path: ".github/workflows/other.yml@refs/heads/main" }, "WORKFLOW_PATH_MISMATCH"],
     [{ event: "push" }, "EVENT_MISMATCH"],
     [{ head_sha: "b".repeat(40) }, "HEAD_SHA_MISMATCH"]
   ];
