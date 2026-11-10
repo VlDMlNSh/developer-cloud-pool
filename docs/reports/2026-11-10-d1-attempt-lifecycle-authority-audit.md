@@ -10,7 +10,7 @@ Read-only source audit of the stacked local D1 proof. No application or workflow
 - PR #51: OPEN / DRAFT / UNMERGED; head branch `feat/indeterminate-reconciliation-queue-2026-11-08`; exact head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; base SHA `4ab0fdc4d649736a171faf95b9ab3a24b17217e8`.
 - PR #51 files: D1 proof workflow, migration 0005, `src/task-attempts.mjs`, `test/claim-outbox.test.ts`.
 - PR #51 source readback:
-  - migration 0004 blob `0ad590ff2589f857257739275c15ed2d54d729` (readback actual SHA: `0ad590ff2589f857257739275c15ed2d54d729`)
+  - migration 0004 source was read back from the exact PR #51 head; its blob identifier is omitted here because the connector response did not provide a complete 40-character SHA.
   - migration 0005 blob `7a19897f6197c79517170e101e4cbf1db233cac6`
   - `task-attempts.mjs` blob `6cb028e048569700ed623d93462ef55e2392a084`
   - `claim-outbox.test.ts` blob `0af5366564dfb3458ccda656c802ff039ead2418`
