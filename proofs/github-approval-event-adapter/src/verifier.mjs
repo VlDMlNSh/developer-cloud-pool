@@ -135,13 +135,13 @@ export async function verifyApprovalEvent({ event, context, octokit, policy }) {
   }
 }
 
-export function readRunnerEvent(env = process.env) {
-  if (env.GITHUB_EVENT_NAME !== "issue_comment" ||
-      typeof env.GITHUB_EVENT_PATH !== "string" ||
-      !env.GITHUB_EVENT_PATH.startsWith("/")) {
+export function readRunnerEvent() {
+  if (process.env.GITHUB_EVENT_NAME !== "issue_comment" ||
+      typeof process.env.GITHUB_EVENT_PATH !== "string" ||
+      !process.env.GITHUB_EVENT_PATH.startsWith("/")) {
     throw new Error("Native GitHub Actions issue_comment event is unavailable");
   }
-  const parsed = JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, "utf8"));
+  const parsed = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
   if (parsed?.action !== "created") throw new Error("Unexpected native event action");
   return parsed;
 }
