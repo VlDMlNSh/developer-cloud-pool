@@ -2137,3 +2137,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No secrets, live API credentials, dispatch, agents/providers, DSH, Resource Probe, remote D1/Worker provisioning, deployment, merge or paid resources.
 - Next: define native workflow_run event binding with exact run_attempt + immutable repo/workflow identity and prove inconclusive evidence cannot transition claimed→ready. Dispatch remains disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — native workflow_run binding + hold-only reconciliation proof
+
+- PR #57 final head: 2c263e8a9915f0bc8e0698cde816e87cb2376538; OPEN/DRAFT/UNMERGED; base Основной @ 864213e2ff5b4fa956ba405dea8137a44d812f49.
+- Added pure native event binding helper `workflow-run-event-binding.mjs`: exact completed workflow_run action/status; deployment-pinned repository ID, workflow ID/path/originating event; root/run/head repo identity; run ID/run_attempt/head SHA/referenced workflows. Blob 793e5dbbf86e18075fc3586ea81a1064d71dd98a.
+- Added pure hold-only reconciliation policy: STILL_ACTIVE and UNRESOLVED => KEEP_CLAIMED; TERMINAL_EXECUTOR_ONLY => HOLD_FOR_EFFECT_RECONCILIATION; all paths dispatch=false, retryAuthorized=false, no ready release. Module commit 5d4129480fd7e4e6da16c0d28834ae269a61b7bd.
+- Exact final-head fixture run 42838193384 / job 129905939447 SUCCESS, 33/33 tests; Pool Contract Validation 42838193405 / job 129905939738 SUCCESS.
+- Report: [2026-11-10 native workflow_run binding and claim retention proof](../reports/2026-11-10-native-workflow-run-binding-and-claim-retention-proof.md), commit 242603cf6f7a96d300b81aacf75e769aff3094c7.
+- Contract addendum commit b922fcee0588a6fd7ccfc1e9379c70be8b9e522f, blob 8bbb2bd64c10ae9b389d497003dc1375447e758e.
+- Native event helper does not authenticate runner or prove GITHUB_EVENT_PATH provenance; production Supervisor wiring NOT IMPLEMENTED; hold-only policy is not atomic state transition.
+- Default Supervisor remains privileged workflow_run + actions:write (blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd); default Worker remains workflow_dispatch + issue-write report (blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4).
+- PR #37 current head 1be8672c1be1a720b6c813dcafff5c020b6456ae: exact-head named workflows 42484039940 and 42484039932 SUCCESS, but OPEN/DRAFT, base 197ba98... predates current default HEAD; existing CHANGES_REQUESTED review from earlier head; no new independent approval. Finalizer still transitions based only on pool:claimed label; does not bind envelope digest, claim generation/owner and run/attempt. Label claim is not CAS.
+- PR #57 reviews=0/threads=0; independent review NOT RUN. Live API NOT RUN. Claim CAS/fencing/effect reconciliation NOT QUALIFIED. Issue #38 OPEN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- No secrets, dispatch, providers, DSH, Resource Probe, remote resources, deployment, merge or paid resource.
+- Next: design immutable reconciliation envelope binding task digest, issuer/approval, claim generation, workflow identity/run attempt and side-effect receipt; test CAS terminal transition and stale-finalizer rejection in existing local D1/claim proof stack. Dispatch stays disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
