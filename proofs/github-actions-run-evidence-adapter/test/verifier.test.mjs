@@ -20,6 +20,7 @@ const base = Object.freeze({
   event: binding.event,
   head_sha: binding.headSha,
   repository: { id: binding.repositoryId, full_name: "VlDMlNSh/developer-cloud-pool" },
+  referenced_workflows: [],
   status: "completed",
   conclusion: "success",
   run_started_at: "2026-11-10T10:00:00Z",
@@ -72,6 +73,19 @@ test("completed conclusions are lifecycle evidence, not side-effect evidence", (
     assert.equal(result.sideEffects, "UNKNOWN", conclusion);
     assert.equal(result.retryAuthorized, false, conclusion);
   }
+});
+test("requires exact referenced workflow path, ref and SHA bindings", () => {
+  const referenced = {
+    path: "VlDMlNSh/developer-cloud-pool/.github/workflows/reusable.yml",
+    ref: "refs/heads/main",
+    sha: "c".repeat(40)
+  };
+  const expected = { ...binding, referencedWorkflows: [referenced] };
+  const response = { ...base, referenced_workflows: [referenced] };
+  assert.equal(verify({ binding: expected, response }).decision, "TERMINAL_EXECUTOR_ONLY");
+  assert.equal(verify({ binding: expected, response: { ...response, referenced_workflows: [] } }).reason, "REFERENCED_WORKFLOWS_MISMATCH");
+  assert.equal(verify({ binding: expected, response: { ...response, referenced_workflows: [{ ...referenced, sha: "d".repeat(40) }] } }).reason, "REFERENCED_WORKFLOWS_MISMATCH");
+  assert.equal(verify({ response: { ...base, referenced_workflows: [{ ...referenced, ref: "" }] } }).reason, "INVALID_REFERENCED_WORKFLOWS");
 });
 test("unknown statuses and conclusions fail closed", () => {
   assert.equal(verify({ response: { ...base, status: "future_state" } }).reason, "UNKNOWN_RUN_STATUS");
