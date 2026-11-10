@@ -60,26 +60,22 @@ export async function createTaskAttempt(db, {
 }
 
 /**
- * A lease takeover of an expired running attempt is permitted only when the
- * caller explicitly asserts the execution is resumable and downstream effects
- * are idempotent/fenced. Expiry alone never authorizes a new execution.
+ * Acquire a lease only for a prepared attempt on a pending task.
+ * Expired/running/indeterminate attempts are never reclaimed by this API:
+ * expiry is not proof that the prior executor stopped or that side effects are fenced.
  */
-export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSeconds, { resumable = false } = {}) {
+export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSeconds) {
   if (!validCommon(db, taskKey, now) || !SAFE_ID.test(workerId || "") ||
-      !Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 900 ||
-      typeof resumable !== "boolean") return deny("INVALID_ATTEMPT_LEASE_REQUEST");
+      !Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 900) {
+    return deny("INVALID_ATTEMPT_LEASE_REQUEST");
+  }
   try {
     const snapshot = await db.prepare(`
-      SELECT t.state, t.current_attempt_id, t.lease_expires_at,
-             a.status AS attempt_status
+      SELECT t.state, t.current_attempt_id
         FROM pool_tasks t
-        LEFT JOIN pool_attempts a ON a.attempt_id = t.current_attempt_id
        WHERE t.task_key = ?
     `).bind(taskKey).first();
     if (!snapshot?.current_attempt_id) return deny("CURRENT_ATTEMPT_MISSING");
-    if (snapshot.state === "leased" && snapshot.lease_expires_at <= now && !resumable) {
-      return deny("RECONCILIATION_REQUIRED");
-    }
 
     const result = await db.prepare(`
       UPDATE pool_tasks
@@ -88,20 +84,13 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
              lease_expires_at = ?, lease_attempt_id = current_attempt_id,
              updated_at = ?
        WHERE task_key = ? AND current_attempt_id IS NOT NULL
-         AND (
-           (state = 'pending' AND EXISTS (
-             SELECT 1 FROM pool_attempts a
-              WHERE a.attempt_id = pool_tasks.current_attempt_id
-                AND a.task_key = pool_tasks.task_key AND a.status = 'prepared'
-           ))
-           OR
-           (state = 'leased' AND lease_expires_at <= ? AND ? = 1 AND EXISTS (
-             SELECT 1 FROM pool_attempts a
-              WHERE a.attempt_id = pool_tasks.current_attempt_id
-                AND a.task_key = pool_tasks.task_key AND a.status = 'running'
-           ))
+         AND state = 'pending'
+         AND EXISTS (
+           SELECT 1 FROM pool_attempts a
+            WHERE a.attempt_id = pool_tasks.current_attempt_id
+              AND a.task_key = pool_tasks.task_key AND a.status = 'prepared'
          )
-    `).bind(workerId, now + leaseSeconds, now, taskKey, now, resumable ? 1 : 0).run();
+    `).bind(workerId, now + leaseSeconds, now, taskKey).run();
 
     if (result?.success !== true || !(result?.meta?.changes >= 1)) {
       return deny("ATTEMPT_NOT_LEASEABLE");
