@@ -10,7 +10,8 @@ const binding = Object.freeze({
   workflowId: 407204864,
   workflowPath: ".github/workflows/pool-worker.yml@refs/heads/main",
   event: "workflow_dispatch",
-  headSha: "a".repeat(40)
+  headSha: "a".repeat(40),
+  referencedWorkflows: []
 });
 const base = Object.freeze({
   id: binding.runId,
