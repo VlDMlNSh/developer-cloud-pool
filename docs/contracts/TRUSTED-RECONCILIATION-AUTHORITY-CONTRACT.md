@@ -271,6 +271,6 @@ The pure verifier currently returns:
 - `TERMINAL_EXECUTOR_ONLY` for recognized completed conclusions, with `sideEffects=UNKNOWN`, `retryAuthorized=false`, and `dispatch=false`;
 - `UNRESOLVED` for API errors/non-200, missing or malformed fields, identity mismatches, stale/future observations and unknown future status/conclusion values.
 
-The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Final amended PR #57 head `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d` passed exact-head fixture CI run `42833466801`, job `129889327476`, COMPLETED/SUCCESS. This verifies only the pure response verifier and synthetic fixtures, not a live API transport or resolver.
+The current proof deliberately does not implement HTTP transport or create a resolver. It uses synthetic Node built-in fixtures only. Final PR #57 head `f92e4bb0931318fd47a252e874ea50bdfc448655` passed exact-head fixture CI run `42834033274`, job `129891348351`, with 11/11 tests passing; Pool Contract Validation run `42834033256`, job `129891356582`, also COMPLETED/SUCCESS. The fixtures compare referenced-workflow identities including SHA-pinned entries with absent ref normalized to null. This verifies only the pure response verifier and synthetic fixtures, not a live API transport or resolver.
 
 Official endpoint and response schema: https://docs.github.com/en/rest/actions/workflow-runs
