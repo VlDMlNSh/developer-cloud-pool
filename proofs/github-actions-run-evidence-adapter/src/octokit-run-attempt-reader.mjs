@@ -36,7 +36,7 @@ export function createWorkflowRunAttemptReader(octokit) {
       // Preserve authoritative HTTP failures as evidence for the pure verifier.
       // Network/transport failures have no status and are rethrown; callers
       // must map them to UNRESOLVED and must not retry or dispatch.
-      if (Number.isSafeInteger(error?.status) && error.status >= 100 && error.status <= 599) {
+      if (Number.isSafeInteger(error?.status) && error.status >= 100 && error.status <= 599 && error.response) {
         return Object.freeze({
           httpStatus: error.status,
           response: error.response?.data ?? null
