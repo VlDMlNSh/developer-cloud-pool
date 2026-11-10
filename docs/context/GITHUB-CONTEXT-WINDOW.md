@@ -1833,3 +1833,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: generate canonical lockfile with npm; add narrow read-only adapter; instantiate real Octokit with synthetic fetch; assert GET-only exact paths, response/error behavior and zero network egress; run `npm ci && npm test` in PR-only workflow with contents:read/issues:read. Keep approval consumption and dispatch disabled.
 - Component/API surface VERIFIED by source inspection; lockfile and real transport NOT VERIFIED/NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — PR #55 transport integration environment recheck
+
+- Report: [PR #55 transport integration environment blocker](../reports/2026-11-10-pr55-transport-integration-environment-blocker.md).
+- Re-read exact PR #55 head `edff010388897f23f58bceb92e5180a09970fdff`; base `Основной` at `864213e2ff5b4fa956ba405dea8137a44d812f49`. Fixture run `42797001989` / job `129764618860` and Pool Contract run `42797001864` / job `129764618337` remain COMPLETED/SUCCESS. Formal reviews and inline threads: 0. PR remains OPEN/DRAFT/UNMERGED.
+- Reconfirmed workflow `.github/workflows/github-approval-event-adapter-fixtures.yml` is pull_request-only, contents:read, and runs fake-client `node --test` fixtures. It does not execute the native issue_comment loader or instantiate Octokit.
+- Local Node/npm are present, but shallow clone of the immutable PR branch failed before transfer because DNS could not resolve `github.com`. npm registry/lockfile generation and real transport tests therefore remain NOT RUN. No lockfile fabricated and no code/dependency/workflow changes made.
+- Next: generate/verify lockfile and real Octokit synthetic-fetch tests on an approved runner with npm registry access, still PR-only and read-only; keep approval consumption and dispatch disabled.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
