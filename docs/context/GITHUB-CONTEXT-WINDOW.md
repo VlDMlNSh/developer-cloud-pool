@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-09 — trusted authority inventory for reconciliation
+Last refreshed: 2026-11-10 — trusted reconciliation contract and GitHub Actions run-attempt evidence proof
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (2026-11-08 live read-back; latest commit is documentation-only)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `7319b53a956cec194049f585f151238053b37bc5`
-Latest daily report commit: `74f46f0f40804d57f9ec1ac56c8d0fe624822391` (2026-11-09 D1/Workflow proof composition audit; this branch remains unmerged)
+Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
+Latest daily report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732` (2026-11-10 GitHub Actions run evidence adapter proof; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -48,7 +48,7 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 ## 3. Repository state, branches and governance
 
 - Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
 - Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
 - Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
