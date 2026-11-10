@@ -287,3 +287,18 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - No secrets, live API credentials, dispatch, agents/providers, DSH, Resource Probe, remote resources, deployment, merge or paid resources.
 - Next: compose adapter with pure verifier under synthetic API response and trusted clock; inspect Supervisor/Worker integration seams. No live API credentials or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-10 — composed attempt evidence check + Supervisor seam review
+
+- PR #57 final head 7a06a663de5431ebb79dc2e1297d66491c9d6d0f; OPEN/DRAFT/UNMERGED; base Основной @ 864213e2ff5b4fa956ba405dea8137a44d812f49.
+- Added composition module (blob f7b04e8dcf966a1cc37be9261fe31158eb9a3281) and seven tests (blob 52227c2bdede82c54a6bd70d77d27fd11c7ea444): fixed owner/repo/repositoryId, exact runId/runAttempt, injected host clock, fail-closed transport and clock handling. Clock provenance remains NOT QUALIFIED.
+- Exact-head fixture run 42837090182 / job 129902075346 SUCCESS, 23/23; Pool Contract Validation run 42837090501 SUCCESS; artifact 13773817882 digest sha256:cef61a9a5d346913c94e6e36e6f8e03f9b233f8d259f2c8459c19e3273d7bb3d.
+- Supervisor seam inspection: pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; pool-worker.yml blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4; scripts/pool-supervisor.mjs blob 52bf03ca889edd92fd10c71ae96a2e35e106d43f; architecture doc blob 3ac28f2f105a20a4eed5d93168bbe84d2d5273b8.
+- Current Supervisor has no exact run_attempt/full immutable binding; stale recovery matches list output by title/created_at and resets claimed→ready after 15m if no match. List absence is not proof executor absent; ambient Date.now is not qualified. Do not wire adapter into Supervisor or enable dispatch.
+- Report: [2026-11-10 composed evidence + Supervisor seam review](../reports/2026-11-10-composed-run-evidence-and-supervisor-seam-review.md), commit 72b0830259b8f773d53b4e54f91485d0463abb2a.
+- Contract addendum commit 4c2fc4c194b7279d9c6cf9cdfde6aa1fd99d9148.
+- Reviews=0; independent review NOT RUN; Issue #38 OPEN; live API NOT RUN; resolver NOT IMPLEMENTED; hosted state authority NOT QUALIFIED; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- No secrets, credentials, dispatch, agents/providers, DSH, resource probe, remote provisioning, deployment, merge or paid resources.
+- Next: define native workflow_run event binding including run_attempt and exact repo/workflow identity; prove ambiguous/missing evidence cannot transition claimed→ready.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
