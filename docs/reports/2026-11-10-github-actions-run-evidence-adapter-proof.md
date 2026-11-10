@@ -37,7 +37,7 @@ Initial implementation head `4576d7dbf686f06894c4c785510634af2934fa84`:
 - Run `42833283887`, workflow **GitHub Actions Run Evidence Fixture Tests**, event pull_request, run_attempt 1, exact head SHA confirmed in the native run payload.
 - Job `129888681560`, `node-fixtures`, COMPLETED/SUCCESS; checkout without persisted credentials and synthetic evidence fixture test step both SUCCESS.
 
-After this CI run, source and tests were amended to require the API's full ref-qualified `path` value (GitHub response example uses `.github/workflows/build.yml@main`), not merely a workflow filename. New exact head is `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`. At report creation, a query for this updated SHA returned no workflow run. Therefore the initial CI result does **not** cover the final amended head; latest exact-head CI is **NOT VERIFIED** pending the synchronize-triggered run.
+After the initial CI run, source and tests were amended to require the API's full ref-qualified `path` value (GitHub response example uses `.github/workflows/build.yml@main`), not merely a workflow filename. New exact head is `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`. The synchronize-triggered exact-head run subsequently completed successfully: run `42833466801`, job `129889327476`, event `pull_request`, run_attempt `1`, head SHA `4fc22aa212d2b23ef2547db89b6fc00ba3d27b2d`; the job's checkout and synthetic fixture test steps both COMPLETED/SUCCESS. The final amended head's fixture CI is therefore VERIFIED.
 
 Official endpoint:
 - `GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}`
@@ -67,7 +67,7 @@ Do not introduce a custom REST transport or retry client. Reuse official Octokit
 
 - Pure verifier and synthetic fixtures: IMPLEMENTED on PR #57.
 - Initial exact-head fixture CI: SUCCESS on initial SHA only.
-- Final amended SHA exact-head CI: NOT VERIFIED at report creation.
+- Final amended SHA exact-head CI: VERIFIED — run `42833466801`, job `129889327476`, COMPLETED/SUCCESS.
 - Live GitHub API transport with real Octokit + synthetic fetch: NOT IMPLEMENTED.
 - Resolver capability/effect reconciliation/hosted State Authority: NOT IMPLEMENTED / NOT QUALIFIED.
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED.
