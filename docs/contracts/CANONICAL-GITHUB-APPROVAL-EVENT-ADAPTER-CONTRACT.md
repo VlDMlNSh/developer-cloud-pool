@@ -206,3 +206,53 @@ References:
 - actions/github-script: https://github.com/actions/github-script
 - Shared lifecycle contract: ./SHARED-IMMUTABLE-CLAIM-LIFECYCLE-CONTRACT.md
 - Issue #38: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38
+
+
+## 12. Verified GitHub REST payload and permission matrix (2026-11-10)
+
+This section records an official-documentation cross-check and the live repository identity snapshot. It narrows the required permission set and corrects implementation assumptions before code is written.
+
+### Native event and issue-vs-PR discriminator
+
+- GitHub documents `issue_comment` as an event that fires for comments on both Issues and pull requests; therefore event name/action alone does not distinguish them.
+- The native event contains `action`, `comment`, `issue`, `repository`, and `sender`. The issue object has a `pull_request` marker when it represents a pull request. Presence of that property is a hard DENY; absence is required for the Issue-only profile.
+- GitHub documents the event action `created` explicitly. The workflow must be declared with `on: issue_comment: types: [created]`, and runtime must also require `github.event_name == "issue_comment"` and payload `action == "created"`.
+- The implementation must parse the runner-provided `GITHUB_EVENT_PATH` and compare it with the immutable GitHub Actions context; it must not accept a caller-provided JSON payload, workflow_dispatch input, artifact, or environment variable as an alternative event source. This is an application-level source constraint, not an assertion that the event JSON itself carries a separately verifiable webhook HMAC.
+- For the comment snapshot compare `id`, `body`, `user.id`, `created_at`, and `updated_at`. The REST comment response documents all these fields. Require `updated_at === created_at` for the no-edit profile. The API response also includes `issue_url`, `url`, `html_url`, and `user.type`; bind and validate these rather than relying on `author_association` as identity.
+- The issue response must be checked for `id`, `number`, `url`, `repository_url`, `state`, and absence of `pull_request`.
+- The repository response must be checked for `id`, `full_name`, `owner.id`, and `owner.type`. Compare numeric IDs first; reject unexpected canonical full-name/owner changes rather than following a rename or transfer as if it were the same approval namespace.
+
+### Minimum fine-grained token / GitHub App permission
+
+| API operation | Documented permission | Decision |
+|---|---|---|
+| `GET /repos/{owner}/{repo}` | Metadata: read | Required |
+| `GET /repos/{owner}/{repo}/issues/{issue_number}` | Issues: read | Required |
+| `GET /repos/{owner}/{repo}/issues/comments/{comment_id}` | Issues: read **or** Pull requests: read | Issues: read satisfies the Issue-only profile |
+| Subscribe GitHub App to `issue_comment` | Issues: read | Required if GitHub App is the event installation |
+
+Thus the minimum fine-grained repository permissions for this Issue-only verifier are **Metadata: read + Issues: read**. Do not add Pull requests: read merely because the shared endpoint supports PR comments; the verifier explicitly rejects pull requests. Do not grant Issues: write, Pull requests: write, Contents: write, Actions: write, Administration, or Workflows permissions.
+
+For public resources GitHub may permit unauthenticated reads, but production implementation should use a clearly scoped, auditable identity and must not infer token capability from successful anonymous public requests. The exact Actions `GITHUB_TOKEN` permissions or GitHub App installation permissions must be verified in the selected runtime before integration.
+
+### Live identity snapshot (read-only public metadata)
+
+At this audit:
+- Repository ID: `1445644538`.
+- Canonical repository: `VlDMlNSh/developer-cloud-pool`.
+- Owner numeric ID: `157891068`, owner type `User`.
+- Default branch: `Основной`.
+- Issue #38 ID: `6249619988`; Issue state `open`; response contains no `pull_request` property and its `repository_url` matches the canonical repository API URL.
+
+These observed IDs are evidence for the current repository snapshot, not yet a protected configuration value. Before implementation, the expected approver ID must be separately pinned in protected configuration and verified to equal the repository owner ID. The adapter must fail closed if the configuration is missing or disagrees; do not silently populate it from event or issue payload fields.
+
+### Official references
+
+- Webhook event payloads and `issue_comment` action/object: https://docs.github.com/en/webhooks/webhook-events-and-payloads
+- Get an issue comment, response schema and fine-grained permission: https://docs.github.com/en/rest/issues/comments#get-an-issue-comment
+- Get a repository and Metadata read permission: https://docs.github.com/en/rest/repos/repos#get-a-repository
+- Fine-grained permission index: https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens
+
+### Disposition
+
+The event and REST field contract is now documentation-checked. This is not a running API adapter, not a credential test, and not proof that the current Actions token has the required permission. No token values were inspected. No source code, workflow, permissions, secrets, variables, D1 resources, dispatch gates, or deployments were changed.
