@@ -131,3 +131,17 @@ Updated [Projection Recovery Grant Issuer and Trusted-Time Interface Contract](h
 - Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: identify the concrete issuer/trust-anchor/revocation evidence path and transaction-local trusted-time/nonce-consumption semantics from source; keep runtime implementation blocked until the governance and independent review gates are evidenced.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Wave 486/487 issuer and R-06 crosswalk correction
+
+- Corrected the projection recovery issuer/trusted-time contract on PR #60 branch. Latest branch HEAD: `234fb2ee40265e26fac00c69ac1b6192766602cb`; contract blob: `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; parent HEAD: `76dcec559faf6a1cc92a9edbf3ecf5e6222e3753`.
+- Added explicit requirement traceability for Wave 486/487: dedicated issuer target, distinct recovery audience, recovery-principal lifecycle, per-consumer verification, capability lifetime ≤300s, revocation freshness ≤30s, delegation attenuation, R-06 audit fields, retention targets and audit-outage fail-closed semantics.
+- Corrected Wave 528 provenance: MediaHub PR #634 is Runner 2 isolation/design, not issuer technology selection. No JWS/RFC 8785/PostgreSQL/audit sink/vendor decision is sourced to Wave 528.
+- PR #599 (Wave 486) remains OPEN/DRAFT/UNMERGED; no exact-head workflow run or formal review returned. PR #600 (Wave 487) remains OPEN/DRAFT/UNMERGED at `05a873e82760d63c8b26dc496b43d3309f4cfbf9`; no exact-head workflow run or formal review returned. PR #634 remains OPEN/DRAFT/UNMERGED at `03e46a5babc0df2adcc2458ac636da6621965a92`; no exact-head workflow run or formal review returned.
+- R-06 route evidence still does not appoint named operational owners or establish legal retention approval. Security Audit and Privacy/Data Governance are functional accountabilities, not named deployed services.
+- Updated PR #60 description to reference the current contract blob and accurately distinguish owner-directed target from accepted/deployed authority.
+- PR #60 current head `234fb2ee40265e26fac00c69ac1b6192766602cb`: exact-head workflow query returned no runs; formal review/threads remain 0; CI NOT VERIFIED, independent review NOT RUN.
+- No runtime implementation, schema, migration, key/secret, permissions, workflow, dispatch, provider call or deployment changed. Recovery NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: establish source-backed issuer/revocation owner and qualified trusted-time/audit transaction boundary. Until then, do not implement or dispatch recovery.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
