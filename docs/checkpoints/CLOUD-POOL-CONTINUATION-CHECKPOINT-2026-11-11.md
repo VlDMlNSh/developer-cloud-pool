@@ -211,3 +211,13 @@ Paste this exact phrase into a new chat:
 - PR #29 exact-head CI `43031920223` SUCCESS, 43/43; independent current-head review NOT VERIFIED.
 - Next: controlled update of #28/#29 to current base, reread all changed files, exact-head CI, fresh independent review. Provider API calls, secret access and agent dispatch remain prohibited/not run.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 11. Durable quota reservation reuse assessment — 2026-11-11
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-durable-quota-reservation-reuse-assessment.md
+- PR #29 pure quota planner: `e4c8d642bbc054e7c52b391356965b492dad32b4`. PR #39 D1 local claim/outbox proof: `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, run `42329993548` SUCCESS; README cites 13/13 on immediately preceding source revision, current-head count not verified.
+- Reusable D1 pattern: conditional state transition + trigger-created outbox in same SQLite transaction; local synthetic D1 only, no hosted/production proof. Reuse pattern, not claim schema as quota implementation.
+- Quota architecture must separate upstream provider evidence, atomic internal reservations, and usage reconciliation. Unknown provider quota remains unknown.
+- PR #28/#29 raw GitHub API still reports base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80` although base ref is `Основной`; default ref `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Repo allow_update_branch=false; no branch update performed.
+- Next: inspect PR #39 predecessor and exact logs; isolated quota-specific D1 proof plus independent Worker HTTP concurrency test. No provider calls, secret access, hosted provisioning, or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
