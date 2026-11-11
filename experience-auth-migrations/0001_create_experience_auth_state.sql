@@ -4,9 +4,15 @@ CREATE TABLE IF NOT EXISTS oauth_transactions (
   browser_binding_hash TEXT NOT NULL
     CHECK (length(browser_binding_hash) = 64 AND browser_binding_hash NOT GLOB '*[^0-9a-f]*'),
   pkce_verifier_envelope TEXT NOT NULL
-    CHECK (length(pkce_verifier_envelope) BETWEEN 32 AND 2048),
+    CHECK (
+      length(pkce_verifier_envelope) BETWEEN 32 AND 2048
+      AND pkce_verifier_envelope NOT GLOB '*[^A-Za-z0-9_-]*'
+    ),
   encryption_key_version TEXT NOT NULL
-    CHECK (length(encryption_key_version) BETWEEN 1 AND 32),
+    CHECK (
+      length(encryption_key_version) BETWEEN 1 AND 32
+      AND encryption_key_version NOT GLOB '*[^A-Za-z0-9._-]*'
+    ),
   created_at INTEGER NOT NULL CHECK (created_at > 0),
   expires_at INTEGER NOT NULL CHECK (expires_at > created_at),
   consumed_at INTEGER,
