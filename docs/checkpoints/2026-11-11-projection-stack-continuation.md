@@ -205,3 +205,13 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Gemini remains eligible only through the approved controller and only after all gates pass; otherwise NOT RUN with exact blocker. No bypass dispatch.
 - The receipt-free projection ACK defect remains a mandatory implementation blocker. The review deferral does not waive the receipt-bound ACK invariant, local tests, exact-head CI, governance, or final acceptance.
 - Current status remains Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Receipt-bound projection orchestration decision — 2026-11-11
+
+- Owner decision: defer independent technical/security/governance qualification until after Cloud Pool launch. Proceed pre-launch with bounded author-side design, implementation and local tests; do not label them independent or qualified.
+- Revalidation: default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025` (OPEN/DRAFT, run `43043284086` SUCCESS, no status contexts/reviews/threads); #59 head `22200226da4f1af30645cf441a639db6893e9310` (OPEN/DRAFT, run `42981807825` SUCCESS, no status contexts/reviews/threads); #66 docs-only head before this update `38e22c127b6b3417eaf49a8b1d24ad62aaa11aac`, no workflow run/status contexts/reviews/threads.
+- Confirmed defect: `acknowledgeProjectionDelivered` at #59 accepts no projection receipt and can ACK using only the live lease tuple. #58 reconciler returns event ID/digest verification but is not bound to `lease_generation_delivery`.
+- Design report: [2026-11-11 receipt-bound orchestration decision](../reports/2026-11-11-receipt-bound-projection-orchestration-preimplementation-decision.md), commit `b39cb1ef05829804a196965f19d35fe44ed9487b`.
+- Next: create a clean implementation branch from current default; selectively reconstruct the compatible #58/#59 proof patch union; implement a single orchestration boundary that owns lease acquire/read-back, reconciler call and conditional ACK. No public receipt-free ACK. Add negative-first tests for missing/mismatched receipt, wrong digest, stale/expired generation, duplicate/delayed marker, lost POST response, concurrent ACK and caller-supplied proof/time. Preserve fifth-lease fail-closed recovery.
+- Do not merge PR #58/#59 wholesale; current PR metadata shows different bases. No hosted D1, dispatch, provider call or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
