@@ -248,3 +248,14 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Remaining: production runtime binding of trusted clock and worker identity, production API adapter, lost-POST/delayed/duplicate marker and DB ambiguity tests, hosted D1 qualification. Independent checks deferred until after pool launch. No dispatch/provider/deployment.
 - PR #58/#59/#66 remain OPEN/DRAFT/UNMERGED; no formal reviews at last check. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## PR #67 and exact-head evidence — 2026-11-11
+
+- Draft PR #67 https://github.com/VlDMlNSh/developer-cloud-pool/pull/67; base default SHA `221f216c00ca7e5596bcc682ba185ad155a10603`; head `cc9181ed14932133e607550fb6526eb135a36a0c`; 8 ahead / 0 behind, 32 files. OPEN / DRAFT / UNMERGED. Reviews 0; threads 0.
+- Exact-head PR D1 run `43063861928` / job `130673434866`: SUCCESS; 5 files / 65 tests passed; artifact `13874432809`, SHA-256 `f50f97d2373ef340df209947a8a15064ddcd0b4d35fd7e882c8500fb988f1906`.
+- Exact-head Pool Contract Validation `43063862022` / job `130673433624`: SUCCESS (workflow syntax, dispatch-disabled invariant, security contract checks).
+- Exact-head push run `43063773936`: SUCCESS. Combined status API still has 0 contexts; do not equate empty contexts with required ruleset check success.
+- Updated detailed report: [2026-11-11 receipt-bound projection orchestrator implementation](../reports/2026-11-11-receipt-bound-projection-orchestrator-implementation.md), report commit `cb4285bd88035cabff759063c1902752f99d9cdf`.
+- Do not merge: no formal review. Independent checks deferred until after pool launch. Hosted D1/live GitHub API/production Worker/dispatch/provider/deployment NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add adversarial tests for lost POST response and matching read-back, delayed/duplicate marker, expiry at conditional ACK, and DB ambiguity; then qualify trusted clock/worker identity and real API adapter.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
