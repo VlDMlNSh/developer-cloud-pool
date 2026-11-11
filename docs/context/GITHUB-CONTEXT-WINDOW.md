@@ -2530,3 +2530,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Runtime Worker NOT PROVISIONED/NOT DEPLOYED; hosted D1 NOT PROVISIONED; web console NOT RUN; authentication/session implementation NOT IMPLEMENTED/NOT QUALIFIED; recovery authority NOT QUALIFIED; dispatch FAIL-CLOSED. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile the Issue #22 session-store contradiction and update the hosting ADR/API acceptance contract before implementation. Then implement/test only the read-only Experience slice; keep Pool runtime and dispatch separately gated.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Governance crosswalk correction — Wave 486 / 528
+
+- MediaHub Wave 486 selected owner-directed WB-05 Option A: dedicated Security Issuer Authority separate from Jarvis and ASTRA A0. This is a target disposition, not normative acceptance, concrete product/service selection or deployed authority. Cloud Pool must reconcile to it and must not create a parallel issuer.
+- Wave 528 JWS, RFC 8785 JCS, managed KMS/HSM, PostgreSQL state/outbox and separate audit sink are recommendations only. R-06 operational ownership/retention, concrete KMS/audit selection and independent A3 review remain open. MediaHub PR #600 remains OPEN/DRAFT/UNMERGED in the reviewed Context Window snapshot.
+- PR #60 issuer/time contract updated to acknowledge this direction; current contract blob `7f5be06506a4b4c93148133bf8ca3441b08ea700`; current PR #60 head `673f2519c8cdc7f75602599c48d44ec72e396dec`. No issuer implementation or clock qualification follows from this alignment.
+- Updated pass report commit `d2ce2fde6354057782814495fa2ee33db67976e2`; report blob after readback pending.
