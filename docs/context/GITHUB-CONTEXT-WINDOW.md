@@ -2236,3 +2236,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No dispatch, secrets, provider/model calls, remote provisioning, deployment, merge, qualification or acceptance. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare Issue #38 backend decision record against claim/reconciliation contracts and free/no-paid-fallback + least-privilege constraints. No resolver implementation before authority/backend decision.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Backend State Authority decision study
+
+- Decision study: [Backend State Authority decision study](../decisions/2026-11-11-backend-state-authority-decision-study.md).
+- Issue #38 compared GitHub Issue labels, dedicated Git refs, D1 and SQLite-backed Durable Objects against immutable claim/reconciliation contracts and free/no-paid-fallback constraints.
+- GitHub labels rejected as authority (PATCH is not CAS); Git refs deferred (Contents:write and delete/recreate/retention threat model unresolved). D1 remains a qualification candidate based on existing local Workers-runtime proof, not hosted deployment. SQLite Durable Objects are the preferred prototype candidate: Free plan published limits 5M row reads/day, 100K writes/day, 1GB per object; synchronous SQLite transaction and actor model fit single authority. This is a candidate recommendation only; owner account plan/eligibility/resource state NOT VERIFIED.
+- No backend selected or provisioned. No secrets, dispatch, provider/model calls, deployment, merge, or paid fallback. Resolver remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only verification of Cloudflare account identity/plan/resource metadata if authorized, followed by a local non-deployed Durable Objects prototype and adversarial claim/recovery tests. No remote resources without separate authorization.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
