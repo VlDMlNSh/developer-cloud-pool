@@ -211,3 +211,10 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Current default HEAD after report publication expected to advance by this report commit; re-read refs after update. Hosted D1 remains NOT AUTHORIZED / NOT RUN; Workers Free entitlement NOT VERIFIED; Issue #38 OPEN / NOT QUALIFIED. No resource provisioning, secret access, dispatch, deployment or merge.
 - Next: inspect existing docs/link validation tooling without broadening PR scope; then resume code-stack reconciliation from immutable PR #58/#59 ancestry. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### PR #65 current-base correction (same revalidation pass)
+
+- After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
+- Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
+- PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
