@@ -2305,3 +2305,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: compare full history/diffs of both Context Window copies and prepare a non-destructive consolidation proposal; define intended approval and required-check governance before advancing PR #25.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Context Window ancestry and safe consolidation decision
+- Report: [Context Window ancestry and consolidation plan](../reports/2026-11-11-context-window-ancestry-and-consolidation-plan.md), commit `f347776bde4428cefdf580ff6b862a6c02d5466c`.
+- Refs: default HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; continuation tip before this update `06229ee21934a7bf5d4e7b9b503ad785e11b467c`; compare merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Continuation is 408 commits ahead / 5 behind default. The same-path Context Window files were introduced independently after their common base; they are not merely one shared file at different freshness. Default copy: 1,524 lines / 228,590 chars (blob `560e9c7c3b58afa7fced1f87b3d65b7b9aec632b`); continuation copy: 2,308 lines / 369,272 chars (blob `21a73d9585860d1117e2913cd859afb18df858bd`).
+- PR #25 changed-file list does not include the Context Window. Continuation branch also contains hundreds of proof/report/contract/test changes beyond this file. Do NOT merge/rebase the 408-commit branch just to promote context.
+- Safe path: preserve both histories; later create a small dedicated branch from the then-current default HEAD with a curated canonical refresh and reconciliation report only, after checking all relative references for files absent from default. Submit as PR; never edit `Основной` directly.
+- Exact-head CI re-read: PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85` runs `42228269689` and `42228269676` SUCCESS; PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa` run `42507524428` SUCCESS. PRs remain OPEN/DRAFT.
+- Ancestry/consolidation path VERIFIED/PROPOSED; canonical default-branch ownership NOT YET ESTABLISHED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile the actual decisions and links in both copies; prepare a curated default-based refresh branch only after another exact default HEAD read.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
