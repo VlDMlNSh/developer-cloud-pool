@@ -139,6 +139,18 @@ test("duplicate deterministic audit markers fail closed", async () => {
   assert.equal(transport.patches, 0);
 });
 
+
+test("conflicting marker digest for the same run and attempt fails closed", async () => {
+  const transport = new FakeFinalizerTransport();
+  const conflicting = "<!-- pool-finalizer:" + expected.runId + ":" + expected.runAttempt + ":" +
+    "f".repeat(64) + " -->";
+  transport.comments.push({ body: conflicting });
+  const result = await finalizeWithTransport(transport.api(), expected);
+  assert.equal(result.decision, "DENY");
+  assert.equal(result.reason, "FINALIZER_MARKER_DIGEST_CONFLICT");
+  assert.equal(transport.patches, 0);
+});
+
 test("documents the unresolved non-CAS race: concurrent human label can be overwritten", async () => {
   const transport = new FakeFinalizerTransport();
   transport.concurrentHumanLabel = "human:concurrent";
