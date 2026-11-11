@@ -757,7 +757,9 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     const history = await env.POOL_DB.prepare(
       "SELECT event_type FROM pool_attempt_projection_events WHERE outbox_id = ? ORDER BY created_at, delivery_event_id"
     ).bind(outboxId).all();
-    expect(history.results.map(x => x.event_type)).toEqual(["delivery.leased", "delivery.retryable"]);
+    expect(history.results.map(x => x.event_type)).toEqual([
+      "delivery.leased", "delivery.retryable", "delivery.leased", "delivery.dead_letter"
+    ]);
     await expect(env.POOL_DB.prepare(
       "DELETE FROM pool_attempt_projection_events WHERE outbox_id = ?"
     ).bind(outboxId).run()).rejects.toThrow();
