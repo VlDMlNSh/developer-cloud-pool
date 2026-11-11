@@ -2084,3 +2084,15 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Next: selectively reconstruct the 23-path baseline harness from exact #58 base commit, then apply the bounded 7-path #58 patch and 5-path #59 patch. Preserve migration order 0006→0007→0008. Replace receipt-free ACK with receipt-bound orchestration and negative-first tests. No code/test/CI was executed in this pass.
 - Independent qualification remains deferred until after pool launch by owner decision. Hosted D1, dispatch, provider calls and deployment remain NOT AUTHORIZED / NOT RUN.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## 12. D1 proof reconstruction on clean branch — 2026-11-11
+
+- Implementation branch `impl/receipt-bound-projection-2026-11-11` now HEAD `4c39deff653841f8979696167d85a1df24361a6f`. Verified ref and recursive tree SHA match this HEAD. Baseline was reconstructed from default `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Three commits: `25e56899f0297fe5d501a78c9007c25959b10bd1` (23 baseline paths from exact source `ec3f326...`); `0feb74cdf2c4dd4a7126d445c3aa46109bb6eedf` (7 exact #58 changed paths); `4c39deff653841f8979696167d85a1df24361a6f` (5 exact #59 changed paths). No divergent history imported.
+- Final proof/contract/report tree contains 29 paths. Migration order 0006→0007→0008 preserved. package.json check script covers projection modules; lockfile preserved.
+- Critical receipt-free ACK defect remains deliberately present pending next bounded implementation: current `acknowledgeProjectionDelivered` accepts no receipt and marks delivered from lease tuple alone. No implementation fix yet.
+- Exact implementation HEAD combined status contexts 0; workflow runs 0; tests NOT RUN / CI NOT VERIFIED. Existing workflow push filter does not include the new impl branch. Add the branch to push filter or open a draft PR targeting default after implementation is ready.
+- Detailed report: [D1 proof reconstruction on clean branch](../reports/2026-11-11-d1-proof-reconstruction-on-clean-branch.md), commit `f75a50ef24931f7436e4716aec36051141864704`.
+- Next: implement private receipt-bound orchestration (trusted runtime clock/worker identity, self-acquired lease, same-row envelope, reconcile exact event+digest, conditional ACK bound to digest+owner+delivery generation+fresh time, read-back) and negative-first tests. Remove public receipt-free ACK; no hosted D1/dispatch/provider/deployment.
+- Independent checks remain deferred until after pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
