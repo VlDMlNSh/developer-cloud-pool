@@ -47,7 +47,7 @@ Regression test in `tests/experience-auth-session.vitest.js`:
 
 - PR #61 remains OPEN / DRAFT / UNMERGED.
 - Formal reviews: 0. Inline review threads: 0. Independent security review NOT RUN.
-- Issue #62 remains OPEN at time of audit; correction is implemented on PR #61 branch but the issue has not been closed.
+- Issue #62 was subsequently closed by repository owner after verification. The closing comment explicitly links final PR #61 head `976cb2ed0b594b39c847921918f182ab6d571344`, source/test blobs and successful run `42984644046`; it also states PR #61 remains draft and not approved for merge or production.
 - `created_at <= now` is a correctness guard, not proof that the supplied `now` is trustworthy. Production trusted-time composition remains unqualified.
 - AEAD PKCE envelope encryption, key custody/rotation, OAuth callback/cookie/CSRF integration, owner allowlist composition, session rotation, global quotas/circuit breaker, browser QA, hosted D1 and deployment remain NOT QUALIFIED / NOT RUN.
 - No secret values were accessed or changed. No OAuth App, production resource, remote database, deployment, provider call or dispatch was touched.
