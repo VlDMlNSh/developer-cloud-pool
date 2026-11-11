@@ -5,7 +5,7 @@
 Last reconciled: 2026-11-11.
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`.
-Observed default HEAD at drafting: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+Observed default HEAD at drafting: `864213e2ff5b4fa956ba405dea8137a44d812f49` (re-read 2026-11-11; latest commit search still returns this SHA).
 Documentation/evidence branch: `docs/cross-chat-continuation-2026-11-06`.
 Continuation Context Window blob at drafting: `f2874c921a99eb44040f15abb8d85115fbbf6771`.
 
@@ -40,11 +40,24 @@ Local D1/Cloudflare Workflow tests establish only local Workers-runtime behavior
 - Exact-head CI: PR #25 runs `42228269689` and `42228269676` SUCCESS; PR #52 run `42507524428` SUCCESS.
 - Limits: demo UI only; auth/deployment absent; local Miniflare/Workers proofs only; no hosted state backend qualification.
 
+### Supervisor → reusable Worker authorization boundary
+- [PR #37 — reusable Pool Worker boundary](https://github.com/VlDMlNSh/developer-cloud-pool/pull/37), current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; base branch `Основной`, API base SHA `197ba98d0dc7d8437d759dd25bee8750d02e59ae`.
+- Exact-head validation runs `42484039940` (Reusable Pool Worker Boundary Validation) and `42484039932` (Pool Contract Validation): SUCCESS.
+- Against current default HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`, this PR is DIVERGED: 36 ahead / 3 behind, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Do not merge without parent-first reconciliation and fresh exact-head CI.
+- The proposal removes direct `workflow_dispatch` from the reusable Worker, introduces caller/callee identity checks and a separate finalizer, and adds `POOL_AUTHORIZATION_CONTRACT_ACCEPTED` as an additional fail-closed gate. It is still OPEN/DRAFT/UNMERGED. Existing default Supervisor/Worker source remains the older direct dispatch chain until an accepted integration.
+- Historical CHANGES_REQUESTED reviews were submitted on 2026-11-08 against earlier PR content; they are not a current-head independent approval. Current independent acceptance remains NOT VERIFIED.
+- Limits: static boundary validation is not live reusable workflow execution, trusted issuer qualification, durable CAS/claim authority, or production execution. Issue #38 remains OPEN and requires one-winner backend contention, recovery, least-privilege authority and independent review before either dispatch gate is enabled.
+
 ### Immutable attempt / reconciliation proof stack
 - [PR #51 — durable indeterminate reconciliation queue](https://github.com/VlDMlNSh/developer-cloud-pool/pull/51), head `32c88e50e173e6b19bc6c61723ab6474a3c08145`.
 - [PR #56 — deny expired attempt lease takeover](https://github.com/VlDMlNSh/developer-cloud-pool/pull/56), head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, stacked on PR #51.
 - Exact-head CI: PR #51 run `42536377720` SUCCESS; PR #56 run `42825872826` SUCCESS.
 - Limits: durable queue is intake only; no trusted resolver, production Supervisor/Worker integration, hosted contention qualification or effect reconciliation.
+
+### Approval-event evidence proof
+- [PR #55 — canonical GitHub approval-event verifier](https://github.com/VlDMlNSh/developer-cloud-pool/pull/55), head `edff010388897f23f58bceb92e5180a09970fdff`, OPEN/DRAFT/UNMERGED.
+- Exact-head CI: `42797001864` Pool Contract Validation SUCCESS; `42797001989` GitHub Approval Event Adapter Fixture Tests SUCCESS.
+- Positive and negative fixture results remain evidence-only; even a positive verifier result returns `dispatch:false`. Protected approver configuration, trusted time/expiry, canonical envelope hashing, D1 single-use consumption/outbox, Actions runtime permission smoke test and independent qualification are absent.
 
 ### GitHub Actions evidence proof
 - [PR #57 — read-only run-attempt evidence verifier](https://github.com/VlDMlNSh/developer-cloud-pool/pull/57), head `2c263e8a9915f0bc8e0698cde816e87cb2376538`.
@@ -60,7 +73,7 @@ All listed CI evidence qualifies only the stated exact SHA and proof/test scope.
 - D1 remains a hosted qualification candidate, not a selected backend. Durable Objects SQLite is a prototype candidate only; account plan/eligibility and hosted resource state are NOT VERIFIED.
 - Trusted reconciliation requires authenticated native executor identity, fixed-origin read-only evidence, trusted clock, single-use resolver capability, side-effect reconciliation and atomic terminal transition + append-only receipt/outbox. No retry is authorized by lease expiry or absence from a list query.
 - Do not read or reveal secrets. Do not mix credentials, account identities, quotas or permissions. Registration alone does not prove a credential works.
-- Gemini may run only through the approved `.github/workflows/gemini-batch-dispatch-controller.yml` after every contract and governance gate passes. If not, status is NOT RUN with the exact blocker. No controller bypass.
+- Gemini in MediaHub OS may run only through the approved `.github/workflows/gemini-batch-dispatch-controller.yml` in `VlDMlNSh/mediahub-os` after every contract and governance gate passes. If not, status is NOT RUN with the exact blocker. No controller bypass.
 - No paid fallback. Do not run local Claude Code except on the explicitly approved third server after host/capability/allowlist verification. Do not use server 3 for Gemini.
 
 ## 5. Repository governance
@@ -76,7 +89,7 @@ Active ruleset [26550182 — Основной — verified](https://github.com/V
 1. Authentication/session implementation and qualification for the web console.
 2. Actual deployment and mobile/desktop reachability.
 3. Selection and hosted qualification of a free durable State Authority.
-4. Production Supervisor→Worker identity/attempt integration.
+4. Production Supervisor→Worker identity/attempt integration; PR #37 remains a divergent, unmerged proposal and Issue #38's durable claim/authority acceptance criteria remain open.
 5. Trusted executor-run evidence provenance and resolver authority.
 6. Side-effect reconciliation, atomic terminal receipt/outbox and recovery tests.
 7. Provider/account-isolated routing, quota accounting and free-only enforcement.
