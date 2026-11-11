@@ -2597,3 +2597,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: validate proposed DDL and transaction shapes in isolated local Workers/D1 runtime; resolve enforceable quota circuit-breaker and session-rotation atomicity; only then prepare implementation PR. Keep all protected routes fail-closed.
 - Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — final executor and governance refresh
+- Re-read Context Window after schema design; blob `d979237d0caf6730736ebd4079a5949849d34039`, design report blob `4578c4201fb494ba835f01f87dcfa48ba14d7967`.
+- PR #58 remains OPEN/DRAFT at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; PR #59 OPEN/DRAFT at `22200226da4f1af30645cf441a639db6893e9310`; PR #60 OPEN/DRAFT current observed HEAD `76dcec559faf6a1cc92a9edbf3ecf5e6222e3753` (advanced from prior observation; refresh before further work).
+- Gemini controller workflow path `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404 on default branch `Основной`. Therefore Gemini dispatch NOT RUN; do not infer that the approved controller is available at that ref. Investigate actual workflow path/branch and governance contract before any dispatch.
+- SentinelX inventory: no connected hosts. One enrolled host `host_5f7264034bdf0b51` (Voktors-Mini.Dlink) is OFFLINE; two hosts are user-disabled. No confirmed third server/online execution target; Claude Code NOT RUN.
+- Supervisor workflow remains at blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` and includes `POOL_DISPATCH_ENABLED` fail-closed guard. Existing finding remains: heartbeat early-exit prevents recovery when dispatch is disabled; recovery must be independently gated.
+- GitHub ruleset API/tool not exposed in this connector inventory during this pass; active ruleset state NOT VERIFIED in this pass (previously observed ruleset ID `26550182`, enforcement active; must refresh through supported read-only path).
+- No agent dispatch, host command, secret access, database provisioning, Worker deployment, workflow mutation or production change performed.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
