@@ -1626,3 +1626,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
 - Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor issuer and component-fit audit
+
+- Documentation-only report created on `docs/recovery-actor-component-fit-2026-11-11`, immutable base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Report: `docs/reports/2026-11-11-recovery-actor-component-fit-audit.md`; report commit `303c9939e52023f1a895c1a0d1acf95dd86a5f4b`.
+- Existing component fit: GitHub Actions OIDC is a candidate workflow-identity attestation input, not the Recovery Grant issuer; SPIRE is operationally heavy for the current ephemeral GitHub-hosted runner/free-infrastructure constraint; Ory Hydra is a full OAuth/OIDC server but does not remove the one-use D1 capability boundary; OPA evaluates policy but does not authenticate or issue grants; oauth4webapi is a client library, not an issuer.
+- No new issuer/policy/runtime dependency selected. No runtime, schema, permission, workflow, secret, dispatch, or deployment changes.
+- PR #60 design branch currently diverges from `Основной` by 7 ahead / 16 behind (merge base `864213e2ff5b4fa956ba405dea8137a44d812f49`); two documentation files only. Reviews: 0; inline threads: 0; exact-head CI NOT VERIFIED.
+- PR #59 exact-head local D1 proof remains run `42981807825` SUCCESS on `22200226da4f1af30645cf441a639db6893e9310`; production recovery and independent review remain NOT VERIFIED.
+- Next: establish accepted Security Issuer Authority ownership and verify whether GitHub Actions OIDC can be an accepted upstream workload-authentication input; do not mint or implement grants before governance, key custody, revocation, audit and trusted-time gates are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
