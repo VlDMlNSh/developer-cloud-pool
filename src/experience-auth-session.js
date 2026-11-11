@@ -101,9 +101,10 @@ export async function lookupApplicationSession(db, input) {
         FROM application_sessions
        WHERE session_hash = ?
          AND revoked_at IS NULL
+         AND created_at <= ?
          AND expires_at > ?
        LIMIT 1
-    `).bind(input.sessionHash, input.now).first();
+    `).bind(input.sessionHash, input.now, input.now).first();
 
     return row ? { outcome: "ACTIVE", githubUserId: row.github_user_id } : deny("SESSION_INACTIVE");
   } catch {
