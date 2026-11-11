@@ -1610,3 +1610,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Updated stack report: `docs/reports/2026-11-11-stacked-pr-25-52-61-audit.md`.
 - Stack remains OPEN/DRAFT and not merge-qualified. Current default divergence from merge base is docs-only (15 commits); verify exact refs before any refresh. Current Ruleset still NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch disabled.
 - Next: verify active repository Ruleset and approval requirement; then complete authority-boundary audit of PR #61/PR #52 before considering any stack promotion.
+
+
+## 2026-11-11 — Issue #38 durable Supervisor claim protocol decision
+
+- Published `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md` (decision record; no runtime/schema/permission/dispatch/deployment changes).
+- Decision: GitHub Issue label PATCH + workflow concurrency/read-back is REJECTED as an authoritative single-use lock. It is not CAS and cannot fence all actors or ambiguous dispatch.
+- Git ref reservation in a dedicated state repo is NOT SELECTED because Contents:write is broad and ref lifecycle/deletion/recreation proof is absent.
+- Preferred target: separate authenticated claim service backed by transactional conditional-write storage. Existing D1 local proof is best candidate, not hosted-service selection/qualification.
+- PR #39 local proof head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, exact run `42329993548` / job `128274072508` SUCCESS; test blob `eb02a8edd0a748fb2c645457bded3be61dd87d60`: 12 concurrent attempts, one claim/outbox.
+- PR #54 local proof head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, exact run `42537241204` / job `128904147572` SUCCESS; test blob `5bcd6e42acc8ac7ee4f2cfec31e32a5e2d3b5499`: 50 distinct approvals attach to one logical task/outbox. Both are local synthetic Workers/D1 tests, dispatch:false; hosted D1, issuer authentication, quotas, credentials and production recovery NOT VERIFIED.
+- PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, exact-head boundary CI run `42484039940` SUCCESS; still OPEN/DRAFT/UNMERGED. Prior formal reviews by `maxkorolskiy88-ship-it` are CHANGES_REQUESTED on earlier revisions; no approval of current head. PR #37 replaces direct dispatch with reusable Worker and adds dual gates, but label PATCH/read-back remains non-CAS.
+- Current default Supervisor blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` and workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` retain direct dispatch, broad workflow permissions, stale-claim requeue and ambiguous dispatch requeue paths. Dispatch must remain disabled.
+- Governance Issue #1 current active Ruleset state not independently fetched in this pass; 2026-11-04 issue snapshot states required approvals=0. Governance remains NOT VERIFIED.
+- PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
+- Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
