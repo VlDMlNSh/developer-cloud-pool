@@ -37,7 +37,7 @@ No runtime route, OAuth exchange, key handling, secret, deployment, remote D1, p
 
 - New exact-head run: [42984494769](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984494769).
 - Head: `27017a22b2ae8710803034759bc308d730a0ad39`.
-- At report creation: run IN_PROGRESS; install, static checks, API/policy tests, and Workers/D1 test step had completed successfully; final post-checkout cleanup was still running. Overall conclusion not yet returned: CI NOT VERIFIED pending final completion.
+- Run completed: SUCCESS. Job `130402330583` completed all steps successfully, including cleanup. `npm ci`, static checks, API/policy tests (11/11), and Workers/D1 tests (14/14 across 3 files) passed. Experience Auth suite 6/6 passed with the new direct-write negative cases.
 - No artifact published.
 
 ## Qualification
@@ -50,3 +50,11 @@ No runtime route, OAuth exchange, key handling, secret, deployment, remote D1, p
 ## Next step
 
 Recheck run `42984494769` on exact head `27017a22b2ae8710803034759bc308d730a0ad39`. If successful, continue with a separate bounded review of transaction/session lifecycle and trusted-time ownership. If failed, inspect the exact job log and correct only the evidenced issue.
+
+
+## Exact-head CI closeout
+
+- Exact head `27017a22b2ae8710803034759bc308d730a0ad39` completed GitHub Actions run `42984494769` / job `130402330583`: SUCCESS.
+- `npm ci`, static checks, API/policy tests 11/11, and Workers/D1 suite 14/14 across 3 files all passed; Experience Auth tests 6/6 passed including malformed direct D1 write cases.
+- Run URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984494769.
+- This remains synthetic local D1 proof, not production auth qualification.
