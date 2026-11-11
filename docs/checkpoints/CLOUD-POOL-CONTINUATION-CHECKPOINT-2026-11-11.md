@@ -107,3 +107,15 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - No runtime, secret, resource, dispatch, deployment or merge action. Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define backend-neutral integration contract for PR #54 attempt finalization/outbox → PR #58 projection; add local cross-module idempotency and projection-isolation tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Attempt Outbox → Projection adapter — 2026-11-11
+
+- Report: ../reports/2026-11-11-attempt-outbox-projection-contract.md (commit 75416ea836561cb08a768531c6f7094870c214e3).
+- PR #58 head 5caeb60f7a45d836c6ad1eea2fb86e20995da025, OPEN/DRAFT.
+- Added pure projection-envelope mapper from attempt outbox row to reconciler envelope, contract document, 5 mapper/reconciler tests, and syntax check.
+- Exact-head push 43043277262 SUCCESS; PR run 43043284086 SUCCESS; job 130600450879. 4 files / 55 tests passed, 0 failed.
+- Blobs: mapper cb1fb8b130c66343ca3b1c071aac506113c4cfb0; tests 14fd64aa76d1cc97ea45fc1ecfa6d80e28bc8624; contract 712b4080e16c1405c1869e1a43232993c05ec216; package ebfcf2b311871694904516b245222425fa9c38f8.
+- Still no integrated D1 delivery actor or hosted qualification. Failure isolation test is interface-level only. Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: local delivery orchestration over fenced projection lease → mapper → injected fake GitHub API → fenced D1 acknowledgement/retry, with failure, stale lease and restart tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
