@@ -7,7 +7,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
 Documentation continuation branch: `docs/projection-stack-reconciliation-2026-11-11`
-Latest documentation commit: `7948bc7d947dfbc34f60613248164b3a8cfedc5b` (Recovery Actor Capability v1 design contract; documentation branch remains unmerged)
+Latest documentation commit: current HEAD of draft PR #66 (working documentation branch; not canonical/default)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2266,3 +2266,11 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No code/runtime/security-boundary changes, secret reads, dispatch, agent, DSH, Resource Probe, provider/model calls, deployment, hosted resource, merge or billing changes.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: resolve one-use POST authority and delayed-visibility behavior, define exact managed-label ownership, version the full finalization event/actor semantics, and qualify a separate orphaned-lease Recovery Actor without broadening authority.
+
+
+### Documentation write verification — 2026-11-11
+
+- Daily audit report commit: 2672e552e5a8f2b34dbe01c145bdb2e717c50646; report blob: de808180bb6db54054ac45cd1483ae805cf387f8.
+- Checkpoint commit: 4f078f62474c5332dadb304415b51cc5b5014956; checkpoint blob: 1afa2d013f834f416be3d50f4817ed21f7b40fca.
+- Context was re-read after the report/checkpoint writes; its prior read-back blob was 53995ff4458841052637dcf4e5b735fcac042f10. This refresh removes the stale fixed commit pointer from the header; use PR #66's current head for the live working-branch ref.
+- PR #66 remains OPEN/DRAFT/UNMERGED. This documentation branch is not canonical production state. Exact-head CI for documentation-only updates remains NOT VERIFIED.
