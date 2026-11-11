@@ -119,3 +119,15 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Still no integrated D1 delivery actor or hosted qualification. Failure isolation test is interface-level only. Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: local delivery orchestration over fenced projection lease → mapper → injected fake GitHub API → fenced D1 acknowledgement/retry, with failure, stale lease and restart tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #59 Projection Dead-Letter Policy Audit — 2026-11-11
+
+- Report: ../reports/2026-11-11-pr59-projection-dead-letter-audit.md (commit 0a2a5c902cb1b110951ac78e8e4ac7c43135fec9).
+- PR #59 head 22200226da4f1af30645cf441a639db6893e9310; exact-head push 42981803947 SUCCESS; PR run 42981807825 SUCCESS; 3 test files / 53 tests passed.
+- Retry budget 5, backoff 30/60/120/240s, dead-letter terminal triggers, monotonic attempt counter, append-only delivery evidence are SOURCE + CI VERIFIED local proof.
+- Limitation: expired-fifth-lease transition requires original worker ID; not an independent reaper. Caller workerId/now are not authenticated/trusted. PR #60 issuer/time contract remains design-only.
+- PR #59 is based on older PR #58 head 6f7953e4abec3cc564984ee3635cdb7717ae5d5e and does not include current mapper at 5caeb60f7a45d836c6ad1eea2fb86e20995da025.
+- No new dependency selected. Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #59 ancestry with current PR #58 mapper, then local fake delivery actor proof; keep orphan recovery blocked pending accepted issuer/trusted time.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
