@@ -299,3 +299,15 @@
 - PR #58 remains OPEN/DRAFT/UNMERGED, independent review 0. Issue #38 OPEN; PR #53 OPEN/DRAFT/UNMERGED; Supervisor claim authority and production split-write/CAS issues remain unresolved. Dispatch FAIL-CLOSED. Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: independently audit PR #59 and its PR #58 base as a stacked change, focusing migration ordering, retry budget, stale lease recovery, event provenance and dead-letter remediation authority.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+
+## PR #59 independent contract audit addendum — 2026-11-11
+
+- Re-read migration files directly: 0006 creates projection outbox/events; 0007 adds retry/dead-letter columns, indexes, and DB guards. Migration order is correct.
+- PR #59 exact head `5c47cda4394d0381315bc16182799a09bf861797`; PR run `42980783397` / job `130390442001` SUCCESS; reviews 0, threads 0; OPEN/DRAFT/UNMERGED.
+- Recovery boundary: `deadLetterExpiredProjection` requires the existing lease-owner worker ID plus matching generation. This is same-owner expiry terminalization, not a reaper. A permanently disappeared fifth-attempt worker can leave a row leased indefinitely. Independent recovery requires a separate, narrowly authorized recovery identity/capability and distinct audit attribution; not implemented here.
+- Default branch `Основной` HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`, API reports `protected:false` and required-check enforcement off. Branch-protection detail endpoint returned 403 (NOT VERIFIED beyond branch metadata).
+- PR #58 and #53 remain OPEN/DRAFT/UNMERGED; Issue #38 OPEN. No hosted D1, live sender, deployment or dispatch. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: design and test a distinct authorized recovery-actor capability for abandoned fifth leases; then independent review of stacked PR #58/#59.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-bounded-terminal-projection-retries-dead-letter-proof.md
