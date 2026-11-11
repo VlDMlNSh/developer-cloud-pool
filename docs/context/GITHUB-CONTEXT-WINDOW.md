@@ -3202,3 +3202,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Final PR #54 CI log confirms 2 test files / 40 tests PASSED; artifact `13849698927`, SHA-256 `ec7077bc8abd532a553634c67ead23c7779ae8aa9ce3bffcdebc11f63b202b5b`.
+
+
+## 2026-11-11 — PR #54/#58/#59 projection stack integration gate audit
+
+- Current refs rechecked: PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`, exact CI run `43010770730` SUCCESS (40/40). PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, base old PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, exact CI `42979949181` SUCCESS on old base. PR #59 head `22200226da4f1af30645cf441a639db6893e9310`, base PR #58 head, exact CI `42981807825` SUCCESS on old stack. PR #60 head `234fb2ee40265e26fac00c69ac1b6192766602cb`, based on `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`, no exact-head CI: NOT VERIFIED. All OPEN/DRAFT/UNMERGED.
+- Compare old #58 base `ec3f3266...` to corrected #54 head `15a09c9...`: 3 commits ahead, 0 behind; old base is ancestor. This is not integrated verification. #58/#59 need controlled base update and new exact-head CI.
+- Integration blockers: #58 deletes all unknown `pool:*` labels; accepts unapproved `pool:completed/pool:failed` and 1–3 terminal labels vs current Supervisor lifecycle; caller boolean `allowPost` remains POST authority and is not tied to D1 lease. #59 durable five-attempt budget/backoff/dead-letter is not connected to actual POST authorization. #59 migration 0007 uses `COALESCE(NEW.lease_owner, OLD.lease_owner)`, retaining actor attribution but not authentication. #60 proposes a narrow Recovery Actor capability but is NOT IMPLEMENTED/NOT QUALIFIED.
+- Issue #38 OPEN; hosted authenticated claim service not selected/qualified. No dispatch/deploy/merge/permission/secret changes or live projection writes.
+- Reuse-first: keep D1 + Workers Vitest; no new queue/event engine. Existing Octokit reuse assessment does not solve semantic idempotency or issuer authority.
+- Report: [PR #54/#58/#59 Projection Stack Integration Gate Audit](../reports/2026-11-11-pr54-pr58-pr59-projection-stack-integration-gate-audit.md), commit `b2464957582f86594dcd5198a54b4f021b556d4b`.
+- Decision: do not merge/promote #58/#59/#60 until exact label ownership is accepted, caller boolean replaced with verifier-backed one-use lease grant, recovery issuer/time/revocation gates implemented, and updated exact-head CI/review evidence obtained.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next bounded action: add fake-only adversarial test/interface for one-use D1-lease-bound POST across repeated invocations; if issuer implementation is not yet approved, preserve fail-closed behavior and publish contract only.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
