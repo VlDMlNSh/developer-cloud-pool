@@ -236,3 +236,15 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Detailed report: [2026-11-11 D1 proof reconstruction](../reports/2026-11-11-d1-proof-reconstruction-on-clean-branch.md), docs commit `f75a50ef24931f7436e4716aec36051141864704`.
 - No hosted D1, dispatch, provider calls or deployment. Independent checks deferred until pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## Receipt-bound orchestration implementation — 2026-11-11
+
+- Implementation branch `impl/receipt-bound-projection-2026-11-11` HEAD `cc9181ed14932133e607550fb6526eb135a36a0c`, tree `f9675790509595513d35c11273a2ed44f6c3aa34`.
+- Removed public receipt-free ACK; test asserts absence. Private orchestration acquires/reads lease, derives envelope from same row, invokes fixed reconciler, validates exact event ID/digest, conditionally ACKs with outbox/digest/owner/delivery generation/unexpired lease, then confirms D1 read-back.
+- Reconciler injection removed from public factory; mismatched digest test now uses a conflicting fake GitHub marker. Clock exceptions fail closed. Tests include lease takeover and concurrent delivery fencing.
+- Exact-head Actions run `43063773936` / job `130673124739`: SUCCESS, syntax SUCCESS, 5 files / 65 tests passed. Artifact ID `13875015875`, SHA-256 `b5f38f2502d5e62a53b719d51f5683673c2558e9324b409593d70bb2d890e907`.
+- Initial run `43063392084` failed 4/63 on a fixture decision-name mismatch; fixed at `c062ab5...`, run `43063513012` passed 63/63; expanded final run passed 65/65.
+- Detailed report: [2026-11-11 receipt-bound projection orchestrator implementation](../reports/2026-11-11-receipt-bound-projection-orchestrator-implementation.md), docs report commit `5caa4fc3f44619ec571c4c11060479f95edd7f4c`.
+- Remaining: production runtime binding of trusted clock and worker identity, production API adapter, lost-POST/delayed/duplicate marker and DB ambiguity tests, hosted D1 qualification. Independent checks deferred until after pool launch. No dispatch/provider/deployment.
+- PR #58/#59/#66 remain OPEN/DRAFT/UNMERGED; no formal reviews at last check. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
