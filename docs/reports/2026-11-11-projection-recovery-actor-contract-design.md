@@ -44,3 +44,14 @@ Retain the current local D1 proof. Durable Objects remain a candidate if per-ent
 ## Next step
 
 Review PR #60 and the recovery-actor ADR against Issue #38. Then choose the authorization issuer and backend only after proving least privilege, free-tier entitlement/cost, isolation, one-use grant consumption, and contention behavior. Add implementation/tests only after those boundaries are evidenced.
+
+
+## Follow-up alignment audit — 2026-11-11
+
+Read the existing [Trusted Reconciliation Authority Contract](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/contracts/TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md), blob `32bce214a8a3577584f058fb5679b8cecf5f3309`. It already defines a task Resolver capability bound to task/attempt/generation/envelope/executor evidence, with operations `observe`, `resolve_no_retry`, and `propose_retry_candidate`.
+
+Disposition: the existing task Resolver grant must NOT be reused directly for projection outbox recovery. Task reconciliation and projection-delivery terminalization are separate authority domains. Reuse only issuer/capability design patterns, with a distinct projection-recovery audience, operation, subject allowlist, exact outbox binding and one-use nonce. Do not widen the task Resolver operation allowlist.
+
+Additional material finding: current local projection adapter functions accept caller-supplied `now`. This is deterministic test injection only, not a production trusted clock. ADR amended to require database-generated time inside the conditional transaction or a separately qualified trusted composition-root clock; caller timestamps must never prove lease expiry or grant validity. Existing resolver host-clock composition proof is synthetic; production clock provenance remains NOT QUALIFIED.
+
+Updated ADR blob: `35dae9ef71eb0feed2977bfa30c2a079f6249c50`; design branch commit `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`. PR #60 body updated and re-read. PR #60 head is now `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`. Exact-head Actions runs: none returned; CI NOT VERIFIED. Reviews/threads remain 0/0.
