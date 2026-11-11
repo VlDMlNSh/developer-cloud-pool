@@ -2032,3 +2032,14 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - PR #58/#59 remain sibling OPEN/DRAFT/UNMERGED. No code or runtime change. Hosted D1 NOT AUTHORIZED/NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review, then a new immutable current-default candidate for receipt-bound orchestration and negative-first tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Receipt-boundary audit final ref synchronization — 2026-11-11
+
+- Audit report: `docs/reports/2026-11-11-projection-delivery-receipt-boundary-audit.md`; commit `fd0754f5b0b41ae2bc4f097f8d4eec576b5f7cda`; blob `657474911cb7b2081a62ac99f075295705f342cb`.
+- PR #66 before the checkpoint commit `80b97035b5e2dc4c17dd4358950aae406f988ebf`: `25ed8cf796ba0b5d56565502a2255209b40a8601`; base `221f216c00ca7e5596bcc682ba185ad155a10603`; AHEAD 50 / BEHIND 0; 12 docs-only paths.
+- Receipt-free ACK is confirmed as blocking; no integration/code changes. Source tests inspected only, NOT RUN. No compatible Workers/D1 drop-in found.
+- Checkpoint blob `4c1a21369a63840adf81fce81937a9257bbb1ba0`; checkpoint commit `80b97035b5e2dc4c17dd4358950aae406f988ebf`.
+- Exact-head CI/review evidence remains empty: CI NOT VERIFIED; independent review NOT RUN. Keep PR #66 Draft and all proof PRs unmerged.
+- Dispatch FAIL-CLOSED; hosted D1 NOT AUTHORIZED/NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
