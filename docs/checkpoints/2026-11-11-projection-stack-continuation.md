@@ -272,3 +272,15 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Detailed report: [receipt-bound projection implementation](../reports/2026-11-11-receipt-bound-projection-orchestration-implementation.md).
 - Next: production runtime adapter design and testability without hosted D1/dispatch; keep PR #67 draft and unmerged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## DeepSeek Harness upstream refresh — 2026-11-11
+
+- The project already accepted DSH as primary candidate agent runtime in the existing adoption plan; no architecture pivot. GitHub Actions remains scheduler/execution plane; Pool Bridge remains policy/authorization authority.
+- Upstream master `deepseek-ai/deepseek-harness@e8f7b93a344964de3dca1ace9e72b6e4d6de87cb`; GitHub pre-release `v0.2.2-rc.2` (release commit `ddac967`) adds named/nested subagents and AgentTeam shared task board. Root package `0.2.2-rc.2`, Node >=24.9.0, MIT.
+- npm latest published `@deepseek-ai/dsh` at inspection is `0.2.2-rc.1`; do not assume rc2 source has been published. Existing manual no-secret headless evaluation workflow is still pinned to `0.2.1-rc.5`; refresh to published rc1 only after checking package metadata, then run ephemeral headless smoke. It is manual-only and was not run in this pass.
+- Upstream SAFETY.md explicitly says unaudited and not production-ready; DSH sandbox does not provide full isolation. No public Web UI, untrusted plugins, provider secrets or public-PR execution without separate controls. Reuse architecture patterns, not authority: event-sourced session logs/flush recovery, credential refs, fail-closed sandbox contract, owner-scoped jobs, subagent/team decomposition, token/context metering.
+- Detailed report: [DeepSeek Harness upstream refresh and Pool fit](../reports/2026-11-11-deepseek-harness-upstream-refresh-and-pool-fit.md), report commit `22427a9c40e333113683081d5e463069ef68095b`.
+- PR #67 current head `dea09ffe94059f446c74fada37971087ec4878eb`, 9 commits / 33 files; OPEN / DRAFT / UNMERGED; reviews 0, threads 0. Default base remains `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Exact-head D1 run `43064261520`: SUCCESS, 5 files / 66 tests; artifact `13875340881`, SHA-256 `de5833fb4eca7a6ca94c7b133d4b1b53e7a548e49a86e86748e222136fb693e5`. Contract validation `43064261551`: SUCCESS; push D1 run `43064251525`: SUCCESS. Combined status API has 0 contexts; do not call empty status pass.
+- Next: refresh pinned npm DSH package after metadata validation and run no-secret headless smoke in ephemeral hosted runner. Separately continue receipt-bound projection adversarial tests/runtime adapter. Hosted D1, provider calls, dispatch, deployment and independent qualification NOT RUN / DEFERRED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
