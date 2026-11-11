@@ -53,3 +53,15 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Next: independent review of manifest and exact source patches; only after acceptance create immutable candidate branch and implement receipt-bound ACK with negative-first local D1 tests.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Continuation pass — web console / OAuth-session proof boundary (2026-11-11)
+
+- Report: [web console and OAuth/session proof boundary audit](../reports/2026-11-11-web-console-oauth-session-proof-boundary-audit.md), created in commit `ae2d6c48f99be1fb6f833a439710b21cc9bb3aa7`.
+- Current default remains `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #66 remains draft/unmerged; reported head `b2060d8932a096f5bffab83d7b9b5edfdf8ec8d8`; exact-head Actions empty, reviews 0, threads 0.
+- PR #25 is fail-closed Hono prototype (protected GET 503, mutations 405); no production OAuth/session or deployment.
+- PR #61 is synthetic local D1 OAuth-state/session proof stacked on #52, not production auth. Latest documented head `f2d225fe8d660bdc9724320080e0d0cd91705f0a`, run `42984959975` / job `130403823600` SUCCESS; no live OAuth, AEAD/key custody, browser cookies/CSRF, owner allowlist, remote D1, free entitlement or deployment qualification.
+- No source or runtime integration performed. No secrets read. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: exact source-tree and ancestry compatibility audit of #52/#61/#25, then a no-code integration manifest before any implementation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
