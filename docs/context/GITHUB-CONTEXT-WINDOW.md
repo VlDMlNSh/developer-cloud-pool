@@ -2938,3 +2938,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source change, dispatch, Worker/DSH execution, provider/model call, secret read, deployment or resource creation. PR #37 exact-head CI VERIFIED; production authorization NOT QUALIFIED; independent current-head security approval NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define claim-service issuer/authentication contract, conditional-write API, idempotency/recovery semantics, tenant/quota boundary and free-tier entitlement proof; then run a bounded adapter proof without enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Transactional attempt finalization contract
+
+- Target contract: [Transactional attempt finalization contract](../decisions/2026-11-11-transactional-attempt-finalization-contract.md).
+- Commit: `1bfa4ca1f3d05ed2c651a779d9827c709b5d1153`; read-back pending this entry.
+- Re-read Issue #38 decision blob `830a549809d10015d5662da562cff82710c3aa11`: hosted dedicated authenticated claim service + transactional conditional-write store remains the preferred target only; no hosted backend selected/qualified.
+- PR #39 local claim/outbox proof: head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, exact-head CI run `42329993548` SUCCESS. Migration `0002` trigger creates claim and task outbox in the same local D1 transaction as conditional approval consume.
+- PR #54 local attempt/projection proof: head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, exact-head CI run `42537241204` SUCCESS. Migration `0004` supplies immutable attempt identity, owner/generation/expiry fencing, terminal attempt event and task projection in trigger transaction; migration `0006` creates projection outbox from the terminal event and append-only delivery events.
+- Important qualification detail: current local `pool_attempt_events.event_digest` for terminalization is populated via `COALESCE(result_digest, provenance_digest, input_digest)`; the new target contract requires canonical digest over all security-relevant finalization fields, including both result and provenance digests. This is a concrete gap to resolve before promotion, not evidence of a broken local CI.
+- PR #53 remains OPEN/DRAFT at `b8a253f06418841d5f0250c9fd550bf3247db040`, formal reviews 0, exact-head CI empty. Envelope and run/attempt checks are useful defense-in-depth, but Issue labels remain non-CAS; F2 not closed. F10 is addressed only as local D1 proof pattern, not production qualification.
+- Contract defines one atomic terminalization transaction: exact attempt/lease fence; immutable terminal fields; canonical append-only finalization event; task projection update; deterministic projection-outbox insert. It separates external projection delivery (at-least-once, idempotent reconciliation) from authoritative execution state and keeps Projection Recovery Actor on a distinct audience.
+- This pass changed documentation only. No schema, runtime, secrets, credentials, workflows, dispatch, deployment, merge or production state changed.
+- Status: target contract DEFINED / NOT IMPLEMENTED AS HOSTED SERVICE; local D1 exact-head proof CI VERIFIED; hosted store/issuer/time/isolation/quota NOT VERIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independently review the target contract against migrations 0002/0004/0006 and adapter transaction semantics; resolve canonical finalization event digest and replay invariants in the proof branch before considering hosted adapter implementation. Do not enable dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
