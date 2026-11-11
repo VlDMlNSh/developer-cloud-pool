@@ -21,20 +21,20 @@ No code, runtime, schema, workflow, secret, permission, dispatch, hosted resourc
 |---|---|---|
 | N01 same-task concurrent claim | PR #39 `proofs/d1-ledger/test/claim-outbox.test.ts`: 12 concurrent consumers for one approval; PR #54 extends logical task identity tests | LOCAL_PROOF for same approval; distinct-approval race has a targeted PR #54 test, but concurrency scheduling coverage is not a broad 50+ same-task/distinct-grant stress proof |
 | N02 same-grant replay | PR #36 `proofs/d1-ledger/test/consume.test.ts`; PR #39/#54 claim retry tests | LOCAL_PROOF |
-| N03 distinct grants, one task-wide claim | PR #54 `claim-outbox.test.ts`, section “canonical task identity across independent approvals”: two approvals attach to one task and one task-level outbox | LOCAL_PROOF for the tested two-approval case; high-contention distinct-grant race remains NOT VERIFIED |
+| N03 distinct grants, one task-wide claim | PR #54 `claim-outbox.test.ts`, section “canonical task identity across independent approvals”: two approvals attach to one task and one task-level outbox | LOCAL_PROOF: PR #54 contains a 50-way distinct-approval contention proof converging on one canonical logical task and task-level outbox; hosted qualification and issuer validation remain unproven |
 | N04 issuer spoof / unsigned approval | Consume/claim APIs accept a caller-provided approval object and deterministic time; no signature verification or issuer trust registry demonstrated by these tests | GAP |
 | N05 revocation | No issuer/key/principal revocation test evidenced in inspected test files | GAP |
 | N06 trusted time / skew / rollback | Tests pass fixed `NOW` values; this verifies expiry comparisons, not trusted-time provenance or clock rollback/skew controls | GAP |
 | N07 database commit succeeds but response is lost | Storage exception is simulated and transaction rollback is asserted; a committed-write/response-loss recovery scenario is not evidenced | GAP |
 | N08 dispatch accepted but response lost | Claim tests explicitly assert `dispatch: false`; no live dispatch-ambiguity reconciliation proof | NOT RUN / GAP |
 | N09 authoritative dispatch rejection | No actual dispatch adapter/rejection integration test evidenced in inspected files | NOT RUN |
-| N10 delayed Actions visibility and stale recovery | No end-to-end recovery proof found in inspected D1 claim tests | GAP |
+| N10 delayed Actions visibility and stale recovery | PR #51 persists indeterminate attempts/reconciliation queue, but no authorized resolver is evidenced; stale recovery across Actions visibility remains GAP | GAP |
 | N11 worker crash at each state transition | Transaction rollback on outbox insert failure is covered; crash/restart at every lifecycle boundary is not | PARTIAL LOCAL_PROOF / GAP |
 | N12 old generation heartbeat/finalizer | PR #54 `claim-outbox.test.ts` includes generation-fenced logical task leases and stale renew/finalize rejection; PR #53 `tests/security/pool-finalizer-fencing.test.mjs` validates run/attempt-derived generation in Issue finalizer planning | LOCAL_PROOF, separate scopes; integrated DB-to-GitHub fencing NOT VERIFIED |
 | N13 envelope mutation | PR #36 binding mismatch tests; PR #53 finalizer body mutation test | LOCAL_PROOF |
 | N14 Issue close/reopen/label conflict | PR #53 finalizer tests reject closed Issue and conflicting/duplicate generations; reopen/label race and atomicity are not established | PARTIAL LOCAL_PROOF / GAP |
 | N15 audit actor attribution | PR #54 source/test work was previously inspected for actor attribution assertions; no independent audit sink/identity authority qualification | LOCAL_PROOF only; operational audit GAP |
-| N16 duplicate outbox delivery / consumer crash | PR #54 projection outbox code has delivery claim/retry/ack helpers, but the inspected projection test path was not present at that immutable head; enqueue proof alone is insufficient | NOT VERIFIED |
+| N16 duplicate outbox delivery / consumer crash | PR #54 has projection delivery lease/retry/ack test coverage and projection outbox helpers; this is local D1 evidence only. Real external GitHub consumer side-effect idempotency after accepted-write/lost-ack remains NOT VERIFIED | NOT VERIFIED |
 | N17 workflow token privilege escalation | Ruleset snapshot is not a test; workflow permission review remains a separate governance gate | GAP |
 | N18 secret leakage / account isolation | No secrets were read; inspected tests do not prove account-level isolation or secret non-disclosure end-to-end | NOT RUN |
 | N19 audit sink unavailable | No failure/recovery test for a durable independent audit sink evidenced | GAP |
@@ -63,11 +63,11 @@ Repository reuse remains preferred: existing Workers Vitest + D1 ledger, logical
 
 ## Required next work
 
-1. Add/verify a 50+ concurrency test for distinct approvals competing for the same canonical task key; assert one active task claim and exactly one authoritative delivery record.
-2. Inspect the actual projection-outbox consumer and test suite at its current immutable head; test duplicate delivery, consumer crash after side effect/before acknowledgement, retry, dead-letter and replay.
-3. Connect lease generation to execution identity and the GitHub finalizer; prove old-generation heartbeat and terminal report rejection across the full boundary.
-4. Add issuer signature, trust registry, revocation and trusted-time contracts/tests before any issuer is considered operational.
-5. Obtain authorized independent security review and strengthen required-review governance before production changes.
+1. Remove or hard-disable the legacy task-lease lifecycle and make the immutable attempt lifecycle the only supported transition path; add cross-API tests proving there is no divergent lease/finalization authority.
+2. Replace caller-controlled \`resumable=true\` with a separately authorized, signed reconciliation capability bound to task, attempt, execution ID and generation; prove a stale or replayed capability cannot take over.
+3. Exercise projection delivery against a fake but stateful external GitHub side-effect endpoint: accepted write + lost acknowledgement, duplicate delivery, consumer crash, retry and reconciliation.
+4. Connect attempt generation and execution identity to the real Worker report/finalizer boundary; prove stale heartbeat and terminal report rejection end-to-end.
+5. Add issuer signature, trust registry, revocation and trusted-time contracts/tests; obtain independent security review and strengthen required-review governance.
 
 ## Status
 
