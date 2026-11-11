@@ -259,3 +259,16 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Do not merge: no formal review. Independent checks deferred until after pool launch. Hosted D1/live GitHub API/production Worker/dispatch/provider/deployment NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add adversarial tests for lost POST response and matching read-back, delayed/duplicate marker, expiry at conditional ACK, and DB ambiguity; then qualify trusted clock/worker identity and real API adapter.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## Receipt-bound projection implementation — 2026-11-11
+
+- Current implementation HEAD `dea09ffe94059f446c74fada37971087ec4878eb`; branch `impl/receipt-bound-projection-2026-11-11`; base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; 9 ahead / 0 behind. Draft PR #67 OPEN / DRAFT / UNMERGED.
+- Public delivery boundary is `createProjectionDeliveryOrchestrator`; caller supplies only outbox ID. It acquires/read-backs the lease, derives envelope from the same row, directly invokes the imported reconciler, verifies exact event ID + digest, performs private conditional ACK bound to outbox ID/digest/owner/delivery generation/fresh clock, and confirms delivered state by D1 read-back.
+- Removed public receipt-free `acknowledgeProjectionDelivered`. Follow-up commit `cc9181e` removed injectable reconciler override. Migration 0009 prevents updates to immutable outbox identity fields including event digest.
+- Exact-head D1 push `43064251525` and PR `43064261520` SUCCESS; job IDs `130674809102` and `130674831651`; 5 files / 66 tests passed. Pool Contract Validation `43064261551` SUCCESS. Artifacts: push `13874881891` SHA-256 `c4322d68c7e57824dd2c1db706ce4b9b69f5680d7c733cde62e742dde4e3212c`; PR `13875340881` SHA-256 `de5833fb4eca7a6ca94c7b133d4b1b53e7a548e49a86e86748e222136fb693e5`. Combined status contexts 0 → status-context set NOT VERIFIED.
+- Mature component research: `Rohan1857/edge-dispatch` is relevant MIT Cloudflare D1/Queues/DO outbox reference but not a drop-in for GitHub issue projection; `nnniyaz/outbox-mcp` and `whitedragon-software/outbox` are email apps. No code copied.
+- Corrected PR #66 lineage claim: #58 head is ancestor of #59 base by 4 commits; stacked, not divergent. PR #66 body updated accordingly.
+- Independent review deferred until after pool launch. No hosted D1, production runtime adapter, provider calls, dispatch or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [receipt-bound projection implementation](../reports/2026-11-11-receipt-bound-projection-orchestration-implementation.md).
+- Next: production runtime adapter design and testability without hosted D1/dispatch; keep PR #67 draft and unmerged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
