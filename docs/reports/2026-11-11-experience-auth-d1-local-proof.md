@@ -139,3 +139,15 @@ The prior report/context entry naming head `7b018219cf220046a641d3811434014cc634
 - Verification boundary remains local synthetic Workers/D1 only. PKCE AEAD/key custody, browser cookies/CSRF/callback, owner allowlist integration, session rotation, quota, remote D1, free-tier entitlement and deployment remain NOT QUALIFIED / NOT RUN.
 - No production resource, secret, OAuth App, route, dispatch or deployment touched. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Latest observed head — 2026-11-11
+
+The PR head advanced again; a fresh exact-head query and job readback confirm:
+- PR #61 HEAD: `27017a22b2ae8710803034759bc308d730a0ad39`.
+- Workflow run `42984494769`: COMPLETED / SUCCESS on that head.
+- Job `130402330583`: COMPLETED / SUCCESS.
+- `npm ci`, syntax checks, Node tests (11/11), and Workers/D1 Vitest (3 files, 14/14) passed; Experience auth suite 6/6.
+- Reviews 0; inline threads 0. PR remains OPEN / DRAFT / UNMERGED.
+
+This is the latest exact-head evidence at the time of this report update. It supersedes the prior 9b8e/42984373437 snapshot. Local-only qualification boundaries remain unchanged.
