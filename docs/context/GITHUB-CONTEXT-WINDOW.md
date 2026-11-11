@@ -1723,3 +1723,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source/runtime/secret/resource/dispatch/deployment/merge changes in this pass. Dispatch FAIL-CLOSED; Issue #38 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: backend-neutral integration contract mapping PR #54 attempt finalization/outbox identity to PR #58 projection protocol, followed by local cross-module tests proving one terminal event → one outbox → idempotent projection and projection failure isolation.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Attempt Outbox → Projection integration adapter
+
+- Report: docs/reports/2026-11-11-attempt-outbox-projection-contract.md; report commit 75416ea836561cb08a768531c6f7094870c214e3.
+- PR #58 target/head: 5caeb60f7a45d836c6ad1eea2fb86e20995da025; base ec3f3266ca28c4fb5633a9475cc6f396a4677974; OPEN/DRAFT.
+- Added pure proofs/d1-ledger/src/projection-envelope.mjs mapping the PR #54 attempt projection outbox row to PR #58 reconciler envelope; validates immutable identifiers/digests/outcome and returns dispatch:false. Outcome→managed labels: succeeded→pool:probe-complete; failed/abandoned→pool:needs-review.
+- Added proofs/d1-ledger/test/projection-envelope.test.ts (5 tests), integration contract docs/contracts/ATTEMPT-OUTBOX-GITHUB-PROJECTION-INTEGRATION-CONTRACT.md, and mapper syntax check in package.json.
+- Exact-head push run 43043277262 SUCCESS; exact-head pull_request run 43043284086 SUCCESS; job 130600450879. Logs: 4 test files, 55 tests passed, 0 failed; syntax check passed.
+- Read-back blobs: mapper cb1fb8b130c66343ca3b1c071aac506113c4cfb0; tests 14fd64aa76d1cc97ea45fc1ecfa6d80e28bc8624; contract 712b4080e16c1405c1869e1a43232993c05ec216; package ebfcf2b311871694904516b245222425fa9c38f8.
+- Limitation: adapter→fake reconciler tested, but no integrated D1 lease→mapper→GitHub API→D1 ack delivery actor; failure isolation is interface-level, not full DB snapshot proof. No hosted D1, trusted time, Issuer, live GitHub race, or independent review.
+- PR #58 remains OPEN/DRAFT. Issue #38 OPEN/NOT QUALIFIED. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement local-only delivery orchestration over fenced projection lease, pure mapper and injected API; acknowledge only on projection_verified=true, mark retryable on ambiguous/failure; add D1 success/failure/stale-lease/restart tests. Keep dispatch=false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
