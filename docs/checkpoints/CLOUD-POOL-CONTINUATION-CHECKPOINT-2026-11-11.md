@@ -106,3 +106,12 @@ Paste this exact phrase into a new chat:
 - PR #64: https://github.com/VlDMlNSh/developer-cloud-pool/pull/64
 - Issue #38: https://github.com/VlDMlNSh/developer-cloud-pool/issues/38
 - Canonical MediaHub map (governance/reference only; Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 8. Adopted project continuity operating policy
+
+- Operating protocol: [PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md](../governance/PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md); blob SHA at read-back: `272449fb7eb0b899e2f6b8ccedfc67b0cb21ea4e`.
+- The policy is active as project documentation. It defines the source-of-truth hierarchy, mandatory start-of-session recovery, Context Window update triggers, checkpoint lifecycle, evidence/status discipline, branch publication discipline, security/authority gates and session closeout.
+- Live PR #64 snapshot during policy verification: OPEN / DRAFT / UNMERGED; head `e257f2ccf35e739b949da6632fe2a8327204a235`; base `6fdcedebeba62715122e43a75c6ad6d926321ce7`; 18 ahead / 0 behind; changed paths are documentation only. Exact-head PR workflow query returned an empty list: CI NOT VERIFIED. Formal reviews 0; inline review threads 0.
+- This policy/checkpoint update is documentation-only. No runtime code, infrastructure, secrets, permissions, provider dispatch or production resources changed.
+- The working branch may advance again when Context Window is updated. Re-fetch its live HEAD on resume; this checkpoint's ref is a historical observation, not a pinned instruction to use stale code.
