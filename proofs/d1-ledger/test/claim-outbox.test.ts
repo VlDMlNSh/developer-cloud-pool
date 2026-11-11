@@ -701,6 +701,10 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       env.POOL_DB, outboxId, "projection-new", second.lease_generation_delivery, NOW + 12
     );
     expect(accepted).toMatchObject({ decision: "PROJECTION_DELIVERED", generation: 2 });
+    const deliveredEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.delivered'"
+    ).bind(outboxId).first();
+    expect(deliveredEvent).toEqual({ actor_id: "projection-new", lease_generation: 2 });
     const row = await env.POOL_DB.prepare(
       "SELECT status, lease_owner, lease_expires_at, delivered_at FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
     ).bind(outboxId).first();
@@ -723,6 +727,33 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       env.POOL_DB, outboxId, "projection-retry", delivery.lease_generation_delivery, NOW + 5
     );
     expect(retryable.decision).toBe("PROJECTION_RETRYABLE");
+    const retryEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.retryable'"
+    ).bind(outboxId).first();
+    expect(retryEvent).toEqual({ actor_id: "projection-retry", lease_generation: 1 });
+
+    const deadLetterLease = await acquireProjectionDelivery(
+      env.POOL_DB, outboxId, "projection-dead-letter", NOW + 6, 30
+    );
+    expect(deadLetterLease).toMatchObject({
+      decision: "PROJECTION_LEASE_ACQUIRED", lease_generation_delivery: 2
+    });
+    await env.POOL_DB.prepare(`
+      UPDATE pool_attempt_projection_outbox
+         SET status = 'dead_letter', lease_owner = NULL,
+             lease_expires_at = NULL, updated_at = ?
+       WHERE outbox_id = ? AND status = 'leased'
+         AND lease_owner = ? AND lease_generation_delivery = ?
+    `).bind(
+      NOW + 7, outboxId, "projection-dead-letter",
+      deadLetterLease.lease_generation_delivery
+    ).run();
+    const deadLetterEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.dead_letter'"
+    ).bind(outboxId).first();
+    expect(deadLetterEvent).toEqual({
+      actor_id: "projection-dead-letter", lease_generation: 2
+    });
     const history = await env.POOL_DB.prepare(
       "SELECT event_type FROM pool_attempt_projection_events WHERE outbox_id = ? ORDER BY created_at, delivery_event_id"
     ).bind(outboxId).all();
