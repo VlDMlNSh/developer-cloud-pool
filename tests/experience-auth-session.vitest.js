@@ -114,11 +114,17 @@ describe("isolated Experience auth D1 schema", () => {
       INSERT INTO application_sessions (session_hash, github_user_id, created_at, expires_at)
       VALUES (?, ?, ?, ?)
     `).bind("x", "01", NOW, NOW + 10).run()).rejects.toThrow();
-    await expect(db().prepare(`
-      INSERT INTO oauth_transactions (
-        state_hash, browser_binding_hash, pkce_verifier_envelope,
-        encryption_key_version, created_at, expires_at
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `).bind(stateHash, bindingHash, "tiny", "k1", NOW, NOW + 10).run()).rejects.toThrow();
+    for (const [invalidEnvelope, keyVersion] of [
+      ["tiny", "k1"],
+      ["!".repeat(48), "k1"],
+      [envelope, "bad/key"]
+    ]) {
+      await expect(db().prepare(`
+        INSERT INTO oauth_transactions (
+          state_hash, browser_binding_hash, pkce_verifier_envelope,
+          encryption_key_version, created_at, expires_at
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `).bind(stateHash, bindingHash, invalidEnvelope, keyVersion, NOW, NOW + 10).run()).rejects.toThrow();
+    }
   });
 });
