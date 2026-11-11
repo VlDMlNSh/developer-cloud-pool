@@ -1875,3 +1875,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #58/#59 remain isolated draft proof branches. Existing compatibility audit findings remain binding: package script union, ordered migrations, workflow branch/path-filter union, orphaned fifth-lease behavior and verified-ack contract must be resolved before integration.
 - Ledgerline is an architecture reference only (Durable Objects authority model); no dependency selected. Additional GitHub repo searches for a ready-made D1 outbox integration returned no candidates.
 - No code/runtime changes this pass. Next: qualify a complete harness transplant onto current default or retain an isolated proof branch; then implement receipt binding within the selected testable harness. Keep `dispatch:false`; hosted D1 NOT AUTHORIZED / NOT RUN.
+
+
+### Governance and proof-stack revalidation — 2026-11-11
+
+- Report: [governance and proof-stack revalidation](../reports/2026-11-11-governance-and-proof-stack-revalidation.md), commit `eef958725e2db6f065a56e04385c98c0e911c66e`.
+- Active ruleset `26550182`: PR required, deletion/non-fast-forward prohibited, review-thread resolution required, 0 required approvals, no bypass actors. Branch protection endpoint's `protected:false` does not override the active ruleset. Independent review remains project acceptance requirement.
+- PR #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025`: 141 ahead / 62 behind; run `43043284086` / job `130600450879` SUCCESS, local Workers D1 only.
+- PR #59 head `22200226da4f1af30645cf441a639db6893e9310`: 147 ahead / 62 behind; run `42981807825` / job `130393715595` SUCCESS, local Workers D1 only.
+- PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: 4 ahead / 7 behind, no exact-head runs, 0 reviews/threads; DRAFT.
+- PR #66 pre-report head `7d59328e090582e9cae0b2e247c87d25ca539ff2`: 9 ahead / 0 behind, three docs only, no exact-head runs, 0 reviews/threads; DRAFT.
+- Current default tree (47 entries) has no D1 proof harness, package manifest, Vitest config or migrations. #58/#59 transplant must be whole-harness manifest, not a cherry-pick of a single function. Include package/lock ownership, migrations 0001–0008, source/tests/config, workflow filter union, receipt-bound acknowledgement and no unauthorized issuer/trusted-time/orphan recovery.
+- No runtime or privileged action. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare file-by-file transplant manifest and obtain independent review before branch mutation.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
