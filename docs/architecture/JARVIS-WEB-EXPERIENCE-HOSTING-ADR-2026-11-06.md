@@ -48,7 +48,7 @@ GitHub REST API (public repository metadata, issues, workflow runs)
 Typed, minimized API response -> graphite dashboard
 ```
 
-No browser-to-GitHub privileged API path exists. The browser never receives a GitHub token, PAT, GitHub App private key, provider key, or workflow token. The initial implementation does not need a database: GitHub remains the existing task/evidence source of truth; the Worker must not create a parallel task ledger.
+No browser-to-GitHub privileged API path exists. The browser never receives a GitHub token, PAT, GitHub App private key, provider key, or workflow token. The initial implementation does not need a Pool task database or parallel task ledger. It does require a dedicated, narrowly scoped D1 database for OAuth transaction state and opaque application-session validity/revocation; GitHub remains the task/evidence source of truth. The session database is a separate security domain and must never be reused as the Pool task ledger.
 
 ### Authentication model — application-issued session
 
@@ -78,7 +78,7 @@ The Worker must not expose a privileged GitHub token, PAT, GitHub App private ke
 
 ## Free-tier and operational constraints
 
-The current Cloudflare Workers documentation lists the Free plan at 100,000 Worker requests/day, 10 ms CPU time per invocation and 128 MB memory; static asset files have documented per-file and per-version limits. D1 Free currently lists 5 million rows read/day, 100,000 rows written/day and 5 GB total storage. The initial read-only console should avoid D1 entirely.
+The current Cloudflare Workers documentation lists the Free plan at 100,000 Worker requests/day, 10 ms CPU time per invocation and 128 MB memory; static asset files have documented per-file and per-version limits. D1 Free currently lists 5 million rows read/day, 100,000 rows written/day and 5 GB total storage. The initial read-only console requires one dedicated D1 session database, not a Pool task ledger. Its usage must remain within the documented Workers Free limits; quota exhaustion is a hard fail-closed outage, never a paid fallback.
 
 The Free plan is a hard operating boundary, not a reason to silently upgrade. On quota exhaustion, the console must show a degraded/unavailable state and preserve fail-closed behavior. Paid fallback, paid Workers, paid identity features or other billable resources are prohibited without a separate explicit owner decision.
 
@@ -137,7 +137,7 @@ No Cloudflare account was accessed, no token/secret was created or read, and no 
 ## Consequences and unresolved gates
 
 - The current HTML/CSS/JS prototype can be retained with minimal adaptation.
-- GitHub remains the source of truth for issues and workflow evidence; no database is required for the first read-only slice.
+- GitHub remains the source of truth for issues and workflow evidence. A dedicated D1 database is required only for OAuth one-time transactions and application sessions; no Pool task ledger is introduced.
 - The console is a remote user interface, not the runtime for workers and not a continuous scheduler.
 - Cloudflare Workers + application-level GitHub OAuth is only a preferred candidate. Actual account entitlement, application session enforcement across static assets and API, domain availability, free-tier quota and deploy credential scope remain NOT VERIFIED.
 - This ADR does not authorize paid resources, secret creation, deployment, production mutations, dispatch, model calls or external worker/server integration.
@@ -230,3 +230,50 @@ The isolated Hono prototype in [PR #25](https://github.com/VlDMlNSh/developer-cl
 ## Exact-head CI — 2026-11-06
 
 PR #25 head `21839a314db6c1f72b71dadfb1fadd96d4bc38a7` has 2/2 successful checks: Hono validation (run `42174718716`, job `127750439087`) including `npm ci`, static checks, 4 API tests and static dashboard validation; and workflow/security validation (run `42174718720`, job `127750439342`). This is CI evidence only. PR remains draft/unmerged with no independent review; authentication, deployment and security qualification remain incomplete.
+
+
+## Session persistence decision — 2026-11-11
+
+**Decision: use a dedicated Cloudflare D1 database for the Experience application's authentication transaction and session records. Do not use Workers KV as an authentication authority, and do not use stateless signed cookies as the primary session mechanism.**
+
+This resolves the earlier conflict between server-side session expiry/revocation and the "no database" statement. The no-database statement is narrowed: the first Experience slice does not need a Pool task database or task ledger, but it does need a dedicated session store.
+
+### Why this option
+
+- Workers KV is eventually consistent; Cloudflare documents that stale values can remain visible for 60 seconds or longer and KV is not an atomic transactional store. It cannot establish immediate global revocation or strict one-use OAuth state consumption.
+- Stateless signed cookies can provide integrity and expiry but do not provide immediate per-session revocation without introducing a separate revocation authority. That conflicts with the existing ADR's server-side revocation requirement.
+- D1 is available on Workers Free and supports transactional SQL. The published Free limits currently include 5 million rows read/day, 100,000 rows written/day, 5 GB total account storage, up to 10 databases/account and 500 MB per database. Cloudflare began enforcing D1 Free daily row limits on 2026-09-01; when exceeded, queries fail until reset. The connected account's actual Workers Free entitlement remains NOT VERIFIED.
+
+### Required isolation and data model
+
+- Create a dedicated database for Jarvis Experience auth/session records only, with a distinct database ID and binding from every Pool task/attempt/projection database.
+- Bind it only to the authenticated Hono Experience Worker. Inventory every Worker and deployment workflow with this binding. Never expose D1 access to browser code, static assets, generic public RPC, task Worker, or Supervisor.
+- Do not put task payloads, approvals, provider credentials, OAuth access tokens or Pool task state in this database.
+- Store only a cryptographic hash of each high-entropy opaque session identifier; the raw identifier exists only in the Secure/HttpOnly cookie. Store numeric GitHub user ID, created/expiry timestamps and nullable revocation timestamp.
+- Store OAuth state/transaction hashes with strict expiry and a consumed marker. Consume a transaction with one conditional database write that succeeds only when the hash matches, it is unconsumed and unexpired. A duplicate/replayed callback must have zero successful consumers.
+- Use parameterized SQL, STRICT tables, bounded indexes and explicit retention cleanup. Do not persist OAuth access tokens after the numeric GitHub identity is verified.
+- On every protected request, validate the session against the D1 primary state; require both `revoked_at IS NULL` and `expires_at >` trusted current time. Never trust a cookie's claims as the authorization record.
+- If read replication is enabled in the future, every auth/session validation must start a D1 Sessions API context with `withSession("first-primary")` so the first lookup sees the latest primary state. Do not accept caller-supplied D1 bookmarks as an authorization freshness guarantee.
+- Database errors, unavailable binding, missing rows, malformed rows, expired sessions, revoked sessions and quota exhaustion all fail closed. For infrastructure/quota errors return a generic unavailable response (503); do not downgrade to KV, stateless cookies, cached session decisions, or paid resources.
+- Keep the application owner-ID allowlist independent from session persistence. D1 session presence is not a role grant and cannot enable task mutations or dispatch.
+
+### Free-only quota and operational acceptance
+
+- Budget every authenticated API request for a bounded indexed session lookup; avoid per-request session writes.
+- Record rows_read/rows_written from D1 result metadata in aggregate operational metrics without logging session IDs, cookies, hashes, OAuth state or tokens.
+- Define hard request budgets, stale-session cleanup, maximum database size and explicit stop conditions before provisioning.
+- On Free quota exhaustion, preserve data, return unavailable, and wait for reset or stop; no paid upgrade/overage/fallback.
+- Before provisioning, independently verify this account's exact Workers Free entitlement, D1 availability and quotas through authorized account metadata. Public plan documentation is not account-specific entitlement proof.
+
+### Required tests before enabling any protected route
+
+1. Concurrent duplicate OAuth callback: exactly one state-consumption winner.
+2. State mismatch, expiry, replay and malformed hash: reject.
+3. Session creation, rotation, expiry and explicit revocation.
+4. Revocation read-after-write from a fresh Worker request; verify no stale authorization result.
+5. Database/binding outage and daily quota-exceeded response: fail closed without fallback.
+6. SQL injection inputs, malformed cookie, session hash collision handling and user-ID allowlist rejection.
+7. Cross-boundary negative tests proving the Pool Worker, Supervisor and browser cannot reach the auth database or its binding.
+8. Migration reproducibility, indexed query plans, retention cleanup, Free quota budget and backup/restore procedure.
+
+This is an architecture decision only. No database, binding, migration, secret, Worker, OAuth App, route or deployment was created or changed by this decision. Protected routes remain disabled until implementation, exact-head CI, browser QA and independent security review pass.
