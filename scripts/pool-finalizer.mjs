@@ -18,6 +18,16 @@ export function claimGenerationLabel(runId, runAttempt) {
   return CLAIM_LABEL_PREFIX + String(runId) + "-" + String(runAttempt);
 }
 
+
+export function extractTargetSha(body) {
+  if (typeof body !== "string") throw new Error("Task envelope body is missing.");
+  const matches = [...body.matchAll(/^### Target SHA\\s*\\r?\\n+([^\\r\\n]+)$/gim)];
+  if (matches.length !== 1) throw new Error("Task envelope must contain exactly one Target SHA field.");
+  const value = matches[0][1].trim();
+  if (!/^[0-9a-f]{40}$/.test(value)) throw new Error("Task envelope Target SHA is invalid.");
+  return value;
+}
+
 export function envelopeDigest(body) {
   if (typeof body !== "string") throw new Error("Task envelope body is missing.");
   return createHash("sha256").update(body, "utf8").digest("hex");
