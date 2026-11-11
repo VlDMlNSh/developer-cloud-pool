@@ -284,3 +284,17 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Exact-head D1 run `43064261520`: SUCCESS, 5 files / 66 tests; artifact `13875340881`, SHA-256 `de5833fb4eca7a6ca94c7b133d4b1b53e7a548e49a86e86748e222136fb693e5`. Contract validation `43064261551`: SUCCESS; push D1 run `43064251525`: SUCCESS. Combined status API has 0 contexts; do not call empty status pass.
 - Next: refresh pinned npm DSH package after metadata validation and run no-secret headless smoke in ephemeral hosted runner. Separately continue receipt-bound projection adversarial tests/runtime adapter. Hosted D1, provider calls, dispatch, deployment and independent qualification NOT RUN / DEFERRED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## PR #67 exact-head and governance recheck — 2026-11-11
+
+- Report: [PR #67 exact-head and governance recheck](../reports/2026-11-11-pr67-exact-head-governance-recheck.md), commit `3b7674db59059044f5b2611ef3880e8b7042b338`.
+- Revalidated default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 head `dea09ffe94059f446c74fada37971087ec4878eb`, exact base default; OPEN / DRAFT / UNMERGED; 9 ahead / 0 behind.
+- Exact-head D1 PR run `43064261520` / job `130674831651` SUCCESS; Pool Contract Validation run `43064261551` / job `130674831998` SUCCESS; 5 files / 66 D1 tests passed.
+- Combined commit-status endpoint returned zero contexts (NOT VERIFIED); formal reviews 0; review threads 0.
+- Active ruleset #26550182 applies to exact default ref; PR required, no bypass, 0 required approvals, review-thread resolution required. Classic branch protection endpoint reports disabled.
+- Receipt-bound local D1 candidate VERIFIED by CI only. Production identity/time, live GitHub behavior, hosted D1 and orphaned lease recovery remain NOT QUALIFIED / NOT RUN.
+- No secret reads, hosted resources, dispatch, provider calls or deployment. Dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: source-level negative-first audit of lease fencing and authority-gated orphan recovery; keep PR #67 draft/unmerged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
