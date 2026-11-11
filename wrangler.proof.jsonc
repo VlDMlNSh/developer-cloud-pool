@@ -16,6 +16,12 @@
       "database_name": "synthetic-proof-only",
       "database_id": "00000000-0000-4000-8000-000000000001",
       "migrations_dir": "migrations"
+    },
+    {
+      "binding": "EXPERIENCE_AUTH_DB",
+      "database_name": "synthetic-experience-auth-only",
+      "database_id": "00000000-0000-4000-8000-000000000002",
+      "migrations_dir": "experience-auth-migrations"
     }
   ]
 }
