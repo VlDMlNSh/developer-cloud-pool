@@ -1,0 +1,42 @@
+name: Jarvis Experience OpenAPI Validation
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "contracts/jarvis-experience-api-v1.yaml"
+      - ".github/workflows/jarvis-experience-openapi-validation.yml"
+  push:
+    branches:
+      - "ci/openapi-contract-validation-2026-11-06"
+    paths:
+      - "contracts/jarvis-experience-api-v1.yaml"
+      - ".github/workflows/jarvis-experience-openapi-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jarvis-openapi-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-openapi:
+    name: Lint OpenAPI 3.1 contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Node.js 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24"
+      - name: Validate OpenAPI contract
+        env:
+          REDOCLY_TELEMETRY: "off"
+          REDOCLY_SUPPRESS_NOTIFICATIONS: "true"
+        run: npx --yes @redocly/cli@2.75.0 lint contracts/jarvis-experience-api-v1.yaml
