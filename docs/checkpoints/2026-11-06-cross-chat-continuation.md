@@ -405,3 +405,15 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Context Window updated: commit `c080a508c65b4867ac2c36ea64c68b4eede36a73`, blob `99092beb35c8f82a80a4066d56c37d56a6ee3e80`.
 - Next: continue bounded source audit of PR #61 temporal/revocation/replay/ambiguous-write/authority boundaries; keep runtime fail-closed and do not merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 follow-up — PR #61 OAuth state creation-time guard
+
+- Latest PR #61 head advanced to `f2d225fe8d660bdc9724320080e0d0cd91705f0a`; commit `test: cover future-created OAuth state rejection`.
+- Current source includes `created_at <= now` for both OAuth transaction consumption and application session lookup. D1 tests deny future-created OAuth state/session before creation and allow them at creation time. D1 binding-isolation regression also confirms synthetic Experience Auth tables are separate from Pool proof DB.
+- Exact-head run [42984959975](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984959975), job `130403823600`: SUCCESS; Node/API 11/11; Workers/D1 3 files / 17 tests.
+- Current source blob `90ec8a9b2e7dba2f367c96ca37fa41b5f6b0b5e3`; test blob `c6f75fd554081173a5de972396cbe2aea9ee1fb7`.
+- Issue #62 closed by owner after verifying the session-specific correction. PR #61 remains OPEN/DRAFT/UNMERGED, no reviews/threads, independent security review NOT RUN. Production trusted time, AEAD/key custody, owner allowlist, session rotation, quotas, callback/cookie/CSRF, browser QA, hosted D1 and deployment remain unqualified.
+- Context Window concurrent read-back now includes the same current-head evidence at blob `fb4325edb8fa41f2b81b2b0845f5a528186d254b`; the detailed report is [here](../reports/2026-11-11-pr61-future-session-time-guard.md), blob `7c26c4f1efff8ab09569daed4ae7377c569e54d7`.
+- Next: continue PR #61 source audit for ambiguous writes, revocation and authority composition; preserve fail-closed API and no production deployment.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
