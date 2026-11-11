@@ -1764,3 +1764,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: after a fresh live-ref check, reconstruct a minimal integration branch from current immutable default and verified source commits; include one attempt-aware lease lifecycle, exclude legacy task lease mutation, preserve reconciliation queue without retry authority, isolate projection delivery module, add cross-API/stale-generation/replay/rollback/indeterminate tests, all dispatch:false. Do not transplant divergent PR #64 aggregate.
 - Hosted D1 remains NOT AUTHORIZED / NOT RUN. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No secrets, dispatch, resource creation, runtime/schema/permission change, deployment or merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — Gemini Wave 317 agent-capacity audit
+
+- Report: [Gemini Wave 317 capacity and admission audit](../reports/2026-11-11-gemini-wave317-agent-capacity-and-admission-audit.md).
+- Approved MediaHub OS controller run 43029067368 completed SUCCESS; admission job 130551092584 and dispatch/monitor job 130551131203 succeeded.
+- Three signed child workflows on immutable target 41c13e1c2b17ac48dc51c9963a9cda140f79ddb0 all completed SUCCESS: Agent 1 run 43029095783 / job 130551247303 → PR #637; Agent 2 run 43029098931 / job 130551255931 → PR #636; Agent 3 run 43029101957 / job 130551261206 → PR #635.
+- PRs #635–#637 are documentation-only evidence artifacts, remain OPEN, with zero formal reviews. Exact-head CI returned action_required; no successful PR CI or independent review. Agent 2 test claims lack reproducible command/run evidence; NOT VERIFIED. Agent 3 static audit did not independently review Agent 1's concurrent output.
+- Verified capacity: three concurrent Gemini roles through the approved controller. Additional agents, persistent worker registration, >3 concurrency, quotas, isolation and account entitlements remain NOT VERIFIED. MediaHub OS PR #608's 20-slot runner design is a draft target, not capacity proof.
+- Do not repeat the same three-agent batch against unchanged target or bypass the fixed controller. Next: reconcile PR evidence, resolve CI action_required without weakening gates, then prepare a versioned role/registry expansion with explicit identity, capability, quota, isolation and revocation gates. Mature components must be evaluated first.
+- Cloud Pool runtime remains not launched/qualified; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
