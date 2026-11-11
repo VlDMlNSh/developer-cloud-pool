@@ -126,7 +126,8 @@ export async function revokeApplicationSession(db, input) {
          SET revoked_at = ?
        WHERE session_hash = ?
          AND revoked_at IS NULL
-    `).bind(input.now, input.sessionHash).run();
+         AND created_at <= ?
+    `).bind(input.now, input.sessionHash, input.now).run();
 
     if (result?.success === true && result?.meta?.changes === 1) {
       return { outcome: "REVOKED" };
