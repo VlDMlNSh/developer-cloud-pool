@@ -1653,3 +1653,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report blob `b0acabc11a4da210f02f95eca8199f773f83fc2a`; Context Window blob before this PR publication note `b4216fd08e4244241c4c1cc7f215443e1388bbb9`.
 - PR was created OPEN / DRAFT / UNMERGED; mergeable=false at creation. Exact-head CI and formal reviews not yet queried on final head.
 - Next: append final PR metadata and verify exact current-head workflow/review/thread state. Do not merge or provision resources.
+
+
+## Cloudflare resource inventory correction — Issue #38 (2026-11-11)
+
+- Read-only Cloudflare account inventory: D1 databases = 0; Worker scripts = 0; Durable Object namespaces = 0. No resources created or modified.
+- This confirms no existing hosted D1 database/Worker/DO namespace is available to reuse in the connected account. It does not establish Workers Free entitlement, remaining quota or permission to provision.
+- The Cloudflare product docs document Free plan availability and limits, but actual account entitlement remains NOT VERIFIED. Hosted proof is NOT RUN; no speculative resource creation.
+- Updated report: `docs/reports/2026-11-11-issue38-free-claim-backend-fit.md`; latest report commit `d53087efe478aa0b6d67267b11ea3cc4c32deeb4`.
