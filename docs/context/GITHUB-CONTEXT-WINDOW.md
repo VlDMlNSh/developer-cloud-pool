@@ -1858,3 +1858,5 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: resolve whether projection outbox is in acceptance scope; prepare integration candidate only after explicit file composition and workflow reconciliation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Issue #38 acceptance text reviewed: durable one-winner task claim, interrupted-claim/worker-failure recovery, least privilege, independent review. It does not require terminal projection delivery. For the Issue #38 bounded candidate, defer migration 0006 + projection adapter + projection tests/setup as a complete optional unit; preserve for later separate projection qualification. This does not close PR #59/#60.
