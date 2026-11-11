@@ -12,6 +12,7 @@ on:
       - "fix/attempt-finalization-idempotency-2026-11-08"
       - "feat/indeterminate-reconciliation-queue-2026-11-08"
       - "proof/fake-github-projection-reconciler-2026-11-11"
+      - "proof/projection-dead-letter-policy-2026-11-11"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
@@ -23,6 +24,7 @@ on:
       - "proof/task-identity-fencing-design-2026-11-08"
       - "proof/immutable-task-attempts-audit-ci-2026-11-08"
       - "test/50-approval-logical-task-contention-2026-11-09"
+      - "proof/fake-github-projection-reconciler-2026-11-11"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
