@@ -1839,3 +1839,17 @@ Next step: design and independently review a versioned, bounded task-admission c
 - All three files were re-fetched after write and the new sections were confirmed present.
 - The checkpoint update advanced the docs branch to `501dcb0721b63c92815692f2520c9871aa400951`; PR #64 head matched this SHA at read-back, base remained `6fdcedebeba62715122e43a75c6ad6d926321ce7`. The next documentation commit will naturally advance that head again.
 - Report link: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+
+
+## 2026-11-11 PR #28/#29 provider router and quota-ledger audit
+
+- Cloud Pool default HEAD observed: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #28 head `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, base `64d2636d4500127e635c214ccfb722c6b3fcda80`, OPEN/DRAFT; docs-only LiteLLM architecture candidate, exact-head CI/review not verified.
+- PR #29 advanced to head `e4c8d642bbc054e7c52b391356965b492dad32b4`, base remains stale `64d2636d4500127e635c214ccfb722c6b3fcda80`, OPEN/DRAFT.
+- PR #29 exact-head CI run `43031920223` SUCCESS; job `130560896729`; 43 tests passed, 0 failed. Static/pure tests only; no hosted persistence or provider execution.
+- Corrected two workflow defects in PR #29 branch: dispatch guard shell variable expansion and runner probe JSON newline. Commits `d3fe63dc240ad8e51c4bebe5988c2977ac885a57`, `e4c8d642bbc054e7c52b391356965b492dad32b4`; blobs `54046165396152f5548e4a5fa21f1275b424d0b4`, `e17031421c26625b83ead2dedd22f587e669ff39`.
+- Historical PR #29 F11 CHANGES_REQUESTED review targeted old SHA `34fc78921b16359d136db553d8a51b4a4716995d`. Current source uses shared eligibility predicate for active/new slots and current tests cover revoked/unqualified/auth-failed/disallowed-billing active slots. Fresh independent review on current head NOT VERIFIED; old review remains.
+- PR #29 pure planner is not an atomic durable lease store; ledger is pure/in-memory. Persistence, atomic reservation and crash reconciliation remain unimplemented.
+- PR #28 LiteLLM is candidate only; no pinned proof-of-fit, PostgreSQL/Redis or gateway deployment.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-router-pr28-pr29-audit.md
+- Next: reconcile stale base of PR #28/#29 against current default, then design durable atomic reservation boundary and obtain fresh independent review. No provider calls/secrets/dispatch. Contour A remains unaccepted; Contour B deferred.
