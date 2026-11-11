@@ -1598,3 +1598,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Current default versus PR #61 head `823c0416850cd0367a890e36d1bc025daa5f03d5`: DIVERGED, 61 ahead / 15 behind, same merge base. The 15-commit default-side delta is documentation-only; no source/config divergence is visible in compare file stats.
 - Earlier report wording that default was only 13 commits ahead was stale; corrected report is `docs/reports/2026-11-11-stacked-pr-25-52-61-audit.md`.
 - This reduces code-conflict risk but does not waive PR stack order, exact-head CI after any refresh, reviews, or governance. Current Ruleset still NOT VERIFIED in this pass.
+
+
+## 2026-11-11 — PR #61 latest moving-head recheck
+
+- PR #61 advanced after the prior audit to current head `f2d225fe8d660bdc9724320080e0d0cd91705f0a` (23 commits, 8 changed files); remains OPEN / DRAFT / UNMERGED.
+- Current adapter blob `90ec8a9b2e7dba2f367c96ca37fa41b5f6b0b5e3`: OAuth state consumption now checks `created_at <= now` and `expires_at > now`; application-session lookup checks the same time bounds.
+- Current test blob `c6f75fd554081173a5de972396cbe2aea9ee1fb7` adds future-created OAuth-state regression (DENY before creation, CONSUMED_ONCE at creation).
+- Exact-head CI run `42984959975` / job `130403823600`: COMPLETED / SUCCESS; all nine steps passed.
+- PR #61 formal review submissions remain 0. Production trusted-time authority, AEAD/key custody, key rotation, owner allowlist integration, browser CSRF/cookie handling, session rotation, quota and hosted D1 remain NOT VERIFIED.
+- Updated stack report: `docs/reports/2026-11-11-stacked-pr-25-52-61-audit.md`.
+- Stack remains OPEN/DRAFT and not merge-qualified. Current default divergence from merge base is docs-only (15 commits); verify exact refs before any refresh. Current Ruleset still NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch disabled.
+- Next: verify active repository Ruleset and approval requirement; then complete authority-boundary audit of PR #61/PR #52 before considering any stack promotion.
