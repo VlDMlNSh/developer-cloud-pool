@@ -3094,3 +3094,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: component discovery COMPLETED; drop-in component NOT FOUND; PR #58 hardening PLANNED; PR #60 issuer/time unresolved; dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: resolve runtime boundary. If GitHub-only remains mandatory, apply only minimal PR #58 protocol fixes in the existing proof; if Cloudflare runtime is approved, first run a synthetic compatibility/free-quota proof without real GitHub writes.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — GitHub API component reuse assessment (terminal projection)
+
+- Rechecked PRs #58/#59/#60 and the current Context Window before this bounded pass. Heads unchanged: #58 `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; #59 `22200226da4f1af30645cf441a639db6893e9310`; #60 `234fb2ee40265e26fac00c69ac1b6192766602cb`.
+- Exact-head CI: #58 run `42979949181` SUCCESS; #59 run `42981807825` SUCCESS; #60 no run returned, NOT VERIFIED. #58/#59/#60 formal reviews and inline threads: none.
+- Reuse-first assessment: official `octokit/plugin-retry.js` is suitable for transient HTTP failures only; `octokit/plugin-throttling.js` for GitHub API rate limits; `actions/github-script` is a candidate narrow workflow sender using workflow-scoped Octokit; `probot/probot` is a possible future GitHub App framework but adds a separate runtime and authority lifecycle. None replaces D1 durable retry budgets, marker reconciliation, or Recovery Actor issuer/capability.
+- Source blobs re-read: #58 reconciler `2f83befc145d39ea60f06fe5b9e9033f89df40c0`; tests `76b144bd067a42455b858345abec5ee3580c8ccf`. Three findings remain: caller-controlled `allowPost` is not coupled to D1 generation/attempt/retry-after state; all `pool:*` labels are treated as owned; envelope permits 1–3 terminal labels. Delayed-visibility test covers a read-only follow-up, not a bounded authorized second POST across visibility windows.
+- Report: [GitHub API Reuse Assessment for Terminal Projection](../reports/2026-11-11-github-api-reuse-assessment-terminal-projection.md), commit `b51775f825bdc66c3341b291336ef6f77e32ad2b`.
+- Decision: do not add another HTTP client or workflow engine. Reuse Octokit/github-script only if a sender is separately authorized. Before source edits, plan the PR #58 change and controlled PR #59 rebase because #59 is stacked on #58.
+- No source/runtime/schema/permission/secret changes, merge, live API writes, dispatch or deployment. Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: inspect authoritative lifecycle label contract and D1 outbox API; prepare minimal PR #58 hardening with exact ownership allowlist, one canonical terminal label and durable D1 retry authorization, then rebase/revalidate stacked #59.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
