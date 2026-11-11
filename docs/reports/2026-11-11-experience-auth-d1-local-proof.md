@@ -151,3 +151,15 @@ The PR head advanced again; a fresh exact-head query and job readback confirm:
 - Reviews 0; inline threads 0. PR remains OPEN / DRAFT / UNMERGED.
 
 This is the latest exact-head evidence at the time of this report update. It supersedes the prior 9b8e/42984373437 snapshot. Local-only qualification boundaries remain unchanged.
+
+
+## 2026-11-11 — current-head verification supersedes prior snapshot
+
+- PR #61 latest head: `27017a22b2ae8710803034759bc308d730a0ad39`; branch and PR refs match.
+- This successor adds stricter D1 CHECK constraints for the PKCE verifier envelope and encryption-key-version character sets, plus direct-SQL negative fixtures. Source adapter and revocation digest coercion guard remain present.
+- Exact-head workflow run `42984494769`: COMPLETED / SUCCESS; job `130402330583`: SUCCESS.
+- Checks: `npm ci` PASS; `npm run check` PASS; `npm test` 11/11 PASS; `npm run test:workflow` 3 files / 14 tests PASS.
+- PR #61 remains OPEN / DRAFT / UNMERGED; reviews 0, inline threads 0. Local synthetic D1/Workers proof VERIFIED only within this test boundary; independent review NOT RUN.
+- No production OAuth App, production D1, secret/key, browser cookie/CSRF route, deployment, provider call or dispatch. PKCE AEAD/key custody/rotation, owner allowlist integration, session rotation, quota, remote D1/free-tier entitlement and browser QA remain NOT QUALIFIED / NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
