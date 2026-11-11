@@ -1699,3 +1699,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Exact-head CI for PR #64 before this context synchronization: no PR-triggered runs returned (NOT VERIFIED); formal reviews 0; inline threads 0.
 - The PR description links the new plan/report and states the test-design correction, free-tier block, stale PR #54 stack and no-provisioning boundary.
 - This context synchronization itself is the next docs-only commit; no runtime behavior or infrastructure changed.
+
+
+## Claim proof stack and mature component fit — 2026-11-11
+
+- Report: [claim proof stack and mature component fit](../reports/2026-11-11-claim-proof-stack-and-mature-component-fit.md).
+- Current immutable default: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`: OPEN/DRAFT, 36 ahead / 19 behind current default, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; existing formal review CHANGES_REQUESTED; exact-head runs `42484039940` and `42484039932` SUCCESS (static/contract scope only).
+- PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`: OPEN/DRAFT, 132 ahead / 19 behind current default, same merge base; exact-head local Workers Vitest run `43010770730` SUCCESS; review COMMENTED, not APPROVED. The 50-distinct-approval contention test is local harness execution, not remote hosted D1 HTTP contention.
+- PR #54 code audit: two overlapping task lease APIs coexist; attempt-aware lifecycle is stricter and binds lease_attempt_id, while legacy task-lease does not. The attempt takeover helper accepts caller boolean `resumable=true`; production must replace this with authenticated durable reconciliation. All helper time/identity arguments remain local-fixture trust inputs until a trusted adapter exists.
+- Mature OSS review: Cloudflare Workflows starter (Apache-2.0) is the first orchestration reuse candidate; Cloudflare Actors README states active development; Trigger.dev and Inngest are substantial self-hostable durable-workflow platforms but add infrastructure and are not drop-in Cloudflare free-only solutions; `@cloudflare/workers-oauth-provider` handles OAuth 2.1 provider/resource-server concerns; `oauth4webapi` is the preferred low-level OAuth/OIDC protocol library. No new dependency selected.
+- PR #64 head `f9ca7c99a5a6e753619201d9f7f3d80254606e62`: OPEN/DRAFT, 10 ahead / 0 behind; exact-head PR workflow query empty (NOT VERIFIED), formal reviews 0, threads 0.
+- No code, runtime, secrets, permissions, Cloudflare resources, workflows or dispatch changed. Hosted D1 NOT RUN; account Workers Free entitlement NOT VERIFIED; dispatch FAIL-CLOSED; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack onto current default; remove overlapping lease APIs, replace caller-controlled resumability with authenticated durable reconciliation, and rerun exact-head CI before any hosted proof. Evaluate Cloudflare Workflows only after account free entitlement/quotas and authority fit are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
