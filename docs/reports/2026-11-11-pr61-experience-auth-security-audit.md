@@ -73,3 +73,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Test blob `5ccfb8e662b531d29b6292985d6420b47ef99029` adds a Workers-runtime D1 case that creates a future-dated session, expects DENY before creation, and ACTIVE at creation time.
 - Exact-head workflow run `42984610137` / job `130402696252` was observed IN_PROGRESS during this recheck; installation was still running and later checks were pending. Fix is source-verified but not yet CI-verified.
 - Issue #62 remains OPEN pending exact-head CI success and final recheck. PR #61 remains OPEN / DRAFT / UNMERGED; independent review submissions remain empty.
+
+## Final disposition — Issue #62 resolved
+
+- Final PR #61 HEAD verified: `976cb2ed0b594b39c847921918f182ab6d571344`.
+- Adapter blob `046111beb31d7c8cf58e623581d2b260fbdad496` includes the creation-time predicate.
+- Regression test blob `5ccfb8e662b531d29b6292985d6420b47ef99029` covers DENY before creation and ACTIVE at creation.
+- Final exact-head CI run `42984644046` / job `130402848442`: COMPLETED / SUCCESS; all steps passed.
+- Issue #62 closed as completed after posting the verification evidence: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62
+- PR #61 remains OPEN / DRAFT / UNMERGED. No formal review submissions were observed. This finding's closure is not approval of the PR or production qualification.
