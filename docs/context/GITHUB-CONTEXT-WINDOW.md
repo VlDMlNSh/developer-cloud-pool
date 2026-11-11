@@ -2489,3 +2489,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Worker runtime NOT PROVISIONED/NOT DEPLOYED; D1 NOT PROVISIONED; remote web console NOT RUN; recovery actor NOT IMPLEMENTED/NOT QUALIFIED; task claim protocol NOT QUALIFIED; dispatch FAIL-CLOSED. Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
 - Next: compare the existing Hono + Workers Static Assets web-console candidate against the minimal Worker + D1 supervisor runtime and define the smallest free-only first deployment slice. No provisioning until governance and architecture gates are checked.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 projection recovery issuer / trusted-time pass
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-11-projection-recovery-issuer-trusted-time-contract-pass.md (commit `989e919e62949964e91154b90618367341984680`).
+- PR #60 remains OPEN / DRAFT / UNMERGED. Current head `94c41364d50c2746c1e72874701637ea3ec54def`; base default `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`. Added issuer/trusted-time contract blob `152ddd377eb30f3ed4dfba25cbfd6cfd103a9a8a`; file commit `5d3b2b033170f92e0740f2d10aefd04cb1a3d917`. PR body links the new contract. Exact-head CI NOT VERIFIED; reviews/threads 0/0.
+- PR #59 current head is `22200226da4f1af30645cf441a639db6893e9310`, not historical `5c47cda...` quoted in prior body/report. Exact-head run `42981807825`, job `130393715595`, completed SUCCESS on current head; local Workers-runtime D1 proof only. Reviews/threads 0/0. Combined status contexts empty.
+- PR #58 remains OPEN / DRAFT / UNMERGED at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`. Issue #38 OPEN.
+- Source review confirms no production issuer, key custody/revocation source, subject registry or qualified production clock. Task Resolver capability cannot be reused for projection recovery. Local caller-provided `now` is test injection only.
+- Default Supervisor five-minute cron operates on GitHub Issues bootstrap queue; it is not a D1 projection outbox consumer. Dispatch-disabled early exit suppresses its issue recovery path. No change made; split operation gates need a separate authority design.
+- No runtime/schema/permission/secret/workflow/dispatch/deployment/provider change. No Gemini/Claude dispatch. Dispatch remains FAIL-CLOSED.
+- Current statuses: local PR #59 retry/dead-letter proof VERIFIED within local test boundary; issuer/key lifecycle NOT QUALIFIED; production clock NOT QUALIFIED; orphan projection recovery BLOCKED / NOT IMPLEMENTED; hosted D1/sender/consumer NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: identify governance-owned issuer and revocation source, and qualify transaction-local backend time + atomic nonce consumption. If either is absent, do not implement recovery authority.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
