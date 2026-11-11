@@ -3185,3 +3185,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: F-02 source correction SUCCEEDED / execution NOT VERIFIED; F-01 OPEN / NOT VERIFIED; hosted D1/issuer/trusted time/isolation/quotas NOT VERIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain exact-head CI for the isolated F-02 branch, then trace the originating `pool_attempt_events` migration and implement F-01 with digest recomputation, replay conflict, rollback, and one-event/outbox tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #54 actor attribution fix and exact-head verification
+
+- Corrected PR #54 migration `0006_create_attempt_projection_outbox.sql`: status-transition audit trigger now captures `OLD.lease_owner` before the UPDATE clears the lease owner. Migration blob `678a4aa8ce396a15f4f0ecbf908aa41fabc4d752`.
+- Added D1 Workers-runtime assertions for `delivery.retryable`, `delivery.delivered`, and `delivery.dead_letter` actor attribution; test blob `6178a10504a5914187c29bc3ed1ec209e3cd62f3`.
+- Final PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`; exact-head CI run `43010770730` SUCCESS; job `130489510967` all steps SUCCESS. Intermediate run `43010595098` failed on the now-corrected event-history expected array; its log was inspected. The final run passed.
+- Inline thread `PRRT_kwDOVirI-s61rjeP` RESOLVED and verified; PR conversation comment `6794407896` records the correction and evidence.
+- PR #54 remains OPEN/DRAFT/UNMERGED. The local D1 proof is not a hosted claim service, does not authenticate actor_id, and does not authorize external GitHub writes.
+- PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, exact-head run `42979949181` SUCCESS; PR #59 head `22200226da4f1af30645cf441a639db6893e9310`, run `42981807825` SUCCESS; PR #60 head `234fb2ee40265e26fac00c69ac1b6192766602cb`, no exact-head run returned — NOT VERIFIED. All three remain OPEN/DRAFT/UNMERGED. PR #58/#59 are stacked on prior heads and require coordinated revalidation if their bases move.
+- Issue #38 remains OPEN. Preferred hosted authenticated transactional claim service is target design only, NOT SELECTED / NOT QUALIFIED. No dispatch, deployment, merge, secrets, permissions or live GitHub projection writes performed.
+- Reuse-first: retained existing Cloudflare D1 + Workers Vitest proof; no new dependency or infrastructure.
+- Report updated: [PR #54 Projection Event Actor Attribution Audit](../reports/2026-11-11-pr54-projection-event-actor-attribution-audit.md), report commit `ae4de99483b2c24935028f09f504f4fcf555aab7`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next bounded action: inspect PR #58/#59 integration against the newly updated PR #54 base, then resolve remaining retry authority and lifecycle ownership contracts without enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
