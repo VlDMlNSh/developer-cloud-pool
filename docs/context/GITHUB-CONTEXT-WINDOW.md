@@ -1806,3 +1806,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: docs/reports/2026-11-11-pr64-hosted-d1-documentation-drift-audit.md (commit `ae5675a00c4109bd7f45f959e27c8a1c69f237ab`).
 - Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean hosted D1 qualification transplant PR #65 — 2026-11-11
+
+- Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/65
+- Branch: `docs/hosted-d1-qualification-clean-2026-11-11`; immutable head `3d67783e4da60296f26547174b0bdeae58d9a3f2`; base `Основной@c3add54d3409122eedaa697f0af5e7ec43753426`.
+- Compare: ahead 4 / behind 0; exactly four documentation files, 392 additions / 0 deletions. PR open, draft, mergeable=true at last API read; 0 formal reviews / 0 threads; no exact-head Actions runs returned. CI NOT VERIFIED.
+- Selectively transplanted hosted D1 qualification plan, Issue #38 backend-fit assessment, hosted qualification boundary audit, and provenance report. No stale Context Window/checkpoint, continuity protocol or broad historical reports imported from PR #64.
+- Base already contains governing decision `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md`, blob `830a549809d10015d5662da562cff82710c3aa11`; plan relative link resolves.
+- Pool Contract Validation workflow's paths filter only includes `.github/workflows/**` and `scripts/**`, so documentation-only PR does not trigger that workflow. No green check should be inferred from absent CI.
+- No D1/Worker provisioning, secrets, schema/runtime/permission changes, deployment, dispatch or merge. Hosted qualification remains NOT AUTHORIZED / NOT RUN; Workers Free entitlement NOT VERIFIED.
+- PR #64 remains OPEN/DRAFT and diverged; do not merge it wholesale. PR #65 is the clean replacement candidate pending review and any appropriate docs validation.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/hosted-d1-qualification-clean-2026-11-11/docs/reports/2026-11-11-hosted-d1-clean-transplant.md
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
