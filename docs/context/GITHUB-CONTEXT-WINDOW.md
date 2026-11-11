@@ -2808,3 +2808,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Caller-supplied `now` remains untrusted; no TTL max policy, revocation freshness, session rotation, PKCE AEAD/key custody, Owner Allowlist integration, OAuth callback/cookie/CSRF, hosted D1 or production deployment qualified. PR #61 OPEN/DRAFT/UNMERGED, reviews 0, threads 0, independent security review NOT RUN. Protected API fail-closed.
 - No secrets, OAuth app, production resources, provider calls, deployment, routes or dispatch touched. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: exact-head CI closeout, then obtain explicit owner decisions for trusted-time authority and maximum OAuth/session TTL before any implementation.
+
+
+## 2026-11-11 — future-time guards and D1 binding isolation
+
+- Issue #62 future-created application session finding was corrected on PR #61: lookup SQL now requires `created_at <= now`; regression proves DENY before creation and ACTIVE at creation time. Issue #62 closed with resolution evidence.
+- Follow-up audit found the same temporal boundary should be explicit for OAuth state consumption. Current PR head `f2d225fe8d660bdc9724320080e0d0cd91705f0a` adds `created_at <= now` to the conditional OAuth state UPDATE and a regression test for future-created OAuth state.
+- Added a D1 binding-isolation test: Experience Auth DB contains only its two auth tables among the checked set and Pool DB contains neither auth table. Wrangler proof config uses distinct synthetic database IDs and migration directories (`DB` vs `EXPERIENCE_AUTH_DB`).
+- Exact-head run `42984959975`, job `130403823600`, on `f2d225fe8d660bdc9724320080e0d0cd91705f0a`: COMPLETED / SUCCESS. `npm ci`, `npm run check`, Node API/policy tests 11/11, Workers/D1 Vitest 3 files / 17 tests PASS. The new future-session, future-OAuth-state, and DB-binding isolation cases are included.
+- PR #61 remains OPEN / DRAFT / UNMERGED; reviews 0, inline threads 0; independent security review NOT RUN. Stacked on PR #52 and cannot be merged independently.
+- Trusted time remains unqualified: adapters accept caller-supplied `now` / `createdAt` / `expiresAt`; these are deterministic local test inputs, not production time provenance. Revocation uses immediate `revoked_at IS NULL` gating in lookup, but no production cache/revocation freshness integration is proven.
+- PKCE AEAD/key custody/rotation, GitHub owner allowlist, browser callback/cookie/CSRF, session rotation, global quota, remote D1, account Free entitlement, deployment and independent security review remain NOT QUALIFIED / NOT RUN.
+- No production DB, OAuth App, secret, key, route, deployment, provider request or dispatch touched. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
