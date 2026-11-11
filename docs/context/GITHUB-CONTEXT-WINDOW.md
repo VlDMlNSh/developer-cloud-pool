@@ -2051,7 +2051,7 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Immutable review targets: default `221f216c00ca7e5596bcc682ba185ad155a10603`; PR #58 `5caeb60f7a45d836c6ad1eea2fb86e20995da025`; PR #59 `22200226da4f1af30645cf441a639db6893e9310`. PR #66 `3cd1d138c6f620088f49232cb16def953bf825e7` is documentation-only and is not implementation review evidence.
 - Review brief explicitly asks for independent verdict, exact source SHAs, severity-ranked findings, invariant analysis, negative-first test gaps, and separation of local proof from hosted/live qualification.
 - Independent review remains NOT RUN; this authoring pass cannot self-certify as independent. No reviewer was dispatched. No source changes or tests executed.
-- **Sequencing clarification:** no implementation candidate is authorized by this pass. First obtain independent review of #58/#59 source and the receipt-boundary design; then create a new immutable candidate from the then-current default and implement only the accepted design. Keep hosted D1 NOT AUTHORIZED, dispatch FAIL-CLOSED, PRs Draft/unmerged, Contour A BLOCKED/NOT ACCEPTED, Contour B DEFERRED.
+- **Historical sequencing note (superseded by the owner decision below):** the earlier requirement to obtain independent review before implementation is no longer the active sequence. Continue bounded pre-launch author-side implementation and local tests; defer independent qualification until after pool launch. Keep hosted D1 NOT AUTHORIZED and dispatch fail-closed unless their separate gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 ## 9. Current decision update — 2026-11-11
