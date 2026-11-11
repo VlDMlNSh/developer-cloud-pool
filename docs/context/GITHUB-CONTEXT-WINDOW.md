@@ -2019,3 +2019,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Context Window and checkpoint refreshed in this branch. Default branch unchanged at `221f216c00ca7e5596bcc682ba185ad155a10603`.
 
 - Checkpoint blob after final synchronization: `28cfd6bd71a607389cd58574a82e48f6e772eeb7`; checkpoint commit: `07fad742d4ca00cd4caf27b351d34b79b0f1c82f`.
+
+
+## Projection delivery receipt-boundary audit — 2026-11-11
+
+- Report: [Projection delivery receipt-boundary audit and reusable component assessment](../reports/2026-11-11-projection-delivery-receipt-boundary-audit.md), commit `fd0754f5b0b41ae2bc4f097f8d4eec576b5f7cda`.
+- Exact source re-read: PR #58 `5caeb60f7a45d836c6ad1eea2fb86e20995da025`; PR #59 `22200226da4f1af30645cf441a639db6893e9310`.
+- Confirmed ACK blocker: `acknowledgeProjectionDelivered` takes only outbox ID, worker, delivery generation and time; no receipt. Existing test directly acknowledges a newly acquired lease without calling projection reconciler. Reconciler result has event ID/digest but does not bind delivery lease generation.
+- Required fix: a single narrow orchestration boundary must run reconcile/read-back and conditionally ACK the exact same outbox/event digest/owner/delivery generation. Do not use a caller-supplied boolean or forgeable plain object as proof; do not export receipt-free ACK.
+- Existing #58/#59 proof strengths (fake GitHub read-back, marker/digest conflict, duplicate markers, bounded retry, dead-letter and lease fencing) are retained as local-only evidence. Tests were source-inspected, NOT RUN in this pass.
+- Reusable component assessment: `jamarius-fortson/effect-queue` (Python/local SQLite), `devmor-j/persistent-bus` (Node native sqlite + Redis), and `Zehelein/pg-transactional-outbox` (PostgreSQL) are useful design/test references but not drop-in Workers/D1 implementations. No compatible maintained drop-in found; no code transplanted.
+- PR #58/#59 remain sibling OPEN/DRAFT/UNMERGED. No code or runtime change. Hosted D1 NOT AUTHORIZED/NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review, then a new immutable current-default candidate for receipt-bound orchestration and negative-first tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
