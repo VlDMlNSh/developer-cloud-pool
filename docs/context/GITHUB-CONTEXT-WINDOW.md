@@ -3036,3 +3036,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: PR #37 F1 VERIFIED within source/exact-head CI scope; F2/F10 NOT IMPLEMENTED; PR #54 digest FAILS contract conformance; actor attribution OPEN; hosted backend/issuer/trusted time/free entitlement NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: decide versioned canonical finalization-event fields/serialization and authenticated actor semantics, then map to PR #54 migrations 0004/0006 before proof-only implementation and adversarial tests. Keep hosted provisioning and dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Canonical attempt-finalization event v1 proposal
+
+- Proposal: [Canonical attempt-finalization event v1](../decisions/2026-11-11-canonical-attempt-finalization-event-v1-proposal.md).
+- Proposal commit `b04ddfdd888cd1c3d87853d241ec74ebb35269f5`; read-back blob `e9a97bc4566b27baeb1e5f6c4894c5a44e7c2721`; 155 lines; read-back verified for RFC 8785/JCS, complete event envelope, actor attribution and explicit NOT APPROVED disposition.
+- Immutable PR #54 source target: head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; migration 0006 blob `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`; finalization adapter blob `6cb028e048569700ed623d93462ef55e2392a084`; projection adapter blob `afdc133ad11a3a99ecb4b7168d5b8afcc1dc4dd6`.
+- Exact-head local D1 CI run `42537241204` COMPLETED/SUCCESS. This is local Workers/Miniflare evidence only; no hosted D1, authenticated issuer, trusted time or production delivery is qualified.
+- Proposal uses RFC 8785 JSON Canonicalization Scheme + SHA-256 over the complete schema-validated event envelope, with explicit domain and schema version. It binds both result and provenance digests, task/attempt identity, lease generation, run-attempt identity, trusted completion time and verified capability provenance. JCS vectors, mutation/replay/rollback tests and schema allowlists remain to be implemented after approval.
+- Delivery actor attribution separates lease owner from authenticated capability actor. For local proof, OLD.lease_owner may preserve lease binding across lease clearing but is not authentication; hosted event actor fields must come from the trusted capability verifier. Current PR #54 trigger uses NEW.lease_owner and therefore records NULL for retryable/delivered transitions.
+- No source/schema/workflow changes, test execution, merge, hosted provisioning, secret read, dispatch, deployment or production mutation. Proposal is design-only; not approved and not implemented.
+- Status: canonical digest conformance NOT IMPLEMENTED; delivery actor attribution NOT VERIFIED; JCS/SHA-256 v1 PROPOSED; issuer/trusted time/hosted store NOT QUALIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: review this proposal against the shared lifecycle contract and issuer governance; obtain an explicit approved schema/version and actor/time authority decision before any proof-branch implementation. Then implement only the local D1 proof with golden vectors, field-mutation, replay, rollback and actor-retention tests; preserve dispatch:false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
