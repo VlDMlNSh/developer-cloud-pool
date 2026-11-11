@@ -25,6 +25,9 @@ function validateEnvelope(e) {
     Array.isArray(e.managedLabels) && e.managedLabels.length >= 1 &&
     e.managedLabels.length <= 3 &&
     e.managedLabels.every(label => ALLOWED_LABELS.has(label)) &&
+    e.managedLabels.every(label => e.terminalOutcome === "succeeded"
+      ? ["pool:probe-complete", "pool:completed"].includes(label)
+      : ["pool:needs-review", "pool:failed"].includes(label)) &&
     new Set(e.managedLabels).size === e.managedLabels.length);
 }
 function markerFor(e) {
