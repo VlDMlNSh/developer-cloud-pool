@@ -3006,3 +3006,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: [PR #61 moving-head revocation boundary audit](../reports/2026-11-11-pr61-moving-head-revocation-boundary-audit.md).
 - No source changes, merge, deployment, secret/provider access, dispatch or resource mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
 - Next: read-only audit of trusted composition root and owner-allowlist/session-cookie/CSRF boundary across the exact PR #25/#24/#52/#61 stack; preserve stack order and verify exact refs before any promotion.
+
+
+## 20. Jarvis Experience composition-root and session-boundary audit — 2026-11-11
+
+- Read-only audit targets: PR #24 `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`; PR #25 `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; PR #52 `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; PR #61 `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`. All OPEN / DRAFT / UNMERGED. Stack #25 -> #52 -> #61; #24 remains a separate documentation branch.
+- Exact-head CI: PR #24 runs 42982847600 and 42982847694 SUCCESS; PR #25 runs 42228269689 and 42228269676 SUCCESS; PR #52 run 42507524428 SUCCESS; PR #61 run 42991794791 SUCCESS. Combined status contexts empty. CI validates only each respective workflow; independent security review not established.
+- PR #25 Worker entrypoint remains fail-closed: service-only health, all other API GET/HEAD return 503, non-read methods return 405. Static assets route through Worker first for `/api/*`. Auth-policy fixture is not imported by Worker.
+- PR #24 architecture/API contract correctly defines Experience plane, Pool Bridge authority, server-side GitHub OAuth, exact immutable owner-ID allowlist, opaque host-only cookie, server-side session validity, same-origin GET-only API and no browser credentials. These are proposed target contracts, not deployed behavior.
+- PR #61 has dedicated synthetic Experience Auth D1 binding separate from Pool ledger D1 and conditional OAuth-state/session functions. Current tip includes `created_at <= input.now` in session revocation and matching test. Functions accept caller-supplied time, hashes and PKCE envelope; no trusted time, crypto, cookie or OAuth runtime.
+- Missing composition root: no OAuth start/callback, server-side GitHub code exchange and authenticated identity fetch, live owner allowlist, PKCE envelope crypto/key custody, cookie issuance/clear/parser, session middleware, logout/rotation, callback CSRF/redirect defense, session family semantics or binding/module authority boundary. The test cookie helper is not production code.
+- GET-only API reduces normal CSRF exposure but OAuth callback remains a browser-triggered state transition; state must be one-time and bound to initiating browser, with strict host/origin/redirect validation. SameSite=Lax alone is not sufficient proof.
+- Reuse Workers/Hono/Workers Vitest/D1; do not add a new auth dependency before compatibility/security review. Preserve all protected routes as 503 until a composition-root contract, adversarial tests and security review are complete.
+- Report: [2026-11-11 Jarvis Experience composition-root audit](../reports/2026-11-11-jarvis-experience-composition-root-audit.md).
+- No source changes, merge, deployment, secret/provider access, dispatch or resource mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create a technology-neutral composition-root contract for OAuth browser binding, trusted time, owner admission, PKCE key custody, session lifecycle, CSRF/redirect controls, and Worker binding access; then implement a bounded proof slice without enabling protected reads.
