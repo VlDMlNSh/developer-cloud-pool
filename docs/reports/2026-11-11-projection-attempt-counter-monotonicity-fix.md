@@ -58,13 +58,13 @@ The existing >5 assertion remains intact. The Vitest configuration uses `readD1M
 
 ## Disposition and boundaries
 
-- Monotonicity invariant: IMPLEMENTED in the isolated PR branch; runtime test result PENDING.
+- Monotonicity invariant: IMPLEMENTED and VERIFIED by exact-head local D1 runtime tests (53/53 passed).
 - PR #59: NOT QUALIFIED / NOT MERGED.
 - No hosted D1, Worker deployment, production projection sender, dispatch, Gemini controller run, provider/model call, secret read, or paid resource was used.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B remains deferred.
 
 ## Next bounded step
 
-Re-read run `42981807825` for exact head `22200226da4f1af30645cf441a639db6893e9310`. If successful, inspect the complete job log/artifact and PR patch, then continue the Supervisor split-gate/recovery analysis without enabling dispatch. If failed, diagnose only the exact failing step and patch the smallest relevant scope.
+Next: inspect the exact PR #59 patch and its 53-test CI evidence during qualification; then proceed to Supervisor Inspection/Recovery/Dispatch gate analysis while keeping production dispatch fail-closed.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
