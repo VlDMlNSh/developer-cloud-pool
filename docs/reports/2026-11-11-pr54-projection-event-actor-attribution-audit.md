@@ -83,3 +83,5 @@ The finding was corrected on PR #54 branch `test/50-approval-logical-task-conten
 - This proves local Workers-runtime D1 transition attribution only. It does not authenticate the worker identity, qualify hosted D1, authorize GitHub POST, or satisfy Issue #38's hosted claim-service acceptance criteria.
 
 Updated status: P54-F01 CODE FIXED / EXACT-HEAD CI SUCCESS / INLINE THREAD RESOLVED. PR #54 remains OPEN / DRAFT / UNMERGED; independent security review remains NOT VERIFIED. Contour A remains BLOCKED / NOT ACCEPTED.
+
+- Final job log readback: 2 test files passed; 40/40 tests passed. Lockfile artifact ID `13849698927`, SHA-256 `ec7077bc8abd532a553634c67ead23c7779ae8aa9ce3bffcdebc11f63b202b5b` (7-day retention).
