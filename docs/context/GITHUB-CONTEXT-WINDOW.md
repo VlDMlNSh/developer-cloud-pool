@@ -2259,3 +2259,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision study addendum: [2026-11-11 backend State Authority study](../decisions/2026-11-11-backend-state-authority-decision-study.md).
 - Next: lineage/merge-base audit PR #52 and its stack (#25) plus PR #51/#56 before deciding whether a DO comparison prototype adds value; do not create a second authority.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #25/#52 and PR #51/#56 lineage audit
+
+- PR #25 → PR #52 internal stack is VERIFIED: declared PR #52 parent base `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85` is identical to current PR #25 branch; child is 11 commits ahead / 0 behind parent with the same merge base.
+- Parent PR #25 vs default `Основной` is DIVERGED: 29 ahead / 5 behind; merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`. PR #52 vs default is DIVERGED: 40 ahead / 5 behind with the same merge base. Do not retarget/rebase child independently; reconcile at PR #25 parent stack boundary, then rebase child and rerun exact-head CI.
+- PR #51 vs default is DIVERGED: 116 ahead / 3 behind; merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. PR #56 remains 4 commits ahead / 0 behind PR #51's recorded head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; it removes caller-controlled resumable lease takeover.
+- PR #52 local Workflow/D1 CI evidence previously re-read remains SUCCESS for implementation and process-recovery proof heads. PR #52 has 0 formal reviews and 0 inline review threads; local Miniflare proof is not hosted qualification.
+- Report: [PR #25/#52/#51/#56 lineage audit](../reports/2026-11-11-pr25-pr52-pr51-pr56-lineage-audit.md), commit `3145d84e1f3c3f79ab033ad76d1791986f3c89b5`.
+- Disposition: internal PR #25→#52 stack coherent but stale vs default; PR #51→#56 coherent internally but stale vs default. Backend NOT SELECTED; hosted qualification NOT VERIFIED; independent review NOT RUN; dispatch disabled; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: determine the exact five default-branch commits that PR #25/#52 lack, assess conflicts/security impact against the parent Hono app and workflows, then prepare a minimal parent-first reconciliation plan. Do not merge or alter refs before that review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
