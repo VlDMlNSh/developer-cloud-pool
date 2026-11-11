@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-10 19:22 Europe/Vilnius — live repository reconciliation and PR #57 Octokit transport audit
+Last refreshed: 2026-11-11 10:41 Europe/Vilnius — PR #58/#59 terminal projection and dead-letter audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (re-read 2026-11-10; latest default commit remains documentation-only)
+Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (re-read 2026-11-11; latest observed default HEAD unchanged)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
 Latest daily report commit: `11fe2c4248b226b5ee62079c4882aab3f283cae1` (2026-11-10 live audit; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -2364,4 +2364,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Scope remains local Workers-runtime D1 proof only. Hosted D1, live GitHub API, sender, deployment, remote UI, executors, provider routing and production state are NOT VERIFIED. Dispatch remains disabled; no secrets read, dispatch, deployment, or merge.
 - PR #59 local proof VERIFIED; PR acceptance NOT ACCEPTED pending review and parent-stack integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: audit PR #59/#58 database trigger order, terminal immutability, attempt budget, append-only events and generation fencing; then recheck issues #38 (single-use claims) and #22 (authenticated web console).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 10:41 — PR #58/#59 terminal projection and dead-letter audit
+
+- Report: [PR #58/#59 terminal projection and dead-letter audit](../reports/2026-11-11-pr58-pr59-projection-outbox-retry-dead-letter-audit.md), report commit `52eacfe898e51c1c68dc49b4fe6c0d125a894782`, blob `8490fa8b96544e32cf91693022ddeed426137144`.
+- PR #54 → #58 → #59 remains an OPEN/DRAFT/UNMERGED stack. PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a467797`; PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; PR #59 head `5c47cda4394d0381315bc16182799a09bf861797`.
+- PR #58 fake projection sender/reconciler proof: PR run `42979949181` / job `130387805034` SUCCESS; push run `42979945524` / job `130387793379` SUCCESS. Ten fake-boundary cases. No live GitHub API or production sender.
+- PR #59 retry/dead-letter proof: run `42980783397` / job `130390442001` SUCCESS; 3 test files / 53 tests passed. Artifact `13837232801`, SHA-256 `7dbc1b8b34dcdf4d03868df27168857b250eed43f6798990419042c9fccb8ebc`. Checkout was synthetic merge commit `f02a32cb88291d1719e620e85688fe1f7a0de2aa` (current PR head into exact PR #58 base); this is PR merge-tree CI, not a direct head checkout.
+- Earlier PR #59 run `42980650499` failed 1/53 due the test expecting the attempt-budget trigger rather than the dead-letter terminal trigger. The follow-up current-head run passed 53/53; preserve the earlier failure as regression history.
+- PR #58 and #59 formal reviews=0, inline threads=0. Combined status contexts for #59 current head empty. Independent review NOT RUN.
+- Local proof verifies bounded projection retries (5 maximum, 30/60/120/240s backoff), generation-fenced expired fifth-lease dead-lettering, terminal dead-letter state, append-only delivery events and no automatic task requeue. All adapter outputs retain `dispatch:false`.
+- Live GitHub sender, hosted D1, production Supervisor/Worker wiring, live recovery and remote UI remain NOT IMPLEMENTED / NOT QUALIFIED. No dispatch, secrets, provider calls, deployment, merge or paid resource.
+- Status: #58 synthetic proof VERIFIED; #59 local Workers-runtime D1 proof VERIFIED; production integration NOT QUALIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Keep dispatch fail-closed.
+- Checkpoint update commit `b68bac187a3467e9c43dc4ec7637a1db192420d4`, blob `a790c0f2a606ece0c94472de395dd4f815ca6b63`.
+- Next: trace production Supervisor/Worker workflow interfaces against the accepted local claim/attempt/outbox contracts; identify exact integration gaps and required least-privilege permissions without wiring or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
