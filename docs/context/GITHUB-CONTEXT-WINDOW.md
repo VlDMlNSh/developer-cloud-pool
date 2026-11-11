@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-11 10:41 Europe/Vilnius — PR #58/#59 terminal projection and dead-letter audit
+Last refreshed: 2026-11-11 11:12 Europe/Vilnius — PR #60 issuer/trusted-time governance gate
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49` (re-read 2026-11-11; latest observed default HEAD unchanged)
+Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (re-read 2026-11-11 11:12 Europe/Vilnius)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
 Latest daily report commit: `11fe2c4248b226b5ee62079c4882aab3f283cae1` (2026-11-10 live audit; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -3240,3 +3240,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/schema/workflow/permissions/secrets changes, dispatch, deployment, merge, or live GitHub writes. Issue #38 OPEN; dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded action: resolve the upstream Security Issuer Authority prerequisites and name a real trusted-time/revocation/audit boundary; absent that, only non-authoritative fake tests are permitted.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #60 issuer and trusted-time governance gate
+
+- Fresh default branch HEAD: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`. Active ruleset collection: ID `26550182`, `Основной — verified`, enforcement active; detailed rules were not re-read in this pass.
+- PR #54 HEAD `15a09c910f52553c59796260131a6b5a4a39c15f`, exact-head CI run `43010770730` SUCCESS; PR #58 HEAD `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, run `42979949181` SUCCESS on old base; PR #59 HEAD `22200226da4f1af30645cf441a639db6893e9310`, run `42981807825` SUCCESS on old stack; PR #60 HEAD `234fb2ee40265e26fac00c69ac1b6192766602cb`, no exact-head CI (NOT VERIFIED). All four remain OPEN/DRAFT/UNMERGED. #58/#59/#60 have no formal reviews/inline threads returned; #54 has a COMMENTED review.
+- Issue #38 remains OPEN. PR #60 contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; ADR blob `59a4be21516da0e005114acfe015aee7787524dc`. Contract requires separately governed issuer, exact recovery grant binding, key lifecycle, fresh revocation, trusted time, one-use nonce and atomic terminal transition, but no deployed issuer, key custody, revocation source, production clock or audit sink is evidenced.
+- Reuse-first disposition: retain D1 + Workers Vitest as local conditional-state proof only. Durable Objects/Workflows remain candidates, not issuer or authorization solutions. No new dependency, queue, KMS/HSM, policy engine, database or audit service selected. Do not reuse task Resolver grants or widen Resolver authority.
+- Report: [PR #60 issuer and trusted-time governance gate](../reports/2026-11-11-pr60-issuer-trusted-time-governance-gate.md), report commit `f4aa8bb0a6cf1d945e640e7e0a179ba9ab576102`, readback blob `0d45c16385c854b899db7bcd7ec8498c380fa7ea`.
+- Decision: Recovery Actor remains BLOCKED / NOT IMPLEMENTED / NOT QUALIFIED. No code, schema, workflow, permission, secret, deployment, merge, dispatch, provider/model call or live projection write. Keep all production dispatch and side-effect paths fail-closed.
+- Next step: establish an owner-approved issuer authority and operational principal, evidence revocation and audit interfaces, and qualify one trusted-time source. Only then prototype verifier composition and adversarial one-use/concurrency tests. If no qualifying authority exists, preserve fail-closed behavior and record non-selection.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
