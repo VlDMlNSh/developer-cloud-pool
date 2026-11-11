@@ -1,5 +1,6 @@
 import { defineConfig } from "vitest/config";
-import { cloudflareTest } from "@cloudflare/vitest-plugin";
+import path from "node:path";
+import { cloudflareTest, readD1Migrations } from "@cloudflare/vitest-plugin";
 import { readD1Migrations } from "@cloudflare/vitest-pool-workers/config";
 
 const experienceAuthMigrations = await readD1Migrations("./experience-auth-migrations");
@@ -16,6 +17,7 @@ export default defineConfig({
     })
   ],
   test: {
+    setupFiles: ["./tests/apply-experience-auth-migrations.js"],
     include: ["tests/*.vitest.js"],
     testTimeout: 30000
   }
