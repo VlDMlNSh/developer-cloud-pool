@@ -2774,3 +2774,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: wait for terminal exact-head run `42984644046`; if success, conduct the next bounded security pass on trusted time, revocation freshness and Worker binding isolation. If failed, inspect exact logs and fix only evidenced defects.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### PR #61 latest head reconciliation — 2026-11-11
+
+- PR #61 advanced to `976cb2ed0b594b39c847921918f182ab6d571344`, adding a session pre-creation-time negative test. Intermediate run `42984610137` cancelled after the branch advanced; do not count it as a code failure.
+- Latest exact-head CI [42984644046](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984644046), job `130402848442`: COMPLETED / SUCCESS. API/policy 11/11; Workers/D1 15/15 across 3 files; static checks and cleanup successful.
+- D1 CHECK constraints for envelope/key-version character sets and direct-write negative cases remain present. Session lookup before creation time is now explicitly tested.
+- Report reconciliation commit `54362bf19c20bd9fad1ff5eb4058a38e7497737d`; PR remains OPEN/DRAFT/UNMERGED, reviews 0, inline threads 0, independent security review NOT RUN. Production OAuth remains NOT QUALIFIED; auth fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
