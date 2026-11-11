@@ -2754,3 +2754,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Exact-head CI run `42984494769` is RUNNING; install, static checks, API/policy tests and Workers/D1 test step completed successfully; cleanup was still in progress at report time. Final conclusion pending, therefore CI NOT VERIFIED until terminal result.
 - PR #61 remains OPEN/DRAFT/UNMERGED, stacked on #52; reviews 0, inline threads 0, independent security review NOT RUN. PKCE AEAD/key custody/rotation, trusted time, allowlist integration, session rotation, browser integration and production deployment remain NOT QUALIFIED. Auth remains fail-closed.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: recheck exact-head CI run `42984494769`, then continue lifecycle/trusted-time audit only after successful completion.
+
+
+### PR #61 D1 schema constraint audit — CI closeout
+
+- Corrected head `27017a22b2ae8710803034759bc308d730a0ad39` passed exact-head run [42984494769](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984494769), job `130402330583`: COMPLETED / SUCCESS.
+- Static checks SUCCESS; API/policy 11/11; Workers/D1 14/14 across 3 files; Experience Auth 6/6 including direct D1 rejection of malformed envelope and key-version fields.
+- Updated report with terminal CI evidence. PR #61 remains OPEN/DRAFT/UNMERGED; independent security review NOT RUN. Synthetic D1 proof only; production auth not qualified; fail-closed remains.
+- Report commit `9bcd823d9c0f51806e711a155999424584d8c31c`; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
