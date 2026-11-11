@@ -2981,3 +2981,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source changes, merge, dispatch, secret/provider calls, deployment or resource mutation. PR #54 local CI VERIFIED; canonical finalization digest conformance FAILED against target contract / NOT IMPLEMENTED; hosted service NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
 - Next: governance/design-only approval of versioned canonical finalization-event schema and deterministic serialization, then implement migration/trigger/replay verifier/golden vectors/adversarial tests on proof branch with dispatch:false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 18. Projection Recovery Actor prerequisite audit — 2026-11-11
+
+- PR #60 OPEN / DRAFT / UNMERGED; immutable design target `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`, base `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Exact-target workflow lookup returned no runs; combined status contexts empty; formal reviews and review threads empty. Exact-head CI NOT VERIFIED; independent review NOT RUN.
+- PR #60 proposes a distinct Recovery Actor with audience `projection-outbox-recovery`, exact repository/outbox/attempt/generation/event binding, operation `dead_letter_expired_projection`, ≤300s grant lifetime and ≤30s revocation-state age. These are proposed target constraints, not deployed issuer evidence.
+- No production issuer, issuer/key custody and rotation, revocation source, recovery-actor registry, trusted production clock, audit sink/operator or retention approval is identified. Token/signature/policy technologies remain candidates only.
+- Existing local D1 adapter's caller-supplied actor and `now` are not authentication/trusted time. The Recovery Actor must terminalize only an exhausted expired projection outbox; no task/attempt mutation, requeue, retry, GitHub write or dispatch.
+- Keep Workers Vitest + local D1 as synthetic proof substrate. Durable Objects/Workflows are orchestration/coordination candidates only, not issuer or authorization solutions. No new dependency or backend migration selected.
+- Report: [2026-11-11 projection Recovery Actor prerequisite audit](../reports/2026-11-11-projection-recovery-actor-prerequisite-audit.md).
+- Decision: no runtime implementation until governance names issuer authority/owner, trusted time, revocation source, audit/retention owner and trusted composition-root boundary. If unresolved, explicit NO-GO and keep recovery NOT IMPLEMENTED.
+- No source-code changes, merge, dispatch, secret/provider access, deployment or resource mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
