@@ -78,3 +78,15 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - No code/runtime/secret/hosted-resource/deployment/dispatch changes. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare implementation contract and negative-first route tests, then request independent security review before any code implementation. Keep synthetic and production D1 configurations separate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Production authentication contract — 2026-11-11
+
+- Contract: [production authentication implementation contract and negative-first route test plan](../contracts/2026-11-11-production-authentication-implementation-contract.md), created in commit `350bf088edb4d14ceaf5774ff0e669746320d3b7`.
+- Preferred mature protocol primitive: `panva/oauth4webapi`, grounded by existing synthetic-only PR #30 compatibility proof at `ad9f9ac598a2414b5209b6923094b16be64630ae`; no new dependency adopted in this pass.
+- Contract defines fixed GitHub OAuth endpoints/callback, state + PKCE S256 + browser binding, versioned AEAD verifier envelope, exact immutable numeric owner-ID allowlist, opaque hashed sessions, __Host- cookie, trusted server clock, CSRF/Origin, fixed upstream allowlist, redacted audit and negative-first route matrix.
+- Exact-head recheck: PR #66 at `eda1ffe8c09a1a26985165e136f325a8763af16f` has 0 Actions runs, 0 combined status records, 0 formal reviews and 0 inline threads. PR #61 current head `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; local D1 proof run `42991794791` SUCCESS; reviews/threads 0.
+- Production auth implementation remains NOT IMPLEMENTED. Contract requires independent security review before code. No runtime/config/schema/workflow/secret/dispatch/hosted-resource/deployment/merge changes.
+- Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of the contract and test matrix; then, only if accepted, create an immutable implementation candidate with negative-first local Workers tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
