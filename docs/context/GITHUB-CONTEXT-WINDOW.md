@@ -1642,3 +1642,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: D1 Free product eligibility DOCUMENTED; account entitlement NOT VERIFIED; local proof CI VERIFIED; hosted contention NOT VERIFIED; Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect non-secret D1 account resource/plan metadata without creating resources, then define the isolated hosted-proof boundary and minimum permissions. Stop before provisioning if entitlement/ownership cannot be verified.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #64 publication — Issue #38 free D1 backend fit (2026-11-11)
+
+- Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/64
+- Purpose: source-backed comparison of GitHub ref reservation, Cloudflare D1 and Durable Objects for the first hosted one-winner claim qualification.
+- Initial PR head at creation: `4f7ab6c333dac06dcaf9b4f4a440e04222ca7f9f`; base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Files: dated report and Context Window only; no runtime/schema/permission/dispatch changes.
+- Report blob `b0acabc11a4da210f02f95eca8199f773f83fc2a`; Context Window blob before this PR publication note `b4216fd08e4244241c4c1cc7f215443e1388bbb9`.
+- PR was created OPEN / DRAFT / UNMERGED; mergeable=false at creation. Exact-head CI and formal reviews not yet queried on final head.
+- Next: append final PR metadata and verify exact current-head workflow/review/thread state. Do not merge or provision resources.
