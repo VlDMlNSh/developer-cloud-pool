@@ -118,3 +118,23 @@ All negative cases must assert: no session created, no protected data returned, 
 Request independent security review of this contract and negative-first matrix. Do not implement runtime code until that review is recorded. Keep synthetic and production D1 configurations separate.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 9. Compatibility-proof limitation — PR #30 source audit (2026-11-11)
+
+A source-level re-read of PR #30's exact test file `scripts/oauth4webapi-github-compat.test.mjs` (blob `bc87a8074f2358883b555677934dfc0526ef6cae`) found a test-coverage gap:
+
+- The test constructs an authorization URL and sets `state`, `code_challenge`, and `code_challenge_method=S256`, but does not assert the resulting URL's origin/path or query parameters and does not pass that URL through a provider simulation.
+- The mocked token endpoint asserts that `code_verifier` is present, but does not recompute S256 and compare it with the challenge generated for the authorization URL. The mock always returns a token for the inspected request.
+- Therefore PR #30 demonstrates oauth4webapi API use, callback state validation, form-body client authentication request construction, token response parsing and synthetic `/user` request construction. It does not prove end-to-end challenge/verifier binding or provider enforcement of PKCE.
+
+Before production integration, extend the isolated synthetic proof to assert: exact authorization endpoint origin/path; exact fixed client ID and redirect URI; `response_type=code`; nonempty unpredictable state; `code_challenge_method=S256`; challenge equals BASE64URL(SHA256(code_verifier)); token request verifier matches that challenge; wrong verifier and missing verifier are rejected by a deterministic provider mock; and no unrecognized outbound URL is accepted. Keep the limitation explicit: a mock cannot prove live GitHub enforcement.
+
+This finding does not invalidate the use of PKCE or the library. GitHub's official documentation (retrieved 2026-11-11) states that OAuth Apps support PKCE and only S256 is accepted. Source: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps and GitHub Changelog 2025-07-14: https://github.blog/changelog/2025-07-14-pkce-support-for-oauth-and-github-app-authentication/.
+
+## 10. Updated evidence disposition
+
+- PR #30 synthetic workflow run `42216422883`, job `127887461269`, COMPLETED/SUCCESS; observed steps include npm ci, pinned oauth4webapi install, and the synthetic test. This is an exact recorded run for PR #30 head `ad9f9ac598a2414b5209b6923094b16be64630ae`, but its assertions have the source-coverage limits above.
+- PR #66 current head revalidated as `be6add0f74d224048e11ce9b21b4b2e0b3ee72a4`; exact-head workflow run list and combined status list empty. CI NOT VERIFIED. Reviews 0; inline threads 0.
+- Historical report `2026-11-11-web-console-oauth-session-proof-boundary-audit.md` contains stale PR #61 head/run data and predates the later corrected compatibility report. Treat it as historical only; current source compatibility report and this addendum supersede those fields.
+- No source/runtime/schema/workflow/permission/secret/dispatch/hosted-resource/deployment/merge changes. No live OAuth request or secret access.
