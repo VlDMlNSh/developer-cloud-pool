@@ -1818,3 +1818,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: persistent no-repost marker state and concurrent reconciliation tests; bind PR #60 to accountable issuer/time/audit services; retire legacy lease lifecycle; integrate generation with Worker finalizer.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — cross-PR consistency and checkpoint correction
+
+- Cross-PR evidence audit: `docs/reports/2026-11-11-cross-pr-evidence-consistency-audit.md`; creation commit `87b1769143681e48ca5d8b0ffac0662786b8aafc`.
+- Updated claim/recovery checkpoint: `docs/checkpoints/2026-11-11-claim-recovery-source-test-checkpoint.md`; update commit `2f5fc1b812b58e665b39131a1ea3ca807815a940`, blob `01e3307d53b5fbc10450839bb98d65318d98dd36`.
+- Correction: the old checkpoint's statement that `acquireAttemptLease` accepts caller-controlled `resumable=true` is superseded by PR #56 HEAD `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; exact-head local D1 run 42825872826 SUCCESS. PR #56 remains DRAFT/unmerged; legacy lease API coexistence and trusted resolver remain unresolved.
+- PR #63 HEAD `886f45ad52b914c938c1898c4d5e017183054a76` and PR #64 HEAD `95d237c753bec96abe9add621140928511047599` remain OPEN/DRAFT/UNMERGED. Exact-head workflow runs and combined status contexts empty for both: NOT VERIFIED.
+- PR #64's D1 report correctly recommends D1 only as preferred hosted-proof target; no D1 DB/Worker/DO resource exists in the read-only account inventory and Workers Free entitlement/quota are NOT VERIFIED. No provisioning authorization.
+- Recovery Actor reports consistently find no accepted operational issuer, trust custodian, revocation registry, trusted-time, audit-sink, privacy-retention or recovery-quorum appointments. Functional accountability roles in draft governance docs are not operational owner appointments.
+- Active ruleset #26550182 still requires zero approving reviews; independent security approval is not enforced.
+- No code/runtime/schema/workflow/secret/permission/dispatch/resource/deployment/merge changes. Production dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile complete local D1 proof stack onto fresh immutable head from current default and rerun exact-head CI; no hosted provisioning until free entitlement/permissions/isolation authorized. Keep Recovery Actor unimplemented until accepted operational owners and governance evidence exist.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
