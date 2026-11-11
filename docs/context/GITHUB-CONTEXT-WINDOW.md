@@ -1707,3 +1707,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; no secrets, provider calls, Worker execution, hosted resources, deployment, merge, or default runtime changes.
 - Next: reconcile PR #39/#54 transactional conditional-write/outbox implementation with Issue #38 and PR #58, then define authoritative Claim Store plus retryable GitHub projection. No hosted D1 until entitlement/quota evidence and explicit authorization. Exact-head CI and independent review mandatory.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — claim / attempt / projection proof-stack reconciliation
+
+- Report: docs/reports/2026-11-11-claim-attempt-projection-stack-reconciliation.md (commit 8220c4b8723e85ec2214307084b559965bc195a2).
+- Immutable default snapshot before report: b4d2a335d2a89372eb618dcda50b09f97b36a946.
+- Rechecked PR #39 head ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833; PR #54 head 15a09c910f52553c59796260131a6b5a4a39c15f; PR #58 head 6f7953e4abec3cc564984ee3635cdb7717ae5d5e; PR #53 head 3458b01c99e0a3ed62e5469dc11631ec5316b0cd. All remain OPEN/DRAFT; Issue #38 OPEN.
+- PR #39 local conditional approval consume + trigger-backed claim/outbox proof: exact PR/push runs 42329993548 and 42329991471 SUCCESS. Local Workers/Miniflare only.
+- PR #54 advances to canonical logical task, immutable attempts, generation-fenced leases, exact finalization replay, indeterminate queue and attempt projection outbox. Exact PR run 43010770730 / job 130489510967 SUCCESS. Previous 50-way logical task contention proof run 42537241204 / job 128904147572 SUCCESS, per Issue #38 evidence.
+- PR #58 fake GitHub projection reconciler exact PR run 42979949181 / job 130387805034 SUCCESS; push run 42979945524 SUCCESS. No live GitHub API qualification.
+- PR #53 exact-head runs 43042039819 and 43042039837 SUCCESS (19/19 transport/planner tests). Its direct GitHub finalizer still has a deliberately demonstrated non-CAS label overwrite race.
+- Architectural gap: PR #54 authoritative attempt/outbox model is not wired to PR #58 projection consumer. PR #53 remains a parallel direct GitHub finalization path and must not be treated as authoritative. Target: transactional Claim/Attempt Store owns state; outbox drives retryable GitHub projection only; projection actor cannot dispatch or mutate task authority.
+- Gaps: issuer authentication, trusted clock/revocation/nonce replay, hosted D1 eligibility/deployment, Supervisor/service/Worker/attempt/projection wiring, hosted concurrency/restart and external side-effect tests. No new OSS dependency required; reuse existing Workers Vitest and local D1 harness.
+- No source/runtime/secret/resource/dispatch/deployment/merge changes in this pass. Dispatch FAIL-CLOSED; Issue #38 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: backend-neutral integration contract mapping PR #54 attempt finalization/outbox identity to PR #58 projection protocol, followed by local cross-module tests proving one terminal event → one outbox → idempotent projection and projection failure isolation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
