@@ -2271,3 +2271,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Disposition: internal PR #25→#52 stack coherent but stale vs default; PR #51→#56 coherent internally but stale vs default. Backend NOT SELECTED; hosted qualification NOT VERIFIED; independent review NOT RUN; dispatch disabled; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: determine the exact five default-branch commits that PR #25/#52 lack, assess conflicts/security impact against the parent Hono app and workflows, then prepare a minimal parent-first reconciliation plan. Do not merge or alter refs before that review.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — exact five-commit delta PR #25/#52
+
+- Compared default `Основной` @ `864213e2ff5b4fa956ba405dea8137a44d812f49` against PR #25/#52 merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`: exactly 5 ahead / 0 behind; merge base exact.
+- Pairwise ancestry verified five commits in order: `1d464da1c76efcd50601018dc008e58a5949fd87` (add PR31 audit report), `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (revert report), `864ca5c1eb7f1e9c871a84b6bbb6b252c6921b32` (add lease actor/generation test), `4d07526589676c6a381426db189c5a5c1528e1a3` (revert test), `864213e2ff5b4fa956ba405dea8137a44d812f49` (add context file).
+- Net compare reports only `docs/context/GITHUB-CONTEXT-WINDOW.md` (1,523 added lines). The report and test additions are absent from current default (both Contents reads NOT_FOUND). No net app, Workflow, permissions, lockfile, migration or runtime code changes in this five-commit delta.
+- Consequence: prior suspected code/security conflicts from these five commits are not evidenced. PR #25 parent-first reconciliation remains required; PR #52 child must remain stacked and follow the reconciled parent. Context-document duplication/staleness must be resolved before integration.
+- Detailed report: [exact five-commit default delta](../reports/2026-11-11-pr25-pr52-five-commit-default-delta.md), commit `51dc07c04d46e24151d5311b8b6c5f776b2c0328`.
+- Actual rebase/merge NOT RUN; post-rebase exact-head CI and formal review remain required. PR #51/#56 separate 3-commit divergence remains unaudited in this pass.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
