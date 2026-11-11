@@ -57,3 +57,11 @@ Dispatch remains disabled.
 Fix Issue #62 on the PR branch, add the future-created-session regression test, rerun exact-head CI, then continue auditing the full stacked PR chain and authority boundaries.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Follow-up ref check — 2026-11-11
+
+- PR #61 advanced after the initial audit to head `27017a22b2ae8710803034759bc308d730a0ad39`.
+- Re-read `src/experience-auth-session.js` at the branch tip: adapter blob remains `14236350b99f4f8629b64db6e6b81ff881d4465f`; the lookup predicate still omits `created_at <= now`. The test file still lacks a future-created-session regression case.
+- New exact-head run `42984494769` / job `130402330583`: COMPLETED / SUCCESS. This verifies CI on the newer head but does not resolve Issue #62.
+- PR remains OPEN / DRAFT / UNMERGED; review submissions remain empty. Finding remains outstanding.
