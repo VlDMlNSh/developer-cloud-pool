@@ -196,3 +196,12 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Independent review remains NOT RUN; this authoring pass cannot self-certify as independent. No reviewer was dispatched. No source changes or tests executed.
 - **Sequencing clarification:** no implementation candidate is authorized by this pass. First obtain independent review of #58/#59 source and the receipt-boundary design; then create a new immutable candidate from the then-current default and implement only the accepted design. Keep hosted D1 NOT AUTHORIZED, dispatch FAIL-CLOSED, PRs Draft/unmerged, Contour A BLOCKED/NOT ACCEPTED, Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Owner sequencing decision — 2026-11-11
+
+- Decision: defer all independent technical/security/governance reviews until after Cloud Development Pool launch; the pool will execute them using separated roles and recorded evidence. An external reviewer is no longer a prerequisite for pre-launch implementation.
+- Pre-launch: continue bounded author-side audits, contract work, implementation and local negative-first tests against immutable target SHAs. Explicitly label them author-side; never claim they are independent review or production qualification.
+- Post-launch: run separate roles for implementation/contracts/tests, security/governance, and provenance/acceptance. Preserve role separation, target SHA, controller/child run IDs, artifacts/digests, findings and verdicts. A role must not independently approve its own implementation.
+- Gemini remains eligible only through the approved controller and only after all gates pass; otherwise NOT RUN with exact blocker. No bypass dispatch.
+- The receipt-free projection ACK defect remains a mandatory implementation blocker. The review deferral does not waive the receipt-bound ACK invariant, local tests, exact-head CI, governance, or final acceptance.
+- Current status remains Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
