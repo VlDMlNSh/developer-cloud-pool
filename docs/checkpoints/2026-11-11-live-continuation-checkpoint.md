@@ -431,3 +431,18 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - No secrets, provider calls, dispatch, resource provisioning, deployment, merge or permissions changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch FAIL-CLOSED.
 - Next: source-level audit of default Supervisor/Worker privileged path against claim/outbox/recovery contracts, without wiring or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — default Supervisor/Worker/Claim/Recovery source audit
+
+- Report: [Default-branch source audit](../reports/2026-11-11-default-supervisor-worker-claim-recovery-source-audit.md).
+- Immutable target: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Audited source blobs: Supervisor script `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; Supervisor workflow `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; Worker workflow `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; durable claim decision `830a549809d10015d5662da562cff82710c3aa11`.
+- Six material findings: Issue PATCH is not CAS; dispatch exception can requeue after ambiguous accepted dispatch; stale recovery treats absence from bounded 100-run listing as no execution; Worker validates label/body but no issuer capability/revocation/trusted-time/nonce; Worker terminal report can overwrite newer state without run/generation fencing; Supervisor workflow-level `issues:write` + `actions:write` is broader than least privilege.
+- Worker is only a DSH headless package/config smoke profile, no provider credentials or model call; not general-purpose pool acceptance.
+- Reuse: PR #39/#54 local Workers/D1 claim/outbox proofs and existing adapters as experimental reference; PR #37 narrows dispatch boundary but remains unmerged and does not solve CAS. No hosted D1 qualification. No stronger drop-in component identified for the project-specific issuer-bound claim/outbox/fencing contract.
+- Remediation: dedicated issuer-authenticated claim API; one-use atomic consume + claim/outbox; indeterminate on ambiguous dispatch; immutable claim/generation/envelope; conditional finalizer; split least-privilege jobs; hosted 50+ request/fault-injection qualification; independent review.
+- No code/runtime/workflow/permission/secret/variable/schema changes, provider calls, dispatch, resource creation, merge or deployment.
+- Status: source audit VERIFIED; implementation NOT STARTED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare a source-bound remediation contract and negative test matrix for F1–F6, documentation/test-design only until issuer/trust/revocation/time/audit owners and hosted-service authorization are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
