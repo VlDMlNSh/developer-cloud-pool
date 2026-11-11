@@ -26,8 +26,8 @@ Workflow push branch filter now includes `fix/projection-audit-actor-2026-11-11`
 ## Verification
 
 - All three changed files were fetched again from the proof branch; read-back content and blob SHAs match the intended changes.
-- Exact-head workflow lookup for `b9731547afaefde2d22e704122e73615ce85876c` returned no runs. CI is therefore **NOT VERIFIED**, not PASS.
-- The added assertions are source-reviewed but have not yet been executed by GitHub Actions.
+- Exact-head lookup for `b9731547afaefde2d22e704122e73615ce85876c` returned no pull-request-triggered runs. The available run lookup filters to pull-request events and does not expose push-event runs; push CI status is therefore **NOT VERIFIED**, not PASS.
+- The added assertions are source-reviewed but execution by GitHub Actions is **NOT VERIFIED**.
 - Branch remains isolated and unmerged.
 
 ## F-01 remains OPEN
