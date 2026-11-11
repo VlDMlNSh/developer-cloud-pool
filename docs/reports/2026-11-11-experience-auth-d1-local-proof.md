@@ -110,3 +110,17 @@ The subsequent run is bound to the current PR head:
 - PR reviews: 0; inline threads: 0.
 
 The failure on the earlier attempt is superseded by the successful exact-head run above. Local D1/Workers runtime proof is now VERIFIED for the tested schema/adapter behavior only. It does not qualify production integration, PKCE AEAD/key management, browser OAuth/cookies/CSRF, session rotation, quota enforcement, remote D1, Free entitlement, deployment or independent security review. PR #61 remains OPEN / DRAFT / UNMERGED.
+
+
+## Subsequent exact-head CI reconciliation
+
+The proof branch advanced again after the previous exact-head success, adding explicit migration loading in `vitest.config.js` and `tests/apply-experience-auth-migrations.js`. The latest observed branch head was rechecked:
+
+- PR #61 current HEAD: `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`.
+- Exact-head workflow run `42984373437`: COMPLETED / SUCCESS.
+- Job `130401940558`: COMPLETED / SUCCESS.
+- `npm ci`, static syntax checks, existing Node tests (11/11) and Workers/D1 Vitest (3 files, 14/14) all passed.
+- New Experience auth suite: 6/6 passed.
+- PR reviews: 0; inline threads: 0.
+
+This supersedes the earlier exact-head snapshot `7b018219cf220046a641d3811434014cc63421d4` / run `42984240109`. The earlier failure remains a superseded configuration attempt. PR #61 remains OPEN / DRAFT / UNMERGED. Verification is limited to local Workers/D1 emulator semantics; no production or account-level qualification is implied.
