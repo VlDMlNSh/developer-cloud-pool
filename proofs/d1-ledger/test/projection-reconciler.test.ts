@@ -123,6 +123,15 @@ describe("fake GitHub terminal projection reconciliation", () => {
     expect(result.projection_verified).toBe(false);
   });
 
+  it("rejects a terminal label inconsistent with the immutable outcome", async () => {
+    const api = new FakeGitHub();
+    const invalid = { ...envelope(), terminalOutcome: "failed" };
+    const result = await reconcileTerminalProjection(api, invalid, { allowPost: true });
+    expect(result.decision).toBe("DENY");
+    expect(result.reason).toBe("INVALID_PROJECTION_ENVELOPE");
+    expect(api.posts).toBe(0);
+  });
+
   it("rejects unsafe labels and malformed immutable envelopes", async () => {
     const api = new FakeGitHub();
     const invalid = { ...envelope(), managedLabels: ["pool:claimed", "other:admin"] };
