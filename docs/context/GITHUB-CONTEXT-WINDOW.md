@@ -3141,3 +3141,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source/schema/workflow/permission/secret changes, merge, dispatch, live GitHub writes or deployment. Dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: establish an accepted lifecycle ownership/outcome-label contract from Supervisor and Worker/finalizer code; then define a one-use D1-lease-bound POST grant and only then make a coordinated stacked PR #58/#59 change.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Proposed Pool Issue Lifecycle Ownership Contract (NOT ACCEPTED)
+
+- Read exact default-branch Supervisor source blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f`, Worker workflow blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`, and architecture blob `3ac28f2f105a20a4eed5d93168bbe84d2d5273b8`.
+- Evidence-based bootstrap labels: Supervisor owns `pool:ready`, `pool:claimed`, `pool:invalid`; Worker report writes `pool:probe-complete` or `pool:needs-review`; Supervisor recovery also writes `pool:needs-review` and returns expired claims to `pool:ready`.
+- Important distinction: `pool:probe-complete` means the narrow DSH smoke test completed, not general agent completion or Contour A acceptance.
+- Identified shared-writer race for `pool:needs-review` (Worker report and Supervisor recovery), updated_at-based stale-claim matching sensitivity, and mismatch between PR #58 D1 outcomes (`succeeded/failed/abandoned`) and current bootstrap label vocabulary.
+- Proposed ownership and candidate transition table published as NOT ACCEPTED: [Proposed Pool Issue Lifecycle Ownership Contract](../reports/2026-11-11-proposed-pool-issue-lifecycle-ownership-contract.md), commit `00c4984b42f8ff067a2ab2d4a0187144d3eb043b`.
+- Required tests include exact state preconditions, stale-run fencing, idempotent/conflicting reports, preservation of non-owned labels, and no D1 outcome mapping until versioned contract acceptance.
+- No code, schema, workflow, permissions, secrets, branch, dispatch, deployment, merge or live API mutation. This is documentation only.
+- Existing PR status last verified this pass: #58/#59/#60 OPEN/DRAFT/UNMERGED; #58 exact-head CI SUCCESS run `42979949181`; #59 exact-head CI SUCCESS run `42981807825`; #60 no run returned, NOT VERIFIED. Formal reviews and inline threads returned empty in this pass.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
+- Next: resolve the lifecycle mapping and single-writer decision, then add adversarial fake-only tests and a one-use D1-lease-bound POST grant as a coordinated PR #58/#59 change.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
