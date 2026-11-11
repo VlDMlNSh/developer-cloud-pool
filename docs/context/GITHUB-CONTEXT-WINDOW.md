@@ -326,3 +326,15 @@
 - No runtime code, migrations, permissions, secrets, workflows, or dispatch gates changed. No hosted Cloudflare resources, deployment, sender, or provider/model calls used.
 - PR #58/#59 remain OPEN / DRAFT / UNMERGED; Issue #38 OPEN. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: review ADR/PR #60 against Issue #38, then choose issuer and backend only after least privilege, free-tier/cost, isolation, one-use grant, and contention qualification.
+
+
+### PR #60 follow-up contract alignment — 2026-11-11
+
+- Re-read the existing Trusted Reconciliation Authority Contract on `docs/cross-chat-continuation-2026-11-06`, blob `32bce214a8a3577584f058fb5679b8cecf5f3309`. Its task Resolver grant is bound to task/attempt/generation/envelope/executor evidence and operations `observe`, `resolve_no_retry`, `propose_retry_candidate`.
+- Important boundary: do NOT reuse task Resolver grants directly for projection-outbox recovery. They are separate authority domains. Reuse issuer/capability patterns only with a distinct projection-recovery audience, operation, subject allowlist, exact outbox/attempt/delivery-generation/event binding, and one-use nonce. Do not widen Resolver operations.
+- Clock gap: current local projection adapter accepts caller-provided `now`; that is only a deterministic test seam. Production must use database-generated time within the conditional transaction or a separately qualified trusted composition-root clock. Caller timestamps never prove expiry. Existing host-clock composition evidence is synthetic; production clock remains NOT QUALIFIED.
+- ADR updated, blob `35dae9ef71eb0feed2977bfa30c2a079f6249c50`, design branch commit/head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`.
+- PR #60 remains OPEN / DRAFT / UNMERGED; exact-head Actions runs none returned (CI NOT VERIFIED), reviews 0, threads 0.
+- Report updated: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-projection-recovery-actor-contract-design.md ; report commit `d6473fe5d4cb0458f15f37fe30166cfdc815407c`.
+- No runtime changes, migrations, grants, secrets, dispatch, live services or deployment. PR #58/#59 remain draft/unmerged; Issue #38 OPEN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED.
+- Next: specify a separate projection-recovery issuer capability and trusted clock provider contract, then adversarially test nonce consumption + dead-letter transaction on the selected backend. No production implementation until issuer ownership and backend qualification are evidenced.
