@@ -2743,3 +2743,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: perform a focused security audit of the new schema/adapter and prove session revocation freshness plus DB-boundary isolation; then address PKCE AEAD design. Keep PR draft; do not merge or provision.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 D1 schema constraint audit
+
+- Report: [PR #61 D1 schema constraint audit](../reports/2026-11-11-pr61-d1-schema-constraint-audit.md).
+- Audited PR #61 immutable baseline `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`. Found DB-level CHECKs enforced PKCE envelope/key-version length only, while application validators enforced allowed character sets; direct DB writes could bypass those syntax constraints.
+- Corrected D1 migration to reject non-base64url PKCE envelope characters and key-version characters outside `[A-Za-z0-9._-]`; added direct-write negative tests. No runtime/auth/deployment/secret/dispatch changes.
+- Updated PR head `27017a22b2ae8710803034759bc308d730a0ad39`; migration blob `31a919566cd0c07a4e55c34c791acbe45c83e055`; test blob `6476f4d5962ab267c5870333e710db6cb13bcddb`. Read-back verified.
+- Exact-head CI run `42984494769` is RUNNING; install, static checks, API/policy tests and Workers/D1 test step completed successfully; cleanup was still in progress at report time. Final conclusion pending, therefore CI NOT VERIFIED until terminal result.
+- PR #61 remains OPEN/DRAFT/UNMERGED, stacked on #52; reviews 0, inline threads 0, independent security review NOT RUN. PKCE AEAD/key custody/rotation, trusted time, allowlist integration, session rotation, browser integration and production deployment remain NOT QUALIFIED. Auth remains fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: recheck exact-head CI run `42984494769`, then continue lifecycle/trusted-time audit only after successful completion.
