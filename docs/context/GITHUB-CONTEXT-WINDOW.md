@@ -1794,3 +1794,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: include this patch in integration plan, clarify event actor semantics, then build a fresh integration candidate from current #58 HEAD with #59 changes and this correction; run complete tests + exact-head CI. No merge/deploy/dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #64 hosted D1 documentation drift audit — 2026-11-11
+
+- Default `Основной` at audit start: `8c9a557189e9219304ae41e6d6615830d9e7a365`; PR #64 head `95d237c753bec96abe9add621140928511047599`; base recorded `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Compare current default...PR64: DIVERGED, 51 ahead / 33 behind; merge base `6fdcedebeba62715122e43a75c6ad6d926321ce7`. PR #64 OPEN/DRAFT, 16 documentation files, mergeability unknown, 0 formal reviews, 0 threads, no exact-head Actions run/status returned.
+- Good content: D1 selected as hosted qualification target; 50 genuinely concurrent independent HTTP requests through test-only Worker; sequential SQL batch explicitly not concurrency proof; isolated Worker excludes GitHub write, dispatch, provider credentials and production bindings; owner authorization, Free entitlement, exact source stack and CI are mandatory gates.
+- Cloudflare inventory reported 0 D1 databases, 0 Workers, 0 DO namespaces; Workers Free entitlement NOT VERIFIED. Hosted provisioning NOT AUTHORIZED / NOT RUN.
+- Disposition: do NOT merge PR #64 as-is. Its broad context/checkpoint and reports are stale/diverged; selectively transplant essential qualification plan/report onto a clean branch from current default, refresh context without overwriting newer entries, run docs/link checks.
+- Report: docs/reports/2026-11-11-pr64-hosted-d1-documentation-drift-audit.md (commit `ae5675a00c4109bd7f45f959e27c8a1c69f237ab`).
+- Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
