@@ -2994,3 +2994,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: [2026-11-11 projection Recovery Actor prerequisite audit](../reports/2026-11-11-projection-recovery-actor-prerequisite-audit.md).
 - Decision: no runtime implementation until governance names issuer authority/owner, trusted time, revocation source, audit/retention owner and trusted composition-root boundary. If unresolved, explicit NO-GO and keep recovery NOT IMPLEMENTED.
 - No source-code changes, merge, dispatch, secret/provider access, deployment or resource mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 19. PR #61 moving-head revocation boundary audit — 2026-11-11
+
+- PR #61 current branch `proof/experience-auth-d1-session-2026-11-11` verified at tip `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; OPEN / DRAFT / UNMERGED, stacked on PR #52.
+- Moving-head correction: immutable commit `f2d225fe8d660bdc9724320080e0d0cd91705f0a` lacked the pre-creation revocation predicate but was not current branch tip. Current tip `58e255880c4cf4dc24fc2f2ee0791a9b121146ae` includes `created_at <= input.now`; earlier discrepancy was stale-ref comparison, not a current-head defect.
+- Current source blob `f514e69cfac03792bb40a7e4c606c2106ba7d79d`; current test blob `60046e5a55dcd1155755ce0c8a5d8af4e87ee1a3`. Regression proves future-created session cannot be revoked before creation, remains ACTIVE at creation time, then can be revoked.
+- Exact-head Actions run `42991794791`, job `130426199809`: COMPLETED / SUCCESS; all reported steps succeeded. Combined status contexts empty. Formal reviews none; independent security review NOT RUN.
+- Qualification remains synthetic local D1 only. Caller-supplied `input.now` is not production trusted time. Hosted D1 entitlement/isolation, AEAD/key custody/rotation, OAuth callback/token exchange, browser cookies/CSRF, owner allowlist integration, session rotation/family lineage, global revoke-all and cache invalidation remain NOT QUALIFIED / NOT IMPLEMENTED.
+- Report: [PR #61 moving-head revocation boundary audit](../reports/2026-11-11-pr61-moving-head-revocation-boundary-audit.md).
+- No source changes, merge, deployment, secret/provider access, dispatch or resource mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
+- Next: read-only audit of trusted composition root and owner-allowlist/session-cookie/CSRF boundary across the exact PR #25/#24/#52/#61 stack; preserve stack order and verify exact refs before any promotion.
