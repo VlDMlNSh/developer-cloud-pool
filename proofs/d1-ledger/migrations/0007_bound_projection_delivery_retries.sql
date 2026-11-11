@@ -38,3 +38,24 @@ END;
 
 CREATE INDEX pool_attempt_projection_retry_due
   ON pool_attempt_projection_outbox(status, retry_after_at, created_at);
+
+-- Database-level guardrails make dead-letter terminal even if a caller bypasses
+-- the adapter. No silent requeue or attempt-budget inflation is permitted.
+CREATE TRIGGER pool_attempt_projection_attempt_budget_guard
+BEFORE UPDATE OF delivery_attempts ON pool_attempt_projection_outbox
+WHEN NEW.delivery_attempts > 5
+BEGIN SELECT RAISE(ABORT, 'PROJECTION_DELIVERY_ATTEMPT_LIMIT'); END;
+
+CREATE TRIGGER pool_attempt_projection_dead_letter_budget_guard
+BEFORE UPDATE OF status ON pool_attempt_projection_outbox
+WHEN NEW.status = 'dead_letter' AND (
+  NEW.delivery_attempts < 5 OR NEW.dead_lettered_at IS NULL OR
+  NEW.dead_letter_reason IS NULL OR NEW.lease_owner IS NOT NULL OR
+  NEW.lease_expires_at IS NOT NULL
+)
+BEGIN SELECT RAISE(ABORT, 'PROJECTION_DEAD_LETTER_EVIDENCE_REQUIRED'); END;
+
+CREATE TRIGGER pool_attempt_projection_dead_letter_terminal
+BEFORE UPDATE ON pool_attempt_projection_outbox
+WHEN OLD.status = 'dead_letter'
+BEGIN SELECT RAISE(ABORT, 'PROJECTION_DEAD_LETTER_TERMINAL'); END;
