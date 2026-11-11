@@ -2782,3 +2782,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Latest exact-head CI [42984644046](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984644046), job `130402848442`: COMPLETED / SUCCESS. API/policy 11/11; Workers/D1 15/15 across 3 files; static checks and cleanup successful.
 - D1 CHECK constraints for envelope/key-version character sets and direct-write negative cases remain present. Session lookup before creation time is now explicitly tested.
 - Report reconciliation commit `54362bf19c20bd9fad1ff5eb4058a38e7497737d`; PR remains OPEN/DRAFT/UNMERGED, reviews 0, inline threads 0, independent security review NOT RUN. Production OAuth remains NOT QUALIFIED; auth fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 — PR #61 future-created session guard
+
+- Audit report: [PR #61 future session time guard](../reports/2026-11-11-pr61-future-session-time-guard.md); report commit `bf2476c43040198793186418a65f6270924dad38`.
+- Issue #62 identified that `lookupApplicationSession` could return ACTIVE before persisted `created_at`. PR #61 initial inspected head `27017a22b2ae8710803034759bc308d730a0ad39` lacked `created_at <= now`.
+- Fixed `src/experience-auth-session.js`: lookup now includes `AND created_at <= ?` and binds `input.now` for both creation and expiry bounds. Added Workers-runtime D1 regression: future-created session denied before creation, active at creation time.
+- Final PR #61 head: `976cb2ed0b594b39c847921918f182ab6d571344`. Source blob `046111beb31d7c8cf58e623581d2b260fbdad496`; test blob `5ccfb8e662b531d29b6292985d6420b47ef99029`.
+- Exact-head run [42984644046](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984644046), job `130402848442`: COMPLETED/SUCCESS. `npm ci`, `npm run check`, `npm test` 11/11, Workers/D1 3 files / 15 tests all passed. Combined status API returned no statuses; workflow run/job are evidence.
+- PR #61 remains OPEN/DRAFT/UNMERGED; reviews 0, threads 0, independent review NOT RUN. Issue #62 remains OPEN (fix is in PR branch, issue not closed).
+- This is local synthetic D1 proof only. Caller-supplied `now` is not production trusted time. AEAD/key custody, owner allowlist composition, session rotation, global quotas, callback/cookie/CSRF integration, browser QA, hosted D1 and deployment remain NOT QUALIFIED/NOT RUN.
+- No migration, workflow, package, production binding, secret, OAuth App, route, deployment, provider call or dispatch changed. Production OAuth/session NOT IMPLEMENTED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue source-level review of PR #61 temporal/revocation/replay/ambiguous-write/authority boundaries; do not enable runtime or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
