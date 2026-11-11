@@ -701,6 +701,10 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       env.POOL_DB, outboxId, "projection-new", second.lease_generation_delivery, NOW + 12
     );
     expect(accepted).toMatchObject({ decision: "PROJECTION_DELIVERED", generation: 2 });
+    const deliveredEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.delivered'"
+    ).bind(outboxId).first();
+    expect(deliveredEvent).toEqual({ actor_id: "projection-new", lease_generation: 2 });
     const row = await env.POOL_DB.prepare(
       "SELECT status, lease_owner, lease_expires_at, delivered_at FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
     ).bind(outboxId).first();
@@ -724,9 +728,12 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     );
     expect(retryable.decision).toBe("PROJECTION_RETRYABLE");
     const history = await env.POOL_DB.prepare(
-      "SELECT event_type FROM pool_attempt_projection_events WHERE outbox_id = ? ORDER BY created_at, delivery_event_id"
+      "SELECT event_type, actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? ORDER BY created_at, delivery_event_id"
     ).bind(outboxId).all();
-    expect(history.results.map(x => x.event_type)).toEqual(["delivery.leased", "delivery.retryable"]);
+    expect(history.results).toEqual([
+      { event_type: "delivery.leased", actor_id: "projection-retry", lease_generation: 1 },
+      { event_type: "delivery.retryable", actor_id: "projection-retry", lease_generation: 1 }
+    ]);
     await expect(env.POOL_DB.prepare(
       "DELETE FROM pool_attempt_projection_events WHERE outbox_id = ?"
     ).bind(outboxId).run()).rejects.toThrow();
