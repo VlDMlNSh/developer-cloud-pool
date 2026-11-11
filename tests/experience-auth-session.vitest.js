@@ -96,6 +96,27 @@ describe("isolated Experience auth D1 schema", () => {
       .toBe("DENY");
   });
 
+  it("rejects sessions before their creation time", async () => {
+    const futureSessionHash = "d".repeat(64);
+    const createdAt = NOW + 100;
+    expect(await createApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      githubUserId: "12345",
+      createdAt,
+      expiresAt: NOW + 3600
+    })).toEqual({ outcome: "CREATED" });
+
+    expect(await lookupApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      now: NOW
+    })).toEqual({ outcome: "DENY", reason: "SESSION_INACTIVE" });
+
+    expect(await lookupApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      now: createdAt
+    })).toEqual({ outcome: "ACTIVE", githubUserId: "12345" });
+  });
+
   it("fails closed on missing storage and storage exceptions", async () => {
     expect((await revokeApplicationSession(db(), {
       sessionHash: { toString: () => sessionHash }, now: NOW
