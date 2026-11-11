@@ -379,3 +379,16 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Local proof status: PR #58 synthetic projection VERIFIED; PR #59 retry/dead-letter VERIFIED within local Workers-runtime D1 scope. Hosted state authority and production qualification NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Keep dispatch fail-closed.
 - Next: trace production Supervisor/Worker interfaces against claim/attempt/outbox contracts; document integration blockers and least-privilege permissions without wiring or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 follow-up — PR #60 projection recovery authority
+
+- Audit: [PR #60 projection recovery authority contract audit](../reports/2026-11-11-pr60-projection-recovery-authority-contract-audit.md).
+- PR #59 exact-head run [42981807825](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42981807825), job 130393715595: SUCCESS; 53 local Workers-runtime D1 tests. No independent review. This is not hosted D1 or production sender qualification.
+- PR #60 design target 04fcf8868a086b9f58c10fdc076aef0b7170d5f2; ADR blob 59a4be21516da0e005114acfe015aee7787524dc; issuer/time contract blob 6c8bc0a06f8eb0f354da397ba2bd9629b348c90c. PR OPEN/DRAFT/UNMERGED; exact-target CI no runs returned; reviews/threads 0.
+- Design is a useful authority boundary but not an implementation. Issuer ownership/authentication, key lifecycle, revocation source, recovery-actor registry, trusted time, durable audit sink/owner and hosted backend qualification remain unresolved.
+- Keep orphan recovery NOT IMPLEMENTED / NOT QUALIFIED; no task Resolver grant reuse; no requeue/task mutation/GitHub writes/dispatch; no hosted resource creation.
+- Context Window updated: blob 558814fba8a83e39428dae13d94650249ada50c8, commit 47daa1064d43f579ab21ef2f604e7a556bcddbd9.
+- Report commit: 3aa9cf03f92988cc75b03364fdfc4d66a294df75.
+- Next: evidence-based inventory of authorized issuer, revocation, clock and audit services; otherwise keep recovery blocked. Refresh ruleset and dispatch-variable metadata separately.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
