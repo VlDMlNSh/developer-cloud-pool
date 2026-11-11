@@ -12,3 +12,8 @@
 - Next: create a clean integration candidate from current default; port only reviewed source files; implement injected local-only orchestrator with receipt-bound acknowledgement and failure/restart/stale-lease tests. Preserve dispatch:false and no live credentials.
 - Hosted D1 remains NOT AUTHORIZED / NOT RUN. Recovery Actor issuer/trusted-time remains BLOCKED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Correction — projection verification receipt
+
+The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified: true`, `eventId`, `payloadDigest` and verified managed labels after final read-back. The gap is not that success always returns false. The gap is that no receipt is bound to the D1 delivery lease generation and the acknowledgement function accepts no receipt. Next implementation must bind outbox ID, digest and generation, and validate them in the D1 acknowledgement. Do not claim cryptographic signing without a real qualified signature mechanism.
