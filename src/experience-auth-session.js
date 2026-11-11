@@ -113,7 +113,7 @@ export async function lookupApplicationSession(db, input) {
 
 export async function revokeApplicationSession(db, input) {
   if (!validDb(db)) return deny("STORAGE_UNAVAILABLE");
-  if (!input || !HEX_256.test(input.sessionHash ?? "") ||
+  if (!input || typeof input.sessionHash !== "string" || !HEX_256.test(input.sessionHash) ||
       !Number.isSafeInteger(input.now) || input.now <= 0) {
     return deny("INVALID_SESSION_REVOCATION");
   }
