@@ -1626,3 +1626,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
 - Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #37 current-head remediation recheck
+
+- Report: `docs/reports/2026-11-11-pr37-current-head-remediation-recheck.md`.
+- PR #37 documented head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; exact-head PR-triggered runs `42484039940` and `42484039932`: SUCCESS.
+- Current Worker workflow blob `04d63d815d2f7d15cfa80c932b614d559385ff0a` places `job.workflow_repository`, `job.workflow_file_path`, and `job.workflow_sha` in the validation step's `steps[].env`, not job-level env. Prior F1 context-placement finding is SOURCE-CORRECTED in this branch snapshot; no live reusable Worker invocation was run.
+- Current Supervisor Finalizer blob `4a176e5ebb3cf1e7ef29b00164498e34a4f9fafc` still checks only presence of `pool:claimed` before terminal label PATCH; it does not bind result to immutable task envelope, owner/generation, run identity, or authoritative claim record. F2 remains HIGH / OPEN / ACCEPTANCE BLOCKER.
+- PR #37 formal reviews: two CHANGES_REQUESTED and one COMMENTED, all by `maxkorolskiy88-ship-it`; no approval. Issue #1 last recorded ruleset snapshot says approvals=0 and CODEOWNERS=false; live ruleset not re-read; governance NOT VERIFIED.
+- Compare PR #37 head to default: 36 ahead / 19 behind, DIVERGED, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Controlled stack reconciliation required; no merge.
+- No runtime, schema, permissions, workflow, secrets, dispatch, deployment or resources changed. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: complete claim-service threat model/interface and resolve F2 using an authenticated transactional conditional-write backend; reconcile PR #37/#53 stack only after immutable target refs and exact-head plan.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
