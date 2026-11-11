@@ -1676,3 +1676,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No hosted provisioning, Worker deployment, secrets, permissions, schema, dispatch or provider/model calls. Dispatch remains FAIL-CLOSED. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #39/#54 proof stack to current default, rerun exact-head local CI, and separately verify account Free entitlement before requesting explicit authorization for isolated hosted resources.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #64 hosted D1 qualification plan publication — 2026-11-11
+
+- PR #64 updated: https://github.com/VlDMlNSh/developer-cloud-pool/pull/64
+- Branch: `docs/issue38-free-claim-backend-fit-2026-11-11`; current head at this context update: `28ddc862f9acffc04a90d9689904560a33e0a50a`; base: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; compare: 8 commits ahead / 0 behind; 4 documentation files changed; 0 deletions.
+- Added plan: `docs/qualification/CONTOUR-A-HOSTED-D1-QUALIFICATION-PLAN.md`, blob `48cc92df59155881f50d81ff7c6ba1f2375d5d97`.
+- Added report: `docs/reports/2026-11-11-hosted-d1-qualification-boundary-audit.md`, blob `81e91ff7493f32c3a750940b9e35bb6b884dc80c`.
+- Context Window blob after preceding update: `5364cc8427533d14db87050856c082b457364356`; this append records PR metadata and links.
+- PR #64 remains OPEN / DRAFT / UNMERGED. Exact-head PR workflow query returned no runs = NOT VERIFIED. Formal reviews 0; inline threads 0. Mergeable flag is not acceptance.
+- The hosted plan explicitly prohibits provisioning until Free eligibility, quotas, source reconciliation and explicit resource authorization are verified. It requires 50 independent concurrent HTTP requests through a test-only Worker/API; sequential D1 SQL batches are not accepted as concurrency evidence.
+- No hosted resource, secret, billing data, runtime/schema/permission/dispatch or deployment changed. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack onto current default and rerun exact-head CI; independently verify account-specific Free eligibility before any owner-authorized hosted resource creation.
