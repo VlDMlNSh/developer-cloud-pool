@@ -86,7 +86,7 @@ BEGIN
       WHEN 'dead_letter' THEN 'delivery.dead_letter'
       ELSE 'delivery.leased'
     END,
-    NEW.lease_generation_delivery, NEW.lease_owner, NEW.updated_at
+    NEW.lease_generation_delivery, OLD.lease_owner, NEW.updated_at
   );
 END;
 
