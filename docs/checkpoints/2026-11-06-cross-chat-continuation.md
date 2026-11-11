@@ -367,3 +367,15 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - No dispatch, provider/model calls, secret access, remote resources, deployment, merge or paid resource. PR #56 exact-head CI VERIFIED; production reconciliation NOT QUALIFIED. Issue #38 OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconstruct PR #51/#56 current D1 migrations/triggers and port the minimal worker-finalization conditional transition with immutable envelope/claim/run_attempt binding. Keep indeterminate resolver separate and dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58/#59 projection outbox and dead-letter audit
+
+- Report: [PR #58/#59 terminal projection and dead-letter audit](../reports/2026-11-11-pr58-pr59-projection-outbox-retry-dead-letter-audit.md), commit `52eacfe898e51c1c68dc49b4fe6c0d125a894782`, blob `8490fa8b96544e32cf91693022ddeed426137144`.
+- PR #58 current head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; PR fixture run `42979949181` / job `130387805034` and push run `42979945524` / job `130387793379` SUCCESS. Fake GitHub projection protocol only; 10 focused cases.
+- PR #59 current head `5c47cda4394d0381315bc16182799a09bf861797`, based on PR #58. PR-associated run `42980783397` / job `130390442001` SUCCESS; 53/53 Workers-runtime D1 tests; artifact `13837232801`, SHA-256 `7dbc1b8b34dcdf4d03868df27168857b250eed43f6798990419042c9fccb8ebc`. Runner checked out synthetic merge commit `f02a32c`; treat as PR merge-tree CI, not direct head checkout.
+- Earlier PR #59 head `5b3b74fae4a70d7bb52fa874e60d60ba903af786` failed 1/53 due assertion expecting attempt-budget trigger rather than terminal dead-letter trigger. Follow-up commit `5c47cda...` corrected the expected terminal invariant; current merge-tree suite passed.
+- PR #54 → #58 → #59 remains OPEN/DRAFT/UNMERGED; #58/#59 formal reviews=0, inline threads=0. No live GitHub sender, hosted D1, production integration, dispatch or independent review.
+- Local proof status: PR #58 synthetic projection VERIFIED; PR #59 retry/dead-letter VERIFIED within local Workers-runtime D1 scope. Hosted state authority and production qualification NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Keep dispatch fail-closed.
+- Next: trace production Supervisor/Worker interfaces against claim/attempt/outbox contracts; document integration blockers and least-privilege permissions without wiring or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
