@@ -3156,3 +3156,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch fail-closed.
 - Next: resolve the lifecycle mapping and single-writer decision, then add adversarial fake-only tests and a one-use D1-lease-bound POST grant as a coordinated PR #58/#59 change.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #54 projection event actor attribution finding
+
+- Re-read default-branch decision `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md`: GitHub Issue labels are rejected as authoritative atomic claim lock; authenticated transactional claim service is only a preferred target, NOT SELECTED/NOT QUALIFIED. Issue #38 remains open and acceptance requires hosted contention/failure proof, authenticated issuer, trusted time, least privilege and independent review.
+- Audited PR #54 immutable head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. Exact-head D1 proof CI run `42537241204` SUCCESS.
+- New finding P54-F01: migration 0006 status trigger writes `NEW.lease_owner` to actor_id, but `markProjectionRetryable` and `acknowledgeProjectionDelivered` clear lease_owner in the same UPDATE. Consequently `delivery.retryable` and `delivery.delivered` event rows have NULL actor_id. Use `OLD.lease_owner` or a separately validated transition actor and assert retryable/delivered/dead-letter actor semantics in tests. Existing unresolved inline owner thread: `PRRT_kwDOVirI-s61rjeP`, comment `4524475226`; this is not independent review.
+- Report: [PR #54 Projection Event Actor Attribution Audit](../reports/2026-11-11-pr54-projection-event-actor-attribution-audit.md), commit `1e75cf2c6412392d217f255ae271d29994d259a4`.
+- Reuse-first: retain existing D1 + Workers Vitest proof; narrow SQL trigger/test fix only, no new event framework or queue.
+- No runtime/schema/workflow/permission/secret changes in this pass; no dispatch, deployment, merge or live GitHub mutation.
+- PR #37/#39/#54/#58/#59/#60 remain OPEN/DRAFT/UNMERGED at last fetch. PR #37 has CHANGES_REQUESTED review history; #54 has unresolved actor_id thread; #58/#59 exact-head CI SUCCESS; #60 exact-head CI NOT VERIFIED. PR #54 exact-head CI SUCCESS.
+- Dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: correct PR #54 status-event actor attribution and add retryable/delivered/dead-letter attribution tests; verify exact updated-head CI, then resume claim-service promotion gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
