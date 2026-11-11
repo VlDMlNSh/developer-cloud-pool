@@ -2477,3 +2477,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Orphaned lease recovery BLOCKED / NOT IMPLEMENTED; actor provenance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
 - Next: verify Free/Paid plan via dashboard label; separately define recovery-actor threat model and acceptance contract before code changes.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Cloudflare Free plan owner confirmation and deployment gate
+- Owner explicitly supplied the Cloudflare plan label **Free** in the project conversation. Record this as owner-reported operational evidence; do not claim independent billing API verification. Cloudflare OAuth billing subscriptions/profile/history remain HTTP 403 due to missing Billing Read scope.
+- Rechecked Cloudflare account metadata: D1 databases `[]`; Worker scripts `[]`; `default_usage_model=standard` is not plan evidence. No resource provisioning, migration, deployment, secret access, or billing mutation.
+- Refreshed repository: default branch `Основной` HEAD remains `864213e2ff5b4fa956ba405dea8137a44d812f49`; continuation branch `docs/cross-chat-continuation-2026-11-06`. PR #37/#58/#59 remain OPEN/DRAFT/UNMERGED. PR #60 OPEN/DRAFT/UNMERGED, head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`; recovery actor contract is design-only. PR #60 review and inline-thread queries returned empty (independent review NOT VERIFIED).
+- PR #59 exact-head CI run `42981807825` COMPLETED/SUCCESS for `22200226da4f1af30645cf441a639db6893e9310`; this is isolated local D1 proof only, not hosted D1 qualification.
+- Report: [Cloudflare Free plan confirmation and deployment gate](../reports/2026-11-11-cloudflare-free-plan-confirmation-and-deployment-gate.md), commit `749bfe21463cbecca611dac3c7fe9f0cd1ef5b16`.
+- Free-only design and bounded planning may proceed using owner-reported Free label, but no Paid fallback, overage, paid-only feature, or charge. Before provisioning, produce a Free-only deployment decision packet with exact quotas, resource inventory, authority boundaries, reversible rollout and stop conditions.
+- Worker runtime NOT PROVISIONED/NOT DEPLOYED; D1 NOT PROVISIONED; remote web console NOT RUN; recovery actor NOT IMPLEMENTED/NOT QUALIFIED; task claim protocol NOT QUALIFIED; dispatch FAIL-CLOSED. Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
+- Next: compare the existing Hono + Workers Static Assets web-console candidate against the minimal Worker + D1 supervisor runtime and define the smallest free-only first deployment slice. No provisioning until governance and architecture gates are checked.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
