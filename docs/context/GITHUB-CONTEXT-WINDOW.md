@@ -2538,3 +2538,6 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Wave 528 JWS, RFC 8785 JCS, managed KMS/HSM, PostgreSQL state/outbox and separate audit sink are recommendations only. R-06 operational ownership/retention, concrete KMS/audit selection and independent A3 review remain open. MediaHub PR #600 remains OPEN/DRAFT/UNMERGED in the reviewed Context Window snapshot.
 - PR #60 issuer/time contract updated to acknowledge this direction; current contract blob `7f5be06506a4b4c93148133bf8ca3441b08ea700`; current PR #60 head `673f2519c8cdc7f75602599c48d44ec72e396dec`. No issuer implementation or clock qualification follows from this alignment.
 - Updated pass report commit `d2ce2fde6354057782814495fa2ee33db67976e2`; report blob after readback pending.
+
+
+- PR #59 description metadata corrected after exact-head refresh: current head `22200226da4f1af30645cf441a639db6893e9310` is now linked to run `42981807825` / job `130393715595` SUCCESS. No source change; PR remains Draft and review 0/0.
