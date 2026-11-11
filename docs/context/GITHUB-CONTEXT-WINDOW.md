@@ -1876,3 +1876,16 @@ Next step: design and independently review a versioned, bounded task-admission c
 - Important correction: PR #28/#29 base refs are indeed `Основной`, but raw GitHub PR API still reports base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`, while default branch ref is `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Repository reports `allow_update_branch=false`; connector has no update-branch operation. Previous file-overlap comparison is not a completed rebase. Do not claim branches updated.
 - Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-durable-quota-reservation-reuse-assessment.md
 - Next: inspect PR #39 predecessor/CI evidence, prepare isolated quota-specific D1 proof and independent HTTP concurrency acceptance. No hosted D1, provider calls, secrets or agent dispatch. Contour A BLOCKED; Contour B DEFERRED.
+
+
+## 2026-11-11 claim protocol evidence refresh
+
+- Default `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7`; Issue #38 OPEN.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`, stacked OPEN/DRAFT. Exact run `43010770730` / job `130489510967` SUCCESS; logs confirm 40/40 Workers-runtime tests. Fixes projection event actor attribution by preserving OLD.lease_owner; also adds indeterminate reconciliation queue, projection outbox and exact finalization replay recovery. Local synthetic D1 only.
+- PR #54 earlier head `ec3f326...` has 50 distinct approval contention proof run `42537241204` / job `128904147572` SUCCESS (per Issue #38 comment). Current head has fresh 40/40 suite. Formal independent APPROVED review on current head NOT VERIFIED; earlier COMMENTED finding fixed by author and exact-head test.
+- PR #57 current head `2c263e8a9915f0bc8e0698cde816e87cb2376538`; fixture run `42838193384` / job `129905939447` SUCCESS 33/33; Pool Contract Validation `42838193405` SUCCESS. Synthetic workflow_run evidence only; no runner provenance or production Supervisor integration.
+- PR #39 head `ecc7193...`, exact run `42329993548` / job `128274072508` SUCCESS 19/19; per-approval proof only, PR #54 is the task-wide extension.
+- Default decision `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md` rejects Issue label PATCH as CAS, does not select Git refs, prefers separate authenticated claim service + conditional-write store; D1 remains local proof, no hosted backend selected.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-contour-a-claim-protocol-evidence-refresh.md
+- No rebase/merge, hosted provisioning, credentials, provider calls, dispatch or production changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: audit PR #54 full current-head schema/state-machine and its composition with PR #57; prioritize issuer authentication/trusted clock; keep gates closed.
