@@ -79,3 +79,18 @@ Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Safe decision: do not merge/rebase stacked PRs blindly. First produce file-level dependency/migration manifest and supersession map; then create fresh candidate from current default and run exact-head CI.
 - No source/branch/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Hosted D1 NOT RUN. Dispatch FAIL-CLOSED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## D1 proof file integration manifest — 2026-11-11
+
+[File-level integration manifest](../reports/2026-11-11-d1-proof-file-integration-manifest.md), report commit `a6237d795249ddfa52991f4e529c15ffabd84d72`; workflow addendum commit `9ef9522c68611d077ee8cf80425d6cc0cd90eafd`.
+
+- Current default `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7` still has no D1 proof package.
+- Shared foundation #39/#54/#56: migrations 0001/0002, consume/worker, test harness and lockfile are identical by blob SHA.
+- PR #54/#56 share migrations 0003 logical task identity, 0004 immutable attempts and 0005 reconciliation queue. Migration order is 0001 → 0002 → 0003 → 0004 → 0005.
+- PR #54 alone contains migration 0006 + projection-outbox adapter/tests. PR #56 does not. Projection must be included as a complete optional unit only if acceptance scope requires it.
+- PR #56 is the security remediation source for `task-attempts.mjs`: removes caller-supplied `resumable:true` takeover path. PR #54 test file has projection coverage but weaker attempt API; PR #56 test file has no-takeover coverage but omits projection setup/tests. Compose deliberately; do not select either test file wholesale.
+- README common to #54/#56 is stale and still documents caller-declared resumability. Package check script differs: #54 includes projection adapter, #56 omits it. If 0006 retained, syntax check must include projection adapter.
+- Workflow review: PR #56 preserves pinned actions, Node 24.9.0, npm ci, syntax/test and lockfile artifact policy; its trigger list adds lease-takeover remediation branch. Keep that coverage in a new candidate.
+- GitHub search did not identify a mature drop-in D1 outbox implementation; keep official Cloudflare Workers Vitest integration rather than replacing it with a bespoke harness.
+- No code/branch/runtime/secret/permission/hosted resource/dispatch/deployment/merge changes. Exact candidate CI not run.
+- Integration NOT RUN; hosted D1 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
