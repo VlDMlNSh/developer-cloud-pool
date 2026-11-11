@@ -2294,3 +2294,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Integration: do not rebase solely to remove the five documentation-only commits; GitHub reports PR #25 mergeable. Preserve #52 as child of #25. Resolve canonical Context Window ownership/duplication and branch governance before advancing draft/review. No merge/deploy/dispatch in this pass.
 - Report: [PR #25 parent readiness review](../reports/2026-11-11-pr25-parent-readiness-review.md), corrected report commit `c53f8552c62948813f1e1f7811296f1fb40af5f2`, blob `a6ce57942c01de6b17e23e3a0540abe65b592255`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Repository governance and Context Window ownership
+- Read-only audit report: [repository governance and Context Window ownership audit](../reports/2026-11-11-repository-governance-context-ownership-audit.md), commit `4f341b5a210c04f0340418493091abddb763d4d6`.
+- Active ruleset `26550182` (`Основной — verified`) targets `refs/heads/Основной`: PR required; deletion and non-fast-forward prohibited; review-thread resolution required. However approving reviews are set to 0, CODEOWNERS review is disabled, last-push approval disabled, and no required status-check rule appears in the ruleset. Thus PR protection is VERIFIED, independent approval/CI enforcement is NOT CONFIGURED by this ruleset.
+- Context Window copies diverge: default-branch blob `560e9c7c3b58afa7fced1f87b3d65b7b9aec632b` (228,590 chars; header last refreshed 2026-11-08; default HEAD recorded as `197ba98d0dc7d8437d759dd25bee8750d02e59ae`) versus continuation-branch blob `0d13d0db8318f6b76a01a36937da4cd40182d2e6` (367,300 chars; includes 2026-11-11 PR #25 readiness). The continuation copy is more current but is not the default branch. Canonical ownership remains split; neither copy overwritten in this pass.
+- PR #25 and #52 remain OPEN/DRAFT with zero formal reviews and zero review threads at this read. Prior observed heads: #25 `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, #52 `c430fe4beecf93a20052f0c3efedb5f8539e4faa`. Recheck exact current heads and CI before any merge/dispatch.
+- No PR state changes, merge, rebase, deployment, workflow dispatch, or secret access.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: compare full history/diffs of both Context Window copies and prepare a non-destructive consolidation proposal; define intended approval and required-check governance before advancing PR #25.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
