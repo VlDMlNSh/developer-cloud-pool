@@ -28,7 +28,7 @@ Read-back:
 
 - Run: [42991794791](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42991794791).
 - Target: `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`.
-- Status at report creation: IN_PROGRESS. Recheck terminal state before treating this proof as verified.
+- COMPLETED / SUCCESS. Job `130426199809`; static checks, API/policy 11/11, Workers/D1 3 files / 18 tests passed, cleanup succeeded.
 
 ## Session revocation and rotation boundaries
 
@@ -42,8 +42,16 @@ Read-back:
 ## Disposition
 
 - Source correction: COMMITTED / READ-BACK VERIFIED.
-- Exact-head CI: PENDING.
+- Exact-head CI: VERIFIED SUCCESS — run `42991794791`, job `130426199809`.
 - PR #61: OPEN / DRAFT / UNMERGED; independent security review NOT RUN.
 - Contour A: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
 - Next: confirm exact-head CI, then define session-family/revocation authority and rotation/recovery policy before implementing rotation.
+
+
+## Exact-head CI closeout
+
+- [Run 42991794791](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42991794791), exact head `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`, job `130426199809`: COMPLETED / SUCCESS.
+- Static checks passed; API/policy 11/11; Workers/D1 3 files / 18 tests passed. Cleanup succeeded.
+- Existing synthetic Workflow failure-path tests emit expected uncaught-error diagnostics in the log; Vitest still reports 3 files / 18 tests passed and the job conclusion is SUCCESS. Node.js 20 deprecation warning for pinned checkout action remains maintenance debt, not a test failure.
+- This is local synthetic D1/Workers evidence only, not production revocation or session-rotation qualification.
