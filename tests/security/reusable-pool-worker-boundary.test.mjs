@@ -80,6 +80,7 @@ test("Worker rejects conflicting or duplicate managed task states", () => {
 
 const finalizerPolicy = fs.readFileSync("scripts/pool-finalizer.mjs", "utf8");
 const finalizerRunner = fs.readFileSync("scripts/pool-finalizer-runner.mjs", "utf8");
+const finalizerProtocol = fs.readFileSync("scripts/pool-finalizer-protocol.mjs", "utf8");
 
 test("Supervisor exports immutable envelope and unique run-attempt claim generation", () => {
   assert.match(script, /createHash\("sha256"\)/);
@@ -103,7 +104,9 @@ test("Finalizer binds issue, body digest, open state, unique claim generation an
   assert.match(finalizerPolicy, /envelopeDigest\(String\(issue\.body/);
   assert.match(finalizerPolicy, /generations\.length !== 1/);
   assert.match(finalizerPolicy, /states\.length !== 1 \|\| states\[0\] !== "pool:claimed"/);
-  assert.match(finalizerRunner, /buildFinalizationPlan\(current, expected\)/);
-  assert.match(finalizerRunner, /readback\.body !== current\.body/);
-  assert.match(finalizerRunner, /does not provide an atomic compare-and-swap/);
+  assert.match(finalizerProtocol, /buildFinalizationPlan\(issue, expected\)/);
+  assert.match(finalizerProtocol, /await api\.replaceLabels\(plan\.labels\)/);
+  assert.match(finalizerProtocol, /terminalReadback\(readback, expected, plan, humanLabels\)/);
+  assert.match(finalizerProtocol, /does not provide an atomic compare-and-swap/);
+  assert.match(finalizerRunner, /finalizeWithTransport\(api, expected\)/);
 });
