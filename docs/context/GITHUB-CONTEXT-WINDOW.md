@@ -1804,3 +1804,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: hard-disable legacy lifecycle; replace caller-controlled resumability with issuer-authorized reconciliation capability; test external side-effect lost-ack behavior; integrate attempt generation/execution identity with Worker finalizer.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (recovery/projection follow-up PRs)
+
+- Review report: `docs/reports/2026-11-11-recovery-projection-follow-up-review.md`; creation commit `f95ca5e528a2b4ec72c817da08234297d6b39cd0`.
+- Checkpoint updated at commit `136f08a9406c2fe073ff3415584f5a31b3663f1e`.
+- PR #56 `0769b6b5d5eda9c7821804b93db21ded6e0985ef`: removes caller-controlled `resumable`; exact-head local D1 run 42825872826 SUCCESS. Still DRAFT/unmerged; legacy lifecycle and trusted resolver unresolved.
+- PR #58 `6f7953e4abec3cc564984ee3635cdb7717ae5d5`: fake GitHub projection reconciler; no exact-head workflow/status. Sequential lost-response and delayed-visibility simulation only. `allowPost` remains caller-controlled; concurrent two-reconciler duplicate POST race is not tested or prevented.
+- PR #59 `22200226da4f1af30645cf441a639db6893e9310`: bounded retry/backoff/five-attempt dead-letter; exact-head local D1 run 42981807825 SUCCESS. Expired dead-letter still requires original worker ID and caller time.
+- PR #60 `234fb2ee40265e26fac00c69ac1b6192766602cb`: projection-specific issuer/trusted-time design only. Issuer owner, principal auth, key custody, revocation source, production clock and audit sink remain unresolved; exact-head CI NOT VERIFIED.
+- Focused mature GitHub repository search for D1 transactional outbox consumers and GitHub Actions outbox reconciliation returned no candidate repos. Keep existing Workers Vitest + D1 substrate; no replacement engine selected.
+- No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. PR #56/#58/#59/#60 all OPEN/DRAFT/UNMERGED. Dispatch FAIL-CLOSED; hosted D1 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: persistent no-repost marker state and concurrent reconciliation tests; bind PR #60 to accountable issuer/time/audit services; retire legacy lease lifecycle; integrate generation with Worker finalizer.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
