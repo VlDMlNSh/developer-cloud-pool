@@ -218,3 +218,18 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+## Projection Recovery Actor live readiness recheck — 2026-11-11
+
+- Default immutable snapshot: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Report: [Projection Recovery Actor live readiness recheck](../reports/2026-11-11-projection-recovery-actor-live-readiness-recheck.md), commit `46420b4ccc6d9e239529e80b1fa6d6ff0fa8e941`.
+- PR #60: OPEN/DRAFT; head `234fb2ee40265e26fac00c69ac1b6192766602cb`; current-default compare DIVERGED 7 ahead / 59 behind; exact-head checks 0.
+- PR #63: OPEN/DRAFT; head `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`; current-default compare DIVERGED 48 ahead / 43 behind; 19 documentation paths. Do not merge either PR as-is.
+- MediaHub Issue #301 OPEN; Wave 486 PR #599 and Wave 487 PR #600 OPEN/DRAFT/UNMERGED; exact-head check-runs 0. Separate Security Issuer Authority remains a governance target only.
+- No accepted operational issuer/key-custody, subject/revocation, trusted-time, audit-sink or privacy/retention owner evidence. Draft grant TTL/revocation limits are not accepted production policy.
+- Existing SOPS+age and Cosign roles remain; OpenBao FUTURE-GATED; immudb unselected; Rekor/Hydra are not substitutes for private operational audit or consumer-specific atomic recovery grants. No new dependency selected.
+- Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; fifth-lease recovery still lacks an independently authorized reaper. No implementation, token, secret, schema, workflow, permission, resource, dispatch, deployment or merge performed.
+- Next: search canonical governance for accepted operational appointments and actual issuer/audit/time-service evidence; if absent, preserve the blocker and obtain explicit governance resolution before code.
+- Dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
