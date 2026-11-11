@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pool-contract-validation-\${{ github.workflow }}-\${{ github.event.pull_request.number || github.ref }}
+  group: pool-contract-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -37,10 +37,10 @@ jobs:
       - name: Assert worker dispatch remains disabled
         shell: bash
         env:
-          POOL_DISPATCH_ENABLED: \${{ vars.POOL_DISPATCH_ENABLED }}
+          POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
         run: |
           set -euo pipefail
-          if [ "\${POOL_DISPATCH_ENABLED:-}" = "true" ]; then
+          if [ "${POOL_DISPATCH_ENABLED:-}" = "true" ]; then
             echo "::error::POOL_DISPATCH_ENABLED is true; validation refuses to proceed."
             exit 1
           fi
