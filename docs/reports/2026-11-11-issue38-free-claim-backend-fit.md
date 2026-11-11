@@ -130,3 +130,13 @@ No Worker, D1 database, Durable Object namespace, secret, API token, OAuth crede
 Next bounded step: inspect current Cloudflare D1 account resource/plan metadata without creating resources, then draft the isolated hosted-proof implementation boundary and permission matrix. If entitlement or ownership cannot be verified, stop before provisioning and retain dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 7. Read-only Cloudflare resource inventory (2026-11-11)
+
+A read-only Cloudflare API inventory was performed after this report's initial draft. Results:
+- D1 databases: empty list.
+- Worker scripts: empty list.
+- Durable Object namespaces: empty list.
+
+No resource was created or modified. This confirms there is no existing D1 database, Worker script or Durable Object namespace available to reuse in the connected account at the time of this read. It does not prove Workers Free plan entitlement, remaining quotas or permission to provision; the API account listing exposed a standard account identity but did not establish a Workers subscription/plan. Therefore the hosted proof cannot start yet without first verifying the account's free entitlement and obtaining an explicit approved provisioning boundary. Do not create resources speculatively.
