@@ -1840,3 +1840,22 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+---
+
+## 2026-11-11 — Projection delivery stack source audit (latest verified overlay)
+
+- Audit report: [Projection delivery stack source and compatibility audit](../reports/2026-11-11-projection-delivery-stack-source-audit.md).
+- Continuation checkpoint: [2026-11-11 projection stack checkpoint](../checkpoints/2026-11-11-projection-stack-continuation.md).
+- Immutable default base observed: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025`; PR #59 head `22200226da4f1af30645cf441a639db6893e9310`. Compare #58→#59: 10 ahead / 0 behind. Current default→#59: DIVERGED, 147 ahead / 62 behind, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. The proof stack is absent from current default; do not merge/rebase wholesale.
+- Audit-actor patch branch `b9731547afaefde2d22e704122e73615ce85876c` diverges from #59 (3 ahead / 18 behind). PR #59 migration 0007 already uses `COALESCE(NEW.lease_owner, OLD.lease_owner)`, retaining the previous lease owner for terminal/retryable status events; blindly cherry-picking its old migration 0006 correction would be redundant.
+- Critical correctness gap: `acknowledgeProjectionDelivered` does not require a projection-verification receipt bound to outbox ID, event digest and lease generation. The D1 outbox can be acknowledged delivered without proof of external projection read-back.
+- Critical liveness gap: `deadLetterExpiredProjection` remains same-owner/generation only; it cannot independently reap an orphaned fifth lease. Do not widen without separately accepted issuer/trusted-time authority.
+- No integrated D1 lease→mapper→projection sender→verified receipt→D1 acknowledgement actor is implemented or qualified. `now` and worker identity remain caller-supplied in the local proof.
+- PR #58 local fake-projection exact-head runs previously recorded successful; PR #59 exact-head PR run `42981807825`, job `130393715595`, 3 Workers-runtime test files / 53 tests passed. These are local proof results, not hosted D1 or live GitHub API qualification.
+- Next: clean integration candidate from current default; port only reviewed source files; add receipt-bound acknowledgement and injected orchestrator tests for success/failure/ambiguous POST/read-back mismatch/stale lease/restart. Preserve `dispatch:false`.
+- Hosted D1 NOT AUTHORIZED / NOT RUN. Recovery Actor issuer/trusted-time BLOCKED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Documentation working branch: `docs/projection-stack-reconciliation-2026-11-11`, based on immutable default SHA above. No runtime/schema/workflow/permission/secret/dispatch/deployment/merge change.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
