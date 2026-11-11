@@ -333,3 +333,18 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect the current authority/issuer/key-custody and evidence-source contracts; decide who can issue each decision and from which trusted evidence before writing executable transition specs.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Recovery Actor authority reconciliation — 2026-11-11
+
+- Critical correction: the prior local Capability v1 draft incorrectly included task-attempt resume and new-attempt authorization. The corrected contract now supersedes that draft and narrows the Recovery Actor to exactly one operation: `dead_letter_expired_projection` on one exact expired, exhausted projection outbox row.
+- Explicit prohibitions: no task retry/resume/new attempt; no mutation of `pool_tasks` or `pool_attempts`; no GitHub writes; no requeue, dispatch, Worker/Supervisor invocation or batch/wildcard access.
+- Corrected contract blob: `9b663ca9ab8fe639b83a26dd5296b3409fd90334`, commit `bd27c53624f23ac2924c37d8bec1b542528a7d1b`.
+- Existing source precedence read-back: PR #60 parent ADR blob `59a4be21516da0e005114acfe015aee7787524dc`; issuer/trusted-time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; PR #63 issuer/R-06 governance audits including operational-owner search. Their core finding: no accepted named issuer operator, trust custodian, principal registry/revocation publisher, trusted-time operator, private audit sink/operator or privacy/legal retention owner is evidenced.
+- Wave 486/487 selects a separate Security Issuer Authority only as a target in draft MediaHub PRs #599/#600. It is not accepted or implemented. Their proposed 300-second grant lifetime / 30-second revocation freshness are target defaults only, not production guarantees.
+- PR #60 and PR #63 exact-head PR workflow queries returned no runs; CI NOT VERIFIED. PR #67 exact-head runs #43064261520 and #43064261551 are SUCCESS, but combined status contexts remain empty and reviews are 0. Those runs do not qualify Recovery Actor.
+- Current ruleset #26550182 read-back: PR required; 0 required approvals; review-thread resolution required; deletion/non-fast-forward blocked; no bypass actors; current user cannot bypass. Zero approvals does not satisfy independent qualification.
+- No code/schema/permissions/workflow/secrets/hosted resources/dispatch/deployment/provider calls changed. Independent review remains deferred until after actual pool launch per owner direction.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: source-only reconciliation of accepted issuer/operational owner and trusted evidence requirements; do not implement until governance and service ownership are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
