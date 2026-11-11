@@ -36,7 +36,7 @@ Read-back verified:
 
 ## 3. Remaining qualification findings
 
-- Corrected exact-head CI: NOT VERIFIED. At the time of this report, GitHub returned no workflow run or combined status for `7b018219cf220046a641d3811434014cc63421d4`.
+- Corrected exact-head CI: SUCCESS — run `42984240109` / job `130401521593`, completed successfully on exact head `7b018219cf220046a641d3811434014cc63421d4`. Static checks SUCCESS; existing API/policy tests 11/11; Workers/D1 suite 14/14 across 3 files, including all 6 Experience Auth tests. Job steps 1–7 and cleanup completed successfully.
 - Independent security review: NOT RUN; formal reviews 0, inline threads 0.
 - OAuth state/session logic remains a local synthetic proof only. PKCE envelope encryption/key custody and rotation are explicitly unqualified; owner allowlisting is separate; session rotation and global quota enforcement are absent.
 - The adapter accepts caller-provided timestamps. This is a test seam and not a production trusted-time implementation.
@@ -47,7 +47,7 @@ Read-back verified:
 
 - Initial CI: FAILED for missing migration application.
 - Harness correction: COMMITTED and read-back verified.
-- Corrected exact-head CI: NOT VERIFIED / pending.
+- Corrected exact-head CI: VERIFIED SUCCESS — run `42984240109` / job `130401521593`; 14/14 Workers/D1 tests and 11/11 API tests passed.
 - PR #61: OPEN / DRAFT / UNMERGED.
 - Production OAuth/session: NOT IMPLEMENTED / NOT QUALIFIED.
 - Jarvis Web Experience authentication remains fail-closed.
@@ -56,3 +56,14 @@ Read-back verified:
 ## 5. Next bounded step
 
 Recheck exact-head CI on `7b018219cf220046a641d3811434014cc63421d4`. If the migration setup now passes, inspect all 6 Experience Auth tests and full suite results; then audit PKCE envelope lifecycle, bounded OAuth/session lifetimes, trusted time and owner-allowlist composition before any production route. If CI remains absent or fails, keep PR #61 draft and fail-closed.
+
+
+## 6. Exact-head CI closeout (2026-11-11)
+
+- Rechecked PR #61 head: `7b018219cf220046a641d3811434014cc63421d4`.
+- Exact-head run `42984240109`, job `130401521593`: COMPLETED / SUCCESS.
+- Step results: checkout, runtime, lockfile install, static checks, existing API/policy tests and Workers/D1 tests all SUCCESS.
+- Test totals: API/policy 11/11; Workers/D1 14/14 across 3 files; Experience Auth 6/6.
+- Run URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984240109.
+- This verifies the local Workers-runtime test harness only. No hosted D1, OAuth app, PKCE encryption/key custody, trusted-time or production session qualification is implied.
+- PR #61 remains OPEN / DRAFT / UNMERGED, stacked on #52; independent security review NOT RUN. Production authentication remains fail-closed.
