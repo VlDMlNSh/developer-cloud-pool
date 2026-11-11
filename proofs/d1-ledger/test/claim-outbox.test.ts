@@ -3,7 +3,7 @@ import { env } from "cloudflare:workers";
 import { claimAndEnqueue, claimLogicalTask } from "../src/claim-outbox.mjs";
 import { acquireTaskLease, renewTaskLease, finalizeTaskLease } from "../src/task-lease.mjs";
 import { createTaskAttempt, acquireAttemptLease, renewAttemptLease, finalizeTaskAttempt, markAttemptIndeterminate } from "../src/task-attempts.mjs";
-import { acquireProjectionDelivery, markProjectionRetryable, acknowledgeProjectionDelivered } from "../src/projection-outbox.mjs";
+import { acquireProjectionDelivery, markProjectionRetryable, deadLetterExpiredProjection, acknowledgeProjectionDelivered, MAX_PROJECTION_DELIVERY_ATTEMPTS } from "../src/projection-outbox.mjs";
 
 const NOW = 1_800_000_000;
 const approval = {
@@ -730,6 +730,132 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     await expect(env.POOL_DB.prepare(
       "DELETE FROM pool_attempt_projection_events WHERE outbox_id = ?"
     ).bind(outboxId).run()).rejects.toThrow();
+  });
+
+
+  it("enforces retry backoff and refuses early reacquisition", async () => {
+    const taskKey = await createLogicalTask("approval-projection-backoff");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-backoff", NOW + 2, 60);
+    await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-backoff",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "1".repeat(64), provenanceDigest: "2".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    const outboxId = "attempt-finalized:attempt-1";
+    const delivery = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-backoff", NOW + 4, 30);
+    const retry = await markProjectionRetryable(
+      env.POOL_DB, outboxId, "projection-backoff", delivery.lease_generation_delivery, NOW + 5, "GITHUB_API_UNAVAILABLE"
+    );
+    expect(retry).toMatchObject({
+      decision: "PROJECTION_RETRYABLE", attempts: 1, retryAfter: NOW + 35, dispatch: false
+    });
+    const early = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-early", NOW + 34, 30);
+    expect(early).toMatchObject({ decision: "DENY", reason: "PROJECTION_NOT_LEASEABLE" });
+    const due = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-due", NOW + 35, 30);
+    expect(due).toMatchObject({ decision: "PROJECTION_LEASE_ACQUIRED", delivery_attempts: 2 });
+  });
+
+  it("dead-letters after five failed projection attempts and never automatically requeues", async () => {
+    const taskKey = await createLogicalTask("approval-projection-dead-letter");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-dead-letter", NOW + 2, 60);
+    await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-dead-letter",
+      generation: lease.generation, status: "failed",
+      resultDigest: "3".repeat(64), provenanceDigest: "4".repeat(64),
+      terminalReason: "failed", now: NOW + 3
+    });
+    const outboxId = "attempt-finalized:attempt-1";
+    const attemptTimes = [NOW + 4, NOW + 35, NOW + 96, NOW + 217, NOW + 458];
+    let last;
+    for (let i = 0; i < MAX_PROJECTION_DELIVERY_ATTEMPTS; i += 1) {
+      const delivery = await acquireProjectionDelivery(
+        env.POOL_DB, outboxId, `projection-attempt-${i + 1}`, attemptTimes[i], 20
+      );
+      expect(delivery).toMatchObject({
+        decision: "PROJECTION_LEASE_ACQUIRED", delivery_attempts: i + 1
+      });
+      last = await markProjectionRetryable(
+        env.POOL_DB, outboxId, `projection-attempt-${i + 1}`,
+        delivery.lease_generation_delivery, attemptTimes[i] + 1, "GITHUB_API_UNAVAILABLE"
+      );
+      if (i < MAX_PROJECTION_DELIVERY_ATTEMPTS - 1) {
+        expect(last.decision).toBe("PROJECTION_RETRYABLE");
+      }
+    }
+    expect(last).toMatchObject({
+      decision: "PROJECTION_DEAD_LETTERED",
+      attempts: MAX_PROJECTION_DELIVERY_ATTEMPTS,
+      reasonCode: "GITHUB_API_UNAVAILABLE",
+      dispatch: false
+    });
+    const row = await env.POOL_DB.prepare(`
+      SELECT status, delivery_attempts, lease_owner, lease_expires_at,
+             dead_lettered_at, dead_letter_reason
+        FROM pool_attempt_projection_outbox WHERE outbox_id = ?
+    `).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "dead_letter", delivery_attempts: 5, lease_owner: null,
+      lease_expires_at: null, dead_lettered_at: attemptTimes[4] + 1,
+      dead_letter_reason: "GITHUB_API_UNAVAILABLE"
+    });
+    const noRequeue = await acquireProjectionDelivery(
+      env.POOL_DB, outboxId, "projection-after-dead-letter", NOW + 1000, 30
+    );
+    expect(noRequeue).toMatchObject({ decision: "DENY", reason: "PROJECTION_NOT_LEASEABLE" });
+    const history = await env.POOL_DB.prepare(`
+      SELECT event_type, actor_id, reason_code
+        FROM pool_attempt_projection_events WHERE outbox_id = ?
+        ORDER BY created_at, delivery_event_id
+    `).bind(outboxId).all();
+    expect(history.results.filter(x => x.event_type === "delivery.dead_letter")).toHaveLength(1);
+    expect(history.results.at(-1)).toMatchObject({
+      event_type: "delivery.dead_letter", actor_id: "projection-attempt-5",
+      reason_code: "GITHUB_API_UNAVAILABLE"
+    });
+  });
+
+  it("dead-letters an expired fifth lease through generation-fenced recovery", async () => {
+    const taskKey = await createLogicalTask("approval-projection-expired-fifth");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-expired-fifth", NOW + 2, 60);
+    await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-expired-fifth",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "5".repeat(64), provenanceDigest: "6".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    const outboxId = "attempt-finalized:attempt-1";
+    const retryAt = [NOW + 4, NOW + 35, NOW + 96, NOW + 217];
+    for (let i = 0; i < 4; i += 1) {
+      const worker = `projection-expire-${i + 1}`;
+      const delivery = await acquireProjectionDelivery(env.POOL_DB, outboxId, worker, retryAt[i], 10);
+      expect(delivery.decision).toBe("PROJECTION_LEASE_ACQUIRED");
+      const marked = await markProjectionRetryable(
+        env.POOL_DB, outboxId, worker, delivery.lease_generation_delivery,
+        retryAt[i] + 1, "COMMENT_VISIBILITY_AMBIGUOUS"
+      );
+      expect(marked.decision).toBe("PROJECTION_RETRYABLE");
+    }
+    const fifth = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-fifth-crashed", NOW + 458, 5);
+    expect(fifth).toMatchObject({ decision: "PROJECTION_LEASE_ACQUIRED", delivery_attempts: 5 });
+    const tooEarly = await deadLetterExpiredProjection(
+      env.POOL_DB, outboxId, "projection-fifth-crashed", fifth.lease_generation_delivery, NOW + 462
+    );
+    expect(tooEarly.decision).toBe("DENY");
+    const recovered = await deadLetterExpiredProjection(
+      env.POOL_DB, outboxId, "projection-fifth-crashed", fifth.lease_generation_delivery, NOW + 463
+    );
+    expect(recovered).toMatchObject({
+      decision: "PROJECTION_DEAD_LETTERED", attempts: 5,
+      reasonCode: "LEASE_EXPIRED_AFTER_MAX_ATTEMPTS", dispatch: false
+    });
+    const stale = await deadLetterExpiredProjection(
+      env.POOL_DB, outboxId, "another-worker", fifth.lease_generation_delivery, NOW + 464
+    );
+    expect(stale.decision).toBe("DENY");
   });
 
 
