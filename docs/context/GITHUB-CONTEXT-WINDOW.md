@@ -1589,3 +1589,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Stack merge readiness BLOCKED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
 - Next: inspect the 13 default-branch commits since the merge base, plan controlled stack refresh, verify current Ruleset, then rerun exact-head CI on all affected PRs.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Correction — default-branch divergence analysis (2026-11-11)
+
+- After documentation publication, current default `Основной` is `9c61ba3a9c4e57f692f33517ed7e76d84b6e68b6`.
+- Compare from PR #25 base / stack merge base `64d2636d4500127e635c214ccfb722c6b3fcda80` to current default: 15 commits ahead, 0 behind. Compare endpoint lists only three changed paths, all docs: Context Window, PR #61 audit report, stacked PR audit report.
+- Current default versus PR #61 head `823c0416850cd0367a890e36d1bc025daa5f03d5`: DIVERGED, 61 ahead / 15 behind, same merge base. The 15-commit default-side delta is documentation-only; no source/config divergence is visible in compare file stats.
+- Earlier report wording that default was only 13 commits ahead was stale; corrected report is `docs/reports/2026-11-11-stacked-pr-25-52-61-audit.md`.
+- This reduces code-conflict risk but does not waive PR stack order, exact-head CI after any refresh, reviews, or governance. Current Ruleset still NOT VERIFIED in this pass.
