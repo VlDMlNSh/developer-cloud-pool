@@ -2911,3 +2911,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain source-bound independent review of exact Wave 487 contract + Wave 486 decision; then protocol/identity/trust-anchor/audit ADR. Separately resolve PR #37 F2/F10 against Issue #38. Only after accepted issuer evidence should PR #60 reference its exact audience/time guarantees.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #53 F2 finalizer fencing review
+
+- Report: [PR #53 F2 Finalizer Fencing Review](../reports/2026-11-11-pr53-f2-finalizer-fencing-review.md).
+- PR #53: https://github.com/VlDMlNSh/developer-cloud-pool/pull/53; head `b8a253f06418841d5f0250c9fd550bf3247db040`, base PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; OPEN/DRAFT/UNMERGED; formal reviews 0; exact-head workflow runs empty.
+- PR #53 materially improves F2 defense-in-depth: SHA-256 full Issue body digest, run/attempt claim-generation label, Worker-side digest/generation revalidation, finalizer pure policy rejecting changed/closed/ambiguous task, pre-write re-read, terminal read-back and adversarial test source.
+- F2 remains NOT CLOSED: generation is a mutable Issue label, not an atomic claim-store token; GET→GET→PATCH→GET still has an external race. The PR itself acknowledges GitHub label PATCH is not CAS. This does not supersede Issue #38 durable claim decision.
+- F10 remains OPEN: terminal label PATCH/read-back and audit comment POST are separate side effects; no transactionally coupled immutable audit/outbox event or idempotent projection is implemented.
+- Exact-head CI NOT VERIFIED; no runs returned for PR #53 head. Tests in patch are not evidence of execution. No live Worker/race/hosted-store test. Do not merge #53 or #37; dispatch stays disabled.
+- Use Issue #38's dedicated authenticated claim service with transactional conditional-write store as target, pending hosted entitlement, issuer, isolation, quotas and trusted-time qualification. Terminal state and immutable audit/outbox event must be persisted atomically; GitHub labels/comments become projections.
+- MediaHub issuer reconciliation report: [2026-11-11 issuer authority reconciliation](../reports/2026-11-11-mediahub-issuer-authority-reconciliation.md). PR #599/#600 remain DRAFT and unaccepted; Wave 487 contract blob `1200d343139c8e67a826902b3ade09d4987c537d` read-back VERIFIED, independent A3 review 0, exact-head CI empty.
+- No secret reads, provider calls, dispatch, runtime changes, deployment, merge or production mutation performed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: specify authoritative transactional finalization record (claim ID, monotonic generation, envelope digest, Worker result/provenance digest, immutable audit event) against Issue #38 target; implement only after issuer/store qualification. Do not further expand label/read-back logic as a substitute for CAS.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
