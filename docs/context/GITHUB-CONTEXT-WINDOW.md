@@ -2062,3 +2062,15 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Gemini may be considered only through the approved MediaHub batch-dispatch controller after all controller, governance, security and provenance gates are verified. No direct or bypass dispatch. If gates are not met, status is NOT RUN with the exact blocker; this does not stop safe local pre-launch work.
 - Receipt-free projection ACK remains a confirmed blocking code defect and must be corrected before integration. Deferring independent review does not waive the receipt-bound ACK invariant, negative-first tests, exact-head CI, governance, or final independent acceptance.
 - Contour A remains BLOCKED / NOT ACCEPTED until the real web console, executor routing, persistence, security/governance and post-launch independent qualification are evidenced. Contour B remains DEFERRED.
+
+## 10. Receipt-bound projection orchestration decision — 2026-11-11
+
+- Owner sequencing: independent technical/security/governance qualification is deferred until after Cloud Pool launch. Pre-launch author-side design/implementation/local tests may proceed, but are not independent review or qualification.
+- Revalidated default: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #58 OPEN/DRAFT/UNMERGED head `5caeb60f7a45d836c6ad1eea2fb86e20995da025`, base branch `test/50-approval-logical-task-contention-2026-11-09`; run `43043284086` SUCCESS, combined status contexts 0, reviews/threads 0.
+- PR #59 OPEN/DRAFT/UNMERGED head `22200226da4f1af30645cf441a639db6893e9310`, base branch `proof/fake-github-projection-reconciler-2026-11-11`; run `42981807825` SUCCESS, combined status contexts 0, reviews/threads 0.
+- PR #66 OPEN/DRAFT/UNMERGED, docs-only, based on default SHA above; no exact-head workflow run/status contexts and no reviews/threads. New docs report commit on the docs branch: `b39cb1ef05829804a196965f19d35fe44ed9487b`.
+- Confirmed source blocker: #59 `acknowledgeProjectionDelivered` takes no receipt and can mark a leased outbox row delivered using only lease identity/time. Reconciler #58 returns event/digest verification but is not bound to delivery lease generation.
+- New design decision report: [receipt-bound projection orchestration pre-implementation decision](../reports/2026-11-11-receipt-bound-projection-orchestration-preimplementation-decision.md). One orchestration boundary must own lease acquisition, immutable row read-back, projection reconciliation, and conditional ACK; no public receipt-free ACK, no caller-supplied receipt/boolean/timestamp/generation; ACK must bind outbox ID, digest, owner, delivery generation, expected status and fresh trusted time.
+- Next: create a fresh implementation branch from then-current default; reconstruct minimum compatible #58/#59 local proof patch set; implement the orchestration boundary and negative-first tests. Do not merge the divergent PRs wholesale. Hosted D1/dispatch/provider calls/deployment remain NOT AUTHORIZED / NOT RUN.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
