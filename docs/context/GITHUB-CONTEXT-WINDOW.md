@@ -2762,3 +2762,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Static checks SUCCESS; API/policy 11/11; Workers/D1 14/14 across 3 files; Experience Auth 6/6 including direct D1 rejection of malformed envelope and key-version fields.
 - Updated report with terminal CI evidence. PR #61 remains OPEN/DRAFT/UNMERGED; independent security review NOT RUN. Synthetic D1 proof only; production auth not qualified; fail-closed remains.
 - Report commit `9bcd823d9c0f51806e711a155999424584d8c31c`; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 — PR #61 branch advanced during follow-up
+- PR #61 advanced again after exact-head SUCCESS on `27017a22b2ae8710803034759bc308d730a0ad39` / run `42984494769`. Latest observed PR head is `976cb2ed0b594b39c847921918f182ab6d571344`.
+- Latest exact-head workflow run `42984644046`, job `130402848442`, was IN_PROGRESS at refresh time. Checkout/runtime succeeded; dependency installation was running; remaining steps pending. Do not transfer previous-head SUCCESS to this new SHA.
+- PR #61 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0. Existing exact-head proof on SHA `27017a22...` remains valid for that immutable snapshot; new head pending.
+- Schema constraint audit report: [PR #61 D1 schema constraint audit](../reports/2026-11-11-pr61-d1-schema-constraint-audit.md), blob `6a389b351e8a92a5b4311e393a8ccada344031f8`; audit correction and direct-write negative tests passed on SHA `27017a22...`.
+- Experience auth proof report: [Experience auth D1 local proof](../reports/2026-11-11-experience-auth-d1-local-proof.md), blob `f7e725d3615fbe6ad5ccd31b699146df01f6ea4d`.
+- No production resources, secrets, OAuth app, Worker deployment, routes, provider requests or dispatch.
+- Next: wait for terminal exact-head run `42984644046`; if success, conduct the next bounded security pass on trusted time, revocation freshness and Worker binding isolation. If failed, inspect exact logs and fix only evidenced defects.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
