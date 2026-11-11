@@ -17,3 +17,12 @@
 ## Correction — projection verification receipt
 
 The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified: true`, `eventId`, `payloadDigest` and verified managed labels after final read-back. The gap is not that success always returns false. The gap is that no receipt is bound to the D1 delivery lease generation and the acknowledgement function accepts no receipt. Next implementation must bind outbox ID, digest and generation, and validate them in the D1 acknowledgement. Do not claim cryptographic signing without a real qualified signature mechanism.
+
+
+## Current-default integration feasibility recheck (2026-11-11)
+
+- Confirmed repository default branch `Основной` at immutable SHA `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Recursive tree: 47 entries; no `proofs/d1-ledger/**`, `package.json`, `vitest.config.ts`, or D1 migration/test harness. Only existing executable project files are supervisor/contract scripts and workflows. Therefore receipt implementation cannot be meaningfully integrated/tested on current default without transplanting the complete D1 proof harness and its test/config/migration/CI dependencies.
+- PR #58/#59 remain isolated draft proof stack; do not transplant a single function without the full harness, package script union, migration order and workflow branch/path-filter union.
+- Existing Ledgerline review remains architecture-only; its Durable Objects authority model is not a drop-in replacement for this D1 lease model. No dependency adopted.
+- No code changed. Next: decide/qualify a complete local D1 harness transplant onto current default versus continued isolated proof branch. Then implement receipt-bound acknowledgement inside the selected testable harness. Keep `dispatch:false`; hosted D1 NOT AUTHORIZED / NOT RUN.
