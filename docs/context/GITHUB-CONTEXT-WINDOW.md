@@ -285,3 +285,17 @@
 - Exact-head PR run `42979949181`, job `130387805034`, COMPLETED/SUCCESS; push run `42979945524`, job `130387793379`, COMPLETED/SUCCESS. Artifact `13836937094`, SHA-256 `c7e403c049d3e5c6b19999f534540e4fea1f101027a31e9724313a8071e16402`.
 - PR #58 remains OPEN/DRAFT/UNMERGED, reviews 0, threads 0. Fake API only; no hosted D1 or live GitHub projection. Dispatch remains FAIL-CLOSED.
 - This subsection supersedes the previous PR #58 exact-head and CI snapshot. Detailed report updated at https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-fake-github-terminal-projection-reconciliation-proof.md.
+
+
+## Bounded terminal projection retries and dead-letter proof — 2026-11-11
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-bounded-terminal-projection-retries-dead-letter-proof.md
+- Created stacked proof PR #59 from immutable PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`. Branch `proof/projection-dead-letter-policy-2026-11-11`; final head `5c47cda4394d0381315bc16182799a09bf861797`. PR #59 OPEN/DRAFT/UNMERGED, mergeable at last read, reviews 0, inline threads 0.
+- Added migration `0007_bound_projection_delivery_retries.sql`: retry timestamps, bounded reason codes, dead-letter evidence, append-only event provenance, retry index, database attempt-budget and terminal-state guards.
+- Updated `projection-outbox.mjs`: maximum five delivery leases; backoff 30/60/120/240 seconds; no early reacquisition; fifth failure dead-letters; expired fifth lease can be dead-lettered only after expiry by matching worker/generation. Dead-letter is terminal for automatic projection delivery; no automatic requeue. All results `dispatch:false`.
+- Added three D1 Workers-runtime tests. Exact-head PR CI run `42980783397`, job `130390442001`, COMPLETED/SUCCESS; 3 test files / 53 tests passed; syntax and artifact upload passed. Artifact `13837232801`, SHA-256 `7dbc1b8b34dcdf4d03868df27168857b250eed43f6798990419042c9fccb8ebc`.
+- Push CI run `42980726317`, job `130390255572`, SUCCESS on parent SHA `48ec1876c7eb8a1702c945b233047da2b757c798`; exact final head is verified by PR CI. An intermediate final candidate at SHA `5b3b74fae4a70d7bb52fa874e60d60ba903af786` failed one test assertion due SQLite trigger precedence; assertion was corrected, and final exact-head PR CI passed.
+- No hosted D1, live GitHub API, secrets, provider/model calls, deployment, production workflow wiring, or dispatch. Dead-letter remediation remains manual and requires a future separately authorized operator capability.
+- PR #58 remains OPEN/DRAFT/UNMERGED, independent review 0. Issue #38 OPEN; PR #53 OPEN/DRAFT/UNMERGED; Supervisor claim authority and production split-write/CAS issues remain unresolved. Dispatch FAIL-CLOSED. Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: independently audit PR #59 and its PR #58 base as a stacked change, focusing migration ordering, retry budget, stale lease recovery, event provenance and dead-letter remediation authority.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
