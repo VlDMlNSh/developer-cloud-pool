@@ -18,10 +18,9 @@ export function claimGenerationLabel(runId, runAttempt) {
   return CLAIM_LABEL_PREFIX + String(runId) + "-" + String(runAttempt);
 }
 
-
 export function extractTargetSha(body) {
   if (typeof body !== "string") throw new Error("Task envelope body is missing.");
-  const matches = [...body.matchAll(/^### Target SHA\\s*\\r?\\n+([^\\r\\n]+)$/gim)];
+  const matches = [...body.matchAll(/^### Target SHA\s*\r?\n+([^\r\n]+)$/gim)];
   if (matches.length !== 1) throw new Error("Task envelope must contain exactly one Target SHA field.");
   const value = matches[0][1].trim();
   if (!/^[0-9a-f]{40}$/.test(value)) throw new Error("Task envelope Target SHA is invalid.");
@@ -49,6 +48,10 @@ export function buildFinalizationPlan(issue, expected) {
   }
   if (envelopeDigest(String(issue.body || "")) !== expected.envelopeDigest) {
     throw new Error("Immutable task envelope digest mismatch.");
+  }
+  if (!/^[0-9a-f]{40}$/.test(String(expected.targetSha || "")) ||
+      extractTargetSha(String(issue.body || "")) !== expected.targetSha) {
+    throw new Error("Target SHA does not match the immutable task envelope.");
   }
 
   const expectedGeneration = claimGenerationLabel(expected.runId, expected.runAttempt);
