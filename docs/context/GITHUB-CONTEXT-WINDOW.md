@@ -1844,3 +1844,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No source/branch/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Hosted D1 NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — D1 proof file-level integration manifest
+
+- Report: `docs/reports/2026-11-11-d1-proof-file-integration-manifest.md`; initial commit `a6237d795249ddfa52991f4e529c15ffabd84d72`; workflow addendum commit `9ef9522c68611d077ee8cf80425d6cc0cd90eafd`; final report blob to verify after write.
+- Checkpoint commit: `9b1fc1f5933ed6aeedc3c44bac35c51f91aa6f2c`; blob `a222a8d47017677b12f4c7e5c2838ea75e1ed08d`.
+- Current default `Основной` remains `6fdcedebeba62715122e43a75c6ad6d926321ce7`; no D1 proof package in default tree.
+- PR #39/#54/#56 share 0001/0002 and base proof harness. #54/#56 share 0003/0004/0005. PR #54 alone has 0006 projection outbox and adapter/tests; #56 omits it.
+- PR #56 `task-attempts.mjs` is preferred security delta: no caller-controlled `resumable:true` takeover. PR #54 test includes projection tests but weaker attempt semantics; PR #56 test includes remediation but no projection tests. Compose intentionally.
+- README stale on resumability; package check script differs; workflow #56 adds remediation branch trigger while preserving pinned actions, Node/npm/test/artifact policy.
+- GitHub mature-project search found no drop-in D1 outbox implementation; retain official Cloudflare Workers Vitest integration.
+- No code/branch/runtime/secret/permission/hosted resource/dispatch/deployment/merge changes. Candidate exact-head CI NOT RUN; hosted D1 NOT RUN.
+- Next: resolve whether projection outbox is in acceptance scope; prepare integration candidate only after explicit file composition and workflow reconciliation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
