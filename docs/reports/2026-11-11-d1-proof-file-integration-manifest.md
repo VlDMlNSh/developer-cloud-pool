@@ -106,3 +106,11 @@ Full workflow blobs were read, not just tree hashes:
 - PR #56 adds `fix/deny-attempt-lease-takeover-2026-11-10` to push triggers. It retains the PR #54 workflow execution steps and artifact policy.
 - All three versions use read-only `contents: read` and pinned action SHAs. No secret permissions are declared.
 - Candidate should preserve PR #56's trigger coverage and add any fresh integration branch trigger only if needed; keep the pinned actions, Node version, npm ci policy, syntax/test steps and artifact upload. Exact workflow candidate still requires exact-head CI.
+
+## Qualification-scope decision — Issue #38
+
+Issue #38 was re-read at its current open state. Its objective and acceptance criteria require a durable single-use task claim, concurrent one-winner behavior, recovery after interrupted claims/worker failure, least-privilege authority and independent review. It does not require a separate terminal projection-delivery outbox.
+
+Therefore, for the Issue #38 claim-protocol integration candidate, defer migration 0006, `src/projection-outbox.mjs`, and projection-specific test/setup code as one complete optional unit. Do not partially copy them. Preserve them in PR #54 history for a later projection-specific qualification scope. This keeps the claim integration bounded and avoids pulling a separate subsystem into the minimum Issue #38 acceptance path.
+
+This scope decision does not close PR #59/#60 projection recovery work or claim that projection delivery is unnecessary for the eventual full Cloud Development Pool. It only says that Issue #38's current acceptance text does not make projection outbox a prerequisite for its task-claim proof.
