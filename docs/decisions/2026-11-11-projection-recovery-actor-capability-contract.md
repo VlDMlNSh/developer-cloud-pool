@@ -167,3 +167,26 @@ The selected source must be authoritative for both `lease_expires_at` and grant 
 Tests may inject a deterministic clock only behind a test-only adapter. Production exports must not accept arbitrary `now` values from the caller. If D1's database time functions are selected, test their exact semantics in the pinned local runtime and hosted D1 before relying on them; do not assume local SQLite and hosted D1 timing semantics are equivalent without evidence.
 
 The trusted reconciliation contract's existing host-clock composition proof is synthetic and explicitly leaves production clock provenance NOT QUALIFIED. That proof is useful precedent, not clock qualification for this outbox.
+
+
+## 13. Verified-grant object and D1 composition-root boundary
+
+A structurally valid JavaScript object is not an authenticated capability. The phrase "verified grant object" must not be implemented as a caller-provided object containing fields such as `verified: true`, `recoveryActorId`, or `issuerId`. TypeScript interfaces and compile-time brands alone do not establish runtime authenticity.
+
+Before implementation, select and test one of these equivalent trusted patterns:
+
+1. **Verify at the storage entrypoint:** the only recovery entrypoint receives the signed grant bytes, verifies the signature and all issuer/key-version/policy/revocation/claim bindings itself, then performs the conditional state transition; or
+2. **Opaque in-process capability:** a trusted composition-root verifier validates the signed grant and constructs a non-serializable capability whose constructor and validation state are private to the module/process boundary (for example, module-private closure state or a private WeakMap). The storage function rejects plain objects, JSON round-trips, cross-process copies, and capabilities not minted by that verifier.
+
+The chosen design must additionally establish:
+
+- A fixed issuer trust configuration and explicit algorithm allowlist; reject unsigned grants, algorithm confusion, unknown issuer/key versions, invalid key rotation state, revoked issuer/policy epochs, malformed canonical claims, and ambiguous duplicate grant IDs.
+- Signature verification covers the canonical immutable claim set, including repository ID, outbox ID, attempt ID, delivery generation, immutable event digest, audience, subject, operation, attempt ceiling, not-before, expiry, nonce, and policy version.
+- The authorization boundary obtains actor identity from the verified issuer/capability, never from request headers, issue text, workflow inputs, or caller-provided actor strings.
+- The recovery operation is reachable only through the trusted composition root. No public route, generic RPC, task Worker input, or browser payload may invoke the storage transition by supplying a grant-shaped JSON object.
+- The D1 binding remains server-side and is never exposed to a browser/client. Inventory every Worker/script with the binding. A second Worker with the same binding is not a distinct database privilege boundary; do not claim SQL least privilege from code separation alone.
+- If one Worker hosts multiple routes, document the application-level trust boundary and ensure only the dedicated authenticated route can invoke the private recovery module. If that cannot be established, keep recovery disabled or select a backend/API with an independently enforceable access boundary.
+- The nonce-consumption table has a database-enforced unique key over the issuer/audience/nonce namespace (or an equally strong canonical grant identifier). Its insert/consume and the outbox terminal transition must commit in the same transaction. Duplicate concurrent consumption must produce one winner and no duplicate event.
+- The audit receipt records the verified issuer, subject, key version, policy epoch, grant ID/digest, nonce hash, original lease owner, expected generation, recovery reason, and trusted timestamp. Never persist the raw signed grant or bearer credential.
+
+These requirements are acceptance criteria, not a selected implementation. The signing format, key custody/rotation mechanism, issuer operator, Worker topology, and account-level isolation remain unresolved. No issuer, credential, route, Worker, or database authority is created by this document.
