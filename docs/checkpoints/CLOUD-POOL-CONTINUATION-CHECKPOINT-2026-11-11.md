@@ -92,3 +92,18 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Active default ruleset requires 0 approvals and no CODEOWNERS review, so it does not enforce independent review. Issue #38 OPEN / NOT QUALIFIED. Dispatch FAIL-CLOSED. No live API race, hosted D1, resource creation, deployment, merge, or default runtime change.
 - Next: reconcile PR #39/#54 transactional conditional-write/outbox with Issue #38 and PR #58; design authoritative transactional Claim Store and retryable GitHub projection. Hosted D1 remains NOT AUTHORIZED / NOT RUN.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Claim / attempt / projection proof-stack reconciliation — 2026-11-11
+
+- Report: ../reports/2026-11-11-claim-attempt-projection-stack-reconciliation.md
+- Default snapshot before report: b4d2a335d2a89372eb618dcda50b09f97b36a946.
+- PR #39 per-approval conditional consume/outbox exact CI: 42329993548 and 42329991471 SUCCESS (local Workers/D1 only).
+- PR #54 logical task, 50-way contention (prior run 42537241204/job 128904147572), immutable attempt/lease/finalization/reconciliation/projection outbox; current exact PR run 43010770730/job 130489510967 SUCCESS. Local proof only.
+- PR #58 fake GitHub projection reconciler exact PR run 42979949181/job 130387805034 SUCCESS; push run 42979945524 SUCCESS. Fake API only.
+- PR #53 exact head 3458b01c99e0a3ed62e5469dc11631ec5316b0cd CI 43042039819 and 43042039837 SUCCESS (19/19 transport/planner tests); known non-CAS whole-label PATCH race remains HIGH/OPEN.
+- PR #54 outbox is not yet wired to PR #58 projection consumer. PR #53 is a parallel direct GitHub finalization path, not authoritative. The target composition must use the transactional Claim/Attempt Store as sole authority and GitHub as retryable projection.
+- Issuer authentication, trusted time/revocation/nonce, hosted D1 eligibility/deployment, actual service wiring and hosted/failure qualification remain missing. No new dependency needed.
+- No runtime, secret, resource, dispatch, deployment or merge action. Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define backend-neutral integration contract for PR #54 attempt finalization/outbox → PR #58 projection; add local cross-module idempotency and projection-isolation tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
