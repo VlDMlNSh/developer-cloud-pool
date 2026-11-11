@@ -2926,3 +2926,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No secret reads, provider calls, dispatch, runtime changes, deployment, merge or production mutation performed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: specify authoritative transactional finalization record (claim ID, monotonic generation, envelope digest, Worker result/provenance digest, immutable audit event) against Issue #38 target; implement only after issuer/store qualification. Do not further expand label/read-back logic as a substitute for CAS.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #37 reusable Worker boundary recheck
+
+- Report: [PR #37 reusable Worker boundary recheck](../reports/2026-11-11-pr37-reusable-worker-boundary-recheck.md), report commit `c3db52af9717f310a131fd8e9b1e4a8ce2b9fc3f`, blob `0579625b782b6712c2cd1f28327c33bc4679d5dc`; read-back verified.
+- PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, OPEN/DRAFT/UNMERGED. Exact-head PR-triggered runs `42484039940` (Reusable Pool Worker Boundary Validation) and `42484039932` (Pool Contract Validation) both COMPLETED/SUCCESS. Combined status contexts empty; do not overstate this as a blanket status pass.
+- Formal CHANGES_REQUESTED review by `maxkorolskiy88-ship-it` is on an earlier revision (2026-11-08). No fresh approval of current head established. Prior review findings must not be assumed fixed solely from CI.
+- Current diff uses reusable Worker + separate finalizer, but GitHub Issue label PATCH/read-back remains a non-CAS lifecycle projection; finalizer read/check then PATCH is non-atomic. It cannot serve as durable single-use claim or cross-actor fencing.
+- Issue #38 durable-claim decision rejects Issue-label PATCH + workflow concurrency/read-back as authoritative lock; preferred target is a separate authenticated claim service backed by transactional conditional-write storage. Local D1 proofs #39/#54 remain synthetic; hosted D1, issuer authentication, quotas/credential ownership and production recovery NOT VERIFIED.
+- No source change, dispatch, Worker/DSH execution, provider/model call, secret read, deployment or resource creation. PR #37 exact-head CI VERIFIED; production authorization NOT QUALIFIED; independent current-head security approval NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define claim-service issuer/authentication contract, conditional-write API, idempotency/recovery semantics, tenant/quota boundary and free-tier entitlement proof; then run a bounded adapter proof without enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
