@@ -758,6 +758,13 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     await expect(env.POOL_DB.prepare(
       "UPDATE pool_attempt_projection_outbox SET delivery_attempts = 6 WHERE outbox_id = ?"
     ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DELIVERY_ATTEMPT_LIMIT");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET delivery_attempts = 1 WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DELIVERY_ATTEMPTS_MONOTONIC");
+    const unchanged = await env.POOL_DB.prepare(
+      "SELECT delivery_attempts FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(unchanged.delivery_attempts).toBe(2);
   });
 
   it("dead-letters after five failed projection attempts and never automatically requeues", async () => {
