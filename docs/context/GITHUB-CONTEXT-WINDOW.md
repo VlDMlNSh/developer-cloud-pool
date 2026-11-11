@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-11 — Recovery Actor Capability v1 design pass
+Last refreshed: 2026-11-11 — PR #67 retry/recovery source audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -2249,3 +2249,20 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch FAIL-CLOSED.
 - Next: trace PR #60 issuer-contract authoring provenance. If generic contract source cannot be resolved, make a docs-only correction to PR #60 issuer contract references, replacing unsupported generic document claims with the actual source-backed P0-07/WB-04/WB-06/Wave487 artifacts and their statuses. Do not create or rename a new shared contract.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 19:23 Europe/Vilnius — PR #67 retry/recovery source audit
+
+- Current default: Основной @ 221f216c00ca7e5596bcc682ba185ad155a10603; latest commit changes only the continuation checkpoint. Default-branch Context Window is stale (blob 8707a0ab0b2f66de9bae3441e0334c1621f89925, last refreshed 2026-11-08, old recorded HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae).
+- Working documentation branch: docs/projection-stack-reconciliation-2026-11-11, PR #66, based on current default; documentation-only, OPEN/DRAFT/UNMERGED. This branch is not canonical/default.
+- Daily/source-audit report: docs/reports/2026-11-11-pr67-retry-recovery-current-head-audit.md; report commit 2672e552e5a8f2b34dbe01c145bdb2e717c50646; blob recorded in the report write result.
+- PR #67 immutable HEAD dea09ffe94059f446c74fada37971087ec4878eb; current base 221f216c00ca7e5596bcc682ba185ad155a10603; 9 ahead / 0 behind. Exact-head D1 run 43064261520 and Pool Contract run 43064261551 SUCCESS; 5 files / 66 local Workers-runtime tests. No formal reviews or inline threads. PR remains OPEN/DRAFT/UNMERGED.
+- Current-head source audit confirms delayed-marker retry gap: orchestrator unconditionally passes allowPost=true on every deliver() call; retryable D1 state can be reacquired under a new generation and POSTed again while a prior marker remains temporarily invisible. Existing safe delayed-visibility test only manually sets allowPost=false on the second reconciler invocation; orchestrator does not expose that gate.
+- Orphaned fifth lease remains unrecoverable through the orchestrator: acquisition stops at five attempts; low-level dead-letter requires original worker ID/generation; public orchestrator has only deliver() and no separately authorized recovery operation.
+- Reconciler still deletes every non-desired pool:* label, not a narrowly owned exact allowlist. PR #67 also inherits the non-canonical finalization event digest and NULL actor-attribution risk in migration 0006; see report for immutable source blobs and line-level reasoning.
+- PR #67 proof is local-only: fake GitHub API, injected worker identity/clock, no hosted D1, production authority, live API or deployment.
+- Issue #1/#22/#26/#38 remain OPEN. PR #24/#25/#30/#31 remain DRAFT and diverged 64 commits behind current default; path-segment fix remains a branch without PR/CI. PR #29 has a CHANGES_REQUESTED review anchored to an old SHA; current-head dedicated unit CI was not found.
+- SentinelX: no connected hosts; Voktors-Mini.Dlink offline; mh-dev-01/mh-dev-02 disabled. No Gemini controller in default workflow tree. Current dispatch variable and Cloudflare entitlement are NOT VERIFIED.
+- No code/runtime/security-boundary changes, secret reads, dispatch, agent, DSH, Resource Probe, provider/model calls, deployment, hosted resource, merge or billing changes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: resolve one-use POST authority and delayed-visibility behavior, define exact managed-label ownership, version the full finalization event/actor semantics, and qualify a separate orphaned-lease Recovery Actor without broadening authority.
