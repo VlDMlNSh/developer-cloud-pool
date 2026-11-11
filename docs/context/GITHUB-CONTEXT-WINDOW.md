@@ -1535,3 +1535,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
 - Next: fix Issue #62 on the PR branch, add the regression test, rerun exact-head CI, then audit the stacked PR chain and authority boundaries.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 latest-head recheck
+
+- PR #61 advanced from audited head `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7` to `27017a22b2ae8710803034759bc308d730a0ad39` during this pass.
+- Re-read current branch tip: adapter blob remains `14236350b99f4f8629b64db6e6b81ff881d4465f`; `lookupApplicationSession` still omits `created_at <= now`, and no future-created-session regression test is present.
+- Latest exact-head CI run `42984494769` / job `130402330583`: COMPLETED / SUCCESS. The passing run does not resolve Issue #62.
+- Issue #62 remains OPEN: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62. PR #61 remains OPEN / DRAFT / UNMERGED; review submissions remain empty.
+- Updated audit report: `docs/reports/2026-11-11-pr61-experience-auth-security-audit.md`.
+- Next: fix Issue #62 on PR #61 branch, add the Workers-runtime D1 regression test, rerun exact-head CI, then re-audit the stacked chain. Do not merge or adopt in production.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
