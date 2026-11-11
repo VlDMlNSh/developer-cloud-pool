@@ -2894,3 +2894,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile MediaHub PR #599/#600 issuer governance and acceptance status; keep PR #60 documentation-only until issuer and trusted time are operationally qualified. Separately resolve PR #37 F2/F10 against Issue #38.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — MediaHub Security Issuer Authority reconciliation
+
+- Report: [MediaHub Security Issuer Authority Reconciliation](../reports/2026-11-11-mediahub-issuer-authority-reconciliation.md).
+- MediaHub PR #599 head `824bb2568b2ac8bb3dceb3608366668e99bab95e`, base `37254c9f4ff09c39943f6924534a63dd44b5a431`; OPEN/DRAFT/UNMERGED; formal reviews 0; exact-head PR workflow runs empty. Wave 486 decision blob `13e6745463dbc05a7c188423bb45ffb2b210c789`.
+- PR #599 records owner-directed WB-05 Option A: dedicated Security Issuer Authority separate from Jarvis and ASTRA A0. This is a selected governance target, not evidence of a deployed issuer, identity registry, KMS/HSM, audit sink or operational principals.
+- MediaHub PR #600 head `05a873e82760d63c8b26dc496b43d3309f4cfbf9`, base `824bb2568b2ac8bb3dceb3608366668e99bab95e` (stacked on #599); OPEN/DRAFT/UNMERGED; formal reviews 0; exact-head workflow runs empty. Current Wave 487 contract blob read-back `1200d343139c8e67a826902b3ade09d4987c537d`.
+- Wave 487 preserves Jarvis mission coordination / dedicated issuer grant governance / ASTRA A0 internal lifecycle / per-consumer verification / MediaHub Product State Authority sole canonical state mutation. It includes requester provenance, mission authorization, approval evidence, immutable request binding, durable receipts, R-06 audit and AUTH-15…AUTH-21 / AUD-05 fixtures. Still DRAFT NORMATIVE CANDIDATE / NOT ACCEPTED / NOT IMPLEMENTED.
+- Wave 487 qualification still requires independent A3 review, protocol/identity/trust-anchor/audit ADR, strict canonical schema and Draft 2020-12 validation, negative/replay/concurrency/crash/expiry/revocation/fencing/audit-outage fixtures, per-consumer source proof and exact-head CI. None is evidenced as complete.
+- PR #603 runner manifest head `cb9f3a1f60ad3ceafb2f5b15b8ae4771c487cc5f`, OPEN/DRAFT/UNMERGED; account concurrency, artifact retention and destination egress enforcement NOT VERIFIED. Issue #301 remains OPEN and continues to order issuer/A0/R-06 gates before runner manifest/schema/review/worker/dispatch.
+- Cloud Pool PR #60 remains DESIGN / NOT IMPLEMENTED / NOT QUALIFIED; it cannot invent or locally substitute issuer identity/keys. Projection recovery grant must remain distinct from Jarvis, A0 Task Resolver, Supervisor, Worker and Product State Authority grants.
+- Cloud Pool PR #37 remains OPEN/DRAFT/UNMERGED at `1be8672c1be1a720b6c813dcafff5c020b6456ae`; exact-head static CI #42484039940/#42484039932 SUCCESS, but no live Worker execution. Prior formal CHANGES_REQUESTED reviews remain on earlier revisions; no current-head approval observed. F2/F10 and Issue #38 durable claim remain unresolved.
+- No secret reads, provider calls, Gemini/Claude or workflow dispatch, runtime change, deployment, merge or production mutation performed. All dispatch remains fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain source-bound independent review of exact Wave 487 contract + Wave 486 decision; then protocol/identity/trust-anchor/audit ADR. Separately resolve PR #37 F2/F10 against Issue #38. Only after accepted issuer evidence should PR #60 reference its exact audience/time guarantees.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
