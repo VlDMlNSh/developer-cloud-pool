@@ -2430,3 +2430,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
 - Next: inspect connected Cloudflare non-secret metadata and verify free Workers/D1 entitlement before drafting an isolated implementation contract.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Cloudflare account/free-tier readiness
+- Read-only Cloudflare identity check succeeded; one account is connected. GET D1 databases returned empty; GET Worker scripts returned empty. Existing Workers subdomain `jarvis-developer-cloud-pool` is metadata only and does not prove a deployed service.
+- Account settings returned `default_usage_model=standard`; this does not identify Free vs Paid. Account-level plan remains NOT VERIFIED.
+- Current Cloudflare docs confirm Workers Free includes D1 and Cron Triggers with constrained quotas: D1 5M rows read/day, 100K rows written/day, 5GB total, 10 DBs; Workers 100K requests/day, 10ms CPU, 5 Cron Triggers/account. D1 free query limits have been enforced since 2026-09-01. Workers Paid minimum is USD 5/month; paid fallback prohibited.
+- Report: [Cloudflare account/free-tier readiness](../reports/2026-11-11-cloudflare-account-free-tier-readiness.md), commit `7994239e2f2663ec12d608fc7679a0830799106c`.
+- No resources provisioned, no secret values read, no deployment or migration. Product-level free feasibility CONFIRMED; account Free entitlement NOT VERIFIED; actual Worker/D1 readiness BLOCKED because no D1 DB or Worker scripts exist in inspected account.
+- Next: obtain authoritative read-only subscription-plan evidence, verify intended account identity, then produce Free-only resource/cost budget and deployment contract before any provisioning.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
