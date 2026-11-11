@@ -1,4 +1,4 @@
-import { buildFinalizationPlan } from "./pool-finalizer.mjs";
+import { finalizeWithTransport } from "./pool-finalizer-protocol.mjs";
 
 const e = process.env;
 const required = [
@@ -25,21 +25,29 @@ const headers = {
   "X-GitHub-Api-Version": "2022-11-28",
   "Content-Type": "application/json"
 };
-async function readIssue() {
-  const response = await fetch(base, { headers });
-  if (!response.ok) throw new Error("Cannot read task: HTTP " + response.status);
-  return response.json();
-}
-async function writeLabels(labels) {
-  const response = await fetch(base, {
-    method: "PATCH",
-    headers,
-    body: JSON.stringify({ labels })
+async function request(path, options = {}) {
+  const response = await fetch(base + path, {
+    ...options,
+    headers: { ...headers, ...(options.headers || {}) }
   });
-  if (!response.ok) throw new Error("Cannot set terminal state: HTTP " + response.status);
-  return response.json();
+  const text = await response.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+  if (!response.ok) throw new Error("GitHub API " + response.status);
+  return data;
 }
-
+const api = {
+  readIssue: () => request(""),
+  replaceLabels: labels => request("", {
+    method: "PATCH",
+    body: JSON.stringify({ labels })
+  }),
+  listComments: () => request("/comments?per_page=100"),
+  createComment: body => request("/comments", {
+    method: "POST",
+    body: JSON.stringify({ body })
+  })
+};
 const expected = {
   issueNumber: Number(e.TASK_ISSUE),
   envelopeDigest: e.ENVELOPE_DIGEST,
@@ -48,49 +56,8 @@ const expected = {
   runAttempt: e.SUPERVISOR_RUN_ATTEMPT,
   workerResult: e.WORKER_RESULT
 };
-
-// Re-read immediately before mutation. GitHub's issue-label PATCH endpoint
-// does not provide an atomic compare-and-swap, so a race window remains.
-const initial = await readIssue();
-buildFinalizationPlan(initial, expected);
-const current = await readIssue();
-const plan = buildFinalizationPlan(current, expected);
-const updated = await writeLabels(plan.labels);
-const updatedLabels = (updated.labels || []).map(label => label.name);
-if (!updatedLabels.includes(plan.terminalLabel) ||
-    updatedLabels.includes("pool:claimed") ||
-    updatedLabels.includes("pool:ready") ||
-    updatedLabels.includes(e.CLAIM_GENERATION)) {
-  throw new Error("Terminal write response mismatch; manual review required.");
+const result = await finalizeWithTransport(api, expected);
+if (!result.finalized) {
+  throw new Error("Finalizer did not verify terminal state: " + result.decision + "/" + result.reason);
 }
-
-const readback = await readIssue();
-const readbackLabels = (readback.labels || []).map(label => label.name);
-if (readback.state !== "open" ||
-    readback.body !== current.body ||
-    !readbackLabels.includes(plan.terminalLabel) ||
-    readbackLabels.includes("pool:claimed") ||
-    readbackLabels.includes("pool:ready") ||
-    readbackLabels.includes(e.CLAIM_GENERATION)) {
-  throw new Error("Terminal state read-back mismatch; manual review required.");
-}
-
-const body = [
-  "**" + plan.auditMarker + "**",
-  "",
-  "- Supervisor run: " + e.SUPERVISOR_RUN_ID,
-  "- Supervisor attempt: " + e.SUPERVISOR_RUN_ATTEMPT,
-  "- Claim generation: " + e.CLAIM_GENERATION,
-  "- Envelope SHA-256: " + e.ENVELOPE_DIGEST,
-  "- Target SHA: " + e.TARGET_SHA,
-  "- Worker reusable workflow result: " + e.WORKER_RESULT,
-  "- Provider credentials: none",
-  "- Production qualification: NOT CLAIMED"
-].join("\n");
-const posted = await fetch(base + "/comments", {
-  method: "POST",
-  headers,
-  body: JSON.stringify({ body })
-});
-if (!posted.ok) throw new Error("Cannot append audit comment: HTTP " + posted.status);
-console.log("Task #" + e.TASK_ISSUE + " finalized as " + plan.terminalLabel + " for " + e.CLAIM_GENERATION + ".");
+console.log("Task #" + e.TASK_ISSUE + " finalizer result: " + result.decision + " (" + result.terminalLabel + ").");
