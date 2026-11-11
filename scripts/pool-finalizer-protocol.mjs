@@ -13,20 +13,24 @@ function markerFor(expected) {
   return "<!-- pool-finalizer:" + expected.runId + ":" + expected.runAttempt + ":" +
     expected.envelopeDigest + " -->";
 }
-function inspectMarker(comments, marker) {
+function inspectMarker(comments, expected) {
   if (!Array.isArray(comments)) return deny("INVALID_COMMENT_READBACK");
+  const prefix = "<!-- pool-finalizer:" + expected.runId + ":" + expected.runAttempt + ":";
   const bodies = comments.map(comment => comment?.body).filter(body => typeof body === "string");
-  const count = bodies.reduce((sum, body) => {
+  const digests = [];
+  for (const body of bodies) {
     let offset = 0;
-    let found = 0;
-    while ((offset = body.indexOf(marker, offset)) !== -1) {
-      found += 1;
-      offset += marker.length;
+    while ((offset = body.indexOf(prefix, offset)) !== -1) {
+      const start = offset + prefix.length;
+      const end = body.indexOf(" -->", start);
+      digests.push(end < 0 ? null : body.slice(start, end));
+      offset = start;
     }
-    return sum + found;
-  }, 0);
-  if (count > 1) return deny("DUPLICATE_FINALIZER_MARKERS");
-  return count === 1 ? { decision: "VERIFIED" } : { decision: "MISSING" };
+  }
+  if (digests.length > 1) return deny("DUPLICATE_FINALIZER_MARKERS");
+  if (digests.length === 0) return { decision: "MISSING" };
+  if (digests[0] !== expected.envelopeDigest) return deny("FINALIZER_MARKER_DIGEST_CONFLICT");
+  return { decision: "VERIFIED" };
 }
 function validateEnvelope(issue, expected) {
   if (!issue || Number(issue.number) !== Number(expected.issueNumber)) throw new Error("Task issue identity mismatch.");
@@ -102,7 +106,7 @@ export async function finalizeWithTransport(api, expected) {
   if (isAlreadyFinalized(issue, expected)) {
     let markerState;
     try {
-      markerState = inspectMarker(await api.listComments(), marker);
+      markerState = inspectMarker(await api.listComments(), expected);
     } catch {
       return retry("FINALIZED_COMMENT_READ_AMBIGUOUS");
     }
