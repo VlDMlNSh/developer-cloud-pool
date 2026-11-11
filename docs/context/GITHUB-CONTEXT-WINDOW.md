@@ -1759,3 +1759,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: contract DESIGN; N01–N20 NOT RUN; hosted D1 NOT QUALIFIED; issuer/trust/revocation/time/audit owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: map N01–N20 to actual PR #36/#39/#54 source/test files and identify smallest missing task-wide uniqueness and consumer/fencing additions. No hosted provisioning or dispatch while authority and free-tier authorization remain unproven.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (claim/recovery matrix pass)
+
+- Documentation branch current HEAD at this refresh: `25258bb6bf9b403ac3ebff0c32468530ac9dfd5f`; this is PR #63 head, still OPEN / DRAFT / UNMERGED, base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #64 remains OPEN / DRAFT / UNMERGED at `95d237c753bec96abe9add621140928511047599`, same base.
+- Exact-head PR-triggered workflow runs and combined status contexts for PR #63 head `25258bb6bf9b403ac3ebff0c32468530ac9dfd5f`: empty; CI NOT VERIFIED. PR #64's previously checked head likewise returned no runs/statuses; refresh again before any decision.
+- Remediation contract report: `docs/reports/2026-11-11-supervisor-claim-recovery-remediation-contract-and-negative-test-matrix.md`, blob `b8827f7c1b96dabede08d126e36db2abb0d8a247`. It defines N01–N20 and acceptance gates; design only, tests NOT RUN.
+- Checkpoint: `docs/checkpoints/2026-11-11-supervisor-claim-recovery-checkpoint.md`, blob `c71c6ec1d216dbc224a624fd02ebb929424d235a`.
+- Issues #38 and #63 remain OPEN. Default branch remains `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #54/#39/#37 local historical proof remains non-production evidence; hosted D1, issuer/revocation/trusted-time/audit ownership and integrated recovery are NOT QUALIFIED / NOT EVIDENCED.
+- No code/runtime/schema/workflow/permission/secret/variable changes, tests, provider calls, dispatch, provisioning, deployment or merge. Production dispatch remains FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: map N01–N20 to exact PR #36/#39/#54 source and tests, prioritizing task-wide uniqueness across distinct grants, outbox consumer idempotency, lease fencing and stale finalizer rejection. No hosted provisioning or dispatch until authority and free-tier authorization are proven.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
