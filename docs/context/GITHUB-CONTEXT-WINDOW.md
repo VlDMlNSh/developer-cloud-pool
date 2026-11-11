@@ -1951,3 +1951,11 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Required next step: independent security review of the auth contract before code implementation. Preserve separate synthetic/production D1 configurations and fail-closed 503/405 routes.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final branch state — 2026-11-11
+
+- Latest checkpoint update commit: `512b8e0e07f770cf50c88d366d288650e7070bcf`.
+- Production authentication contract blob: `906e68d9e76f6e9670d9ab88963d9a36fec74c13`.
+- Current docs branch head after this Context Window update is recorded by the commit created for this file. Exact-head Actions/status records remain empty; CI NOT VERIFIED.
+- No source/runtime/schema/workflow/secret/dispatch/hosted-resource/deployment/merge changes. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
