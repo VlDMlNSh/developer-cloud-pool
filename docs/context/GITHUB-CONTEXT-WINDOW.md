@@ -1737,3 +1737,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #58 remains OPEN/DRAFT. Issue #38 OPEN/NOT QUALIFIED. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement local-only delivery orchestration over fenced projection lease, pure mapper and injected API; acknowledge only on projection_verified=true, mark retryable on ambiguous/failure; add D1 success/failure/stale-lease/restart tests. Keep dispatch=false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #59 Projection Dead-Letter Policy Audit
+
+- Report: docs/reports/2026-11-11-pr59-projection-dead-letter-audit.md; report commit 0a2a5c902cb1b110951ac78e8e4ac7c43135fec9.
+- Default HEAD at audit start: d350bb4e988eb4e5f01cde02dd86035d3d716c47.
+- PR #59 head 22200226da4f1af30645cf441a639db6893e9310, base 6f7953e4abec3cc564984ee3635cdb7717ae5d5e, OPEN/DRAFT. Exact-head push 42981803947 SUCCESS; PR run 42981807825 SUCCESS; job 130393715595; logs 3 test files / 53 tests passed. Formal reviews 0; inline threads 0.
+- PR #59 source adds 5-attempt ceiling, 30/60/120/240s backoff, dead-letter terminal triggers, monotonic attempt count, append-only reason-code delivery events. Local proof only.
+- Critical limitation: deadLetterExpiredProjection requires the original worker ID and generation; not an independent reaper. workerId and now are caller-supplied metadata, not authentication/trusted time. PR #60 documents the separate issuer/trusted-time prerequisite, design-only/unqualified.
+- PR #59 base is an earlier PR #58 head (6f7953e4abec3cc564984ee3635cdb7717ae5d5e), not latest PR #58 head 5caeb60f7a45d836c6ad1eea2fb86e20995da025; latest projection-envelope mapper is not included. Stack ancestry reconciliation required before unified qualification.
+- PR #60 OPEN/DRAFT at 234fb2ee40265e26fac00c69ac1b6192766602cb; PR #63 OPEN/DRAFT at 4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6. PR #53/#54/#58 remain OPEN/DRAFT.
+- Active ruleset #26550182: applies to Основной, PR required, 0 required approvals, thread resolution required, deletion/non-fast-forward prohibited, no bypass actors.
+- Mature component review: Cloudflare Queues/Workflows and Ledgerline considered; no new dependency/platform primitive selected. Keep D1 proof architecture pending entitlement and architecture decision.
+- Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #59 ancestry with latest PR #58 mapper; then local injected delivery orchestration proof (fenced lease → mapper → fake projection → verified acknowledgement/retry). Do not implement orphan recovery until issuer/trusted-time prerequisites accepted.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
