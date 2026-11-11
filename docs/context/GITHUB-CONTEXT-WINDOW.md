@@ -1959,3 +1959,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Production authentication contract blob: `906e68d9e76f6e9670d9ab88963d9a36fec74c13`.
 - Current docs branch head after this Context Window update is recorded by the commit created for this file. Exact-head Actions/status records remain empty; CI NOT VERIFIED.
 - No source/runtime/schema/workflow/secret/dispatch/hosted-resource/deployment/merge changes. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 OAuth PKCE synthetic-proof audit
+
+- New source audit: [OAuth PKCE synthetic proof source audit](../reports/2026-11-11-oauth-pkce-synthetic-proof-source-audit.md), commit `0a37b9ebddab920acb2ce5758479acd0940e798c`.
+- Production authentication contract updated in commit `6548f9fc632b5d6761bc200cae13897b9098324e` to record the PR #30 test coverage limitation and required assertions.
+- PR #30 test blob `bc87a8074f2358883b555677934dfc0526ef6cae`: constructs authorization URL but does not assert its parameters; mock token endpoint checks verifier presence but does not validate S256 verifier/challenge binding or wrong-verifier rejection. Run `42216422883` / job `127887461269` SUCCESS, but this is only synthetic library/request-construction proof.
+- GitHub official docs/changelog confirm PKCE support for OAuth Apps and S256-only. No live provider request was made.
+- PR #66 head at revalidation start `be6add0f74d224048e11ce9b21b4b2e0b3ee72a4`; no exact-head runs/statuses; reviews 0; threads 0. Any newer documentation head requires its own exact-head checks.
+- Historical proof-boundary report with old PR #61 head/run data is superseded by the later source compatibility report and this source audit.
+- No runtime/package/workflow/secret/permission/provider/hosted-resource/deployment/merge changes. Live OAuth NOT RUN; hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of corrected auth contract; only after acceptance add negative-first synthetic PKCE assertions.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
