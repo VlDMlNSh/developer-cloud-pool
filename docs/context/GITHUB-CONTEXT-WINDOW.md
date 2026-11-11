@@ -2554,3 +2554,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime/schema/binding/secret/OAuth app/Worker/permission/workflow/resource/deployment changes. Web auth/session NOT IMPLEMENTED/NOT QUALIFIED; deployment NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
 - Next: design exact session/state schema, migration and D1 read/write budget; verify account-specific Free entitlement through authorized metadata; build local D1/Workers negative tests (replay, concurrent consume, revoke read-after-write, expiry, outage/quota, cross-boundary). No provisioning until gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #24 exact-head session-store contract CI reconciliation
+- Concurrent documentation refinements advanced PR #24 to HEAD `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`; current ADR blob read-back `c8cdb46afcddc1baf50c41dea1f9a39dc925c5bd`. The D1-only Experience auth/session decision and bounded Free-plan budget/qualification controls are present.
+- Exact-head Pool Contract Validation run `42982847600`, job `130397061861`: COMPLETED/SUCCESS (YAML syntax, dispatch-disabled invariant, pool security contracts).
+- Exact-head Jarvis Experience OpenAPI Validation run `42982847694`, job `130397062519`: COMPLETED/SUCCESS (Node 24, OpenAPI validation).
+- PR #24 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0. CI is static contract validation only, not OAuth/session implementation, browser QA, deployment or independent security qualification.
+- Session decision report reconciled to current PR head and exact-head runs: [Web Console session-store decision](../reports/2026-11-11-web-console-session-store-decision.md).
