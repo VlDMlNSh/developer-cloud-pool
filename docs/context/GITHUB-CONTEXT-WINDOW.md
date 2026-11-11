@@ -1860,3 +1860,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Issue #38 acceptance text reviewed: durable one-winner task claim, interrupted-claim/worker-failure recovery, least privilege, independent review. It does not require terminal projection delivery. For the Issue #38 bounded candidate, defer migration 0006 + projection adapter + projection tests/setup as a complete optional unit; preserve for later separate projection qualification. This does not close PR #59/#60.
+
+
+## 2026-11-11 — Recovery Actor OIDC workflow-readiness audit
+
+- Report: `docs/reports/2026-11-11-recovery-oidc-workflow-readiness-audit.md`.
+- Audited default-branch Pool Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`: it has `contents:read`, `issues:write`, `actions:write`, and no `id-token:write`; it is not currently configured to request an OIDC JWT.
+- GitHub documentation confirms repositories created after 2026-07-15 use immutable owner/repository-ID subject claims and that `id-token:write` is required to request a JWT. The expected subject for this repository's default branch is documented as a derived expectation, not a live token/customization read-back.
+- OIDC remains a workload-authentication candidate only; it is not a Recovery Grant issuer, revocation service, nonce consumer, or atomic D1 authority.
+- Do not add `id-token:write`, request/debug a live token, or deploy an issuer until the issuer owner, trust policy, key custody, revocation, trusted time, audit sink and privacy governance are accepted.
+- No code, runtime, schema, permission, workflow, secret, dispatch, resource, deployment or merge changes. Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
