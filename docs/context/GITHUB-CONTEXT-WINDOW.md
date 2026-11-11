@@ -1853,3 +1853,14 @@ Next step: design and independently review a versioned, bounded task-admission c
 - PR #28 LiteLLM is candidate only; no pinned proof-of-fit, PostgreSQL/Redis or gateway deployment.
 - Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-router-pr28-pr29-audit.md
 - Next: reconcile stale base of PR #28/#29 against current default, then design durable atomic reservation boundary and obtain fresh independent review. No provider calls/secrets/dispatch. Contour A remains unaccepted; Contour B deferred.
+
+
+## 2026-11-11 provider PR base-drift impact review
+
+- Default `Основной` remains `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #28 base and PR #29 base remain `64d2636d4500127e635c214ccfb722c6b3fcda80`; heads remain #28 `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, #29 `e4c8d642bbc054e7c52b391356965b492dad32b4`.
+- GitHub compare old base...default: default is 21 commits ahead, 0 behind. Default-side changed files are Context Window, durable claim protocol decision, PR61 audit, and stacked PR25/52/61 audit. No path overlaps PR #28/#29 changed files. This indicates a likely low-conflict base update, not a completed rebase/merge.
+- No branch update was performed. PR #29 shared workflow diffs still require review after base update and exact-head CI. PR #28 docs-only CI may remain NOT RUN due path filters.
+- PR #29 exact-head CI run `43031920223` remains SUCCESS at `e4c8d642bbc054e7c52b391356965b492dad32b4`, 43/43 tests. Current-head independent review NOT VERIFIED; old F11 review is tied to `34fc78921b16359d136db553d8a51b4a4716995d`.
+- Base-drift report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-pr-base-drift-impact-review.md
+- Next: controlled base update of #28/#29, full diff reread, exact-head validation, fresh independent review. No provider calls/secrets/dispatch. Contour A BLOCKED; Contour B DEFERRED.
