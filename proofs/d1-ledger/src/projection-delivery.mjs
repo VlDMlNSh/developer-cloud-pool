@@ -60,14 +60,12 @@ async function acknowledgeVerifiedProjection(db, identity, workerId, generation,
  * timestamp, lease owner or delivery generation.
  */
 export function createProjectionDeliveryOrchestrator({
-  db, api, workerId, clock, leaseSeconds = 60,
-  reconcile = reconcileTerminalProjection
+  db, api, workerId, clock, leaseSeconds = 60
 }) {
   if (!db || typeof db.prepare !== "function" ||
       !SAFE_ID.test(workerId || "") ||
       !clock || typeof clock.now !== "function" ||
-      !Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 900 ||
-      typeof reconcile !== "function") {
+      !Number.isSafeInteger(leaseSeconds) || leaseSeconds < 1 || leaseSeconds > 900) {
     throw new TypeError("INVALID_PROJECTION_ORCHESTRATOR_CONFIGURATION");
   }
 
@@ -105,7 +103,7 @@ export function createProjectionDeliveryOrchestrator({
 
       let projection;
       try {
-        projection = await reconcile(api, mapped.envelope, { allowPost: true });
+        projection = await reconcileTerminalProjection(api, mapped.envelope, { allowPost: true });
       } catch {
         projection = { decision: "RETRYABLE", reason: "PROJECTION_RECONCILIATION_AMBIGUOUS" };
       }

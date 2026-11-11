@@ -117,13 +117,17 @@ describe("receipt-bound projection orchestration", () => {
 
   it("rejects a reconciler result with a mismatched event digest", async () => {
     const outboxId = await createOutbox();
+    const api = apiFactory();
+    const identity = await env.POOL_DB.prepare(
+      "SELECT event_digest FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    api.comments.push({
+      body: `<!-- pool-projection:${outboxId}:${"f".repeat(64)} -->`
+    });
+    expect(identity.event_digest).not.toBe("f".repeat(64));
     const orchestrator = createProjectionDeliveryOrchestrator({
-      db: env.POOL_DB, api: apiFactory(), workerId: "projection-runtime",
-      clock: { now: () => NOW + 10 },
-      reconcile: async (_api, envelope) => ({
-        decision: "PROJECTION_VERIFIED", projection_verified: true,
-        eventId: envelope.eventId, payloadDigest: "f".repeat(64)
-      })
+      db: env.POOL_DB, api, workerId: "projection-runtime",
+      clock: { now: () => NOW + 10 }
     });
     const result = await orchestrator.deliver(outboxId);
     expect(result).toMatchObject({ decision: "DENY", reason: "PROJECTION_RECEIPT_MISMATCH" });
