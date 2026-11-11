@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 import { claimLogicalTask } from "../src/claim-outbox.mjs";
 import { createTaskAttempt, acquireAttemptLease, finalizeTaskAttempt } from "../src/task-attempts.mjs";
 import { createProjectionDeliveryOrchestrator } from "../src/projection-delivery.mjs";
+import { acquireProjectionDelivery } from "../src/projection-outbox.mjs";
 import * as projectionOutbox from "../src/projection-outbox.mjs";
 
 const NOW = 1_810_000_000;
@@ -152,5 +153,57 @@ describe("receipt-bound projection orchestration", () => {
     ).bind(outboxId).first();
     expect(row.status).toBe("leased");
     expect(row.delivered_at).toBeNull();
+  });
+
+  it("rejects an old generation after a different worker takes over the expired lease", async () => {
+    const outboxId = await createOutbox();
+    let now = NOW + 10;
+    let takeover;
+    const api = apiFactory();
+    api.listLabels = async () => {
+      now = NOW + 100;
+      if (!takeover) {
+        takeover = await acquireProjectionDelivery(
+          env.POOL_DB, outboxId, "projection-takeover", now, 30
+        );
+      }
+      return [...api.labels];
+    };
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime",
+      clock: { now: () => now }, leaseSeconds: 30
+    });
+    const result = await orchestrator.deliver(outboxId);
+    expect(takeover).toMatchObject({
+      decision: "PROJECTION_LEASE_ACQUIRED", lease_generation_delivery: 2
+    });
+    expect(result).toMatchObject({ decision: "DENY" });
+    const row = await env.POOL_DB.prepare(
+      "SELECT status, lease_owner, lease_generation_delivery, delivered_at FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "leased", lease_owner: "projection-takeover",
+      lease_generation_delivery: 2, delivered_at: null
+    });
+  });
+
+  it("allows at most one concurrent delivery orchestration for a single lease", async () => {
+    const outboxId = await createOutbox();
+    const api = apiFactory();
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime",
+      clock: { now: () => NOW + 10 }
+    });
+    const results = await Promise.all([
+      orchestrator.deliver(outboxId),
+      orchestrator.deliver(outboxId)
+    ]);
+    expect(results.filter(x => x.decision === "PROJECTION_DELIVERED")).toHaveLength(1);
+    expect(api.comments).toHaveLength(1);
+    const row = await env.POOL_DB.prepare(
+      "SELECT status, lease_generation_delivery FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row.status).toBe("delivered");
+    expect(row.lease_generation_delivery).toBe(1);
   });
 });

@@ -9,8 +9,12 @@ function deny(reason, extra = {}) {
 }
 
 function validNow(clock) {
-  const value = clock.now();
-  return Number.isSafeInteger(value) && value > 0 ? value : null;
+  try {
+    const value = clock.now();
+    return Number.isSafeInteger(value) && value > 0 ? value : null;
+  } catch {
+    return null;
+  }
 }
 
 async function readProjectionRow(db, outboxId, workerId, generation, now) {
