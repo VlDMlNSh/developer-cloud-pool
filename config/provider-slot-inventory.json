@@ -1,0 +1,557 @@
+{
+  "schema": "developer-cloud-pool.provider-slot-inventory.v1",
+  "generated_from": {
+    "repository": "VlDMlNSh/mediahub-os",
+    "ref": "docs/mediahub-chat-tree-map-20261012",
+    "path": "ops/qualification/provider_model_registry.json",
+    "source_schema": "mediahub.provider-model-registry.v1"
+  },
+  "policy": {
+    "secret_values_included": false,
+    "secret_presence_checked": false,
+    "provider_calls_made": false,
+    "provider_account_independence_assumed": false,
+    "cost_class_is_inventory_metadata_only": true,
+    "null_account_and_quota_domain_mean_unverified": true
+  },
+  "summary": {
+    "cloud_slot_count": 24,
+    "local_provider_excluded": "ollama-local-1",
+    "verified_account_count": 0,
+    "verified_quota_domain_count": 0
+  },
+  "slots": [
+    {
+      "slot_id": "mimo-1",
+      "provider": "Xiaomi MiMo",
+      "family": "mimo",
+      "models": [
+        "mimo-v2.6-flash",
+        "mimo-v2.6-pro"
+      ],
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "declared_cost_class": "paid_api",
+      "declared_persistence_class": "api",
+      "credential_reference": "secret://mediahub/provider-slots/mimo-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "siliconflow-1",
+      "provider": "SiliconFlow",
+      "family": "siliconflow",
+      "models": [
+        "THUDM/glm-4-9b-chat"
+      ],
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/siliconflow-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "siliconflow-2",
+      "provider": "SiliconFlow",
+      "family": "siliconflow",
+      "models": [
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/siliconflow-2",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "novita-1",
+      "provider": "Novita",
+      "family": "novita",
+      "models": [
+        "meta-llama/Llama-3.2-1B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "capabilities": [
+        "fast",
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/novita-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "novita-2",
+      "provider": "Novita",
+      "family": "novita",
+      "models": [
+        "meta-llama/Llama-3.2-1B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "capabilities": [
+        "fast",
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/novita-2",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "zai-1",
+      "provider": "Z.ai",
+      "family": "zai",
+      "models": [
+        "glm-4.7-flash",
+        "glm-4.5-flash"
+      ],
+      "capabilities": [
+        "fast",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/zai-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "zai-2",
+      "provider": "Z.ai",
+      "family": "zai",
+      "models": [
+        "glm-4.7-flash",
+        "glm-4.5-flash"
+      ],
+      "capabilities": [
+        "fast",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "permanent_free",
+      "credential_reference": "secret://mediahub/provider-slots/zai-2",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "kimi-1",
+      "provider": "Kimi",
+      "family": "kimi",
+      "models": [
+        "kimi-k2.5"
+      ],
+      "capabilities": [
+        "general",
+        "reasoning"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/kimi-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "llm7-1",
+      "provider": "LLM7",
+      "family": "llm7",
+      "models": [
+        "default"
+      ],
+      "capabilities": [
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/llm7-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "sambanova-1",
+      "provider": "SambaNova",
+      "family": "sambanova",
+      "models": [
+        "DeepSeek-V3.1",
+        "Meta-Llama-3.3-70B-Instruct"
+      ],
+      "capabilities": [
+        "large_context",
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/sambanova-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "aionlabs-1",
+      "provider": "Aion Labs",
+      "family": "aionlabs",
+      "models": [
+        "aion-labs/aion-3.5-mini",
+        "aion-labs/aion-3.5"
+      ],
+      "capabilities": [
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/aionlabs-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "cloudflare-1",
+      "provider": "Cloudflare",
+      "family": "cloudflare",
+      "models": [
+        "@cf/meta/llama-3.1-8b-instruct"
+      ],
+      "capabilities": [
+        "fast",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "workers_ai",
+      "credential_reference": "secret://mediahub/provider-slots/cloudflare-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "cloudflare-2",
+      "provider": "Cloudflare",
+      "family": "cloudflare",
+      "models": [
+        "@cf/meta/llama-3.1-8b-instruct"
+      ],
+      "capabilities": [
+        "fast",
+        "general"
+      ],
+      "declared_cost_class": "free",
+      "declared_persistence_class": "workers_ai",
+      "credential_reference": "secret://mediahub/provider-slots/cloudflare-2",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "nararouter-1",
+      "provider": "NaraRouter",
+      "family": "nararouter",
+      "models": [
+        "default"
+      ],
+      "capabilities": [
+        "burst",
+        "general"
+      ],
+      "declared_cost_class": "router",
+      "declared_persistence_class": "router",
+      "credential_reference": "secret://mediahub/provider-slots/nararouter-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "orcarouter-1",
+      "provider": "OrcaRouter",
+      "family": "orcarouter",
+      "models": [
+        "default"
+      ],
+      "capabilities": [
+        "burst",
+        "general"
+      ],
+      "declared_cost_class": "router",
+      "declared_persistence_class": "router",
+      "credential_reference": "secret://mediahub/provider-slots/orcarouter-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "unorouter-1",
+      "provider": "UnoRouter",
+      "family": "unorouter",
+      "models": [
+        "gpt-oss-120b:free"
+      ],
+      "capabilities": [
+        "burst",
+        "general",
+        "coding"
+      ],
+      "declared_cost_class": "router",
+      "declared_persistence_class": "router",
+      "credential_reference": "secret://mediahub/provider-slots/unorouter-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "zerouter-1",
+      "provider": "ZeroRouter",
+      "family": "zerouter",
+      "models": [
+        "gpt-5.4"
+      ],
+      "capabilities": [
+        "burst",
+        "general",
+        "coding"
+      ],
+      "declared_cost_class": "router",
+      "declared_persistence_class": "router",
+      "credential_reference": "secret://mediahub/provider-slots/zerouter-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "deepseek-1",
+      "provider": "DeepSeek",
+      "family": "deepseek",
+      "models": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+      ],
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "general"
+      ],
+      "declared_cost_class": "trial",
+      "declared_persistence_class": "trial",
+      "credential_reference": "secret://mediahub/provider-slots/deepseek-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "gemini-1",
+      "provider": "Google Gemini",
+      "family": "gemini",
+      "models": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash-lite"
+      ],
+      "capabilities": [
+        "fast",
+        "general",
+        "reasoning"
+      ],
+      "declared_cost_class": "free_tier",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/gemini-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "groq-1",
+      "provider": "Groq",
+      "family": "groq",
+      "models": [
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+      ],
+      "capabilities": [
+        "fast",
+        "coding",
+        "reasoning"
+      ],
+      "declared_cost_class": "free_tier",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/groq-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "mistral-1",
+      "provider": "Mistral",
+      "family": "mistral",
+      "models": [
+        "mistral-small-latest",
+        "mistral-large-latest"
+      ],
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free_tier",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/mistral-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "mistral-2",
+      "provider": "Mistral",
+      "family": "mistral",
+      "models": [
+        "mistral-small-latest",
+        "mistral-large-latest"
+      ],
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free_tier",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/mistral-2",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "openrouter-1",
+      "provider": "OpenRouter",
+      "family": "openrouter",
+      "models": [
+        "openai/gpt-oss-120b:free",
+        "google/gemini-2.5-flash:free"
+      ],
+      "capabilities": [
+        "burst",
+        "general",
+        "coding"
+      ],
+      "declared_cost_class": "router",
+      "declared_persistence_class": "router",
+      "credential_reference": "secret://mediahub/provider-slots/openrouter-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    },
+    {
+      "slot_id": "huggingface-1",
+      "provider": "Hugging Face",
+      "family": "huggingface",
+      "models": [
+        "openai/gpt-oss-120b:fastest",
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct:fastest"
+      ],
+      "capabilities": [
+        "coding",
+        "general"
+      ],
+      "declared_cost_class": "free_tier",
+      "declared_persistence_class": "free_tier",
+      "credential_reference": "secret://mediahub/provider-slots/huggingface-1",
+      "account_ref": null,
+      "quota_domain_id": null,
+      "evidence_status": "unknown",
+      "credential_presence": "not_checked",
+      "billing_eligibility": "not_verified",
+      "quota_reset_policy_ref": null
+    }
+  ]
+}
