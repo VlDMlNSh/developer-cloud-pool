@@ -1662,3 +1662,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Checkpoint commit: `dcab4104e293bf8b202a8aa617934df19136f791`; blob: `undefined`.
 - This checkpoint summarizes current refs, statuses, D1/DO decision, hosted provisioning gate, OSS fit, safety invariants and next bounded work. It is a recovery aid, not provisioning authorization.
 - Latest claim backend audit: `docs/reports/2026-11-11-issue38-claim-backend-current-head-recheck.md`, blob `268dede5d1040b31953b2141444ebbe509f5c11a`.
+
+
+## 2026-11-11 — PR #53 F2 finalizer fencing current-head recheck
+
+- Report: `docs/reports/2026-11-11-pr53-f2-finalizer-fencing-recheck.md`.
+- Immutable default snapshot before report: `9cf09e684958a44e58228aba2c59641fcfe9ab39`.
+- PR #53 head `b8a253f06418841d5f0250c9fd550bf3247db040`, stacked on PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; compare #37→#53 26 ahead / 0 behind; 10 changed paths. PR OPEN/DRAFT/UNMERGED, mergeable=true.
+- Exact-head PR workflows returned none (CI NOT VERIFIED); formal reviews 0; inline threads 0; independent security review NOT RUN.
+- Read-back source blobs: finalizer `84ec79662097b9aeaeff0ca7d5b4b0524104c34d`; runner `b0af6b4d97ac497315ac90978518cb63efd6e3ac`; supervisor `adc265c27617b0395b6b0ff275bacf3f1839cc0f`; pure tests `bfa3bfc9940f50befe1fdffe8d44ecc86ff32cfe`; Supervisor workflow `7132542d605f5f8544a7235eb7d37ac32765e232`; Worker workflow `19958cfa11d5ac09c130f64d27042cda5f562953`.
+- PR #53 improves immutable body digest and run/attempt generation checks. F2 remains HIGH / OPEN: GitHub label PATCH is non-CAS; final GET→PATCH race can terminalize stale state or overwrite concurrent human labels. Read-back detects after mutation, not atomic rollback.
+- Additional gaps: finalizer validates TARGET_SHA syntax but does not independently compare it with SHA parsed from immutable issue body; terminal label PATCH and audit comment POST are non-atomic, with no replay path if comment response is lost; nine tests cover pure planner only, not runner transport sequence or race/failure windows.
+- Recommended authority model: transactional claim store owns terminal state; GitHub labels/comments are retryable projection with deterministic marker and reconciliation-only replay. Add fake-transport runner tests and target SHA binding. No new OSS dependency required; reuse local D1 conditional-write and PR #58 fake projection patterns, without claiming hosted/live qualification.
+- No runtime/schema/workflow/permission/secret/resource/dispatch/deployment/merge/branch update. Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: bounded PR #53 remediation (runner harness + target SHA binding) and exact-head CI, then independent review. No dispatch enablement.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
