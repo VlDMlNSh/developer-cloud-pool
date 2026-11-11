@@ -97,3 +97,12 @@ This is a distinct optional proof layer and must be explicitly included only if 
 Status: manifest VERIFIED at inspected immutable tree/blob SHAs; integration NOT RUN; hosted D1 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Workflow blob review addendum
+
+Full workflow blobs were read, not just tree hashes:
+- PR #39 workflow pins checkout/setup-node/upload-artifact SHAs, uses Node 24.9.0, `npm ci --ignore-scripts --no-audit --no-fund`, syntax check, Workers D1 tests and 7-day lockfile artifact. Its branch trigger list covers only the first two proof branches.
+- PR #54 adds task identity, immutable attempts, finalization and reconciliation branch names to push/PR trigger lists.
+- PR #56 adds `fix/deny-attempt-lease-takeover-2026-11-10` to push triggers. It retains the PR #54 workflow execution steps and artifact policy.
+- All three versions use read-only `contents: read` and pinned action SHAs. No secret permissions are declared.
+- Candidate should preserve PR #56's trigger coverage and add any fresh integration branch trigger only if needed; keep the pinned actions, Node version, npm ci policy, syntax/test steps and artifact upload. Exact workflow candidate still requires exact-head CI.
