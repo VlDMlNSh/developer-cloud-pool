@@ -132,7 +132,7 @@ export async function finalizeWithTransport(api, expected) {
 
   let markerState;
   try {
-    markerState = inspectMarker(await api.listComments(), marker);
+    markerState = inspectMarker(await api.listComments(), expected);
   } catch {
     return retry("AUDIT_MARKER_READ_AMBIGUOUS");
   }
@@ -158,7 +158,7 @@ export async function finalizeWithTransport(api, expected) {
       // A lost response may hide a successful POST; reconcile by marker read-back.
     }
     try {
-      markerState = inspectMarker(await api.listComments(), marker);
+      markerState = inspectMarker(await api.listComments(), expected);
     } catch {
       return retry("AUDIT_MARKER_POST_RESPONSE_AMBIGUOUS");
     }
