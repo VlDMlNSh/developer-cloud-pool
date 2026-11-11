@@ -2730,3 +2730,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: audit PR #61 source/migration for SQL invariants and threat boundaries, then design/implement bounded AEAD envelope and owner-allowlist middleware proof without enabling protected routes. Keep PR draft until review and qualification gates.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 latest-head CI reconciliation
+- PR #61 advanced after the previous verification; latest observed HEAD is `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`, base remains `proof/cloudflare-workflows-vitest-2026-11-08`.
+- Latest exact-head run `42984373437`, job `130401940558`: COMPLETED / SUCCESS. `npm ci`, syntax checks, Node tests 11/11 and Workers/D1 Vitest 3 files / 14 tests all PASS; Experience auth suite 6/6 PASS.
+- The intermediate run `42984240109` on previous head `7b018219cf220046a641d3811434014cc63421d4` also passed, but latest report now uses the newer exact-head evidence. Initial failure due unresolved migration-helper import is superseded.
+- PR #61 remains OPEN / DRAFT / UNMERGED; reviews 0; inline threads 0. Local D1 proof VERIFIED for tested behavior only.
+- Report updated: [Experience auth D1 local proof](../reports/2026-11-11-experience-auth-d1-local-proof.md), commit `e388ca7e300176b295de0f316724ca295b5f1a51`, blob `4304522f76af3cf06c94031dec6bc2bf678fdd58`.
+- Production integration remains unqualified: PKCE AEAD/key custody, owner allowlist middleware, session rotation, quota circuit breaker, browser cookie/callback/CSRF, browser QA, remote D1, account Workers Free entitlement, deployment and independent security review remain open.
+- No production resource, secret, key, OAuth App, route, deployment, provider request or dispatch.
+- Next: perform a focused security audit of the new schema/adapter and prove session revocation freshness plus DB-boundary isolation; then address PKCE AEAD design. Keep PR draft; do not merge or provision.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
