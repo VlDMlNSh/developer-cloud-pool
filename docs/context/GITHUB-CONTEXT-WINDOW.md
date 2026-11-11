@@ -1753,3 +1753,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issue #38 OPEN/NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #59 ancestry with latest PR #58 mapper; then local injected delivery orchestration proof (fenced lease → mapper → fake projection → verified acknowledgement/retry). Do not implement orphan recovery until issuer/trusted-time prerequisites accepted.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #58/#59 ancestry reconciliation — 2026-11-11
+
+- Default HEAD observed: `8a64a18260ee0b7f2ed4bdac8c47471db3833042`.
+- PR #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025`; PR #59 head `22200226da4f1af30645cf441a639db6893e9310`.
+- GitHub Compare reports DIVERGED: PR #59 has 10 commits beyond merge-base and lacks 4 commits from current PR #58; merge-base `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`. Mapper/integration contract from #58 are therefore not validated together with #59 dead-letter changes.
+- Exact-head runs: #58 `43043284086` SUCCESS; #59 `42981807825` SUCCESS. Separate heads only; combined integration NOT VERIFIED.
+- Reviews: #58 0/0, #59 0/0 (formal/inline). Ruleset 26550182 active; 0 required approvals, so independent review remains separately required.
+- OSS fit: Ledgerline demonstrates DO-authoritative stream + D1 projection/outbox, but is not a drop-in and changes authority model. No dependency adopted; free-tier eligibility unverified.
+- Decision: no force-push/rebase/retarget/merge/dispatch/provisioning. Next: inspect patches, create immutable integration branch and reconcile minimum mapper + retry/dead-letter stack, then exact-head CI and independent review.
+- Report: docs/reports/2026-11-11-pr58-pr59-ancestry-reconciliation.md.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
