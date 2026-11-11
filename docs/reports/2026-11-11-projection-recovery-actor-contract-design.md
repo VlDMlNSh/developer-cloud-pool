@@ -55,3 +55,16 @@ Disposition: the existing task Resolver grant must NOT be reused directly for pr
 Additional material finding: current local projection adapter functions accept caller-supplied `now`. This is deterministic test injection only, not a production trusted clock. ADR amended to require database-generated time inside the conditional transaction or a separately qualified trusted composition-root clock; caller timestamps must never prove lease expiry or grant validity. Existing resolver host-clock composition proof is synthetic; production clock provenance remains NOT QUALIFIED.
 
 Updated ADR blob: `35dae9ef71eb0feed2977bfa30c2a079f6249c50`; design branch commit `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`. PR #60 body updated and re-read. PR #60 head is now `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`. Exact-head Actions runs: none returned; CI NOT VERIFIED. Reviews/threads remain 0/0.
+
+
+## Concurrent PR lineage refresh — 2026-11-11
+
+A final live refresh detected PR #59 advanced while this pass was running:
+- Current PR #59 head: `22200226da4f1af30645cf441a639db6893e9310`.
+- Current base branch: `proof/fake-github-projection-reconciler-2026-11-11` at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`.
+- Exact-head PR workflow run: `42981807825`, attempt 1, event `pull_request`, completed/success; job `130393715595` (Local Workers-runtime D1 adversarial tests), SUCCESS.
+- PR #59 reviews: 0; inline review threads: 0. Combined commit status contexts: none returned.
+- PR #58 remains OPEN/DRAFT, head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, base `test/50-approval-logical-task-contention-2026-11-09`.
+- PR #60 remains OPEN/DRAFT, head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`, base default SHA `864213e2ff5b4fa956ba405dea8137a44d812f49`, no exact-head Actions run returned, reviews/threads 0/0.
+
+The new PR #59 CI success updates only the local D1 proof status; it does not change the same-owner-only recovery limitation, hosted D1 status, independent-review status, or production dispatch boundary. PR #59 is still stacked on a separate fake GitHub projection reconciler branch and must be reviewed as a lineage, not as an isolated diff.
