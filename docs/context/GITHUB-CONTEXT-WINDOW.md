@@ -3125,3 +3125,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: component discovery COMPLETED; PR #58 protocol qualification INCOMPLETE; PR #59 local D1 proof CI VERIFIED but integration/recovery NOT QUALIFIED; PR #60 CI NOT VERIFIED and issuer/time unresolved; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: extract the canonical accepted lifecycle-label contract and PR #59-to-PR #58 lease-to-POST authorization interface; then make one minimal stacked change with adversarial tests. Keep fake/local, no live GitHub writes, no secrets, `dispatch:false`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58 lifecycle ownership / PR #59 D1 retry interface audit
+
+- Immutable targets: PR #58 `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; PR #59 `22200226da4f1af30645cf441a639db6893e9310` (stacked on #58); PR #60 `234fb2ee40265e26fac00c69ac1b6192766602cb`.
+- Reuse-first search for Cloudflare D1 outbox, Workers idempotency, and D1 retry/backoff repositories returned no compatible mature drop-in. No new framework/queue/client adopted.
+- Current default-branch Supervisor `scripts/pool-supervisor.mjs` blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` declares labels `pool:ready`, `pool:claimed`, `pool:probe-complete`, `pool:needs-review`, `pool:invalid`. This is implementation evidence, not a complete accepted lifecycle contract.
+- PR #58 reconciler blob `2f83befc145d39ea60f06fe5b9e9033f89df40c0` accepts four terminal labels (`probe-complete`, `needs-review`, `completed`, `failed`), allows 1–3 labels, and removes all current `pool:*` labels. This can remove labels not owned by the reconciler; exact owner/outcome mapping is unresolved. PR #37's narrower draft set is not accepted and must not be silently adopted.
+- PR #59 D1 proof blobs: migration 0006 `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`; migration 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; migration 0008 `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; adapter `1546c2e4172e3767ed8bd5642c7b9c6d95716d11`. They add durable lease generation, max 5 delivery attempts, backoff 30/60/120/240 sec, dead-letter terminalization and append-only events.
+- F-01 remains: PR #59's D1 lease/retry budget is not connected to PR #58 POST authorization. PR #58 still trusts caller boolean `allowPost`; no one-use grant tied to exact outbox/repository/issue/event digest/generation/attempt/expiry is present. Existing local tests do not prove one POST per D1 lease generation or prevent lease reuse.
+- Caller-provided `now` is only a local test seam; no trusted production clock or authenticated actor identity proven. Migration #0007 actor_id from lease_owner is attribution, not authentication. PR #60 issuer/time unresolved.
+- Exact-head CI: #58 run `42979949181` SUCCESS; #59 run `42981807825` SUCCESS; #60 no run returned, NOT VERIFIED. All OPEN/DRAFT/UNMERGED. Formal reviews: none. Inline threads not reverified this pass.
+- Report: [PR #58 Lifecycle / D1 Retry Interface Audit](../reports/2026-11-11-pr58-lifecycle-d1-retry-interface-audit.md), commit `516eb443d04aed73c9b2571e5734294d33605386`.
+- No source/schema/workflow/permission/secret changes, merge, dispatch, live GitHub writes or deployment. Dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: establish an accepted lifecycle ownership/outcome-label contract from Supervisor and Worker/finalizer code; then define a one-use D1-lease-bound POST grant and only then make a coordinated stacked PR #58/#59 change.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
