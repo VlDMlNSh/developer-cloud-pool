@@ -124,3 +124,18 @@ The proof branch advanced again after the previous exact-head success, adding ex
 - PR reviews: 0; inline threads: 0.
 
 This supersedes the earlier exact-head snapshot `7b018219cf220046a641d3811434014cc63421d4` / run `42984240109`. The earlier failure remains a superseded configuration attempt. PR #61 remains OPEN / DRAFT / UNMERGED. Verification is limited to local Workers/D1 emulator semantics; no production or account-level qualification is implied.
+
+
+## 2026-11-11 — final exact-head verification refresh
+
+The prior report/context entry naming head `7b018219cf220046a641d3811434014cc63421d4` is superseded by a subsequent hardening commit.
+
+- Current PR #61 head: `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`; branch head and PR head match.
+- Additional negative validation: `revokeApplicationSession` now rejects non-string session digests instead of relying on RegExp coercion. Added an object-with-`toString` adversarial fixture.
+- Exact-head workflow run `42984373437`: COMPLETED / SUCCESS; job `130401940558`: SUCCESS.
+- Exact-head checks: `npm ci` PASS; `npm run check` PASS; `npm test` 11/11 PASS; `npm run test:workflow` 3 files / 14 tests PASS. Experience auth D1 suite remains 6/6 PASS; concurrent 50-way OAuth state consumption yields exactly one consumer.
+- Earlier attempts are retained as history: first run failed because migration was not applied; second failed due duplicate import; the final head uses `readD1Migrations` from the already-pinned `@cloudflare/vitest-plugin` and applies the migration through the Cloudflare test API. No dependency or lockfile change.
+- PR #61 remains OPEN / DRAFT / UNMERGED; formal reviews 0, inline threads 0. Independent security review NOT RUN.
+- Verification boundary remains local synthetic Workers/D1 only. PKCE AEAD/key custody, browser cookies/CSRF/callback, owner allowlist integration, session rotation, quota, remote D1, free-tier entitlement and deployment remain NOT QUALIFIED / NOT RUN.
+- No production resource, secret, OAuth App, route, dispatch or deployment touched. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
