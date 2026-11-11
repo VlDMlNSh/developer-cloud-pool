@@ -1803,3 +1803,29 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - New task-scoped profiles documented: provider inventory auditor, provider qualification verifier, quota ledger engineer, model capability evaluator, router policy engineer, rate-limit auditor, task planner, bounded coding worker, independent security reviewer. These reuse A1/A2/A3; no permanent role taxonomy expansion.
 - First static wave PLANNED only: A1 provider inventory read-only; A2 quota-ledger/test design; A3 provider workflow blast-radius audit. Not dispatched because current Gemini controller accepts only fixed role payloads and no custom tasks; no bypass or duplicate generic batch.
 - Provider/model API calls: NOT RUN. Additional provider-backed agents: NOT DISPATCHED. Model Gateway: NOT IMPLEMENTED/NOT QUALIFIED. Contour A remains BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 provider inventory and additive agent capacity refresh
+
+Latest directly observed refs for this pass:
+- Cloud Pool default `Основной`: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Working documentation branch `docs/issue38-free-claim-backend-fit-2026-11-11`: `717203d873f98003aa84e2c72c6a731d39399853`.
+- PR #64 OPEN/DRAFT/UNMERGED, head `717203d873f98003aa84e2c72c6a731d39399853`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Active ruleset collection: ID `26550182`, name `Основной — verified`, enforcement active; detailed rules were not re-read in this pass.
+- Issue #26 (provider routing/quota ledger) OPEN; Issue #38 (durable claims) OPEN.
+- Pool Supervisor schedule run `42994815115` SUCCESS at default SHA `6fdcedebeba62715122e43a75c6ad6d926321ce7`; this does not prove live model/provider execution or a deployed pool.
+- Latest observed Pool Actions runs also include local D1 proof runs `43010770730` SUCCESS, `43010595098` FAILURE, `43010555851` SUCCESS, `43010555555` SUCCESS on feature branches; not provider-agent qualification.
+
+Provider/agent evidence:
+- MediaHub `ops/qualification/provider_model_registry.json` blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`: 25 records, 24 cloud credential slots plus Ollama local. Registry is inventory metadata, not secret-presence or route-health proof.
+- MediaHub `.github/agent-system/registry.yaml` blob `0317d1e794aa80cd0fa22bd953b95921b26aafd3`: reuse A0/A1/A2/A3 authority and dynamic bounded workers; do not proliferate permanent role types.
+- MediaHub `.github/ai/model-router.yml` blob `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`: policy-only router; direct provider calls disabled, only named transports allowlisted, paid fallback false, unknown routes fail closed.
+- Provider qualification workflow blob `d3160088fbef4fce152ed7335f0acaa3bb440378` references multiple provider env aliases and injects them into a broad self-hosted qualification job labelled `mediahub-provider` with a host/user check for `mh-dev-02`. This creates a credential blast-radius concern; future qualification should be one account-slot per isolated job with only that slot's credential reference. Never run untrusted PR code in a secret-bearing job.
+- GitHub Secrets API is unsupported by the available GitHub connector; actual secret existence/scope is NOT VERIFIED. Secret values were not read.
+- Owner-provided Aion Labs Free 20k/day + LLM7 Free 100k/day = 120k/day arithmetic estimate; quota, reset, account scope, model, request/concurrency limits and zero-cost eligibility remain NOT VERIFIED. Never combine into a fungible pool or multiply by key aliases without provider evidence.
+- Additive bounded task profiles documented: provider inventory auditor (A1), quota ledger engineer (A2), provider qualification/security verifier (A3), model capability evaluator (A1), router policy engineer (A2), rate-limit auditor (A3), bounded coding worker (A2), independent security reviewer (A3). These reuse canonical roles; no new permanent authority.
+- New provider-backed agents are PLANNED / NOT DISPATCHED. No provider calls, new workflow dispatch, secret access or hosted resource provisioning occurred.
+- Approved Gemini controller remains fixed-task only; no arbitrary task envelope input. Do not bypass it or claim custom tasks were assigned.
+
+Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+Next step: design and independently review a versioned, bounded task-admission contract plus per-slot provider qualification/secret-injection contract; reconcile existing PR #28 routing design and PR #29 quota ledger rather than replacing them wholesale. Continue Contour A only; Contour B deferred.
