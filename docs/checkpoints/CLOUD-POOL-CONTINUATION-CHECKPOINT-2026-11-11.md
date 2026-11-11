@@ -140,3 +140,13 @@ Paste this exact phrase into a new chat:
 - PR #57 exact current head NOT VERIFIED in this pass. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: fresh-ref check, then minimal integration branch from current immutable default, no aggregate PR #64 transplant; one attempt-aware lifecycle, legacy lease isolated, reconciliation queue retained without authority, projection module separate, adversarial tests, dispatch:false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 11. Gemini Wave 317 — agent capacity and admission audit (2026-11-11)
+
+- Report: [Wave 317 capacity/admission audit](../reports/2026-11-11-gemini-wave317-agent-capacity-and-admission-audit.md).
+- Controller run 43029067368 SUCCEEDED; three signed children on target SHA 41c13e1c2b17ac48dc51c9963a9cda140f79ddb0 SUCCEEDED: Agent 1 43029095783 → PR #637; Agent 2 43029098931 → PR #636; Agent 3 43029101957 → PR #635.
+- Outputs are documentation-only. PRs remain OPEN, formal reviews 0, exact-head CI action_required / NOT VERIFIED. Agent 2 test claims lack reproducible transcripts; Agent 3's static audit did not independently review Agent 1's concurrent work.
+- Three-way concurrent dispatch is VERIFIED. Permanent >3 agent capacity, runner entitlement, persistent registration, quotas and isolation are NOT VERIFIED. PR #608's 20-slot runner design remains draft and is not capacity evidence.
+- Next: reconcile PR evidence and action_required checks, then prepare role/registry expansion with identity, capability, quota, isolation, expiry/revocation and exact-head CI gates; reuse mature components where suitable.
+- Cloud Pool not launched/qualified. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
