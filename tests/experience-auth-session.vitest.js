@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
+import { applyD1Migrations } from "cloudflare:test";
 import {
   issueOAuthTransaction,
   consumeOAuthTransaction,
@@ -16,6 +17,7 @@ const envelope = "E".repeat(48);
 const db = () => env.EXPERIENCE_AUTH_DB;
 
 async function reset() {
+  await applyD1Migrations(db(), env.TEST_EXPERIENCE_AUTH_MIGRATIONS);
   await db().prepare("DELETE FROM oauth_transactions").run();
   await db().prepare("DELETE FROM application_sessions").run();
 }
