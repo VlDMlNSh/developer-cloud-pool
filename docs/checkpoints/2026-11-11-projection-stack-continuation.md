@@ -225,3 +225,14 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Next: selectively reconstruct the 23-path proof harness baseline, then the exact #58/#59 bounded patches; preserve migrations 0006→0007→0008. Implement one receipt-bound orchestration boundary and negative-first tests. No code or tests in this pass; no hosted D1/dispatch/provider/deployment.
 - Receipt-free ACK remains a mandatory blocker. Independent checks are deferred until after pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## D1 proof reconstruction — 2026-11-11
+
+- Clean implementation branch `impl/receipt-bound-projection-2026-11-11` HEAD `4c39deff653841f8979696167d85a1df24361a6f`, ref/tree revalidated.
+- Commit sequence: `25e56899f0297fe5d501a78c9007c25959b10bd1` reconstructs 23 baseline paths from exact #58 base `ec3f326...`; `0feb74cdf2c4dd4a7126d445c3aa46109bb6eedf` transplants exact 7 #58 paths; `4c39deff653841f8979696167d85a1df24361a6f` transplants exact 5 #59 paths. 29 final proof/contract/report paths, no full divergent history imported.
+- Migration 0006→0007→0008 preserved. package check includes projection syntax; package-lock preserved.
+- Receipt-free ACK remains a known blocker and is not accepted: current helper still accepts no projection receipt. Next step is private orchestration with trusted runtime clock/identity, lease self-acquisition, same-row envelope, exact event/digest reconciliation, conditional ACK bound to digest/owner/delivery generation/fresh time and final read-back, plus negative-first tests.
+- Exact implementation HEAD has zero combined status contexts and zero workflow runs. Tests NOT RUN, CI NOT VERIFIED. Workflow push branch filter does not yet include impl branch.
+- Detailed report: [2026-11-11 D1 proof reconstruction](../reports/2026-11-11-d1-proof-reconstruction-on-clean-branch.md), docs commit `f75a50ef24931f7436e4716aec36051141864704`.
+- No hosted D1, dispatch, provider calls or deployment. Independent checks deferred until pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
