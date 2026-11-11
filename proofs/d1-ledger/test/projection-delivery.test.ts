@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 import { claimLogicalTask } from "../src/claim-outbox.mjs";
 import { createTaskAttempt, acquireAttemptLease, finalizeTaskAttempt } from "../src/task-attempts.mjs";
 import { createProjectionDeliveryOrchestrator } from "../src/projection-delivery.mjs";
+import * as projectionOutbox from "../src/projection-outbox.mjs";
 
 const NOW = 1_810_000_000;
 let sequence = 0;
@@ -67,6 +68,9 @@ async function createOutbox() {
 }
 
 describe("receipt-bound projection orchestration", () => {
+  it("does not export a receipt-free delivery acknowledgement primitive", () => {
+    expect("acknowledgeProjectionDelivered" in projectionOutbox).toBe(false);
+  });
   it("ACKs only after matching marker and managed-label read-back, then verifies D1 read-back", async () => {
     const outboxId = await createOutbox();
     let now = NOW + 10;

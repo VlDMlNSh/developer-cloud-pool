@@ -16,7 +16,7 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
    - `terminal_status → terminalOutcome`
    - succeeded → `pool:probe-complete`; failed/abandoned → `pool:needs-review`.
 4. `reconcileTerminalProjection(api, envelope)` may write only the deterministic audit comment and managed `pool:*` labels. It has no task/attempt storage handle and returns `dispatch:false`.
-5. The caller may acknowledge the outbox as delivered only after `projection_verified:true`, using `acknowledgeProjectionDelivered(db, outboxId, workerId, deliveryGeneration, trustedNow)`. Retryable or ambiguous projection must use `markProjectionRetryable` with the same fenced delivery lease. A stale generation must fail closed.
+5. Only `createProjectionDeliveryOrchestrator({ db, api, workerId, clock, leaseSeconds })` is the public delivery boundary. Its per-delivery method accepts only an `outboxId`; it acquires and reads back the lease itself, derives the envelope from that same row, reconciles the projection, validates exact `eventId` and digest, conditionally ACKs using a private SQL helper, and confirms the delivered row by read-back. No receipt-free ACK function is exported. Retryable projection uses the same fenced lease; stale generations fail closed.
 6. Projection failure must not roll back, rewrite, reopen, or otherwise mutate the finalized task/attempt. Projection delivery status is separate from task/attempt terminal status.
 
 ## Idempotency and failure semantics
@@ -32,6 +32,6 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
 
 ## Explicit non-goals and qualification gates
 
-This contract does not implement or authorize a production Worker, live GitHub API adapter, dispatch, hosted D1, issuer authentication, trusted clock, revocation, nonce replay protection, or deployment. D1 delivery lease `now` must be supplied by a separately qualified trusted-time authority; a caller-provided timestamp is not itself trusted.
+This contract does not implement or authorize a production Worker, live GitHub API adapter, dispatch, hosted D1, issuer authentication, trusted clock, revocation, nonce replay protection, or deployment. The runtime must wire `clock.now()` from a separately qualified trusted-time authority and bind `workerId` from its runtime identity. The local proof factory accepts injected adapters for deterministic tests; callers of `deliver()` cannot supply timestamps, receipts, worker identity or lease generations.
 
 Required before hosted qualification: wire the real outbox lease → mapper → bounded GitHub adapter → verified projection → fenced D1 acknowledgement path; test crash/restart and lost-response windows; qualify issuer/time/secret isolation; obtain independent security/governance review and hosted account entitlement evidence.

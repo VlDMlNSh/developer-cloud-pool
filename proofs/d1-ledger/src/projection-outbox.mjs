@@ -151,31 +151,3 @@ export async function deadLetterExpiredProjection(db, outboxId, workerId, genera
   }
 }
 
-export async function acknowledgeProjectionDelivered(db, outboxId, workerId, generation, now) {
-  if (!db || typeof db.prepare !== "function" || !SAFE_ID.test(outboxId || "") ||
-      !SAFE_ID.test(workerId || "") || !Number.isSafeInteger(generation) || generation < 1 ||
-      !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_PROJECTION_ACK");
-  try {
-    const result = await db.prepare(`
-      UPDATE pool_attempt_projection_outbox
-         SET status = 'delivered', lease_owner = NULL,
-             lease_expires_at = NULL, delivered_at = ?, updated_at = ?
-       WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
-         AND lease_generation_delivery = ? AND lease_expires_at > ?
-    `).bind(now, now, outboxId, workerId, generation, now).run();
-    if (result?.success !== true || !(result?.meta?.changes >= 1)) {
-      return deny("STALE_OR_EXPIRED_PROJECTION_LEASE");
-    }
-    const row = await db.prepare(`
-      SELECT status, lease_owner, lease_expires_at, lease_generation_delivery, delivered_at
-        FROM pool_attempt_projection_outbox WHERE outbox_id = ?
-    `).bind(outboxId).first();
-    return row?.status === "delivered" && row.lease_owner === null &&
-      row.lease_expires_at === null && row.lease_generation_delivery === generation &&
-      row.delivered_at === now
-      ? { decision: "PROJECTION_DELIVERED", outboxId, generation, dispatch: false }
-      : deny("PROJECTION_ACK_READBACK_MISMATCH");
-  } catch {
-    return deny("PROJECTION_ACK_AMBIGUOUS");
-  }
-}
