@@ -2562,3 +2562,10 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Exact-head Jarvis Experience OpenAPI Validation run `42982847694`, job `130397062519`: COMPLETED/SUCCESS (Node 24, OpenAPI validation).
 - PR #24 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0. CI is static contract validation only, not OAuth/session implementation, browser QA, deployment or independent security qualification.
 - Session decision report reconciled to current PR head and exact-head runs: [Web Console session-store decision](../reports/2026-11-11-web-console-session-store-decision.md).
+
+
+### WB-05 / Wave 486 source precision — 2026-11-11
+
+- WB-05 packet blob `1b562c6546b1216f2ee89095cd6a78427a967dc5` itself says A–D unselected. Later owner-directed disposition is recorded in MediaHub PR #599 (Wave 486), selecting Option A as a target only. PR #599 remains OPEN/DRAFT/UNMERGED; no exact-head CI, reviews or inline threads returned in current check. This is not normative acceptance or deployed issuer evidence.
+- MediaHub PR #600 / Wave 487 remains OPEN/DRAFT/UNMERGED; no exact-head CI/reviews/threads returned. R-06 ownership/retention, concrete KMS/audit selection and independent A3 review remain blockers.
+- Cloud Pool PR #60 issuer/time contract now explicitly traces the distinction; blob `b445c7d601accc437fe715c4d742fcdf3c416687`; PR #60 head `76dcec559faf6a1cc92a9edbf3ecf5e6222e3753`. Exact-head CI NOT VERIFIED; review NOT RUN.
