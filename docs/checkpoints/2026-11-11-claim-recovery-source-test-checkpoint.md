@@ -30,3 +30,13 @@ These are local proofs only; no hosted D1 or integrated Supervisor/Worker qualif
 Implement no runtime changes until the canonical lifecycle/reconciliation contract is approved. Next useful work is a narrow design decision and cross-API negative test specification, then authorized independent review. No hosted provisioning, secrets, dispatch or Contour B.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Supersession note — live correction 2026-11-11
+
+The historical finding above that `acquireAttemptLease` accepts caller-controlled `resumable=true` is **SUPERSEDED** by PR #56 at immutable HEAD `0769b6b5d5eda9c7821804b93db21ded6e0985ef`. That PR removes the parameter and restricts lease acquisition to a pending task with a prepared attempt; exact-head local D1 workflow run `42825872826` completed SUCCESS. This is local proof only, and PR #56 remains OPEN/DRAFT/UNMERGED.
+
+Still open: the legacy `task-lease.mjs` lifecycle coexists with attempt-aware lifecycle; cross-API negative tests and retirement/hard-disable are not evidenced; no trusted reconciliation resolver exists for indeterminate attempts.
+
+The historical PR #63 head `7bd818443d13cf3bba9f0f8c0b63e0689f68cd60` is superseded by current PR #63 head `886f45ad52b914c938c1898c4d5e017183054a76`. Exact-head CI and combined statuses for current PR #63 and PR #64 returned empty results: NOT VERIFIED.
+
+Cross-PR consistency audit: [2026-11-11 cross-PR evidence consistency audit](../reports/2026-11-11-cross-pr-evidence-consistency-audit.md).
