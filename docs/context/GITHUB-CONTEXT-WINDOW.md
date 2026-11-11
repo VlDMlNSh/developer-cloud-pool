@@ -1560,3 +1560,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: verify run `42984610137` completes successfully on exact head `64ebe73e5c1f5c5b82637b85ae7b1be39d50c8a6`; then close Issue #62 only if all checks pass, and continue audit of the stacked PR chain.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+ 
+## 2026-11-11 — PR #61 Issue #62 resolved
+
+- Final PR #61 head verified: `976cb2ed0b594b39c847921918f182ab6d571344`; PR remains OPEN / DRAFT / UNMERGED.
+- Adapter blob `046111beb31d7c8cf58e623581d2b260fbdad496` now enforces `created_at <= now` and `expires_at > now`.
+- Regression test blob `5ccfb8e662b531d29b6292985d6420b47ef99029` proves future-created sessions are denied before creation and active at creation.
+- Exact-head CI run `42984644046` / job `130402848442`: COMPLETED / SUCCESS; all steps passed.
+- Issue #62 closed as completed with verification evidence: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62
+- Audit report updated: `docs/reports/2026-11-11-pr61-experience-auth-security-audit.md`.
+- No formal PR review submissions observed. Closure of Issue #62 does not approve PR #61 or qualify production OAuth/session behavior. AEAD/key custody, key rotation, production OAuth, owner allowlist integration, session rotation, global quota, production D1 and deployment remain NOT VERIFIED.
+- Next: audit the PR #61 stacked base chain (#52) and reconcile the OAuth/session adapter contract with existing Pool authorization and recovery boundaries before any merge. Dispatch remains disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
