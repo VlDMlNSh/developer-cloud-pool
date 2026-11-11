@@ -83,7 +83,8 @@ function terminalReadback(issue, expected, plan, humanLabels) {
  * terminal label mutation, so a terminal label cannot be committed by this
  * protocol without a visible deterministic audit marker.
  *
- * GitHub label replacement is still non-CAS. A concurrent label mutation
+ * GitHub's issue-label PATCH endpoint does not provide an atomic compare-and-swap.
+ * A concurrent label mutation
  * between read and PATCH may be overwritten; read-back can detect but cannot
  * atomically prevent or roll back that race.
  */
