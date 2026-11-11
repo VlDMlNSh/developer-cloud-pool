@@ -2,12 +2,14 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-11 — Recovery Actor R-06 operational-owner source search
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (read-back 2026-11-11)
+Documentation continuation branch: `docs/recovery-actor-component-fit-2026-11-11`
+Latest report commit: `1465e733cd41a4792456771d820eed9f0be240b9` (documentation branch; PR #63 remains open/draft/unmerged)
+Latest-state note: dated snapshots below are historical evidence; the most recent Recovery Actor sections at the end of this file supersede older PR/head/status observations.
+
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -1683,4 +1685,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: `docs/reports/2026-11-11-recovery-existing-security-components-and-authority-gap.md`.
 - Status: SOPS/age existing selected encryption primitives; OpenBao FUTURE_GATED; audit sink and named operational owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: continue no-code search in accepted governance records for operational role appointments and service ownership. If none exists, keep the blocker explicit; do not create a duplicate vault, issuer, or audit database by assumption.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor operational-owner assignment source search
+
+- Report: `docs/reports/2026-11-11-recovery-operational-owner-assignment-search.md`, commit `1465e733cd41a4792456771d820eed9f0be240b9`.
+- MediaHub default source snapshot `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; canonical Baseline 2.0 is accepted, but MH-12 remains ARCHITECTURE COMPLETE / GOVERNANCE REVIEW REQUIRED and implementation NOT AUTHORIZED. MH-13 remains RECONSTRUCTED / PROPOSED, acceptance NOT VERIFIED, with exact stewardship and retention/legal/deletion semantics unresolved.
+- Bounded GitHub repository search for named operational appointments returned no accepted source naming Security Issuer operator, Trust Custodian/key-custody team, principal registry/revocation operator, trusted-time owner, audit-sink/on-call operator, privacy/legal approver or recovery quorum. The result is limited to project GitHub evidence, not external organizational records.
+- Wave 485 PR #598 remains OPEN/DRAFT/UNMERGED; Wave 486 PR #599 and Wave 487 PR #600 remain OPEN/DRAFT/UNMERGED. #599/#600 exact-head PR workflow-run lists are empty; formal reviews are empty. Issue #301 remains OPEN and explicitly orders A0 issuer and R-06 authority gates first.
+- Accepted MediaHub component decisions and integration boundary already select SOPS + age for encrypted configuration/secrets and Cosign for artifact signatures/provenance. OpenBao remains TARGET-CANDIDATE / FUTURE-GATED; immudb remains an unselected audit-storage candidate; Rekor is supply-chain transparency rather than private operational audit; Hydra is not the consumer-specific one-use Recovery Grant + atomic D1 transition. No duplicate vault, issuer, or audit sink should be built by assumption.
+- Pool default `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; active ruleset #26550182 applies to that branch (PR required; 0 approval threshold; review-thread resolution required; no bypass actors).
+- PR #60 remains OPEN/DRAFT/UNMERGED at `234fb2ee40265e26fac00c69ac1b6192766602cb`, 7 ahead / 16 behind current default, exact-head CI NOT VERIFIED, reviews 0 / threads 0.
+- PR #63 is OPEN/DRAFT/UNMERGED on `docs/recovery-actor-component-fit-2026-11-11`; immediately before this update it was head `2e1a9b160906c5e0f926d6d342e0dd959bedbb8e`, 8 ahead / 0 behind. This pass added the operational-owner search report and refreshed this Context Window; re-read PR head/compare/CI/reviews after the context commit before reporting final branch counts.
+- Recovery Actor: NOT IMPLEMENTED / NOT QUALIFIED. Production dispatch: FAIL-CLOSED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- No secrets, live tokens, credentials, key material, provider calls, workflow dispatch, runtime/schema/permission changes, deployment or merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
