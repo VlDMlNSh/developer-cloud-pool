@@ -13,6 +13,7 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const finalizerPolicy = read("scripts/pool-finalizer.mjs");
 const finalizerRunner = read("scripts/pool-finalizer-runner.mjs");
+const finalizerProtocol = read("scripts/pool-finalizer-protocol.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const validation = read(".github/workflows/reusable-pool-worker-boundary-validation.yml");
