@@ -2353,3 +2353,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: review updated draft for overstatement of PR #37 finalizer/authority guarantees and reconcile remaining authorization/quota/claim PRs before creating any default-based branch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #59 exact-head D1 CI re-verification
+- Report: [PR #59 dead-letter CI re-verification](../reports/2026-11-11-pr59-dead-letter-ci-reverification.md), report commit `a7325b755e88024319c6cdcb4769071f8263bea3`.
+- PR #59 exact head `5c47cda4394d0381315bc16182799a09bf861797`, exact base `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, merge checkout `f02a32cb88291d1719e620e85688fe1f7a0de2aa`.
+- Run `42980783397` / job `130390442001` COMPLETED / SUCCESS. Job log confirms checkout of the exact PR head merged into the exact base. Syntax PASS; 3 test files / 53 tests PASS; lockfile artifact ID `13837232801`, SHA-256 `7dbc1b8b34dcdf4d03868df27168857b250eed43f6798990419042c9fccb8ebc`.
+- Earlier run `42980650499` failed one test; new success is a separate exact-head merge checkout and is recorded distinctly.
+- PR #59 remains OPEN/DRAFT/UNMERGED, formal reviews 0, inline threads 0. Parent PR #58 remains OPEN/DRAFT/UNMERGED; its recorded run `42979949181` is SUCCESS.
+- Scope remains local Workers-runtime D1 proof only. Hosted D1, live GitHub API, sender, deployment, remote UI, executors, provider routing and production state are NOT VERIFIED. Dispatch remains disabled; no secrets read, dispatch, deployment, or merge.
+- PR #59 local proof VERIFIED; PR acceptance NOT ACCEPTED pending review and parent-stack integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: audit PR #59/#58 database trigger order, terminal immutability, attempt budget, append-only events and generation fencing; then recheck issues #38 (single-use claims) and #22 (authenticated web console).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
