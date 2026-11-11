@@ -1689,3 +1689,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - The hosted plan explicitly prohibits provisioning until Free eligibility, quotas, source reconciliation and explicit resource authorization are verified. It requires 50 independent concurrent HTTP requests through a test-only Worker/API; sequential D1 SQL batches are not accepted as concurrency evidence.
 - No hosted resource, secret, billing data, runtime/schema/permission/dispatch or deployment changed. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #39/#54 proof stack onto current default and rerun exact-head CI; independently verify account-specific Free eligibility before any owner-authorized hosted resource creation.
+
+
+## Final publication read-back — PR #64 (2026-11-11)
+
+- PR #64 head immediately before this context synchronization: `6ef2467d68f61dbe9b969b9bca22a572aa8bc55a`; PR remains OPEN / DRAFT / UNMERGED, base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Current PR changed-file set: 4 documentation files, 422 additions, 0 deletions. Compare before this synchronization: 9 commits ahead / 0 behind.
+- Final qualification plan blob: `48cc92df59155881f50d81ff7c6ba1f2375d5d97`; audit report blob: `81e91ff7493f32c3a750940b9e35bb6b884dc80c`.
+- Exact-head CI for PR #64 before this context synchronization: no PR-triggered runs returned (NOT VERIFIED); formal reviews 0; inline threads 0.
+- The PR description links the new plan/report and states the test-design correction, free-tier block, stale PR #54 stack and no-provisioning boundary.
+- This context synchronization itself is the next docs-only commit; no runtime behavior or infrastructure changed.
