@@ -40,3 +40,16 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - No source/runtime/schema/workflow/permission/secret/dispatch/hosted-resource/deployment/merge changes. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: file-by-file transplant manifest from exact #58/#59 patches and current default tree; independent review before branch mutation.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## D1 proof harness transplant manifest — 2026-11-11
+
+- Manifest: [D1 proof harness transplant manifest](../reports/2026-11-11-d1-proof-harness-transplant-manifest.md), commit `ef5258670667d0c61d45074a34ee5c0ecbcf3d42`.
+- Exact ancestry correction: PR #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025` and PR #59 head `22200226da4f1af30645cf441a639db6893e9310` are DIVERGED, 10 ahead / 4 behind, merge base `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`. #59 is based on the earlier shared proof base, not the latest #58 head.
+- The four #58-only commits absent from #59 add the projection envelope contract, projection-envelope.mjs, its tests, and a package syntax check. Exact PR #59 package script omits node --check src/projection-envelope.mjs; copying it blindly loses coverage. Preserve this check in the logical union.
+- Manifest inventories all proof paths, migration order 0001–0008, workflow filter union, package/lock/config/test ownership, ACK receipt requirements and explicit exclusions.
+- Concrete code defect remains: acknowledgeProjectionDelivered accepts no receipt. No integrated actor exists. Same-owner fifth-lease dead-letter restriction remains; do not relax without issuer/trusted-time authority.
+- Manifest inventory: VERIFIED against exact PR heads and current default tree. Independent review: NOT RUN. Code integration: NOT RUN. Hosted D1: NOT AUTHORIZED / NOT RUN. Dispatch FAIL-CLOSED.
+- Next: independent review of manifest and exact source patches; only after acceptance create immutable candidate branch and implement receipt-bound ACK with negative-first local D1 tests.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
