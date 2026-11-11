@@ -66,3 +66,16 @@ Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Dispatch FAIL-CLOSED.
 - Next: require durable no-repost state + concurrent reconciler tests; bind PR #60 issuer/time contract to actual accountable services before implementation; hard-disable legacy lifecycle and integrate finalizer generation.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## D1 proof stack integration-base audit — 2026-11-11
+
+[Full audit](../reports/2026-11-11-d1-proof-stack-integration-base-audit.md), commit `0ab16fa071de8c7411869a7a8daf4e057159c310`.
+
+- Current default `Основной` HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7`; recursive tree contains no `proofs/d1-ledger/` package.
+- PR #39 HEAD `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, base `9ef7e4aadd6c723fa86b21ea44383f8020643a0c`, compare to default: diverged, 55 ahead / 19 behind.
+- PR #54 HEAD `15a09c910f52553c59796260131a6b5a4a39c15f`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`, compare: diverged, 132 ahead / 19 behind.
+- PR #56 HEAD `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, base `32c88e50e173e6b19bc6c61723ab6474a3c08145`, compare: diverged, 120 ahead / 19 behind.
+- Historical exact-head local D1 runs: #39 run 42329993548 SUCCESS; #54 run 43010770730 SUCCESS; #56 run 42825872826 SUCCESS. Combined status contexts empty. These are not current-default integration or hosted qualification.
+- Safe decision: do not merge/rebase stacked PRs blindly. First produce file-level dependency/migration manifest and supersession map; then create fresh candidate from current default and run exact-head CI.
+- No source/branch/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Hosted D1 NOT RUN. Dispatch FAIL-CLOSED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
