@@ -2248,3 +2248,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Cloudflare read-only account inventory supplement: one standard account visible; D1 databases 0, Worker scripts 0, Durable Objects namespaces 0. Account subscriptions endpoint returned HTTP 403 authentication permission denied, so Free/Paid plan status NOT VERIFIED. No account identifiers, billing profile or secrets read; no resources provisioned. See decision study supplement.
+
+
+## 2026-11-11 — PR #52 Workflow/D1 proof re-audit
+
+- Re-audited PR #52 [local D1 attempt ledger + Workflow compatibility](https://github.com/VlDMlNSh/developer-cloud-pool/pull/52). Found documented local proofs for commit-then-timeout retry, duplicate trigger rejection, explicit restart replay, completed-instance persistence across two local processes, and in-progress Workflow recovery across abrupt local process termination.
+- Exact-head CI independently read back SUCCESS: implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`, run `42505474727`, job `128807039896`; report SHA `1eb3be17d9146d57a4335b511804946e097651ae`, run `42506744722`, job `128810903390`; recovery report SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`, run `42507524428`, job `128813275338`. All jobs and steps completed successfully.
+- PR #52 remains DRAFT / UNMERGED; formal reviews 0, inline threads 0. Evidence is local synthetic Miniflare/Workers runtime, not hosted Cloudflare qualification. No remote resources, dispatch, secrets or provider calls.
+- D1 + Workflows local proof: LOCALLY VERIFIED for listed cases; hosted backend NOT QUALIFIED; backend NOT SELECTED; independent review NOT RUN. Account Free entitlement remains NOT VERIFIED (subscriptions endpoint 403); connected account inventory had zero D1 databases, Worker scripts and DO namespaces.
+- Decision study addendum: [2026-11-11 backend State Authority study](../decisions/2026-11-11-backend-state-authority-decision-study.md).
+- Next: lineage/merge-base audit PR #52 and its stack (#25) plus PR #51/#56 before deciding whether a DO comparison prototype adds value; do not create a second authority.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
