@@ -392,3 +392,16 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Report commit: 3aa9cf03f92988cc75b03364fdfc4d66a294df75.
 - Next: evidence-based inventory of authorized issuer, revocation, clock and audit services; otherwise keep recovery blocked. Refresh ruleset and dispatch-variable metadata separately.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 follow-up — PR #61 future-created session guard
+
+- Issue #62 reported an ACTIVE session lookup before persisted `created_at` at PR #61 head `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`; reproduced against the then-current branch snapshot `27017a22b2ae8710803034759bc308d730a0ad39`.
+- Corrected `lookupApplicationSession`: SQL now requires `created_at <= ?` and `expires_at > ?`, binding the same lookup timestamp. Added a D1 Workers-runtime regression proving denial before creation and ACTIVE at creation.
+- Final PR head `976cb2ed0b594b39c847921918f182ab6d571344`; source blob `046111beb31d7c8cf58e623581d2b260fbdad496`; test blob `5ccfb8e662b531d29b6292985d6420b47ef99029`.
+- Exact-head CI run [42984644046](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984644046), job `130402848442`: SUCCESS; static checks; API/policy 11/11; Workers/D1 3 files / 15 tests.
+- Report: [PR #61 future session time guard](../reports/2026-11-11-pr61-future-session-time-guard.md), commit `bf2476c43040198793186418a65f6270924dad38`.
+- PR #61 remains OPEN/DRAFT/UNMERGED; reviews/threads 0; independent review NOT RUN. Issue #62 remains OPEN. Local synthetic D1 proof only; trusted production time, AEAD/key custody, owner allowlist, session rotation, global quotas, callback/cookie/CSRF, browser QA, hosted D1 and deployment remain unqualified.
+- Context Window updated: commit `c080a508c65b4867ac2c36ea64c68b4eede36a73`, blob `99092beb35c8f82a80a4066d56c37d56a6ee3e80`.
+- Next: continue bounded source audit of PR #61 temporal/revocation/replay/ambiguous-write/authority boundaries; keep runtime fail-closed and do not merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
