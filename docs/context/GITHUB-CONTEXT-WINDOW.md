@@ -1821,3 +1821,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/hosted-d1-qualification-clean-2026-11-11/docs/reports/2026-11-11-hosted-d1-clean-transplant.md
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #65 exact-head revalidation — 2026-11-11
+
+- Report: [PR #65 exact-head revalidation](../reports/2026-11-11-pr65-exact-head-revalidation.md), blob `85b31504ced71ec1b5e4ccf369db476c2611dc49`, commit `85b31504ced71ec1b5e4ccf369db476c2611dc49`.
+- PR #65 remains OPEN / DRAFT; head `3d67783e4da60296f26547174b0bdeae58d9a3f2`, declared base `c3add54d3409122eedaa697f0af5e7ec43753426`, compare 4 ahead / 0 behind, 4 added docs / 392 additions / 0 deletions. API reports mergeable=true at recheck.
+- All four files read back from exact head. Governing decision blob `830a549809d10015d5662da562cff82710c3aa11` is present on branch; relative links to decision and boundary audit resolve.
+- Exact-head combined status empty; exact-head Actions query returned no runs. Pool Contract Validation path filter only matches `.github/workflows/**` and `scripts/**`, so docs-only PR does not trigger it. CI NOT VERIFIED.
+- PR #65 has 0 formal reviews and 0 review threads. Independent review NOT RUN. PR #64 remains OPEN/DRAFT, mergeable=false, diverged; do not merge as-is.
+- Current default HEAD after report publication expected to advance by this report commit; re-read refs after update. Hosted D1 remains NOT AUTHORIZED / NOT RUN; Workers Free entitlement NOT VERIFIED; Issue #38 OPEN / NOT QUALIFIED. No resource provisioning, secret access, dispatch, deployment or merge.
+- Next: inspect existing docs/link validation tooling without broadening PR scope; then resume code-stack reconciliation from immutable PR #58/#59 ancestry. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
