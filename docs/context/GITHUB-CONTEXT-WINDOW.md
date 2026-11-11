@@ -3170,3 +3170,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Dispatch fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: correct PR #54 status-event actor attribution and add retryable/delivered/dead-letter attribution tests; verify exact updated-head CI, then resume claim-service promotion gates.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Projection delivery actor attribution correction
+
+- Isolated proof branch: `fix/projection-audit-actor-2026-11-11`, based on immutable PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; latest branch commit `b9731547afaefde2d22e704122e73615ce85876c`.
+- F-02 correction: migration 0006 records `OLD.lease_owner` when a transition leaves `leased`, preserving the actor after the live lease is cleared. Migration blob `956911c5d66938829205e9ef6d56568d17198376`.
+- Added assertions for `delivery.delivered` actor `projection-new` / generation 2 and `delivery.retryable` actor `projection-retry` / generation 1. Test blob `32ae873f71af7f74041e52fc0d067c16626f76c8`.
+- Added isolated branch to D1 proof-validation push filter. Workflow blob `be0003fd29a687ad87b2d51ac973f0bfc7b5a8b5`.
+- Read-back of all changed files verified. Exact-head workflow lookup for `b9731547afaefde2d22e704122e73615ce85876c` returned no runs; CI remains NOT VERIFIED. Source assertions are authored but not executed.
+- Report: [Projection delivery actor attribution correction](../reports/2026-11-11-projection-delivery-actor-correction.md), commit `48b3b5241aa61aba1dcd44830c1ff1f7d8d7f533`; read-back pending.
+- F-01 remains OPEN: finalization event digest is still `resultDigest || provenanceDigest`, not canonical full-field event digest. Do not add a partial workaround; trace and update originating event schema/trigger and all consumers/tests as one versioned contract change.
+- No merge, deployment, secret/credential access, production mutation, dispatch, provider call, or hosted D1 operation.
+- Status: F-02 source correction SUCCEEDED / execution NOT VERIFIED; F-01 OPEN / NOT VERIFIED; hosted D1/issuer/trusted time/isolation/quotas NOT VERIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain exact-head CI for the isolated F-02 branch, then trace the originating `pool_attempt_events` migration and implement F-01 with digest recomputation, replay conflict, rollback, and one-event/outbox tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
