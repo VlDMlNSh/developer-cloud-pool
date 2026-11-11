@@ -53,3 +53,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: hard-disable legacy lifecycle; replace caller-controlled resumability with issuer-authorized reconciliation capability; prove external side-effect idempotency after lost acknowledgement; then connect generation/execution identity to Worker finalizer.
 
 Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Live continuation — recovery/projection PR follow-up (2026-11-11)
+
+[Recovery and projection follow-up review](../reports/2026-11-11-recovery-projection-follow-up-review.md).
+
+- PR #56 removes caller-supplied `resumable` from attempt lease acquisition; exact-head local D1 run 42825872826 SUCCESS. It remains draft/unmerged and does not retire the parallel legacy lease API or supply a trusted resolver.
+- PR #58 adds fake GitHub marker reconciliation, lost-response and delayed-visibility tests. No exact-head workflow/status returned. Sequential fake proof only; caller-controlled `allowPost` and concurrent duplicate-POST race remain unresolved.
+- PR #59 adds 30/60/120/240 backoff, five-attempt cap and terminal dead-letter guard; exact-head local D1 run 42981807825 SUCCESS. Dead-letter of an expired lease still requires caller-supplied original worker identity/time.
+- PR #60 defines a projection-specific recovery grant and trusted-time contract, but issuer, key lifecycle, revocation source, production clock and audit sink remain unowned/unqualified; design-only, no exact-head CI.
+- Focused mature GitHub component search returned no candidate; retain existing Workers Vitest + D1 substrate.
+- No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Dispatch FAIL-CLOSED.
+- Next: require durable no-repost state + concurrent reconciler tests; bind PR #60 issuer/time contract to actual accountable services before implementation; hard-disable legacy lifecycle and integrate finalizer generation.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
