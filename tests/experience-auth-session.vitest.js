@@ -97,6 +97,9 @@ describe("isolated Experience auth D1 schema", () => {
   });
 
   it("fails closed on missing storage and storage exceptions", async () => {
+    expect((await revokeApplicationSession(db(), {
+      sessionHash: { toString: () => sessionHash }, now: NOW
+    })).outcome).toBe("DENY");
     expect((await lookupApplicationSession(undefined, { sessionHash, now: NOW })).outcome)
       .toBe("DENY");
     const broken = { prepare() { throw new Error("synthetic unavailable"); } };
