@@ -2582,3 +2582,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: static prototype CI VERIFIED; production OAuth/session NOT IMPLEMENTED/NOT QUALIFIED; D1 resource/deployment/browser QA NOT RUN; independent security review NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
 - Next: define minimal D1 OAuth-state/session schema and repository interface, then implement local D1-compatible tests against the actual repository (not the Map fixture). Keep hosted provisioning gated.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Web Console OAuth/session schema and budget design
+- Default branch `Основной` observed HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Rechecked open PRs/issues: PR #24, #25, #27, #58, #59, #60 remain OPEN/DRAFT/UNMERGED; Issues #22 and #38 remain OPEN. PR #24 HEAD `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`; PR #25 HEAD `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; PR #30 HEAD `ad9f9ac598a2414b5209b6923094b16be64630ae`.
+- Reused-component audit: PR #25 Hono prototype has exact-head Hono validation run `42228269676` / job `127927219846` SUCCESS and Pool Contract Validation run `42228269689` / job `127927220340` SUCCESS. It remains GET/HEAD fail-closed; no OAuth or D1 runtime. Its auth-policy tests use an in-memory Map and are test-only, not D1 concurrency proof.
+- PR #30 oauth4webapi synthetic GitHub OAuth + PKCE compatibility harness inspected; current HEAD has no workflow runs returned, reviews 0, threads 0. It is a protocol-library candidate only, not production OAuth integration; no real GitHub OAuth request.
+- PR #24 API contract blob `b542636dc7a5efcf67287c5aa53a230d06a02c6d`; ADR blob `c8cdb46afcddc1baf50c41dea1f9a39dc925c5bd`.
+- Created design report [Web Console OAuth/session schema and budget](../reports/2026-11-11-web-console-oauth-session-schema-and-budget-design.md), commit `67b528810a0be03875c2af9444e6d1498dbe9585`. It proposes two STRICT D1 tables, atomic OAuth-state UPDATE…RETURNING, indexed session lookup, conditional logout, AEAD-encrypted PKCE verifier envelope, and explicit Free-only operational thresholds. DDL is proposed only; no migration executed.
+- Proposed application thresholds: 20,000 D1 rows read/day; 2,000 rows written/day; max 300 successful OAuth logins/day; 300 logout writes/day; cleanup max 100 deletes/day; 10,000 authenticated API requests/day. Estimated worst-case writes 1,300/day. These are budget thresholds, NOT an enforceable global limiter yet; enforcement design remains OPEN.
+- Session rotation's single-successor transaction remains OPEN and must be proven under concurrent D1 tests before enablement.
+- No code, schema migration, database, binding, secret, OAuth App, Worker, deployment, provider call or dispatch changed. D1 schema PROPOSED/NOT TESTED; OAuth/session NOT IMPLEMENTED/NOT QUALIFIED; Workers Free entitlement NOT VERIFIED; deployment NOT RUN.
+- Next: validate proposed DDL and transaction shapes in isolated local Workers/D1 runtime; resolve enforceable quota circuit-breaker and session-rotation atomicity; only then prepare implementation PR. Keep all protected routes fail-closed.
+- Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
