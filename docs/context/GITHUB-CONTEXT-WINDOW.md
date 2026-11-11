@@ -311,3 +311,18 @@
 - PR #58 and #53 remain OPEN/DRAFT/UNMERGED; Issue #38 OPEN. No hosted D1, live sender, deployment or dispatch. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: design and test a distinct authorized recovery-actor capability for abandoned fifth leases; then independent review of stacked PR #58/#59.
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-bounded-terminal-projection-retries-dead-letter-proof.md
+
+
+## Projection Recovery Actor design pass — 2026-11-11
+
+- Created ADR: https://github.com/VlDMlNSh/developer-cloud-pool/blob/design/projection-recovery-actor-contract-2026-11-11/docs/decisions/2026-11-11-projection-recovery-actor-capability-contract.md
+- Design PR #60: https://github.com/VlDMlNSh/developer-cloud-pool/pull/60 (OPEN / DRAFT / UNMERGED), head `1da14b1f7bb9d5ff76055838a568674d584464e0`, base `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`; one changed file, reviews 0, threads 0, no exact-head Actions runs returned (documentation-only; CI NOT VERIFIED).
+- Re-read PR #59 adapter/schema/tests/README and Issue #38. Current `deadLetterExpiredProjection` is same-owner-only, not an independent orphan reaper.
+- Design rule: actor ID strings are metadata, not authorization. Recovery requires an issuer-verified, narrowly scoped, one-use grant bound to repo/outbox/attempt/generation/operation/expiry/nonce and atomically consumed with terminal projection dead-lettering.
+- Authority separation: Recovery Actor may only terminalize projection outbox; no requeue, retry, dispatch, or task/attempt mutation. Audit attribution must distinguish recovery actor from expired delivery worker.
+- Mature components compared: D1 conditional SQL update (state CAS, not caller authentication); SQLite Durable Objects (per-entity serialized coordination/private state); Cloudflare Workflows (durable steps/retries, not authority). Keep current local D1 proof; no migration or account qualification yet.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-projection-recovery-actor-contract-design.md
+- Report commit: `029914ab8a9b5cea1f43423d50a77a2532847008`.
+- No runtime code, migrations, permissions, secrets, workflows, or dispatch gates changed. No hosted Cloudflare resources, deployment, sender, or provider/model calls used.
+- PR #58/#59 remain OPEN / DRAFT / UNMERGED; Issue #38 OPEN. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: review ADR/PR #60 against Issue #38, then choose issuer and backend only after least privilege, free-tier/cost, isolation, one-use grant, and contention qualification.
