@@ -2393,3 +2393,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Both PRs are local D1 proof only, not production integration. Neither merged or accepted. No dispatch, deployment, secrets access, provider call or paid resource. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: narrow follow-up to PR #59 for monotonic counter trigger + adversarial test, then exact-head CI.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58/#59 SQL recovery integration audit
+- Report: [PR #58/#59 SQL and recovery integration audit](../reports/2026-11-11-pr58-pr59-sql-recovery-audit.md), commit `625d418383acc659bebf555c817d2ed7801ad2bd`.
+- Rechecked PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e` and PR #59 head `5c47cda4394d0381315bc16182799a09bf861797`; both remain OPEN/DRAFT/UNMERGED.
+- PR #59 diff: 8 commits ahead / 0 behind. Exact-head merge checkout CI run `42980783397`, job `130390442001`, SUCCESS, 53/53.
+- Inspected migration `0007_bound_projection_delivery_retries.sql` blob `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`, adapter blob `1546c2e4172e3767ed8bd5642c7b9c6d95716d11`, reconciler blob `2f83befc145d39ea60f06fe5b9e9033f89df40c0`, test blob `0b7c5f624ff726aa00ebd2618c3659eb9adf30fd`, workflow blob `a72b58c06b7d621a228df86bc2295110c9b5f451`.
+- SQL invariants and isolated recovery function are VERIFIED in local Workers-runtime tests. Blocking: inspected `projection-reconciler.mjs` does not invoke `deadLetterExpiredProjection()`; inspected workflow only runs tests and artifact upload; migration labels itself local proof only. No production scheduler/poller, hosted D1 migration, or recovery invocation is established. Automatic recovery orchestration and hosted D1 are NOT VERIFIED.
+- No code, merge, deployment, or dispatch performed. PR #58/#59 remain Draft; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: trace existing runtime scheduling/queue architecture, identify durable recovery trigger, and design bounded integration tests before any deployment.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
