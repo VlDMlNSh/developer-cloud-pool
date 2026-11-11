@@ -2515,3 +2515,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Projection recovery NOT IMPLEMENTED/NOT QUALIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
 - Next: compare Hono + Workers Static Assets console candidate against minimal Worker + D1 Supervisor runtime; define smallest free-only deployment slice, exact quotas, authority boundaries, rollback and stop conditions. Owner-reported Free label is planning context, not entitlement proof.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Free-tier first runtime slice architecture audit
+
+- Owner supplied Cloudflare plan label **Free**; this is owner-reported operational input, not independent billing API verification. Billing API remains unavailable to the connected OAuth identity (Billing Read scope absent).
+- Fresh read-only Cloudflare account inventory: D1 databases `[]`; Worker scripts `[]`; `default_usage_model=standard` is not plan evidence. No provisioning, migration, secret access or deployment.
+- Compared Issue #22 web-console requirements with existing PR #6 dashboard prototype and PR #24 hosting ADR/API contract. PR #6 head `5b8469b3bb691ff48f8be9bda9aea0969d42f537`: associated static UI validation and Pool Contract runs `42108498565` / `42108497862` completed SUCCESS. PR #24 head `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6`: OpenAPI validation and Pool Contract runs `42188894226` / `42188894227` completed SUCCESS. Both PRs remain draft/unmerged; these are contract/static checks, not deployment or security qualification.
+- Architecture separation: first web Experience slice is Workers Static Assets + Hono GET-only API reusing graphite vanilla-JS UI; it must not be coupled to the Pool D1 task ledger/Supervisor runtime. Keep dispatch disabled and no browser mutation/dispatch path.
+- Critical design gap found: ADR requires opaque server-side revocable sessions while also saying no DB is needed. Workers KV is Free (100k reads/day, 1k writes/deletes/list per day, 1GB) but is eventually consistent; Cloudflare documents stale values can persist for 60s or longer. KV alone does not prove immediate global session revocation or atomic single-use semantics. Do not silently use KV as an auth authority.
+- Decision required before deployment: either qualify a dedicated D1 session store, separate from the Pool task ledger, with bounded schema/permissions/consistency tests; or revise the ADR to a stateless short-lived session model and explicitly accept/review its revocation limitations. No storage choice or resource provisioning was made.
+- Report: [Free-tier first runtime slice architecture audit](../reports/2026-11-11-free-tier-first-runtime-slice-architecture-audit.md), commit `bca608d076930b06d3841aa1536e8a272e44cd6e`.
+- Current PR #60 head at this pass: `94c41364d50c2746c1e72874701637ea3ec54def`; issuer/trusted-time contract remains design-only. PR #37/#58/#59/#60 remain OPEN/DRAFT/UNMERGED; Issues #1/#22/#38 remain open.
+- Runtime Worker NOT PROVISIONED/NOT DEPLOYED; hosted D1 NOT PROVISIONED; web console NOT RUN; authentication/session implementation NOT IMPLEMENTED/NOT QUALIFIED; recovery authority NOT QUALIFIED; dispatch FAIL-CLOSED. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile the Issue #22 session-store contradiction and update the hosting ADR/API acceptance contract before implementation. Then implement/test only the read-only Experience slice; keep Pool runtime and dispatch separately gated.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
