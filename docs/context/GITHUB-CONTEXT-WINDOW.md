@@ -264,3 +264,15 @@
 - PR #53 split-write/non-CAS production Supervisor issue remains unresolved. Issue #38 OPEN; hosted claim authority and contention NOT QUALIFIED. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: independent review of PR #58 state machine, marker parsing, retry authorization and managed-label assumptions; then isolated dead-letter policy/recovery proof if accepted.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+### PR #58 marker-multiplicity hardening and final CI — 2026-11-11
+
+- Follow-up audit found a parser edge case: duplicate event markers repeated inside a single comment needed to be counted, not merely duplicate comments. The reconciler now counts marker occurrences across all comment bodies; an additional regression test denies repeated markers within one comment.
+- Final PR #58 head: `1824f768bcb71b5a5690e941d3a0cbde0d6ffb78`.
+- Exact-head PR CI run `42979789479`, job `130387281108`, COMPLETED/SUCCESS; push CI run `42979785568`, job `130387268145`, COMPLETED/SUCCESS. Nine focused fake-boundary cases plus syntax validation passed.
+- Artifact `13836509657`, SHA-256 `52981371ec6c6d8de541a76af94684756e5737536b3f0d17f356fb4800907de1`.
+- PR #58 remains OPEN/DRAFT/UNMERGED; formal reviews 0 and inline threads 0. This remains fake API only; no live GitHub projection, hosted D1, production integration, or dispatch.
+- Default branch `Основной` HEAD re-read as `864213e2ff5b4fa956ba405dea8137a44d812f49`; branch API reports `protected=false`, protection disabled. The protection endpoint itself returns 403 to the integration, so governance details beyond the branch metadata are NOT VERIFIED.
+- Context window's preceding PR #58 entry contains the original initial-head snapshot; this subsection supersedes its SHA/CI/artifact details.
+- Next: independent review of PR #58, then isolated dead-letter policy/recovery proof. Do not connect a live GitHub sender or enable dispatch.
