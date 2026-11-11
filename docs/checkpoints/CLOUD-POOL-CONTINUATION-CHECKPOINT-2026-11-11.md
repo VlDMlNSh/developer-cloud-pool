@@ -129,3 +129,14 @@ Paste this exact phrase into a new chat:
 - Next bounded work: fresh-ref and exact-tree audit, then a new branch from current immutable default to reconcile only the minimum PR #39/#54 claim/attempt code. Make the attempt-aware lifecycle canonical, remove/isolate overlapping legacy lease mutation, replace caller-controlled resumability with authenticated durable reconciliation, and add adversarial tests. Do not transplant stale aggregate branches. Hosted D1 remains NOT AUTHORIZED / NOT RUN until Free entitlement/quota, source reconciliation and explicit resource authorization pass.
 - No secrets, dispatch, provider/model calls, resource creation, runtime/schema/permission changes, deployment or merge occurred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Context Window updated on this documentation branch; fetch its current blob SHA before resuming.
+
+
+## 10. Attempt/lease and projection stack source audit — 2026-11-11
+
+- Report: [source audit](../reports/2026-11-11-attempt-lease-projection-stack-source-audit.md); commit `76b15e57ab36b4529fa4bb5556f7b86849d03ff2`.
+- PR #56 recorded exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, run `42825872826` SUCCESS. PR #59 recorded exact head `22200226da4f1af30645cf441a639db6893e9310`, run `42981807825` SUCCESS (53 local Workers-runtime tests). These are local proof results, not hosted qualification.
+- Critical source finding: PR #56 tests still import legacy `task-lease.mjs` and attempt-aware `task-attempts.mjs` on the same task row. Legacy API mutates task lease fields without attempt binding; attempt-aware API requires pending/prepared attempt and binds lease_attempt_id. Do not integrate both as equivalent authorities. Canonical candidate: attempt-aware lifecycle; quarantine legacy entry points and prove cross-API denial while preserving historical proof evidence.
+- Reconciliation queue is not retry authority. PR #57 is read-only lifecycle evidence and leaves side effects UNKNOWN. PR #59 projection delivery is separate; same-worker dead-letter is not independent orphan recovery. Keep these authority domains separate.
+- PR #57 exact current head NOT VERIFIED in this pass. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: fresh-ref check, then minimal integration branch from current immutable default, no aggregate PR #64 transplant; one attempt-aware lifecycle, legacy lease isolated, reconciliation queue retained without authority, projection module separate, adversarial tests, dispatch:false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
