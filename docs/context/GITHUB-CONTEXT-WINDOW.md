@@ -276,3 +276,12 @@
 - Default branch `Основной` HEAD re-read as `864213e2ff5b4fa956ba405dea8137a44d812f49`; branch API reports `protected=false`, protection disabled. The protection endpoint itself returns 403 to the integration, so governance details beyond the branch metadata are NOT VERIFIED.
 - Context window's preceding PR #58 entry contains the original initial-head snapshot; this subsection supersedes its SHA/CI/artifact details.
 - Next: independent review of PR #58, then isolated dead-letter policy/recovery proof. Do not connect a live GitHub sender or enable dispatch.
+
+
+### PR #58 terminal-outcome / managed-label binding hardening — 2026-11-11
+
+- Further contract review bound managed labels to the immutable terminal outcome: successful outcomes accept only success labels; failed/abandoned outcomes accept only review/failure labels. Added a negative regression test for mismatched outcome/label.
+- Final PR #58 head now `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; ten focused fake-boundary cases pass.
+- Exact-head PR run `42979949181`, job `130387805034`, COMPLETED/SUCCESS; push run `42979945524`, job `130387793379`, COMPLETED/SUCCESS. Artifact `13836937094`, SHA-256 `c7e403c049d3e5c6b19999f534540e4fea1f101027a31e9724313a8071e16402`.
+- PR #58 remains OPEN/DRAFT/UNMERGED, reviews 0, threads 0. Fake API only; no hosted D1 or live GitHub projection. Dispatch remains FAIL-CLOSED.
+- This subsection supersedes the previous PR #58 exact-head and CI snapshot. Detailed report updated at https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-fake-github-terminal-projection-reconciliation-proof.md.
