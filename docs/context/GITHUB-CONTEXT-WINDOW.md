@@ -2696,3 +2696,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: refresh PR #61 checks until exact-head workflow run appears; inspect jobs/logs; fix failures on this branch. Do not merge or provision until CI, integration and security gates pass.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 Experience OAuth / Session D1 CI audit
+
+- Report: [Experience OAuth / Session D1 CI audit](../reports/2026-11-11-experience-oauth-session-d1-ci-audit.md).
+- PR #61 base #52 exact SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; initial head `7d30a55d8a90fb14f2516a57e458b0a660630499`; corrected head `7b018219cf220046a641d3811434014cc63421d4`. PR remains OPEN/DRAFT/UNMERGED and stacked on #52.
+- Initial exact-head run `42984076534` / job `130400997089`: FAILURE. Static checks and 11 existing API tests passed; 8 existing Workers/D1 tests passed; all 6 new Experience Auth tests failed because custom D1 migration was never applied (`no such table: oauth_transactions`).
+- Applied official Cloudflare Workers Vitest migration recipe: read migration SQL via `readD1Migrations`, inject test-only binding, and call `applyD1Migrations` from setup file. Added setup `tests/apply-experience-auth-migrations.js`, updated `vitest.config.js`, and expanded workflow path filters. Official references: https://developers.cloudflare.com/workers/testing/vitest-integration/configuration/ and https://github.com/cloudflare/workers-sdk/blob/main/fixtures/vitest-pool-workers-examples/d1/test/apply-migrations.ts.
+- Read-back blobs: setup `f285639081ce1fe9f5934cbdd6bd07bfd0507b42`; Vitest config `31df299b8c0437ebcbceb69eb053819180531b11`; workflow `cecbba93a4ff33f2e10f157a808418b60502c9d0`. Corrected exact-head CI lookup returned no run/status: NOT VERIFIED. Reviews/threads 0.
+- OAuth/session remains synthetic proof only; PKCE encryption/key custody/rotation, trusted time, bounded lifetimes, owner-allowlist composition and production session lifecycle are not qualified. No production auth, secrets, OAuth app, remote D1, deployment, routes, provider calls or dispatch touched. Jarvis auth remains fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: recheck exact-head CI at `7b018219cf220046a641d3811434014cc63421d4`; then audit auth lifecycle boundaries only if CI succeeds.
