@@ -212,10 +212,13 @@ components:
       description: >
         Application-issued opaque session cookie created only after server-side
         GitHub OAuth callback validation and exact numeric GitHub user-ID
-        allowlisting. Cookie is Secure, HttpOnly, SameSite=Lax or stricter,
-        host-only, Path=/, and has bounded server-side expiry. OAuth tokens are
-        never returned to the browser. Missing, invalid, expired or revoked
-        sessions fail closed. OAuth/session implementation is not yet deployed.
+        allowlisting. The cookie value is random; only its cryptographic digest
+        is stored in a dedicated D1 session database held by the Experience
+        Worker. This database is not the Pool task ledger. Cookie is Secure,
+        HttpOnly, SameSite=Lax or stricter, host-only, Path=/, and has bounded
+        server-side expiry/revocation. OAuth tokens are never returned to the
+        browser. Missing, invalid, expired, revoked, or unavailable-store
+        sessions fail closed. OAuth/session implementation is not deployed.
   responses:
     Unauthorized:
       description: Missing, invalid, expired or revoked application session cookie.
