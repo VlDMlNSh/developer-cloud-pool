@@ -162,3 +162,16 @@ Paste this exact phrase into a new chat:
 - Wave 317 three agents and controller SUCCEEDED; PRs #635–#637 OPEN, exact-head CI action_required, formal reviews absent. Outputs not qualified.
 - Cloud Pool runtime NOT LAUNCHED / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 8. Provider credentials and additional agent capacity — 2026-11-11
+
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+- MediaHub provider registry: 24 ordered cloud credential slots + one local Ollama record; blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`.
+- Canonical agent registry: A0 Astra, A1 Architect, A2 Builder, A3 Verifier; dynamic workers reuse A1/A2/A3; default parallelism 3; no nested delegation; conflicting writes blocked. Blob `0317d1e794aa80cd0fa22bd953b95921b26aafd3`.
+- Model router remains policy-only; direct provider API calls false; paid fallback false; unknown routes fail-closed. Blob `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`.
+- Provider qualification workflow maps many credential aliases into one self-hosted mh-dev-02 job. Treat as broad blast radius; redesign to one isolated provider/account slot per job before production calls.
+- Secrets API is not exposed by the available GitHub read interface. No secret values read; configured secret existence/scope NOT VERIFIED.
+- Aion 20k/day + LLM7 100k/day = 120k/day owner-provided estimate only; not verified, not pooled.
+- Proposed additive agent tasks are documented, but custom assignments cannot be dispatched through the current fixed Gemini controller. No dispatch or provider call was made.
+- Status: provider-backed agents PLANNED/NOT DISPATCHED; Cloud Pool router NOT QUALIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
