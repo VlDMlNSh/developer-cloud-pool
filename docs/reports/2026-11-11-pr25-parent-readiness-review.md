@@ -9,7 +9,7 @@
 
 ## Exact-head CI and governance
 - PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`:
-  - run `42228269689`, job `129? ` — Pool Contract Validation COMPLETED/SUCCESS; steps: checkout without persisted credentials, assert dispatch disabled, YAML syntax, pool security contracts.
+  - run `42228269689` — Pool Contract Validation COMPLETED/SUCCESS; steps: checkout without persisted credentials, assert dispatch disabled, YAML syntax, pool security contracts.
   - run `42228269676` — Jarvis Web Prototype Validation COMPLETED/SUCCESS; runtime, npm ci from lockfile, static checks, API negative/fail-closed tests, static UI contract.
 - PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`:
   - run `42507524428` — Jarvis Web Prototype Validation COMPLETED/SUCCESS; includes Cloudflare Workflow and D1 local proof.
