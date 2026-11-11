@@ -68,3 +68,18 @@ Retain the existing Cloudflare D1 + Workers Vitest local proof and its current s
 Next bounded action: fix the trigger attribution in PR #54 on its own head, add the three transition actor tests (retryable, delivered, dead-letter), run D1 proof CI on the exact updated head, and only then continue coordinated stack integration. Do not merge or enable dispatch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Follow-up implementation and verification — 2026-11-11
+
+The finding was corrected on PR #54 branch `test/50-approval-logical-task-contention-2026-11-09`.
+
+- SQL migration blob: `678a4aa8ce396a15f4f0ecbf908aa41fabc4d752`; status trigger now records `OLD.lease_owner` for status transitions.
+- Test blob: `6178a10504a5914187c29bc3ed1ec209e3cd62f3`; assertions cover actor identity for retryable, delivered and dead-letter events.
+- Final PR head: `15a09c910f52553c59796260131a6b5a4a39c15f`.
+- Exact-head CI run: `43010770730`, completed SUCCESS; job `130489510967`, including syntax check, Workers-runtime D1 adversarial tests and lockfile preservation, all SUCCESS.
+- Initial run `43010595098` on intermediate head `b51ba3b2384bbd0bc6a6f320ef7ef665eaaf6ff8` failed because the expanded history assertion still expected only the first two events. The log identified the extra `delivery.leased` and `delivery.dead_letter` events. The expectation was corrected; final exact-head run succeeded.
+- Inline review thread `PRRT_kwDOVirI-s61rjeP` is now RESOLVED after readback. A PR conversation comment `6794407896` records the fix and CI evidence.
+- This proves local Workers-runtime D1 transition attribution only. It does not authenticate the worker identity, qualify hosted D1, authorize GitHub POST, or satisfy Issue #38's hosted claim-service acceptance criteria.
+
+Updated status: P54-F01 CODE FIXED / EXACT-HEAD CI SUCCESS / INLINE THREAD RESOLVED. PR #54 remains OPEN / DRAFT / UNMERGED; independent security review remains NOT VERIFIED. Contour A remains BLOCKED / NOT ACCEPTED.
