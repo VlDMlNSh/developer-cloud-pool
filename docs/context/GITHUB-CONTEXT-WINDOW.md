@@ -1840,3 +1840,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+## Projection Recovery Actor live readiness recheck — 2026-11-11
+
+- Immutable default snapshot: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; report branch `docs/recovery-actor-live-readiness-2026-11-11`, created from that exact SHA.
+- Report: [Projection Recovery Actor live readiness recheck](../reports/2026-11-11-projection-recovery-actor-live-readiness-recheck.md), report commit `46420b4ccc6d9e239529e80b1fa6d6ff0fa8e941`.
+- PR #60 head `234fb2ee40265e26fac00c69ac1b6192766602cb`: OPEN/DRAFT; current-default compare DIVERGED 7 ahead / 59 behind; two docs only; exact-head check-runs 0 (CI NOT VERIFIED).
+- PR #63 head `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`: OPEN/DRAFT; current-default compare DIVERGED 48 ahead / 43 behind; 19 documentation paths; do not merge wholesale.
+- Recovery issuer/time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c` remains PROPOSED / NOT IMPLEMENTED / NOT QUALIFIED. It sets draft target limits ≤300s capability lifetime and ≤30s revocation freshness, and binds audience `projection-outbox-recovery`, operation `dead_letter_expired_projection`, exact repository/outbox/attempt/generation/event digest and one-use nonce. These are draft governance targets, not accepted production policy.
+- MediaHub Issue #301 remains OPEN. PR #599 Wave 486 head `824bb2568b2ac8bb3dceb3608366668e99bab95e` and PR #600 Wave 487 head `05a873e82760d63c8b26dc496b43d3309f4cfbf9` remain OPEN/DRAFT/UNMERGED; exact-head check-runs returned 0. Separate Security Issuer Authority is a target, not an implemented/operational issuer. Named issuer/key custodian, principal/revocation operator, qualified time, audit sink/operator and privacy/retention approval remain NOT EVIDENCED.
+- Reuse decisions unchanged: SOPS+age for encrypted static config/secrets; Cosign for artifact provenance only; OpenBao FUTURE-GATED; immudb unselected audit-storage candidate; Rekor not private operational audit; Hydra not a drop-in one-use scoped grant + atomic D1 transition. No new dependency selected.
+- Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED. No independent reaper; current fifth-lease recovery requires original worker identity. No code/runtime/schema/workflow/permission/secret/resource/dispatch/deployment/merge changes.
+- Next: search accepted canonical governance records for operational appointments and actual issuer/audit/time-service evidence; only then reconcile the minimal contract on current default and write negative-first interface tests.
+- Production dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
