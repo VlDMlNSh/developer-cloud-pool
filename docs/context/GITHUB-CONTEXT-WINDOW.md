@@ -1916,3 +1916,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next bounded step: inspect exact #52/#61 and #25 source trees and ancestry, then produce a no-code integration compatibility manifest (shared Hono package/config, separate D1 bindings/migrations, OAuth-state/session adapter API, cookie/CSRF/owner authorization gaps). Keep PR #66 draft until exact-head checks and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Web console OAuth/session audit pointer — 2026-11-11
+
+- Detailed report: [web console and OAuth/session proof boundary audit](../reports/2026-11-11-web-console-oauth-session-proof-boundary-audit.md), commit `ae2d6c48f99be1fb6f833a439710b21cc9bb3aa7`.
+- PR #25 remains a fail-closed Hono prototype; protected reads 503, mutations 405, production OAuth/session and deployment NOT IMPLEMENTED / NOT RUN.
+- PR #61 is a local synthetic D1 OAuth-state/session adapter proof stacked on #52, not a production auth implementation. Latest documented head `f2d225fe8d660bdc9724320080e0d0cd91705f0a`, exact-head local Workers/D1 run `42984959975` / job `130403823600` SUCCESS. AEAD/key custody, trusted production time, browser cookie/CSRF, owner allowlist, remote D1, free entitlement and deployment remain NOT QUALIFIED.
+- Next: inspect exact #52/#61/#25 trees and ancestry; produce no-code integration manifest before implementation.
