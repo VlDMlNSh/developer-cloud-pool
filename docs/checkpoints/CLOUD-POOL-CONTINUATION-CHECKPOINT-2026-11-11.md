@@ -26,6 +26,12 @@ Paste this exact phrase into a new chat:
 - PR #64 formal reviews: 0; review threads: 0.
 - A previous report snapshot mentions PR #64 head `9949e857a0fd8d4ff9bc8836e4c511feac65c50b` and 12 ahead. That was an earlier point before the final context commits. Use the live PR head above for continuation; do not treat the earlier report snapshot as current.
 
+## Snapshot publication note
+
+- The checkpoint's pre-publication PR #64 snapshot was HEAD `c84990f97a9cd1536a21b79cd43c03d84e025ae6` (14 ahead / 0 behind). Publishing the checkpoint and updating the Context Window created further documentation-only commits. Immediately after the Context Window update, PR #64 HEAD was `674e3b17157065129812ca3039daacb39bcbc3f7`; base remained `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Context Window update commit: `674e3b17157065129812ca3039daacb39bcbc3f7`; Context Window blob: `5bb944976f85404d9e2764840e3f1ca2e9c69450`.
+- The final checkpoint commit itself advances the documentation branch once more. Therefore, on resume, the first mandatory action is to fetch the live PR #64 head and compare it to the default branch; do not rely on any branch HEAD embedded in this static checkpoint.
+
 ## 3. Key artifacts on the working branch
 
 - Context Window: `docs/context/GITHUB-CONTEXT-WINDOW.md`; latest verified blob at checkpoint `e7ad3f8cca205214a546cf080cde9bfbf2c7927d`.
