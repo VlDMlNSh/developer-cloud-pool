@@ -1,172 +1,164 @@
-# Recovery Actor Capability v1 — design contract and negative-first test matrix
+# Projection Recovery Actor Capability v1 — corrected narrow-scope contract
 
 Date: 2026-11-11
 
-## Status and immutable scope
+## Status and precedence
 
-- Status: DESIGN DRAFT / NOT IMPLEMENTED / NOT QUALIFIED.
-- Repository: `VlDMlNSh/developer-cloud-pool`.
-- Implementation target audited: PR #67 head `dea09ffe94059f446c74fada37971087ec4878eb`, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
-- Documentation branch: `docs/projection-stack-reconciliation-2026-11-11`; this document is documentation-only and does not authorize source changes.
-- Blocking source finding: `acquireAttemptLease(..., { resumable: true })` permits an expired still-running attempt takeover based on a caller-controlled boolean. It does not authenticate a Recovery Actor issuer, capability, scope or evidence. Existing local test explicitly exercises this path.
-- Preserve PR #67 as DRAFT / UNMERGED. Do not enable dispatch, hosted D1, live provider calls or deployment. Independent technical/security/governance qualification remains deferred until after actual Cloud Pool launch, per owner direction.
+- Status: DESIGN RECONCILIATION / NOT IMPLEMENTED / NOT QUALIFIED.
+- This corrected version supersedes the earlier draft of this file. The earlier draft incorrectly included task-attempt resume and new-attempt authorization. Those permissions are expressly out of scope and must not be implemented.
+- Scope: **one operation only** — terminalize one exact, expired and exhausted projection-delivery outbox lease as `dead_letter`.
+- Immutable implementation candidate: PR #67 head `dea09ffe94059f446c74fada37971087ec4878eb`, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Existing design sources: PR #60 and its parent ADR at design branch head `234fb2ee40265e26fac00c69ac1b6192766602cb`; issuer/time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`.
+- Governance evidence source: PR #63 head `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`.
+- Documentation-only branch: `docs/projection-stack-reconciliation-2026-11-11`; not merged to default.
+- No code, schema, permission, workflow, secret, resource, deployment or dispatch change is authorized by this document.
 
-## 1. Security objective
+## 1. Normative authority boundary
 
-A Recovery Actor may resolve one exact durable reconciliation item only when it presents a separately authenticated, narrowly scoped, unexpired, single-use authorization and decision-specific evidence. A Worker, task payload, caller-provided boolean, issue comment, expired lease, or possession of a task identifier is never sufficient authority.
+The Projection Recovery Actor is separate from the Delivery Worker and Task Supervisor/Worker.
 
-The contract separates:
-1. **Authentication** — establish the issuer's cryptographic identity from a trusted issuer/key registry.
-2. **Authorization** — verify the signed capability is for this resolver, this actor, this task/attempt/reconciliation tuple and exactly one permitted decision.
-3. **Evidence validation** — validate the decision-specific evidence against a trusted evidence contract.
-4. **Atomic consumption and state transition** — consume the one-time nonce and perform the guarded ledger transition as one database transaction.
-5. **Audit** — append a durable, redacted decision record without storing bearer tokens or secret material.
+**Allowed capability:** `dead_letter_expired_projection` for one exact projection outbox row only.
 
-Failure or ambiguity at any boundary is deny/no-op; do not silently fall back to Worker authority.
+**Explicitly prohibited:**
+- task execution retry, task attempt resume, retry-candidate creation or new attempt creation;
+- changes to `pool_tasks`, `pool_attempts`, task/attempt terminal status, result/provenance digest or task lease;
+- GitHub writes, comments, labels, repository/target binding changes, or external projection replay;
+- task dispatch, Worker/Supervisor invocation, or broad repository permissions;
+- batch scanning or wildcard resource access.
 
-## 2. Capability v1 envelope
+The Recovery Actor can only terminalize a projection-delivery outbox row after its delivery attempt budget is exhausted and its current lease has expired. Lease expiry alone does not prove that an external effect did not occur and is not permission to retry the task or repeat a GitHub side effect.
 
-The following is a logical schema, not a finalized wire encoding. Exact serialization, signature algorithm, key custody and runtime library must be selected and qualified before implementation.
+This is narrower than the generic task Resolver capability. Do not reuse a task Resolver grant, expand its operation allowlist, or treat a caller-provided actor ID as proof of authority.
 
-Required claims:
+## 2. Exact grant profile
 
-| Claim | Requirement |
+The trusted issuer/verifier boundary must validate a signed or otherwise cryptographically authenticated grant with at least:
+
+| Claim | Required constraint |
 |---|---|
-| `version` | Exact supported value `recovery-capability/v1`; unknown versions deny |
-| `capability_id` | Cryptographically random unique identifier; never reused |
-| `issuer_id` | Stable issuer identity resolved through trusted registry, not caller-supplied trust |
-| `key_id` | Exact active signing key registered for that issuer and algorithm |
-| `subject` | Exact Recovery Actor workload/principal identity; no wildcard |
-| `audience` | Exact resolver service identifier |
-| `issued_at`, `not_before`, `expires_at` | Validated using trusted server/database time; short bounded lifetime; reject excessive future skew |
-| `nonce` | Cryptographically random, globally unique one-use replay key |
-| `decision` | Exactly one enum value from §4; no generic recovery permission |
-| `resource.task_key` | Exact task key |
-| `resource.attempt_id` | Exact immutable attempt ID |
-| `resource.reconciliation_id` | Exact durable pending reconciliation row ID |
-| `resource.observed_lease_generation` | Exact generation observed by issuer |
-| `resource.input_digest` | Exact immutable task input digest |
-| `evidence.digest` | Digest of the decision-specific evidence bundle |
-| `evidence.kind` | Exact evidence class allowed for the selected decision |
-| `constraints` | Explicit single-use; no delegation; no scope expansion; no wildcard resource selectors |
+| Schema/version | Exact supported profile version; unknown versions deny |
+| Issuer and key/version | Resolve from trusted issuer/key configuration; never trust caller-selected key material |
+| Subject | One enrolled Projection Recovery Actor principal, checked against authoritative subject lifecycle |
+| Audience | Exactly `projection-outbox-recovery` |
+| Operation | Exactly `dead_letter_expired_projection` |
+| Repository | Exact immutable numeric repository ID |
+| Outbox | Exact `outbox_id` |
+| Attempt | Exact immutable `attempt_id` associated with the outbox row |
+| Delivery generation | Exact expected `lease_generation_delivery` |
+| Event digest | Exact immutable projection event digest |
+| Attempt ceiling | Exact configured maximum delivery-attempt precondition (currently 5 in the isolated proof; do not treat this as a universal production setting without configuration evidence) |
+| Validity | `not_before` and `expires_at`, evaluated by qualified trusted time |
+| Replay | Unique grant ID and nonce; one use only |
+| Policy | Policy version / authority epoch where required by the issuer governance contract |
 
-Signature validation must pin the allowed algorithm from issuer configuration; never trust an algorithm or key URL selected by the token. The issuer registry must support key activation, retirement and revocation. The resolver must reject unknown, inactive, revoked or out-of-validity keys. Raw capability tokens and private keys must never be written to logs, task payloads or audit rows.
+Reject unknown or duplicate claims, malformed/non-canonical encodings, unsupported schema, wrong audience/subject/operation, mismatched resource, revoked issuer/key/policy, stale revocation state, not-yet-valid or expired grants, and replay.
 
-The issuer must be distinct from the Worker being recovered. Worker identity, task payload fields, labels, issue comments and caller context are not issuer proof. The trusted issuer-to-principal mapping and key registry are out-of-band configuration with auditable change control.
+A registered GitHub secret, repository variable, environment name, actor string, workflow identity, or D1 binding is not by itself an issuer or grant. Do not add `id-token: write` to the Supervisor or request a live OIDC token until the issuer trust policy and accountable owners are accepted. GitHub Actions OIDC is only a possible workload-authentication input, not the Recovery Grant issuer itself.
 
-## 3. Exact resource binding and replay semantics
+## 3. Required atomic transition
 
-The authorization must bind all of the following together: task key, attempt ID, reconciliation row ID, observed lease generation, input digest, decision, issuer, subject, audience, capability ID, nonce, expiry and evidence digest.
+The conditional transaction must re-check all predicates against current database state:
+- exact outbox ID and immutable repository/attempt/event-digest binding;
+- row status is `leased`;
+- exact current delivery generation;
+- lease expiry is at or before qualified trusted time;
+- delivery attempts meet the configured exhaustion ceiling;
+- grant issuer/subject/audience/operation and every resource claim match the same row;
+- grant validity window is current;
+- nonce/grant ID has not already been consumed.
 
-A valid capability authorizes one decision for one exact resource tuple. It cannot authorize a different attempt, a newer generation, a changed input, another task, another resolver, or a second action.
+The same atomic database unit must:
+1. mark only the projection outbox row `dead_letter`;
+2. clear delivery lease owner and expiry;
+3. persist a bounded reason code and separately authenticated recovery actor attribution;
+4. persist grant ID/digest and recovery timestamp;
+5. consume the grant nonce exactly once under a database uniqueness constraint;
+6. append one immutable `delivery.dead_letter` event attributed to the Recovery Actor.
 
-The nonce/capability ID must be protected by a database uniqueness constraint. Consumption and the state transition must occur in one transaction/batch with conditional predicates that re-read:
-- the exact pending reconciliation row and its status;
-- the exact current task and attempt;
-- the current attempt/lease generation and input digest;
-- the required lease/attempt state for the decision;
-- the nonce is unused and the capability has not already been consumed;
-- trusted time remains within the capability validity window.
+A zero-row conditional update is DENY / stale / already handled. Database error, ambiguous commit or failed read-back is NOT VERIFIED. Read-back must prove the exact terminal row and unique event. Do not assume an ambiguous write failed and blindly retry it.
 
-Only one concurrent consumer may commit. A separate “mark nonce used” transaction followed by a later state mutation is not acceptable. If the chosen D1/runtime semantics cannot prove the required all-or-nothing behavior, the resolver must remain disabled; do not emulate atomicity with GitHub Actions concurrency or an in-memory lock.
+No mutation of task or attempt state may be included in this transaction.
 
-## 4. Decision enum and evidence contracts
+## 4. Trusted-time boundary
 
-The v1 decision set is deliberately narrow:
+The preferred time source is database-generated UTC time evaluated in the same transaction as lease expiry, grant validity and nonce consumption, but only if the exact pinned local and hosted D1 semantics are demonstrated. Otherwise, a separately qualified trusted composition-root clock must document provenance, skew bounds, monotonicity/backwards-jump handling and fail-closed behavior.
 
-### `confirm_terminal_from_evidence`
-May record a terminal outcome only when the evidence bundle proves the exact attempt's terminal result and is bound to the attempt ID, input digest and generation. A lease timeout, missing heartbeat or queue age is not terminal evidence. It must not create a retry.
+The source must govern both outbox lease expiry and grant `not_before`/`expires_at`. Caller-supplied timestamps are not authoritative. Test clock injection is allowed only behind a test-only adapter, never through a production public API.
 
-### `resume_same_attempt_with_idempotency_proof`
-May resume the same immutable attempt only when evidence proves the prior execution is safe to resume and the operation's idempotency contract prevents duplicate external effects. Must retain the same attempt ID and input digest while incrementing/fencing the lease generation. A caller's `resumable=true` assertion is never evidence.
+The issuer/time contract records target limits of grant lifetime no greater than 300 seconds and revocation-state age no greater than 30 seconds from the Wave 486/487 draft target. These are not accepted production settings: PR #599/#600 remain draft and governance/operational owners are unresolved. Treat them as proposed constraints pending acceptance, not deployed guarantees.
 
-### `authorize_new_attempt`
-May create a new attempt only when the prior attempt's outcome is established as terminal or the operation has an explicit, verified idempotency/reconciliation guarantee that makes a new attempt safe. The new attempt must reference the prior attempt and exact reconciliation decision. It must not erase or rewrite the old attempt.
+## 5. Issuer and R-06 governance gates
 
-No catch-all “recover”, “force”, “clear lease”, or generic retry decision is permitted in v1. If evidence is inconclusive, the record stays pending and the task remains quarantined for human/governed resolution.
+Wave 486/487 documents select a separately governed Security Issuer Authority as an owner-directed target, distinct from Jarvis, ASTRA A0, executors and Product State Authority. They remain DRAFT / NOT ACCEPTED / NOT IMPLEMENTED. Functional accountability is assigned to Security Audit (integrity and controlled access) and Privacy/Data Governance (classification and retention), but no named operational owners or deployed services are evidenced.
 
-## 5. Resolver algorithm — normative order
+Before implementation, accepted source evidence must identify:
+1. issuer service/operator and issuance principal authentication;
+2. trust-anchor/key custodian, dual control, rotation, revocation and compromise response;
+3. enrolled subject registry and lifecycle/suspension semantics;
+4. authoritative revocation-state publisher and freshness/version guarantees;
+5. qualified trusted-time source;
+6. private audit sink, operator, read-access control, integrity, backup/restore and outage behavior;
+7. Privacy/Data Governance and legal approval for classification, retention, deletion and legal hold;
+8. recovery activation/quorum and independent reviewer;
+9. hosting, durability and availability model consistent with free-only infrastructure or an explicitly accepted exception.
 
-1. Parse a bounded input; reject unknown fields, duplicate claims, oversized evidence and unsupported version.
-2. Resolve `issuer_id + key_id` from the trusted registry. Verify signature with the configured algorithm and key; reject unknown/revoked/inactive key.
-3. Validate issuer authorization for the exact decision and subject; validate exact audience and validity window against trusted time.
-4. Validate one-use/no-delegation constraints and exact resource binding.
-5. Load the evidence by immutable reference; recompute digest; validate provenance, freshness, subject, task/attempt/generation/input binding and decision-specific schema.
-6. Start one database atomic unit. Recheck current reconciliation/task/attempt state and exact generation/digest. Insert/consume the nonce under a uniqueness constraint and perform only the permitted conditional transition. Append the decision audit record in the same atomic unit where supported.
-7. Read back the committed task, attempt, reconciliation and audit state. Return success only if every expected field matches. On ambiguous commit/read-back, return an indeterminate result, retain durable reconciliation state and prohibit another action until reconciled by trusted evidence.
+Do not invent names or services to fill these gaps. Absence in project GitHub evidence does not prove absence outside the repositories; it means the accepted project source of record does not yet evidence the appointment.
 
-Never infer that an executor stopped merely because its lease expired. Never clear a lease or overwrite history as a side effect of failed verification.
+## 6. Mature-component disposition
 
-## 6. Negative-first test matrix
+Existing project research establishes:
+- SOPS + age are selected MediaHub encrypted configuration/secrets primitives; reuse their existing role, but they do not issue dynamic Recovery Grants or provide online revocation/nonce consumption.
+- Cosign is selected for artifact signing/provenance; it does not authorize runtime recovery.
+- OpenBao is TARGET-CANDIDATE / FUTURE-GATED, not an approved second vault or Recovery Grant issuer.
+- immudb is a possible future tamper-evident audit-storage candidate, not a selected authority or deployed free-tier sink.
+- Rekor is a supply-chain transparency log, not the default private operational audit sink.
+- Ory Hydra, Keycloak, ZITADEL and authentik are general identity products, not complete one-use consumer-bound D1 recovery transitions.
+- SPIRE provides workload identity/attestation, not the operation-bound one-use grant.
+- Biscuit and Cedar may inform capability/policy implementation, but neither replaces issuer governance, revocation state, durable nonce uniqueness and atomic D1 transition.
 
-All tests below are required before a resolver implementation can be considered locally qualified. Each rejection test must assert **no task/attempt/reconciliation mutation, no nonce consumption unless the atomic transaction definitively committed, and no sensitive value in logs**.
+No new dependency is selected. Do not build a bespoke IAM server, vault, policy engine or append-only log before a concrete accepted gap and operational ownership are demonstrated.
 
-| ID | Adversarial case | Required result |
+## 7. Negative-first test matrix
+
+Every denial must leave the outbox, task and attempt unchanged; must not consume a nonce unless the transaction definitively committed; and must not leak grant/key/secret material into logs.
+
+| ID | Adversarial case | Expected result |
 |---|---|---|
-| N01 | Worker submits `resumable=true` without capability | DENY; no state change |
-| N02 | Worker forges `issuer_id`, subject, role or evidence fields in task payload | DENY; trusted registry remains authoritative |
-| N03 | Missing capability, malformed envelope or unknown version | DENY |
-| N04 | Unknown issuer, unknown key ID, inactive/revoked/retired key | DENY |
-| N05 | Signature tampering, wrong key, algorithm substitution or untrusted key URL | DENY |
-| N06 | Expired, not-yet-valid, excessive future skew or invalid time ordering | DENY |
-| N07 | Wrong audience, subject, decision or resolver | DENY |
-| N08 | Task key, attempt ID, reconciliation ID, generation or input digest mismatch | DENY |
-| N09 | Wildcard, multi-resource, delegated, multi-use or extra decision scope | DENY |
-| N10 | Missing evidence, wrong evidence kind, digest mismatch, stale or untrusted evidence | DENY |
-| N11 | Evidence references another task/attempt/generation or does not prove the selected decision | DENY |
-| N12 | Reused nonce/capability ID, including concurrent duplicate submissions | At most one commit; all others DENY/REPLAY |
-| N13 | Two different capabilities race on the same reconciliation row | At most one commit; second sees resolved/stale state |
-| N14 | Lease generation changes after capability issuance | DENY stale capability |
-| N15 | Reconciliation row already resolved/cancelled or task/attempt state changed | DENY |
-| N16 | Attempt already terminal, or new attempt exists unexpectedly | DENY unless explicit decision contract permits exact state |
-| N17 | Storage batch/transaction fails before commit | No mutation; nonce remains available only if transaction is proven rolled back |
-| N18 | Commit outcome or read-back is ambiguous | INDETERMINATE; quarantine; no automatic retry |
-| N19 | Trusted clock unavailable or inconsistent | DENY |
-| N20 | Audit append fails or immutable history constraint is violated | Whole transaction fails; no partial transition |
-| N21 | Oversized/deeply nested/duplicate-key or unknown-field payload | DENY within bounded resource budget |
-| N22 | Capability or evidence contains secrets; logging/error path exercised | Redacted output; no token/private key/secret leakage |
+| N01 | Caller supplies arbitrary `recoveryActorId` or `verified: true` object | DENY |
+| N02 | Worker or Supervisor invokes recovery operation | DENY |
+| N03 | Missing, malformed or unsupported grant | DENY |
+| N04 | Unknown issuer/key, revoked/retired key or policy epoch | DENY |
+| N05 | Signature tampering, algorithm substitution or caller-selected key | DENY |
+| N06 | Wrong subject, audience or operation | DENY |
+| N07 | Wrong repository ID, outbox ID, attempt ID, generation or event digest | DENY |
+| N08 | Wildcard, batch or extra task/attempt permissions | DENY |
+| N09 | Non-exhausted attempt count, live lease or non-leased row | DENY |
+| N10 | Stale generation or already terminal row | DENY |
+| N11 | Not-before/expiry boundary invalid, stale revocation state or clock failure | DENY |
+| N12 | Reused nonce/grant ID, including concurrent duplicate requests | At most one commit |
+| N13 | Two valid grants race on one row | At most one commit |
+| N14 | Changed immutable outbox binding/event digest | DENY |
+| N15 | Database failure before commit | No state mutation |
+| N16 | Ambiguous commit or failed read-back | NOT VERIFIED; no blind retry |
+| N17 | Audit append or immutability constraint fails | Entire atomic transition fails |
+| N18 | Attempt to mutate `pool_tasks` or `pool_attempts` | DENY; invariant test |
+| N19 | Attempt to retry, requeue, dispatch or call GitHub API | DENY; invariant test |
+| N20 | Oversized, duplicate-key, unknown-field or non-canonical input | DENY |
+| N21 | Grant/evidence/log path contains secret material | Redacted; no secret leakage |
+| N22 | Capability lifetime/revocation freshness exceeds accepted policy limits | DENY |
 
-Positive controls must prove one exact successful case for each of the three decisions, including exact read-back and append-only audit, plus key rotation behavior that accepts only the configured active key. Positive controls do not replace the negative matrix.
+Positive controls: one successful terminalization of an exact expired exhausted outbox row; exact read-back; one nonce-consumption record; one immutable audit event; proof that task/attempt state and GitHub remain untouched.
 
-## 7. Persistence and audit requirements
+## 8. Existing repository evidence and disposition
 
-Persist append-only records for capability consumption and recovery decisions, including capability ID, issuer ID, key ID, subject, decision, exact resource tuple, evidence digest/reference, trusted decision time, outcome and correlation ID. Do not persist raw bearer token, private key, API key, full secret-bearing evidence or unredacted provider payload.
+- PR #60 parent ADR blob: `59a4be21516da0e005114acfe015aee7787524dc`; issuer/time contract blob: `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`. Both are on an older design branch based at `864213e2ff5b4fa956ba405dea8137a44d812f49`; PR #60 is OPEN / DRAFT / UNMERGED and its exact-head workflow list is empty.
+- PR #63 component/authority audit branch head: `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`; exact-head PR workflow list empty; reviews 0. It documents the absence of accepted operational issuer, key custodian, principal registry, revocation source, trusted time, audit sink and privacy/legal operator appointments.
+- PR #67 implementation candidate head: `dea09ffe94059f446c74fada37971087ec4878eb`; exact-head runs #43064261520 and #43064261551 SUCCESS. Combined status contexts remain empty; formal reviews 0. These runs do not test a Recovery Actor.
+- Active ruleset #26550182 applies to `refs/heads/Основной`: PR required, deletion and non-fast-forward blocked, review-thread resolution required, zero required approvals, no bypass actors; current user cannot bypass. Zero approvals is not independent review.
+- Documentation branch default is not; this contract is a draft document and not merged. No source implementation, tests, secrets, hosted D1, dispatch, deployment or provider/model calls were made in this pass.
+- Independent review remains deferred until after actual Cloud Pool launch by owner direction.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
-Enforce uniqueness for nonce and capability ID. Enforce immutability of historical attempt identity/input and append-only decision history at the database layer, not only in application code. Retain rejected-attempt telemetry only in a bounded, redacted security log; do not let untrusted callers create unbounded durable rows.
-
-## 8. Mature GitHub component review
-
-Reviewed upstream source repositories and their own README/specification descriptions:
-
-- [Eclipse Biscuit specification repository](https://github.com/eclipse-biscuit/biscuit), README blob `f53e9f28495c1f5d47e6bc1f416da0cd26511abb`: mature capability-oriented authorization token with signed authority blocks, attenuation and decentralized validation. The project explicitly states that Biscuit is not an authentication protocol and that revocation requires external state management. It does not by itself provide one-time nonce consumption or atomic ledger transitions. Candidate for a later protocol/library evaluation only; **not adopted**.
-- [Eclipse Biscuit Rust implementation](https://github.com/eclipse-biscuit/biscuit-rust), README blob `032851cee4368762ae6e027339e52017b295ae85`: supports token verification and attenuation, but is Rust-focused and not a drop-in Worker JavaScript/D1 resolver. Its non-goal on revocation reinforces the need for durable replay state. **Not adopted**.
-- [Cedar policy engine](https://github.com/cedar-policy/cedar), README blob `2d5f0653cd04f65c1a5ddb2a3b0fabbeeeb2b11b`: mature fine-grained authorization policy engine with schema validation and analyzability. It evaluates policies; it is not a signed capability issuer, replay store or transaction coordinator. Could later encode decision policy if the runtime/language fit is demonstrated. **Not adopted**.
-
-Conclusion: no mature component found that replaces the complete issuer authentication + one-use replay ledger + decision-specific evidence + atomic D1 transition boundary. Reuse of a token/policy library must not replace durable single-use state or transaction predicates. No dependency was added.
-
-## 9. Qualification gates and implementation order
-
-Before source implementation:
-- finalize trusted issuer registry, issuer enrollment/rotation/revocation and independent authority boundary;
-- select a supported signature/token implementation compatible with the actual Cloudflare Worker runtime and pin its provenance;
-- verify D1 transaction/batch atomicity and uniqueness semantics in the local Workers runtime;
-- finalize trusted-time source and maximum capability lifetime/skew;
-- define evidence schemas and trusted evidence origins for each decision;
-- agree the exact state transition table and audit retention model.
-
-Then implement negative-first in the isolated local D1 proof harness. The caller-controlled `resumable` path must be removed or made unreachable before any production wiring. Tests must cover concurrency and crash/ambiguous-commit cases. Hosted D1, dispatch and provider execution remain separately gated and are not authorized by passing local tests.
-
-## 10. Current repository evidence and next step
-
-- Default branch `Основной`: `221f216c00ca7e5596bcc682ba185ad155a10603`.
-- PR #67: `dea09ffe94059f446c74fada37971087ec4878eb`, OPEN / DRAFT / UNMERGED.
-- Exact-head Actions associated with PR #67: runs `43064261520` (Isolated D1 Ledger Proof) and `43064261551` (Pool Contract Validation), both completed SUCCESS. Combined commit-status endpoint returned zero contexts / pending; formal reviews and inline comments are empty. These runs do not qualify Recovery Actor.
-- PR #66 documentation branch HEAD at this pass: `55babef9b6a3e2422e387e3be575d6e06c2447ad`; its exact-head PR workflow run list returned empty. NOT VERIFIED.
-- Active ruleset `26550182` applies to `refs/heads/Основной`: PR required, deletion and non-fast-forward blocked, review-thread resolution required, 0 approvals, no bypass actors; current user cannot bypass.
-- No code, tests, workflows, secrets, variables, hosted resources, deployment, dispatch or provider/model calls were changed or run in this pass.
-- Independent review remains deferred until after actual pool launch by owner direction.
-- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
-
-Next bounded step: inspect the exact current Recovery Actor/authority contracts and decide issuer/key custody and evidence-source ownership; only then draft the executable state-transition specification. Do not implement or dispatch until those authorities are explicit.
+Next: continue source-only authority/ownership reconciliation and exact-state transition review. Do not implement issuer or recovery runtime until issuer, custodian, registry, revocation, time, audit/privacy owners and hosting model have accepted evidence.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
