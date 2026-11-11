@@ -9,6 +9,8 @@ on:
       - "experience-auth-migrations/**"
       - "src/experience-auth-session.js"
       - "tests/experience-auth-session.vitest.js"
+      - "tests/apply-experience-auth-migrations.js"
+      - "vitest.config.js"
       - ".github/workflows/experience-auth-d1-proof.yml"
 
 permissions:
