@@ -25,6 +25,21 @@ async function reset() {
 beforeEach(reset);
 
 describe("isolated Experience auth D1 schema", () => {
+  it("keeps Experience auth tables isolated from the Pool ledger D1 binding", async () => {
+    const authTables = await db().prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('oauth_transactions', 'application_sessions', 'pool_attempts') ORDER BY name"
+    ).all();
+    expect(authTables.results.map(row => row.name)).toEqual([
+      "application_sessions",
+      "oauth_transactions"
+    ]);
+
+    const poolBindingAuthTables = await env.DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('oauth_transactions', 'application_sessions') ORDER BY name"
+    ).all();
+    expect(poolBindingAuthTables.results).toEqual([]);
+  });
+
   it("consumes one OAuth state across concurrent callbacks", async () => {
     expect(await issueOAuthTransaction(db(), {
       stateHash, browserBindingHash: bindingHash,
