@@ -755,6 +755,9 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(early).toMatchObject({ decision: "DENY", reason: "PROJECTION_NOT_LEASEABLE" });
     const due = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-due", NOW + 35, 30);
     expect(due).toMatchObject({ decision: "PROJECTION_LEASE_ACQUIRED", delivery_attempts: 2 });
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET delivery_attempts = 6 WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DELIVERY_ATTEMPT_LIMIT");
   });
 
   it("dead-letters after five failed projection attempts and never automatically requeues", async () => {
@@ -806,7 +809,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DEAD_LETTER_TERMINAL");
     await expect(env.POOL_DB.prepare(
       "UPDATE pool_attempt_projection_outbox SET delivery_attempts = 6 WHERE outbox_id = ?"
-    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DELIVERY_ATTEMPT_LIMIT");
+    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DEAD_LETTER_TERMINAL");
     const noRequeue = await acquireProjectionDelivery(
       env.POOL_DB, outboxId, "projection-after-dead-letter", NOW + 1000, 30
     );
