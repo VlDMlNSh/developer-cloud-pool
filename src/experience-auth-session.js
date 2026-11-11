@@ -13,10 +13,10 @@ function deny(reason) {
 
 export async function issueOAuthTransaction(db, input) {
   if (!validDb(db)) return deny("STORAGE_UNAVAILABLE");
-  if (!input || !HEX_256.test(input.stateHash ?? "") ||
-      !HEX_256.test(input.browserBindingHash ?? "") ||
-      !ENVELOPE.test(input.pkceVerifierEnvelope ?? "") ||
-      !KEY_VERSION.test(input.encryptionKeyVersion ?? "") ||
+  if (!input || typeof input.stateHash !== "string" || !HEX_256.test(input.stateHash) ||
+      typeof input.browserBindingHash !== "string" || !HEX_256.test(input.browserBindingHash) ||
+      typeof input.pkceVerifierEnvelope !== "string" || !ENVELOPE.test(input.pkceVerifierEnvelope) ||
+      typeof input.encryptionKeyVersion !== "string" || !KEY_VERSION.test(input.encryptionKeyVersion) ||
       !Number.isSafeInteger(input.createdAt) || input.createdAt <= 0 ||
       !Number.isSafeInteger(input.expiresAt) || input.expiresAt <= input.createdAt) {
     return deny("INVALID_OAUTH_TRANSACTION");
@@ -40,8 +40,8 @@ export async function issueOAuthTransaction(db, input) {
 
 export async function consumeOAuthTransaction(db, input) {
   if (!validDb(db)) return deny("STORAGE_UNAVAILABLE");
-  if (!input || !HEX_256.test(input.stateHash ?? "") ||
-      !HEX_256.test(input.browserBindingHash ?? "") ||
+  if (!input || typeof input.stateHash !== "string" || !HEX_256.test(input.stateHash) ||
+      typeof input.browserBindingHash !== "string" || !HEX_256.test(input.browserBindingHash) ||
       !Number.isSafeInteger(input.now) || input.now <= 0) {
     return deny("INVALID_OAUTH_CALLBACK");
   }
@@ -70,8 +70,8 @@ export async function consumeOAuthTransaction(db, input) {
 
 export async function createApplicationSession(db, input) {
   if (!validDb(db)) return deny("STORAGE_UNAVAILABLE");
-  if (!input || !HEX_256.test(input.sessionHash ?? "") ||
-      !GITHUB_ID.test(input.githubUserId ?? "") ||
+  if (!input || typeof input.sessionHash !== "string" || !HEX_256.test(input.sessionHash) ||
+      typeof input.githubUserId !== "string" || !GITHUB_ID.test(input.githubUserId) ||
       !Number.isSafeInteger(input.createdAt) || input.createdAt <= 0 ||
       !Number.isSafeInteger(input.expiresAt) || input.expiresAt <= input.createdAt) {
     return deny("INVALID_SESSION");
@@ -90,7 +90,7 @@ export async function createApplicationSession(db, input) {
 
 export async function lookupApplicationSession(db, input) {
   if (!validDb(db)) return deny("STORAGE_UNAVAILABLE");
-  if (!input || !HEX_256.test(input.sessionHash ?? "") ||
+  if (!input || typeof input.sessionHash !== "string" || !HEX_256.test(input.sessionHash) ||
       !Number.isSafeInteger(input.now) || input.now <= 0) {
     return deny("INVALID_SESSION_LOOKUP");
   }
