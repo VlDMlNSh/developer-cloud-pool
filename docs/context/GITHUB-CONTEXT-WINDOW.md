@@ -1728,3 +1728,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 - Documentation branch current HEAD before this final context-only append: `c8ecd20582fc46e4f7ccd90f9769cb8b932aa342`; context blob `18bce4604765521ea47bb854e7ede47d92f7e977`; checkpoint blob `f8229941f77679d12af5ce6f96d65e543ce13e0e`; report blob `c436270eb45f98bcde79374a14a7eafafcab4c27`.
 - PR #63 head is advanced by the context/checkpoint/report commits and remains documentation-only. Recheck PR head and exact-head CI before relying on any prior run. The earlier exact-head query for `f2418604d050a2eaa9aa8ac7d767cc91fe2f626e` returned no PR workflow runs and no combined statuses; NOT VERIFIED.
+
+
+## 2026-11-11 — default Supervisor/Worker/Claim/Recovery source audit
+
+- Report: `docs/reports/2026-11-11-default-supervisor-worker-claim-recovery-source-audit.md`, report commit `4858b22ee72611b45d80f09efb1b832b01055ea4`.
+- Immutable default target `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; audited blobs: Supervisor script `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; Supervisor workflow `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; Worker workflow `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; claim decision `830a549809d10015d5662da562cff82710c3aa11`.
+- Findings: Issue label PATCH is not CAS; ambiguous dispatch error returns task to ready; stale recovery requeues after absence in bounded 100-run listing and mutable issue age; Worker validates projection label/body but not issuer capability, revocation, trusted time, nonce or generation; Worker report can overwrite newer state without run/generation/envelope fencing; Supervisor has workflow-level `issues:write` + `actions:write`.
+- Current Worker only runs pinned DSH headless package/config smoke; no provider credentials/model call; this does not qualify general agent execution.
+- Reuse existing PR #39/#54 Workers/D1 claim/outbox adapters and local proofs as experimental reference only; PR #37 narrows dispatch boundary but remains unmerged and does not establish CAS. Hosted D1 remains NOT QUALIFIED. No stronger drop-in repo identified for this project's issuer-bound claim + atomic outbox + fencing contract.
+- Remediation contract: issuer-authenticated one-use claim API; atomic claim+outbox; indeterminate ambiguous dispatch; immutable envelope/claim/generation; generation-fenced finalizer/recovery; least-privilege job split; hosted contention/fault injection; independent security review.
+- Report commit `4858b22ee72611b45d80f09efb1b832b01055ea4`; checkpoint commit `d5dd3ea579e1a7a65ba27aaff2389841dbdeb7eb`. Checkpoint blob `bbbbbccce288c88bd4786d88ad902409c389f6a1`.
+- No code/runtime/workflow/permission/secret/variable/schema changes, provider calls, dispatch, resource creation, billing, merge or deployment.
+- Status: source audit VERIFIED; implementation NOT STARTED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare a source-bound remediation contract and negative test matrix for F1–F6, documentation/test-design only until issuer/trust/revocation/time/audit owners and hosted-service authorization are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
