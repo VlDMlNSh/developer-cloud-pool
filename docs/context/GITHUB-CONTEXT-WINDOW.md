@@ -2329,3 +2329,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: prepare a concise canonical Context Window draft for review against Bootstrap/map/checkpoint/roadmap; use branch-qualified evidence links and explicit unmerged-branch warning. Create no default-based branch until that draft is reconciled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Compact canonical Context Window draft prepared
+- Draft: [GITHUB-CONTEXT-WINDOW-CANONICAL-DRAFT.md](../drafts/GITHUB-CONTEXT-WINDOW-CANONICAL-DRAFT.md), commit `b8fcc41862658f927709f79f7c47d4ae8f3e771f`, blob `1dc3b0751be979b46ec96cfdaff879214173b991`.
+- Draft explicitly labels itself NOT CANONICAL / NOT ON DEFAULT BRANCH, uses branch-qualified links for unmerged evidence, states Contour A BLOCKED / NOT ACCEPTED and Contour B DEFERRED, and forbids treating local CI/proofs as deployment or acceptance.
+- Cross-checked against the MediaHub Bootstrap (blob `75f30750183efe8c6877368e9f0ada48f8e81ea7`), canonical map blob `75f62685459ec99ebf8be478f4e9096cdb842b1d` (retrieved by Git blob API; Contents API returned empty body), checkpoint blob `fd312ded05dd1898bd36d776a9669bb02920720d`, and Master Roadmap blob `ea7e94e921045253f3e6494438e197c4bafae3a0`. Binding sequencing remains cloud pool first, local/MediaHub product work after Contour A acceptance; preserve Baseline 2.0, A0/issuer/capability and Product State Authority boundaries.
+- Draft created only on the continuation documentation branch. No default-based branch created; no PR, merge, rebase, deployment, workflow dispatch, secrets access or PR state change.
+- Next: compare the draft line-by-line against Cloud Pool's current default-source contracts/workflows and verify its claims against current immutable refs; then refresh default HEAD and create a minimal dedicated default-based branch only if the draft is accurate and self-contained.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
