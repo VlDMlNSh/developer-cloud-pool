@@ -40,7 +40,7 @@ The latest baseline added a test asserting that `oauth_transactions` and `applic
 ## 5. Exact-head CI
 
 - Exact-head workflow run: [42984959975](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984959975).
-- At report creation: IN_PROGRESS; final conclusion pending.
+- Completed SUCCESS on exact head. Job `130403823600`: checkout, runtime, lockfile install, static checks, API/policy tests, Workers/D1 tests and cleanup all succeeded. API/policy 11/11; Workers/D1 17/17 across 3 files; Experience Auth suite 9/9, including future-created OAuth state regression and binding-isolation test.
 - CI must be rechecked on exact head `f2d225fe8d660bdc9724320080e0d0cd91705f0a`. Prior-head successes are not transferable.
 - No artifacts or production evidence claimed.
 
@@ -58,8 +58,16 @@ The latest baseline added a test asserting that `oauth_transactions` and `applic
 ## 7. Disposition and next step
 
 - Source correction: COMMITTED / READ-BACK VERIFIED.
-- Exact-head CI: PENDING at report creation; must be rechecked.
+- Exact-head CI: VERIFIED SUCCESS — run `42984959975`, job `130403823600`; API/policy 11/11 and Workers/D1 17/17.
 - Production OAuth/session: NOT QUALIFIED.
 - Contour A: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
 - Next: confirm exact-head CI. If successful, prepare an explicit temporal policy decision request for trusted-time authority and maximum OAuth/session TTL, and continue auditing revocation/rotation boundaries without enabling production auth.
+
+
+## Exact-head CI closeout
+
+- Exact PR head `f2d225fe8d660bdc9724320080e0d0cd91705f0a` passed [run 42984959975](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984959975), job `130403823600`.
+- API/policy: 11/11 passed. Workers/D1: 17/17 across 3 files. Experience Auth: 9/9. Static checks and all workflow steps including cleanup succeeded.
+- Test log contains expected synthetic uncaught-error diagnostics from existing workflow failure-path tests; Vitest reported 3 files passed / 17 tests passed and the job concluded SUCCESS.
+- This remains local synthetic Workers/D1 proof only; no production qualification follows.
