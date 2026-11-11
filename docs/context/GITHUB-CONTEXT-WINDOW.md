@@ -2503,3 +2503,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Current statuses: local PR #59 retry/dead-letter proof VERIFIED within local test boundary; issuer/key lifecycle NOT QUALIFIED; production clock NOT QUALIFIED; orphan projection recovery BLOCKED / NOT IMPLEMENTED; hosted D1/sender/consumer NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: identify governance-owned issuer and revocation source, and qualify transaction-local backend time + atomic nonce consumption. If either is absent, do not implement recovery authority.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Projection recovery capability boundary review
+- Default branch `Основной` observed HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #58 OPEN/DRAFT/UNMERGED; exact-head run `42979949181` SUCCESS. PR #59 OPEN/DRAFT/UNMERGED; exact-head run `42981807825` SUCCESS for `22200226da4f1af30645cf441a639db6893e9310` (53 local D1 tests). PR #60 OPEN/DRAFT/UNMERGED; updated head `94c41364d50c2746c1e72874701637ea3ec54def`; exact-head CI NOT RUN, reviews 0, threads 0.
+- Reviewed PR #60 against Trusted Reconciliation contract `32bce214a8a3577584f058fb5679b8cecf5f3309` and Shared Immutable Claim Lifecycle contract `595da5bdaf832a48e032eb51a283e2456943b248`.
+- Added ADR Section 13 to prohibit treating plain objects/JSON/TypeScript brands as authenticated capabilities; require cryptographic grant verification or opaque in-process capability, issuer/key-version/revocation/policy checks, complete binding, trusted composition-root invocation, server-side D1 binding inventory, unique nonce namespace, atomic consumption and audit provenance.
+- ADR blob `59a4be21516da0e005114acfe015aee7787524dc`. No runtime, schema, workflow, permission or deployment changes. No secrets, dispatch, model/provider calls or paid resources.
+- Report: [Projection recovery capability boundary review](../reports/2026-11-11-projection-recovery-capability-boundary-review.md).
+- Projection recovery NOT IMPLEMENTED/NOT QUALIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
+- Next: compare Hono + Workers Static Assets console candidate against minimal Worker + D1 Supervisor runtime; define smallest free-only deployment slice, exact quotas, authority boundaries, rollback and stop conditions. Owner-reported Free label is planning context, not entitlement proof.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
