@@ -1677,3 +1677,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime/schema/workflow/permission/secret/resource/dispatch/deployment/merge/branch update. Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: bounded PR #53 remediation (runner harness + target SHA binding) and exact-head CI, then independent review. No dispatch enablement.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #53 target SHA binding remediation
+
+- Report: \`docs/reports/2026-11-11-pr53-target-sha-binding-remediation.md\`.
+- Immutable default snapshot before report: \`c375fa981cd28ada403364d866fd788e098c9c2e\`.
+- PR #53 final head after bounded remediation: \`56cd2b9deff91d9308ed877965252f317222f597\`; base PR #37 head \`1be8672c1be1a720b6c813dcafff5c020b6456ae\`; compare 31 ahead / 0 behind, 10 paths. PR OPEN/DRAFT/UNMERGED, mergeable=true.
+- Added strict single-field Target SHA extraction and finalizer-side equality check against TARGET_SHA; runner passes targetSha; unit tests increased from 9 to 11 with mismatch/missing/duplicate/malformed cases.
+- Final source blobs: finalizer \`d21e4dbeeacebd6f2bc1bfa1bbc5756b3baaa5ab\`; runner \`50e7206a2aa1edf02550ed9428ce0b13ad8b8b17\`; tests \`6b7fb8b07551c0fa20a7fd8efc57fdecdd940a08\`. All re-fetched from branch.
+- Exact-head PR workflow query returned no runs (CI NOT VERIFIED); tests not executed. Formal reviews 0; inline threads 0; independent review NOT RUN.
+- TARGET_SHA binding gap is addressed in source, but fundamental F2 remains HIGH / OPEN: GitHub labels PATCH non-CAS; terminal label and audit comment are non-atomic; no fake-transport runner harness or replay reconciliation. Do not claim race-free or exactly-once semantics.
+- No default-branch runtime/schema/workflow/permission/secret/resource/dispatch/deployment/merge/branch-base change. Dispatch FAIL-CLOSED; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: add injectable runner protocol and fake-transport tests for final GET/PATCH race, lost PATCH response, terminal-label/comment split failure and idempotent audit reconciliation. Preserve non-CAS limitation; exact-head CI and independent review mandatory.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
