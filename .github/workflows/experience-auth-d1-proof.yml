@@ -1,0 +1,45 @@
+name: Experience Auth D1 Local Proof
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "wrangler.proof.jsonc"
+      - "experience-auth-migrations/**"
+      - "src/experience-auth-session.js"
+      - "tests/experience-auth-session.vitest.js"
+      - ".github/workflows/experience-auth-d1-proof.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: experience-auth-d1-proof-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-d1-proof:
+    name: Validate isolated Experience auth D1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify runtime
+        run: node --version && npm --version
+
+      - name: Install from committed lockfile
+        run: npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund
+
+      - name: Static checks
+        run: npm run check
+
+      - name: Existing API and policy tests
+        run: npm test
+
+      - name: Local Cloudflare Workers and D1 tests
+        run: npm run test:workflow
