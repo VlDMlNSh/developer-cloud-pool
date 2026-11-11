@@ -2858,3 +2858,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define and implement F2/F10 as a fenced/idempotent terminal transition against the authoritative claim/outbox store, reconcile Issue #38 claim envelope and PR #60 recovery issuer/time boundary, then exact-head CI and independent audit.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 session revocation temporal audit
+
+- Report: [PR #61 session revocation temporal audit](../reports/2026-11-11-pr61-session-revocation-temporal-audit.md).
+- Baseline `f2d225fe8d660bdc9724320080e0d0cd91705f0a` omitted `created_at <= now` in `revokeApplicationSession`. The DB CHECK rejected early revocation but surfaced as ambiguous storage failure. Added the temporal predicate to atomic UPDATE and a D1 test: deny before creation, still active at creation, revoke succeeds at creation.
+- Corrected PR head `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; source blob `f514e69cfac03792bb40a7e4c606c2106ba7d79d`; test blob `60046e5a55dcd1155755ce0c8a5d8af4e87ee1a3`; read-back verified.
+- Exact-head CI run `42991794791` IN_PROGRESS at report creation; must recheck terminal state.
+- Rotation not implemented: no session family/device lineage, atomic rotate/replacement, single-active-successor invariant or ambiguous-outcome recovery. Do not invent these semantics; obtain explicit authority/concurrency/recovery policy first.
+- Per-session D1 revocation is not production cache/global revocation proof. Caller-supplied `now`, TTL policy, trusted time, owner allowlist, callback/cookie/CSRF, PKCE AEAD/key custody, hosted D1 and independent review remain NOT QUALIFIED/NOT RUN. Protected API fail-closed.
+- PR #61 OPEN/DRAFT/UNMERGED, Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
