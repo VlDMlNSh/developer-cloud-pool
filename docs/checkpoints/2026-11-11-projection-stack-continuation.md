@@ -305,3 +305,15 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Before DSH task execution, exact profile review must explicitly disable/constrain Code Mode, dynamic plugin installation/hot-update, project-instruction trust, network egress, loopback/RPC and telemetry. Do not rely on shell/filesystem sandbox alone.
 - DSH report updated with these caveats at commit `a02f3a5689fefdfaf86b1cd8e13d6a0793a82911`; Context Window updated at `dc69f1fd0fe80b243a3e384b0222f5e120de2688`.
 - DSH runtime evaluation remains NOT RUN. Existing manual workflow pin `0.2.1-rc.5` should be refreshed to the latest verified published npm version before execution; GitHub release rc2 is not assumed published to npm.
+
+
+## Recovery Actor and lease-recovery audit — 2026-11-11
+
+- Report: [Recovery Actor and lease-recovery source audit](../reports/2026-11-11-recovery-actor-lease-recovery-source-audit.md), commit `54971b963cf9814813c15fc932e0689d57d185fb`.
+- PR #67 exact source head audited: `dea09ffe94059f446c74fada37971087ec4878eb`; OPEN / DRAFT / UNMERGED.
+- Lease fencing by owner/generation/expiry and indeterminate reconciliation queue are present in local proof.
+- Blocking gap: `{ resumable: true }` is caller-controlled and permits takeover of an expired still-running attempt without authenticated Recovery Actor capability or evidence. Indeterminate attempts remain fail-closed; no resolver exists.
+- Source-only audit; no code changes or tests executed. Do not treat the flag as production authorization.
+- Next: specify issuer-bound, scoped, single-use Recovery Actor capability and adversarial tests before implementation; keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
