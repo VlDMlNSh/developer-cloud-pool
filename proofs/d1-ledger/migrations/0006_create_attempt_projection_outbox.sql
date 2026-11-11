@@ -86,7 +86,9 @@ BEGIN
       WHEN 'dead_letter' THEN 'delivery.dead_letter'
       ELSE 'delivery.leased'
     END,
-    NEW.lease_generation_delivery, NEW.lease_owner, NEW.updated_at
+    NEW.lease_generation_delivery,
+    CASE WHEN OLD.status = 'leased' THEN OLD.lease_owner ELSE NEW.lease_owner END,
+    NEW.updated_at
   );
 END;
 
