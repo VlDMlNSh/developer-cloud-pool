@@ -65,3 +65,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Re-read `src/experience-auth-session.js` at the branch tip: adapter blob remains `14236350b99f4f8629b64db6e6b81ff881d4465f`; the lookup predicate still omits `created_at <= now`. The test file still lacks a future-created-session regression case.
 - New exact-head run `42984494769` / job `130402330583`: COMPLETED / SUCCESS. This verifies CI on the newer head but does not resolve Issue #62.
 - PR remains OPEN / DRAFT / UNMERGED; review submissions remain empty. Finding remains outstanding.
+
+## Resolution candidate — fix and regression test landed, CI pending
+
+- PR #61 advanced to head `64ebe73e5c1f5c5b82637b85ae7b1be39d50c8a6`.
+- Adapter blob `046111beb31d7c8cf58e623581d2b260fbdad496` now includes both `created_at <= ?` and `expires_at > ?` in the session lookup predicate.
+- Test blob `5ccfb8e662b531d29b6292985d6420b47ef99029` adds a Workers-runtime D1 case that creates a future-dated session, expects DENY before creation, and ACTIVE at creation time.
+- Exact-head workflow run `42984610137` / job `130402696252` was observed IN_PROGRESS during this recheck; installation was still running and later checks were pending. Fix is source-verified but not yet CI-verified.
+- Issue #62 remains OPEN pending exact-head CI success and final recheck. PR #61 remains OPEN / DRAFT / UNMERGED; independent review submissions remain empty.
