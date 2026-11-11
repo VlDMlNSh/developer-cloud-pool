@@ -2440,3 +2440,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No resources provisioned, no secret values read, no deployment or migration. Product-level free feasibility CONFIRMED; account Free entitlement NOT VERIFIED; actual Worker/D1 readiness BLOCKED because no D1 DB or Worker scripts exist in inspected account.
 - Next: obtain authoritative read-only subscription-plan evidence, verify intended account identity, then produce Free-only resource/cost budget and deployment contract before any provisioning.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Cloudflare billing entitlement access blocker
+- Rechecked PR #37/#58/#59: all OPEN / DRAFT / UNMERGED.
+- Read-only Cloudflare GET probes: account subscriptions, billing profile and billing history each return HTTP 403 because this OAuth connection has no Billing Read scope; Cloudflare states OAuth cannot access these endpoints and requires API token Billing Read or Billing Write. We do not request Billing Write or read/create tokens.
+- Account entitlements endpoint returned empty result; `default_usage_model=standard` does not prove Free vs Paid. Account plan remains NOT VERIFIED.
+- Report: [Cloudflare billing entitlement access audit](../reports/2026-11-11-cloudflare-billing-entitlement-access-audit.md), commit `843947a7dfa7267e12f91cf08db010a8ddeea199`.
+- Owner-only verification path, if needed: Cloudflare Dashboard → Workers & Pages → Workers plans (or Billing → Subscriptions), provide only the plan label. No billing instruments, token values or secrets.
+- No provisioning/deployment/migration/dispatch. No D1 databases or Worker scripts exist in inspected account. Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
+- Next: once plan is verified, prepare Free-only quota/cost envelope and bounded Worker+D1 implementation contract; if account is Paid, stop without fallback.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
