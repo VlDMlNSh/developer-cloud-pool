@@ -176,3 +176,15 @@ This is the latest exact-head evidence at the time of this report update. It sup
 - PKCE AEAD/key custody/rotation, GitHub owner allowlist, browser callback/cookie/CSRF, session rotation, global quota, remote D1, account Free entitlement, deployment and independent security review remain NOT QUALIFIED / NOT RUN.
 - No production DB, OAuth App, secret, key, route, deployment, provider request or dispatch touched. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — continuation and governance recheck
+
+- Current default branch `Основной` HEAD observed: `0bb804df8ba989b7a9c004d093d45c680b165892`.
+- Active ruleset `26550182` (`Основной — verified`) still targets only `refs/heads/Основной`, enforcement active, blocks deletion/non-fast-forward, and requires pull requests with resolved review threads. It sets `required_approving_review_count: 0`; therefore it does NOT enforce a mandatory approving review. Branch-protection endpoint returned 403 to the integration, so effective protection beyond the readable ruleset is NOT VERIFIED.
+- PR #52 remains OPEN / DRAFT / UNMERGED at `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; its base PR #25 also remains an unmerged parent chain. PR #61 remains OPEN / DRAFT / UNMERGED, base PR #52 exact head `c430fe4...`; do not merge #61 independently.
+- Latest PR #61 head and proof branch agree: `f2d225fe8d660bdc9724320080e0d0cd91705f0a`; exact-head run `42984959975` / job `130403823600` SUCCESS; 11 Node tests and 17 Workers/D1 tests passed. Reviews 0, inline threads 0.
+- PR #61 auth adapter is not imported by `src/index.js` at this head; protected `/api/*` remains 503 `AUTHENTICATION_NOT_CONFIGURED`, mutations remain 405, health says authentication not configured and dispatch disabled. Thus this proof has not enabled production authentication or routes.
+- Context and report are on the documentation continuation branch, not default branch or merged implementation. Current docs branch observed `f088013c314ddb76973aa86c20477a0892b39d5d` at governance check; documentation commits are separate from PR #61 implementation branch.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
