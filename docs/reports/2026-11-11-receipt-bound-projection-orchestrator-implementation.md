@@ -60,3 +60,10 @@ Extend negative-first tests for lost POST response with matching read-back, dela
 Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Draft PR and second exact-head validation (17:01Z)
+
+- Draft PR #67 opened against `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, head `impl/receipt-bound-projection-2026-11-11@cc9181ed14932133e607550fb6526eb135a36a0c`; compare is 8 commits ahead / 0 behind; 32 changed files. PR is OPEN / DRAFT / UNMERGED. No formal reviews or review threads.
+- Exact-head PR run [43063861928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43063861928), job `130673434866`: SUCCESS; syntax and Workers-runtime D1 tests SUCCESS; 5 files / 65 tests passed. Artifact ID `13874432809`, SHA-256 `f50f97d2373ef340df209947a8a15064ddcd0b4d35fd7e882c8500fb988f1906`.
+- Exact-head PR contract validation [43063862022](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43063862022), job `130673433624`: SUCCESS; workflow syntax, dispatch-disabled invariant and pool security contract checks passed.
+- Exact-head push run [43063773936](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43063773936) also SUCCESS. The combined status endpoint returned zero contexts; do not represent it as required ruleset contexts being published.
