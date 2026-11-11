@@ -188,3 +188,16 @@ Paste this exact phrase into a new chat:
 - Proposed bounded profiles reuse A1 Architect / A2 Builder / A3 Verifier; PLANNED / NOT DISPATCHED. Gemini controller does not accept arbitrary task payloads; no bypass or manual child dispatch.
 - Full evidence and provider task plan: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
 - Next: review a versioned task-admission schema and per-provider-slot qualification contract, then reconcile PR #28 and #29. Contour A remains unaccepted; Contour B deferred.
+
+
+## 9. PR #28/#29 provider router and quota-ledger audit — 2026-11-11
+
+- Audit report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-router-pr28-pr29-audit.md
+- Current default SHA: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #28 head `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, PR #29 head `e4c8d642bbc054e7c52b391356965b492dad32b4`; both OPEN/DRAFT and based on stale `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- PR #29 exact-head CI run `43031920223` SUCCESS; job `130560896729`; 43/43 tests passed. Pure/static validation only.
+- Fixed escaped dispatch guard expansion and invalid JSON newline in PR #29 branch; commits `d3fe63dc240ad8e51c4bebe5988c2977ac885a57` and `e4c8d642bbc054e7c52b391356965b492dad32b4`.
+- F11 active-slot finding from review at old SHA `34fc78921b16359d136db553d8a51b4a4716995d` appears addressed in current source/tests, but fresh independent review not yet obtained; formal old CHANGES_REQUESTED remains.
+- PR #29 planner does not implement durable atomic lease storage; PR #28 LiteLLM remains candidate only. No DB/Redis or gateway provisioned.
+- No provider API calls, secret access, or agent dispatch.
+- Next: stale-base impact/rebase plan for #28/#29, durable atomic reservation contract, fresh independent review. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
