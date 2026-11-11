@@ -252,3 +252,15 @@
 - Readback blobs: migration `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`, adapter `afdc133ad11a3a99ecb4b7168d5b8afcc1dc4dd6`, test `5bcd6e42acc8ac7ee4f2cfec31e32a5e2d3b5499`, package `115e89447d16daa860d8ef95589e96190aca5633`.
 - Limits: local proof only; no hosted D1, real GitHub projection, delayed visibility, comment duplicate reconciliation, dead-letter transition policy, backup/restore, or production identity qualification. PR #54 OPEN/DRAFT/UNMERGED. Issue #38 OPEN; PR #53 F2-R1/R2 NOT FIXED; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: build local fake GitHub projection sender/reconciler tests for lost POST response, delayed marker visibility, duplicate markers, digest conflict and managed-label convergence. No real GitHub write scope, workflow wiring, or dispatch. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## Fake GitHub terminal projection reconciliation proof — 2026-11-11
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-fake-github-terminal-projection-reconciliation-proof.md
+- Implemented isolated fake-API reconciler on PR #54 immutable head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; PR #58 head `475e27d2b862ac294c8134f2ab3d2533f2bb1317`.
+- Added `proofs/d1-ledger/src/projection-reconciler.mjs` and eight focused fake-boundary tests. Covers lost POST response, delayed marker visibility, no-POST reconciliation-only pass, digest conflict, duplicate markers, managed-label convergence preserving unrelated labels, mutation failure, and invalid envelope. Every result retains `dispatch:false`; comments remain at-least-once, not exactly-once.
+- Added proof workflow branch filters and syntax check. Exact-head PR run `42979621196`, job `130386702749`, COMPLETED/SUCCESS; push run `42979603325`, job `130386642987`, COMPLETED/SUCCESS. Artifact `13836856938`, SHA-256 `d5ff9dbf5f7b6e111b271982be190f5be704c2a0cae125b3251ffd617c8619`.
+- PR #58 OPEN/DRAFT/UNMERGED; formal reviews 0, inline threads 0. Fake API only; no live GitHub API, hosted D1, production integration, secret, provider/model call, deployment, or dispatch.
+- PR #53 split-write/non-CAS production Supervisor issue remains unresolved. Issue #38 OPEN; hosted claim authority and contention NOT QUALIFIED. Dispatch FAIL-CLOSED; Contour A BLOCKED/NOT QUALIFIED/NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: independent review of PR #58 state machine, marker parsing, retry authorization and managed-label assumptions; then isolated dead-letter policy/recovery proof if accepted.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
