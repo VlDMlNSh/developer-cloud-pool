@@ -58,6 +58,31 @@ describe("isolated Experience auth D1 schema", () => {
     expect(stored.consumed_at).toBe(NOW + 1);
   });
 
+  it("rejects OAuth state before its creation time", async () => {
+    const futureStateHash = "e".repeat(64);
+    const createdAt = NOW + 100;
+    expect(await issueOAuthTransaction(db(), {
+      stateHash: futureStateHash,
+      browserBindingHash: bindingHash,
+      pkceVerifierEnvelope: envelope,
+      encryptionKeyVersion: "k1",
+      createdAt,
+      expiresAt: NOW + 600
+    })).toEqual({ outcome: "ISSUED" });
+
+    expect(await consumeOAuthTransaction(db(), {
+      stateHash: futureStateHash,
+      browserBindingHash: bindingHash,
+      now: NOW
+    })).toEqual({ outcome: "DENY", reason: "OAUTH_STATE_MISMATCH_EXPIRED_OR_REPLAYED" });
+
+    expect(await consumeOAuthTransaction(db(), {
+      stateHash: futureStateHash,
+      browserBindingHash: bindingHash,
+      now: createdAt
+    })).toMatchObject({ outcome: "CONSUMED_ONCE" });
+  });
+
   it("rejects OAuth binding mismatch, expiry and replay", async () => {
     await issueOAuthTransaction(db(), {
       stateHash, browserBindingHash: bindingHash,
