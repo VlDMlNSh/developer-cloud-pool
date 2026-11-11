@@ -3050,3 +3050,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: canonical digest conformance NOT IMPLEMENTED; delivery actor attribution NOT VERIFIED; JCS/SHA-256 v1 PROPOSED; issuer/trusted time/hosted store NOT QUALIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: review this proposal against the shared lifecycle contract and issuer governance; obtain an explicit approved schema/version and actor/time authority decision before any proof-branch implementation. Then implement only the local D1 proof with golden vectors, field-mutation, replay, rollback and actor-retention tests; preserve dispatch:false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Projection Recovery Actor issuer/trusted-time audit
+
+- Read-only target PR #60: OPEN / DRAFT / UNMERGED; head `234fb2ee40265e26fac00c69ac1b6192766602cb`, base `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`; documentation-only, 7 commits / 2 files.
+- Issuer/time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; ADR blob `59a4be21516da0e005114acfe015aee7787524dc`.
+- Contract correctly separates projection-outbox recovery from A0 ingress and task Resolver authority; exact audience `projection-outbox-recovery`, exact operation/resource/generation/event binding, one-use nonce, verifier-produced grant and trusted time are required. Recovery is terminal-outbox-only; no task retry, task/attempt mutation, GitHub write or dispatch.
+- Target limits <=300s grant lifetime and <=30s revocation age are design targets only. Issuer owner, principal registry/lifecycle, key custody/rotation, revocation source, qualified trusted clock, audit sink/operator and retention approval remain unresolved / NOT IMPLEMENTED.
+- Exact-head workflow query for PR #60 returned no runs; CI NOT VERIFIED. Reviews 0; inline threads 0; independent review NOT RUN.
+- Report: [2026-11-11 Projection Recovery Actor issuer/time audit](../reports/2026-11-11-projection-recovery-actor-issuer-time-audit.md), report commit `e658a6470f208f655dc0dd3bf030293d6a414d29`.
+- Issue #38 remains OPEN; Issue labels are not CAS. PR #61 synthetic local D1 session tests do not qualify production OAuth composition or hosted state.
+- No source/runtime/schema/permission/secret/dispatch/deployment changes; no provider calls or hosted resource provisioning. Keep dispatch fail-closed.
+- Status: PR #60 design NOT ACCEPTED; issuer/time/recovery NOT IMPLEMENTED / NOT QUALIFIED; exact-head CI NOT VERIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: identify and govern issuer principal, key lifecycle, revocation authority, trusted-time source, audit sink and retention owner before any runtime recovery proof.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
