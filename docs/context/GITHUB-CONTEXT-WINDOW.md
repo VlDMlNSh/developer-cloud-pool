@@ -1924,3 +1924,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #25 remains a fail-closed Hono prototype; protected reads 503, mutations 405, production OAuth/session and deployment NOT IMPLEMENTED / NOT RUN.
 - PR #61 is a local synthetic D1 OAuth-state/session adapter proof stacked on #52, not a production auth implementation. Latest documented head `f2d225fe8d660bdc9724320080e0d0cd91705f0a`, exact-head local Workers/D1 run `42984959975` / job `130403823600` SUCCESS. AEAD/key custody, trusted production time, browser cookie/CSRF, owner allowlist, remote D1, free entitlement and deployment remain NOT QUALIFIED.
 - Next: inspect exact #52/#61/#25 trees and ancestry; produce no-code integration manifest before implementation.
+
+
+## Source compatibility audit — web console / OAuth stack (2026-11-11)
+
+- Report: [web console auth stack source compatibility audit](../reports/2026-11-11-web-console-auth-stack-source-compatibility-audit.md), commit `adbfdc326b23e4ec482321eb3c1082ed07c63523e`.
+- Confirmed exact ancestry: PR #52 base is PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; PR #61 base is PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`. PR #61 current head is `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; supersedes stale `f2d225fe...` recorded earlier.
+- Exact-head CI: PR #25 runs `42228269689` and `42228269676` SUCCESS; PR #52 run `42507524428` SUCCESS; PR #61 current-head run `42991794791` SUCCESS. Jobs and steps read back.
+- Source compatibility: shared Hono/npm package/lockfile/Wrangler/Vitest stack. PR #61 adds separate synthetic `EXPERIENCE_AUTH_DB` and migration directory; it does not merge auth tables into Pool `DB`.
+- Remaining production auth gaps: no OAuth exchange/callback route, PKCE AEAD/key custody, cookie issuance/parsing, CSRF/Origin middleware, owner-ID allowlist enforcement, session rotation, route-level authorization or trusted production clock. Existing D1 adapter is not production auth.
+- PR #25/#52/#61 formal reviews: 0; inline review threads: 0 each. Keep all draft/unmerged pending independent review.
+- No code/runtime/secret/hosted-resource/deployment/dispatch changes. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare implementation contract and negative-first route tests, then request independent security review before any code implementation. Keep synthetic and production D1 configurations separate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
