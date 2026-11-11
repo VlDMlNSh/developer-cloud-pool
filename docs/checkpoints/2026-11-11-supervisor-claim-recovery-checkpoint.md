@@ -94,3 +94,5 @@ Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - GitHub search did not identify a mature drop-in D1 outbox implementation; keep official Cloudflare Workers Vitest integration rather than replacing it with a bespoke harness.
 - No code/branch/runtime/secret/permission/hosted resource/dispatch/deployment/merge changes. Exact candidate CI not run.
 - Integration NOT RUN; hosted D1 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Issue #38 current acceptance text re-read. It requires one-winner durable task claims, interruption/worker-failure recovery, least privilege and independent review; it does not require terminal projection delivery. For the bounded Issue #38 integration candidate, defer 0006 + projection adapter + projection tests as one complete optional unit. Preserve for a separate projection qualification; this does not close PR #59/#60 scope.
