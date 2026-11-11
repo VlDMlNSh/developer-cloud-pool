@@ -42,7 +42,7 @@ async function writeLabels(labels) {
 
 const expected = {
   issueNumber: Number(e.TASK_ISSUE),
-  envelopeDigest: e.ENVELOPE_DIGEST,
+  envelopeDigest: e.ENVELOPE_DIGEST,\n  targetSha: e.TARGET_SHA,
   runId: e.SUPERVISOR_RUN_ID,
   runAttempt: e.SUPERVISOR_RUN_ATTEMPT,
   workerResult: e.WORKER_RESULT
