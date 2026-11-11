@@ -2541,3 +2541,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 
 - PR #59 description metadata corrected after exact-head refresh: current head `22200226da4f1af30645cf441a639db6893e9310` is now linked to run `42981807825` / job `130393715595` SUCCESS. No source change; PR remains Draft and review 0/0.
+
+
+## 2026-11-11 — Web Console session-store decision
+- Default branch `Основной` observed HEAD remains `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Issue #22 remains OPEN. PR #24 remains OPEN/DRAFT/UNMERGED; updated head `c698cd549e09ace392a273915216f4b3cbda5d39`; ADR blob `18f5c130023ae70559be2c1b50a23b91c898fa6c`; exact-head CI NOT RUN/NOT VERIFIED, reviews 0, threads 0. Previous exact-head runs `42188894226` and `42188894227` passed on older head `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6`, not the current head.
+- Resolved Issue #22 ADR contradiction: no Pool task ledger is required for the first read-only Experience slice, but server-side session expiry/revocation requires a dedicated D1 auth/session database. Workers KV rejected for security authority due eventual consistency; stateless signed cookies rejected as primary mechanism because immediate per-session revocation needs a separate revocation authority.
+- ADR now requires dedicated D1 DB/binding exclusively for Jarvis Experience OAuth transactions and sessions; only authenticated Hono Worker may bind it; hashed opaque session/state IDs; atomic one-use state consumption; current DB lookup for each protected request; primary-consistent lookup (`withSession("first-primary")`) if replication is enabled; fail-closed on DB/quota failure; no paid fallback; no task/dispatch authority.
+- Official D1 Free documented limits: 5M rows read/day, 100k rows written/day, 5 GB total account storage, up to 10 databases/account, 500 MB/database; exceeding daily limits causes queries to fail until reset. Exact account Workers Free entitlement remains NOT VERIFIED. D1 Sessions API supports sequential consistency and first-primary routing. References recorded in report.
+- ADR commit `c698cd549e09ace392a273915216f4b3cbda5d39`, blob `18f5c130023ae70559be2c1b50a23b91c898fa6c`; readback verified.
+- Report: [Web Console session-store decision](../reports/2026-11-11-web-console-session-store-decision.md), commit `db6a6a8fdd95a719bcd63c7ee6ce97aeec4b8b5e`.
+- No runtime/schema/binding/secret/OAuth app/Worker/permission/workflow/resource/deployment changes. Web auth/session NOT IMPLEMENTED/NOT QUALIFIED; deployment NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
+- Next: design exact session/state schema, migration and D1 read/write budget; verify account-specific Free entitlement through authorized metadata; build local D1/Workers negative tests (replay, concurrent consume, revoke read-after-write, expiry, outage/quota, cross-boundary). No provisioning until gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
