@@ -2569,3 +2569,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - WB-05 packet blob `1b562c6546b1216f2ee89095cd6a78427a967dc5` itself says A–D unselected. Later owner-directed disposition is recorded in MediaHub PR #599 (Wave 486), selecting Option A as a target only. PR #599 remains OPEN/DRAFT/UNMERGED; no exact-head CI, reviews or inline threads returned in current check. This is not normative acceptance or deployed issuer evidence.
 - MediaHub PR #600 / Wave 487 remains OPEN/DRAFT/UNMERGED; no exact-head CI/reviews/threads returned. R-06 ownership/retention, concrete KMS/audit selection and independent A3 review remain blockers.
 - Cloud Pool PR #60 issuer/time contract now explicitly traces the distinction; blob `b445c7d601accc437fe715c4d742fcdf3c416687`; PR #60 head `76dcec559faf6a1cc92a9edbf3ecf5e6222e3753`. Exact-head CI NOT VERIFIED; review NOT RUN.
+
+
+### PR #25 runtime authentication boundary audit — 2026-11-11
+
+- PR #25 exact HEAD `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation run `42228269689`, job `127927220340`: COMPLETED/SUCCESS. Jarvis Web Prototype Validation run `42228269676`, job `127927219846`: COMPLETED/SUCCESS. Prototype job included npm ci, static checks, API negative/fail-closed tests and dashboard validation.
+- Read-back: Worker `src/index.js` blob `0b1f066cc49b77f7a3000c562b731b85d5c164f4`; API tests `cf3662609dd86b802be2c102182ce13d4501db07`; auth policy tests `9fab2f5aed43057890fd767c6e37ccbaa10d705c`; fixture `7b69e79d6c39aac2db861ef3fde12b386ab78a42`.
+- Critical distinction: auth policy module is a test-only fixture (in-memory Map and pure predicates), explicitly not imported by Worker. Runtime exposes public health, returns 503 for protected reads, rejects mutation methods 405. Thus CI verifies fail-closed prototype and fixture predicates, not real OAuth, D1 atomic state, sessions or revocation.
+- PR #24 ADR/OpenAPI remain design-only D1 session direction (blobs `c8cdb46afcddc1baf50c41dea1f9a39dc925c5bd` / `b542636dc7a5efcf67287c5aa53a230d06a02c6d`). PR #25 has no D1 binding, schema, migration, OAuth routes or session middleware.
+- Audit report: [PR #25 runtime authentication boundary audit](../reports/2026-11-11-pr25-runtime-auth-boundary-audit.md), commit `cd555a3efe418041c87a2990fb5d8a9d2583eb2c`.
+- Status: static prototype CI VERIFIED; production OAuth/session NOT IMPLEMENTED/NOT QUALIFIED; D1 resource/deployment/browser QA NOT RUN; independent security review NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED/NOT ACCEPTED; Contour B deferred.
+- Next: define minimal D1 OAuth-state/session schema and repository interface, then implement local D1-compatible tests against the actual repository (not the Map fixture). Keep hosted provisioning gated.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
