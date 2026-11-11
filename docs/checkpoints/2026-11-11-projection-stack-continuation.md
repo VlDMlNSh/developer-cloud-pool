@@ -26,3 +26,17 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - PR #58/#59 remain isolated draft proof stack; do not transplant a single function without the full harness, package script union, migration order and workflow branch/path-filter union.
 - Existing Ledgerline review remains architecture-only; its Durable Objects authority model is not a drop-in replacement for this D1 lease model. No dependency adopted.
 - No code changed. Next: decide/qualify a complete local D1 harness transplant onto current default versus continued isolated proof branch. Then implement receipt-bound acknowledgement inside the selected testable harness. Keep `dispatch:false`; hosted D1 NOT AUTHORIZED / NOT RUN.
+
+
+## Governance and proof-stack revalidation — 2026-11-11
+
+- Report: [governance and proof-stack revalidation](../reports/2026-11-11-governance-and-proof-stack-revalidation.md), commit `eef958725e2db6f065a56e04385c98c0e911c66e`.
+- Active ruleset `26550182` applies to `Основной`: PR required, deletion/non-fast-forward prohibited, review-thread resolution required, 0 required approvals, no bypass actors. Branch-protection endpoint says protected=false/status checks off; active ruleset is the operative evidence. Independent review remains a project acceptance requirement not guaranteed by GitHub.
+- PR #58 exact head `5caeb60f7a45d836c6ad1eea2fb86e20995da025`: compare 141 ahead / 62 behind (diverged); Actions run `43043284086`, job `130600450879`, success; local Workers-runtime D1 proof only.
+- PR #59 exact head `22200226da4f1af30645cf441a639db6893e9310`: compare 147 ahead / 62 behind (diverged); Actions run `42981807825`, job `130393715595`, success; local Workers-runtime D1 proof only.
+- PR #65 exact head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: 4 ahead / 7 behind, no exact-head Actions runs, 0 reviews/threads. Draft; hosted qualification remains NOT AUTHORIZED / NOT RUN.
+- PR #66 head before this report `7d59328e090582e9cae0b2e247c87d25ca539ff2`: 9 ahead / 0 behind, exactly 3 documentation paths / 0 deletions; no exact-head Actions runs, 0 reviews/threads. Draft.
+- Current default tree has 47 entries and no D1 proof harness/package/test config. PR #58/#59 complete proof stack requires full manifest before transplant: package scripts/lockfile, ordered migrations 0001–0008, source/tests/config, workflow branch/path filter union, receipt-bound acknowledgement, and explicit issuer/trusted-time/orphan fifth-lease exclusions.
+- No source/runtime/schema/workflow/permission/secret/dispatch/hosted-resource/deployment/merge changes. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: file-by-file transplant manifest from exact #58/#59 patches and current default tree; independent review before branch mutation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
