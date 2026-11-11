@@ -2943,7 +2943,7 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 ## 2026-11-11 — Transactional attempt finalization contract
 
 - Target contract: [Transactional attempt finalization contract](../decisions/2026-11-11-transactional-attempt-finalization-contract.md).
-- Commit: `1bfa4ca1f3d05ed2c651a779d9827c709b5d1153`; read-back pending this entry.
+- Commit: `1bfa4ca1f3d05ed2c651a779d9827c709b5d1153`; blob SHA `16c3c63d3377ceeb11247026785815073e0e091b`; read-back VERIFIED.
 - Re-read Issue #38 decision blob `830a549809d10015d5662da562cff82710c3aa11`: hosted dedicated authenticated claim service + transactional conditional-write store remains the preferred target only; no hosted backend selected/qualified.
 - PR #39 local claim/outbox proof: head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, exact-head CI run `42329993548` SUCCESS. Migration `0002` trigger creates claim and task outbox in the same local D1 transaction as conditional approval consume.
 - PR #54 local attempt/projection proof: head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`, exact-head CI run `42537241204` SUCCESS. Migration `0004` supplies immutable attempt identity, owner/generation/expiry fencing, terminal attempt event and task projection in trigger transaction; migration `0006` creates projection outbox from the terminal event and append-only delivery events.
