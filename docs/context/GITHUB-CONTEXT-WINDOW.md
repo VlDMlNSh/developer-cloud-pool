@@ -1547,3 +1547,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: fix Issue #62 on PR #61 branch, add the Workers-runtime D1 regression test, rerun exact-head CI, then re-audit the stacked chain. Do not merge or adopt in production.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 Issue #62 fix candidate
+
+- Latest PR #61 head observed: `64ebe73e5c1f5c5b82637b85ae7b1be39d50c8a6`. Adapter blob `046111beb31d7c8cf58e623581d2b260fbdad496` now checks `created_at <= now` as well as `expires_at > now`.
+- Regression test blob `5ccfb8e662b531d29b6292985d6420b47ef99029` adds a D1 Workers-runtime case: future-created session denied before creation and active at creation time.
+- Exact-head CI run `42984610137` / job `130402696252` was IN_PROGRESS at recheck; install still running, later test steps pending. Fix source-verified, CI NOT YET VERIFIED.
+- Issue #62 remains OPEN pending exact-head CI completion and final source/CI recheck: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62
+- PR #61 remains OPEN / DRAFT / UNMERGED; independent review submissions remain empty. Do not merge or production-adopt.
+- Report updated: `docs/reports/2026-11-11-pr61-experience-auth-security-audit.md`.
+- Next: verify run `42984610137` completes successfully on exact head `64ebe73e5c1f5c5b82637b85ae7b1be39d50c8a6`; then close Issue #62 only if all checks pass, and continue audit of the stacked PR chain.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
