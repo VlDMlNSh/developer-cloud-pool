@@ -2415,3 +2415,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code changes, merge, dispatch, deployment, secret access, provider/model call, or paid resource. Existing cron IMPLEMENTED; live scheduled execution NOT VERIFIED. Issue recovery while dispatch disabled BLOCKED. D1 production recovery NOT IMPLEMENTED / NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: design split Supervisor operation gates and bounded D1 recovery batch contract; retain dispatch disabled and do not deploy.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Supervisor cron / D1 recovery architecture audit
+- Report: [Supervisor cron and D1 recovery architecture audit](../reports/2026-11-11-supervisor-cron-d1-recovery-architecture-audit.md), commit `23f5325543d9ac7177a6f608dd2945659e3601a4`.
+- Current default branch `Основной` HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`; workflow-run lookup returned empty, so exact-head CI NOT VERIFIED.
+- Active Ruleset `26550182` applies to `refs/heads/Основной`; requires PRs, but approvals=0 and CODEOWNERS review disabled. Classic branch endpoint says protected=false; retain distinction.
+- Default Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has a five-minute cron. Default supervisor script blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` has GitHub Issue/workflow-run stale-claim recovery, not D1 projection recovery. Workflow grants issues:write/actions:write; do not inherit these privileges for D1 polling.
+- Candidate PR #37 branch head `1be8672c1be1a720b6c813dcafff5c020b6456ae` remains OPEN/DRAFT/UNMERGED and removes workflow_run/actions:write/REST dispatch; no D1 recovery integration.
+- D1 proof package has only local Vitest scripts (package blob `26b52ef60613366eaca02191b2d28901415cea5a`); Wrangler config blob `eb683b6bb838cb7a48741f900de6c17be7fdc0fe` contains a zero UUID proof DB ID. No hosted DB, Worker binding, Cron Trigger or migration application verified.
+- Architecture recommendation: keep D1 recovery in a dedicated Cloudflare Worker + hosted D1 Cron Trigger, isolated from GitHub task dispatch, conditional on verified free entitlement, quotas, identity and governance. Existing GitHub cron is a separate signal, not the D1 data-plane poller.
+- Issue #1/#22/#38 remain open. Current POOL_DISPATCH_ENABLED could not be freshly read; last verified false in Issue #1 was 2026-11-04, so current variable value NOT VERIFIED.
+- PR #37/#58/#59 remain draft/unmerged. No secrets read, dispatch, worker run, model call, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
+- Next: inspect connected Cloudflare non-secret metadata and verify free Workers/D1 entitlement before drafting an isolated implementation contract.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
