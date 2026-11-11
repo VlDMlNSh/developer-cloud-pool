@@ -90,3 +90,10 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent security review of the contract and test matrix; then, only if accepted, create an immutable implementation candidate with negative-first local Workers tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final documentation read-back — 2026-11-11
+
+- Context Window metadata corrected and read back; preceding working head was `d4b770150596f1f86445bd35c66f39b8684b9562`.
+- Production auth contract blob: `906e68d9e76f6e9670d9ab88963d9a36fec74c13`.
+- No code, runtime, schema, workflow, secret, dispatch, hosted resource, deployment or merge changes.
