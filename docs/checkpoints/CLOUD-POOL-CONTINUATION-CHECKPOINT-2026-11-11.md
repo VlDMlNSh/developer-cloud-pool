@@ -201,3 +201,13 @@ Paste this exact phrase into a new chat:
 - PR #29 planner does not implement durable atomic lease storage; PR #28 LiteLLM remains candidate only. No DB/Redis or gateway provisioned.
 - No provider API calls, secret access, or agent dispatch.
 - Next: stale-base impact/rebase plan for #28/#29, durable atomic reservation contract, fresh independent review. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 10. Provider PR base-drift impact review — 2026-11-11
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-pr-base-drift-impact-review.md
+- Default SHA `6fdcedebeba62715122e43a75c6ad6d926321ce7`; #28/#29 base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- GitHub compare: default 21 commits ahead, zero behind. Four default-side changed paths do not overlap either provider PR's changed paths. Likely low-conflict base update, but no branch update/rebase performed.
+- PR #29 exact-head CI `43031920223` SUCCESS, 43/43; independent current-head review NOT VERIFIED.
+- Next: controlled update of #28/#29 to current base, reread all changed files, exact-head CI, fresh independent review. Provider API calls, secret access and agent dispatch remain prohibited/not run.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
