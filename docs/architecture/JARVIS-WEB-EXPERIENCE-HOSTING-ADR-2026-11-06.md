@@ -277,3 +277,43 @@ This resolves the earlier conflict between server-side session expiry/revocation
 8. Migration reproducibility, indexed query plans, retention cleanup, Free quota budget and backup/restore procedure.
 
 This is an architecture decision only. No database, binding, migration, secret, Worker, OAuth App, route or deployment was created or changed by this decision. Protected routes remain disabled until implementation, exact-head CI, browser QA and independent security review pass.
+
+
+## Superseding session-store decision — 2026-11-11
+
+**Decision:** use one dedicated Cloudflare D1 database for Jarvis Experience authentication/session state only. Do not use Workers KV as the authoritative OAuth-state or session-revocation store. Do not use stateless signed cookies as a silent substitute for the existing server-side revocation contract.
+
+This section supersedes earlier statements in this ADR that the first slice needs no database or should avoid D1 entirely. Those statements remain true only for the Pool task/evidence ledger: the Experience Worker must not create a parallel task ledger. The D1 database selected here is a separate, minimal authentication-state store.
+
+### Rationale and boundary
+
+- The existing contract requires one-time OAuth state, replay rejection, bounded session expiry and server-side revocation.
+- Cloudflare KV is eventually consistent and cannot provide the immediate, atomic consume/revoke semantics required for these security decisions. KV is therefore rejected as the authentication authority.
+- D1 provides transactional SQL semantics suitable for conditional state transitions. It does not provide per-table SQL roles for separate Workers sharing the same binding. Consequently, do not claim database-enforced least privilege between Worker modules or separate Workers that share this binding.
+- Keep one Hono Worker as the sole D1 binding holder. Expose only narrow internal repository functions to OAuth/session middleware; no public database proxy or generic SQL route. This is a source-level application boundary, not a D1-enforced role boundary.
+- The D1 database must contain only hashed opaque session identifiers, OAuth state/nonce digests, immutable GitHub numeric subject ID, creation/expiry/revocation timestamps and minimal audit metadata. Never store OAuth access tokens in the browser; avoid persisting them at all in v1.
+- GitHub remains the source of truth for tasks and workflow evidence. The session database cannot create, authorize, mutate or dispatch Pool work.
+
+### Required transaction contract
+
+1. OAuth state issuance stores only a cryptographic digest, a short expiry, and a nonce/challenge binding. Callback validation must atomically consume the exact unexpired digest; replay, mismatch, expiry and concurrent second consumption fail closed.
+2. Session issuance creates a cryptographically random opaque cookie value; only its digest is stored. The cookie is Secure, HttpOnly, host-only, SameSite=Lax or stricter, Path=/, and bounded by a server-side expiry.
+3. Every protected request checks the digest, subject allowlist, expiry and revocation state against D1. Database errors, timeout, ambiguous write/readback or unavailable D1 return an unavailable/unauthorized fail-closed result; never fall back to KV or stateless acceptance.
+4. Logout/revocation is a conditional update scoped to the exact session digest and active state. The API must not claim revocation until the transaction commits. A failed/ambiguous revocation is surfaced as failure and the session is not reported as revoked.
+5. Session rotation revokes the prior session and creates the replacement in one transaction. Concurrent rotation/replay tests must prove only one successor is accepted.
+6. Cleanup is bounded, indexed and non-authoritative: expiry checks happen on every request even if cleanup is delayed. Cleanup cannot revive, extend or reissue sessions.
+
+### Free-plan budget and operational controls
+
+- Apply explicit application caps well below the Free ceilings; do not use plan maxima as normal operating targets.
+- Budget D1 reads/writes per authenticated request and OAuth transition. Use indexed exact-key lookups, bounded retention cleanup, bounded result sets and request rate limits.
+- Set a conservative per-day session-state read/write budget and fail closed with a clear degraded response when the application budget is exhausted. No paid fallback, alternate billable storage or unbounded retries.
+- Keep the database dedicated to the Experience session boundary. Do not colocate projection outbox, task claims, supervisor leases or recovery grants.
+- Define migration versioning, export/backup, restore drill, retention/deletion, rollback and quota alarms before provisioning.
+- D1 Time Travel and export/import behavior must be checked against current documentation before adopting a backup/restore objective; no backup guarantee is assumed by this ADR.
+
+### Required qualification before deployment
+
+Test: OAuth state mismatch, expiry, replay and concurrent consume; wrong GitHub numeric subject; session digest mismatch; expiry; revocation; concurrent logout/rotation; D1 unavailable/timeout; ambiguous write; quota exhaustion; cleanup race; migration rollback; restore; and absence of any Pool/task mutation route. Verify no token/cookie material in logs or artifacts. Verify same-origin and browser security controls independently.
+
+**Status:** architecture choice RECORDED / NOT IMPLEMENTED / NOT QUALIFIED. D1 database NOT PROVISIONED. No secret, migration, Worker deployment, OAuth App setup or dispatch was performed. Provisioning remains gated on exact-head contract tests, security review and a Free-only resource budget.
