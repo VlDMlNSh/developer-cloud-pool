@@ -1653,3 +1653,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: source-evidence audit of accepted R-06 and Wave 486/487 clauses to separate accountable functions from named operational owners and deployed service evidence; keep issuer unimplemented.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor R-06 and authority-source evidence audit
+
+- MediaHub source snapshot: `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`. Wave 486 decision blob `13e6745463dbc05a7c188423bb45ffb2b210c789` / report `7b778ebe67105d50afb00466965cdcfb5353a262`; Wave 487 amended contract blob `1200d343139c8e67a826902b3ade09d4987c537d` / report `c9dfa2e63683ac52223a890ad0d96ab4f950aedd`. PR #599/#600 remain OPEN/DRAFT/UNMERGED, no exact-head PR workflow runs returned and formal reviews 0.
+- MH-12 Security Architecture blob `cf4ebfd5bf471ca676f075c51d3a24906504e490`: ARCHITECTURE COMPLETE / GOVERNANCE REVIEW REQUIRED; governance acceptance NOT GRANTED; implementation NOT AUTHORIZED. MH-12 unknowns blob `97f08824fb858dd4506876729ae37d610140c3e8` retains PKI, trust root, secret store and cloud identity gaps.
+- MH-13 privacy/data-governance blob `e732ff9cacbc9c1189bd83306cdff30906326cf0`: RECONSTRUCTED / PROPOSED, acceptance NOT VERIFIED, production implementation NOT AUTHORIZED; exact ownership/stewardship and retention/legal/deletion semantics unknown. MH-21 retention blob `8dfe3b619be593c3ec57948e350671895827ae8b` is PROPOSED / provider evidence required.
+- R-06 assigns functional accountability to Security Audit (event integrity/access) and Privacy/Data Governance (classification/retention), but no named operational teams, on-call operators, issuer service, KMS/HSM, principal registry, revocation publisher, trusted clock, audit sink or privacy/legal approver is evidenced. Do not invent owners or deploy.
+- Mature GitHub audit/key candidates inspected: immudb (cryptographically verifiable immutable database), Sigstore Rekor (software supply-chain transparency log; v1 maintenance, v2 developing), OpenBao (secrets/keys/encryption/leases/revocation/audit), Ory Hydra (OAuth/OIDC issuer). No one component is a drop-in solution. immudb/OpenBao need persistent operations; Rekor is not suitable for private operational audit by default; Hydra is not the grant+atomic D1 transition.
+- Report: `docs/reports/2026-11-11-recovery-r06-authority-and-audit-component-audit.md`.
+- No secrets/tokens/keys/provider calls, dispatch, runtime/schema/permission changes, deployment or merge.
+- Status: R-06 roles identified in draft target only; named operational owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: no-code search of accepted canonical governance records for an owner-assigned identity/audit service; if absent, keep blocker explicit and perform a free-only hosting fit ADR only when a real service candidate is evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
