@@ -100,7 +100,8 @@ if (!/needs\.worker\.result/.test(supervisor)) fail("Supervisor finalizer must c
 if (!/pool:needs-review/.test(finalizerPolicy)) fail("Finalizer policy must route non-success to needs-review");
 if (!/pool:claim-/.test(supervisorScript) || !/envelope_digest/.test(supervisorScript)) fail("Supervisor must bind claims to a unique generation and immutable envelope digest");
 if (!/generations\.length !== 1/.test(finalizerPolicy) || !/envelopeDigest\(String\(issue\.body/.test(finalizerPolicy)) fail("Finalizer must verify the unique claim generation and immutable issue envelope");
-if (!/buildFinalizationPlan\(current, expected\)/.test(finalizerRunner) || !/readback\.body !== current\.body/.test(finalizerRunner)) fail("Finalizer runner must revalidate immediately before write and verify terminal readback");
+if (!/buildFinalizationPlan\(issue, expected\)/.test(finalizerProtocol) || !/await api\.replaceLabels\(plan\.labels\)/.test(finalizerProtocol) || !/terminalReadback\(readback, expected, plan, humanLabels\)/.test(finalizerProtocol)) fail("Finalizer protocol must revalidate before terminal write and verify authoritative read-back");
+if (!/does not provide an atomic compare-and-swap/.test(finalizerProtocol)) fail("Finalizer must retain the explicit GitHub non-CAS limitation");
 if (failures.length === 0) pass("Supervisor uses reusable invocation, dual fail-closed gates and one-task claim/read-back");
 
 for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resource]]) {
