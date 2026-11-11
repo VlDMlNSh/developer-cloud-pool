@@ -2451,3 +2451,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No provisioning/deployment/migration/dispatch. No D1 databases or Worker scripts exist in inspected account. Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
 - Next: once plan is verified, prepare Free-only quota/cost envelope and bounded Worker+D1 implementation contract; if account is Paid, stop without fallback.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Projection delivery attempt counter monotonicity fix
+- Default branch remains `Основной`; last observed baseline HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`. Active repository ruleset `Основной — verified`, ID `26550182`, enforcement active.
+- Refreshed open work: PR #58, #59, #60 remain OPEN / DRAFT / UNMERGED. PR #58 exact-head run `42979949181` SUCCESS. PR #59 prior exact-head run `42980783397` SUCCESS only for prior head `5c47cda4394d0381315bc16182799a09bf861797`. PR #60 has no exact-head run and no review.
+- Found database invariant gap in PR #59 migration 0007: upper bound `delivery_attempts <= 5` existed, but direct SQL decrement was not prohibited. Migration 0006 introduced the counter and no earlier projection-table trigger exists in migrations 0001–0005.
+- Added migration `0008_enforce_projection_attempt_monotonicity.sql` and an adversarial direct-SQL decrement assertion to `claim-outbox.test.ts`. Both changes are on PR #59 branch `proof/projection-dead-letter-policy-2026-11-11`; current exact head `22200226da4f1af30645cf441a639db6893e9310`. Migration blob `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; test blob `d572b3d5fdf58c720d9cbfe0990419e7a9bc60f1`.
+- New exact-head CI run `42981807825`, job `130393715595`, observed RUNNING; tests pending at last inspection. Result NOT VERIFIED until completion. PR #59 remains draft/unmerged; reviews 0, threads 0.
+- Detailed report: [Projection attempt counter monotonicity fix](../reports/2026-11-11-projection-attempt-counter-monotonicity-fix.md).
+- PR #60 proposes a narrowly scoped, issuer-verified, one-use recovery grant for orphaned terminal projection leases. It remains design-only; no runtime authority or recovery implementation is qualified.
+- Cloudflare account plan remains NOT VERIFIED; billing metadata endpoints blocked by missing Billing Read scope. No token, secret, billing mutation, provisioning, deployment, dispatch, Gemini run, provider/model call, or paid fallback used.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B deferred.
+- Next: verify exact-head CI run `42981807825`; then proceed to Supervisor Inspection/Recovery/Dispatch gate analysis while retaining fail-closed dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
