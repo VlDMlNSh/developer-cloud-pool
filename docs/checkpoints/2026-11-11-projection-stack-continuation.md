@@ -378,3 +378,18 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch FAIL-CLOSED.
 - Next: trace PR #60 issuer-contract authoring provenance. If generic contract source cannot be resolved, make a docs-only correction to PR #60 issuer contract references, replacing unsupported generic document claims with the actual source-backed P0-07/WB-04/WB-06/Wave487 artifacts and their statuses. Do not create or rename a new shared contract.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 19:23 Europe/Vilnius — current PR #67 integration recheck
+
+- Default HEAD: 221f216c00ca7e5596bcc682ba185ad155a10603.
+- Working documentation branch: docs/projection-stack-reconciliation-2026-11-11 (PR #66, OPEN/DRAFT/UNMERGED; not canonical).
+- Report: [PR #67 retry/recovery source audit](../reports/2026-11-11-pr67-retry-recovery-current-head-audit.md), commit 2672e552e5a8f2b34dbe01c145bdb2e717c50646.
+- PR #67 HEAD dea09ffe94059f446c74fada37971087ec4878eb; 9 ahead / 0 behind; exact-head D1 and Pool Contract runs 43064261520 / 43064261551 SUCCESS; 5 files / 66 local D1 tests; no reviews/threads.
+- Blocking source findings: every orchestrator retry passes allowPost=true, so delayed marker visibility can cause another POST; fifth-attempt orphan leases cannot be recovered through deliver(); label reconciliation removes all non-desired pool:* labels; inherited finalization event digest and actor-attribution gaps remain.
+- Positive scope only: local receipt-bound D1 ACK and immutable outbox identity; fake API, injected identity/clock, no hosted D1 or production authority.
+- Default Context Window copy is stale (last refreshed 2026-11-08). Current documentation branch is a working proposal, not canonical production state.
+- SentinelX has no connected hosts; one Mac mini offline and two Linux hosts disabled. Gemini controller absent from default workflows. Dispatch variable and Cloudflare entitlement NOT VERIFIED.
+- No code/runtime/security-boundary changes, dispatch, secret reads, provider/model calls, deployment, merge or billing changes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: resolve one-use POST authorization, orphaned fifth-lease recovery authority, exact label allowlist and canonical finalization event semantics before any live projection sender.
