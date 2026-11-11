@@ -1859,3 +1859,10 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Hosted D1 NOT AUTHORIZED / NOT RUN. Recovery Actor issuer/trusted-time BLOCKED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Documentation working branch: `docs/projection-stack-reconciliation-2026-11-11`, based on immutable default SHA above. No runtime/schema/workflow/permission/secret/dispatch/deployment/merge change.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Source-review correction — projection verification receipt (2026-11-11)
+
+- Full reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified: true`, `eventId`, `payloadDigest` and verified managed labels after comment-marker and final-label read-back. Earlier abbreviated note suggesting success returns false is incorrect; use this correction.
+- Remaining correctness gap: this success result is not bound to the current D1 delivery lease generation, and `acknowledgeProjectionDelivered` accepts no receipt/result. A caller can acknowledge without presenting proof for the exact outbox event + digest + fenced generation.
+- Required local proof: receipt object bound to outbox/event ID, digest, lease generation and verified state; generated only after final reconciler read-back; checked in the D1 conditional update and subsequent read-back. Do not describe as signed/cryptographic unless a real signature verifier is implemented and qualified.
