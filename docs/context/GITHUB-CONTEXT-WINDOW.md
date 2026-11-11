@@ -1889,3 +1889,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime or privileged action. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare file-by-file transplant manifest and obtain independent review before branch mutation.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### D1 proof harness transplant manifest — 2026-11-11
+
+- Manifest: [D1 proof harness transplant manifest](../reports/2026-11-11-d1-proof-harness-transplant-manifest.md), commit `ef5258670667d0c61d45074a34ee5c0ecbcf3d42`.
+- Exact PR ancestry: #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025` vs #59 head `22200226da4f1af30645cf441a639db6893e9310` is DIVERGED 10 ahead / 4 behind; merge base `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`. Do not describe #59 as stacked on latest #58.
+- Four #58-only commits are absent from #59: projection contract, envelope source, envelope test, and package script check. #59 package omits syntax check for projection-envelope.mjs; carry forward the #58 check in the logical union.
+- Manifest records the full proof path inventory, migrations 0001–0008, workflow trigger union, package/lock/test/config set, receipt-bound ACK requirements, and authority exclusions.
+- Inventory VERIFIED; independent review NOT RUN; code integration NOT RUN. No branch mutation. Hosted D1 NOT AUTHORIZED / NOT RUN. Dispatch FAIL-CLOSED.
+- Next: independent review of manifest and exact patches; then a clean candidate branch and receipt-bound ACK proof only after review acceptance.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
