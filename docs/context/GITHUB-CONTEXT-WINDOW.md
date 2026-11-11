@@ -2096,3 +2096,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Next: implement private receipt-bound orchestration (trusted runtime clock/worker identity, self-acquired lease, same-row envelope, reconcile exact event+digest, conditional ACK bound to digest+owner+delivery generation+fresh time, read-back) and negative-first tests. Remove public receipt-free ACK; no hosted D1/dispatch/provider/deployment.
 - Independent checks remain deferred until after pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## 13. Receipt-bound projection orchestration — 2026-11-11
+
+- Clean implementation branch `impl/receipt-bound-projection-2026-11-11` final HEAD `cc9181ed14932133e607550fb6526eb135a36a0c`, tree `f9675790509595513d35c11273a2ed44f6c3aa34`. Default remains `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Receipt-free public `acknowledgeProjectionDelivered` was removed; regression test asserts it is not exported. The old stale-ACK test now proves stale-worker fencing using retryable transition rather than falsely treating lease possession as delivery proof.
+- Added local orchestrator: self-acquires and reads back lease; maps same immutable outbox row; runs fixed in-module reconciler (no caller-supplied reconcile override); validates exact event ID/digest; private conditional ACK binds outbox/digest/owner/delivery generation/lease expiry; final D1 read-back confirms delivered state.
+- Added tests for success, retryable reconciliation, digest conflict, expired lease, takeover fencing, concurrent delivery (one winner), and no receipt-free ACK export. Clock exceptions fail closed.
+- Exact-head push Actions run `43063773936`, job `130673124739`: SUCCESS; syntax check SUCCESS; 5 files / 65 tests passed. Artifact `13875015875`, SHA-256 `b5f38f2502d5e62a53b719d51f5683673c2558e9324b409593d70bb2d890e907`. Combined status API returned zero contexts (not counted as a separate pass).
+- Previous first run `43063392084` failed 4/63 due incorrect fixture decision; corrected in `c062ab5...`, run `43063513012` passed 63/63. Expanded exact-head run is the 65/65 pass above.
+- Detailed report: [receipt-bound projection orchestrator implementation](../reports/2026-11-11-receipt-bound-projection-orchestrator-implementation.md), docs commit `5caa4fc3f44619ec571c4c11060479f95edd7f4c`.
+- Remaining: production runtime must bind worker identity and trusted clock from qualified authorities; no production Worker/live GitHub adapter, hosted D1, hosted concurrency, provider calls, dispatch, or deployment. More adversarial tests remain for lost POST response, delayed/duplicate marker and ambiguous DB read-back. Independent checks remain deferred until after pool launch.
+- PR #58/#59 remain OPEN/DRAFT/UNMERGED; no formal reviews/threads at last check. PR #66 remains OPEN/DRAFT/UNMERGED, docs-only.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
