@@ -6,12 +6,12 @@
 - Default branch: `Основной`; observed HEAD remains `864213e2ff5b4fa956ba405dea8137a44d812f49`.
 - Issue #22 remains OPEN: primary secure web console.
 - PR #24 remains OPEN / DRAFT / UNMERGED; branch `docs/jarvis-web-experience-adr-2026-11-06`; base `Основной`.
-- Updated PR #24 HEAD: `c698cd549e09ace392a273915216f4b3cbda5d39`.
-- Updated ADR blob: `18f5c130023ae70559be2c1b50a23b91c898fa6c`.
-- ADR read-back: VERIFIED.
-- Exact-head CI for new PR #24 HEAD: NOT RUN / NOT VERIFIED (workflow-run query empty).
-- Formal reviews: 0; inline threads: 0.
-- Existing preceding exact-head checks on earlier PR #24 head `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6`: OpenAPI Validation `42188894226` SUCCESS; Pool Contract Validation `42188894227` SUCCESS. These do not cover the new ADR commit.
+- Updated PR #24 HEAD after concurrent documentation refinements: `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`.
+- Current ADR blob read-back: `c8cdb46afcddc1baf50c41dea1f9a39dc925c5bd`; session-store decision and follow-up Free-plan budget/qualification controls are present.
+- Exact-head Pool Contract Validation run `42982847600`, job `130397061861`: COMPLETED / SUCCESS; YAML syntax, dispatch-disabled invariant and pool security contracts all passed.
+- Exact-head Jarvis Experience OpenAPI Validation run `42982847694`, job `130397062519`: COMPLETED / SUCCESS; Node 24 and OpenAPI validation passed.
+- Formal reviews: 0; inline threads: 0. These are static contract checks, not authentication implementation, deployment, browser QA or independent security qualification.
+- Earlier head `d9a7389d4bb5562bb6f2a1e853ebc818659e2cd6` also had runs `42188894226` and `42188894227` SUCCESS, but current-head runs above supersede them.
 
 ## Problem resolved
 
