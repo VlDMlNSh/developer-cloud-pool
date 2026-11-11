@@ -1864,3 +1864,15 @@ Next step: design and independently review a versioned, bounded task-admission c
 - PR #29 exact-head CI run `43031920223` remains SUCCESS at `e4c8d642bbc054e7c52b391356965b492dad32b4`, 43/43 tests. Current-head independent review NOT VERIFIED; old F11 review is tied to `34fc78921b16359d136db553d8a51b4a4716995d`.
 - Base-drift report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-pr-base-drift-impact-review.md
 - Next: controlled base update of #28/#29, full diff reread, exact-head validation, fresh independent review. No provider calls/secrets/dispatch. Contour A BLOCKED; Contour B DEFERRED.
+
+
+## 2026-11-11 durable quota reservation reuse assessment
+
+- PR #29 quota planner head `e4c8d642bbc054e7c52b391356965b492dad32b4`; PR #39 D1 claim/outbox proof head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- PR #39 includes a local-only D1 conditional state-transition + SQLite trigger + transactional outbox pattern. Tests cover concurrent first-consumer-wins, deterministic retry, immutable binding mismatch, pre-consumed replay, and rollback on outbox insertion failure. README explicitly excludes production integration, hosted D1, provider calls, dispatch and secrets. Reusable pattern only, NOT production qualified.
+- PR #39 exact-head run observed `42329993548` SUCCESS; README says 13/13 on immediately preceding source revision; current-head exact test count/log not verified.
+- PR #29 pure quota planner handles provider outcome states and provider-authoritative reset evidence but has no persistence/reservation/concurrency authority. Slot admission says production controller needs atomic shared lease store.
+- Proposed separation: provider-authoritative quota evidence; internal atomic reservations keyed by account slot + quota domain + model/scope + reset period; usage reconciliation. Unknown provider caps stay unknown; reservations are not provider billing truth.
+- Important correction: PR #28/#29 base refs are indeed `Основной`, but raw GitHub PR API still reports base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`, while default branch ref is `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Repository reports `allow_update_branch=false`; connector has no update-branch operation. Previous file-overlap comparison is not a completed rebase. Do not claim branches updated.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-durable-quota-reservation-reuse-assessment.md
+- Next: inspect PR #39 predecessor/CI evidence, prepare isolated quota-specific D1 proof and independent HTTP concurrency acceptance. No hosted D1, provider calls, secrets or agent dispatch. Contour A BLOCKED; Contour B DEFERRED.
