@@ -38,3 +38,18 @@ This pass defines protocol invariants, 20 negative/adversarial cases (N01–N20)
 Map N01–N20 against PR #36/#39/#54 source and tests. Identify the smallest missing task-wide uniqueness and consumer/fencing changes. Obtain authorized independent security review before implementation. No hosted provisioning, live dispatch, secret access or Contour B work.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation — source/test traceability pass (2026-11-11)
+
+[Source-to-test traceability N01–N20](../reports/2026-11-11-source-to-test-traceability-n01-n20.md).
+
+- PR #36/#39/#40/#50/#51/#54 exact-head local workflows succeeded (IDs 42329438308, 42329438351, 42329993548, 42489887940, 42533097813, 42536377720, 43010770730). PR #53/#63/#64 returned no PR-triggered runs; NOT VERIFIED. Combined statuses empty for checked SHAs.
+- PR #54 proves 50-way distinct-approval contention converges to one canonical task and one task-level outbox; it also contains generation-fenced legacy leases and immutable attempt lifecycle tests. This corrects earlier assumption that N03 had no test. Local proof only; no hosted D1 qualification.
+- PR #51 attempt lifecycle persists indeterminate/reconciliation state, but expired attempt takeover still accepts caller-controlled `resumable=true`; without a separately authorized resolver capability, this is a security gap.
+- Legacy task-lease and immutable attempt lifecycle APIs coexist. No evidence yet that one canonical state machine is enforced across the complete Supervisor/Worker/finalizer path.
+- PR #54 projection delivery has local D1 lease/retry/ack evidence; accepted external GitHub side-effect followed by lost acknowledgement remains NOT VERIFIED.
+- Ruleset #26550182: active on `Основной`, PR required, zero required approvals, review-thread resolution required, no bypass actors. Independent security approval is not enforced.
+- No code/runtime/secret/permission/dispatch/hosted resource/deployment/merge changes in this pass. Dispatch remains FAIL-CLOSED.
+- Next: hard-disable legacy lifecycle; replace caller-controlled resumability with issuer-authorized reconciliation capability; prove external side-effect idempotency after lost acknowledgement; then connect generation/execution identity to Worker finalizer.
+
+Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
