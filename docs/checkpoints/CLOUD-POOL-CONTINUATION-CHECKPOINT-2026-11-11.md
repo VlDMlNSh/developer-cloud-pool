@@ -175,3 +175,16 @@ Paste this exact phrase into a new chat:
 - Proposed additive agent tasks are documented, but custom assignments cannot be dispatched through the current fixed Gemini controller. No dispatch or provider call was made.
 - Status: provider-backed agents PLANNED/NOT DISPATCHED; Cloud Pool router NOT QUALIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 provider inventory / agent-capacity addendum
+
+- Latest Cloud Pool default SHA: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Latest working docs branch / PR #64 head: `717203d873f98003aa84e2c72c6a731d39399853`; PR #64 OPEN/DRAFT/UNMERGED; base is default SHA. This branch is documentation-only and is not accepted/default code.
+- MediaHub provider registry blob: `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca` (25 entries: 24 cloud slots + Ollama local). Agent registry blob: `0317d1e794aa80cd0fa22bd953b95921b26aafd3`. Model router policy blob: `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`.
+- Actual GitHub secret inventory/existence is NOT VERIFIED: connector does not support Secrets API. Secret values were not read. Workflow env references do not prove a secret exists or authenticates.
+- Aion Labs 20,000/day + LLM7 100,000/day = 120,000/day only as owner-provided planning estimate; not verified, not fungible and not safely additive until quota domains, reset rules, model limits and account identities are evidenced.
+- Existing provider qualification workflow injects multiple provider credential references into one self-hosted qualification job; blast-radius concern recorded. Redesign recommendation: per-slot isolated job, minimum credential exposure, no untrusted PR execution, sanitized evidence only.
+- Proposed bounded profiles reuse A1 Architect / A2 Builder / A3 Verifier; PLANNED / NOT DISPATCHED. Gemini controller does not accept arbitrary task payloads; no bypass or manual child dispatch.
+- Full evidence and provider task plan: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+- Next: review a versioned task-admission schema and per-provider-slot qualification contract, then reconcile PR #28 and #29. Contour A remains unaccepted; Contour B deferred.
