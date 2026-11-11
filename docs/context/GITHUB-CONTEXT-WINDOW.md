@@ -2169,3 +2169,8 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: source-level negative-first audit of retry/terminal lease-generation fencing and authority-gated orphaned-lease recovery; no hosted D1 or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+### DeepSeek Harness security-review leads
+
+- Public upstream Discussions contain community security reports against older versions (#817 for 0.1.0-rc.5, #3252 for 0.1.0-rc.7, #3245 Code Mode execution-boundary report, #10507 for 0.2.1-rc.2). These are unverified leads for current `0.2.2-rc.2`, not proof the same issues persist. They raise the qualification bar: inspect exact profile; disable or constrain Code Mode, dynamic plugin installation/hot-update, project instruction trust, network egress, loopback/RPC and telemetry. Ordinary shell/filesystem sandbox is not enough. Upstream SAFETY.md itself says unaudited and not production-ready.
+- Detailed DSH report amended at commit `a02f3a5689fefdfaf86b1cd8e13d6a0793a82911`, blob `20b29588cf6e188bc0c2932e4f4a24a1476b6caa`.
