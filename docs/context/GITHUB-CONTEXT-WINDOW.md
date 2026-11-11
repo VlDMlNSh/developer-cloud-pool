@@ -3107,3 +3107,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source/runtime/schema/permission/secret changes, merge, live API writes, dispatch or deployment. Dispatch remains fail-closed. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: inspect authoritative lifecycle label contract and D1 outbox API; prepare minimal PR #58 hardening with exact ownership allowlist, one canonical terminal label and durable D1 retry authorization, then rebase/revalidate stacked #59.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58 exact-head and reuse-first recheck
+
+- Refreshed repository: default branch `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7`; context branch `docs/cross-chat-continuation-2026-11-06` was at `240621564074ea45de08d35f6cf04c343995a54b` before this update.
+- PR #58 remains OPEN/DRAFT/UNMERGED at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; exact-head CI run `42979949181` SUCCESS; reviews 0, inline threads 0.
+- PR #59 remains OPEN/DRAFT/UNMERGED at `22200226da4f1af30645cf441a639db6893e9310`; exact-head CI run `42981807825` SUCCESS; reviews 0, inline threads 0. It has durable D1 lease/attempt/backoff/dead-letter logic, but that lease is not yet wired to PR #58's `allowPost` boolean. Do not build a second retry scheduler; integrate authorization to the existing outbox lease.
+- PR #60 remains OPEN/DRAFT/UNMERGED at `234fb2ee40265e26fac00c69ac1b6192766602cb`; no exact-head workflow run found: NOT VERIFIED.
+- PR #61 remains OPEN/DRAFT/UNMERGED at `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; exact-head run `42991794791` SUCCESS.
+- Active repository Ruleset ID `26550182`, exact default branch selector, enforcement active. It requires PR but approvals=0 and CODEOWNERS review disabled; therefore it does not enforce independent review. Classic branch-protection endpoint returned 403 to the integration: NOT VERIFIED.
+- Issue #1 remains open. Historical record says `POOL_DISPATCH_ENABLED=false` on 2026-11-04; live value was NOT freshly re-read this pass. No dispatch attempted. Issue #38 remains OPEN (security/governance).
+- Reuse-first search reviewed `octokit/plugin-retry.js` README blob `34c5c76be0091ca50f3a428ff8b0c388ee8479db`, `octokit/plugin-throttling.js` blob `b0b87c7aac8965c1807ed48985f827741ac0b961`, `actions/github-script` blob `bbae14e0c51ff43ec7481124f94d151a4e0ab266`, and `probot/probot` blob `4360a1dcb4ee35d6e47406175cc42c8a280a27df`. Reuse Octokit retry/throttling if a real client is approved; none of these libraries provides durable D1 attempt authority, event binding, delayed-visibility reconciliation or one-use recovery authority. No dependency added.
+- F-01 remains: PR #58 `allowPost` is caller-controlled; PR #59 durable retry leases exist but are not wired to POST authorization. F-02 remains: reconciler deletes all `pool:*`; PR #37 draft contract's narrower state list is not accepted and differs from PR #58's labels. F-03 remains: envelope accepts 1–3 labels; one canonical outcome-to-label mapping is not yet accepted.
+- Report: [2026-11-11 PR #58 Projection Reconciler Exact-Head and Reuse-First Recheck](../reports/2026-11-11-pr58-projection-reconciler-exact-head-reuse-recheck.md), commit `4f28ebcc5430920f5110cf7db53a558061295a93`.
+- No source/package/workflow/secret/permission changes, no merge, external API mutation, deployment or dispatch.
+- Status: component discovery COMPLETED; PR #58 protocol qualification INCOMPLETE; PR #59 local D1 proof CI VERIFIED but integration/recovery NOT QUALIFIED; PR #60 CI NOT VERIFIED and issuer/time unresolved; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: extract the canonical accepted lifecycle-label contract and PR #59-to-PR #58 lease-to-POST authorization interface; then make one minimal stacked change with adversarial tests. Keep fake/local, no live GitHub writes, no secrets, `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
