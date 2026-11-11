@@ -348,3 +348,19 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: source-only reconciliation of accepted issuer/operational owner and trusted evidence requirements; do not implement until governance and service ownership are evidenced.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Projection Recovery reuse crosswalk — 2026-11-11
+
+- New source-to-contract report: `docs/reports/2026-11-11-projection-recovery-reuse-crosswalk.md`, commit `558231fbfb2e77334a6bf4663b18642a9dc74cf8`.
+- Immutable source target: PR #67 `dea09ffe94059f446c74fada37971087ec4878eb`; default base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Reuse decision: keep the existing D1 projection outbox, delivery lease-generation fencing, five-attempt budget, immutable event identity, marker/digest reconciliation and private fenced ACK. No second queue/DB/orchestrator justified.
+- Source finding: exported `deadLetterExpiredProjection(db, outboxId, workerId, generation, now)` requires the original lease owner, so it demonstrates same-owner expiry handling, not independent orphan-worker recovery. Caller-provided worker ID/generation/time are not authenticated actor or qualified clock. It has no issuer/grant/revocation/nonce validation. Migration 0007 event attribution falls back to `OLD.lease_owner`, therefore cannot identify a separate Recovery Actor. No direct test for independent Recovery Actor flow found in inspected PR #67 test paths.
+- Exact source blobs: `projection-outbox.mjs` `cd27ba98c5716ef568c0672250b652d68e714ea5`; `projection-delivery.mjs` `3ddb3fd8e56dd9c85f3160aba066a25ba4f13dad`; `projection-reconciler.mjs` `2f83befc145d39ea60f06fe5b9e9033f89df40c0`; migration 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; migration 0009 `86919425f498dc634329bb783a3ca6ae7a0ff6a1`; integration contract `f7bf604f5d68ed5a7ec037afdfeb18aae01f61cd`; delivery tests `602fb9aec4aca161f0065df16d9c4b428cbbf11f`.
+- PR #60 references Shared Immutable Claim Lifecycle and Trusted Reconciliation Authority contracts but exact canonical paths/blob IDs were not located by exact-title search in current Cloud Pool default or checked MediaHub main snapshot. Their existence/content is recorded as a statement in PR #60, direct read-back NOT VERIFIED. Must resolve canonical refs before claiming conformance.
+- Added RA01–RA11 source-specific negative-first assertions to the report. No source implementation or tests changed.
+- PR #60/#63 remain OPEN/DRAFT/UNMERGED; exact-head workflow queries empty (CI NOT VERIFIED). PR #67 exact-head runs #43064261520 and #43064261551 remain SUCCESS; combined status contexts empty and reviews 0.
+- Operational issuer/key custodian/subject registry/revocation/trusted time/audit/privacy owners remain NOT EVIDENCED. Hosted D1 NOT QUALIFIED. Dispatch FAIL-CLOSED. Independent review deferred until after pool launch per owner direction.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: resolve canonical source refs for the Shared Immutable Claim Lifecycle and Trusted Reconciliation Authority contracts from PR #60 authorship/context, then compare the exact interface with the narrow projection recovery grant profile.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
