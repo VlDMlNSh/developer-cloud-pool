@@ -1,0 +1,13 @@
+{
+  "name": "pool-d1-single-use-ledger-proof",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts",
+    "check": "node --check src/consume.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.4.7",
+    "vitest": "4.1.12"
+  }
+}

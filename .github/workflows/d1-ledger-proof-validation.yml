@@ -1,0 +1,61 @@
+name: Isolated D1 Ledger Proof
+
+on:
+  # Run on pushes to the two isolated proof branches. This makes the
+  # validation workflow executable before either stacked PR is merged.
+  push:
+    branches:
+      - "proof/d1-single-use-ledger-retry-2026-11-06"
+      - "proof/d1-claim-outbox-atomic-2026-11-07"
+    paths:
+      - "proofs/d1-ledger/**"
+      - ".github/workflows/d1-ledger-proof-validation.yml"
+  pull_request:
+    branches:
+      - "Основной"
+      - "proof/d1-single-use-ledger-retry-2026-11-06"
+    paths:
+      - "proofs/d1-ledger/**"
+      - ".github/workflows/d1-ledger-proof-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  d1-ledger-proof:
+    name: Local Workers-runtime D1 adversarial tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: proofs/d1-ledger
+    steps:
+      - name: Checkout pull request merge commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install exact declared dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Check proof adapter syntax
+        run: npm run check
+
+      - name: Run Workers-runtime D1 tests
+        run: npm test
+
+      - name: Preserve resolved lockfile for independent review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: d1-ledger-proof-package-lock
+          path: proofs/d1-ledger/package-lock.json
+          if-no-files-found: error
+          retention-days: 7
