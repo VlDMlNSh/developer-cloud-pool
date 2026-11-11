@@ -85,3 +85,10 @@ Updated issuer/time contract blob after this correction: `7f5be06506a4b4c9314813
 ## PR #59 evidence metadata correction (2026-11-11)
 
 Updated PR #59 description to remove stale head/run references and bind its current head `22200226da4f1af30645cf441a639db6893e9310` to exact-head run `42981807825` / job `130393715595` (SUCCESS). PR remains OPEN/DRAFT/UNMERGED; formal reviews and inline threads remain 0/0. No source code changed.
+
+
+## WB-05 / Wave 486 provenance precision (2026-11-11)
+
+The WB-05 decision packet itself (MediaHub docs branch blob `1b562c6546b1216f2ee89095cd6a78427a967dc5`) explicitly states that options A–D are unselected. A later owner-directed disposition is recorded in MediaHub PR #599 (Wave 486): its body selects WB-05 Option A as the target, a dedicated Security Issuer Authority separate from Jarvis and ASTRA A0. This is a target direction, not normative acceptance or a deployed authority. PR #599 is OPEN/DRAFT/UNMERGED; current check returned no exact-head PR workflow runs, review submissions or inline threads. PR #600 / Wave 487 remains OPEN/DRAFT/UNMERGED, with no exact-head runs/reviews/threads returned. Thus the previous crosswalk is retained only as an owner-directed target; do not describe the WB-05 packet itself as having selected the option.
+
+Issuer/time contract updated to blob `b445c7d601accc437fe715c4d742fcdf3c416687`; PR #60 updated to head `76dcec559faf6a1cc92a9edbf3ecf5e6222e3753`. Exact-head CI for PR #60: no runs returned / NOT VERIFIED. Independent review: NOT RUN.
