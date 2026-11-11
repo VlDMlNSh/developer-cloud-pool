@@ -61,3 +61,14 @@ Independently audit PR #59 and PR #58 as a stacked change, focusing on migration
 - PR #53: https://github.com/VlDMlNSh/developer-cloud-pool/pull/53
 - Durable outbox design: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/architecture/DURABLE-FINALIZATION-OUTBOX-DESIGN.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Independent contract audit addendum — 2026-11-11
+
+- Migration ordering was re-read directly from GitHub: `0006_create_attempt_projection_outbox.sql` creates the outbox/events tables; `0007_bound_projection_delivery_retries.sql` alters them and adds retry/dead-letter controls. Ordering is correct; no migration rename/content change was made.
+- Exact-head PR #59 remains `5c47cda4394d0381315bc16182799a09bf861797`, OPEN / DRAFT / UNMERGED. Exact-head PR CI run `42980783397`, job `130390442001`, SUCCESS. Reviews: 0; inline threads: 0.
+- Important recovery limitation: `deadLetterExpiredProjection` requires the supplied worker ID to match the existing lease owner and the same delivery generation. It proves same-owner terminalization after expiry, **not** independent orphan-worker recovery. If the fifth-attempt worker permanently disappears, another actor cannot finalize that lease under this contract; the row can remain leased indefinitely.
+- Do not describe this as a functioning supervisor reaper. A separate recovery actor requires a narrowly scoped, explicitly authorized capability, generation/expiry CAS, and distinct actor attribution. This proof intentionally does not grant that authority.
+- Main branch `Основной` currently resolves to `864213e2ff5b4fa956ba405dea8137a44d812f49`; branch API reports `protected:false`, required checks enforcement off. Branch-protection detail endpoint itself returned 403, so no further protection settings were independently readable.
+- PR #58 remains OPEN / DRAFT / UNMERGED; Issue #38 remains OPEN; PR #53 remains OPEN / DRAFT / UNMERGED. No live D1, sender, deployment, production workflow, or dispatch was exercised.
+- Disposition: local retry/dead-letter proof VERIFIED at exact head; orphan recovery NOT IMPLEMENTED / NOT QUALIFIED; independent review NOT RUN; governance BLOCKED; dispatch FAIL-CLOSED.
+- Next: define a separately authorized recovery-actor contract and test abandoned fifth leases, then re-audit the stacked PR #58/#59 pair. Do not merge or wire production sender before review and hosted D1 qualification.
