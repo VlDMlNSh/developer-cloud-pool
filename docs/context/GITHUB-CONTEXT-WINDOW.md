@@ -1626,3 +1626,266 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
 - Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Issue #38 free transactional claim backend fit
+
+- Report: `docs/reports/2026-11-11-issue38-free-claim-backend-fit.md`, commit `7c3e7fef208314235859d968e0257caf8e3de1f3`.
+- Immutable Pool default snapshot: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Issue #38 remains OPEN. Acceptance requires real-backend one-winner contention proof, interrupted-claim recovery, least privilege, exact-head CI and independent security review.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`: exact-head CI run `43010770730` / job `130489510967` SUCCESS. Local 50-way synthetic D1/Miniflare proof only; hosted D1 remains NOT VERIFIED. The previous actor-attribution finding is corrected in migration blob `678a4aa8ce396a15f4f0ecbf908aa41fabc4d752` using `OLD.lease_owner`, and test blob `6178a10504a5914187c29bc3ed1ec209e3cd62f3` asserts retryable/delivered actor identity. Old review thread is resolved/outdated. Review is COMMENTED, not APPROVED.
+- PR #37 remains OPEN/DRAFT/UNMERGED at `1be8672c1be1a720b6c813dcafff5c020b6456ae`; formal review history includes CHANGES_REQUESTED and COMMENTED, no approval on current head.
+- Official Cloudflare docs current at 2026-11-11 document Workers Free at 100,000 requests/day, 10ms CPU, 50 external subrequests/request; D1 Free at 5m rows read/day, 100k rows written/day, 5GB total storage; D1 batch is sequential SQL transaction with rollback if a statement fails. Exceeding free daily D1 quotas blocks further operations until 00:00 UTC. Durable Objects Free (SQLite only) at 100k requests/day, 13,000 GB-s/day, 5m rows read/day, 100k writes/day, 5GB total account storage and 1GB per object. All quotas must be treated as fail-closed, no paid fallback.
+- Product documentation proves Free-plan product availability, not this connected account's actual entitlement or remaining quota. No Cloudflare Worker, D1 database or DO namespace was created; actual account plan/resource usage was not verified.
+- Decision recommendation: D1 is PREFERRED for the first hosted qualification because existing local proof already uses D1 and D1 batch supplies atomic transaction semantics. This is NOT deployment/production approval. GitHub labels/concurrency rejected as CAS; Git ref reservation not selected due Contents:write/ref lifecycle risks; DO deferred unless D1 proof establishes need for per-task actor serialization.
+- Report includes exact hosted synthetic proof acceptance plan; not executed. No resource provisioning, secret/token reads, dispatch, runtime/schema/permission change, deployment, merge or gate enablement.
+- Status: D1 Free product eligibility DOCUMENTED; account entitlement NOT VERIFIED; local proof CI VERIFIED; hosted contention NOT VERIFIED; Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect non-secret D1 account resource/plan metadata without creating resources, then define the isolated hosted-proof boundary and minimum permissions. Stop before provisioning if entitlement/ownership cannot be verified.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #64 publication — Issue #38 free D1 backend fit (2026-11-11)
+
+- Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/64
+- Purpose: source-backed comparison of GitHub ref reservation, Cloudflare D1 and Durable Objects for the first hosted one-winner claim qualification.
+- Initial PR head at creation: `4f7ab6c333dac06dcaf9b4f4a440e04222ca7f9f`; base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Files: dated report and Context Window only; no runtime/schema/permission/dispatch changes.
+- Report blob `b0acabc11a4da210f02f95eca8199f773f83fc2a`; Context Window blob before this PR publication note `b4216fd08e4244241c4c1cc7f215443e1388bbb9`.
+- PR was created OPEN / DRAFT / UNMERGED; mergeable=false at creation. Exact-head CI and formal reviews not yet queried on final head.
+- Next: append final PR metadata and verify exact current-head workflow/review/thread state. Do not merge or provision resources.
+
+
+## Cloudflare resource inventory correction — Issue #38 (2026-11-11)
+
+- Read-only Cloudflare account inventory: D1 databases = 0; Worker scripts = 0; Durable Object namespaces = 0. No resources created or modified.
+- This confirms no existing hosted D1 database/Worker/DO namespace is available to reuse in the connected account. It does not establish Workers Free entitlement, remaining quota or permission to provision.
+- The Cloudflare product docs document Free plan availability and limits, but actual account entitlement remains NOT VERIFIED. Hosted proof is NOT RUN; no speculative resource creation.
+- Updated report: `docs/reports/2026-11-11-issue38-free-claim-backend-fit.md`; latest report commit `d53087efe478aa0b6d67267b11ea3cc4c32deeb4`.
+
+
+## Hosted D1 qualification boundary audit — 2026-11-11
+
+- Research run completed: [TinyFish independent architecture/security report](https://agent.tinyfish.ai/research/01a1ca9a-c166-76d3-936a-769d2eecb066). Its findings were cross-checked against current GitHub refs, PRs, issue #38, ruleset 26550182, default Supervisor workflow and read-only Cloudflare inventory.
+- New plan: [Contour A hosted D1 qualification plan](../qualification/CONTOUR-A-HOSTED-D1-QUALIFICATION-PLAN.md); report: [hosted D1 qualification boundary audit](../reports/2026-11-11-hosted-d1-qualification-boundary-audit.md).
+- Current default branch observed: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Cloudflare read-only inventory: one accessible account of type `standard`, D1 databases 0, Worker scripts 0. Account-specific Workers Free entitlement/quota is NOT VERIFIED. No resources, secrets or billing data were created/read/changed.
+- PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, OPEN/DRAFT/UNMERGED; exact-head runs `42484039940` and `42484039932` SUCCESS. Historical formal review includes CHANGES_REQUESTED; no current approval. Default Supervisor still has `workflow_run` and `actions: write`.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`, local D1 run `43010770730` SUCCESS; its base `b9067dc7d06245893cd4e208f6215438efe5ca64` is 106 commits behind and divergent from current default. Reconcile before any hosted run.
+- PR #64 current head `b1aa2031d46446896c70bb354af858fc2dd64ebc`, OPEN/DRAFT/UNMERGED; exact-head PR workflow query returned no runs (NOT VERIFIED), formal reviews 0, threads 0.
+- Test-design correction: sequential `wrangler d1 execute` SQL batch is not 50-way concurrency evidence. Hosted contention requires 50 independent concurrent HTTP requests through a test-only Worker/API backed by the actual isolated D1 database.
+- No hosted provisioning, Worker deployment, secrets, permissions, schema, dispatch or provider/model calls. Dispatch remains FAIL-CLOSED. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack to current default, rerun exact-head local CI, and separately verify account Free entitlement before requesting explicit authorization for isolated hosted resources.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #64 hosted D1 qualification plan publication — 2026-11-11
+
+- PR #64 updated: https://github.com/VlDMlNSh/developer-cloud-pool/pull/64
+- Branch: `docs/issue38-free-claim-backend-fit-2026-11-11`; current head at this context update: `28ddc862f9acffc04a90d9689904560a33e0a50a`; base: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; compare: 8 commits ahead / 0 behind; 4 documentation files changed; 0 deletions.
+- Added plan: `docs/qualification/CONTOUR-A-HOSTED-D1-QUALIFICATION-PLAN.md`, blob `48cc92df59155881f50d81ff7c6ba1f2375d5d97`.
+- Added report: `docs/reports/2026-11-11-hosted-d1-qualification-boundary-audit.md`, blob `81e91ff7493f32c3a750940b9e35bb6b884dc80c`.
+- Context Window blob after preceding update: `5364cc8427533d14db87050856c082b457364356`; this append records PR metadata and links.
+- PR #64 remains OPEN / DRAFT / UNMERGED. Exact-head PR workflow query returned no runs = NOT VERIFIED. Formal reviews 0; inline threads 0. Mergeable flag is not acceptance.
+- The hosted plan explicitly prohibits provisioning until Free eligibility, quotas, source reconciliation and explicit resource authorization are verified. It requires 50 independent concurrent HTTP requests through a test-only Worker/API; sequential D1 SQL batches are not accepted as concurrency evidence.
+- No hosted resource, secret, billing data, runtime/schema/permission/dispatch or deployment changed. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack onto current default and rerun exact-head CI; independently verify account-specific Free eligibility before any owner-authorized hosted resource creation.
+
+
+## Final publication read-back — PR #64 (2026-11-11)
+
+- PR #64 head immediately before this context synchronization: `6ef2467d68f61dbe9b969b9bca22a572aa8bc55a`; PR remains OPEN / DRAFT / UNMERGED, base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Current PR changed-file set: 4 documentation files, 422 additions, 0 deletions. Compare before this synchronization: 9 commits ahead / 0 behind.
+- Final qualification plan blob: `48cc92df59155881f50d81ff7c6ba1f2375d5d97`; audit report blob: `81e91ff7493f32c3a750940b9e35bb6b884dc80c`.
+- Exact-head CI for PR #64 before this context synchronization: no PR-triggered runs returned (NOT VERIFIED); formal reviews 0; inline threads 0.
+- The PR description links the new plan/report and states the test-design correction, free-tier block, stale PR #54 stack and no-provisioning boundary.
+- This context synchronization itself is the next docs-only commit; no runtime behavior or infrastructure changed.
+
+
+## Claim proof stack and mature component fit — 2026-11-11
+
+- Report: [claim proof stack and mature component fit](../reports/2026-11-11-claim-proof-stack-and-mature-component-fit.md).
+- Current immutable default: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #37 head `1be8672c1be1a720b6c813dcafff5c020b6456ae`: OPEN/DRAFT, 36 ahead / 19 behind current default, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; existing formal review CHANGES_REQUESTED; exact-head runs `42484039940` and `42484039932` SUCCESS (static/contract scope only).
+- PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`: OPEN/DRAFT, 132 ahead / 19 behind current default, same merge base; exact-head local Workers Vitest run `43010770730` SUCCESS; review COMMENTED, not APPROVED. The 50-distinct-approval contention test is local harness execution, not remote hosted D1 HTTP contention.
+- PR #54 code audit: two overlapping task lease APIs coexist; attempt-aware lifecycle is stricter and binds lease_attempt_id, while legacy task-lease does not. The attempt takeover helper accepts caller boolean `resumable=true`; production must replace this with authenticated durable reconciliation. All helper time/identity arguments remain local-fixture trust inputs until a trusted adapter exists.
+- Mature OSS review: Cloudflare Workflows starter (Apache-2.0) is the first orchestration reuse candidate; Cloudflare Actors README states active development; Trigger.dev and Inngest are substantial self-hostable durable-workflow platforms but add infrastructure and are not drop-in Cloudflare free-only solutions; `@cloudflare/workers-oauth-provider` handles OAuth 2.1 provider/resource-server concerns; `oauth4webapi` is the preferred low-level OAuth/OIDC protocol library. No new dependency selected.
+- PR #64 final head `9949e857a0fd8d4ff9bc8836e4c511feac65c50b`: OPEN/DRAFT, 12 ahead / 0 behind; exact-head PR workflow query empty (NOT VERIFIED), formal reviews 0, threads 0.
+- No code, runtime, secrets, permissions, Cloudflare resources, workflows or dispatch changed. Hosted D1 NOT RUN; account Workers Free entitlement NOT VERIFIED; dispatch FAIL-CLOSED; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack onto current default; remove overlapping lease APIs, replace caller-controlled resumability with authenticated durable reconciliation, and rerun exact-head CI before any hosted proof. Evaluate Cloudflare Workflows only after account free entitlement/quotas and authority fit are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Continuation checkpoint — 2026-11-11
+
+- Recovery checkpoint: [CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md](../checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md).
+- Exact resume phrase is recorded in section 0 of that checkpoint. In a new chat, begin with that phrase; it directs the next session to revalidate all live refs before acting.
+- At checkpoint creation PR #64 was OPEN/DRAFT/UNMERGED, head `c84990f97a9cd1536a21b79cd43c03d84e025ae6`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`, 14 ahead / 0 behind; exact-head PR CI empty (NOT VERIFIED), reviews 0, threads 0. The previous audit report records an earlier head snapshot; checkpoint is the later observation.
+- No runtime, infrastructure, secrets, permissions or dispatch changed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Project continuity operating system adopted — 2026-11-11
+
+- Adopted protocol: [PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md](../governance/PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md); verified blob SHA `272449fb7eb0b899e2f6b8ccedfc67b0cb21ea4e`.
+- Current recovery anchor: [CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md](../checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md); updated checkpoint blob SHA `d4b71ea75aca656ef6f8388385da8d3834a9247f`.
+- Adopted lifecycle: mandatory new-chat/`/next` recovery; read Context Window + latest checkpoint + bootstrap/map/roadmap/relevant contracts; re-fetch live refs/HEAD/PR/Issues/exact-head CI/reviews/rulesets/worker availability; assess mature GitHub OSS before implementation; pin immutable target SHA; one bounded pass; read back files/SHA; update Context Window after significant work; create checkpoints at material milestones and handoffs; close with evidence/status/next step.
+- Source-of-truth hierarchy: live GitHub state > Context Window > latest checkpoint > bootstrap/map > roadmap/accepted contracts > dated evidence reports > conversation history. Conflicts must be documented, not silently overwritten.
+- Evidence rules formalized: empty CI/review/worker data is NOT VERIFIED; local mocks are not hosted proof; SUCCEEDED is not VERIFIED; QUALIFIED/ACCEPTED require declared criteria and published evidence.
+- Branch and authority controls retained: working PRs are proposals, default branch is accepted baseline; no secrets, paid fallback, unauthorized provisioning/dispatch/merge; Contour B remains deferred until Contour A acceptance.
+- Mature OSS review for this documentation-governance change: no new runtime dependency was warranted. Existing repository Context Window, ADR/decision records, dated reports and GitHub PR/commit history already provide the required durable primitives; the adopted policy composes these rather than introducing a new tool or service.
+- Verification snapshot while implementing policy: default `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; PR #64 OPEN/DRAFT/UNMERGED, head at that verification point `e257f2ccf35e739b949da6632fe2a8327204a235`, 18 ahead / 0 behind; exact-head PR workflow query empty (CI NOT VERIFIED), formal reviews 0, inline threads 0. Subsequent documentation commits can advance the PR head; always fetch live HEAD before resuming.
+- Changes were documentation-only. No runtime, hosted resources, secrets, permissions, provider execution, dispatch or Contour B work performed.
+- Canonical MediaHub architecture map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Contour A live continuation recheck
+
+- Report: [live continuation recheck](../reports/2026-11-11-contour-a-live-continuation-recheck.md); report commit `c14a6712a380dcbf7790a1a52870e3b4a2dd0dee`.
+- Live default-branch commit search returned `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`, matching the immutable base in the latest checkpoint. Default-branch Context Window remains stale (blob `ea70d48490f294f89caa1aba8a67ce1ea1379308`, last refreshed 2026-11-08); do not use it alone.
+- PR #63 (Recovery Actor component fit) and PR #64 (free claim backend / hosted D1 plan) remain OPEN. Review lists for both are empty. Available connector did not expose current PR head metadata directly; checkpoint/body SHA snapshots are historical, and exact current-head CI remains NOT VERIFIED.
+- PR #37 has a formal CHANGES_REQUESTED review; it remains unapproved. PR #54's 50-way proof remains local Workers-runtime D1 only, not hosted HTTP contention. Issue #38 and Issue #1 remain OPEN.
+- Current ruleset details and current Actions variable value were not freshly readable. Governance and live dispatch-variable state are NOT VERIFIED in this pass; historical `POOL_DISPATCH_ENABLED=false` evidence must not be represented as a current read-back.
+- Default Supervisor source blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f` still contains the privileged dispatch path behind `POOL_DISPATCH_ENABLED`, label-based claim logic, and stale-claim recovery that returns tasks to ready after absence from a bounded workflow-run listing. This is source evidence, not runtime execution. Keep dispatch fail-closed.
+- Mature-component reconciliation: reuse selected SOPS + age for compatible encrypted static configuration and Cosign for artifact provenance; OpenBao remains FUTURE-GATED. immudb remains an unselected audit-storage candidate; Rekor is not a private operational audit sink; Hydra is not the consumer-specific atomic Recovery Grant implementation. Cloudflare Workflows is an orchestration candidate, not claim authority; Actors were not selected as a mature default; Trigger.dev/Inngest free-only fit is unproven; oauth4webapi is a protocol library, not an issuer. No new dependency selected.
+- Recovery Actor operational-owner search remains negative within project GitHub evidence: no accepted named issuer operator, Trust Custodian, revocation/principal-registry operator, trusted-time owner, audit-sink operator, privacy/legal approver or recovery quorum. MH-12 governance acceptance is not granted; MH-13 remains proposed. Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED.
+- Next bounded engineering step: after a fresh live-ref check, create a new proof-integration branch from the current immutable default; reconcile minimum PR #39/#54 claim/attempt source, choose one canonical attempt-aware lifecycle, remove/isolate overlapping legacy lease mutations, replace caller-controlled resumability with authenticated durable reconciliation, and add adversarial cross-API/stale-generation/replay/rollback/indeterminate tests. Do not transplant stale aggregate branches. Hosted D1 remains NOT AUTHORIZED / NOT RUN until account Free entitlement/quota, source reconciliation and explicit resource authorization are satisfied.
+- No secrets, live tokens, provider/model calls, dispatch, resource provisioning, schema/runtime/permission changes, deployment or merge occurred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — attempt/lease and projection stack source audit
+
+- Report: [attempt/lease and projection stack source audit](../reports/2026-11-11-attempt-lease-projection-stack-source-audit.md); report commit `76b15e57ab36b4529fa4bb5556f7b86849d03ff2`.
+- PR #56 exact recorded head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; exact run `42825872826` COMPLETED/SUCCESS. Attempt module blob `d9e5f97b94f0873fbec542a71bc90ea3b62e0e30`; test blob `911945bed6449b45f421786808d57e994d160e71`; migration 0004 blob `0ad590ffdd2589f857257739275c15ed2d54d729`; migration 0005 blob `7a19897f6197c79517170e101e4cbf1db233cac6`.
+- PR #59 exact recorded head `22200226da4f1af30645cf441a639db6893e9310`; exact run `42981807825` COMPLETED/SUCCESS; 53 local Workers-runtime tests. Projection module blob `1546c2e4172e3767ed8bd5642c7b9c6d95716d11`; migrations 0007/0008 blobs `767d95a30fa0a14c79e88c8c58392bfec9cdddc2` / `1d9385dd371f3404c52ec15fce03b0a14d384ab1`.
+- Source conflict confirmed: PR #56 test suite still imports legacy `task-lease.mjs` and attempt-aware `task-attempts.mjs` against the same `pool_tasks` row. Legacy lease API mutates state/owner/expiry/generation without binding to current attempt; attempt-aware API requires pending + prepared current attempt and binds `lease_attempt_id`. These are not safe interchangeable production entry points. Candidate canonical lifecycle is attempt-aware; legacy API must be quarantined/removed from integrated composition with cross-API denial tests, while preserving historical proof provenance.
+- PR #51 reconciliation queue records indeterminate work but grants no retry/resolution authority. PR #57 run-attempt verifier is read-only lifecycle evidence; side effects remain UNKNOWN. PR #59 projection outbox is separate and same-worker dead-letter is not orphan-worker recovery. Do not conflate task retry, projection delivery retry and external side-effect recovery.
+- PR #39 (12-way local proof) and #54 (50-way local proof) remain unmerged/local only. PR #57 exact current head could not be refreshed; exact-head CI NOT VERIFIED in this pass.
+- No new mature dependency/service selected; reuse existing D1/SQLite transactional proof, SOPS+age and Cosign only within their selected roles. No new vault or audit store.
+- Next: after a fresh live-ref check, reconstruct a minimal integration branch from current immutable default and verified source commits; include one attempt-aware lease lifecycle, exclude legacy task lease mutation, preserve reconciliation queue without retry authority, isolate projection delivery module, add cross-API/stale-generation/replay/rollback/indeterminate tests, all dispatch:false. Do not transplant divergent PR #64 aggregate.
+- Hosted D1 remains NOT AUTHORIZED / NOT RUN. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No secrets, dispatch, resource creation, runtime/schema/permission change, deployment or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — Gemini Wave 317 agent-capacity audit
+
+- Report: [Gemini Wave 317 capacity and admission audit](../reports/2026-11-11-gemini-wave317-agent-capacity-and-admission-audit.md).
+- Approved MediaHub OS controller run 43029067368 completed SUCCESS; admission job 130551092584 and dispatch/monitor job 130551131203 succeeded.
+- Three signed child workflows on immutable target 41c13e1c2b17ac48dc51c9963a9cda140f79ddb0 all completed SUCCESS: Agent 1 run 43029095783 / job 130551247303 → PR #637; Agent 2 run 43029098931 / job 130551255931 → PR #636; Agent 3 run 43029101957 / job 130551261206 → PR #635.
+- PRs #635–#637 are documentation-only evidence artifacts, remain OPEN, with zero formal reviews. Exact-head CI returned action_required; no successful PR CI or independent review. Agent 2 test claims lack reproducible command/run evidence; NOT VERIFIED. Agent 3 static audit did not independently review Agent 1's concurrent output.
+- Verified capacity: three concurrent Gemini roles through the approved controller. Additional agents, persistent worker registration, >3 concurrency, quotas, isolation and account entitlements remain NOT VERIFIED. MediaHub OS PR #608's 20-slot runner design is a draft target, not capacity proof.
+- Do not repeat the same three-agent batch against unchanged target or bypass the fixed controller. Next: reconcile PR evidence, resolve CI action_required without weakening gates, then prepare a versioned role/registry expansion with explicit identity, capability, quota, isolation and revocation gates. Mature components must be evaluated first.
+- Cloud Pool runtime remains not launched/qualified; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## 2026-11-11 — parallel interactive and background-agent operating model
+
+- New operating rule: background agents are additive capacity; their dispatch or continued execution does not suspend or replace work in the active chat. Each `/next` continues one bounded interactive task in parallel with any already-running GitHub workflows, provided scopes do not overlap.
+- Interactive lane: live-state checks, source/contract audits, mature-component research, integration preparation, documentation and read-back verification. Background lane: asynchronous, controller-approved bounded agent tasks with immutable target SHA and evidence capture. Do not wait for agents unless the next action depends on their exact output.
+- ChatGPT does not run continuously between user turns; dispatched GitHub workflows can continue independently. This distinction is explicit in the new policy.
+- Current MediaHub controller supports only fixed `probe`, `agents` (three fixed role prompts) and fixed `review` modes. Issue #301 `/next` does not accept arbitrary per-agent task payload. Re-triggering the same generic batch against unchanged target risks duplicate work; no new dispatch this pass.
+- Mature upstream fit review: Temporal (durable workflow/client-worker separation), NATS JetStream (persisted/replayable messages), OpenFGA (fine-grained authorization), SPIFFE/SPIRE (workload identity). All are STUDY / NOT ADOPTED; operational cost and fit with free GitHub-only hosting must be proven before adoption.
+- Report: [Parallel Chat and Background-Agent Operating Model](../reports/2026-11-11-parallel-chat-and-background-agent-operating-model.md). Governance protocol updated with section 10; protocol blob SHA `31b4f4643d58c2f51d3e13f0e791b523a7d58961`.
+- Wave 317 controller and three child runs remain SUCCEEDED; PRs #635–#637 OPEN with exact-head CI action_required and no formal reviews. Agent outputs are not qualified.
+- Next: while the interactive lane independently audits the controller admission/task contracts, prepare a versioned task-admission proposal with bounded task IDs, immutable SHA, allowed paths, role/capability, owner, expiry, conflict key, evidence schema, cancellation and no-secret/no-nested-dispatch rules. Do not bypass current controller.
+- Cloud Pool default branch remains `Основной` at `6fdcedebeba62715122e43a75c6ad6d926321ce7`; docs working branch baseline before this pass `e92139a24e5ef243272cbf2f6d2be5db4cea35ff`. Context/checkpoint remain on the working documentation branch, not accepted default.
+- Cloud Pool runtime not launched/qualified; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 provider credential inventory and additive agent capacity addendum
+
+- Report: [Provider Credential Inventory and Additive Agent Capacity Plan](../reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md).
+- Cloud Pool default `Основной` HEAD observed: `6fdcedebeba62715122e43a75c6ad6d926321ce7`; documentation branch is separate and unmerged.
+- MediaHub `main` source baseline: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Provider registry blob: `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`; it contains 24 ordered cloud credential slots plus one local Ollama record (25 records total).
+- Agent registry blob: `0317d1e794aa80cd0fa22bd953b95921b26aafd3`; canonical roles remain A0 Astra coordinator, A1 Architect, A2 Builder, A3 Verifier; dynamic workers reuse A1/A2/A3, default parallelism 3, no nested delegation, conflict blocking.
+- Model router policy blob: `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`; policy-only, direct provider calls disabled, paid fallback false, unknown routes fail-closed.
+- Provider qualification workflow blob: `d3160088fbef4fce152ed7335f0acaa3bb440378`; references many provider credential aliases in one self-hosted job on mh-dev-02. This broad injection surface requires per-provider/per-slot isolation before production use.
+- The GitHub connector used for this audit does not expose Secrets API endpoints. Secret values were not read; actual configured secret existence/scope is NOT VERIFIED. Workflow references are not proof of configured credentials.
+- Owner-provided Aion Labs Free 20k/day + LLM7 Free 100k/day = 120k/day arithmetic estimate only; not independently verified and not a fungible shared quota.
+- New task-scoped profiles documented: provider inventory auditor, provider qualification verifier, quota ledger engineer, model capability evaluator, router policy engineer, rate-limit auditor, task planner, bounded coding worker, independent security reviewer. These reuse A1/A2/A3; no permanent role taxonomy expansion.
+- First static wave PLANNED only: A1 provider inventory read-only; A2 quota-ledger/test design; A3 provider workflow blast-radius audit. Not dispatched because current Gemini controller accepts only fixed role payloads and no custom tasks; no bypass or duplicate generic batch.
+- Provider/model API calls: NOT RUN. Additional provider-backed agents: NOT DISPATCHED. Model Gateway: NOT IMPLEMENTED/NOT QUALIFIED. Contour A remains BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 provider inventory and additive agent capacity refresh
+
+Latest directly observed refs for this pass:
+- Cloud Pool default `Основной`: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Working documentation branch `docs/issue38-free-claim-backend-fit-2026-11-11`: `717203d873f98003aa84e2c72c6a731d39399853`.
+- PR #64 OPEN/DRAFT/UNMERGED, head `717203d873f98003aa84e2c72c6a731d39399853`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Active ruleset collection: ID `26550182`, name `Основной — verified`, enforcement active; detailed rules were not re-read in this pass.
+- Issue #26 (provider routing/quota ledger) OPEN; Issue #38 (durable claims) OPEN.
+- Pool Supervisor schedule run `42994815115` SUCCESS at default SHA `6fdcedebeba62715122e43a75c6ad6d926321ce7`; this does not prove live model/provider execution or a deployed pool.
+- Latest observed Pool Actions runs also include local D1 proof runs `43010770730` SUCCESS, `43010595098` FAILURE, `43010555851` SUCCESS, `43010555555` SUCCESS on feature branches; not provider-agent qualification.
+
+Provider/agent evidence:
+- MediaHub `ops/qualification/provider_model_registry.json` blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`: 25 records, 24 cloud credential slots plus Ollama local. Registry is inventory metadata, not secret-presence or route-health proof.
+- MediaHub `.github/agent-system/registry.yaml` blob `0317d1e794aa80cd0fa22bd953b95921b26aafd3`: reuse A0/A1/A2/A3 authority and dynamic bounded workers; do not proliferate permanent role types.
+- MediaHub `.github/ai/model-router.yml` blob `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`: policy-only router; direct provider calls disabled, only named transports allowlisted, paid fallback false, unknown routes fail closed.
+- Provider qualification workflow blob `d3160088fbef4fce152ed7335f0acaa3bb440378` references multiple provider env aliases and injects them into a broad self-hosted qualification job labelled `mediahub-provider` with a host/user check for `mh-dev-02`. This creates a credential blast-radius concern; future qualification should be one account-slot per isolated job with only that slot's credential reference. Never run untrusted PR code in a secret-bearing job.
+- GitHub Secrets API is unsupported by the available GitHub connector; actual secret existence/scope is NOT VERIFIED. Secret values were not read.
+- Owner-provided Aion Labs Free 20k/day + LLM7 Free 100k/day = 120k/day arithmetic estimate; quota, reset, account scope, model, request/concurrency limits and zero-cost eligibility remain NOT VERIFIED. Never combine into a fungible pool or multiply by key aliases without provider evidence.
+- Additive bounded task profiles documented: provider inventory auditor (A1), quota ledger engineer (A2), provider qualification/security verifier (A3), model capability evaluator (A1), router policy engineer (A2), rate-limit auditor (A3), bounded coding worker (A2), independent security reviewer (A3). These reuse canonical roles; no new permanent authority.
+- New provider-backed agents are PLANNED / NOT DISPATCHED. No provider calls, new workflow dispatch, secret access or hosted resource provisioning occurred.
+- Approved Gemini controller remains fixed-task only; no arbitrary task envelope input. Do not bypass it or claim custom tasks were assigned.
+
+Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+Next step: design and independently review a versioned, bounded task-admission contract plus per-slot provider qualification/secret-injection contract; reconcile existing PR #28 routing design and PR #29 quota ledger rather than replacing them wholesale. Continue Contour A only; Contour B deferred.
+
+
+### Publication read-back — final sequence for provider inventory pass
+
+- Provider report blob verified: `f61e634f10b4bd419f579ff20b0678edcd52edab`.
+- Context Window blob verified: `37b51dc43a4b963fafb7a0a81edfc31713a6290e`.
+- Checkpoint blob verified: `17987e486ebbf42feba16916b023e4af9a1bbddb`.
+- All three files were re-fetched after write and the new sections were confirmed present.
+- The checkpoint update advanced the docs branch to `501dcb0721b63c92815692f2520c9871aa400951`; PR #64 head matched this SHA at read-back, base remained `6fdcedebeba62715122e43a75c6ad6d926321ce7`. The next documentation commit will naturally advance that head again.
+- Report link: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
+
+
+## 2026-11-11 PR #28/#29 provider router and quota-ledger audit
+
+- Cloud Pool default HEAD observed: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #28 head `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, base `64d2636d4500127e635c214ccfb722c6b3fcda80`, OPEN/DRAFT; docs-only LiteLLM architecture candidate, exact-head CI/review not verified.
+- PR #29 advanced to head `e4c8d642bbc054e7c52b391356965b492dad32b4`, base remains stale `64d2636d4500127e635c214ccfb722c6b3fcda80`, OPEN/DRAFT.
+- PR #29 exact-head CI run `43031920223` SUCCESS; job `130560896729`; 43 tests passed, 0 failed. Static/pure tests only; no hosted persistence or provider execution.
+- Corrected two workflow defects in PR #29 branch: dispatch guard shell variable expansion and runner probe JSON newline. Commits `d3fe63dc240ad8e51c4bebe5988c2977ac885a57`, `e4c8d642bbc054e7c52b391356965b492dad32b4`; blobs `54046165396152f5548e4a5fa21f1275b424d0b4`, `e17031421c26625b83ead2dedd22f587e669ff39`.
+- Historical PR #29 F11 CHANGES_REQUESTED review targeted old SHA `34fc78921b16359d136db553d8a51b4a4716995d`. Current source uses shared eligibility predicate for active/new slots and current tests cover revoked/unqualified/auth-failed/disallowed-billing active slots. Fresh independent review on current head NOT VERIFIED; old review remains.
+- PR #29 pure planner is not an atomic durable lease store; ledger is pure/in-memory. Persistence, atomic reservation and crash reconciliation remain unimplemented.
+- PR #28 LiteLLM is candidate only; no pinned proof-of-fit, PostgreSQL/Redis or gateway deployment.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-router-pr28-pr29-audit.md
+- Next: reconcile stale base of PR #28/#29 against current default, then design durable atomic reservation boundary and obtain fresh independent review. No provider calls/secrets/dispatch. Contour A remains unaccepted; Contour B deferred.
+
+
+## 2026-11-11 provider PR base-drift impact review
+
+- Default `Основной` remains `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #28 base and PR #29 base remain `64d2636d4500127e635c214ccfb722c6b3fcda80`; heads remain #28 `c07e3442a54fabdb74431f00cbbcd9d75280b01b`, #29 `e4c8d642bbc054e7c52b391356965b492dad32b4`.
+- GitHub compare old base...default: default is 21 commits ahead, 0 behind. Default-side changed files are Context Window, durable claim protocol decision, PR61 audit, and stacked PR25/52/61 audit. No path overlaps PR #28/#29 changed files. This indicates a likely low-conflict base update, not a completed rebase/merge.
+- No branch update was performed. PR #29 shared workflow diffs still require review after base update and exact-head CI. PR #28 docs-only CI may remain NOT RUN due path filters.
+- PR #29 exact-head CI run `43031920223` remains SUCCESS at `e4c8d642bbc054e7c52b391356965b492dad32b4`, 43/43 tests. Current-head independent review NOT VERIFIED; old F11 review is tied to `34fc78921b16359d136db553d8a51b4a4716995d`.
+- Base-drift report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-pr-base-drift-impact-review.md
+- Next: controlled base update of #28/#29, full diff reread, exact-head validation, fresh independent review. No provider calls/secrets/dispatch. Contour A BLOCKED; Contour B DEFERRED.
+
+
+## 2026-11-11 durable quota reservation reuse assessment
+
+- PR #29 quota planner head `e4c8d642bbc054e7c52b391356965b492dad32b4`; PR #39 D1 claim/outbox proof head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- PR #39 includes a local-only D1 conditional state-transition + SQLite trigger + transactional outbox pattern. Tests cover concurrent first-consumer-wins, deterministic retry, immutable binding mismatch, pre-consumed replay, and rollback on outbox insertion failure. README explicitly excludes production integration, hosted D1, provider calls, dispatch and secrets. Reusable pattern only, NOT production qualified.
+- PR #39 exact-head run observed `42329993548` SUCCESS; README says 13/13 on immediately preceding source revision; current-head exact test count/log not verified.
+- PR #29 pure quota planner handles provider outcome states and provider-authoritative reset evidence but has no persistence/reservation/concurrency authority. Slot admission says production controller needs atomic shared lease store.
+- Proposed separation: provider-authoritative quota evidence; internal atomic reservations keyed by account slot + quota domain + model/scope + reset period; usage reconciliation. Unknown provider caps stay unknown; reservations are not provider billing truth.
+- Important correction: PR #28/#29 base refs are indeed `Основной`, but raw GitHub PR API still reports base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`, while default branch ref is `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Repository reports `allow_update_branch=false`; connector has no update-branch operation. Previous file-overlap comparison is not a completed rebase. Do not claim branches updated.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-durable-quota-reservation-reuse-assessment.md
+- Next: inspect PR #39 predecessor/CI evidence, prepare isolated quota-specific D1 proof and independent HTTP concurrency acceptance. No hosted D1, provider calls, secrets or agent dispatch. Contour A BLOCKED; Contour B DEFERRED.
+
+
+## 2026-11-11 claim protocol evidence refresh
+
+- Default `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7`; Issue #38 OPEN.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`, stacked OPEN/DRAFT. Exact run `43010770730` / job `130489510967` SUCCESS; logs confirm 40/40 Workers-runtime tests. Fixes projection event actor attribution by preserving OLD.lease_owner; also adds indeterminate reconciliation queue, projection outbox and exact finalization replay recovery. Local synthetic D1 only.
+- PR #54 earlier head `ec3f326...` has 50 distinct approval contention proof run `42537241204` / job `128904147572` SUCCESS (per Issue #38 comment). Current head has fresh 40/40 suite. Formal independent APPROVED review on current head NOT VERIFIED; earlier COMMENTED finding fixed by author and exact-head test.
+- PR #57 current head `2c263e8a9915f0bc8e0698cde816e87cb2376538`; fixture run `42838193384` / job `129905939447` SUCCESS 33/33; Pool Contract Validation `42838193405` SUCCESS. Synthetic workflow_run evidence only; no runner provenance or production Supervisor integration.
+- PR #39 head `ecc7193...`, exact run `42329993548` / job `128274072508` SUCCESS 19/19; per-approval proof only, PR #54 is the task-wide extension.
+- Default decision `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md` rejects Issue label PATCH as CAS, does not select Git refs, prefers separate authenticated claim service + conditional-write store; D1 remains local proof, no hosted backend selected.
+- Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-contour-a-claim-protocol-evidence-refresh.md
+- No rebase/merge, hosted provisioning, credentials, provider calls, dispatch or production changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: audit PR #54 full current-head schema/state-machine and its composition with PR #57; prioritize issuer authentication/trusted clock; keep gates closed.
