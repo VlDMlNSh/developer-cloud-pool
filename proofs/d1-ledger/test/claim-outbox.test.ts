@@ -3,6 +3,7 @@ import { env } from "cloudflare:workers";
 import { claimAndEnqueue, claimLogicalTask } from "../src/claim-outbox.mjs";
 import { acquireTaskLease, renewTaskLease, finalizeTaskLease } from "../src/task-lease.mjs";
 import { createTaskAttempt, acquireAttemptLease, renewAttemptLease, finalizeTaskAttempt, markAttemptIndeterminate } from "../src/task-attempts.mjs";
+import { acquireProjectionDelivery, markProjectionRetryable, acknowledgeProjectionDelivered } from "../src/projection-outbox.mjs";
 
 const NOW = 1_800_000_000;
 const approval = {
@@ -32,6 +33,13 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_outbox_insert").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_projection_events_no_update").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_projection_events_no_delete").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_projection_events_no_update BEFORE UPDATE ON pool_attempt_projection_events BEGIN SELECT RAISE(ABORT, 'PROJECTION_EVENTS_APPEND_ONLY'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_attempt_projection_events_no_delete BEFORE DELETE ON pool_attempt_projection_events BEGIN SELECT RAISE(ABORT, 'PROJECTION_EVENTS_APPEND_ONLY'); END").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
@@ -414,9 +422,89 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       taskKey, attemptId: "attempt-1", workerId: "worker-final",
       generation: lease.generation, status: "succeeded",
       resultDigest: "e".repeat(64), provenanceDigest: "f".repeat(64),
+      terminalReason: "completed", now: NOW + 30
+    });
+    expect(replay).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
+
+    const conflictingReplay = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-final",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "a".repeat(64), provenanceDigest: "f".repeat(64),
       terminalReason: "completed", now: NOW + 3
     });
-    expect(replay).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER" });
+    expect(conflictingReplay).toMatchObject({
+      decision: "DENY", reason: "STALE_OR_EXPIRED_ATTEMPT_FINALIZER"
+    });
+    const eventCount = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    expect(eventCount.n).toBe(1);
+  });
+
+  it("recovers an exact finalization after commit succeeds but the caller loses the response", async () => {
+    const taskKey = await createLogicalTask("approval-finalize-ambiguous-response");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-ambiguous", NOW + 2, 30);
+    const originalPrepare = env.POOL_DB.prepare.bind(env.POOL_DB);
+    let loseResponse = true;
+    const ambiguousDb = {
+      prepare(sql) {
+        const statement = originalPrepare(sql);
+        if (loseResponse && sql.includes("UPDATE pool_attempts")) {
+          return {
+            bind(...values) {
+              const bound = statement.bind(...values);
+              return {
+                async run() {
+                  const committed = await bound.run();
+                  loseResponse = false;
+                  if (committed?.success !== true || !(committed?.meta?.changes >= 1)) {
+                    throw new Error("fault injection expected committed finalization");
+                  }
+                  throw new Error("simulated lost response after commit");
+                }
+              };
+            }
+          };
+        }
+        return statement;
+      }
+    };
+
+    const first = await finalizeTaskAttempt(ambiguousDb, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(first).toMatchObject({
+      decision: "DENY", reason: "ATTEMPT_FINALIZATION_AMBIGUOUS"
+    });
+
+    const recovered = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-ambiguous",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 30
+    });
+    expect(recovered).toMatchObject({
+      decision: "ATTEMPT_ALREADY_FINALIZED", status: "succeeded",
+      completedAt: NOW + 3
+    });
+
+    const terminalEvents = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_events WHERE attempt_id = ? AND event_type = 'attempt.finalized'"
+    ).bind("attempt-1").first();
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(terminalEvents.n).toBe(1);
+    expect(task).toMatchObject({
+      state: "completed", lease_owner: null, lease_expires_at: null
+    });
   });
 
   it("preserves failed attempt history and creates a distinct retry attempt", async () => {
@@ -469,6 +557,25 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       "SELECT status FROM pool_attempts WHERE attempt_id = ?"
     ).bind("attempt-1").first();
     expect(row.status).toBe("indeterminate");
+
+    const reconciliation = await env.POOL_DB.prepare(`
+      SELECT status, task_key, attempt_id, input_digest, lease_generation, expired_lease_owner
+        FROM pool_attempt_reconciliations WHERE attempt_id = ?
+    `).bind("attempt-1").first();
+    expect(reconciliation).toMatchObject({
+      status: "pending", task_key: taskKey, attempt_id: "attempt-1",
+      input_digest: "d".repeat(64), lease_generation: 1,
+      expired_lease_owner: "worker-unknown"
+    });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_generation, lease_expires_at FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    // Expiry creates durable reconciliation work; it does not prove that
+    // the executor stopped or authorize clearing the lease / retrying.
+    expect(task).toMatchObject({
+      state: "leased", lease_owner: "worker-unknown",
+      lease_generation: 1, lease_expires_at: NOW + 7
+    });
   });
 
   it("rejects mutation of immutable attempt identity and cross-attempt lease renewal", async () => {
@@ -498,4 +605,165 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     ).bind(taskKey).first();
     expect(count.n).toBe(1);
   });
+
+  it("attaches 50 distinct concurrent approvals to exactly one logical task and one delivery outbox", async () => {
+    const contenders = Array.from({ length: 50 }, (_, index) => ({
+      ...approval,
+      approvalId: `approval-contention-${String(index + 1).padStart(3, "0")}`,
+      envelopeDigest: (index + 1).toString(16).padStart(2, "0").repeat(32)
+    }));
+
+    await Promise.all(contenders.map((item) => seed(item)));
+    const results = await Promise.all(
+      contenders.map((item) => claimLogicalTask(env.POOL_DB, item, NOW))
+    );
+
+    expect(results).toHaveLength(50);
+    expect(results.every((result) =>
+      result.decision === "TASK_CREATED_OR_ATTACHED" ||
+      result.decision === "TASK_ALREADY_ATTACHED"
+    )).toBe(true);
+    expect(results.every((result) => result.dispatch === false)).toBe(true);
+    expect(new Set(results.map((result) => result.taskKey)).size).toBe(1);
+    expect(new Set(results.map((result) => result.outboxId)).size).toBe(1);
+
+    const tasks = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_tasks"
+    ).first();
+    const approvals = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_task_approvals"
+    ).first();
+    const outbox = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_task_delivery_outbox"
+    ).first();
+    const consumed = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_approval_ledger WHERE state = 'consumed'"
+    ).first();
+
+    expect(tasks.n).toBe(1);
+    expect(approvals.n).toBe(50);
+    expect(outbox.n).toBe(1);
+    expect(consumed.n).toBe(50);
+  });
+
+  it("creates projection intent atomically with terminal audit and fences concurrent delivery leases", async () => {
+    const taskKey = await createLogicalTask("approval-projection-outbox");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-terminal", NOW + 2, 60);
+    const finalized = await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-terminal",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "9".repeat(64), provenanceDigest: "8".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    expect(finalized.decision).toBe("ATTEMPT_FINALIZED");
+    const outboxId = "attempt-finalized:attempt-1";
+    const intent = await env.POOL_DB.prepare(
+      "SELECT task_key, attempt_id, repository_id, issue_number, target_sha, profile, terminal_status, status FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(intent).toMatchObject({
+      task_key: taskKey, attempt_id: "attempt-1", repository_id: approval.repositoryId,
+      issue_number: approval.issueNumber, target_sha: approval.targetSha,
+      profile: approval.profile, terminal_status: "succeeded", status: "pending"
+    });
+    const contenders = await Promise.all(Array.from({ length: 20 }, (_, i) =>
+      acquireProjectionDelivery(env.POOL_DB, outboxId, `projection-worker-${i}`, NOW + 4, 30)
+    ));
+    const winners = contenders.filter(x => x.decision === "PROJECTION_LEASE_ACQUIRED");
+    expect(winners, JSON.stringify(contenders)).toHaveLength(1);
+    expect(contenders.every(x => x.dispatch === false)).toBe(true);
+    const eventCount = await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.leased'"
+    ).bind(outboxId).first();
+    expect(eventCount.n).toBe(1);
+  });
+
+  it("rejects stale delivery acknowledgement after lease expiry and takeover", async () => {
+    const taskKey = await createLogicalTask("approval-projection-stale-ack");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-terminal-2", NOW + 2, 60);
+    await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-terminal-2",
+      generation: lease.generation, status: "succeeded",
+      resultDigest: "7".repeat(64), provenanceDigest: "6".repeat(64),
+      terminalReason: "completed", now: NOW + 3
+    });
+    const outboxId = "attempt-finalized:attempt-1";
+    const first = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-old", NOW + 4, 5);
+    const second = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-new", NOW + 10, 20);
+    expect(first).toMatchObject({ decision: "PROJECTION_LEASE_ACQUIRED", lease_generation_delivery: 1 });
+    expect(second).toMatchObject({ decision: "PROJECTION_LEASE_ACQUIRED", lease_generation_delivery: 2 });
+    const stale = await acknowledgeProjectionDelivered(
+      env.POOL_DB, outboxId, "projection-old", first.lease_generation_delivery, NOW + 11
+    );
+    expect(stale).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_PROJECTION_LEASE" });
+    const accepted = await acknowledgeProjectionDelivered(
+      env.POOL_DB, outboxId, "projection-new", second.lease_generation_delivery, NOW + 12
+    );
+    expect(accepted).toMatchObject({ decision: "PROJECTION_DELIVERED", generation: 2 });
+    const deliveredEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.delivered'"
+    ).bind(outboxId).first();
+    expect(deliveredEvent).toEqual({ actor_id: "projection-new", lease_generation: 2 });
+    const row = await env.POOL_DB.prepare(
+      "SELECT status, lease_owner, lease_expires_at, delivered_at FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({ status: "delivered", lease_owner: null, lease_expires_at: null, delivered_at: NOW + 12 });
+  });
+
+  it("records retryable transitions and keeps delivery history append-only", async () => {
+    const taskKey = await createLogicalTask("approval-projection-retryable");
+    await createAttempt(taskKey);
+    const lease = await acquireAttemptLease(env.POOL_DB, taskKey, "worker-terminal-3", NOW + 2, 60);
+    await finalizeTaskAttempt(env.POOL_DB, {
+      taskKey, attemptId: "attempt-1", workerId: "worker-terminal-3",
+      generation: lease.generation, status: "failed",
+      resultDigest: "5".repeat(64), provenanceDigest: "4".repeat(64),
+      terminalReason: "failed", now: NOW + 3
+    });
+    const outboxId = "attempt-finalized:attempt-1";
+    const delivery = await acquireProjectionDelivery(env.POOL_DB, outboxId, "projection-retry", NOW + 4, 30);
+    const retryable = await markProjectionRetryable(
+      env.POOL_DB, outboxId, "projection-retry", delivery.lease_generation_delivery, NOW + 5
+    );
+    expect(retryable.decision).toBe("PROJECTION_RETRYABLE");
+    const retryEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.retryable'"
+    ).bind(outboxId).first();
+    expect(retryEvent).toEqual({ actor_id: "projection-retry", lease_generation: 1 });
+
+    const deadLetterLease = await acquireProjectionDelivery(
+      env.POOL_DB, outboxId, "projection-dead-letter", NOW + 6, 30
+    );
+    expect(deadLetterLease).toMatchObject({
+      decision: "PROJECTION_LEASE_ACQUIRED", lease_generation_delivery: 2
+    });
+    await env.POOL_DB.prepare(`
+      UPDATE pool_attempt_projection_outbox
+         SET status = 'dead_letter', lease_owner = NULL,
+             lease_expires_at = NULL, updated_at = ?
+       WHERE outbox_id = ? AND status = 'leased'
+         AND lease_owner = ? AND lease_generation_delivery = ?
+    `).bind(
+      NOW + 7, outboxId, "projection-dead-letter",
+      deadLetterLease.lease_generation_delivery
+    ).run();
+    const deadLetterEvent = await env.POOL_DB.prepare(
+      "SELECT actor_id, lease_generation FROM pool_attempt_projection_events WHERE outbox_id = ? AND event_type = 'delivery.dead_letter'"
+    ).bind(outboxId).first();
+    expect(deadLetterEvent).toEqual({
+      actor_id: "projection-dead-letter", lease_generation: 2
+    });
+    const history = await env.POOL_DB.prepare(
+      "SELECT event_type FROM pool_attempt_projection_events WHERE outbox_id = ? ORDER BY created_at, delivery_event_id"
+    ).bind(outboxId).all();
+    expect(history.results.map(x => x.event_type)).toEqual([
+      "delivery.leased", "delivery.retryable", "delivery.leased", "delivery.dead_letter"
+    ]);
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_attempt_projection_events WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow();
+  });
+
+
 });
