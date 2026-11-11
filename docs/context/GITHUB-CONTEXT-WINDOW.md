@@ -2404,3 +2404,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code, merge, deployment, or dispatch performed. PR #58/#59 remain Draft; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: trace existing runtime scheduling/queue architecture, identify durable recovery trigger, and design bounded integration tests before any deployment.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Supervisor scheduler / D1 recovery boundary audit
+- Report: [Supervisor scheduler and projection recovery boundary audit](../reports/2026-11-11-supervisor-scheduler-projection-recovery-boundary-audit.md), commit `46c3295761f0566a5f32ef5b31e5f732e61fd73e`.
+- Default branch `Основной` observed HEAD `864213e2ff5b4fa956ba405dea8137a44d812f49`; Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; script blob `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; architecture blob `3ac28f2f105a20a4eed5d93168bbe84d2d5273b8`.
+- Confirmed native GitHub Actions cron already exists every five minutes, plus issue events, Worker workflow completion and manual dispatch. This is a best-effort wake-up for the GitHub Issues bootstrap queue, not a guaranteed daemon.
+- Critical distinction: current cron/Supervisor does not consume PR #58/#59's separate local D1 projection outbox. PR #59 recovery function has no production D1 binding, hosted migration, invocation or consumer evidenced. Do not create a second scheduler; a future bounded D1 recovery batch may reuse the existing cron only after hosted D1 and authority gates pass.
+- New finding: default Supervisor exits immediately when `POOL_DISPATCH_ENABLED` is false, before `recoverFailedWorkflowRun()` and `recoverStaleClaims()`. Therefore dispatch-off mode suppresses stale-claim recovery as well as dispatch. Keep dispatch fail-closed; separately design an independently gated recovery operation with least-privilege permissions and ambiguity-safe tests before changing code.
+- No code changes, merge, dispatch, deployment, secret access, provider/model call, or paid resource. Existing cron IMPLEMENTED; live scheduled execution NOT VERIFIED. Issue recovery while dispatch disabled BLOCKED. D1 production recovery NOT IMPLEMENTED / NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design split Supervisor operation gates and bounded D1 recovery batch contract; retain dispatch disabled and do not deploy.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
