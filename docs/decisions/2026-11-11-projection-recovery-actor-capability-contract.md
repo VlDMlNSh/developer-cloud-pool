@@ -140,3 +140,30 @@ Backend qualification:
 6. exact-head tests and independent security review pass.
 
 Keep `POOL_DISPATCH_ENABLED` false/unset and all production dispatch paths fail-closed. Do not deploy, wire a live sender, or claim Contour A acceptance from this local proof.
+
+
+## 11. Relationship to the existing Resolver contract
+
+The repository already defines a broader backend-neutral Resolver capability in `docs/contracts/TRUSTED-RECONCILIATION-AUTHORITY-CONTRACT.md` (documentation branch `docs/cross-chat-continuation-2026-11-06`, blob `32bce214a8a3577584f058fb5679b8cecf5f3309`). That contract binds resolver grants to task/attempt/generation/envelope/executor evidence and permits only `observe`, `resolve_no_retry`, or `propose_retry_candidate`.
+
+**Do not reuse a task Resolver grant as a projection recovery grant.** The authority domains and resources differ:
+- Task Resolver evaluates native executor/effect evidence and must not clear or transfer the old task lease, create a new attempt, or dispatch.
+- Projection Recovery Actor terminalizes one exhausted projection-delivery outbox row and must not resolve task execution, change task/attempt state, or perform GitHub writes.
+
+Reuse the established issuer/capability design patterns only if the issuer explicitly supports a distinct audience (for example `projection-outbox-recovery`), subject allowlist, operation, and exact outbox binding. A dedicated grant must bind repository ID, outbox ID, attempt ID, delivery generation, immutable event digest, and the terminal-only operation. Its nonce namespace and consumption record must be unambiguous and single-use. Do not expand the task Resolver's current operation allowlist or silently broaden an existing Resolver capability.
+
+The shared claim lifecycle and trusted reconciliation contracts remain normative for issuer authentication, revocation, policy versioning, trusted clock provenance, immutable binding, fencing, idempotency and audit. They do not by themselves grant projection recovery permission.
+
+## 12. Trusted time correction and implementation boundary
+
+The current local projection adapter accepts `now` as a caller argument. That is acceptable only as a deterministic test seam; it is not a production time authority. The recovery contract must not trust a caller-supplied timestamp to prove lease expiry or grant validity.
+
+Before implementation, select and qualify one trusted time source:
+- preferably a database-generated UTC timestamp evaluated inside the same conditional transaction as lease-expiry checks and grant-nonce consumption; or
+- a separately qualified trusted host clock sampled at the trusted composition root, with provenance, skew bounds, monotonicity and failure behavior established.
+
+The selected source must be authoritative for both `lease_expires_at` and grant `not_before`/`expires_at` comparisons. Clock unavailable, backwards, future-inconsistent, or outside the permitted skew bound means DENY / UNRESOLVED. A timestamp passed by an API caller or embedded in an unverified JSON object is never authoritative.
+
+Tests may inject a deterministic clock only behind a test-only adapter. Production exports must not accept arbitrary `now` values from the caller. If D1's database time functions are selected, test their exact semantics in the pinned local runtime and hosted D1 before relying on them; do not assume local SQLite and hosted D1 timing semantics are equivalent without evidence.
+
+The trusted reconciliation contract's existing host-clock composition proof is synthetic and explicitly leaves production clock provenance NOT QUALIFIED. That proof is useful precedent, not clock qualification for this outbox.
