@@ -215,3 +215,13 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Next: create a clean implementation branch from current default; selectively reconstruct the compatible #58/#59 proof patch union; implement a single orchestration boundary that owns lease acquire/read-back, reconciler call and conditional ACK. No public receipt-free ACK. Add negative-first tests for missing/mismatched receipt, wrong digest, stale/expired generation, duplicate/delayed marker, lost POST response, concurrent ACK and caller-supplied proof/time. Preserve fifth-lease fail-closed recovery.
 - Do not merge PR #58/#59 wholesale; current PR metadata shows different bases. No hosted D1, dispatch, provider call or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+## Clean implementation branch lineage audit — 2026-11-11
+
+- Created `impl/receipt-bound-projection-2026-11-11` from default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`. Verified ref points to the same SHA and compare is identical (0 ahead / 0 behind).
+- Corrected earlier inaccurate PR lineage statement: #58 head `5caeb60f7a45d836c6ad1eea2fb86e20995da025` is an ancestor of #59 base `6f7953e4abec3cc564984ee3635cdb7717ae5d5e` by four commits. #58 exact base→head patch is 7 paths / 12 commits; #59 exact base→head patch is 5 paths / 10 commits. Both PRs are stacked in lineage, not unrelated.
+- The D1 proof harness baseline exists on #58 base `ec3f3266ca28c4fb5633a9475cc6f396a4677974` but not on default. Baseline branch is 132 ahead / 62 behind default and adds 23 paths; do not transplant full branch history.
+- Detailed audit: [2026-11-11 clean implementation branch lineage audit](../reports/2026-11-11-clean-implementation-branch-lineage-audit.md), commit `84380c1ed1db16374d00de71c942ab39f8f2360b`.
+- Next: selectively reconstruct the 23-path proof harness baseline, then the exact #58/#59 bounded patches; preserve migrations 0006→0007→0008. Implement one receipt-bound orchestration boundary and negative-first tests. No code or tests in this pass; no hosted D1/dispatch/provider/deployment.
+- Receipt-free ACK remains a mandatory blocker. Independent checks are deferred until after pool launch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
