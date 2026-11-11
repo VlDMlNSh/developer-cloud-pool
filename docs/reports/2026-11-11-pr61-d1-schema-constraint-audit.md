@@ -58,3 +58,12 @@ Recheck run `42984494769` on exact head `27017a22b2ae8710803034759bc308d730a0ad3
 - `npm ci`, static checks, API/policy tests 11/11, and Workers/D1 suite 14/14 across 3 files all passed; Experience Auth tests 6/6 passed including malformed direct D1 write cases.
 - Run URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984494769.
 - This remains synthetic local D1 proof, not production auth qualification.
+
+
+## Subsequent PR head and CI reconciliation
+
+- PR #61 advanced after the schema-fix commit with one additional test commit: `976cb2ed0b594b39c847921918f182ab6d571344` (`test: reject sessions before creation time`). This adds a negative-time boundary test proving a session is inactive before `created_at` and active at its creation instant.
+- An intermediate run `42984610137` was cancelled by GitHub Actions concurrency after the branch advanced; it is not treated as a failure of the final head.
+- Latest exact-head run [42984644046](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984644046), job `130402848442`, completed SUCCESS on exact head `976cb2ed0b594b39c847921918f182ab6d571344`.
+- Latest suite totals: API/policy 11/11; Workers/D1 15/15 across 3 files; Experience Auth suite includes the new pre-creation-time test. Static checks and all workflow steps succeeded.
+- PR remains OPEN/DRAFT/UNMERGED; independent security review NOT RUN; production auth remains NOT QUALIFIED and fail-closed.
