@@ -92,3 +92,21 @@ The parent PR #52 had a completed successful Hono validation run `42507524428`; 
 Next: obtain the exact-head run for PR #61; inspect job logs and fix any migration/runtime/test failure on the same branch. Only after CI passes should the schema/adapter proof be considered locally verified and advanced to cookie/PKCE integration design. Do not merge or provision.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Exact-head CI reconciliation — 2026-11-11
+
+The first CI attempt `42984166338` failed at Vitest config loading because the initial migration helper import referenced the uninstalled package `@cloudflare/vitest-pool-workers/config`. Static checks and the 11 Node API/policy tests had passed. The import was corrected to use `readD1Migrations` from the already-pinned `@cloudflare/vitest-plugin`; a setup file now calls `applyD1Migrations` against the dedicated `EXPERIENCE_AUTH_DB` binding. No dependency or lockfile was added.
+
+The subsequent run is bound to the current PR head:
+- PR #61 HEAD: `7b018219cf220046a641d3811434014cc63421d4`.
+- Workflow run `42984240109`: COMPLETED / SUCCESS, exact head.
+- Job `130401521593`: COMPLETED / SUCCESS.
+- `npm ci`: PASS.
+- `npm run check`: PASS.
+- `npm test`: 11/11 PASS.
+- `npm run test:workflow`: 3 files passed, 14/14 tests passed.
+- Experience auth suite: 6/6 PASS; includes 50 concurrent callbacks with exactly one successful state consumption.
+- PR reviews: 0; inline threads: 0.
+
+The failure on the earlier attempt is superseded by the successful exact-head run above. Local D1/Workers runtime proof is now VERIFIED for the tested schema/adapter behavior only. It does not qualify production integration, PKCE AEAD/key management, browser OAuth/cookies/CSRF, session rotation, quota enforcement, remote D1, Free entitlement, deployment or independent security review. PR #61 remains OPEN / DRAFT / UNMERGED.
