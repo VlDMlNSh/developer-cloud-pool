@@ -2708,3 +2708,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - OAuth/session remains synthetic proof only; PKCE encryption/key custody/rotation, trusted time, bounded lifetimes, owner-allowlist composition and production session lifecycle are not qualified. No production auth, secrets, OAuth app, remote D1, deployment, routes, provider calls or dispatch touched. Jarvis auth remains fail-closed.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: recheck exact-head CI at `7b018219cf220046a641d3811434014cc63421d4`; then audit auth lifecycle boundaries only if CI succeeds.
+
+
+### PR #61 exact-head CI closeout
+
+- Corrected exact head `7b018219cf220046a641d3811434014cc63421d4` passed GitHub Actions run [42984240109](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984240109), job `130401521593`: COMPLETED / SUCCESS.
+- Static checks SUCCESS; API/policy tests 11/11; Workers/D1 tests 14/14 across 3 files; new Experience Auth tests 6/6. Migration setup now applies through the official Workers Vitest migration harness.
+- PR #61 remains OPEN/DRAFT/UNMERGED, stacked on PR #52. Reviews/threads 0; independent security review NOT RUN.
+- Local synthetic test proof only. OAuth app, PKCE encryption/key custody/rotation, production trusted time, bounded lifetime policy, owner allowlist composition and production session lifecycle remain NOT QUALIFIED. Jarvis API remains fail-closed; no deployment or production auth enabled.
+- Report updated with run evidence; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
