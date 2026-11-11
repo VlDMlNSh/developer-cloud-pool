@@ -3079,3 +3079,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: PR #58 local proof CI VERIFIED but protocol qualification INCOMPLETE; PR #59 local D1 proof CI VERIFIED but hosted backend/independent recovery NOT QUALIFIED; PR #60 issuer/time prerequisite unresolved; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: bounded fake/local amendment to PR #58 proving delayed-visibility retry budget/cooldown, exact label ownership, and one canonical terminal label; then adversarial tests. Do not wire a live sender.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Mature GitHub component reuse review (Projection Recovery)
+
+- User reaffirmed mandatory search-before-build rule: search mature GitHub projects and first-party components at every bounded stage; only implement custom code when no compatible maintained component fits.
+- Immutable review targets: PR #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; PR #59 head `22200226da4f1af30645cf441a639db6893e9310`.
+- Reviewed GitHub candidates: dotnetcore/CAP (.NET; not direct Workers/D1 fit); dtm-labs/dtm (separate transaction-manager service; not drop-in); Azure/AWS transactional-outbox sample repos (reference examples only); cloudflare/workers-sdk first-party Workflow/Queues fixtures and Miniflare runtime; Inngest and Restate (no approved free GitHub-only operating path established).
+- First-party Cloudflare Workflows is a conditional future candidate: Free and Paid availability; durable steps, retries, sleep/event waits; official docs require idempotent operations, deterministic step names, granular steps, and warn side effects outside steps can repeat. It does not provide the pool's Security Issuer Authority, trusted time, revocation governance, or GitHub side-effect exactly-once semantics.
+- Cloudflare Queues is a conditional future transport only: Free plan 10,000 operations/day and 24h retention; at-least-once delivery; retries and DLQ. It cannot replace D1 outbox, durable deduplication, or one-use grants.
+- No compatible drop-in mature GitHub project found for current JS/Workers + D1 + GitHub Actions protocol within GitHub-free-first / least-authority constraints. No new queue/workflow engine should be built. Cloudflare products NOT ADOPTED / NOT PROVISIONED pending explicit runtime-boundary approval.
+- Report: [2026-11-11 Mature GitHub Component Reuse Review — Projection Recovery](../reports/2026-11-11-mature-component-reuse-review-projection-recovery.md), report commit `9ab819f920600e5aaf3cce36e3f03a6be054b6c5`.
+- No source/runtime/schema/workflow/permission/secret changes, merge, deployment, external provider calls or hosted resource provisioning.
+- Status: component discovery COMPLETED; drop-in component NOT FOUND; PR #58 hardening PLANNED; PR #60 issuer/time unresolved; dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: resolve runtime boundary. If GitHub-only remains mandatory, apply only minimal PR #58 protocol fixes in the existing proof; if Cloudflare runtime is approved, first run a synthetic compatibility/free-quota proof without real GitHub writes.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
