@@ -80,3 +80,8 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 A targeted re-read of the Cloud Pool Context Window and MediaHub roadmap clarified that MediaHub Wave 486 already selected the owner-directed WB-05 Option A target: a dedicated Security Issuer Authority logically separate from Jarvis and ASTRA A0. This is a selected target disposition, not normative acceptance, concrete product/service selection, or deployed authority. The Cloud Pool recovery grant must reconcile to that direction and must not create a parallel issuer. Wave 528 recommendations (GitHub OIDC workload authentication, JWS, RFC 8785 JCS, managed KMS/HSM, PostgreSQL state/outbox, separate audit sink) remain recommendations; R-06 operational ownership/retention, concrete KMS/audit selection and independent A3 review remain open. MediaHub PR #600 is still OPEN/DRAFT/UNMERGED per the project Context Window snapshot; do not treat the crosswalk as runtime issuer evidence.
 
 Updated issuer/time contract blob after this correction: `7f5be06506a4b4c93148133bf8ca3441b08ea700`. PR #60 head: `673f2519c8cdc7f75602599c48d44ec72e396dec`. Exact-head CI remains NOT VERIFIED; independent review NOT RUN.
+
+
+## PR #59 evidence metadata correction (2026-11-11)
+
+Updated PR #59 description to remove stale head/run references and bind its current head `22200226da4f1af30645cf441a639db6893e9310` to exact-head run `42981807825` / job `130393715595` (SUCCESS). PR remains OPEN/DRAFT/UNMERGED; formal reviews and inline threads remain 0/0. No source code changed.
