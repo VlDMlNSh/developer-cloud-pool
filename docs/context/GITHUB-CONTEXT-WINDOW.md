@@ -1639,3 +1639,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime, schema, permissions, workflow, secrets, dispatch, deployment or resources changed. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: complete claim-service threat model/interface and resolve F2 using an authenticated transactional conditional-write backend; reconcile PR #37/#53 stack only after immutable target refs and exact-head plan.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Issue #38 claim backend / PR #64 current-head recheck
+
+- Report: `docs/reports/2026-11-11-issue38-claim-backend-current-head-recheck.md`.
+- Current default before this report: `9aa719ce4b68519191cb6bb8e8fe0fe447dc7a38`.
+- PR #64 head `95d237c753bec96abe9add621140928511047599`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`; OPEN/DRAFT/UNMERGED, API mergeable=false; compare current default to PR head DIVERGED 51 ahead / 2 behind, merge base `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #64 has 16 changed paths, all documentation, 1,957 additions. It mixes Issue #38 backend/hosted D1 materials with unrelated provider credential, Gemini Wave 317, agent-capacity, provider-router and quota reports. Scope cohesion issue; exact-head PR CI query empty (NOT VERIFIED); formal reviews 0; inline threads 0.
+- PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`, exact run `43010770730` / job `130489510967` SUCCESS; local Miniflare/workerd D1 proof only, not hosted contention.
+- Cloudflare inventory previously read-only: 0 D1 databases, 0 Worker scripts, 0 Durable Object namespaces. No resources created. Account-specific entitlement/quota and provisioning authority remain NOT VERIFIED / NOT AUTHORIZED.
+- Official D1 Free facts refreshed: 5m rows read/day, 100k rows written/day, 5GB total storage; D1 database single-threaded; batch is transactional; client timeout is not proof a write failed and requires authoritative reconciliation. DO SQLite Free alternative: 100k requests/day, 13k GB-s/day, 5m reads/day, 100k writes/day, 5GB account storage, 100 classes. Product limits do not prove account quota/authority.
+- OSS fit: pg-boss and Graphile Worker are PostgreSQL-backed and not drop-in D1; Temporal is a separate service platform, too broad for this single-use claim boundary; pgtask requires PostgreSQL 16+. DO remains native alternative only if a per-task actor requirement is demonstrated. No dependency adopted.
+- No runtime/schema/permission/workflow/secret/resource/dispatch/deployment/merge/rebase changes. Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: narrow/split PR #64 documentation scope, rebase only after bounded plan, rerun exact-head CI and obtain independent review. Hosted D1 remains NOT AUTHORIZED / NOT RUN until owner approval and entitlement/quota evidence.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
