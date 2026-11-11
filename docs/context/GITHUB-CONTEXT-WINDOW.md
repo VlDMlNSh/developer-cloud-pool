@@ -1638,3 +1638,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #59 exact-head local D1 proof remains run `42981807825` SUCCESS on `22200226da4f1af30645cf441a639db6893e9310`; production recovery and independent review remain NOT VERIFIED.
 - Next: establish accepted Security Issuer Authority ownership and verify whether GitHub Actions OIDC can be an accepted upstream workload-authentication input; do not mint or implement grants before governance, key custody, revocation, audit and trusted-time gates are evidenced.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Issuer governance and mature-component feasibility audit
+
+- Default `Основной` HEAD rechecked: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #63 remains OPEN/DRAFT/UNMERGED at `fde6f7c14ec63da92a145c30ef6795331cc314aa`, 2 ahead / 0 behind, docs-only. Exact-head workflow query returned no PR-triggered runs (CI NOT VERIFIED); formal reviews 0; inline threads 0. Active ruleset #26550182 requires PR and thread resolution but 0 approvals; no bypass actors.
+- PR #60 remains OPEN/DRAFT/UNMERGED; design head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`, 2 ahead / 16 behind current default, merge base `864213e2ff5b4fa956ba405dea8137a44d812f49`; formal reviews 0; inline threads 0.
+- MediaHub Wave 486 PR #599 (`824bb2568b2ac8bb3dceb3608366668e99bab95e`) and Wave 487 PR #600 (`05a873e82760d63c8b26dc496b43d3309f4cfbf9`) remain OPEN/DRAFT/UNMERGED. Both exact-head workflow queries returned no PR-triggered runs; formal reviews 0. They select a dedicated Security Issuer Authority target and normative candidate but do not name operational teams, issuer service, KMS/HSM, identity registry, revocation source, trusted clock or audit sink. Wave 528 PR #634 remains open/draft and is a Runner 2 design, not an issuer decision.
+- Cloud Pool repository created 2026-11-04; public metadata: repository ID `1445644538`, owner ID `157891068`. GitHub docs state repos created after 2026-07-15 use immutable default OIDC subject with owner/repository IDs. Expected subject format is documented in report, but actual repo customization setting and live token were NOT VERIFIED; no token requested.
+- Mature projects rechecked from their GitHub READMEs: Ory Hydra, Keycloak, ZITADEL, authentik, SPIRE, OPA and panva/oauth4webapi. No drop-in Recovery Grant issuer found. Avoid building a general IdP; no product selected pending governance/service ownership and free-tier operation proof.
+- Report: `docs/reports/2026-11-11-recovery-issuer-governance-and-oss-fit.md`.
+- No secrets, live tokens, workflow permission changes, dispatch, runtime/schema changes or deployment.
+- Status: Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: source-evidence audit of accepted R-06 and Wave 486/487 clauses to separate accountable functions from named operational owners and deployed service evidence; keep issuer unimplemented.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
