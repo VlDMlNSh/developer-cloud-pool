@@ -2317,3 +2317,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Ancestry/consolidation path VERIFIED/PROPOSED; canonical default-branch ownership NOT YET ESTABLISHED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile the actual decisions and links in both copies; prepare a curated default-based refresh branch only after another exact default HEAD read.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Context Window relative-link portability and current proof-stack recheck
+- Report: [relative-link portability audit](../reports/2026-11-11-context-window-relative-link-portability-audit.md), commit `2da0ba0dc7f3bd8bc9e7288fe34652ad21de1510`.
+- Six latest evidence links (Backend State Authority study; PR #25/#52/#51/#56 lineage; five-commit delta; PR #25 readiness; governance/context ownership; ancestry/consolidation plan) all exist on `docs/cross-chat-continuation-2026-11-06` but all return NOT_FOUND on default `Основной`. Copying the continuation Context Window unchanged into default would create broken links.
+- For a future curated default Context Window, use explicit branch-qualified GitHub URLs for those six docs and state clearly that they are on an unmerged documentation branch, not default-branch production code. Keep detailed reports on continuation until separately reviewed/integrated. Do not wholesale merge the 408-commit branch.
+- Fresh PR metadata: #25 OPEN/DRAFT head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`; #52 OPEN/DRAFT head `c430fe4beecf93a20052f0c3efedb5f8539e4faa` based on #25; #51 OPEN/DRAFT head `32c88e50e173e6b19bc6c61723ab6474a3c08145`; #56 OPEN/DRAFT head `0769b6b5d5eda9c7821804b93db21ded6e0985ef` based on #51; #57 OPEN/DRAFT head `2c263e8a9915f0bc8e0698cde816e87cb2376538`.
+- Exact-head PR-triggered CI read-back: #25 runs `42228269689` and `42228269676` SUCCESS; #52 `42507524428` SUCCESS; #51 `42536377720` SUCCESS; #56 `42825872826` SUCCESS; #57 `42838193405` and `42838193384` SUCCESS. These qualify only the respective proof/test scopes, not hosted runtime, deployment, executor integration or dispatch.
+- No merge, rebase, deployment, dispatch, secrets access or PR state change.
+- Next: prepare a concise canonical Context Window draft for review against Bootstrap/map/checkpoint/roadmap; use branch-qualified evidence links and explicit unmerged-branch warning. Create no default-based branch until that draft is reconciled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
