@@ -150,3 +150,15 @@ Paste this exact phrase into a new chat:
 - Next: reconcile PR evidence and action_required checks, then prepare role/registry expansion with identity, capability, quota, isolation, expiry/revocation and exact-head CI gates; reuse mature components where suitable.
 - Cloud Pool not launched/qualified. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## 12. Parallel chat and background-agent work lanes (2026-11-11)
+
+- Policy: agent dispatch is additive capacity, not a pause or replacement of interactive `/next` work. Chat lane continues independent bounded audits/research/docs/integration prep while GitHub agent workflows run asynchronously. Do not wait unless an action depends on agent output; avoid overlapping paths/tasks.
+- ChatGPT does not execute continuously between user turns. GitHub workflows can continue independently after dispatch.
+- Controller source inspection: only fixed `probe`, `agents` (three fixed child-role prompts), and fixed `review` modes. Issue #301 `/next` does not accept arbitrary custom task payloads. Repeating the generic batch against unchanged SHA risks duplicate work; no new dispatch in this pass.
+- New policy is recorded in governance protocol section 10; report: [Parallel Chat and Background-Agent Operating Model](../reports/2026-11-11-parallel-chat-and-background-agent-operating-model.md). Protocol blob SHA `31b4f4643d58c2f51d3e13f0e791b523a7d58961`.
+- Mature components examined as STUDY / NOT ADOPTED: Temporal (durable workflow/task queues), NATS JetStream (persistent messaging), OpenFGA (authorization), SPIFFE/SPIRE (workload identity). Prefer existing GitHub Actions baseline unless free hosting, operational fit and security gates justify adoption.
+- Next: interactive lane audits controller admission/task contracts and prepares a versioned task-admission proposal with immutable target, bounded task ID, allowed paths, role/capability, owner, expiry, conflict key, evidence, cancellation and no-secret/no-nested-dispatch constraints. Do not bypass controller.
+- Cloud Pool default SHA `6fdcedebeba62715122e43a75c6ad6d926321ce7`; working docs branch baseline before this pass `e92139a24e5ef243272cbf2f6d2be5db4cea35ff`.
+- Wave 317 three agents and controller SUCCEEDED; PRs #635–#637 OPEN, exact-head CI action_required, formal reviews absent. Outputs not qualified.
+- Cloud Pool runtime NOT LAUNCHED / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
