@@ -1654,3 +1654,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime/schema/permission/workflow/secret/resource/dispatch/deployment/merge/rebase changes. Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: narrow/split PR #64 documentation scope, rebase only after bounded plan, rerun exact-head CI and obtain independent review. Hosted D1 remains NOT AUTHORIZED / NOT RUN until owner approval and entitlement/quota evidence.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Continuation checkpoint — 2026-11-11
+
+- Published default-branch recovery checkpoint: `docs/checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md`.
+- Checkpoint commit: `dcab4104e293bf8b202a8aa617934df19136f791`; blob: `undefined`.
+- This checkpoint summarizes current refs, statuses, D1/DO decision, hosted provisioning gate, OSS fit, safety invariants and next bounded work. It is a recovery aid, not provisioning authorization.
+- Latest claim backend audit: `docs/reports/2026-11-11-issue38-claim-backend-current-head-recheck.md`, blob `268dede5d1040b31953b2141444ebbe509f5c11a`.
