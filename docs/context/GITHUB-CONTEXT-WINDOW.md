@@ -3065,3 +3065,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: PR #60 design NOT ACCEPTED; issuer/time/recovery NOT IMPLEMENTED / NOT QUALIFIED; exact-head CI NOT VERIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: identify and govern issuer principal, key lifecycle, revocation authority, trusted-time source, audit sink and retention owner before any runtime recovery proof.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Terminal projection retry/reconciliation conformance audit
+
+- Read-only targets: PR #58 OPEN/DRAFT/UNMERGED at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, base PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; PR #59 OPEN/DRAFT/UNMERGED at `22200226da4f1af30645cf441a639db6893e9310`, base PR #58 head. PR #58 reconciler blob `2f83befc145d39ea60f06fe5b9e9033f89df40c0`; PR #59 adapter blob `1546c2e4172e3767ed8bd5642c7b9c6d95716d11`.
+- Exact-head CI: PR #58 run 42979949181 SUCCESS (fake API only); PR #59 run 42981807825 SUCCESS (local Workers-runtime D1 only; 3 files / 53 tests). No formal reviews or inline threads on either.
+- PR #59 is same-worker recovery only: owner + generation + expiry + attempt ceiling. It is not an independent reaper; caller-supplied `now` is a local test seam. Migration event actor fallback to OLD lease owner is attribution, not authentication.
+- PR #58 conformance gaps: F-01 caller-controlled `allowPost` has no durable retry budget/cooldown and can issue another POST while earlier marker remains delayed; F-02 all `pool:*` labels are treated as owned and may be removed, requiring an exact label ownership contract; F-03 envelope permits multiple terminal labels and needs cardinality reconciliation with Worker lifecycle rules.
+- PR #61 current head `58e255880c4cf4dc24fc2f2ee0791a9b121146ae` run 42991794791 SUCCESS; PR #24 head `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3` runs 42982847600/42982847694 SUCCESS; PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85` runs 42228269689/42228269676 SUCCESS. Draft/local or contract validation only; no independent review.
+- Report: [2026-11-11 Terminal Projection Retry and Reconciliation Conformance Audit](../reports/2026-11-11-terminal-projection-retry-reconciliation-audit.md), report commit `fc3f4329c104160d62d4e8ada6b803c1dad66791`.
+- No source/runtime/schema/workflow/permission/secret changes, merge, hosted provisioning, live GitHub writes, dispatch or deployment. Dispatch remains fail-closed.
+- Status: PR #58 local proof CI VERIFIED but protocol qualification INCOMPLETE; PR #59 local D1 proof CI VERIFIED but hosted backend/independent recovery NOT QUALIFIED; PR #60 issuer/time prerequisite unresolved; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: bounded fake/local amendment to PR #58 proving delayed-visibility retry budget/cooldown, exact label ownership, and one canonical terminal label; then adversarial tests. Do not wire a live sender.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
