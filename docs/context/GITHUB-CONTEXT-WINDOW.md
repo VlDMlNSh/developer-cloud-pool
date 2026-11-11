@@ -2869,3 +2869,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Rotation not implemented: no session family/device lineage, atomic rotate/replacement, single-active-successor invariant or ambiguous-outcome recovery. Do not invent these semantics; obtain explicit authority/concurrency/recovery policy first.
 - Per-session D1 revocation is not production cache/global revocation proof. Caller-supplied `now`, TTL policy, trusted time, owner allowlist, callback/cookie/CSRF, PKCE AEAD/key custody, hosted D1 and independent review remain NOT QUALIFIED/NOT RUN. Protected API fail-closed.
 - PR #61 OPEN/DRAFT/UNMERGED, Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+### PR #61 session revocation temporal guard — exact-head CI closeout
+
+- Corrected head `58e255880c4cf4dc24fc2f2ee0791a9b121146ae` passed [run 42991794791](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42991794791), job `130426199809`: COMPLETED / SUCCESS.
+- Static checks PASS; API/policy 11/11; Workers/D1 3 files / 18 tests PASS; cleanup succeeded. Existing synthetic workflow failure-path diagnostics and checkout Node 20 deprecation warning noted; not CI failures.
+- Report update commit `32bd034122511497420f00d3b7367216c437a9a9`. PR #61 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0; independent security review NOT RUN.
+- Session rotation remains unimplemented: no family/device lineage, atomic replacement, single-active-successor or ambiguous-outcome recovery contract. Per-session revocation is not production/global revocation proof. Trusted time, TTL policy, PKCE AEAD/key custody, Owner Allowlist, callback/cookie/CSRF, hosted D1 and deployment NOT QUALIFIED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; protected API fail-closed.
