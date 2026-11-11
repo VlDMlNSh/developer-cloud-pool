@@ -115,3 +115,17 @@ Paste this exact phrase into a new chat:
 - Live PR #64 snapshot during policy verification: OPEN / DRAFT / UNMERGED; head `e257f2ccf35e739b949da6632fe2a8327204a235`; base `6fdcedebeba62715122e43a75c6ad6d926321ce7`; 18 ahead / 0 behind; changed paths are documentation only. Exact-head PR workflow query returned an empty list: CI NOT VERIFIED. Formal reviews 0; inline review threads 0.
 - This policy/checkpoint update is documentation-only. No runtime code, infrastructure, secrets, permissions, provider dispatch or production resources changed.
 - The working branch may advance again when Context Window is updated. Re-fetch its live HEAD on resume; this checkpoint's ref is a historical observation, not a pinned instruction to use stale code.
+
+
+## 9. Latest continuation recheck — 2026-11-11
+
+- Report: [Contour A live continuation recheck](../reports/2026-11-11-contour-a-live-continuation-recheck.md); report commit `c14a6712a380dcbf7790a1a52870e3b4a2dd0dee`.
+- Default `Основной` still observed at `6fdcedebeba62715122e43a75c6ad6d926321ce7`. The default-branch Context Window remains stale; use the working-branch Context Window plus this checkpoint and always re-fetch live refs.
+- PR #63 and #64 remain OPEN; formal review lists empty. Current exact PR heads were not exposed by the available connector action; do not reuse historical head snapshots as current. Exact-head CI is NOT VERIFIED until a fresh PR-head read and run attribution.
+- PR #37 has CHANGES_REQUESTED review; PR #54 is local D1 contention evidence only. Issue #38 and Issue #1 remain OPEN.
+- Ruleset details and current Actions variable value are NOT VERIFIED in this pass. Historical dispatch=false evidence is not a current read-back. Default Supervisor source still contains privileged dispatch and stale-claim recovery paths; keep dispatch disabled.
+- Recovery Actor named operational owners/issuer/clock/audit sink remain NOT EVIDENCED in project GitHub sources; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED.
+- Mature-component reuse remains: SOPS + age, Cosign; OpenBao FUTURE-GATED; no selected drop-in issuer or private audit sink. Cloudflare Workflows is only an orchestration candidate; no new dependency selected.
+- Next bounded work: fresh-ref and exact-tree audit, then a new branch from current immutable default to reconcile only the minimum PR #39/#54 claim/attempt code. Make the attempt-aware lifecycle canonical, remove/isolate overlapping legacy lease mutation, replace caller-controlled resumability with authenticated durable reconciliation, and add adversarial tests. Do not transplant stale aggregate branches. Hosted D1 remains NOT AUTHORIZED / NOT RUN until Free entitlement/quota, source reconciliation and explicit resource authorization pass.
+- No secrets, dispatch, provider/model calls, resource creation, runtime/schema/permission changes, deployment or merge occurred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Context Window updated on this documentation branch; fetch its current blob SHA before resuming.
