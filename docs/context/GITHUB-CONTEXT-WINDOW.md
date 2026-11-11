@@ -2878,3 +2878,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report update commit `32bd034122511497420f00d3b7367216c437a9a9`. PR #61 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0; independent security review NOT RUN.
 - Session rotation remains unimplemented: no family/device lineage, atomic replacement, single-active-successor or ambiguous-outcome recovery contract. Per-session revocation is not production/global revocation proof. Trusted time, TTL policy, PKCE AEAD/key custody, Owner Allowlist, callback/cookie/CSRF, hosted D1 and deployment NOT QUALIFIED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; protected API fail-closed.
+
+
+## 2026-11-11 — Projection Recovery Actor cross-authority audit
+
+- Report: [Projection Recovery Actor Cross-Authority Audit](../reports/2026-11-11-projection-recovery-cross-authority-audit.md).
+- PR #60 immutable head re-read: `234fb2ee40265e26fac00c69ac1b6192766602cb`, base `864213e2ff5b4fa956ba405dea8137a44d812f49`; OPEN/DRAFT/UNMERGED, formal reviews 0.
+- Capability contract blob `59a4be21516da0e005114acfe015aee7787524dc`; issuer/trusted-time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`.
+- Recovery Actor boundary is sound at design level: terminalize only one exhausted projection outbox; no task retry/requeue/dispatch, task/attempt mutation, GitHub writes, or target/result provenance changes. Task Resolver grant must not be reused; audience and resource authority differ.
+- Issuer is not operationally evidenced. MediaHub Security Issuer Authority remains a target described by PR #599/#600, not an accepted/deployed issuer in this evidence set. Key custody/rotation, service-principal registry, revocation, policy epoch and audit sink remain unresolved.
+- Grant TTL 300 seconds and revocation freshness 30 seconds are upstream target defaults, not qualified runtime guarantees. Caller-provided `now` is test-only. D1 database time semantics and hosted behavior remain NOT QUALIFIED.
+- Atomic nonce consumption + exact-generation dead-letter + immutable event is a well-defined acceptance target, but PR #60 is documentation-only; implementation and hosted contention proof NOT RUN.
+- This does not solve Supervisor task claim/finalization. PR #37 F2/F10 and Issue #38 remain separate blockers; do not merge projection-recovery and task-claim audiences.
+- No issuer/clock/secret/route/Worker/deployment/database mutation/provider call/dispatch performed. PR #60 stays DESIGN / NOT IMPLEMENTED / NOT QUALIFIED. All dispatch gates fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile MediaHub PR #599/#600 issuer governance and acceptance status; keep PR #60 documentation-only until issuer and trusted time are operationally qualified. Separately resolve PR #37 F2/F10 against Issue #38.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
