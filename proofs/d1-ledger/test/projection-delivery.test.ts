@@ -56,7 +56,7 @@ async function createOutbox() {
   const lease = await acquireAttemptLease(
     env.POOL_DB, claimed.taskKey, `terminal-worker-${n}`, NOW + 2, 60
   );
-  expect(lease.decision).toBe("LEASE_ACQUIRED");
+  expect(lease.decision).toBe("ATTEMPT_LEASE_ACQUIRED");
   const finalized = await finalizeTaskAttempt(env.POOL_DB, {
     taskKey: claimed.taskKey, attemptId, workerId: `terminal-worker-${n}`,
     generation: lease.generation, status: "succeeded",
