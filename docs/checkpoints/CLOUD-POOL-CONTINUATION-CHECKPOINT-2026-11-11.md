@@ -221,3 +221,14 @@ Paste this exact phrase into a new chat:
 - Quota architecture must separate upstream provider evidence, atomic internal reservations, and usage reconciliation. Unknown provider quota remains unknown.
 - PR #28/#29 raw GitHub API still reports base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80` although base ref is `Основной`; default ref `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Repo allow_update_branch=false; no branch update performed.
 - Next: inspect PR #39 predecessor and exact logs; isolated quota-specific D1 proof plus independent Worker HTTP concurrency test. No provider calls, secret access, hosted provisioning, or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 12. Claim protocol evidence refresh — 2026-11-11
+
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-contour-a-claim-protocol-evidence-refresh.md
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`; exact run `43010770730` / job `130489510967` SUCCESS, 40/40 tests. Actor attribution correction for projection events, reconciliation queue, projection outbox and exact finalization replay recovery. Local synthetic D1 only. Earlier PR #54 head `ec3f326...` has 50 distinct approvals contention proof run `42537241204` / job `128904147572` SUCCESS per Issue #38 comment.
+- PR #57 head `2c263e8a...`; run `42838193384` / job `129905939447` SUCCESS 33/33; Pool Contract Validation `42838193405` SUCCESS. Synthetic workflow_run evidence only.
+- PR #39 head `ecc7193...`; run `42329993548` / job `128274072508` SUCCESS 19/19; per-approval only.
+- Default decision prefers separate authenticated claim service + transactional conditional-write store; GitHub Issue label PATCH rejected as authoritative CAS; D1 local proof not hosted qualification.
+- PR #54 remains stacked OPEN/DRAFT; independent approval on current head NOT VERIFIED. PR #57 stacked OPEN/DRAFT. No merge/rebase/deployment, credentials, provider calls or dispatch.
+- Next: audit PR #54 current schema/state-machine and compose with PR #57 evidence; issuer authentication and trusted time remain highest-priority blockers. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
