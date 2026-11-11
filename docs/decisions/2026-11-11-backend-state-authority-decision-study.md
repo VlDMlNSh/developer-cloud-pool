@@ -128,3 +128,26 @@ Updated disposition:
 - Workers Free / Paid subscription status: NOT VERIFIED (subscriptions endpoint denied).
 - Backend: NOT SELECTED; Durable Objects remains preferred local prototype candidate only.
 - Remote provisioning: NOT RUN.
+
+
+## 2026-11-11 — PR #52 local Workflow/D1 proof re-audit
+
+PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/52  
+Proof branch: `proof/cloudflare-workflows-vitest-2026-11-08`  
+Implementation head: `34cdf68d44aac22c10871bf42ddf1cbadf31082e`  
+Latest report-only head: `1eb3be17d9146d57a4335b511804946e097651ae`  
+In-progress process recovery report commit: `c430fe4beecf93a20052f0c3efedb5f8539e4faa`.
+
+This audit found stronger local evidence than the earlier summary of the D1 candidate recorded: PR #52 composes a synthetic D1 attempt ledger with an official Cloudflare Workflow step and documents commit-then-timeout retry, duplicate Workflow trigger rejection, explicit restart replay, completed-instance persistence across two Wrangler processes, and in-progress Workflow recovery across abrupt local process termination. The in-progress test uses a named 60-second sleep, terminates the first local process set with SIGKILL, restarts a distinct Wrangler/Workerd process using the same persistence directory, observes the same Workflow instance still running, and confirms one final D1 receipt at the original attempt generation. These are useful local simulator proofs, not hosted Cloudflare qualification.
+
+Exact-head Actions evidence independently read back in this audit:
+- Implementation SHA `34cdf68d44aac22c10871bf42ddf1cbadf31082e`: run `42505474727`, job `128807039896`, COMPLETED / SUCCESS; all steps passed including Workflow + D1 local proof.
+- Report-only SHA `4db46c78e57c4af1b995b1cebeb6c12203e6ab3d`: run `42506472721`, job `128810086646`, COMPLETED / SUCCESS; all steps passed.
+- Report-only SHA `1eb3be17d9146d57a4335b511804946e097651ae`: run `42506744722`, job `128810903390`, COMPLETED / SUCCESS; all steps passed.
+- Process-recovery report SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`: run `42507524428`, job `128813275338`, COMPLETED / SUCCESS; all steps passed.
+
+Review state: PR #52 has zero formal review submissions and zero inline review threads at this inspection. It remains DRAFT / UNMERGED. The local tests use synthetic Miniflare/Workers runtime; there is no remote D1/Workflow deployment, account-level quota/plan verification, distributed hosted contention storm, independent security/provenance review, or production issuer/resolver boundary. The local process restart is not proof of hosted regional failover or all crash windows.
+
+Architectural implication: do not start a second Durable Objects implementation until the D1/Workflow proof is fully lineage-audited and the ADR explicitly chooses whether to retain D1 as primary candidate or run a narrowly scoped comparative DO prototype. A local DO prototype may still be justified to compare transaction semantics, but must reuse the same backend-neutral claim contract and must not create dual authority. PR #52 is itself stacked on PR #25 and remains a proof branch; its current base/merge readiness must be checked before promotion. The account inventory remains: one connected standard account visible, zero D1 databases / Workers scripts / DO namespaces; subscription endpoint 403, so Free entitlement NOT VERIFIED.
+
+Updated disposition: D1 + Workflows local proof = LOCALLY VERIFIED for the stated cases; hosted backend = NOT QUALIFIED; backend selection = NOT SELECTED; PR #52 = DRAFT / UNMERGED; independent review = NOT RUN; dispatch disabled; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
