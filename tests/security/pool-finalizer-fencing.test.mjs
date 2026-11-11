@@ -19,7 +19,7 @@ const runAttempt = "2";
 const generation = claimGenerationLabel(runId, runAttempt);
 const expected = {
   issueNumber: 73,
-  envelopeDigest: envelopeDigest(body),
+  envelopeDigest: envelopeDigest(body),\n  targetSha: "0123456789abcdef0123456789abcdef01234567",
   runId,
   runAttempt,
   workerResult: "success"
@@ -44,7 +44,7 @@ test("finalizer accepts only the exact open issue envelope and current claim gen
   assert.deepEqual(plan.labels, ["triage", "pool:probe-complete"]);
 });
 
-test("body mutation invalidates the immutable task envelope", () => {
+test("finalizer independently binds target SHA to the immutable task envelope", () => {\n  assert.throws(() => buildFinalizationPlan(issue(), { ...expected, targetSha: "1123456789abcdef0123456789abcdef01234567" }), /target sha/i);\n  assert.equal(extractTargetSha(body), expected.targetSha);\n});\n\ntest("missing, duplicate, or malformed Target SHA fields fail closed", () => {\n  assert.throws(() => extractTargetSha("### Worker profile\\nDSH headless probe"), /exactly one/i);\n  assert.throws(() => extractTargetSha(body + "\\n\\n### Target SHA\\n" + expected.targetSha), /exactly one/i);\n  assert.throws(() => extractTargetSha(body.replace(expected.targetSha, "bad")), /invalid/i);\n});\n\ntest("body mutation invalidates the immutable task envelope", () => {
   assert.throws(() => buildFinalizationPlan(issue({ body: body + "\nchanged" }), expected), /envelope/i);
 });
 
