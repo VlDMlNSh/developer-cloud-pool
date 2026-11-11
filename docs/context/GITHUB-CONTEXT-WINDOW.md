@@ -2013,7 +2013,9 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 
 ## Final exact-head synchronization — 2026-11-11
 
-- PR #66 final head after report/context/checkpoint commits: `7007ff9dd983a76117c68066525ff55a84d7d5f5`; base `221f216c00ca7e5596bcc682ba185ad155a10603`; compare AHEAD 43 / BEHIND 0; 11 documentation-only paths.
+- PR #66 head after the preceding checkpoint commit `07fad742d4ca00cd4caf27b351d34b79b0f1c82f`: pending this Context Window commit; base `221f216c00ca7e5596bcc682ba185ad155a10603`; 11 documentation-only paths. The final branch HEAD is this Context Window commit.
 - Final exact-head combined statuses: 0; PR-triggered workflow runs: 0; formal reviews: 0; inline review threads: 0. CI NOT VERIFIED; independent review NOT RUN.
 - Report blob `731544f14831c3a6ad547c9895e01576efb6030b`; report commit `eb2489b4d486ad2fae0acb28bc24db0d60326da2`.
-- Context Window refreshed in this branch; checkpoint synchronization follows in the same pass. Default branch unchanged at `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Context Window and checkpoint refreshed in this branch. Default branch unchanged at `221f216c00ca7e5596bcc682ba185ad155a10603`.
+
+- Checkpoint blob after final synchronization: `28cfd6bd71a607389cd58574a82e48f6e772eeb7`; checkpoint commit: `07fad742d4ca00cd4caf27b351d34b79b0f1c82f`.
