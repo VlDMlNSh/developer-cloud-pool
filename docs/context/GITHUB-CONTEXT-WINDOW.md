@@ -2842,3 +2842,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Context and report are on the documentation continuation branch, not default branch or merged implementation. Current docs branch observed `f088013c314ddb76973aa86c20477a0892b39d5d` at governance check; documentation commits are separate from PR #61 implementation branch.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #37 finalizer fencing audit
+
+- Report: [PR #37 Finalizer Fencing Audit](../reports/2026-11-11-pr37-finalizer-fencing-audit.md).
+- Current PR #37 head re-read: `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; OPEN/DRAFT/UNMERGED, mergeable=true only as GitHub metadata.
+- Worker workflow blob at exact head: `04d63d815d2f7d15cfa80c932b614d559385ff0a`; F1 fixed: `job.workflow_repository/file_path/sha` moved to step-level env. Exact-head CI: #42484039940 SUCCESS and #42484039932 SUCCESS; these are static checks, not reusable Worker runtime proof.
+- F2 remains HIGH/OPEN: Finalizer only checks presence of `pool:claimed`; it does not bind current Issue body/target SHA/profile to immutable task envelope, claim ID, run attempt, generation/fencing or Worker result provenance. Closed/changed/conflicting task states are not fully rejected. GET/PATCH/read-back is not CAS.
+- F10 remains OPEN: terminal label PATCH/read-back and audit comment POST are separate side effects; comment failure/ambiguous response can leave terminal projection without a durable audit event. Requires authoritative atomic state+event and idempotent projection/outbox.
+- Formal CHANGES_REQUESTED review on #37 targets earlier head `5587a4e013507b5be330fd0c49ce1fc836faa946`; F1 corrected since then, F2 persists. No current-head approval observed.
+- Issue #38 and durable claim decision remain controlling: Issue label PATCH + Actions concurrency is not an atomic single-winner claim. Local D1 proofs do not qualify hosted issuer/claim service.
+- PR #60 current head `234fb2ee40265e26fac00c69ac1b6192766602cb`, OPEN/DRAFT/UNMERGED, reviews 0. Its Recovery Actor contract separates outbox recovery authority from task Resolver/Supervisor/Worker and requires exact scoped single-use grant, atomic nonce/dead-letter/event and trusted time; issuer/key custody/rotation, trusted time, hosted backend and production isolation remain unresolved. Design only, not implementation/qualification.
+- Dispatch remains fail-closed. Current live governance approval enforcement NOT VERIFIED. No worker, DSH, provider, deployment, secret, or production resource was exercised.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define and implement F2/F10 as a fenced/idempotent terminal transition against the authoritative claim/outbox store, reconcile Issue #38 claim envelope and PR #60 recovery issuer/time boundary, then exact-head CI and independent audit.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
