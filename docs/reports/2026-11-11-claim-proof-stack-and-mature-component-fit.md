@@ -10,7 +10,7 @@
 
 - PR #37: OPEN / DRAFT / UNMERGED; head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Compared with current default: 36 commits ahead / 19 behind, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Existing formal review is CHANGES_REQUESTED. Exact-head workflow runs `42484039940` and `42484039932` are SUCCESS; these are static/contract checks and do not prove live reusable Worker execution.
 - PR #54: OPEN / DRAFT / UNMERGED; head `15a09c910f52553c59796260131a6b5a4a39c15f`, base `b9067dc7d06245893cd4e208f6215438efe5ca64`. Compared with current default: 132 commits ahead / 19 behind, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Exact-head local CI run `43010770730` is SUCCESS. The only formal review returned is COMMENTED, not APPROVED. This source stack is not integrated with current default.
-- PR #64: OPEN / DRAFT / UNMERGED; head `f9ca7c99a5a6e753619201d9f7f3d80254606e62`, base current default `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Compare: 10 commits ahead / 0 behind. Exact-head PR workflow query returned no runs; reviews = 0; inline threads = 0. CI remains NOT VERIFIED.
+- PR #64: OPEN / DRAFT / UNMERGED; final head `9949e857a0fd8d4ff9bc8836e4c511feac65c50b`, base current default `6fdcedebeba62715122e43a75c6ad6d926321ce7`. Compare: 12 commits ahead / 0 behind. Exact-head PR workflow query returned no runs; reviews = 0; inline threads = 0. CI remains NOT VERIFIED.
 - Issue #38 remains OPEN. No hosted D1 or Worker resources exist in the connected Cloudflare account inventory; account-specific Workers Free eligibility remains NOT VERIFIED.
 
 ## 2. What PR #54 actually proves
@@ -84,7 +84,7 @@ No new component is selected or added as a dependency in this pass. Cloudflare W
 - Claim/lease implementation: DESIGN / LOCAL PROOF ONLY; production qualification NOT VERIFIED.
 - PR #37: OPEN / DRAFT; historical CHANGES_REQUESTED; live Worker path NOT QUALIFIED.
 - PR #54: OPEN / DRAFT; 132 ahead / 19 behind; not integrated.
-- PR #64: OPEN / DRAFT; 10 ahead / 0 behind; exact-head CI NOT VERIFIED; reviews 0; threads 0.
+- PR #64: OPEN / DRAFT; final head `9949e857a0fd8d4ff9bc8836e4c511feac65c50b`, 12 ahead / 0 behind; exact-head CI NOT VERIFIED; reviews 0; threads 0.
 - Cloudflare free entitlement: NOT VERIFIED; no resources created.
 - Dispatch: FAIL-CLOSED.
 - Contour A: BLOCKED / NOT ACCEPTED.
