@@ -2,12 +2,14 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-11 — Supervisor claim/recovery remediation contract and N01–N20 negative test matrix
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (read-back 2026-11-11)
+Documentation continuation branch: `docs/recovery-actor-component-fit-2026-11-11`
+Latest documentation commit: `21e3ff73b36a21d7c89b232422435e6d300e850d` (documentation branch; PR #63 remains open/draft/unmerged). Latest remediation report blob: `b8827f7c1b96dabede08d126e36db2abb0d8a247`; checkpoint blob: `c71c6ec1d216dbc224a624fd02ebb929424d235a`.
+Latest-state note: dated snapshots below are historical evidence; the most recent Recovery Actor sections at the end of this file supersede older PR/head/status observations.
+
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -1625,4 +1627,247 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Governance Issue #1 current active Ruleset state not independently fetched in this pass; 2026-11-04 issue snapshot states required approvals=0. Governance remains NOT VERIFIED.
 - PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
 - Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor issuer and component-fit audit
+
+- Documentation-only report created on `docs/recovery-actor-component-fit-2026-11-11`, immutable base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Report: `docs/reports/2026-11-11-recovery-actor-component-fit-audit.md`; report commit `303c9939e52023f1a895c1a0d1acf95dd86a5f4b`.
+- Existing component fit: GitHub Actions OIDC is a candidate workflow-identity attestation input, not the Recovery Grant issuer; SPIRE is operationally heavy for the current ephemeral GitHub-hosted runner/free-infrastructure constraint; Ory Hydra is a full OAuth/OIDC server but does not remove the one-use D1 capability boundary; OPA evaluates policy but does not authenticate or issue grants; oauth4webapi is a client library, not an issuer.
+- No new issuer/policy/runtime dependency selected. No runtime, schema, permission, workflow, secret, dispatch, or deployment changes.
+- PR #60 design branch currently diverges from `Основной` by 7 ahead / 16 behind (merge base `864213e2ff5b4fa956ba405dea8137a44d812f49`); two documentation files only. Reviews: 0; inline threads: 0; exact-head CI NOT VERIFIED.
+- PR #59 exact-head local D1 proof remains run `42981807825` SUCCESS on `22200226da4f1af30645cf441a639db6893e9310`; production recovery and independent review remain NOT VERIFIED.
+- Next: establish accepted Security Issuer Authority ownership and verify whether GitHub Actions OIDC can be an accepted upstream workload-authentication input; do not mint or implement grants before governance, key custody, revocation, audit and trusted-time gates are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Issuer governance and mature-component feasibility audit
+
+- Default `Основной` HEAD rechecked: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #63 remains OPEN/DRAFT/UNMERGED at `fde6f7c14ec63da92a145c30ef6795331cc314aa`, 2 ahead / 0 behind, docs-only. Exact-head workflow query returned no PR-triggered runs (CI NOT VERIFIED); formal reviews 0; inline threads 0. Active ruleset #26550182 requires PR and thread resolution but 0 approvals; no bypass actors.
+- PR #60 remains OPEN/DRAFT/UNMERGED; design head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`, 2 ahead / 16 behind current default, merge base `864213e2ff5b4fa956ba405dea8137a44d812f49`; formal reviews 0; inline threads 0.
+- MediaHub Wave 486 PR #599 (`824bb2568b2ac8bb3dceb3608366668e99bab95e`) and Wave 487 PR #600 (`05a873e82760d63c8b26dc496b43d3309f4cfbf9`) remain OPEN/DRAFT/UNMERGED. Both exact-head workflow queries returned no PR-triggered runs; formal reviews 0. They select a dedicated Security Issuer Authority target and normative candidate but do not name operational teams, issuer service, KMS/HSM, identity registry, revocation source, trusted clock or audit sink. Wave 528 PR #634 remains open/draft and is a Runner 2 design, not an issuer decision.
+- Cloud Pool repository created 2026-11-04; public metadata: repository ID `1445644538`, owner ID `157891068`. GitHub docs state repos created after 2026-07-15 use immutable default OIDC subject with owner/repository IDs. Expected subject format is documented in report, but actual repo customization setting and live token were NOT VERIFIED; no token requested.
+- Mature projects rechecked from their GitHub READMEs: Ory Hydra, Keycloak, ZITADEL, authentik, SPIRE, OPA and panva/oauth4webapi. No drop-in Recovery Grant issuer found. Avoid building a general IdP; no product selected pending governance/service ownership and free-tier operation proof.
+- Report: `docs/reports/2026-11-11-recovery-issuer-governance-and-oss-fit.md`.
+- No secrets, live tokens, workflow permission changes, dispatch, runtime/schema changes or deployment.
+- Status: Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: source-evidence audit of accepted R-06 and Wave 486/487 clauses to separate accountable functions from named operational owners and deployed service evidence; keep issuer unimplemented.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor R-06 and authority-source evidence audit
+
+- MediaHub source snapshot: `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`. Wave 486 decision blob `13e6745463dbc05a7c188423bb45ffb2b210c789` / report `7b778ebe67105d50afb00466965cdcfb5353a262`; Wave 487 amended contract blob `1200d343139c8e67a826902b3ade09d4987c537d` / report `c9dfa2e63683ac52223a890ad0d96ab4f950aedd`. PR #599/#600 remain OPEN/DRAFT/UNMERGED, no exact-head PR workflow runs returned and formal reviews 0.
+- MH-12 Security Architecture blob `cf4ebfd5bf471ca676f075c51d3a24906504e490`: ARCHITECTURE COMPLETE / GOVERNANCE REVIEW REQUIRED; governance acceptance NOT GRANTED; implementation NOT AUTHORIZED. MH-12 unknowns blob `97f08824fb858dd4506876729ae37d610140c3e8` retains PKI, trust root, secret store and cloud identity gaps.
+- MH-13 privacy/data-governance blob `e732ff9cacbc9c1189bd83306cdff30906326cf0`: RECONSTRUCTED / PROPOSED, acceptance NOT VERIFIED, production implementation NOT AUTHORIZED; exact ownership/stewardship and retention/legal/deletion semantics unknown. MH-21 retention blob `8dfe3b619be593c3ec57948e350671895827ae8b` is PROPOSED / provider evidence required.
+- R-06 assigns functional accountability to Security Audit (event integrity/access) and Privacy/Data Governance (classification/retention), but no named operational teams, on-call operators, issuer service, KMS/HSM, principal registry, revocation publisher, trusted clock, audit sink or privacy/legal approver is evidenced. Do not invent owners or deploy.
+- Mature GitHub audit/key candidates inspected: immudb (cryptographically verifiable immutable database), Sigstore Rekor (software supply-chain transparency log; v1 maintenance, v2 developing), OpenBao (secrets/keys/encryption/leases/revocation/audit), Ory Hydra (OAuth/OIDC issuer). No one component is a drop-in solution. immudb/OpenBao need persistent operations; Rekor is not suitable for private operational audit by default; Hydra is not the grant+atomic D1 transition.
+- Report: `docs/reports/2026-11-11-recovery-r06-authority-and-audit-component-audit.md`.
+- No secrets/tokens/keys/provider calls, dispatch, runtime/schema/permission changes, deployment or merge.
+- Status: R-06 roles identified in draft target only; named operational owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: no-code search of accepted canonical governance records for an owner-assigned identity/audit service; if absent, keep blocker explicit and perform a free-only hosting fit ADR only when a real service candidate is evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor existing-security-component and authority-gap reconciliation
+
+- MediaHub source snapshot: `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; Baseline 2.0 blob `1147ecd39cfe6f0e6ba2d7a62b6bf68c71c0e24f` ACCEPTED / CANONICAL.
+- MediaHub component architecture decisions blob `42b2701f0d6a1014435e96118e41e33025dbff08` (ACCEPTED BASELINE), component integration boundary blob `d80f369ed126ac470ab60296559781e45cd203a4` (ACCEPTED ARCHITECTURAL BASELINE), registry blob `3ad109ba5ec9b095d0fac851514caadcefbe2f69`.
+- Existing selected components: SOPS + age are CURRENT_FOUNDATION / selected for encrypted configuration/secrets; Cosign selected for artifact signing/verification. These must be reused where compatible, not rebuilt. They do not provide a dynamic Recovery Grant issuer or operational audit sink. Cloud Pool remains a separate repo/control plane; no SOPS/age implementation was found there by repository-scoped search, and MediaHub selection is an evaluation input, not automatic deployment approval.
+- OpenBao is registry `target-candidate` / `native_future_gated`; requires a proven capability gap, security review, recovery/rotation and HA/local-mode fit. Do not activate as a speculative second secret authority. Latest stable release metadata checked: SOPS v3.13.3 (2026-07-23), age v1.3.2 (2026-08-29), OpenBao v2.7.2 (2026-10-26).
+- immudb remains an unselected candidate for tamper-evident audit storage only; Rekor is supply-chain transparency, not private operational audit; Ory Hydra remains general OAuth/OIDC, not the atomic recovery grant + D1 transition.
+- MH-12 Audit blob `ab6e1c652790fd9088ac26b595050774611da2fc` states integrity/access/privacy-aware retention/bounded storage/controlled export requirements, but no backend or operator. MH-12 Recovery blob `fdfb2ae6ecb7cc1ed1daecb18ad12aaf2a1c6149` requires explicit recovery identity, operator separation and audit. MH-12 index remains GOVERNANCE REVIEW REQUIRED / acceptance NOT GRANTED / implementation NOT AUTHORIZED. MH-12 unknowns still include recovery trust root, key storage and cloud identity.
+- CPRG protocol blob `fe486dcc5723788a90351150f5a0484b74b30692` defines distinct logical Trust Root, CPRG Authority, Recovery Authority and Audit Verifier roles but is architecture-only; no trust-root generation/production keys or recovery quorum selected. Architecture gaps blob `13c3a158ed9c925eaefcd6fe106577bc425f765b` retains G04 key management/root-of-trust, G25 audit failure and G27 recovery quorum/custody gaps.
+- Wave 486/487 remain OPEN/DRAFT/UNMERGED. They assign functional R-06 roles but do not name operational teams/operators/services. MH-13 remains proposed and exact stewardship/retention unknown. Issue #127 MH-12 qualification remains queued / NOT YET EXECUTED.
+- Pool PR #60 exact head `234fb2ee40265e26fac00c69ac1b6192766602cb`: 7 ahead / 16 behind current default, only 2 documentation files, no exact-head PR runs, reviews 0, inline threads 0. PR #63 current head `c58e68e0e9a6634a29abdeacb20c0d1e2ece1723`: 6 ahead / 0 behind, four docs paths, CI NOT VERIFIED, reviews 0, threads 0.
+- Report: `docs/reports/2026-11-11-recovery-existing-security-components-and-authority-gap.md`.
+- Status: SOPS/age existing selected encryption primitives; OpenBao FUTURE_GATED; audit sink and named operational owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue no-code search in accepted governance records for operational role appointments and service ownership. If none exists, keep the blocker explicit; do not create a duplicate vault, issuer, or audit database by assumption.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery Actor operational-owner assignment source search
+
+- Report: `docs/reports/2026-11-11-recovery-operational-owner-assignment-search.md`, commit `1465e733cd41a4792456771d820eed9f0be240b9`.
+- MediaHub default source snapshot `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; canonical Baseline 2.0 is accepted, but MH-12 remains ARCHITECTURE COMPLETE / GOVERNANCE REVIEW REQUIRED and implementation NOT AUTHORIZED. MH-13 remains RECONSTRUCTED / PROPOSED, acceptance NOT VERIFIED, with exact stewardship and retention/legal/deletion semantics unresolved.
+- Bounded GitHub repository search for named operational appointments returned no accepted source naming Security Issuer operator, Trust Custodian/key-custody team, principal registry/revocation operator, trusted-time owner, audit-sink/on-call operator, privacy/legal approver or recovery quorum. The result is limited to project GitHub evidence, not external organizational records.
+- Wave 485 PR #598 remains OPEN/DRAFT/UNMERGED; Wave 486 PR #599 and Wave 487 PR #600 remain OPEN/DRAFT/UNMERGED. #599/#600 exact-head PR workflow-run lists are empty; formal reviews are empty. Issue #301 remains OPEN and explicitly orders A0 issuer and R-06 authority gates first.
+- Accepted MediaHub component decisions and integration boundary already select SOPS + age for encrypted configuration/secrets and Cosign for artifact signatures/provenance. OpenBao remains TARGET-CANDIDATE / FUTURE-GATED; immudb remains an unselected audit-storage candidate; Rekor is supply-chain transparency rather than private operational audit; Hydra is not the consumer-specific one-use Recovery Grant + atomic D1 transition. No duplicate vault, issuer, or audit sink should be built by assumption.
+- Pool default `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; active ruleset #26550182 applies to that branch (PR required; 0 approval threshold; review-thread resolution required; no bypass actors).
+- PR #60 remains OPEN/DRAFT/UNMERGED at `234fb2ee40265e26fac00c69ac1b6192766602cb`, 7 ahead / 16 behind current default, exact-head CI NOT VERIFIED, reviews 0 / threads 0.
+- PR #63 post-update read-back: OPEN/DRAFT/UNMERGED; head `9ddf2654a76d781cec21532a5f6b611ee9689b32`, compare 10 ahead / 0 behind, six documentation paths (503 additions / 4 deletions), exact-head PR workflow list empty (CI NOT VERIFIED), formal reviews 0, inline threads 0. `mergeable=true` is not acceptance. Any subsequent docs commit changes the head and requires fresh exact-head verification.
+- Recovery Actor: NOT IMPLEMENTED / NOT QUALIFIED. Production dispatch: FAIL-CLOSED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- No secrets, live tokens, credentials, key material, provider calls, workflow dispatch, runtime/schema/permission changes, deployment or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+# 2026-11-11 — live repository and governance reconciliation
+
+- Status: LIVE REFS RECONCILED / CONTOUR A BLOCKED / NOT ACCEPTED.
+- Scope: one read-only governance, branch, PR, issue and exact-head CI pass; no code/runtime changes.
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`.
+- Default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Documentation work branch: `docs/recovery-actor-component-fit-2026-11-11`; immutable starting HEAD `f2418604d050a2eaa9aa8ac7d767cc91fe2f626e`; compare to default: 11 ahead / 0 behind; merge base is the current default HEAD.
+- PR #63: OPEN / DRAFT / UNMERGED; head `f2418604d050a2eaa9aa8ac7d767cc91fe2f626e`; base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; 11 ahead / 0 behind; 6 documentation paths; formal reviews 0; inline threads 0; exact-head PR workflow runs empty; combined status contexts empty. Exact-head CI = NOT VERIFIED. mergeable=true is not acceptance.
+- PR #64: OPEN / DRAFT / UNMERGED; head `95d237c753bec96abe9add621140928511047599`; base current default; hosted D1 claim qualification explicitly NOT RUN; do not infer concurrency from sequential SQL execution. It is documentation-only.
+- Issue #38 (durable single-use Supervisor claims) remains OPEN. Issue #63 (Recovery Actor issuer components) remains OPEN. Issue #1 governance gate remains OPEN.
+- Active ruleset #26550182: enforcement ACTIVE, selector exactly `refs/heads/Основной`; requires PR, deletion and non-fast-forward protections; required approvals = 0; review-thread resolution required; no bypass actors; current user cannot bypass. Thus PR requirement is active but independent approval is NOT enforced by this ruleset.
+- Default branch API metadata says `protected=false`; do not confuse that flag with the active repository ruleset. Ruleset is the effective observed control.
+- PR #63 source audit confirms only documentation changes, no runtime/schema/permission/workflow/secret/dispatch/deployment modifications. Its Recovery Actor analysis retains existing SOPS+age for encrypted config/secrets and Cosign for artifact provenance; OpenBao remains FUTURE-GATED; immudb remains an unselected audit-storage candidate; Rekor is not a private operational audit sink; Hydra is not a consumer-specific atomic Recovery Grant issuer.
+- Operational issuer owner, Trust Custodian, principal registry/revocation publisher, trusted clock, audit-sink operator, privacy/legal approver and recovery quorum remain NOT EVIDENCED in accepted project records. Wave 486/487 role assignments are draft governance targets, not accepted operational appointments.
+- Mature component reuse check: no drop-in Recovery Grant issuer/audit service was found; reuse current selected components, do not add another vault/IdP/logging service by assumption.
+- No secrets or token values accessed; no workflow dispatch, provider call, D1/Worker provisioning, deployment, merge, billing or permissions/variables mutation.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED. Production dispatch remains FAIL-CLOSED.
+- Next bounded action: continue source-level authority audit of the default Supervisor/Worker path against the claim/outbox/recovery contracts and identify exact code-level blockers; do not wire or dispatch until issuer, trusted time, revocation, audit and independent review gates are qualified.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final read-back after this reconciliation
+
+- Documentation branch current HEAD before this final context-only append: `c8ecd20582fc46e4f7ccd90f9769cb8b932aa342`; context blob `18bce4604765521ea47bb854e7ede47d92f7e977`; checkpoint blob `f8229941f77679d12af5ce6f96d65e543ce13e0e`; report blob `c436270eb45f98bcde79374a14a7eafafcab4c27`.
+- PR #63 head is advanced by the context/checkpoint/report commits and remains documentation-only. Recheck PR head and exact-head CI before relying on any prior run. The earlier exact-head query for `f2418604d050a2eaa9aa8ac7d767cc91fe2f626e` returned no PR workflow runs and no combined statuses; NOT VERIFIED.
+
+
+## 2026-11-11 — default Supervisor/Worker/Claim/Recovery source audit
+
+- Report: `docs/reports/2026-11-11-default-supervisor-worker-claim-recovery-source-audit.md`, report commit `4858b22ee72611b45d80f09efb1b832b01055ea4`.
+- Immutable default target `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; audited blobs: Supervisor script `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; Supervisor workflow `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; Worker workflow `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; claim decision `830a549809d10015d5662da562cff82710c3aa11`.
+- Findings: Issue label PATCH is not CAS; ambiguous dispatch error returns task to ready; stale recovery requeues after absence in bounded 100-run listing and mutable issue age; Worker validates projection label/body but not issuer capability, revocation, trusted time, nonce or generation; Worker report can overwrite newer state without run/generation/envelope fencing; Supervisor has workflow-level `issues:write` + `actions:write`.
+- Current Worker only runs pinned DSH headless package/config smoke; no provider credentials/model call; this does not qualify general agent execution.
+- Reuse existing PR #39/#54 Workers/D1 claim/outbox adapters and local proofs as experimental reference only; PR #37 narrows dispatch boundary but remains unmerged and does not establish CAS. Hosted D1 remains NOT QUALIFIED. No stronger drop-in repo identified for this project's issuer-bound claim + atomic outbox + fencing contract.
+- Remediation contract: issuer-authenticated one-use claim API; atomic claim+outbox; indeterminate ambiguous dispatch; immutable envelope/claim/generation; generation-fenced finalizer/recovery; least-privilege job split; hosted contention/fault injection; independent security review.
+- Report commit `4858b22ee72611b45d80f09efb1b832b01055ea4`; checkpoint commit `d5dd3ea579e1a7a65ba27aaff2389841dbdeb7eb`. Checkpoint blob `bbbbbccce288c88bd4786d88ad902409c389f6a1`.
+- No code/runtime/workflow/permission/secret/variable/schema changes, provider calls, dispatch, resource creation, billing, merge or deployment.
+- Status: source audit VERIFIED; implementation NOT STARTED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare a source-bound remediation contract and negative test matrix for F1–F6, documentation/test-design only until issuer/trust/revocation/time/audit owners and hosted-service authorization are evidenced.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Supervisor claim/recovery remediation contract and negative matrix
+
+- Report: [remediation contract and N01–N20 matrix](../reports/2026-11-11-supervisor-claim-recovery-remediation-contract-and-negative-test-matrix.md), creation commit `a0524fc105e571dfd921fad680cb7ed56ac8ee96`.
+- New continuation checkpoint: [2026-11-11 Supervisor claim/recovery checkpoint](../checkpoints/2026-11-11-supervisor-claim-recovery-checkpoint.md), creation commit `ce6d5f66a13eca180e1a538f8b114a88fb5788d6`.
+- Default immutable source target remains `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; documentation branch at start `6836cd6a72b306244944ad552fac52d33f81de49`.
+- Contract invariants now explicit: task-wide single active claim; one-use grant; issuer/revocation/trusted-time validation before mutation; ambiguous dispatch = indeterminate; monotonic generation fencing; positive-evidence recovery; Issue projection is non-authoritative; job-level least privilege; attributable append-only audit; fail-closed.
+- Negative matrix N01–N20 covers concurrent same-task claims, same-grant replay, distinct approvals for same task, forged/revoked issuer, trusted-time boundary, commit response loss, ambiguous dispatch, authoritative rejection, delayed run visibility, worker crash at every boundary, stale finalizer, envelope mutation, Issue mutation, audit actor attribution, duplicate outbox delivery, privilege escalation, secret/account isolation, audit sink failure and restore/replay rollback.
+- Reuse evidence rechecked: PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`, exact-head run `43010770730` SUCCESS; actor attribution correction and assertions exist in local Workers/D1 scope. PR #39 exact-head run `42329993548` SUCCESS at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; PR #37 exact-head runs `42284051309` and `42284051311` SUCCESS at `5587a4e013507b5be330fd0c49ce1fc836faa946`. These are historical local/static proofs, not hosted D1 or integrated production acceptance.
+- Critical new emphasis: per-approval uniqueness does not prove one active claim per task across two distinct approvals; N03 is mandatory. Atomic enqueue is not full delivery/consumer/lease/recovery qualification.
+- At this recheck, PR #63 and #64 remain OPEN/DRAFT/UNMERGED. Their current head SHAs and exact-head CI must be refreshed from live PR refs before any merge/dispatch decision; prior checked heads had empty PR-triggered run lists and combined statuses (NOT VERIFIED). Current documentation branch HEAD is `21e3ff73b36a21d7c89b232422435e6d300e850d`; its PR-triggered run list and combined statuses are empty (NOT VERIFIED). Ruleset #26550182 remains active only on `refs/heads/Основной`, requires PR but 0 approvals, thread resolution, no bypass actors.
+- This pass is design/test planning only. No code/runtime/schema/workflow/permission/secret/variable changes, test execution, provider calls, dispatch, resource creation, deployment or merge.
+- Status: contract DESIGN; N01–N20 NOT RUN; hosted D1 NOT QUALIFIED; issuer/trust/revocation/time/audit owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: map N01–N20 to actual PR #36/#39/#54 source/test files and identify smallest missing task-wide uniqueness and consumer/fencing additions. No hosted provisioning or dispatch while authority and free-tier authorization remain unproven.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (claim/recovery matrix pass)
+
+- Documentation branch current HEAD at this refresh: `25258bb6bf9b403ac3ebff0c32468530ac9dfd5f`; this is PR #63 head, still OPEN / DRAFT / UNMERGED, base `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #64 remains OPEN / DRAFT / UNMERGED at `95d237c753bec96abe9add621140928511047599`, same base.
+- Exact-head PR-triggered workflow runs and combined status contexts for PR #63 head `25258bb6bf9b403ac3ebff0c32468530ac9dfd5f`: empty; CI NOT VERIFIED. PR #64's previously checked head likewise returned no runs/statuses; refresh again before any decision.
+- Remediation contract report: `docs/reports/2026-11-11-supervisor-claim-recovery-remediation-contract-and-negative-test-matrix.md`, blob `b8827f7c1b96dabede08d126e36db2abb0d8a247`. It defines N01–N20 and acceptance gates; design only, tests NOT RUN.
+- Checkpoint: `docs/checkpoints/2026-11-11-supervisor-claim-recovery-checkpoint.md`, blob `c71c6ec1d216dbc224a624fd02ebb929424d235a`.
+- Issues #38 and #63 remain OPEN. Default branch remains `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- PR #54/#39/#37 local historical proof remains non-production evidence; hosted D1, issuer/revocation/trusted-time/audit ownership and integrated recovery are NOT QUALIFIED / NOT EVIDENCED.
+- No code/runtime/schema/workflow/permission/secret/variable changes, tests, provider calls, dispatch, provisioning, deployment or merge. Production dispatch remains FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: map N01–N20 to exact PR #36/#39/#54 source and tests, prioritizing task-wide uniqueness across distinct grants, outbox consumer idempotency, lease fencing and stale finalizer rejection. No hosted provisioning or dispatch until authority and free-tier authorization are proven.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (source-to-test mapping)
+
+- Source-to-test mapping report: `docs/reports/2026-11-11-claim-recovery-source-to-test-mapping.md`; report commit `4084df588357260e666a76b64d4438fa87f77eb5`.
+- Checkpoint: `docs/checkpoints/2026-11-11-claim-recovery-source-test-checkpoint.md`; checkpoint commit `5e196db85af64464ba9334332f6ffc43fd526266`.
+- PR #54 local proof includes 50 concurrent distinct approvals attached to one logical task and one task-level outbox; also attempt fencing/finalization and projection delivery lease fencing. This corrects earlier N03 "missing regression" wording: N03 has local proof, not hosted qualification.
+- PR #51 local proof persists indeterminate attempts/reconciliation queue but no authorized resolver. `acquireAttemptLease` still accepts caller-controlled `resumable=true` for expired running attempt takeover.
+- Legacy `task-lease.mjs` and attempt-aware `task-attempts.mjs` lifecycle APIs coexist; no cross-API negative test establishes a single canonical state machine. Highest priority is selecting attempt-aware lifecycle and retiring/hard-disabling legacy API.
+- PR #53 pure finalizer tests cover immutable body digest, closed issue, run/attempt generation mismatch and duplicate finalization, but exact-head workflow run/status query empty (NOT VERIFIED).
+- PR #54 projection outbox local tests do not prove a real GitHub consumer's external side-effect idempotency after accepted-write/lost-ack.
+- Proof PRs #36/#39/#40/#50/#51/#53/#54 remain OPEN/DRAFT/UNMERGED on divergent/stacked bases. Historical successful exact-head runs do not establish an integrated build.
+- Ruleset #26550182 still requires zero approvals; independent review is not governance-enforced. No independent approved security review evidenced.
+- No code/runtime/schema/workflow/permission/secret/variable changes, tests, provider calls, dispatch, provisioning, deployment or merge in this pass. Production dispatch FAIL-CLOSED; hosted D1 and trust authorities NOT QUALIFIED.
+- Next: formalize one canonical attempt lifecycle and a verifiable reconciliation capability; specify cross-API negative tests and accepted-write/lost-ack consumer tests before any runtime change.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (N01–N20 source/test traceability)
+
+- Documentation branch at start of this pass: `4084df588357260e666a76b64d4438fa87f77eb5`; report creation commit `2f7f149d3d4205411f3d8070e686d7576395faf8`; corrected traceability report update commit `3f2d51afc9948d1693004bcbad9b76a89ab9f0c5`; checkpoint update commit `4b5afec5219440f282f8e2092aa1a70357e01cdc`.
+- Report: `docs/reports/2026-11-11-source-to-test-traceability-n01-n20.md`. It maps N01–N20 to exact source/test files and separates LOCAL_PROOF, GAP, NOT RUN and hosted NOT QUALIFIED.
+- PR #54 evidence correction: 50-way distinct-approval contention converges on one canonical task/task-level outbox; generation-fenced task leases and immutable attempt lifecycle tests also exist. Historical local D1 proof only.
+- PR #51: indeterminate attempt/reconciliation queue is persisted, but lease takeover still accepts caller-supplied `resumable=true`; no independent signed/authorized reconciliation capability demonstrated.
+- Legacy task-lease and immutable attempt APIs coexist. No end-to-end proof that only one canonical lifecycle controls execution, recovery and finalization.
+- Projection outbox local lease/retry/ack evidence exists; external GitHub accepted-write/lost-ack idempotency remains NOT VERIFIED.
+- Exact-head PR-triggered CI: #36 runs 42329438308/42329438351 SUCCESS; #39 42329993548 SUCCESS; #40 42489887940 SUCCESS; #50 42533097813 SUCCESS; #51 42536377720 SUCCESS; #54 43010770730 SUCCESS. PR #53/#63/#64 returned no runs. Combined statuses empty for checked SHAs. Empty = NOT VERIFIED.
+- Ruleset #26550182 active on `Основной`, PR required, zero required approvals, threads resolved, no bypass. Independent security approval is not enforced.
+- No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Dispatch FAIL-CLOSED; hosted D1 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: hard-disable legacy lifecycle; replace caller-controlled resumability with issuer-authorized reconciliation capability; test external side-effect lost-ack behavior; integrate attempt generation/execution identity with Worker finalizer.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (recovery/projection follow-up PRs)
+
+- Review report: `docs/reports/2026-11-11-recovery-projection-follow-up-review.md`; creation commit `f95ca5e528a2b4ec72c817da08234297d6b39cd0`.
+- Checkpoint updated at commit `136f08a9406c2fe073ff3415584f5a31b3663f1e`.
+- PR #56 `0769b6b5d5eda9c7821804b93db21ded6e0985ef`: removes caller-controlled `resumable`; exact-head local D1 run 42825872826 SUCCESS. Still DRAFT/unmerged; legacy lifecycle and trusted resolver unresolved.
+- PR #58 `6f7953e4abec3cc564984ee3635cdb7717ae5d5`: fake GitHub projection reconciler; no exact-head workflow/status. Sequential lost-response and delayed-visibility simulation only. `allowPost` remains caller-controlled; concurrent two-reconciler duplicate POST race is not tested or prevented.
+- PR #59 `22200226da4f1af30645cf441a639db6893e9310`: bounded retry/backoff/five-attempt dead-letter; exact-head local D1 run 42981807825 SUCCESS. Expired dead-letter still requires original worker ID and caller time.
+- PR #60 `234fb2ee40265e26fac00c69ac1b6192766602cb`: projection-specific issuer/trusted-time design only. Issuer owner, principal auth, key custody, revocation source, production clock and audit sink remain unresolved; exact-head CI NOT VERIFIED.
+- Focused mature GitHub repository search for D1 transactional outbox consumers and GitHub Actions outbox reconciliation returned no candidate repos. Keep existing Workers Vitest + D1 substrate; no replacement engine selected.
+- No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. PR #56/#58/#59/#60 all OPEN/DRAFT/UNMERGED. Dispatch FAIL-CLOSED; hosted D1 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: persistent no-repost marker state and concurrent reconciliation tests; bind PR #60 to accountable issuer/time/audit services; retire legacy lease lifecycle; integrate generation with Worker finalizer.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — cross-PR consistency and checkpoint correction
+
+- Cross-PR evidence audit: `docs/reports/2026-11-11-cross-pr-evidence-consistency-audit.md`; creation commit `87b1769143681e48ca5d8b0ffac0662786b8aafc`.
+- Updated claim/recovery checkpoint: `docs/checkpoints/2026-11-11-claim-recovery-source-test-checkpoint.md`; update commit `2f5fc1b812b58e665b39131a1ea3ca807815a940`, blob `01e3307d53b5fbc10450839bb98d65318d98dd36`.
+- Correction: the old checkpoint's statement that `acquireAttemptLease` accepts caller-controlled `resumable=true` is superseded by PR #56 HEAD `0769b6b5d5eda9c7821804b93db21ded6e0985ef`; exact-head local D1 run 42825872826 SUCCESS. PR #56 remains DRAFT/unmerged; legacy lease API coexistence and trusted resolver remain unresolved.
+- PR #63 HEAD `886f45ad52b914c938c1898c4d5e017183054a76` and PR #64 HEAD `95d237c753bec96abe9add621140928511047599` remain OPEN/DRAFT/UNMERGED. Exact-head workflow runs and combined status contexts empty for both: NOT VERIFIED.
+- PR #64's D1 report correctly recommends D1 only as preferred hosted-proof target; no D1 DB/Worker/DO resource exists in the read-only account inventory and Workers Free entitlement/quota are NOT VERIFIED. No provisioning authorization.
+- Recovery Actor reports consistently find no accepted operational issuer, trust custodian, revocation registry, trusted-time, audit-sink, privacy-retention or recovery-quorum appointments. Functional accountability roles in draft governance docs are not operational owner appointments.
+- Active ruleset #26550182 still requires zero approving reviews; independent security approval is not enforced.
+- No code/runtime/schema/workflow/secret/permission/dispatch/resource/deployment/merge changes. Production dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile complete local D1 proof stack onto fresh immutable head from current default and rerun exact-head CI; no hosted provisioning until free entitlement/permissions/isolation authorized. Keep Recovery Actor unimplemented until accepted operational owners and governance evidence exist.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — D1 proof stack integration-base audit
+
+- Report: `docs/reports/2026-11-11-d1-proof-stack-integration-base-audit.md`; commit `0ab16fa071de8c7411869a7a8daf4e057159c310`.
+- Checkpoint update commit: `55ce64ee2d169ce77b894da48640373583c40579`; blob `0bca262c037d3f8cf51f80ef9330f5a125a2f293`.
+- Current default `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7` has no `proofs/d1-ledger/` paths in recursive tree.
+- PR #39/#54/#56 remain stacked on historical bases and diverged from current default: #39 55 ahead/19 behind; #54 132 ahead/19 behind; #56 120 ahead/19 behind. These counts include shared ancestry.
+- Exact-head local proof runs succeeded historically: #39 42329993548, #54 43010770730, #56 42825872826; combined status contexts empty. Not current-default integration or hosted qualification.
+- Do not merge/rebase/cherry-pick blindly. Next step is file-level dependency and migration-order manifest with superseded-file mapping, then a fresh candidate from current default and exact-head CI.
+- No source/branch/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Hosted D1 NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — D1 proof file-level integration manifest
+
+- Report: `docs/reports/2026-11-11-d1-proof-file-integration-manifest.md`; initial commit `a6237d795249ddfa52991f4e529c15ffabd84d72`; workflow addendum commit `9ef9522c68611d077ee8cf80425d6cc0cd90eafd`; final report blob to verify after write.
+- Checkpoint commit: `9b1fc1f5933ed6aeedc3c44bac35c51f91aa6f2c`; blob `a222a8d47017677b12f4c7e5c2838ea75e1ed08d`.
+- Current default `Основной` remains `6fdcedebeba62715122e43a75c6ad6d926321ce7`; no D1 proof package in default tree.
+- PR #39/#54/#56 share 0001/0002 and base proof harness. #54/#56 share 0003/0004/0005. PR #54 alone has 0006 projection outbox and adapter/tests; #56 omits it.
+- PR #56 `task-attempts.mjs` is preferred security delta: no caller-controlled `resumable:true` takeover. PR #54 test includes projection tests but weaker attempt semantics; PR #56 test includes remediation but no projection tests. Compose intentionally.
+- README stale on resumability; package check script differs; workflow #56 adds remediation branch trigger while preserving pinned actions, Node/npm/test/artifact policy.
+- GitHub mature-project search found no drop-in D1 outbox implementation; retain official Cloudflare Workers Vitest integration.
+- No code/branch/runtime/secret/permission/hosted resource/dispatch/deployment/merge changes. Candidate exact-head CI NOT RUN; hosted D1 NOT RUN.
+- Next: resolve whether projection outbox is in acceptance scope; prepare integration candidate only after explicit file composition and workflow reconciliation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Issue #38 acceptance text reviewed: durable one-winner task claim, interrupted-claim/worker-failure recovery, least privilege, independent review. It does not require terminal projection delivery. For the Issue #38 bounded candidate, defer migration 0006 + projection adapter + projection tests/setup as a complete optional unit; preserve for later separate projection qualification. This does not close PR #59/#60.
+
+
+## 2026-11-11 — Recovery Actor OIDC workflow-readiness audit
+
+- Report: `docs/reports/2026-11-11-recovery-oidc-workflow-readiness-audit.md`.
+- Audited default-branch Pool Supervisor workflow blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`: it has `contents:read`, `issues:write`, `actions:write`, and no `id-token:write`; it is not currently configured to request an OIDC JWT.
+- GitHub documentation confirms repositories created after 2026-07-15 use immutable owner/repository-ID subject claims and that `id-token:write` is required to request a JWT. The expected subject for this repository's default branch is documented as a derived expectation, not a live token/customization read-back.
+- OIDC remains a workload-authentication candidate only; it is not a Recovery Grant issuer, revocation service, nonce consumer, or atomic D1 authority.
+- Do not add `id-token:write`, request/debug a live token, or deploy an issuer until the issuer owner, trust policy, key custody, revocation, trusted time, audit sink and privacy governance are accepted.
+- No code, runtime, schema, permission, workflow, secret, dispatch, resource, deployment or merge changes. Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
