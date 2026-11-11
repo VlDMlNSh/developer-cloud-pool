@@ -1,9 +1,10 @@
-import { defineConfig } from "vitest/config";
 import path from "node:path";
+import { defineConfig } from "vitest/config";
 import { cloudflareTest, readD1Migrations } from "@cloudflare/vitest-plugin";
-import { readD1Migrations } from "@cloudflare/vitest-pool-workers/config";
 
-const experienceAuthMigrations = await readD1Migrations("./experience-auth-migrations");
+const experienceAuthMigrations = await readD1Migrations(
+  path.join(process.cwd(), "experience-auth-migrations")
+);
 
 export default defineConfig({
   plugins: [
