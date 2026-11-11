@@ -97,3 +97,17 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Context Window metadata corrected and read back; preceding working head was `d4b770150596f1f86445bd35c66f39b8684b9562`.
 - Production auth contract blob: `906e68d9e76f6e9670d9ab88963d9a36fec74c13`.
 - No code, runtime, schema, workflow, secret, dispatch, hosted resource, deployment or merge changes.
+
+
+## OAuth PKCE synthetic proof source audit — 2026-11-11
+
+- Report: [OAuth PKCE synthetic proof source audit](../reports/2026-11-11-oauth-pkce-synthetic-proof-source-audit.md), commit `0a37b9ebddab920acb2ce5758479acd0940e798c`.
+- Re-read PR #30 test source blob `bc87a8074f2358883b555677934dfc0526ef6cae` and workflow blob `b73adc79e1de48cc8ece973cb8c466786d54e51d`.
+- Finding: PR #30 creates a URL with PKCE fields but never asserts the resulting URL; its token mock checks verifier presence but does not verify verifier-to-challenge binding or reject wrong/missing verifier. Treat as library API/request-construction smoke proof, not end-to-end PKCE enforcement.
+- PR #30 run `42216422883`, job `127887461269`, COMPLETED/SUCCESS; steps read back. Success does not close source coverage gaps.
+- GitHub official docs/changelog confirm OAuth App PKCE support and S256-only behavior. The auth contract was updated with explicit required synthetic assertions and this proof limitation; contract commit `6548f9fc632b5d6761bc200cae13897b9098324e`.
+- PR #66 head at audit start `be6add0f74d224048e11ce9b21b4b2e0b3ee72a4`; exact-head runs/statuses empty, reviews 0, threads 0. New docs commits have not yet been CI-qualified.
+- Historical `2026-11-11-web-console-oauth-session-proof-boundary-audit.md` contains stale PR #61 data; treat as historical only, superseded by the later source compatibility report and this audit.
+- No runtime/package/workflow/secret/permission/provider/hosted-resource/deployment/merge changes. Live OAuth NOT RUN; hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of the corrected contract. After acceptance, add missing negative-first synthetic PKCE assertions only; no live provider or production credentials.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
