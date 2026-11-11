@@ -78,3 +78,17 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - No default runtime/schema/workflow/permissions/secrets/resources/dispatch/deployment/merge changes. Dispatch FAIL-CLOSED. Hosted D1 NOT AUTHORIZED / NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add injectable runner protocol and fake-transport tests for GET/PATCH race, lost PATCH response, label-success/comment-failure, and idempotent audit reconciliation. Exact-head CI and independent review required.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #53 injectable Finalizer protocol — 2026-11-11
+
+- Latest PR #53 head: 3458b01c99e0a3ed62e5469dc11631ec5316b0cd; base PR #37 head 1be8672c1be1a720b6c813dcafff5c020b6456ae; 43 ahead / 0 behind; OPEN/DRAFT/UNMERGED.
+- Report: docs/reports/2026-11-11-pr53-finalizer-transport-reconciliation.md.
+- Added injectable Finalizer transport; deterministic audit marker is posted and read back before terminal labels; lost POST/PATCH responses are reconciled by read-back; duplicate/conflicting markers fail closed; repeated finalization is idempotent.
+- Reused local fake projection/reconciler design from PR #58; no new dependency.
+- Exact-head CI for 3458b01c99e0a3ed62e5469dc11631ec5316b0cd: run 43042039819 Pool Contract Validation SUCCESS (19/19 tests); run 43042039837 Reusable Pool Worker Boundary Validation SUCCESS.
+- Final blobs: protocol c69a8a6bd465ade382e3f576ac557390c4f0a541; runner 4b4b168624502ad38454a394af7faf4104919deb; tests 88fcf67c99afd97605eb1726c68d79c8aa891f0c; validator e400c4c9823ccf5f8d75fb066131df24d8d0f889.
+- Residual F2 HIGH / OPEN: test explicitly demonstrates concurrent human labels can be overwritten by non-CAS GitHub label PATCH despite successful read-back. This is not fixed. Independent review NOT RUN; PR reviews/threads 0/0.
+- Active default ruleset requires 0 approvals and no CODEOWNERS review, so it does not enforce independent review. Issue #38 OPEN / NOT QUALIFIED. Dispatch FAIL-CLOSED. No live API race, hosted D1, resource creation, deployment, merge, or default runtime change.
+- Next: reconcile PR #39/#54 transactional conditional-write/outbox with Issue #38 and PR #58; design authoritative transactional Claim Store and retryable GitHub projection. Hosted D1 remains NOT AUTHORIZED / NOT RUN.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
