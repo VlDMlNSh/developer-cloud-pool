@@ -95,6 +95,15 @@ describe("fake GitHub terminal projection reconciliation", () => {
     expect(result.projection_verified).toBe(false);
   });
 
+  it("detects repeated markers inside a single comment", async () => {
+    const api = new FakeGitHub();
+    const marker = "<!-- pool-projection:attempt-finalized:attempt-7:" + "a".repeat(64) + " -->";
+    api.comments.push({ body: marker + "\\n" + marker });
+    const result = await reconcileTerminalProjection(api, envelope());
+    expect(result.reason).toBe("DUPLICATE_EVENT_MARKERS");
+    expect(result.projection_verified).toBe(false);
+  });
+
   it("converges only pool:* labels and preserves unrelated human labels", async () => {
     const api = new FakeGitHub();
     api.comments.push({ body: "<!-- pool-projection:attempt-finalized:attempt-7:" + "a".repeat(64) + " -->" });
