@@ -2796,3 +2796,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No migration, workflow, package, production binding, secret, OAuth App, route, deployment, provider call or dispatch changed. Production OAuth/session NOT IMPLEMENTED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: continue source-level review of PR #61 temporal/revocation/replay/ambiguous-write/authority boundaries; do not enable runtime or merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 OAuth state temporal-boundary audit
+
+- Report: [PR #61 OAuth state temporal-boundary audit](../reports/2026-11-11-pr61-oauth-state-temporal-boundary-audit.md).
+- Inspected immutable baseline `823c0416850cd0367a890e36d1bc025daa5f03d5`. Found `consumeOAuthTransaction` checked binding, unused state and expiry but omitted `created_at <= now`, allowing early consumption of future-created OAuth state when caller supplies earlier `now`.
+- Corrected atomic UPDATE predicate with `AND created_at <= ?`, binding the timestamp. Added D1 regression proving DENY before creation and one-time consumption at creation. Source blob `90ec8a9b2e7dba2f367c96ca37fa41b5f6b0b5e3`; test blob `c6f75fd554081173a5de972396cbe2aea9ee1fb7`; read-back verified.
+- Current PR head `f2d225fe8d660bdc9724320080e0d0cd91705f0a`; exact-head run `42984959975` IN_PROGRESS at report creation. Recheck terminal result; do not transfer previous-head CI.
+- Baseline includes synthetic D1 binding-isolation test: auth tables present in `EXPERIENCE_AUTH_DB`, absent from Pool ledger `DB`; not production binding attestation.
+- Caller-supplied `now` remains untrusted; no TTL max policy, revocation freshness, session rotation, PKCE AEAD/key custody, Owner Allowlist integration, OAuth callback/cookie/CSRF, hosted D1 or production deployment qualified. PR #61 OPEN/DRAFT/UNMERGED, reviews 0, threads 0, independent security review NOT RUN. Protected API fail-closed.
+- No secrets, OAuth app, production resources, provider calls, deployment, routes or dispatch touched. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: exact-head CI closeout, then obtain explicit owner decisions for trusted-time authority and maximum OAuth/session TTL before any implementation.
