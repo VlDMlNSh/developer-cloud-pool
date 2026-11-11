@@ -11,6 +11,9 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
+const finalizerPolicy = read("scripts/pool-finalizer.mjs");
+const finalizerRunner = read("scripts/pool-finalizer-runner.mjs");
+const finalizerProtocol = read("scripts/pool-finalizer-protocol.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const validation = read(".github/workflows/reusable-pool-worker-boundary-validation.yml");
@@ -74,6 +77,8 @@ if (/^      CALLEE_(?:REPOSITORY|FILE_PATH|WORKFLOW_SHA):/m.test(worker)) fail("
 if (!worker.includes("          CALLEE_REPOSITORY: ${{ job.workflow_repository }}") || !worker.includes("          CALLEE_FILE_PATH: ${{ job.workflow_file_path }}") || !worker.includes("          CALLEE_WORKFLOW_SHA: ${{ job.workflow_sha }}")) fail("job.workflow_* contexts must be mapped in step-level env");
 if (!/CALLER_WORKFLOW_SHA !== e\.CALLEE_WORKFLOW_SHA/.test(worker)) fail("Worker must require caller and callee to share the immutable invocation SHA");
 if (!/pool:claimed/.test(worker)) fail("Worker must require Supervisor claim state");
+if (!/createHash\("sha256"\)/.test(worker) || !/digest\("hex"\) !== e\.ENVELOPE_DIGEST/.test(worker)) fail("Worker must verify the immutable task envelope digest");
+if (!/generations\[0\] !== e\.CLAIM_GENERATION/.test(worker)) fail("Worker must verify the exact claim generation");
 if (!/activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/.test(worker)) fail("Worker must reject conflicting or duplicate managed task states");
 if (failures.length === 0) pass("Worker is reusable-only, read-only, identity-bound and has no issue mutation authority");
 
@@ -93,7 +98,11 @@ if (!/const issue = candidates\[0\]/.test(supervisorScript)) fail("Supervisor mu
 if (!/Claim read-back was ambiguous/.test(supervisorScript)) fail("Supervisor must fail closed on ambiguous claim read-back");
 if (/POOL_CLAIM_LEASE_EXPIRED|replaceLabels\([^,\n]+,\s*\["pool:claimed"\],\s*\["pool:ready"\]\)/.test(supervisorScript)) fail("Supervisor must never auto-requeue a consumed approval");
 if (!/needs\.worker\.result/.test(supervisor)) fail("Supervisor finalizer must consume reusable Worker result");
-if (!/pool:needs-review/.test(supervisor)) fail("Supervisor must route non-success to needs-review");
+if (!/pool:needs-review/.test(finalizerPolicy)) fail("Finalizer policy must route non-success to needs-review");
+if (!/pool:claim-/.test(supervisorScript) || !/envelope_digest/.test(supervisorScript)) fail("Supervisor must bind claims to a unique generation and immutable envelope digest");
+if (!/generations\.length !== 1/.test(finalizerPolicy) || !/envelopeDigest\(String\(issue\.body/.test(finalizerPolicy)) fail("Finalizer must verify the unique claim generation and immutable issue envelope");
+if (!/buildFinalizationPlan\(issue, expected\)/.test(finalizerProtocol) || !/await api\.replaceLabels\(plan\.labels\)/.test(finalizerProtocol) || !/terminalReadback\(readback, expected, plan, humanLabels\)/.test(finalizerProtocol)) fail("Finalizer protocol must revalidate before terminal write and verify authoritative read-back");
+if (!/does not provide an atomic compare-and-swap/.test(finalizerProtocol)) fail("Finalizer must retain the explicit GitHub non-CAS limitation");
 if (failures.length === 0) pass("Supervisor uses reusable invocation, dual fail-closed gates and one-task claim/read-back");
 
 for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resource]]) {
@@ -103,6 +112,7 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (!validation.includes("node --test tests/security/reusable-pool-worker-boundary.test.mjs")) fail("Dedicated reusable boundary tests must run in CI");
+if (!validation.includes("node --test tests/security/pool-finalizer-fencing.test.mjs")) fail("Dedicated finalizer fencing tests must run in CI");
 if (failures.length === 0) pass("DSH and Resource Probe remain manual, read-only and secret-free");
 
 if (failures.length) {

@@ -47,7 +47,7 @@ test("Supervisor requires both dispatch and authorization acceptance gates", () 
 
 test("Supervisor claims one task and verifies exact read-back before emitting outputs", () => {
   assert.match(script, /const issue = candidates\[0\]/);
-  assert.match(script, /await replaceLabels\(issue, \["pool:ready"\], \["pool:claimed"\]\)/);
+  assert.match(script, /await replaceLabels\(issue, \["pool:ready"\], \["pool:claimed", claimGeneration\]\)/);
   assert.match(script, /Claim read-back was ambiguous/);
   assert.match(script, /setOutput\("task_issue"/);
 });
@@ -55,7 +55,7 @@ test("Supervisor claims one task and verifies exact read-back before emitting ou
 test("Failed or ambiguous claims are not automatically requeued", () => {
   assert.doesNotMatch(script, /replaceLabels\([^,\n]+,\s*\["pool:claimed"\],\s*\["pool:ready"\]\)/);
   assert.doesNotMatch(script, /POOL_CLAIM_LEASE_EXPIRED/);
-  assert.match(supervisor, /pool:needs-review/);
+  assert.match(finalizerPolicy, /pool:needs-review/);
 });
 
 test("Worker validates caller and reusable callee identity separately", () => {
@@ -76,4 +76,37 @@ test("Worker validates caller and reusable callee identity separately", () => {
 test("Worker rejects conflicting or duplicate managed task states", () => {
   assert.match(worker, /const managedStates = \["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"\]/);
   assert.match(worker, /activeStates\.length !== 1 \|\| activeStates\[0\] !== "pool:claimed"/);
+});
+
+const finalizerPolicy = fs.readFileSync("scripts/pool-finalizer.mjs", "utf8");
+const finalizerRunner = fs.readFileSync("scripts/pool-finalizer-runner.mjs", "utf8");
+const finalizerProtocol = fs.readFileSync("scripts/pool-finalizer-protocol.mjs", "utf8");
+
+test("Supervisor exports immutable envelope and unique run-attempt claim generation", () => {
+  assert.match(script, /createHash\("sha256"\)/);
+  assert.match(script, /pool:claim-.*runId.*runAttempt/);
+  assert.match(script, /setOutput\("envelope_digest"/);
+  assert.match(script, /setOutput\("claim_generation"/);
+});
+
+test("Worker requires the exact claim generation before executing the probe", () => {
+  assert.match(worker, /claim_generation:/);
+  assert.match(worker, /CLAIM_GENERATION: \$\{\{ inputs\.claim_generation \}\}/);
+  assert.match(worker, /generations\[0\] !== e\.CLAIM_GENERATION/);
+  assert.match(worker, /createHash\("sha256"\)/);
+  assert.match(worker, /digest\("hex"\) !== e\.ENVELOPE_DIGEST/);
+  assert.match(supervisor, /envelope_digest: \$\{\{ needs\.reconcile\.outputs\.envelope_digest \}\}/);
+  assert.match(supervisor, /claim_generation: \$\{\{ needs\.reconcile\.outputs\.claim_generation \}\}/);
+});
+
+test("Finalizer binds issue, body digest, open state, unique claim generation and claimed state", () => {
+  assert.match(finalizerPolicy, /issue\.state !== "open"/);
+  assert.match(finalizerPolicy, /envelopeDigest\(String\(issue\.body/);
+  assert.match(finalizerPolicy, /generations\.length !== 1/);
+  assert.match(finalizerPolicy, /states\.length !== 1 \|\| states\[0\] !== "pool:claimed"/);
+  assert.match(finalizerProtocol, /buildFinalizationPlan\(issue, expected\)/);
+  assert.match(finalizerProtocol, /await api\.replaceLabels\(plan\.labels\)/);
+  assert.match(finalizerProtocol, /terminalReadback\(readback, expected, plan, humanLabels\)/);
+  assert.match(finalizerProtocol, /does not provide an atomic compare-and-swap/);
+  assert.match(finalizerRunner, /finalizeWithTransport\(api, expected\)/);
 });

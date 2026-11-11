@@ -12,6 +12,12 @@ on:
       profile:
         required: true
         type: string
+      claim_generation:
+        required: true
+        type: string
+      envelope_digest:
+        required: true
+        type: string
 
 permissions: {}
 
@@ -25,6 +31,8 @@ jobs:
       TASK_ISSUE: ${{ inputs.task_issue }}
       TARGET_SHA: ${{ inputs.target_sha }}
       PROFILE: ${{ inputs.profile }}
+      CLAIM_GENERATION: ${{ inputs.claim_generation }}
+      ENVELOPE_DIGEST: ${{ inputs.envelope_digest }}
       CALLER_REPOSITORY: ${{ github.repository }}
       CALLER_REPOSITORY_ID: ${{ github.repository_id }}
       EXPECTED_REPOSITORY_ID: "1445644538"
@@ -41,10 +49,13 @@ jobs:
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
+          import { createHash } from "node:crypto";
           const e = process.env;
           if (!/^\d+$/.test(e.TASK_ISSUE || "")) throw new Error("Invalid task issue.");
           if (!/^[0-9a-f]{40}$/.test(e.TARGET_SHA || "")) throw new Error("Invalid target SHA.");
           if (e.PROFILE !== "dsh-headless-probe") throw new Error("Profile is not allowlisted.");
+          if (!/^pool:claim-[0-9]+-[0-9]+$/.test(e.CLAIM_GENERATION || "")) throw new Error("Claim generation is invalid.");
+          if (!/^[0-9a-f]{64}$/.test(e.ENVELOPE_DIGEST || "")) throw new Error("Envelope digest is invalid.");
           if (e.CALLER_REPOSITORY !== e.GITHUB_REPOSITORY) throw new Error("Caller repository mismatch.");
           if (e.CALLER_REPOSITORY_ID !== e.EXPECTED_REPOSITORY_ID) throw new Error("Caller repository ID mismatch.");
           if (!e.CALLER_WORKFLOW_REF.endsWith("/.github/workflows/pool-supervisor.yml@refs/heads/Основной")) throw new Error("Caller is not the protected default-branch Supervisor.");
@@ -61,10 +72,12 @@ jobs:
           }});
           if (!response.ok) throw new Error("Cannot read task: HTTP " + response.status);
           const issue = await response.json();
+          if (createHash("sha256").update(String(issue.body || ""), "utf8").digest("hex") !== e.ENVELOPE_DIGEST) throw new Error("Task envelope digest mismatch.");
           const labels = (issue.labels || []).map(label => label.name);
           const managedStates = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"];
           const activeStates = labels.filter(label => managedStates.includes(label));
-          if (issue.pull_request || issue.state !== "open" || activeStates.length !== 1 || activeStates[0] !== "pool:claimed") {
+          const generations = labels.filter(label => /^pool:claim-[0-9]+-[0-9]+$/.test(label));
+          if (issue.pull_request || issue.state !== "open" || activeStates.length !== 1 || activeStates[0] !== "pool:claimed" || generations.length !== 1 || generations[0] !== e.CLAIM_GENERATION) {
             throw new Error("Task must be open and have exactly one managed state: pool:claimed.");
           }
           const sha = String(issue.body || "").match(/^### Target SHA\s*\r?\n+([0-9a-f]{40})\s*$/im);
