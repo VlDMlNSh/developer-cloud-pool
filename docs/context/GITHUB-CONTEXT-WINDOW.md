@@ -2679,3 +2679,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: PR #59 local D1 proof VERIFIED within stated scope; orphan recovery BLOCKED/NOT IMPLEMENTED; PR #60 design read-back VERIFIED, NOT IMPLEMENTED/NOT QUALIFIED; exact-head CI NOT VERIFIED; independent review NOT RUN; hosted runtime/deployment NOT RUN; dispatch FAIL-CLOSED by policy; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: establish whether an actually governed Security Issuer Authority, service-principal lifecycle, revocation source, trusted time and durable audit sink exist and are authorized for Cloud Pool. Do not implement runtime until evidenced. Re-read active ruleset and dispatch variable through authorized metadata-only access; never read secret values.
 
+
+
+## 2026-11-11 — Experience auth D1 local proof PR #61
+- Refreshed default branch HEAD via recent commit search: `Основной` remains `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Rechecked open PR inventory: PR #24, #25, #27, #30, #58, #59, #60 and PR #61 remain OPEN/DRAFT/UNMERGED. PR #61 is stacked on PR #52 branch `proof/cloudflare-workflows-vitest-2026-11-08`, parent SHA `c430fe4beecf93a20052f0c3efedb5f8539e4faa`; its head branch is `proof/experience-auth-d1-session-2026-11-11`, current HEAD `7d30a55d8a90fb14f2516a57e458b0a660630499`.
+- PR #61 reuses the root Cloudflare Workers Vitest harness from #52 (`@cloudflare/vitest-plugin@1.6.0`, Vitest 4.1.12, Wrangler 4.158.0, existing lockfile and `npm run test:workflow`). No new package dependency or lockfile.
+- Added isolated synthetic D1 binding `EXPERIENCE_AUTH_DB` with separate `experience-auth-migrations`; existing Pool proof D1 binding `DB` remains separate.
+- Added STRICT OAuth transaction/session tables, a fail-closed D1 adapter, and Workers-runtime tests including 50 concurrent callback consumers, state/browser-binding mismatch, expiry/replay, malformed IDs, session expiry/revocation and storage exceptions.
+- Added dedicated PR-triggered workflow `.github/workflows/experience-auth-d1-proof.yml`; the previous Hono workflow branch filters would not trigger on the stacked proof base.
+- Added new source/test syntax checks. During review, found and corrected JS coercion risk: GitHub subject and other digest/envelope/key-version fields now require actual strings, not values that regex would coerce.
+- Report: [Experience auth D1 local proof](../reports/2026-11-11-experience-auth-d1-local-proof.md), commit `8b3e8899039fa534bca5096ae5a9892a87370ae9`.
+- Branch files were read back. Current PR #61 HEAD `7d30a55d8a90fb14f2516a57e458b0a660630499`; exact-head workflow run query returned no runs and combined status returned no statuses. CI NOT RUN / NOT VERIFIED; reviews 0; inline threads 0. Local interactive tests NOT RUN.
+- No remote D1, production binding, OAuth App, secret, key, route, deployment, provider call, dispatch or production change.
+- PKCE envelope is opaque synthetic ciphertext; AEAD/key custody/rotation not implemented. Owner allowlist middleware, session rotation, global quota enforcement, browser cookies/callback/CSRF and security qualification remain OPEN.
+- Next: refresh PR #61 checks until exact-head workflow run appears; inspect jobs/logs; fix failures on this branch. Do not merge or provision until CI, integration and security gates pass.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
