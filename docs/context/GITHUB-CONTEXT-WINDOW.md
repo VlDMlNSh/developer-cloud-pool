@@ -1829,3 +1829,13 @@ Provider/agent evidence:
 
 Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
 Next step: design and independently review a versioned, bounded task-admission contract plus per-slot provider qualification/secret-injection contract; reconcile existing PR #28 routing design and PR #29 quota ledger rather than replacing them wholesale. Continue Contour A only; Contour B deferred.
+
+
+### Publication read-back — final sequence for provider inventory pass
+
+- Provider report blob verified: `f61e634f10b4bd419f579ff20b0678edcd52edab`.
+- Context Window blob verified: `37b51dc43a4b963fafb7a0a81edfc31713a6290e`.
+- Checkpoint blob verified: `17987e486ebbf42feba16916b023e4af9a1bbddb`.
+- All three files were re-fetched after write and the new sections were confirmed present.
+- The checkpoint update advanced the docs branch to `501dcb0721b63c92815692f2520c9871aa400951`; PR #64 head matched this SHA at read-back, base remained `6fdcedebeba62715122e43a75c6ad6d926321ce7`. The next documentation commit will naturally advance that head again.
+- Report link: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/issue38-free-claim-backend-fit-2026-11-11/docs/reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md
