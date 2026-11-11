@@ -159,3 +159,16 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Report: docs/reports/2026-11-11-pr58-pr59-code-migration-compatibility-audit.md (blob `f36345c08f37303aea56e11678e63facfb3163c5`).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Projection audit actor retention fix review — 2026-11-11
+
+- Candidate branch `fix/projection-audit-actor-2026-11-11` HEAD `b9731547afaefde2d22e704122e73615ce85876c`; implementation `8776e967688dc891c86f6d3ba50b97e8dc897c83`; test `46a2ed2777a7fc2b15bd0898c9ceb9a04f5607d9`; CI wiring `b9731547afaefde2d22e704122e73615ce85876c`.
+- Patch fixes audit actor loss on leased→terminal/retryable transitions by retaining OLD.lease_owner. Regression tests verify delivered/retryable event actor + generation.
+- Exact branch run `43010555851` SUCCESS; job `130488783673`; syntax check and 40/40 tests passed. Artifact SHA256 `64e3ea398b90155a2e7b914ceb143e706cdc670ad154500705fcd1cf5860ff83`.
+- Branch is not a PR; diverged from current #58 (3 ahead, 12 behind, merge-base `ec3f3266ca28c4fb5633a9475cc6f396a467797`). Thus current stack compatibility NOT VERIFIED.
+- Semantics caveat: patch records previous lease holder, not necessarily actor initiating status transition; contract should define actor_id as lease owner whose lease is closed. Non-leased status transitions still may have NULL actor. No independent review or hosted qualification.
+- Report: docs/reports/2026-11-11-projection-audit-actor-retention-review.md (commit `7f90d6ffa7aaa0acefc09ce74231d33b75029094`).
+- Next: include this patch in integration plan, clarify event actor semantics, then build a fresh integration candidate from current #58 HEAD with #59 changes and this correction; run complete tests + exact-head CI. No merge/deploy/dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
