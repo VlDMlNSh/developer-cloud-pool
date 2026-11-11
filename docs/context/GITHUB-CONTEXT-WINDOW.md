@@ -2381,3 +2381,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Checkpoint update commit `b68bac187a3467e9c43dc4ec7637a1db192420d4`, blob `a790c0f2a606ece0c94472de395dd4f815ca6b63`.
 - Next: trace production Supervisor/Worker workflow interfaces against the accepted local claim/attempt/outbox contracts; identify exact integration gaps and required least-privilege permissions without wiring or dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58/#59 projection outbox integration audit
+- Report: [PR #58/#59 projection outbox integration audit](../reports/2026-11-11-pr58-pr59-projection-outbox-integration-audit.md), commit `80360716ec1f0762a2bf0f0cb5973a114db8d605`.
+- Refreshed default HEAD: `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #58 OPEN/DRAFT, head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, base `ec3f3266ca28c4fb5633a9475cc6f396a4677974`; exact-head run `42979949181` SUCCESS; reviews 0, threads 0.
+- PR #59 OPEN/DRAFT, head `5c47cda4394d0381315bc16182799a09bf861797`, base #58 head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`; exact-head run `42980783397` SUCCESS (3 files / 53 tests; artifact SHA-256 `7dbc1b8b34dcdf4d03868df27168857b250eed43f6798990419042c9fccb8ebc)); reviews 0, threads 0.
+- Static gap: migration 0007 caps `delivery_attempts > 5` but does not reject a decrease relative to OLD.delivery_attempts. The migration alone therefore does not establish DB-level monotonicity. Exploitability depends on prior schema triggers and remains NOT VERIFIED; add a monotonic guard and adversarial D1 test before qualification.
+- Positive: fake GitHub read-back reconciles ambiguous comment POST without immediate duplicate POST; marker digest conflicts/duplicates deny; human labels preserved. Retry adapter uses max 5 attempts, 30/60/120/240-second backoff, dead-letter evidence, expired-fifth-lease generation fencing and terminal dead-letter trigger.
+- Both PRs are local D1 proof only, not production integration. Neither merged or accepted. No dispatch, deployment, secrets access, provider call or paid resource. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: narrow follow-up to PR #59 for monotonic counter trigger + adversarial test, then exact-head CI.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
