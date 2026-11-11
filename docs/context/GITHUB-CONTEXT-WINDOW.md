@@ -1574,3 +1574,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: audit the PR #61 stacked base chain (#52) and reconcile the OAuth/session adapter contract with existing Pool authorization and recovery boundaries before any merge. Dispatch remains disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — stacked PR #25 → #52 → #61 audit
+
+- PR #25: base `64d2636d4500127e635c214ccfb722c6b3fcda80`, head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, OPEN/DRAFT/UNMERGED; exact-head runs `42228269689` and `42228269676` SUCCESS; formal reviews 0.
+- PR #52: base PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`, OPEN/DRAFT/UNMERGED; exact-head run `42507524428` / job `128813275338` SUCCESS; formal reviews 0. Local synthetic Workflow/D1 proof only; no hosted Cloudflare runtime or process crash/regional failover proof.
+- PR #61: base PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`, current head `823c0416850cd0367a890e36d1bc025daa5f03d5`, OPEN/DRAFT/UNMERGED; exact-head run `42984891388` / job `130403611974` SUCCESS; formal reviews 0. Adapter blob `046111beb31d7c8cf58e623581d2b260fbdad496`, regression test blob `94466fe5231ae116b8fa40ba530af61c024c540e`. Issue #62 closed after correction.
+- Stack comparison against current default `Основной` at `fb046db19dfbb7e4f68833cd9dcf70793de89d92`: DIVERGED, 61 ahead / 13 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`. Controlled refresh/rebase and exact-head CI required before merge.
+- PR #52 proof Worker has unauthenticated synthetic POST /create but remains isolated in `wrangler.proof.jsonc`; never deploy/expose proof Worker. Production Hono Worker remains fail-closed.
+- PR #61 remains synthetic D1 only; production OAuth, AEAD/key custody, owner allowlist middleware, session rotation, CSRF/cookies, quota and hosted D1 are NOT VERIFIED.
+- No formal reviews on #25/#52/#61. Governance issue last documented Ruleset `26550182` with zero required approvals (2026-11-04); current Ruleset not queried, governance NOT VERIFIED.
+- Report: `docs/reports/2026-11-11-stacked-pr-25-52-61-audit.md`.
+- Stack merge readiness BLOCKED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
+- Next: inspect the 13 default-branch commits since the merge base, plan controlled stack refresh, verify current Ruleset, then rerun exact-head CI on all affected PRs.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
