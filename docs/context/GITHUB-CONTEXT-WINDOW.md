@@ -1521,3 +1521,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: `docs/reports/2026-11-08-indeterminate-reconciliation-queue-implementation.md`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #61 Experience Auth source-level security audit
+
+- Rechecked PR #61 exact head `9b8e35566dfd1aa42df967d5ee65a1759fdcd7c7`, base PR #52 head `c430fe4beecf93a20052f0c3efedb5f8539e4faa`. PR #61 remains OPEN / DRAFT / UNMERGED; formal review submissions remain empty.
+- Exact-head CI run `42984373437` / job `130401940558`: COMPLETED / SUCCESS. npm ci, static checks, existing API/policy tests and local Workers/D1 tests all passed.
+- Source-level audit found a fail-closed session boundary defect: `lookupApplicationSession` checks hash, revocation and expiry but omits `created_at <= now`. A future-created session can be returned ACTIVE before its creation time. Migration constraints do not prevent this state.
+- Created Issue #62: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62. Required correction: add `AND created_at <= ?`, bind lookup time, and add a Workers-runtime D1 regression test.
+- Adapter blob audited: `14236350b99f4f8629b64db6e6b81ff881d4465f`. No production data, secrets, OAuth app, provider calls, dispatch or deployment touched.
+- Report: `docs/reports/2026-11-11-pr61-experience-auth-security-audit.md`, documentation commit `d6da18942dfa01e0cbd8a38f704befbe3a912a22`.
+- PR #61 CI VERIFIED but security review INCOMPLETE and qualification NOT VERIFIED. AEAD/key custody, key rotation, production OAuth, owner allowlist integration, session rotation, global quota, production D1 and deployment remain NOT VERIFIED/out of scope.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
+- Next: fix Issue #62 on the PR branch, add the regression test, rerun exact-head CI, then audit the stacked PR chain and authority boundaries.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
