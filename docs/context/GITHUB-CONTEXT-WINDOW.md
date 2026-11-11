@@ -2465,3 +2465,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED. Contour B deferred.
 - Next: verify exact-head CI run `42981807825`; then proceed to Supervisor Inspection/Recovery/Dispatch gate analysis while retaining fail-closed dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Orphaned projection lease recovery authority audit
+- Re-read PR #59 source and immutable D1 proof components. PR #59 exact-head local CI run 42980783397 / job 130390442001 succeeded (53 tests); PR #59 remains OPEN/DRAFT/UNMERGED. PR #58 and #37 remain OPEN/DRAFT/UNMERGED.
+- Critical correction: `deadLetterExpiredProjection` requires matching existing lease owner + generation. It can terminalize only the same owner's expired fifth lease. It cannot recover an orphaned fifth lease after worker disappearance; PR #59 body explicitly acknowledges a row may remain leased indefinitely. Normal acquire excludes attempts >=5.
+- Additional provenance gap: status-event trigger uses old lease owner after clearing lease; it does not identify an independent reaper. D1 binding is not per-table SQL-role isolation; a second Worker with same binding does not establish database-enforced least privilege.
+- Report: [Orphaned projection lease recovery authority audit](../reports/2026-11-11-orphaned-projection-lease-recovery-authority-audit.md), commit `5bcd93ba06b861be186f03d70b348363532f7fa7`.
+- No implementation or authority expansion performed. No Cloudflare resources, secret reads, migrations, deployment or dispatch.
+- Billing entitlement still NOT VERIFIED; OAuth Billing Read restriction persists. D1 and Worker resources absent in inspected account.
+- Orphaned lease recovery BLOCKED / NOT IMPLEMENTED; actor provenance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
+- Next: verify Free/Paid plan via dashboard label; separately define recovery-actor threat model and acceptance contract before code changes.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
