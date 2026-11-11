@@ -2954,3 +2954,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Status: target contract DEFINED / NOT IMPLEMENTED AS HOSTED SERVICE; local D1 exact-head proof CI VERIFIED; hosted store/issuer/time/isolation/quota NOT VERIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independently review the target contract against migrations 0002/0004/0006 and adapter transaction semantics; resolve canonical finalization event digest and replay invariants in the proof branch before considering hosted adapter implementation. Do not enable dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Transactional finalization proof review
+
+- Report: [Independent transactional finalization proof review](../reports/2026-11-11-transactional-finalization-proof-review.md), commit `0140c8db3d0b08ea006eff8c6abf2103665b5a61`; read-back verification pending in this update.
+- Immutable target reviewed: PR #54 head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`. Exact-head workflow run `42537241204` is COMPLETED / SUCCESS. PR review list contains one COMMENTED review; inline thread on migration 0006 line 89 remains unresolved.
+- F-01 OPEN: `finalizeTaskAttempt()` accepts replay when event digest equals `resultDigest || provenanceDigest`. This is not the canonical full-field event digest required by [transactional finalization contract](../decisions/2026-11-11-transactional-attempt-finalization-contract.md). It fails to bind both result and provenance digests plus terminal identity/status/reason/actor/generation/time. A versioned canonical serialization and recomputation tests are required.
+- F-02 OPEN: migration 0006 status-event trigger records `NEW.lease_owner`; retryable/delivered adapters clear lease_owner in the same UPDATE. Those immutable events therefore record NULL actor. Existing unresolved PR #54 review thread already identifies this; tests need explicit actor assertions.
+- Positive local proof: PR #39 migration 0002 trigger couples conditional approval consumption with claim + task-outbox inserts; PR #54 migration 0006 couples terminal event insertion with projection-outbox insert and protects delivery-event history against UPDATE/DELETE. These are local D1 transaction proofs only, not hosted service qualification.
+- No source/schema/workflow/permission/secret/dispatch/deployment/merge/production mutation in this pass.
+- Status: PR #54 exact-head local CI VERIFIED; finalization event digest NOT VERIFIED / contract gap; delivery actor attribution OPEN; hosted store/issuer/trusted time/isolation/quota NOT VERIFIED; dispatch DISABLED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: on a proof branch, correct canonical event digest and delivery actor attribution, then add full-field replay, digest recomputation, actor-retention, rollback and exactly-one-event/outbox tests. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
