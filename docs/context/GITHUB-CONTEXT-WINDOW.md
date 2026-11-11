@@ -1832,3 +1832,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: reconcile complete local D1 proof stack onto fresh immutable head from current default and rerun exact-head CI; no hosted provisioning until free entitlement/permissions/isolation authorized. Keep Recovery Actor unimplemented until accepted operational owners and governance evidence exist.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 — D1 proof stack integration-base audit
+
+- Report: `docs/reports/2026-11-11-d1-proof-stack-integration-base-audit.md`; commit `0ab16fa071de8c7411869a7a8daf4e057159c310`.
+- Checkpoint update commit: `55ce64ee2d169ce77b894da48640373583c40579`; blob `0bca262c037d3f8cf51f80ef9330f5a125a2f293`.
+- Current default `Основной` HEAD `6fdcedebeba62715122e43a75c6ad6d926321ce7` has no `proofs/d1-ledger/` paths in recursive tree.
+- PR #39/#54/#56 remain stacked on historical bases and diverged from current default: #39 55 ahead/19 behind; #54 132 ahead/19 behind; #56 120 ahead/19 behind. These counts include shared ancestry.
+- Exact-head local proof runs succeeded historically: #39 42329993548, #54 43010770730, #56 42825872826; combined status contexts empty. Not current-default integration or hosted qualification.
+- Do not merge/rebase/cherry-pick blindly. Next step is file-level dependency and migration-order manifest with superseded-file mapping, then a fresh candidate from current default and exact-head CI.
+- No source/branch/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Hosted D1 NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
