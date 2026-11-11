@@ -1661,3 +1661,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - This confirms no existing hosted D1 database/Worker/DO namespace is available to reuse in the connected account. It does not establish Workers Free entitlement, remaining quota or permission to provision.
 - The Cloudflare product docs document Free plan availability and limits, but actual account entitlement remains NOT VERIFIED. Hosted proof is NOT RUN; no speculative resource creation.
 - Updated report: `docs/reports/2026-11-11-issue38-free-claim-backend-fit.md`; latest report commit `d53087efe478aa0b6d67267b11ea3cc4c32deeb4`.
+
+
+## Hosted D1 qualification boundary audit — 2026-11-11
+
+- Research run completed: [TinyFish independent architecture/security report](https://agent.tinyfish.ai/research/01a1ca9a-c166-76d3-936a-769d2eecb066). Its findings were cross-checked against current GitHub refs, PRs, issue #38, ruleset 26550182, default Supervisor workflow and read-only Cloudflare inventory.
+- New plan: [Contour A hosted D1 qualification plan](../qualification/CONTOUR-A-HOSTED-D1-QUALIFICATION-PLAN.md); report: [hosted D1 qualification boundary audit](../reports/2026-11-11-hosted-d1-qualification-boundary-audit.md).
+- Current default branch observed: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Cloudflare read-only inventory: one accessible account of type `standard`, D1 databases 0, Worker scripts 0. Account-specific Workers Free entitlement/quota is NOT VERIFIED. No resources, secrets or billing data were created/read/changed.
+- PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, OPEN/DRAFT/UNMERGED; exact-head runs `42484039940` and `42484039932` SUCCESS. Historical formal review includes CHANGES_REQUESTED; no current approval. Default Supervisor still has `workflow_run` and `actions: write`.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`, local D1 run `43010770730` SUCCESS; its base `b9067dc7d06245893cd4e208f6215438efe5ca64` is 106 commits behind and divergent from current default. Reconcile before any hosted run.
+- PR #64 current head `b1aa2031d46446896c70bb354af858fc2dd64ebc`, OPEN/DRAFT/UNMERGED; exact-head PR workflow query returned no runs (NOT VERIFIED), formal reviews 0, threads 0.
+- Test-design correction: sequential `wrangler d1 execute` SQL batch is not 50-way concurrency evidence. Hosted contention requires 50 independent concurrent HTTP requests through a test-only Worker/API backed by the actual isolated D1 database.
+- No hosted provisioning, Worker deployment, secrets, permissions, schema, dispatch or provider/model calls. Dispatch remains FAIL-CLOSED. Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #39/#54 proof stack to current default, rerun exact-head local CI, and separately verify account Free entitlement before requesting explicit authorization for isolated hosted resources.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
