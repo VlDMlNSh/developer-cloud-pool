@@ -155,3 +155,27 @@ At adoption on 2026-11-11:
 
 Canonical architecture map:
 https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 10. Parallel interactive and background-agent work lanes
+
+Background agents are additive execution capacity. Their launch or continued execution does not suspend, replace or cancel the active interactive project lane.
+
+**Interactive lane (current chat):** on every `/next`, continue one bounded, non-overlapping task such as live-state reconciliation, source/contract review, mature-component research, integration analysis, documentation, read-back verification or planning. Do not wait for background agents unless the next action depends on their exact output.
+
+**Background lane (approved GitHub workflows):** bounded agent workflows may continue asynchronously after dispatch. The interactive lane may continue independent work while they run. Record exact target SHA, task ID, owned paths, role/capability, expiry, forbidden actions, evidence requirements, run/job IDs and artifact digests.
+
+These lanes must not silently overwrite one another. Prefer disjoint task/path scopes. If both need the same code or file, one lane stays read-only until ownership is resolved. Completed agent work is a proposal until exact-head CI, review, provenance and acceptance checks pass.
+
+Do not claim that ChatGPT runs continuously between user turns. GitHub workflows can continue independently once dispatched; this chat continues its own work whenever a new turn is being processed.
+
+Current controller limitation: the approved MediaHub controller accepts only fixed `probe`, `agents` and fixed `review` modes. `agents` always launches three fixed role prompts; Issue #301 `/next` does not accept arbitrary per-agent task payloads. Do not trigger duplicate generic batches merely to simulate parallelism. Do not bypass the controller. Before supporting continuous additive capacity, prepare and review a versioned task-admission contract with bounded task IDs, immutable target, allowed paths, role/capability, owner, expiry, conflict key, evidence schema, cancellation, no-secret and no-nested-dispatch constraints.
+
+During waits, the interactive lane should use time for independent audits, mature upstream component research, documentation and integration preparation. If the approved controller cannot accept a non-duplicative assignment, mark the agent task PLANNED/BLOCKED or NOT RUN and continue safe chat-lane work.
+
+### Mature component evaluation anchors
+
+- Temporal: study its client/server/worker and durable task-queue separation as an architecture reference; self-hosted service/database operations mean it is not automatically suitable for the free GitHub-only baseline. https://github.com/temporalio/temporal
+- NATS JetStream: study persisted/replayable task/event delivery; it requires a permitted NATS service and operational controls. https://github.com/nats-io/nats-server
+- OpenFGA: study fine-grained authorization; it does not replace workload identity, scheduling or quotas. https://github.com/openfga/openfga
+- SPIFFE/SPIRE: study workload identity for future heterogeneous worker pools; it adds infrastructure and must be evaluated against ephemeral GitHub runners. https://github.com/spiffe/spire
+- These are STUDY / NOT ADOPTED candidates. Prefer the existing GitHub Actions controller until a concrete, free, maintainable integration case is proven.
