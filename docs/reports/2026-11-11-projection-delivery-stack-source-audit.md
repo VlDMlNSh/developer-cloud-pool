@@ -62,3 +62,12 @@ Before implementation, inspect the current exact default workflow/test conventio
 No secrets, tokens, API keys, provider calls, live GitHub writes, hosted resources, dispatch, deployment, schema/runtime changes or merges were performed.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Source-review correction — reconciler success receipt semantics (2026-11-11)
+
+A full read of the tail of `proofs/d1-ledger/src/projection-reconciler.mjs` corrects an earlier abbreviated interpretation: after comment marker verification and final managed-label read-back, the success path returns `decision: PROJECTION_VERIFIED` and `projection_verified: true`, together with `eventId`, `payloadDigest` and the verified managed labels. It does not always return false.
+
+The actual integration gap remains at the D1 acknowledgement boundary: this result is not a signed/opaque receipt bound to the acquired delivery lease generation, and `acknowledgeProjectionDelivered` accepts no reconciler result/receipt at all. The reconciler result does not echo a verified lease-generation binding. The D1 acknowledgement can therefore be called without proving that the exact outbox event and current fenced delivery lease produced the verified external projection.
+
+Required correction: define a receipt schema bound to `outboxId/eventId`, `eventDigest/payloadDigest`, `leaseGeneration`, and verified projection state; construct it only after the reconciler's final read-back; validate it within the same D1 conditional acknowledgement update/read-back path. Do not call it cryptographic or signed unless a real verifier/signature mechanism is implemented and qualified.
