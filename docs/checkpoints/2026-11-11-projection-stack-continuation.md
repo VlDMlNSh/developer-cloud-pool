@@ -158,7 +158,7 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 
 ## Final exact-head synchronization — 2026-11-11
 
-- PR #66 head: `7007ff9dd983a76117c68066525ff55a84d7d5f5`; base `221f216c00ca7e5596bcc682ba185ad155a10603`; AHEAD 43 / BEHIND 0; 11 documentation-only paths.
+- PR #66 head before this checkpoint commit: `7007ff9dd983a76117c68066525ff55a84d7d5f5`; base `221f216c00ca7e5596bcc682ba185ad155a10603`; AHEAD 43 / BEHIND 0; 11 documentation-only paths.
 - Exact-head statuses: 0; PR-triggered runs: 0; reviews: 0; inline threads: 0. CI NOT VERIFIED; independent review NOT RUN.
 - Context Window blob: `cbe589454ebd621b83f9ebc501822fd63324ebff`; commit: `fc7afefe56506ccd67abf1584e6d36ddf906dc38`.
 - Next: independent review of PR #66 documentation and PR #58/#59 proof contract. Keep all PRs unmerged and dispatch disabled.
