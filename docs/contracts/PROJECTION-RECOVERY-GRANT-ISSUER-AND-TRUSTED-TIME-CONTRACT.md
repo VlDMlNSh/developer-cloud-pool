@@ -13,11 +13,32 @@ The repository contains a proposed backend-neutral Shared Immutable Claim Lifecy
 
 The existing task Resolver capability is not a projection recovery grant. It has a different audience, subject/resource binding and operation set. Reusing its issuer/capability patterns is permissible only through a separately constrained grant profile; widening Resolver permissions is prohibited.
 
-The original WB-05 decision packet (blob `1b562c6546b1216f2ee89095cd6a78427a967dc5`) explicitly left options A–D unselected. A later owner-directed disposition is recorded in MediaHub PR #599 (Wave 486), whose body selects the WB-05 Option A target: a dedicated Security Issuer Authority separate from Jarvis and ASTRA A0. PR #599 is still OPEN/DRAFT/UNMERGED with no recorded reviews or exact-head CI in the current query. Treat Option A as an owner-directed target, not normative acceptance, a concrete product/service selection, or deployed authority. Do not create a parallel issuer. MediaHub PR #600 / Wave 487 / Wave 528 remains OPEN/DRAFT/UNMERGED; R-06 operational ownership/retention, concrete KMS/audit service selection and independent A3 review remain open. Wave 528 JWS, RFC 8785 JCS, managed KMS/HSM, PostgreSQL state/outbox and separate audit sink are recommendations, not accepted ADR.
+The original WB-05 decision packet (blob `1b562c6546b1216f2ee89095cd6a78427a967dc5`) left options A–D unselected. The later owner-directed Wave 486 disposition (MediaHub PR #599; disposition blob `7b778ebe67105d50afb00466965cdcfb5353a262`) selected Option A as a target: a separately governed Security Issuer Authority distinct from Jarvis, ASTRA A0, executors and Product State Authority. PR #599 is OPEN/DRAFT/UNMERGED; exact-head CI and independent review are NOT VERIFIED. Wave 487 (MediaHub PR #600; contract blob `1200d343139c8e67a826902b3ade09d4987c537d`) translates that target into a DRAFT NORMATIVE CANDIDATE / NOT ACCEPTED / NOT IMPLEMENTED contract; its exact-head CI and independent A3 review are NOT VERIFIED. Neither PR proves a deployed issuer or operational staffing. Wave 528 is MediaHub PR #634, a Runner 2 isolation/design proposal, and is not a source for issuer token, canonicalization, database or audit-sink technology decisions. R-06 operational ownership, retention approval and concrete audit/KMS service selection remain unresolved.
 
 The local D1 adapter's caller-supplied `now` is a deterministic test seam only. The synthetic Resolver host-clock composition proof does not qualify production clock provenance for this outbox.
 
-## 2. Required trusted composition boundary
+## 2. Crosswalk to MediaHub Wave 486 / Wave 487 authority requirements
+
+This recovery grant profile is a distinct consumer-specific application of the owner-directed Security Issuer Authority target. It is not an A0 ingress capability and does not grant Jarvis, A0, or the Cloud Pool authority to issue grants.
+
+| MediaHub requirement | Projection recovery application | Boundary / evidence |
+|---|---|---|
+| Separate Security Issuer Authority | Only that separately governed authority may authenticate/authorize issuance of a projection-recovery grant | Owner-directed target only; PR #599 / #600 remain Draft |
+| Service-principal lifecycle and identity generation | Recovery Actor is a separately admitted service principal with stable ID and generation; suspension/revocation invalidates new grants | No registry or production lifecycle implementation evidenced |
+| Audience confinement | Exact audience `projection-outbox-recovery`; never accept A0 ingress or task Resolver audience | No cross-audience reuse |
+| Consumer-specific verification | Cloud Pool recovery composition root verifies its own grant immediately before state transition | No caller-supplied actor ID or decoded claims |
+| Maximum capability lifetime | Grant lifetime MUST NOT exceed 300 seconds, measured by qualified trusted time | Wave 486/487 target default; test seam does not qualify production clock |
+| Revocation freshness | Revocation state MUST be no older than 30 seconds and generation MUST NOT roll back; stale/unavailable state denies recovery | Wave 486/487 target default; no production revocation source evidenced |
+| Delegation attenuation | No delegation by default. If later required, every hop must preserve issuer, original requester, actor identity, exact audience, operation, resource and no-broader lifetime/scope | Jarvis→A0 delegation semantics do not automatically authorize a Cloud Pool recovery delegation |
+| R-06 security audit | Record issuer/subject identity generations, grant digest/ID, audience, operation, exact outbox binding, decision/reason, revocation generation, trusted timestamp/confidence and transition receipt; never raw grant/token/key | Security Audit owns integrity/access accountability; concrete sink/operator not evidenced |
+| R-06 privacy and retention | Minimize payload; classify fields; apply deletion/legal-hold and controlled-reader rules. Wave 486's 365-day security / 90-day operational values are target defaults only | Privacy/Data Governance owns classification/retention accountability; legal approval and operational owner unresolved |
+| Audit failure | No new recovery transition when required audit cannot be durably committed and verified; ambiguous commit remains NOT VERIFIED | Consistent with fail-closed privileged mutation target; exact sink/transaction coupling unqualified |
+
+The Wave 487 requester/mission provenance fields apply to the actual authenticated issuance request. For this maintenance operation, the authenticated requester is the admitted Recovery Actor workload principal; any human approval evidence is required only if the accepted issuer policy explicitly requires it. Do not invent a Jarvis mission or claim that a Cloud Pool grant is an A0 grant. The issuer must independently authorize the exact recovery operation and resource binding.
+
+The Wave 487 contract is technology-neutral and explicitly selects no token format, signature algorithm, KMS/HSM vendor, identity provider, database, queue or audit sink. JWS, KMS/HSM, Cedar and Macaroons listed below are candidates only; RFC 8785 and PostgreSQL are not decisions sourced from Wave 528.
+
+## 3. Required trusted composition boundary
 
 Define one trusted composition root with two separately testable dependencies:
 
@@ -28,7 +49,7 @@ The storage adapter must not accept an arbitrary actor ID, decoded-but-unverifie
 
 No concrete implementation is selected by this contract.
 
-## 3. Recovery grant profile
+## 4. Recovery grant profile
 
 A grant must be authenticated by an issuer whose authority and key lifecycle are independently governed. The verified claims must bind all of:
 
@@ -47,7 +68,7 @@ A grant must be authenticated by an issuer whose authority and key lifecycle are
 
 Unknown claims, unsupported versions, duplicate fields, malformed canonical encodings, wrong audience/subject/operation, mismatched resource binding, revoked issuer/key/policy, expired or not-yet-valid grants, and replay are DENY / UNRESOLVED. A grant cannot authorize scanning arbitrary repositories or batches; any future batch interface must verify a distinct per-row binding or a separately reviewed bounded batch capability.
 
-## 4. Issuer responsibilities and unresolved ownership
+## 5. Issuer responsibilities and unresolved ownership
 
 Before implementation, governance must name and qualify:
 1. the authoritative issuer service or owner-approved issuance event;
@@ -61,7 +82,7 @@ A registered GitHub secret, repository variable, environment name, workflow iden
 
 Candidate technologies (JWS, managed KMS/HSM, Cedar, Macaroons) remain candidates only. A token format or policy engine does not establish principal authentication, key custody, revocation freshness, or authority ownership. No new dependency is selected here.
 
-## 5. Trusted-time contract
+## 6. Trusted-time contract
 
 Preferred source: database-generated UTC time evaluated by the same database transaction that conditionally validates lease expiry, grant validity and nonce consumption. This preference is conditional on proving the selected D1 runtime's exact semantics and transaction behavior.
 
@@ -75,7 +96,7 @@ If database time cannot be qualified, an alternative trusted composition-root cl
 
 The chosen source must consistently evaluate both the outbox lease expiry and grant not-before/expiry. If the grant validity boundary cannot be evaluated atomically with nonce consumption and the terminal transition, the design must document the residual race and remain unqualified until resolved. Test clocks may be injected only through a test-only adapter that is not exported by production composition.
 
-## 6. Required verification sequence
+## 7. Required verification sequence
 
 1. Authenticate the issuance principal independently of request fields.
 2. Resolve issuer/key/policy state from trusted configuration or authoritative registry; fail closed on unavailable or stale revocation state.
@@ -86,7 +107,7 @@ The chosen source must consistently evaluate both the outbox lease expiry and gr
 
 The database transaction remains the state-transition authority. Issuer verification does not replace SQL fencing; SQL fencing does not authenticate the caller.
 
-## 7. Required adversarial tests
+## 8. Required adversarial tests
 
 - forged actor ID, fabricated branded object and caller-supplied decoded claims;
 - wrong issuer/key version, revoked key, stale revocation data, wrong policy epoch;
@@ -100,6 +121,6 @@ The database transaction remains the state-transition authority. Issuer verifica
 
 Synthetic unit tests are necessary but not sufficient. Hosted backend, issuer, key lifecycle, revocation and time-source qualification are separate mandatory gates.
 
-## 8. Decision
+## 9. Decision
 
 No issuer or production clock is evidenced as implemented and qualified in the inspected contracts. Therefore the next engineering step is governance/source identification and interface verification, not runtime implementation. Keep recovery NOT IMPLEMENTED / NOT QUALIFIED, task Resolver unchanged, production dispatch FAIL-CLOSED, and Contour B deferred.
