@@ -2608,3 +2608,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - GitHub ruleset API/tool not exposed in this connector inventory during this pass; active ruleset state NOT VERIFIED in this pass (previously observed ruleset ID `26550182`, enforcement active; must refresh through supported read-only path).
 - No agent dispatch, host command, secret access, database provisioning, Worker deployment, workflow mutation or production change performed.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 Projection Recovery Grant Contract Audit
+
+- Report: [projection recovery grant contract audit](../reports/2026-11-11-projection-recovery-grant-contract-audit.md).
+- Immutable default target re-read: `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #59 exact head `22200226da4f1af30645cf441a639db6893e9310`; adapter blob `1546c2e4172e3767ed8bd5642c7b9c6d95716d11`; migration blob `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`. Exact-head run [42981807825](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42981807825), job `130393715595`, COMPLETED/SUCCESS (3 files / 53 Workers-runtime tests). Formal reviews and inline threads: 0.
+- PR #60 target `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`; issuer/trusted-time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; ADR blob `59a4be21516da0e005114acfe015aee7787524dc`. Exact-head workflow lookup: no runs; reviews/threads: 0. CI NOT VERIFIED; independent review NOT RUN.
+- Audit: PR #59 remains a same-owner expired-lease proof, not an independent reaper. Its event trigger attributes the dead-letter actor to the original lease owner. PR #60 correctly specifies a separate issuer grant and trusted-time boundary but does not select/qualify issuer ownership, key custody, revocation source, audit sink, or production clock. Database-time/nonce/audit atomicity remains unproven.
+- Recovery actor: NOT IMPLEMENTED / NOT QUALIFIED. Production dispatch remains FAIL-CLOSED. No live API, secrets, provider calls, deployment or dispatch performed. Contour A BLOCKED / NOT ACCEPTED; Contour B deferred.
+- Next: resolve and evidence the issuer, recovery actor lifecycle, revocation, trusted time and audit ownership/interface before implementation.
