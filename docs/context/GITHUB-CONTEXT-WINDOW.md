@@ -1767,3 +1767,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report: docs/reports/2026-11-11-pr58-pr59-ancestry-reconciliation.md.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #58/#59 code and migration compatibility audit — 2026-11-11
+
+- Audit base `Основной` HEAD: `dd1303879d1e8d4f89f83c18c5671b3712656e28`; #58 HEAD `5caeb60f7a45d836c6ad1eea2fb86e20995da025`; #59 HEAD `22200226da4f1af30645cf441a639db6893e9310`.
+- #58 adds mapper + fake reconciler as additive files; #59 modifies outbox/migrations/tests/workflow. No unified candidate or CI exists.
+- Integration hazard: #59 package check omits `projection-envelope.mjs`, while #58 includes both envelope and reconciler. Preserve both checks.
+- Migration order is 0006 → 0007 → 0008; 0007 replaces status event trigger. Workflow branch filters require union, not overwrite.
+- Critical liveness gap: expired fifth lease cannot be reacquired; deadLetterExpiredProjection requires original worker identity/generation, so no independent reaper exists.
+- Critical enforcement gap: acknowledgeProjectionDelivered does not enforce a persisted `projection_verified` proof; `now` and workerId remain caller-supplied, not trusted/authenticated.
+- No branch mutation/dispatch/deployment in this pass. Next: local-only integration candidate from immutable #58 HEAD, preserving syntax/workflow filters and migrations, add regression tests for orphaned fifth lease and unverified ack, then full D1 tests + exact-head CI.
+- Report: docs/reports/2026-11-11-pr58-pr59-code-migration-compatibility-audit.md (blob `f36345c08f37303aea56e11678e63facfb3163c5`).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
