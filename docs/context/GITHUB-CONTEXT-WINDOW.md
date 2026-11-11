@@ -1713,3 +1713,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code, runtime, secrets, permissions, Cloudflare resources, workflows or dispatch changed. Hosted D1 NOT RUN; account Workers Free entitlement NOT VERIFIED; dispatch FAIL-CLOSED; Issue #38 OPEN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #39/#54 proof stack onto current default; remove overlapping lease APIs, replace caller-controlled resumability with authenticated durable reconciliation, and rerun exact-head CI before any hosted proof. Evaluate Cloudflare Workflows only after account free entitlement/quotas and authority fit are evidenced.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Continuation checkpoint — 2026-11-11
+
+- Recovery checkpoint: [CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md](../checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md).
+- Exact resume phrase is recorded in section 0 of that checkpoint. In a new chat, begin with that phrase; it directs the next session to revalidate all live refs before acting.
+- At checkpoint creation PR #64 was OPEN/DRAFT/UNMERGED, head `c84990f97a9cd1536a21b79cd43c03d84e025ae6`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`, 14 ahead / 0 behind; exact-head PR CI empty (NOT VERIFIED), reviews 0, threads 0. The previous audit report records an earlier head snapshot; checkpoint is the later observation.
+- No runtime, infrastructure, secrets, permissions or dispatch changed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
