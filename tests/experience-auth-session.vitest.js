@@ -136,6 +136,32 @@ describe("isolated Experience auth D1 schema", () => {
       .toBe("DENY");
   });
 
+  it("does not revoke a session before its creation time", async () => {
+    const futureSessionHash = "f".repeat(64);
+    const createdAt = NOW + 100;
+    expect(await createApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      githubUserId: "12345",
+      createdAt,
+      expiresAt: NOW + 3600
+    })).toEqual({ outcome: "CREATED" });
+
+    expect(await revokeApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      now: NOW
+    })).toEqual({ outcome: "DENY", reason: "SESSION_NOT_ACTIVE_OR_ALREADY_REVOKED" });
+
+    expect(await lookupApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      now: createdAt
+    })).toEqual({ outcome: "ACTIVE", githubUserId: "12345" });
+
+    expect(await revokeApplicationSession(db(), {
+      sessionHash: futureSessionHash,
+      now: createdAt
+    })).toEqual({ outcome: "REVOKED" });
+  });
+
   it("rejects sessions before their creation time", async () => {
     const futureSessionHash = "d".repeat(64);
     const createdAt = NOW + 100;
