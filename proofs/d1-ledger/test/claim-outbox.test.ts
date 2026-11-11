@@ -801,6 +801,12 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
       lease_expires_at: null, dead_lettered_at: attemptTimes[4] + 1,
       dead_letter_reason: "GITHUB_API_UNAVAILABLE"
     });
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET status = 'retryable' WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DEAD_LETTER_TERMINAL");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET delivery_attempts = 6 WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow("PROJECTION_DELIVERY_ATTEMPT_LIMIT");
     const noRequeue = await acquireProjectionDelivery(
       env.POOL_DB, outboxId, "projection-after-dead-letter", NOW + 1000, 30
     );
