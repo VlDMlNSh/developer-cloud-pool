@@ -1788,3 +1788,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Cloud Pool default branch remains `Основной` at `6fdcedebeba62715122e43a75c6ad6d926321ce7`; docs working branch baseline before this pass `e92139a24e5ef243272cbf2f6d2be5db4cea35ff`. Context/checkpoint remain on the working documentation branch, not accepted default.
 - Cloud Pool runtime not launched/qualified; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-11 provider credential inventory and additive agent capacity addendum
+
+- Report: [Provider Credential Inventory and Additive Agent Capacity Plan](../reports/2026-11-11-provider-credential-inventory-and-agent-capacity-plan.md).
+- Cloud Pool default `Основной` HEAD observed: `6fdcedebeba62715122e43a75c6ad6d926321ce7`; documentation branch is separate and unmerged.
+- MediaHub `main` source baseline: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Provider registry blob: `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`; it contains 24 ordered cloud credential slots plus one local Ollama record (25 records total).
+- Agent registry blob: `0317d1e794aa80cd0fa22bd953b95921b26aafd3`; canonical roles remain A0 Astra coordinator, A1 Architect, A2 Builder, A3 Verifier; dynamic workers reuse A1/A2/A3, default parallelism 3, no nested delegation, conflict blocking.
+- Model router policy blob: `e249333c1c0ce6c1c586a5f498dbfd3979418f6e`; policy-only, direct provider calls disabled, paid fallback false, unknown routes fail-closed.
+- Provider qualification workflow blob: `d3160088fbef4fce152ed7335f0acaa3bb440378`; references many provider credential aliases in one self-hosted job on mh-dev-02. This broad injection surface requires per-provider/per-slot isolation before production use.
+- The GitHub connector used for this audit does not expose Secrets API endpoints. Secret values were not read; actual configured secret existence/scope is NOT VERIFIED. Workflow references are not proof of configured credentials.
+- Owner-provided Aion Labs Free 20k/day + LLM7 Free 100k/day = 120k/day arithmetic estimate only; not independently verified and not a fungible shared quota.
+- New task-scoped profiles documented: provider inventory auditor, provider qualification verifier, quota ledger engineer, model capability evaluator, router policy engineer, rate-limit auditor, task planner, bounded coding worker, independent security reviewer. These reuse A1/A2/A3; no permanent role taxonomy expansion.
+- First static wave PLANNED only: A1 provider inventory read-only; A2 quota-ledger/test design; A3 provider workflow blast-radius audit. Not dispatched because current Gemini controller accepts only fixed role payloads and no custom tasks; no bypass or duplicate generic batch.
+- Provider/model API calls: NOT RUN. Additional provider-backed agents: NOT DISPATCHED. Model Gateway: NOT IMPLEMENTED/NOT QUALIFIED. Contour A remains BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
