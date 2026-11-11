@@ -1866,3 +1866,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Full reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified: true`, `eventId`, `payloadDigest` and verified managed labels after comment-marker and final-label read-back. Earlier abbreviated note suggesting success returns false is incorrect; use this correction.
 - Remaining correctness gap: this success result is not bound to the current D1 delivery lease generation, and `acknowledgeProjectionDelivered` accepts no receipt/result. A caller can acknowledge without presenting proof for the exact outbox event + digest + fenced generation.
 - Required local proof: receipt object bound to outbox/event ID, digest, lease generation and verified state; generated only after final reconciler read-back; checked in the D1 conditional update and subsequent read-back. Do not describe as signed/cryptographic unless a real signature verifier is implemented and qualified.
+
+
+### Current-default integration feasibility recheck — 2026-11-11
+
+- Default branch is `Основной`; immutable HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Recursive tree has 47 entries and lacks `proofs/d1-ledger/**`, `package.json`, `vitest.config.ts`, D1 migrations and a Workers/D1 test harness. A receipt implementation directly on this branch would not be meaningfully executable or testable without importing the complete proof project.
+- PR #58/#59 remain isolated draft proof branches. Existing compatibility audit findings remain binding: package script union, ordered migrations, workflow branch/path-filter union, orphaned fifth-lease behavior and verified-ack contract must be resolved before integration.
+- Ledgerline is an architecture reference only (Durable Objects authority model); no dependency selected. Additional GitHub repo searches for a ready-made D1 outbox integration returned no candidates.
+- No code/runtime changes this pass. Next: qualify a complete harness transplant onto current default or retain an isolated proof branch; then implement receipt binding within the selected testable harness. Keep `dispatch:false`; hosted D1 NOT AUTHORIZED / NOT RUN.
