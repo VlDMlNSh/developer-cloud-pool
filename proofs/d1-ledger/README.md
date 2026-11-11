@@ -56,3 +56,11 @@ Migration `0004_create_immutable_task_attempts.sql` and `src/task-attempts.mjs` 
 - All adapter responses retain `dispatch: false`. No provider, model, GitHub dispatch, secret, remote D1, or deployed Worker integration is present.
 
 This is a proof extension only. The previous `attempt_count` field remains a legacy lease-acquisition counter for the older adapter; it is not backfilled into fabricated attempt history. The new adapter uses `attempt_number` and `pool_attempts`. Do not mix the old `task-lease.mjs` API with the new attempt lifecycle when assessing retry semantics.
+
+
+## Terminal projection delivery proof (local-only)
+
+- Migration 0009 makes the projection outbox identity immutable across updates: outbox ID, task/attempt binding, repository/issue, target SHA, profile, attempt lease generation, terminal outcome and event digest. Delivery state and fenced lease fields remain mutable.
+- `createProjectionDeliveryOrchestrator` is the only public delivery boundary. It owns lease acquisition/read-back, envelope derivation, fake GitHub reconciliation, exact event/digest verification, private conditional ACK and D1 read-back. The receipt-free ACK helper is not exported.
+- The local Workers-runtime tests cover verified delivery, missing/ambiguous projection, conflicting marker digest, expired lease, takeover by a newer delivery generation, concurrent calls, and immutable event-digest enforcement. All responses retain `dispatch: false`.
+- This remains an isolated proof. Runtime identity/clock qualification, live GitHub behavior, hosted D1 and deployment are not implemented.

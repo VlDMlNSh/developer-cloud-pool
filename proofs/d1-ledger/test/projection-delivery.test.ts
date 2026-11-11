@@ -210,4 +210,18 @@ describe("receipt-bound projection orchestration", () => {
     expect(row.status).toBe("delivered");
     expect(row.lease_generation_delivery).toBe(1);
   });
+  it("prevents mutation of the immutable outbox event digest", async () => {
+    const outboxId = await createOutbox();
+    const before = await env.POOL_DB.prepare(
+      "SELECT event_digest FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET event_digest = ? WHERE outbox_id = ?"
+    ).bind("f".repeat(64), outboxId).run()).rejects.toThrow();
+    const after = await env.POOL_DB.prepare(
+      "SELECT event_digest FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(after.event_digest).toBe(before.event_digest);
+  });
+
 });

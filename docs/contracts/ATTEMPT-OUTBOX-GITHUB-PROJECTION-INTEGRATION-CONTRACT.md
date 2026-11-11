@@ -5,7 +5,7 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
 ## Authority and data flow
 
 1. `pool_attempt_events` is append-only. A committed `attempt.finalized` event causes migration 0006 to insert exactly one `pool_attempt_projection_outbox` row in the same D1 transaction.
-2. The outbox row is the immutable source for projection identity and payload: `outbox_id`, `event_digest`, `repository_id`, `issue_number`, `target_sha`, `profile`, `lease_generation`, `terminal_status`.
+2. The outbox row is the immutable source for projection identity and payload, enforced by migration 0009 against updates to: `outbox_id`, `event_digest`, `repository_id`, `issue_number`, `target_sha`, `profile`, `lease_generation`, `terminal_status`.
 3. `projectionEnvelopeFromOutbox(row)` is the pure adapter. It maps:
    - `outbox_id → eventId`
    - `event_digest → payloadDigest`
@@ -13,10 +13,10 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
    - `issue_number → issueNumber`
    - `target_sha → targetSha`
    - `lease_generation → claimGeneration`
-   - `terminal_status → terminalOutcome`
+   - `terminal_status → terminalOutcome`\n   - The identity fields above cannot be rewritten after insertion; delivery/lease state fields remain mutable.
    - succeeded → `pool:probe-complete`; failed/abandoned → `pool:needs-review`.
 4. `reconcileTerminalProjection(api, envelope)` may write only the deterministic audit comment and managed `pool:*` labels. It has no task/attempt storage handle and returns `dispatch:false`.
-5. Only `createProjectionDeliveryOrchestrator({ db, api, workerId, clock, leaseSeconds })` is the public delivery boundary. Its per-delivery method accepts only an `outboxId`; it acquires and reads back the lease itself, derives the envelope from that same row, reconciles the projection, validates exact `eventId` and digest, conditionally ACKs using a private SQL helper, and confirms the delivered row by read-back. No receipt-free ACK function is exported. Retryable projection uses the same fenced lease; stale generations fail closed.
+5. Only `createProjectionDeliveryOrchestrator({ db, api, workerId, clock, leaseSeconds })` is the public delivery boundary. Its per-delivery method accepts only an `outboxId`; it acquires and reads back the lease itself, derives the envelope from that same row, reconciles the projection, validates exact `eventId` and digest, conditionally ACKs using a private SQL helper, and confirms the delivered row by read-back. No receipt-free ACK function is exported. Migration 0009 prevents rewriting the event digest or other projection identity fields after outbox insertion. Retryable projection uses the same fenced lease; stale generations fail closed.
 6. Projection failure must not roll back, rewrite, reopen, or otherwise mutate the finalized task/attempt. Projection delivery status is separate from task/attempt terminal status.
 
 ## Idempotency and failure semantics
