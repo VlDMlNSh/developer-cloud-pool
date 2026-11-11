@@ -53,9 +53,10 @@ export async function consumeOAuthTransaction(db, input) {
        WHERE state_hash = ?
          AND browser_binding_hash = ?
          AND consumed_at IS NULL
+         AND created_at <= ?
          AND expires_at > ?
       RETURNING pkce_verifier_envelope, encryption_key_version
-    `).bind(input.now, input.stateHash, input.browserBindingHash, input.now).first();
+    `).bind(input.now, input.stateHash, input.browserBindingHash, input.now, input.now).first();
 
     if (!row) return deny("OAUTH_STATE_MISMATCH_EXPIRED_OR_REPLAYED");
     return {
