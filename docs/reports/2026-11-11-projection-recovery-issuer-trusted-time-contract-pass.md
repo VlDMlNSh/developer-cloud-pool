@@ -73,3 +73,10 @@ No runtime, migration, schema, permission, secret, workflow, dispatch, deploymen
 Identify the actual governance-owned issuer and revocation source from authoritative project governance, and establish whether the selected free backend can provide transaction-local trusted time and atomic one-use nonce consumption. If no issuer owner or time authority is evidenced, keep implementation blocked; do not create a parallel issuer or grant runtime permission.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Governance crosswalk correction (2026-11-11)
+
+A targeted re-read of the Cloud Pool Context Window and MediaHub roadmap clarified that MediaHub Wave 486 already selected the owner-directed WB-05 Option A target: a dedicated Security Issuer Authority logically separate from Jarvis and ASTRA A0. This is a selected target disposition, not normative acceptance, concrete product/service selection, or deployed authority. The Cloud Pool recovery grant must reconcile to that direction and must not create a parallel issuer. Wave 528 recommendations (GitHub OIDC workload authentication, JWS, RFC 8785 JCS, managed KMS/HSM, PostgreSQL state/outbox, separate audit sink) remain recommendations; R-06 operational ownership/retention, concrete KMS/audit selection and independent A3 review remain open. MediaHub PR #600 is still OPEN/DRAFT/UNMERGED per the project Context Window snapshot; do not treat the crosswalk as runtime issuer evidence.
+
+Updated issuer/time contract blob after this correction: `7f5be06506a4b4c93148133bf8ca3441b08ea700`. PR #60 head: `673f2519c8cdc7f75602599c48d44ec72e396dec`. Exact-head CI remains NOT VERIFIED; independent review NOT RUN.
