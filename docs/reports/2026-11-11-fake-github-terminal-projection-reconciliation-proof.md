@@ -9,7 +9,7 @@ IMPLEMENTED / EXACT-HEAD CI VERIFIED / INDEPENDENT REVIEW NOT RUN. This is a loc
 - Base: PR #54 exact head `ec3f3266ca28c4fb5633a9475cc6f396a4677974`.
 - Branch: `proof/fake-github-projection-reconciler-2026-11-11`.
 - PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/58
-- Exact head: `1824f768bcb71b5a5690e941d3a0cbde0d6ffb78`.
+- Exact head: `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`.
 - Added `proofs/d1-ledger/src/projection-reconciler.mjs` and `proofs/d1-ledger/test/projection-reconciler.test.ts`.
 - Added syntax validation for the new module and branch filters so the isolated D1 proof workflow runs on the new proof branch and PR base.
 - Changed only isolated proof code, its tests/package script, and the proof workflow branch filters.
@@ -29,6 +29,10 @@ IMPLEMENTED / EXACT-HEAD CI VERIFIED / INDEPENDENT REVIEW NOT RUN. This is a loc
 ## Marker multiplicity hardening
 
 A follow-up audit found that duplicate markers repeated within a single comment also needed detection, not only duplicates across separate comments. The parser now counts marker occurrences across all comment bodies, and an additional regression case verifies same-comment duplicates are denied. The final exact head below includes this correction.
+
+## Terminal-outcome binding hardening
+
+A further contract review found that the envelope validator must reject terminal outcomes paired with semantically inconsistent managed labels. The validator now binds successful outcomes to success labels and failed/abandoned outcomes to review/failure labels. A negative regression case covers this mismatch. The final exact head below includes this correction.
 
 ## Exact-head verification
 
