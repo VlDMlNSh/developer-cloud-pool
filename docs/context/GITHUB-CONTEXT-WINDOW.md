@@ -1721,3 +1721,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Exact resume phrase is recorded in section 0 of that checkpoint. In a new chat, begin with that phrase; it directs the next session to revalidate all live refs before acting.
 - At checkpoint creation PR #64 was OPEN/DRAFT/UNMERGED, head `c84990f97a9cd1536a21b79cd43c03d84e025ae6`, base `6fdcedebeba62715122e43a75c6ad6d926321ce7`, 14 ahead / 0 behind; exact-head PR CI empty (NOT VERIFIED), reviews 0, threads 0. The previous audit report records an earlier head snapshot; checkpoint is the later observation.
 - No runtime, infrastructure, secrets, permissions or dispatch changed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Project continuity operating system adopted — 2026-11-11
+
+- Adopted protocol: [PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md](../governance/PROJECT-CONTINUITY-AND-CHECKPOINT-PROTOCOL.md); verified blob SHA `272449fb7eb0b899e2f6b8ccedfc67b0cb21ea4e`.
+- Current recovery anchor: [CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md](../checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md); updated checkpoint blob SHA `d4b71ea75aca656ef6f8388385da8d3834a9247f`.
+- Adopted lifecycle: mandatory new-chat/`/next` recovery; read Context Window + latest checkpoint + bootstrap/map/roadmap/relevant contracts; re-fetch live refs/HEAD/PR/Issues/exact-head CI/reviews/rulesets/worker availability; assess mature GitHub OSS before implementation; pin immutable target SHA; one bounded pass; read back files/SHA; update Context Window after significant work; create checkpoints at material milestones and handoffs; close with evidence/status/next step.
+- Source-of-truth hierarchy: live GitHub state > Context Window > latest checkpoint > bootstrap/map > roadmap/accepted contracts > dated evidence reports > conversation history. Conflicts must be documented, not silently overwritten.
+- Evidence rules formalized: empty CI/review/worker data is NOT VERIFIED; local mocks are not hosted proof; SUCCEEDED is not VERIFIED; QUALIFIED/ACCEPTED require declared criteria and published evidence.
+- Branch and authority controls retained: working PRs are proposals, default branch is accepted baseline; no secrets, paid fallback, unauthorized provisioning/dispatch/merge; Contour B remains deferred until Contour A acceptance.
+- Mature OSS review for this documentation-governance change: no new runtime dependency was warranted. Existing repository Context Window, ADR/decision records, dated reports and GitHub PR/commit history already provide the required durable primitives; the adopted policy composes these rather than introducing a new tool or service.
+- Verification snapshot while implementing policy: default `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; PR #64 OPEN/DRAFT/UNMERGED, head at that verification point `e257f2ccf35e739b949da6632fe2a8327204a235`, 18 ahead / 0 behind; exact-head PR workflow query empty (CI NOT VERIFIED), formal reviews 0, inline threads 0. Subsequent documentation commits can advance the PR head; always fetch live HEAD before resuming.
+- Changes were documentation-only. No runtime, hosted resources, secrets, permissions, provider execution, dispatch or Contour B work performed.
+- Canonical MediaHub architecture map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
