@@ -2152,3 +2152,20 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Next bounded step: refresh DSH smoke workflow pin to current published `0.2.2-rc.1` only after verifying package metadata, then run the harmless headless profile evaluation in a disposable GitHub-hosted runner; no model task, credentials, write token or public Web UI. Capture install footprint, startup time, disk/RSS, profile hash and artifact digest. Keep PR #67 draft/unmerged; continue receipt-bound adversarial tests and runtime adapter design separately.
 - Hosted D1, production runtime adapter, provider/model calls, dispatch, deployment and independent qualification remain NOT RUN / DEFERRED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## Exact-head and governance recheck — PR #67 — 2026-11-11 (supersedes prior status snapshot)
+
+- Revalidated default branch `Основной` HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603`. Repository metadata confirms default branch `Основной`.
+- PR #67 current head: `dea09ffe94059f446c74fada37971087ec4878eb`, base exactly `221f216c00ca7e5596bcc682ba185ad155a10603`; OPEN / DRAFT / UNMERGED; 9 commits ahead / 0 behind; mergeable=true is not acceptance.
+- Exact-head PR D1 workflow run `43064261520`, job `130674831651`: COMPLETED / SUCCESS. Checkout, pinned Node, npm ci, syntax, Workers-runtime D1 tests and artifact upload succeeded.
+- Exact-head Pool Contract Validation run `43064261551`, job `130674831998`: COMPLETED / SUCCESS. Dispatch-disabled assertion, YAML syntax and pool contract validation succeeded.
+- D1 suite evidence: 5 files / 66 tests passed. Combined commit-status endpoint returned zero contexts; status contexts remain NOT VERIFIED and must not be called green.
+- PR #67 formal reviews 0; inline review threads 0.
+- Ruleset #26550182 direct read: active on exactly `refs/heads/Основной`; PR required; deletion/non-fast-forward prohibited; review-thread resolution required; required approvals 0; bypass actors none; current user bypass `never`. Branch API reports classic protection disabled. Ruleset governance is active, but no approving review is mandated by this ruleset.
+- PR #67 implementation is local Workers-runtime D1 proof only. Trusted production clock and issuer/worker identity, live GitHub API behavior, hosted D1, crash/restart qualification and orphaned fifth-lease recovery remain NOT QUALIFIED / NOT RUN.
+- No hosted resource, dispatch, provider/model call, secret read, paid resource or deployment occurred. Dispatch remains FAIL-CLOSED.
+- Detailed report: [PR #67 exact-head and governance recheck](../reports/2026-11-11-pr67-exact-head-governance-recheck.md), commit `3b7674db59059044f5b2611ef3880e8b7042b338`.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: source-level negative-first audit of retry/terminal lease-generation fencing and authority-gated orphaned-lease recovery; no hosted D1 or dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
