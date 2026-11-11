@@ -3226,3 +3226,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code/tests/workflows/permissions/secrets changed; no dispatch, provider/model call, deployment, merge or live GitHub projection write.
 - Decision: PR #58 BLOCKED; keep sender/dispatch fail-closed. Next step is governance/source qualification for issuer and trusted time under Issue #38 / proposed PR #60; then implement verifier boundary and one-use/concurrency adversarial tests.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58 one-use POST authority interface gate
+
+- Rechecked default branch HEAD `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`; PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f` / CI `43010770730` SUCCESS; PR #58 `6f7953e4abec3cc564984ee3635cdb7717ae5d5e` / CI `42979949181` SUCCESS on old base; PR #59 `22200226da4f1af30645cf441a639db6893e9310` / CI `42981807825` SUCCESS on old stack; PR #60 `234fb2ee40265e26fac00c69ac1b6192766602cb` / no exact-head CI, NOT VERIFIED. All OPEN/DRAFT/UNMERGED. #58/#59/#60 formal reviews and inline threads empty; #54 has owner COMMENTED review and its known thread resolved.
+- PR #58 source blob `2f83befc145d39ea60f06fe5b9e9033f89df40c0` gates comment POST solely on caller boolean `allowPost`. Its tests blob `76b144bd067a42455b858345abec5ee3580c8ccf` prove one POST per invocation and read-only delayed-marker reconciliation, but not cross-invocation grant reuse, concurrent same-grant admission, stale generation, or nonce consumption.
+- PR #59 outbox blob `1546c2e4172e3767ed8bd5642c7b9c6d95716d11` and retry migration blob `767d95a30fa0a14c79e88c8c58392bfec9cdddc2` still do not gate POST authority. Five attempts are not five safe external POSTs.
+- PR #60 grant/time contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c` and actor ADR blob `59a4be21516da0e005114acfe015aee7787524dc` are PROPOSED / NOT IMPLEMENTED / NOT QUALIFIED. Trusted issuer, key custody, time, revocation and audit sink are unresolved. MediaHub Wave 486/487 issuer is also a target design, not a deployed service.
+- Decision: no fake verifier or runtime grant implementation was added because no accepted issuer/verifier exists. Report defines opaque-grant interface, exact resource/operation binding, atomic nonce consumption with live D1 lease validation, trusted time/revocation, one POST per permit, INDETERMINATE handling for ambiguous external outcomes, and adversarial test matrix. No exactly-once GitHub side effect is claimed.
+- Reuse-first: retain existing D1 + Workers Vitest and pinned dependencies; no new capability framework, queue, token library or HTTP client.
+- Report: [PR #58 one-use POST authority interface gate](../reports/2026-11-11-pr58-one-use-post-authority-interface-gate.md), commit `d5fcad4b20f038f5b6151f2bf994c57022c779d6`.
+- No code/schema/workflow/permissions/secrets changes, dispatch, deployment, merge, or live GitHub writes. Issue #38 OPEN; dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded action: resolve the upstream Security Issuer Authority prerequisites and name a real trusted-time/revocation/audit boundary; absent that, only non-authoritative fake tests are permitted.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
