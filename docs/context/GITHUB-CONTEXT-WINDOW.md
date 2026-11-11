@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-11 — Recovery Actor R-06 operational-owner source search
+Last refreshed: 2026-11-11 — Supervisor claim/recovery remediation contract and N01–N20 negative test matrix
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (read-back 2026-11-11)
 Documentation continuation branch: `docs/recovery-actor-component-fit-2026-11-11`
-Latest report commit: `1465e733cd41a4792456771d820eed9f0be240b9` (documentation branch; PR #63 remains open/draft/unmerged)
+Latest documentation commit: `21e3ff73b36a21d7c89b232422435e6d300e850d` (documentation branch; PR #63 remains open/draft/unmerged). Latest remediation report blob: `b8827f7c1b96dabede08d126e36db2abb0d8a247`; checkpoint blob: `c71c6ec1d216dbc224a624fd02ebb929424d235a`.
 Latest-state note: dated snapshots below are historical evidence; the most recent Recovery Actor sections at the end of this file supersede older PR/head/status observations.
 
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -1754,8 +1754,8 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Negative matrix N01–N20 covers concurrent same-task claims, same-grant replay, distinct approvals for same task, forged/revoked issuer, trusted-time boundary, commit response loss, ambiguous dispatch, authoritative rejection, delayed run visibility, worker crash at every boundary, stale finalizer, envelope mutation, Issue mutation, audit actor attribution, duplicate outbox delivery, privilege escalation, secret/account isolation, audit sink failure and restore/replay rollback.
 - Reuse evidence rechecked: PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`, exact-head run `43010770730` SUCCESS; actor attribution correction and assertions exist in local Workers/D1 scope. PR #39 exact-head run `42329993548` SUCCESS at `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; PR #37 exact-head runs `42284051309` and `42284051311` SUCCESS at `5587a4e013507b5be330fd0c49ce1fc836faa946`. These are historical local/static proofs, not hosted D1 or integrated production acceptance.
 - Critical new emphasis: per-approval uniqueness does not prove one active claim per task across two distinct approvals; N03 is mandatory. Atomic enqueue is not full delivery/consumer/lease/recovery qualification.
-- Current PR #63 head `6836cd6a72b306244944ad552fac52d33f81de49` and PR #64 head `95d237c753bec96abe9add621140928511047599` have empty PR-triggered run lists and combined statuses; CI NOT VERIFIED. Ruleset #26550182 remains active only on `refs/heads/Основной`, requires PR but 0 approvals, thread resolution, no bypass actors.
+- At this recheck, PR #63 and #64 remain OPEN/DRAFT/UNMERGED. Their current head SHAs and exact-head CI must be refreshed from live PR refs before any merge/dispatch decision; prior checked heads had empty PR-triggered run lists and combined statuses (NOT VERIFIED). Current documentation branch HEAD is `21e3ff73b36a21d7c89b232422435e6d300e850d`; its PR-triggered run list and combined statuses are empty (NOT VERIFIED). Ruleset #26550182 remains active only on `refs/heads/Основной`, requires PR but 0 approvals, thread resolution, no bypass actors.
 - This pass is design/test planning only. No code/runtime/schema/workflow/permission/secret/variable changes, test execution, provider calls, dispatch, resource creation, deployment or merge.
 - Status: contract DESIGN; N01–N20 NOT RUN; hosted D1 NOT QUALIFIED; issuer/trust/revocation/time/audit owners NOT EVIDENCED; Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: map N01–N20 to the actual PR #36/#39/#54 source/test files, identify the smallest missing task-wide uniqueness and consumer/fencing additions, then obtain authorized independent review. No hosted provisioning or dispatch.
+- Next: map N01–N20 to actual PR #36/#39/#54 source/test files and identify smallest missing task-wide uniqueness and consumer/fencing additions. No hosted provisioning or dispatch while authority and free-tier authorization remain unproven.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
