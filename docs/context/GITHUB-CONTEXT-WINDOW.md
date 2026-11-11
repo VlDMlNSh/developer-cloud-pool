@@ -338,3 +338,14 @@
 - Report updated: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-projection-recovery-actor-contract-design.md ; report commit `d6473fe5d4cb0458f15f37fe30166cfdc815407c`.
 - No runtime changes, migrations, grants, secrets, dispatch, live services or deployment. PR #58/#59 remain draft/unmerged; Issue #38 OPEN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED.
 - Next: specify a separate projection-recovery issuer capability and trusted clock provider contract, then adversarially test nonce consumption + dead-letter transaction on the selected backend. No production implementation until issuer ownership and backend qualification are evidenced.
+
+
+### PR lineage refresh — 2026-11-11
+
+- Live refresh detected PR #59 advanced to head `22200226da4f1af30645cf441a639db6893e9310`, base branch `proof/fake-github-projection-reconciler-2026-11-11` at `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`.
+- Exact-head PR workflow run `42981807825`, attempt 1, event `pull_request`, COMPLETED/SUCCESS; job `130393715595` (Local Workers-runtime D1 adversarial tests) SUCCESS. Combined status contexts none returned. PR #59 reviews 0, inline threads 0.
+- PR #58 remains OPEN/DRAFT, head `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, base `test/50-approval-logical-task-contention-2026-11-09`.
+- PR #60 remains OPEN/DRAFT, head `04fcf8868a086b9f58c10fdc076aef0b7170d5f2`, base `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`; no exact-head Actions run returned, reviews/threads 0/0.
+- PR #59 CI success qualifies only its current local Workers-runtime D1 proof; same-owner-only orphan recovery limitation remains; no hosted D1, independent review or production dispatch.
+- PR #59 is stacked on the fake GitHub projection reconciler branch; review the full lineage, not an isolated PR diff.
+- Updated report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/github-context-window-2026-11-06/docs/reports/2026-11-11-projection-recovery-actor-contract-design.md ; latest report commit `34093deaf23a3df3c60aca87809eb688b217ff02d`.
