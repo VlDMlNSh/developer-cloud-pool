@@ -2174,3 +2174,17 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 
 - Public upstream Discussions contain community security reports against older versions (#817 for 0.1.0-rc.5, #3252 for 0.1.0-rc.7, #3245 Code Mode execution-boundary report, #10507 for 0.2.1-rc.2). These are unverified leads for current `0.2.2-rc.2`, not proof the same issues persist. They raise the qualification bar: inspect exact profile; disable or constrain Code Mode, dynamic plugin installation/hot-update, project instruction trust, network egress, loopback/RPC and telemetry. Ordinary shell/filesystem sandbox is not enough. Upstream SAFETY.md itself says unaudited and not production-ready.
 - Detailed DSH report amended at commit `a02f3a5689fefdfaf86b1cd8e13d6a0793a82911`, blob `20b29588cf6e188bc0c2932e4f4a24a1476b6caa`.
+
+
+## Recovery Actor and lease-recovery source audit — 2026-11-11
+
+- Audited PR #67 exact implementation HEAD `dea09ffe94059f446c74fada37971087ec4878eb` (base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`), OPEN / DRAFT / UNMERGED. Documentation-only pass; implementation source unchanged.
+- Source blobs inspected: task-lease `b41edf89cdf960b2c007f38ba16554dc179f021a`; task-attempts `6cb028e048569700ed623d93462ef55e2392a084`; projection-outbox `cd27ba98c5716ef568c0672250b652d68e714ea5`; migration 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; migration 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; migration 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; migration 0008 `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; test file `93192ebb3d00701230c3d9a1a5557ba159fd74f3`.
+- Verified local lease fencing: owner + monotonically increasing generation + unexpired lease bind renew/finalize; DB triggers enforce attempt terminal fencing. Expired attempt becomes indeterminate and creates durable reconciliation row with task/attempt/input digest/generation/expired owner. Expiry alone does not clear lease or authorize retry. Projection retry/dead-letter paths are generation/owner fenced.
+- BLOCKING authority gap: `acquireAttemptLease(..., { resumable: true })` permits an expired still-running attempt to be taken over based on caller-supplied boolean. No issuer/capability, scope, evidence digest or separate approval is verified. Existing test explicitly demonstrates this local behavior. This flag is not production authorization.
+- Indeterminate attempts correctly reject takeover even with `resumable: true`; no reconciliation resolver or Recovery Actor exists to consume pending records. Recovery Actor identity/capability: NOT IMPLEMENTED / NOT QUALIFIED.
+- No source changes/tests in this pass; do not patch only the boolean without a complete authorization contract and adversarial tests. Independent external checks remain deferred until after pool launch per project direction.
+- Detailed report: [Recovery Actor and lease-recovery source audit](../reports/2026-11-11-recovery-actor-lease-recovery-source-audit.md), docs commit `54971b963cf9814813c15fc932e0689d57d185fb`.
+- Next: define versioned issuer-bound, narrowly scoped, single-use Recovery Actor capability contract and negative-first tests; atomically revalidate reconciliation/task/attempt/generation/input digest before any recovery transition. No hosted D1 or dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
