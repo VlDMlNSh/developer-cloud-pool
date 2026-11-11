@@ -2650,3 +2650,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No runtime implementation, schema, migration, key/secret, permissions, workflow, dispatch, provider call or deployment changed. Recovery NOT IMPLEMENTED / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: establish source-backed issuer/revocation owner and qualified trusted-time/audit transaction boundary. Until then, do not implement or dispatch recovery.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Recovery issuer ownership / technology crosswalk
+
+- Report: [Recovery issuer ownership and technology-selection crosswalk](../reports/2026-11-11-recovery-issuer-ownership-technology-crosswalk.md).
+- Refreshed Cloud Pool PR #59 and #60 bodies, Issue #38, and MediaHub PR #599/#600 source records/comments. Default target observed: `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- PR #60 contract blob `6c8bc0a06f8eb0f354da397ba2bd9629b348c90c`; branch HEAD recorded `234fb2ee40265e26fac00c69ac1b6192766602cb`. Exact-head workflow lookup returned no runs; formal reviews/threads 0. CI NOT VERIFIED; independent review NOT RUN.
+- Source crosswalk: Wave 486 PR #599 selects a separately governed Security Issuer Authority only as an owner-directed target; it does not identify named operational owners/services. Wave 487 PR #600 remains a technology-neutral draft and leaves protocol, identity provider, key custody, audit sink and operational team unselected. Its R-06 functional accountabilities are not named staffed owners; 365d/90d retention remains unapproved target policy. Wave 528 comment recommendations (OIDC, JWS/JCS, KMS/HSM, PostgreSQL, separate audit sink) remain candidate directions, not accepted decisions or qualified services.
+- Cloud Pool must retain separate `projection-outbox-recovery` audience and exact resource/operation binding; no A0 ingress or task Resolver grant reuse. ≤300s grant / ≤30s revocation freshness are target constraints, not production evidence.
+- No issuer, Recovery Actor, revocation source, trusted clock, database, key provider, audit sink or named operator is selected/qualified. PR #59 local D1 proof remains SUCCESS (53 tests); hosted D1/production recovery NOT QUALIFIED. No secrets, runtime, dispatch, provider calls or deployment touched.
+- Dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain named governance owners and approved retention/audit policy; then independent review of an explicit identity/protocol/trust/audit ADR before any schema or verifier implementation.
