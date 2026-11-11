@@ -3215,3 +3215,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision: do not merge/promote #58/#59/#60 until exact label ownership is accepted, caller boolean replaced with verifier-backed one-use lease grant, recovery issuer/time/revocation gates implemented, and updated exact-head CI/review evidence obtained.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next bounded action: add fake-only adversarial test/interface for one-use D1-lease-bound POST across repeated invocations; if issuer implementation is not yet approved, preserve fail-closed behavior and publish contract only.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #58 delayed-visibility retry authority adversarial gap
+
+- Rechecked PR refs/reviews/exact-head CI: #54 HEAD `15a09c910f52553c59796260131a6b5a4a39c15f`, run `43010770730` SUCCESS, actor-attribution thread resolved; #58 HEAD `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, run `42979949181` SUCCESS on old base; #59 HEAD `22200226da4f1af30645cf441a639db6893e9310`, run `42981807825` SUCCESS on old stack; #60 HEAD `234fb2ee40265e26fac00c69ac1b6192766602cb`, no exact-head run. #58/#59 have no formal reviews/inline threads returned; #60 likewise. Issue #38 OPEN.
+- New finding: PR #58 delayed-visibility test uses `allowPost:true` on first call and `allowPost:false` on second. It does not test repeated `allowPost:true`. Source path permits a second POST if marker is still invisible because the sender accepts caller-controlled boolean and never consumes/verifies a D1 lease-bound grant. Existing fake increments POST counter per createComment; repeat call is a deterministic source-level counterexample, not executed in this pass.
+- PR #59 D1 max-five retry budget remains disconnected from PR #58 side-effecting POST. PR #60 issuer/trusted-time contract says no concrete issuer or production clock is selected/qualified. Do not fake production auth or accept caller-supplied actor/time/nonce.
+- Report: [PR #58 delayed-visibility retry authority adversarial gap](../reports/2026-11-11-pr58-delayed-visibility-retry-authority-adversarial-gap.md), commit `0b35eb3977d2b5e88850d42b793dbd58ec6786f3`.
+- No code/tests/workflows/permissions/secrets changed; no dispatch, provider/model call, deployment, merge or live GitHub projection write.
+- Decision: PR #58 BLOCKED; keep sender/dispatch fail-closed. Next step is governance/source qualification for issuer and trusted time under Issue #38 / proposed PR #60; then implement verifier boundary and one-use/concurrency adversarial tests.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
