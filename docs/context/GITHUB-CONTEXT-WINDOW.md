@@ -2339,3 +2339,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: compare the draft line-by-line against Cloud Pool's current default-source contracts/workflows and verify its claims against current immutable refs; then refresh default HEAD and create a minimal dedicated default-based branch only if the draft is accurate and self-contained.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Canonical Context Window draft source reconciliation
+- Source reconciliation report: [canonical Context Window draft source reconciliation](../reports/2026-11-11-canonical-context-draft-source-reconciliation.md), commit `8bcaea0b659be397ff0530551af91eb625df0541`.
+- Current default source read-back: README blob `fea44c2485b604432ab9ee20293c3e1f7ee8bdec`; Supervisor workflow `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; Worker workflow `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; Supervisor script `52bf03ca889edd92fd10c71ae96a2e35e106d43f`; Supervisor architecture `3ac28f2f105a20a4eed5d93168bbe84d2d5273b8`. Default HEAD remains `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Default Supervisor remains the older direct workflow_dispatch Worker chain. It exits heartbeat-only unless `POOL_DISPATCH_ENABLED` is literal `true`; workflow permissions include issues:write/actions:write. Default Worker remains manually dispatchable and limited to DSH headless probe. README/architecture mark the pool scaffold / NOT RUN; no production web deployment, general-purpose agent execution or checkpoint/resume is claimed.
+- Added omitted PR #37 authorization boundary proposal to draft: current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`; exact-head validation runs `42484039940` and `42484039932` SUCCESS; PR remains OPEN/DRAFT. Against current default it is DIVERGED 36 ahead / 3 behind (merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`). Historical CHANGES_REQUESTED reviews concern earlier content and do not constitute current-head approval.
+- Added PR #55 evidence-only approval adapter: head `edff010388897f23f58bceb92e5180a09970fdff`; exact-head runs `42797001864` and `42797001989` SUCCESS; positive verifier output still has `dispatch:false`.
+- Issue #38 and #22 remain OPEN; durable one-winner claims/authority/recovery and authenticated deployed web console are acceptance blockers. Gemini controller route explicitly names `VlDMlNSh/mediahub-os` and its approved workflow; no dispatch attempted.
+- Updated canonical draft blob: `aba0da189f3eedfb7e0538880ff40905d9b3a768`. Read-back verified draft includes PR #37, PR #55 and corrected repository/controller wording. Reconciliation report blob: `5392042d9b0717d3461a9a51af264c6e38f4516a`.
+- No default branch change, branch creation, PR, merge, rebase, dispatch, deployment, secret access or provider call.
+- Next: review updated draft for overstatement of PR #37 finalizer/authority guarantees and reconcile remaining authorization/quota/claim PRs before creating any default-based branch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
