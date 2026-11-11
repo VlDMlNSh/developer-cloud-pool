@@ -68,3 +68,15 @@ Canonical navigation:
 - PR #61: https://github.com/VlDMlNSh/developer-cloud-pool/pull/61
 - Issue #62: https://github.com/VlDMlNSh/developer-cloud-pool/issues/62
 - MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Subsequent exact-head refresh — OAuth transaction creation-time guard
+
+A subsequent branch commit extended the same temporal invariant to OAuth transactions:
+- Current PR #61 head: `f2d225fe8d660bdc9724320080e0d0cd91705f0a` (commit message: `test: cover future-created OAuth state rejection`).
+- `consumeOAuthTransaction` now requires `created_at <= now` as well as `expires_at > now`, with the lookup timestamp bound to both predicates.
+- Added a Workers-runtime D1 regression that creates OAuth state in the future, verifies DENY before creation, and verifies single-use consumption at creation time.
+- Current source blob: `90ec8a9b2e7dba2f367c96ca37fa41b5f6b0b5e3`; current test blob: `c6f75fd554081173a5de972396cbe2aea9ee1fb7`.
+- Exact-head workflow run [42984959975](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42984959975), job `130403823600`: COMPLETED / SUCCESS. `npm ci`, static checks, Node/API tests 11/11, Workers/D1 suite 3 files / 17 tests all passed.
+- Read-back confirms both temporal guards: OAuth transaction consume and application-session lookup. PR remains OPEN/DRAFT/UNMERGED; no formal reviews/threads; independent security review NOT RUN.
+- This remains local synthetic D1 evidence. Production trusted time and complete OAuth/session lifecycle are still NOT QUALIFIED. Issue #62 is CLOSED by owner; closure applies only to the narrow future-created session finding and does not approve PR merge or production.
