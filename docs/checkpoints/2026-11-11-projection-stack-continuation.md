@@ -317,3 +317,19 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Next: specify issuer-bound, scoped, single-use Recovery Actor capability and adversarial tests before implementation; keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Recovery Actor Capability v1 design pass — 2026-11-11
+
+- Design contract: [Recovery Actor Capability v1 — design contract and negative-first test matrix](../contracts/2026-11-11-recovery-actor-capability-v1-design-contract.md), added in commit `7948bc7d947dfbc34f60613248164b3a8cfedc5b`.
+- Immutable implementation target: PR #67 HEAD `dea09ffe94059f446c74fada37971087ec4878eb`, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`. PR remains OPEN / DRAFT / UNMERGED.
+- Current refs re-read: default branch HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`; docs branch before this pass `55babef9b6a3e2422e387e3be575d6e06c2447ad`; new docs commit `7948bc7d947dfbc34f60613248164b3a8cfedc5b`.
+- Active ruleset #26550182 was read directly: applies to `refs/heads/Основной`; PR required; deletion/non-fast-forward blocked; review-thread resolution required; zero required approvals; no bypass actors; current user cannot bypass.
+- PR #67 associated exact-head workflow runs #43064261520 (Isolated D1 Ledger Proof) and #43064261551 (Pool Contract Validation) are completed SUCCESS. Combined commit status remains pending with zero contexts. PR reviews and inline comments are empty. PR #66 current exact-head workflow run list is empty; NOT VERIFIED.
+- Reconfirmed blocking authority gap: caller-supplied `resumable: true` can take over an expired still-running attempt without authenticated Recovery Actor issuer/capability/evidence. Recovery Actor resolver remains NOT IMPLEMENTED / NOT QUALIFIED.
+- Reviewed mature GitHub projects: Eclipse Biscuit (signed/attenuable capability tokens; revocation requires external state; no one-use transaction ledger) and Cedar (policy evaluation/schema validation; no capability issuer/replay ledger/transaction coordinator). No component adopted; neither replaces durable one-time nonce consumption and conditional D1 state transition.
+- Contract defines exact capability binding (issuer/key/subject/audience/decision/task/attempt/reconciliation/generation/input digest/evidence digest/nonce/expiry), three narrow decisions, atomic one-use consumption, audit constraints and 22 negative tests. It is design-only; no source code or tests changed.
+- No secrets read, no hosted D1, dispatch, provider/model call, deployment or paid resource used. Independent review remains deferred until after actual pool launch per owner direction.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect the current authority/issuer/key-custody and evidence-source contracts; decide who can issue each decision and from which trusted evidence before writing executable transition specs.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
