@@ -1982,3 +1982,17 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Current project disposition: production auth NOT IMPLEMENTED; live OAuth NOT RUN; hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next concrete step: obtain independent security review of corrected production-auth contract; after acceptance, add negative-first synthetic PKCE tests on a new immutable implementation candidate. Do not enable live OAuth or production routes before gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## D1 proof-harness transplant manifest self-audit — 2026-11-11
+
+- Report: [D1 transplant manifest source self-audit](../reports/2026-11-11-d1-transplant-manifest-self-audit.md), created in commit `c746179e393c071115b971e1be29868b60842154`.
+- Current default remains `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; source proof heads remain PR #58 `5caeb60f7a45d836c6ad1eea2fb86e20995da025` and PR #59 `22200226da4f1af30645cf441a639db6893e9310`.
+- Re-read complete changed-path lists: PR #58 has 7 delta paths; PR #59 has 5. The manifest accounts for all 12 delta paths and separately enumerates shared-base harness files. The PRs are divergent siblings from `6f7953e4abec3cc564984ee3635cdb7717ae5d5e`, not a linear stack.
+- Source read-back confirms package-script union must preserve `node --check src/projection-envelope.mjs`; PR #59's package script omits it. Migration 0007 preserves `COALESCE(NEW.lease_owner, OLD.lease_owner)`; migration 0008 enforces monotonic delivery attempts.
+- Confirmed blocking ACK defect: `acknowledgeProjectionDelivered` accepts no projection receipt; it checks lease tuple/time and marks delivered. Reconciler verification result has event ID/digest but is not bound to delivery lease generation. Receipt-bound conditional ACK remains mandatory.
+- Same-owner fifth-lease dead-letter behavior remains intentionally fenced. No issuer-verified recovery grant or production trusted-time source is qualified; do not relax the fence.
+- This is an author-side consistency audit, **not independent review**. PR #66 remains OPEN/DRAFT/UNMERGED; exact-head CI/review must be rechecked after this documentation update.
+- Manifest audit: VERIFIED for file inventory and identified compatibility gaps. Independent review: NOT RUN. Code integration: NOT RUN. Hosted D1: NOT AUTHORIZED / NOT RUN. Dispatch: FAIL-CLOSED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: independent review of manifest and exact #58/#59 patches; only then create an immutable current-default integration candidate and implement receipt-bound ACK with negative-first local Workers tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
