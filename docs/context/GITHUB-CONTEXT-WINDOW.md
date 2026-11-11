@@ -2246,3 +2246,5 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No backend selected or provisioned. No secrets, dispatch, provider/model calls, deployment, merge, or paid fallback. Resolver remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only verification of Cloudflare account identity/plan/resource metadata if authorized, followed by a local non-deployed Durable Objects prototype and adversarial claim/recovery tests. No remote resources without separate authorization.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Cloudflare read-only account inventory supplement: one standard account visible; D1 databases 0, Worker scripts 0, Durable Objects namespaces 0. Account subscriptions endpoint returned HTTP 403 authentication permission denied, so Free/Paid plan status NOT VERIFIED. No account identifiers, billing profile or secrets read; no resources provisioned. See decision study supplement.
