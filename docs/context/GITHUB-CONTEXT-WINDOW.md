@@ -3178,7 +3178,7 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - F-02 correction: migration 0006 records `OLD.lease_owner` when a transition leaves `leased`, preserving the actor after the live lease is cleared. Migration blob `956911c5d66938829205e9ef6d56568d17198376`.
 - Added assertions for `delivery.delivered` actor `projection-new` / generation 2 and `delivery.retryable` actor `projection-retry` / generation 1. Test blob `32ae873f71af7f74041e52fc0d067c16626f76c8`.
 - Added isolated branch to D1 proof-validation push filter. Workflow blob `be0003fd29a687ad87b2d51ac973f0bfc7b5a8b5`.
-- Read-back of all changed files verified. Exact-head workflow lookup for `b9731547afaefde2d22e704122e73615ce85876c` returned no runs; CI remains NOT VERIFIED. Source assertions are authored but not executed.
+- Read-back of all changed files verified. Exact-head lookup for `b9731547afaefde2d22e704122e73615ce85876c` returned no pull-request-triggered runs. The available lookup filters to PR events and does not expose push-event runs; push CI execution remains NOT VERIFIED. Source assertions are authored but execution is NOT VERIFIED.
 - Report: [Projection delivery actor attribution correction](../reports/2026-11-11-projection-delivery-actor-correction.md), commit `48b3b5241aa61aba1dcd44830c1ff1f7d8d7f533`; read-back pending.
 - F-01 remains OPEN: finalization event digest is still `resultDigest || provenanceDigest`, not canonical full-field event digest. Do not add a partial workaround; trace and update originating event schema/trigger and all consumers/tests as one versioned contract change.
 - No merge, deployment, secret/credential access, production mutation, dispatch, provider call, or hosted D1 operation.
