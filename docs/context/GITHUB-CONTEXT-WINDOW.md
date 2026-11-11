@@ -1789,3 +1789,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: formalize one canonical attempt lifecycle and a verifiable reconciliation capability; specify cross-API negative tests and accepted-write/lost-ack consumer tests before any runtime change.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (N01–N20 source/test traceability)
+
+- Documentation branch at start of this pass: `4084df588357260e666a76b64d4438fa87f77eb5`; report creation commit `2f7f149d3d4205411f3d8070e686d7576395faf8`; corrected traceability report update commit `3f2d51afc9948d1693004bcbad9b76a89ab9f0c5`; checkpoint update commit `4b5afec5219440f282f8e2092aa1a70357e01cdc`.
+- Report: `docs/reports/2026-11-11-source-to-test-traceability-n01-n20.md`. It maps N01–N20 to exact source/test files and separates LOCAL_PROOF, GAP, NOT RUN and hosted NOT QUALIFIED.
+- PR #54 evidence correction: 50-way distinct-approval contention converges on one canonical task/task-level outbox; generation-fenced task leases and immutable attempt lifecycle tests also exist. Historical local D1 proof only.
+- PR #51: indeterminate attempt/reconciliation queue is persisted, but lease takeover still accepts caller-supplied `resumable=true`; no independent signed/authorized reconciliation capability demonstrated.
+- Legacy task-lease and immutable attempt APIs coexist. No end-to-end proof that only one canonical lifecycle controls execution, recovery and finalization.
+- Projection outbox local lease/retry/ack evidence exists; external GitHub accepted-write/lost-ack idempotency remains NOT VERIFIED.
+- Exact-head PR-triggered CI: #36 runs 42329438308/42329438351 SUCCESS; #39 42329993548 SUCCESS; #40 42489887940 SUCCESS; #50 42533097813 SUCCESS; #51 42536377720 SUCCESS; #54 43010770730 SUCCESS. PR #53/#63/#64 returned no runs. Combined statuses empty for checked SHAs. Empty = NOT VERIFIED.
+- Ruleset #26550182 active on `Основной`, PR required, zero required approvals, threads resolved, no bypass. Independent security approval is not enforced.
+- No code/runtime/schema/workflow/secret/permission/dispatch/hosted resource/deployment/merge changes. Dispatch FAIL-CLOSED; hosted D1 NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: hard-disable legacy lifecycle; replace caller-controlled resumability with issuer-authorized reconciliation capability; test external side-effect lost-ack behavior; integrate attempt generation/execution identity with Worker finalizer.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
