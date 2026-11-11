@@ -1626,3 +1626,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #25 latest API says `mergeable:false`; no merge action taken. PR #52 and #61 remain Draft.
 - Next: inspect exact-head fixes/status of PR #37 (including review comments) and complete claim service threat-model/interface prerequisites without deploying or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — Issue #38 free transactional claim backend fit
+
+- Report: `docs/reports/2026-11-11-issue38-free-claim-backend-fit.md`, commit `7c3e7fef208314235859d968e0257caf8e3de1f3`.
+- Immutable Pool default snapshot: `Основной@6fdcedebeba62715122e43a75c6ad6d926321ce7`.
+- Issue #38 remains OPEN. Acceptance requires real-backend one-winner contention proof, interrupted-claim recovery, least privilege, exact-head CI and independent security review.
+- PR #54 current head `15a09c910f52553c59796260131a6b5a4a39c15f`: exact-head CI run `43010770730` / job `130489510967` SUCCESS. Local 50-way synthetic D1/Miniflare proof only; hosted D1 remains NOT VERIFIED. The previous actor-attribution finding is corrected in migration blob `678a4aa8ce396a15f4f0ecbf908aa41fabc4d752` using `OLD.lease_owner`, and test blob `6178a10504a5914187c29bc3ed1ec209e3cd62f3` asserts retryable/delivered actor identity. Old review thread is resolved/outdated. Review is COMMENTED, not APPROVED.
+- PR #37 remains OPEN/DRAFT/UNMERGED at `1be8672c1be1a720b6c813dcafff5c020b6456ae`; formal review history includes CHANGES_REQUESTED and COMMENTED, no approval on current head.
+- Official Cloudflare docs current at 2026-11-11 document Workers Free at 100,000 requests/day, 10ms CPU, 50 external subrequests/request; D1 Free at 5m rows read/day, 100k rows written/day, 5GB total storage; D1 batch is sequential SQL transaction with rollback if a statement fails. Exceeding free daily D1 quotas blocks further operations until 00:00 UTC. Durable Objects Free (SQLite only) at 100k requests/day, 13,000 GB-s/day, 5m rows read/day, 100k writes/day, 5GB total account storage and 1GB per object. All quotas must be treated as fail-closed, no paid fallback.
+- Product documentation proves Free-plan product availability, not this connected account's actual entitlement or remaining quota. No Cloudflare Worker, D1 database or DO namespace was created; actual account plan/resource usage was not verified.
+- Decision recommendation: D1 is PREFERRED for the first hosted qualification because existing local proof already uses D1 and D1 batch supplies atomic transaction semantics. This is NOT deployment/production approval. GitHub labels/concurrency rejected as CAS; Git ref reservation not selected due Contents:write/ref lifecycle risks; DO deferred unless D1 proof establishes need for per-task actor serialization.
+- Report includes exact hosted synthetic proof acceptance plan; not executed. No resource provisioning, secret/token reads, dispatch, runtime/schema/permission change, deployment, merge or gate enablement.
+- Status: D1 Free product eligibility DOCUMENTED; account entitlement NOT VERIFIED; local proof CI VERIFIED; hosted contention NOT VERIFIED; Issue #38 OPEN / NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect non-secret D1 account resource/plan metadata without creating resources, then define the isolated hosted-proof boundary and minimum permissions. Stop before provisioning if entitlement/ownership cannot be verified.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
