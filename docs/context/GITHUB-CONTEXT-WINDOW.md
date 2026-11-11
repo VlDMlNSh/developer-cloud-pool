@@ -1695,7 +1695,7 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 ## 2026-11-11 — PR #53 injectable Finalizer protocol and reconciliation
 
-- Report: docs/reports/2026-11-11-pr53-finalizer-transport-reconciliation.md (commit df3ad17cb842ee61a03287d09ca13e80d8a39ae0; blob pending read-back).
+- Report: docs/reports/2026-11-11-pr53-finalizer-transport-reconciliation.md (commit df3ad17cb842ee61a03287d09ca13e80d8a39ae0; blob ea2ad0e11b10929cdc4ba087b308ef570cc53552).
 - Immutable default snapshot before report: 7bb525bd0b551181c8a212c5b723e29cc60ae863.
 - PR #53 final head: 3458b01c99e0a3ed62e5469dc11631ec5316b0cd; base PR #37 head 1be8672c1be1a720b6c813dcafff5c020b6456ae; compare 43 ahead / 0 behind, 11 files. OPEN / DRAFT / UNMERGED.
 - Reused local fake-GitHub projection reconciler pattern from PR #58 (head 6f7953e4abec3cc564984ee3635cdb7717ae5d5e): deterministic marker, read-back, no blind retry, delayed visibility, reconciliation-only replay. No dependency adopted.
