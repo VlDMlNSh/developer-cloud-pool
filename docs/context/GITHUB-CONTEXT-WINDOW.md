@@ -1773,3 +1773,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: map N01–N20 to exact PR #36/#39/#54 source and tests, prioritizing task-wide uniqueness across distinct grants, outbox consumer idempotency, lease fencing and stale finalizer rejection. No hosted provisioning or dispatch until authority and free-tier authorization are proven.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Live continuation refresh — 2026-11-11 (source-to-test mapping)
+
+- Source-to-test mapping report: `docs/reports/2026-11-11-claim-recovery-source-to-test-mapping.md`; report commit `4084df588357260e666a76b64d4438fa87f77eb5`.
+- Checkpoint: `docs/checkpoints/2026-11-11-claim-recovery-source-test-checkpoint.md`; checkpoint commit `5e196db85af64464ba9334332f6ffc43fd526266`.
+- PR #54 local proof includes 50 concurrent distinct approvals attached to one logical task and one task-level outbox; also attempt fencing/finalization and projection delivery lease fencing. This corrects earlier N03 "missing regression" wording: N03 has local proof, not hosted qualification.
+- PR #51 local proof persists indeterminate attempts/reconciliation queue but no authorized resolver. `acquireAttemptLease` still accepts caller-controlled `resumable=true` for expired running attempt takeover.
+- Legacy `task-lease.mjs` and attempt-aware `task-attempts.mjs` lifecycle APIs coexist; no cross-API negative test establishes a single canonical state machine. Highest priority is selecting attempt-aware lifecycle and retiring/hard-disabling legacy API.
+- PR #53 pure finalizer tests cover immutable body digest, closed issue, run/attempt generation mismatch and duplicate finalization, but exact-head workflow run/status query empty (NOT VERIFIED).
+- PR #54 projection outbox local tests do not prove a real GitHub consumer's external side-effect idempotency after accepted-write/lost-ack.
+- Proof PRs #36/#39/#40/#50/#51/#53/#54 remain OPEN/DRAFT/UNMERGED on divergent/stacked bases. Historical successful exact-head runs do not establish an integrated build.
+- Ruleset #26550182 still requires zero approvals; independent review is not governance-enforced. No independent approved security review evidenced.
+- No code/runtime/schema/workflow/permission/secret/variable changes, tests, provider calls, dispatch, provisioning, deployment or merge in this pass. Production dispatch FAIL-CLOSED; hosted D1 and trust authorities NOT QUALIFIED.
+- Next: formalize one canonical attempt lifecycle and a verifiable reconciliation capability; specify cross-API negative tests and accepted-write/lost-ack consumer tests before any runtime change.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
