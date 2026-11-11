@@ -2717,3 +2717,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #61 remains OPEN/DRAFT/UNMERGED, stacked on PR #52. Reviews/threads 0; independent security review NOT RUN.
 - Local synthetic test proof only. OAuth app, PKCE encryption/key custody/rotation, production trusted time, bounded lifetime policy, owner allowlist composition and production session lifecycle remain NOT QUALIFIED. Jarvis API remains fail-closed; no deployment or production auth enabled.
 - Report updated with run evidence; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-11 — PR #61 exact-head D1 proof CI success
+- Reconciled PR #61 current head `7b018219cf220046a641d3811434014cc63421d4`, base remains PR #52 proof branch `proof/cloudflare-workflows-vitest-2026-11-08`.
+- Initial run `42984166338` failed due importing absent `@cloudflare/vitest-pool-workers/config`. Fixed using `readD1Migrations` from existing pinned `@cloudflare/vitest-plugin` and a setup file invoking `applyD1Migrations`; no new dependency or lockfile.
+- Exact-head run `42984240109` for `7b018219cf220046a641d3811434014cc63421d4`: COMPLETED / SUCCESS; job `130401521593` SUCCESS. `npm ci`, `npm run check`, `npm test` (11/11), `npm run test:workflow` (3 files, 14/14) all PASS. New Experience auth D1 suite 6/6 PASS; 50 concurrent callback consumers yielded exactly one success.
+- PR #61 reviews 0; inline review threads 0; remains OPEN / DRAFT / UNMERGED. Local D1/Workers behavior for tested cases is VERIFIED; production integration and independent security qualification are not.
+- Updated report [Experience auth D1 local proof](../reports/2026-11-11-experience-auth-d1-local-proof.md), commit `c653dddc12d29d5ab3bbea0087af1f49b4830681`, blob `6035bba4d8ab129ee48175b117ee839a8adff79c`.
+- Still OPEN: AEAD PKCE encryption/key custody/rotation; GitHub owner allowlist integration; session rotation single-successor transaction; global budget/circuit breaker; cookies, OAuth callback and CSRF integration; browser QA; remote D1 and Workers Free entitlement; deployment; independent security review.
+- No production database, binding, OAuth App, secret, key, route, deployment, provider request or dispatch.
+- Next: audit PR #61 source/migration for SQL invariants and threat boundaries, then design/implement bounded AEAD envelope and owner-allowlist middleware proof without enabling protected routes. Keep PR draft until review and qualification gates.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
