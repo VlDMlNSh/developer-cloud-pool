@@ -1937,3 +1937,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No code/runtime/secret/hosted-resource/deployment/dispatch changes. Hosted D1 NOT AUTHORIZED / NOT RUN; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare implementation contract and negative-first route tests, then request independent security review before any code implementation. Keep synthetic and production D1 configurations separate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 continuation correction — production auth contract
+
+The preceding context body contains historical snapshots from 2026-11-06/08 and must not be treated as current without primary-ref revalidation. Current independently observed repository default is `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`. Current working documentation branch is `docs/projection-stack-reconciliation-2026-11-11`; latest verified commit from this pass is `837f51588d409d146a297f51625fd65079f78e63` (checkpoint update). This branch is unmerged documentation, not default production code.
+
+- Added [production authentication implementation contract and negative-first route test plan](../contracts/2026-11-11-production-authentication-implementation-contract.md), initial commit `350bf088edb4d14ceaf5774ff0e669746320d3b7`.
+- Preferred protocol component is existing mature `panva/oauth4webapi`; PR #30 provides a synthetic-only fit proof. No dependency or runtime code was changed.
+- PR #61 exact head remains `58e255880c4cf4dc24fc2f2ee0791a9b121146ae`; local D1 proof run `42991794791` SUCCESS. It does not implement production OAuth/session routes.
+- PR #66 head revalidated as `eda1ffe8c09a1a26985165e136f325a8763af16f`; exact-head Actions 0, combined statuses 0, reviews 0, threads 0. Keep DRAFT/OPEN/UNMERGED.
+- PR #61 reviews 0, threads 0. Production auth NOT IMPLEMENTED. Hosted D1 / live OAuth / deployment NOT RUN and NOT AUTHORIZED. Dispatch FAIL-CLOSED.
+- Required next step: independent security review of the auth contract before code implementation. Preserve separate synthetic/production D1 configurations and fail-closed 503/405 routes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
