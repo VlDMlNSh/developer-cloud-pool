@@ -45,9 +45,11 @@ The existing >5 assertion remains intact. The Vitest configuration uses `readD1M
 ## Validation state
 
 - Previous exact-head PR #59 run `42980783397` passed on the previous head `5c47cda...`; it does not validate this change.
-- New exact-head run `42981807825` was observed RUNNING for head `22200226...`.
-- Job `130393715595`: Local Workers-runtime D1 adversarial tests; at last readback the pinned Node.js setup was in progress and dependency install/tests were pending.
-- New exact-head CI: RUNNING; result NOT VERIFIED until completion.
+- New exact-head run `42981807825` completed SUCCESS for head `22200226da4f1af30645cf441a639db6893e9310`.
+- Job `130393715595` (Local Workers-runtime D1 adversarial tests): pinned Node.js 24.9.0, `npm ci`, syntax check and Vitest all passed.
+- Vitest: 3 files passed, 53 tests passed, including the new direct-SQL decrement rejection and unchanged-counter readback.
+- Lockfile artifact ID `13838285758`; uploaded ZIP SHA-256 `baa3db3a6a748b26e37c0a174e28f3e0342995547c21513da125cae57da94f74`.
+- Exact-head CI: SUCCESS / VERIFIED for this local test suite only; no independent review or production qualification.
 - PR #59 remains OPEN / DRAFT / UNMERGED. Reviews: 0. Inline review threads: 0.
 - PR #58 remains OPEN / DRAFT / UNMERGED; its exact-head run `42979949181` was SUCCESS.
 - PR #60 recovery-actor contract remains OPEN / DRAFT / UNMERGED; exact-head CI and independent review NOT RUN.
