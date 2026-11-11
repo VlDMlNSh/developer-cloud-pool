@@ -34,12 +34,20 @@ async function readAndVerifyComment(api, e) {
   const comments = await api.listComments(e.repositoryId, e.issueNumber);
   if (!Array.isArray(comments)) return deny("INVALID_COMMENT_READBACK");
   const prefix = "<!-- pool-projection:" + e.eventId + ":";
-  const matches = comments.filter(c => typeof c?.body === "string" && c.body.includes(prefix));
-  if (matches.length > 1) return deny("DUPLICATE_EVENT_MARKERS", { markerCount: matches.length });
-  if (matches.length === 0) return retry("EVENT_MARKER_NOT_VISIBLE");
-  const start = matches[0].body.indexOf(prefix) + prefix.length;
-  const end = matches[0].body.indexOf(" -->", start);
-  const digest = end < 0 ? null : matches[0].body.slice(start, end);
+  const occurrences = [];
+  for (const comment of comments) {
+    if (typeof comment?.body !== "string") continue;
+    let offset = 0;
+    while ((offset = comment.body.indexOf(prefix, offset)) !== -1) {
+      const start = offset + prefix.length;
+      const end = comment.body.indexOf(" -->", start);
+      occurrences.push(end < 0 ? null : comment.body.slice(start, end));
+      offset = start;
+    }
+  }
+  if (occurrences.length > 1) return deny("DUPLICATE_EVENT_MARKERS", { markerCount: occurrences.length });
+  if (occurrences.length === 0) return retry("EVENT_MARKER_NOT_VISIBLE");
+  const digest = occurrences[0];
   if (digest !== e.payloadDigest) return deny("EVENT_MARKER_DIGEST_CONFLICT");
   return { decision: "COMMENT_VERIFIED", dispatch: false, projection_verified: false };
 }
