@@ -58,3 +58,9 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/validate-pool-contract.mjs
+
+      - name: Run finalizer planner and transport protocol tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test tests/security/pool-finalizer-fencing.test.mjs tests/security/pool-finalizer-runner.test.mjs
