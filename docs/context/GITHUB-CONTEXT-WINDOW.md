@@ -2223,3 +2223,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No dispatch, secret access, provider/model call, hosted D1, deployment, merge, qualification or acceptance. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement trusted evidence-bound reconciliation and Supervisor/Worker immutable identity bridge; preserve claims on missing/ambiguous evidence; independently review PRs on exact heads and re-read exact-head CI.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-11 — PR #51 lineage and reconciliation queue audit
+
+- Report: [PR #51 lineage and reconciliation queue audit](../reports/2026-11-11-pr51-lineage-and-reconciliation-queue-audit.md).
+- Default `Основной` HEAD observed `864213e2ff5b4fa956ba405dea8137a44d812f49`; PR #51 branch `feat/indeterminate-reconciliation-queue-2026-11-08` head `32c88e50e173e6b19bc6c61723ab6474a3c08145`, 116 ahead / 3 behind default, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Stale/diverged; no merge without rebase/stack reconciliation and fresh CI.
+- PR #51 exact-head run `42536377720`, job `128901478596`, SUCCESS; artifact `13639507665`, SHA-256 `4a472704ea37d577c123f74224d9344137d90136df8fef916b58fd03745c3d67`, provenance exact head `32c88e50e173e6b19bc6c61723ab6474a3c08145`. Reviews/threads 0/0.
+- Queue migration blob `7a19897f6197c79517170e101e4cbf1db233cac6`; adapter `6cb028e048569700ed623d93462ef55e2392a084`; test `0af5366564dfb3458ccda656c802ff039ead2418`. Trigger persists pending row on running→indeterminate with task/attempt/input digest/generation/owner/time. It does not release lease, retry or terminalize. Status CHECK permits only pending: queue is intake ledger, not resolver state machine.
+- PR #56 is 4 commits ahead / 0 behind PR #51 exact head; current head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`. Its lease-takeover denial remains verified in preceding audit.
+- Issue #38 remains OPEN. Shared claim contract blob `595da5bdaf832a48e032eb51a283e2456943b248`; trusted reconciliation contract blob `32bce214a8a3577584f058fb5679b8cecf5f3309`. Backend-neutral decision not made. GitHub labels lack CAS; refs require separate Contents:write threat model; D1 requires verified entitlement/identity/ACL/quota/recovery/hosted contention. Resolver requires separate single-use capability, native run identity, effect reconciliation and atomic receipt/outbox.
+- No dispatch, secrets, provider/model calls, remote provisioning, deployment, merge, qualification or acceptance. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare Issue #38 backend decision record against claim/reconciliation contracts and free/no-paid-fallback + least-privilege constraints. No resolver implementation before authority/backend decision.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
