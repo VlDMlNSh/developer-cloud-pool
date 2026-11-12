@@ -2378,3 +2378,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - PR #67 remains OPEN/DRAFT/UNMERGED; exact-head local D1 run 43162128594 and Pool Contract Validation run 43162128615 completed SUCCESS; combined commit status has zero contexts, and formal reviews/review threads are zero. Local Workers-runtime proof only.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile proposed actor/digest semantics with the corrected narrow Recovery Actor and issuer/time contracts; no runtime implementation before explicit authority acceptance.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Recovery issuer × terminal-event contract reconciliation — 2026-11-12
+
+- Added [cross-contract reconciliation report](../reports/2026-11-12-recovery-issuer-event-contract-reconciliation.md), commit `28ec43cafe46ae5f7e7d790e874c1b7373daa273`.
+- Reconciled PR #67 integration contract blob `e9bca72fd93709638a14e30210154c5c04759a11`, corrected Recovery Actor contract blob `9b663ca9ab8fe639b83a26dd5296b3409fd90334`, PR #60 issuer/time contract blob `674e2a601acdc972e1e96f15776d45fa51ae6842`, and terminal-event proposal. Their intended scopes are compatible only with explicit event digest/version strategy and distinct worker/finalizer/recovery identities.
+- Recovery Actor remains one operation only: `dead_letter_expired_projection` for one exact expired/exhausted outbox row; no task/attempt mutation, retry/resume, GitHub writes, comment-state reset, dispatch or batch scope.
+- Grant must bind exact immutable event ID + digest + version. Current v1 digest is result-only; v2 must preserve v1 IDs/digests, use explicit versioned canonicalization and dual-read/rollback plan. Hash does not authenticate a signer.
+- Issuer/time contract is a proposal. 300s grant lifetime and 30s revocation freshness are Wave 486/487 target defaults, not accepted/deployed policy. No issuer/key custodian/subject registry/revocation/trusted-time/audit/privacy operational owners are evidenced.
+- PR #60 OPEN/DRAFT/UNMERGED head `134fe6fe739a09b181fee88463ac848a6b059206`, base stale; exact-head CI NOT VERIFIED. PR #63 OPEN/DRAFT/UNMERGED head `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`, mergeability false. PR #67 remains OPEN/DRAFT/UNMERGED at `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; exact-head local D1/contract runs 43162128594 and 43162128615 SUCCESS; combined status contexts 0, formal reviews 0, threads 0. Local proof only.
+- No code/schema/permission/secret/hosted D1/live GitHub/dispatch/provider/deployment/merge changes. Independent review deferred until actual pool launch by owner direction.
+- Next: source-only compatibility design for v2 event ID/digest and v1 dual-read/rollback; no implementation until normative decisions and operational authority owners are accepted.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
