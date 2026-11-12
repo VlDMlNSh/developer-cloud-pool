@@ -16,7 +16,8 @@ export default defineConfig({
         d1Databases: {
           POOL_DB: "00000000-0000-0000-0000-000000000000",
           UPGRADE_DB: "11111111-1111-4111-8111-111111111111",
-          REPLAY_DB: "22222222-2222-4222-8222-222222222222"
+          REPLAY_DB: "22222222-2222-4222-8222-222222222222",
+          FAILURE_DB: "33333333-3333-4333-8333-333333333333"
         },
         bindings: { UPGRADE_MIGRATIONS: migrations }
       }
