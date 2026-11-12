@@ -2505,3 +2505,15 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - PR #67 formal reviews 0, review threads 0, combined status contexts empty. No independent audit/dispatch; owner instruction defers independent reviews until pool launch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Mature tooling fit and ref reconciliation — 2026-11-12
+
+- Reused the project's pinned official Cloudflare Workers Vitest integration for local D1 migration fixture replay. Official SDK example: https://github.com/cloudflare/workers-sdk/tree/main/fixtures/vitest-plugin-examples/d1 ; D1 migrations: https://developers.cloudflare.com/d1/reference/migrations/ .
+- Checked DBDiff/DBDiff and sqlite-rehearsal; neither is a drop-in for this pinned Workers/D1 test lifecycle (one is a general SQLite/multi-engine schema-data diff tool; the other is file-based raw SQLite rehearsal). No extra package or SQL engine adopted.
+- PR #67 remains exact head `320e3c60c74fcec7cb0fb567cba8a48fdd45b616`, OPEN / DRAFT / UNMERGED; exact-head runs 43180300405 and 43180300406 SUCCESS.
+- PR #66 docs branch current head `3bce7f421c6b4e7d54ad54aeebf9d8c894ea5d08`, OPEN / DRAFT / UNMERGED; exact-head CI NOT VERIFIED. PR #60 and #63 have no exact-head runs returned; #63 mergeable false.
+- Default branch latest commit search confirms `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Effective GitHub ruleset cannot be reverified because no ruleset/branch-protection action is exposed. No merge/dispatch attempted.
+- MediaHub canonical map file retrieval returned empty content at blob `75f62685459ec99ebf8be478f4e9096cdb842b1d`, including base64 attempt. Link remains canonical but document body NOT VERIFIED in this pass.
+- Next: freeze the deterministic schema-0010 fixture as a durable golden artifact/digest; add failure-atomicity proof on a separate fresh synthetic local D1 binding. Only then candidate 0011.
