@@ -210,6 +210,76 @@ describe("receipt-bound projection orchestration", () => {
     expect(row.status).toBe("delivered");
     expect(row.lease_generation_delivery).toBe(1);
   });
+  it("does not repeat a POST across separate delivery leases when marker visibility is delayed", async () => {
+    const outboxId = await createOutbox();
+    let now = NOW + 10;
+    let visible = false;
+    let postCalls = 0;
+    const api = apiFactory();
+    api.listComments = async () => visible ? api.comments.map(x => ({ ...x })) : [];
+    api.createComment = async (_repo, _issue, body) => {
+      postCalls += 1;
+      api.comments.push({ body });
+    };
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime", clock: { now: () => now }
+    });
+
+    const first = await orchestrator.deliver(outboxId);
+    expect(first.decision).toBe("PROJECTION_RETRYABLE");
+    let row = await env.POOL_DB.prepare(
+      "SELECT status, comment_post_state, comment_post_attempt_generation FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "retryable", comment_post_state: "indeterminate",
+      comment_post_attempt_generation: 1
+    });
+    expect(postCalls).toBe(1);
+
+    now = NOW + 41;
+    visible = true;
+    const second = await orchestrator.deliver(outboxId);
+    expect(second.decision).toBe("PROJECTION_DELIVERED");
+    expect(postCalls).toBe(1);
+    row = await env.POOL_DB.prepare(
+      "SELECT status, comment_post_state, lease_generation_delivery FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "delivered", comment_post_state: "verified", lease_generation_delivery: 2
+    });
+    const events = await env.POOL_DB.prepare(
+      "SELECT event_type FROM pool_attempt_projection_comment_events WHERE outbox_id = ? ORDER BY created_at, comment_event_id"
+    ).bind(outboxId).all();
+    expect(events.results.map(x => x.event_type)).toEqual(["post_reserved", "marker_verified"]);
+  });
+
+  it("never repeats an indeterminate POST when the marker remains invisible on later retries", async () => {
+    const outboxId = await createOutbox();
+    let now = NOW + 10;
+    let postCalls = 0;
+    const api = apiFactory();
+    api.listComments = async () => [];
+    api.createComment = async () => { postCalls += 1; };
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime", clock: { now: () => now }
+    });
+
+    const first = await orchestrator.deliver(outboxId);
+    expect(first.decision).toBe("PROJECTION_RETRYABLE");
+    now = NOW + 41;
+    const second = await orchestrator.deliver(outboxId);
+    expect(second.decision).toBe("PROJECTION_RETRYABLE");
+    expect(second.reason).toBeUndefined();
+    expect(postCalls).toBe(1);
+    const row = await env.POOL_DB.prepare(
+      "SELECT status, comment_post_state, delivery_attempts, last_error_code FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "retryable", comment_post_state: "indeterminate",
+      delivery_attempts: 2, last_error_code: "COMMENT_POST_INDETERMINATE"
+    });
+  });
+
   it("prevents mutation of the immutable outbox event digest", async () => {
     const outboxId = await createOutbox();
     const before = await env.POOL_DB.prepare(
