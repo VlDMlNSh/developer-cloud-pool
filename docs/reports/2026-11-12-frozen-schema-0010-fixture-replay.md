@@ -11,7 +11,7 @@ This pass adds only test harness/config/workflow code on PR #67. It does not cha
 - Repository: `VlDMlNSh/developer-cloud-pool`.
 - Default branch: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
 - PR #67: `impl/receipt-bound-projection-2026-11-11@320e3c60c74fcec7cb0fb567cba8a48fdd45b616`, base current default; OPEN / DRAFT / UNMERGED; mergeable true.
-- PR #66 documentation branch remains OPEN / DRAFT / UNMERGED; its exact-head CI is not part of this implementation pass.
+- PR #66 documentation branch current HEAD `3bce7f421c6b4e7d54ad54aeebf9d8c894ea5d08`, OPEN / DRAFT / UNMERGED; exact-head CI NOT VERIFIED (no runs returned). PR #60 remains OPEN at `134fe6fe739a09b181fee88463ac848a6b059206` with no exact-head runs; PR #63 remains OPEN at `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`, mergeable false, no exact-head runs. Latest commit search confirms default HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`.
 - PR #67 formal reviews: 0; inline review threads: 0; combined status contexts empty.
 - Open issue search still includes #1 governance gate, #22 secure web console, #38 durable single-use Supervisor claims, #26 provider routing/quota ledger, #5 ephemeral agent-browser and #21 native mobile scope. These remain separate tracks; no scope was switched to Contour B.
 
