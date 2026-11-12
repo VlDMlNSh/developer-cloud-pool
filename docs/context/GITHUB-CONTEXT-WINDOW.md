@@ -2418,3 +2418,15 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Frozen v1 fixture NOT CREATED; isolated upgrade harness NOT IMPLEMENTED; byte-preservation test NOT RUN; migration 0011 NOT CREATED; hosted D1 NOT RUN. Recovery Actor NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect installed `@cloudflare/vitest-plugin@1.4.7` supported APIs for a separate disposable D1 binding; design the upgrade harness before writing migration SQL. Do not implement migration 0011 until a populated pre-0011 upgrade test exists.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Disposable D1 upgrade harness API fit — 2026-11-12
+
+- Added [Disposable D1 upgrade harness — API fit and test topology](../reports/2026-11-12-disposable-d1-upgrade-harness-api-fit.md), commit `233b4750cdbdf19a5ef725ee92ddbc761c0b2799`.
+- Rechecked default branch `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #67 OPEN/DRAFT/UNMERGED at `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`, local exact-head runs 43162128594 and 43162128615 SUCCESS, statuses 0; PR #66 now at `fdf52c61c438f195f941eb2c927cf1be5567047c`, OPEN/DRAFT/UNMERGED, no exact-head runs/status contexts returned. PR #60 and #63 remain OPEN/DRAFT/UNMERGED; #63 mergeability false.
+- Inspected pinned package manifest: `@cloudflare/vitest-plugin@1.4.7`, `vitest@4.1.12`; current Wrangler config has only local synthetic `POOL_DB`; global setup applies all migrations to it.
+- Official Cloudflare SDK docs/source describe `readD1Migrations`, `applyD1Migrations(db, migrations)`, and D1 binding configuration through Miniflare/Wrangler. These are current docs/main, not immutable 1.4.7 source. Guessed Git ref `vitest-plugin@1.4.7` returned 404; exact patch-level source/type compatibility therefore NOT VERIFIED.
+- Recommended design: separate Vitest config, separate local-only D1 binding, no normal setupFiles, apply migrations 0001–0010 explicitly, seed and snapshot valid v1 rows, then apply candidate 0011 and compare complete byte-preserving snapshots. Candidate invalid migration tested against a separate disposable binding. Exact second-binding config must first be confirmed from installed 1.4.7 types/schema.
+- No code/config/package/SQL changes. No fixture/harness implemented; upgrade test NOT RUN; migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect exact installed package artifact/types for 1.4.7 and confirm independent local D1 binding support before writing test code.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
