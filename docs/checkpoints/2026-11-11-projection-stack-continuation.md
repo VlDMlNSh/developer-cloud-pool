@@ -671,3 +671,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: freeze baseline as a reviewable immutable artifact/digest, add failure-atomicity proof on a fresh synthetic local D1 namespace, then draft/test candidate 0011 against the populated frozen schema-0010 fixture. No v2 writer.
 - PR #67 formal reviews 0 / threads 0; independent audits deferred until pool launch; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Mature tooling fit and latest ref reconciliation — 2026-11-12
+
+- Reviewed Cloudflare's official Workers SDK D1 Vitest fixture and D1 migration docs. Existing pinned `@cloudflare/vitest-plugin` + Miniflare + `applyD1Migrations` remains the best fit for this exact Workers/D1 runtime proof. No extra dependency or second SQL engine adopted.
+- DBDiff/DBDiff is a multi-engine SQLite/schema-data diff and migration generator, not a Cloudflare D1/workerd fixture lifecycle; sqlite-rehearsal is file-based raw SQLite rehearsal and likewise not a D1 runtime substitute. No mature drop-in found for this precise pinned integration.
+- PR #67 exact HEAD remains `320e3c60c74fcec7cb0fb567cba8a48fdd45b616`, OPEN / DRAFT / UNMERGED; exact-head D1 run 43180300405 and contract run 43180300406 both SUCCESS.
+- PR #66 docs branch advanced to `3bce7f421c6b4e7d54ad54aeebf9d8c894ea5d08`, OPEN / DRAFT / UNMERGED; exact-head CI runs NOT FOUND / NOT VERIFIED.
+- PR #60 remains OPEN at `134fe6fe739a09b181fee88463ac848a6b059206` with no exact-head workflow runs returned; PR #63 remains OPEN at `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`, mergeable false, no exact-head workflow runs returned.
+- Latest commit search confirms default `Основной` HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Governance/ruleset tools are not exposed by the connected GitHub action inventory; effective ruleset details therefore NOT REVERIFIED in this pass. No merge or dispatch attempted.
+- MediaHub canonical map fetch returned empty content (blob `75f62685459ec99ebf8be478f4e9096cdb842b1d`) even with base64 retrieval; canonical URL remains linked, but map body content was NOT VERIFIED in this pass.
+- Next: freeze the reproducible schema-0010 fixture baseline as a durable golden artifact/digest and add failure atomicity on a fresh synthetic local D1 binding; only then candidate migration 0011.
