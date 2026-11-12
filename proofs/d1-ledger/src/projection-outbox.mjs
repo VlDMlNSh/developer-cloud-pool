@@ -164,17 +164,19 @@ export async function reserveProjectionCommentPost(db, outboxId, workerId, gener
       !SAFE_ID.test(workerId || "") || !Number.isSafeInteger(generation) || generation < 1 ||
       !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_PROJECTION_COMMENT_RESERVATION");
   try {
-    const result = await db.prepare(`
-      UPDATE pool_attempt_projection_outbox
-         SET comment_post_state = 'indeterminate',
-             comment_post_attempted_at = ?, comment_post_attempt_generation = ?,
-             updated_at = ?
-       WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
-         AND lease_generation_delivery = ? AND lease_expires_at > ?
-         AND comment_post_state = 'not_attempted'
-    `).bind(now, generation, now, outboxId, workerId, generation, now).run();
-    if (result?.success !== true || result?.meta?.changes !== 1) {
-      return deny("PROJECTION_COMMENT_POST_RESERVATION_NOT_ACQUIRED");
+    try {
+      await db.prepare(`
+        UPDATE pool_attempt_projection_outbox
+           SET comment_post_state = 'indeterminate',
+               comment_post_attempted_at = ?, comment_post_attempt_generation = ?,
+               updated_at = ?
+         WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
+           AND lease_generation_delivery = ? AND lease_expires_at > ?
+           AND comment_post_state = 'not_attempted'
+      `).bind(now, generation, now, outboxId, workerId, generation, now).run();
+    } catch {
+      // The UPDATE response can be ambiguous after a committed write.
+      // The fenced read-back below is the authority for whether POST is allowed.
     }
     const row = await db.prepare(`
       SELECT comment_post_state, comment_post_attempted_at,
@@ -211,15 +213,16 @@ export async function markProjectionCommentVerified(db, outboxId, workerId, gene
     if (current.comment_post_state === "verified") {
       return { decision: "PROJECTION_COMMENT_ALREADY_VERIFIED", outboxId, generation, dispatch: false };
     }
-    const result = await db.prepare(`
-      UPDATE pool_attempt_projection_outbox
-         SET comment_post_state = 'verified', updated_at = ?
-       WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
-         AND lease_generation_delivery = ? AND lease_expires_at > ?
-         AND comment_post_state IN ('not_attempted', 'indeterminate')
-    `).bind(now, outboxId, workerId, generation, now).run();
-    if (result?.success !== true || result?.meta?.changes !== 1) {
-      return deny("PROJECTION_COMMENT_VERIFICATION_NOT_RECORDED");
+    try {
+      await db.prepare(`
+        UPDATE pool_attempt_projection_outbox
+           SET comment_post_state = 'verified', updated_at = ?
+         WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
+           AND lease_generation_delivery = ? AND lease_expires_at > ?
+           AND comment_post_state IN ('not_attempted', 'indeterminate')
+      `).bind(now, outboxId, workerId, generation, now).run();
+    } catch {
+      // Verify the durable state below; never infer success from an ambiguous UPDATE.
     }
     const row = await db.prepare(`
       SELECT comment_post_state, lease_owner, lease_generation_delivery, lease_expires_at
