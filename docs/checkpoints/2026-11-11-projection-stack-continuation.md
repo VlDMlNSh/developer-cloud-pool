@@ -619,3 +619,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement/run a minimal disposable second-D1 binding smoke test, verify local-only isolation and pinned applyD1Migrations runtime before constructing the populated v1 upgrade fixture.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent review postponed until after pool launch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Second local D1 binding smoke — 2026-11-12
+- Report: docs/reports/2026-11-12-second-local-d1-binding-smoke.md.
+- Added separate Vitest config with two synthetic local D1 IDs (POOL_DB zero UUID; UPGRADE_DB distinct UUID), no remote proxy configuration; added dedicated smoke test applying current migrations to UPGRADE_DB and checking POOL_DB remains untouched; added package script and PR workflow step. No lockfile changes.
+- First D1 workflow run 43176833135 FAILED because the new smoke test filename matched the default test glob and imported readD1Migrations inside the Worker test, causing Miniflare error `No such module node:process`. The 69 pre-existing tests passed. Corrected by using a `.smoke.ts` filename excluded from default glob and moving migration discovery to Node-side Vitest config, passed via UPGRADE_MIGRATIONS binding.
+- Corrected PR #67 head: e068391ee0a08c7047593c249199a102e1cd0010. Rerun 43176990564 RUNNING at last observation; setup/install completed, syntax check in progress; isolated binding step not yet reached. Pool Contract Validation 43176990553 pending. Therefore runtime binding and migration API remain NOT VERIFIED.
+- PR #67 remains OPEN/DRAFT/UNMERGED. No hosted D1, credentials, remote proxy, secrets, dispatch, model/provider calls, production changes or deployment. Migration 0011 NOT CREATED/APPLIED; populated v1 fixture/upgrade harness not yet implemented.
+- Next: inspect rerun 43176990564 through final dedicated smoke step and logs. If pass, mark local second-binding smoke VERIFIED and proceed to frozen pre-0011 fixture; if fail, diagnose only the isolated test config.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent reviews remain postponed until pool launch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
