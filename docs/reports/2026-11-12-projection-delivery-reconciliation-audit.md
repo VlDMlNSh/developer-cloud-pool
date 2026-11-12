@@ -46,7 +46,7 @@ No code change was made for F-02 because selecting a safe persistence/operationa
 - Two exact-head workflows were observed for corrected head `d908a9a60609508073f14b32e624558ccd83870d`:
   - Pool Contract Validation run `43161227426`
   - Isolated D1 Ledger Proof run `43161227797`
-- Both were IN_PROGRESS when first observed. Combined commit status had zero contexts and PENDING. Until final run conclusions are read, validation is NOT VERIFIED.
+- Both completed SUCCESS on exact head `d908a9a60609508073f14b32e624558ccd83870d`. Pool Contract Validation job `130992629166` passed workflow syntax, dispatch-disabled assertion, YAML parsing and pool security-contract validation. Isolated D1 Ledger Proof job `130992630814` passed syntax and Workers-runtime D1 adversarial tests. Combined commit status still has zero contexts / PENDING; workflow success is evidence for these jobs only, not a green required-status context.
 - No local command execution is claimed in this pass.
 - No hosted D1, live GitHub API, worker deployment, dispatch, provider/model call, paid service, secret read, or merge.
 
