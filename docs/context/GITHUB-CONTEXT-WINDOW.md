@@ -2547,3 +2547,13 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Schema-0010 golden local fixture is VERIFIED at artifact blob `7b5a560a28e1669624981b55141176c393b68191`, canonical SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`. This is not a populated 0010→0011 upgrade proof. Migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN.
 - Next bounded step: populated schema-0010 fixture and deterministic full-table snapshot; freeze digest; only then isolated candidate migration 0011 and byte-preservation/schema-invariant comparison. Keep v1 writer unchanged and no hosted D1.
 - No secrets, provider/model calls, workflow dispatch, agent/DSH/Resource Probe, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Schema-0010 snapshot coverage correction — 2026-11-12
+
+- Source audit report: [snapshot coverage audit](../reports/2026-11-12-schema-0010-snapshot-coverage-audit.md), report commit `a9159c7d13b929eaaed4e597f6d4df93269ba58b`.
+- PR #67 immutable target `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; exact-head D1 run `43182768560` and contract run `43182768593` SUCCESS; formal reviews 0.
+- Correction: the golden fixture test's `TABLES` list covers 7 application tables, but migrations 0001–0010 create 12. Five omitted tables: `pool_approval_ledger`, `pool_task_claims`, `pool_task_outbox`, `pool_task_approvals`, `pool_task_delivery_outbox`. The fixture inserts approvals and migration triggers create related legacy rows, but these are excluded from the golden digest. Do not call the current digest a complete all-table snapshot; it proves only the seven selected tables plus synthetic marker bodies.
+- Migration 0011 is deferred until the baseline includes all 12 tables, schema/index/trigger invariants, deterministic row ordering, expected counts, relational checks, and a negative mutation test proving omitted-row changes are detected. Preserve the existing seven-table golden as historical evidence; freeze a new digest for the expanded snapshot.
+- No implementation/runtime/security-boundary change, hosted D1, dispatch, secrets, provider/model calls, deployment or merge. Ruleset, dispatch variable, executors and hosted D1 entitlement NOT VERIFIED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
