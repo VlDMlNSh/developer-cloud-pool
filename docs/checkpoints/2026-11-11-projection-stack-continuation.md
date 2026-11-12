@@ -684,3 +684,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Governance/ruleset tools are not exposed by the connected GitHub action inventory; effective ruleset details therefore NOT REVERIFIED in this pass. No merge or dispatch attempted.
 - MediaHub canonical map fetch returned empty content (blob `75f62685459ec99ebf8be478f4e9096cdb842b1d`) even with base64 retrieval; canonical URL remains linked, but map body content was NOT VERIFIED in this pass.
 - Next: freeze the reproducible schema-0010 fixture baseline as a durable golden artifact/digest and add failure atomicity on a fresh synthetic local D1 binding; only then candidate migration 0011.
+
+
+## Schema-0010 golden baseline and batch atomicity — 2026-11-12
+
+- Report: [schema-0010 golden and batch atomicity](../reports/2026-11-12-schema-0010-golden-baseline-and-d1-batch-atomicity.md).
+- PR #67 exact HEAD `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; golden artifact `proofs/d1-ledger/fixtures/schema-0010-v1-golden.json` blob `7b5a560a28e1669624981b55141176c393b68191`.
+- Frozen SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`, canonical bytes 16160.
+- Fresh synthetic local D1 batch rollback proof passed: duplicate UNIQUE violation rolled back preceding CREATE TABLE and insert; table absence verified by read-back. Scope is D1 batch atomicity only, not arbitrary migration runner/hosted D1 guarantees.
+- Exact-head D1 run 43182768560 SUCCESS (69 standard tests + 2 fixture/atomicity tests); contract run 43182768593 SUCCESS. Combined status contexts empty. Artifact ID 13927451100, SHA-256 `99ac207c743903f1b3aff8d53d58a12c719284b0970a90b456bfcf7b402bfde3`.
+- PR #67 remains OPEN / DRAFT / UNMERGED, reviews 0 / threads 0. No independent audit (deferred until pool launch).
+- Migration 0011 NOT CREATED/APPLIED; populated 0010→0011 preservation NOT TESTED; hosted D1 NOT AUTHORIZED / NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: candidate 0011 compatibility test against a populated frozen schema-0010 DB copy; preserve v1 IDs/digests/marker bytes and add schema assertions. No v2 writer.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
