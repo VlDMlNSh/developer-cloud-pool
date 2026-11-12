@@ -766,7 +766,7 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 ## Schema snapshot source audit continuation — 2026-11-12
 
 - Latest report: [schema-0010 complete snapshot plan and audit](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md), report commit `dcaf6811098935694fd28ee1a6d66b92d52263a7`.
-- Candidate plan commit `59066cbfa2771318ad43ee65a0b20e594cc8ff73`, blob `6e86da34b2f61571b4599f29781108e471f98b57`.
+- Candidate plan commit `59066cbfa2771318ad43ee65a0b20e594cc8ff73`, blob `6e86da34b2f61571b4599f29781108e471f98b57`; current compare against parent `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`: 6 ahead / 0 behind, one added plan file, 79 additions.
 - Source-level audit of migrations 0001–0010 confirms the twelve application tables and finds no column-projection mismatch in the seven existing fixture projections or the five proposed additions.
 - Refined plan now requires PRAGMA metadata capture (`table_info`, `foreign_key_list`, `index_list`, `index_xinfo`) and zero rows from `foreign_key_check`, alongside deterministic `sqlite_master` object-set comparison. This avoids treating sqlite_master as sufficient evidence for implicit indexes.
 - PR #67 remains OPEN/DRAFT/UNMERGED at `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; exact-head runs `43182768560` and `43182768593` SUCCESS; formal reviews 0. These runs do not validate the candidate plan.
