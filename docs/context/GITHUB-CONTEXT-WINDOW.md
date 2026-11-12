@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-12 — daily revalidation of schema-0010 baseline and current PR refs
+Last refreshed: 2026-11-12 19:34 Europe/Vilnius — Contour A web/routing/governance and adapter path-segment revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -2641,3 +2641,37 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Candidate plan requires exactly `PRAGMA foreign_key_check` without a table argument to scan the whole database, zero result rows after fixture writes and trigger effects on each isolated replay DB. This diagnostic supplements rather than replaces D1's normal FK enforcement. `PRAGMA quick_check` requires one `ok` row.
 - Candidate plan commit `35e7c29faa81fde865082f6ba7e637f717a85b93`, blob `931c75499beb60312f8d4008a99dc969eee3e956`; docs-only change, no fixture/test/golden/migration/runtime/CI execution.
 - Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (accessed 2026-11-12). Snapshot implementation, replays, negative tests, new golden and candidate CI remain NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Contour A daily revalidation — 2026-11-12 19:34 Europe/Vilnius
+
+### Current refs and tracked work
+
+- Current default branch `Основной` HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Issues #1/#22/#26 remain OPEN; latest issue snapshots last updated Nov 5, Nov 6 and Nov 6 respectively.
+- PR #24 head `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`, base `64d2636d4500127e635c214ccfb722c6b3fcda80`, 62 ahead/64 behind current default. Exact-head Pool Contract run `42982847600` and OpenAPI run `42982847694` completed SUCCESS.
+- PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, same old base, 29 ahead/64 behind. Exact-head Pool Contract `42228269689` and Hono Prototype `42228269676` completed SUCCESS.
+- PR #30 head `ad9f9ac598a2414b5209b6923094b16be64630ae`, stacked on #25 old head `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`, 35 ahead/64 behind. Prior synthetic job `42216422883` succeeded, but current exact-commit run/status query returned empty; exact-head association NOT VERIFIED.
+- PR #31 head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`, stacked on the same old #25 head, 36 ahead/64 behind. Exact-head Hono Prototype run `42229917555` succeeded.
+- All four PRs OPEN/DRAFT/UNMERGED; formal reviews 0, inline review threads 0; combined status contexts empty. Treat CI as implementation evidence only, not independent acceptance or runtime proof.
+
+### Adapter path-segment security correction
+
+- `fix/github-read-adapter-path-segments-2026-11-06` resolves to tip `dee17350864cb49e8c5dd41cf61859d77d3affca`; 38 ahead/64 behind current default, but 2 ahead/0 behind PR #31. No PR was found for this branch.
+- Fix source blob `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63` rejects `.` and `..` path segments; test blob `bd8ac8d97cdd673bb170a22d67ce08697cf46789` covers four dot-segment slugs. PR #31 source blob `97d49834085f9ad4466ffaeae76bb927fe322e3b` lacks this guard; test blob `a2ff0a846c62b61e58a9c4b2729434d6af8d6d99` lacks the dot-segment cases. Fix tip exact-head CI and status are empty: NOT VERIFIED.
+- PR #31 Hono entrypoint blob `0b1f066cc49b77f7a3000c562b731b85d5c164f4` still reports authentication not configured and pool status unknown; protected reads return 503, non-GET/HEAD methods 405. Keep adapter unmounted.
+
+### Governance and runtime evidence
+
+- Issue #1 contains historical active-ruleset 26550182 evidence and historical `POOL_DISPATCH_ENABLED=false` read-back (Nov 4). Effective ruleset details and current variable value were not re-read through available GitHub read actions: NOT VERIFIED. Static CI assertion steps do not establish current live variable state.
+- SentinelX: 0 connected hosts; `Voktors-Mini.Dlink` offline (last connected Nov 9); `mh-dev-01` and `mh-dev-02` disabled. No Cloud Pool executor/Supervisor runtime was run or verified. Cloudflare Worker/D1 deployment and free entitlement NOT VERIFIED.
+- Issue #22: authenticated web console remains not deployed/qualified. Issue #26: account-isolated routing/provider quota remains design-only/not qualified.
+- Working documentation branch `docs/projection-stack-reconciliation-2026-11-11` compares 210 ahead/0 behind default; PR #66 OPEN/DRAFT/UNMERGED. It remains a working docs branch, not canonical/default.
+
+### Required next gate
+
+Reconcile the two-commit path-segment fix onto a branch based on current default (or refresh the stacked PR base after lineage review), obtain exact-SHA CI and independent review, and keep the adapter unmounted until OAuth/session, owner authorization, effective governance and live read-only web-console acceptance are independently verified. Reconcile stale #24/#25 bases before relying on their CI for current-base qualification.
+
+Current status: audit SUCCEEDED; #24/#25/#31 CI SUCCEEDED; #30 exact-head CI NOT VERIFIED; path fix CI NOT VERIFIED; governance/current dispatch variable NOT VERIFIED; runtime/deployment NOT RUN or NOT VERIFIED; independent acceptance NOT VERIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-daily-revalidation.md).
