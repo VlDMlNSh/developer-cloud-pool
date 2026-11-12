@@ -84,3 +84,15 @@ Final tested head: `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`.
 Specify a governed operator-resolution procedure for permanently indeterminate comment POSTs (including proof requirements, actor authority, no-duplicate guarantee and audit evidence) without weakening the at-most-once database guard. Separately continue the remaining projection finalization actor/digest and fifth-lease recovery contract review. Do not enable live GitHub writes or hosted D1.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Mature GitHub component fit check
+
+Reviewed established public implementations before retaining a repository-local D1 state machine:
+
+- [dotnetcore/CAP](https://github.com/dotnetcore/CAP): mature .NET outbox/event-bus framework with retry, storage adapters and operational dashboard. Its .NET hosting, provider adapters and message-broker delivery model do not provide a drop-in Cloudflare D1 + GitHub Issues comment adapter.
+- [dtm-labs/dtm](https://github.com/dtm-labs/dtm): distributed transaction manager with outbox/two-phase message patterns and multiple storage engines. It introduces a separate transaction service/runtime and does not solve the GitHub comment API's non-transactional visibility/duplicate boundary in this Cloud Pool.
+- [aws-samples/transactional-outbox-pattern](https://github.com/aws-samples/transactional-outbox-pattern): reference implementations use Aurora/SQS or DynamoDB/Kinesis and explicitly call out duplicate-message handling through consumer idempotency. Not portable as a free GitHub-hosted D1 component.
+- [Azure-Samples/transactional-outbox-pattern](https://github.com/Azure-Samples/transactional-outbox-pattern): Cosmos DB Change Feed + Azure Service Bus sample; infrastructure and transport differ from this target.
+
+Disposition: these projects validate the generic transactional-outbox and idempotent-consumer patterns, but none is a compatible, bounded, drop-in component for the local D1 outbox plus GitHub Issues comment projection. No dependency or external runtime was added. The local state machine is limited to this adapter boundary and remains a proof candidate, not production infrastructure.
