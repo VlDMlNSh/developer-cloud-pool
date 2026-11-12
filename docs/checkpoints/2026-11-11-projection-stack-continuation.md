@@ -426,3 +426,34 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 ### Next bounded step
 
 Continue author-side source review of PR #67 projection delivery semantics: delayed-marker duplicate POST prevention, exact managed-label allowlist, canonical finalization event digest and actor attribution, and the separate orphaned fifth-lease recovery boundary. Do not broaden Recovery Actor scope or implement issuer/runtime until operational issuer, key custody, subject registry/revocation, trusted time, audit sink and privacy/retention ownership are evidenced. Do not dispatch independent reviewers before actual pool launch.
+
+
+## Continuation checkpoint — 2026-11-12 projection delivery reconciliation
+
+### Completed
+- PR #67 head: `d908a9a60609508073f14b32e624558ccd83870d`, based on `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, 12 ahead / 0 behind; OPEN/DRAFT/UNMERGED.
+- Fixed broad label mutation in `proofs/d1-ledger/src/projection-reconciler.mjs`: only explicit projection labels (`pool:claimed` and four declared terminal labels) are mutated or included in managed-label read-back. Unknown `pool:*` labels are preserved. Source blob `4d440879a850fec1e3313b01df1b139e71d92fd7`; test blob `32d667fb13731347ec839e8bdfcbff6f2f726fc4`.
+- Updated integration contract blob `376c94ae61ba0bf6b3f4622a63b690c82eb94350`.
+- Added report `docs/reports/2026-11-12-projection-delivery-reconciliation-audit.md`, commit `66b972c103d58e837685553d1ebaa7be3bdb8c81`.
+- Updated Context Window in commit `6062f68e129c79e8a421c2ff1f302503294e9310`, blob `417927af3b576b51b3fcbc951662b6a4fdb3495f`.
+
+### Open blocker: delayed marker visibility / duplicate POST
+The orchestrator passes `allowPost:true` on every delivery lease. If GitHub accepts a comment but marker read-back is delayed, the next outbox retry can POST again. Existing test only verifies direct reconciliation with `allowPost:false`, not a second orchestrator invocation. No implementation change was made because the correct durable state and failure policy must be specified: durable post-attempt/indeterminate with reconciliation-only retries, or at-most-once/manual resolution. Exactly-once cannot be assumed for a non-transactional comment API.
+
+### Validation
+- Exact-head workflows `43161227426` Pool Contract Validation and `43161227797` Isolated D1 Ledger Proof were IN_PROGRESS when first observed for PR #67 head `d908a9a60609508073f14b32e624558ccd83870d`. Combined commit status had zero contexts / PENDING. Do not claim tests passed until final conclusions are checked.
+- No local command execution claimed.
+- No hosted D1, live GitHub API, dispatch, provider/model calls, deployment, secrets, paid resources, merge, or independent reviewer dispatch.
+
+### Current disposition
+- PR #67 OPEN/DRAFT/UNMERGED; PR #60 and #66 also remain OPEN/DRAFT/UNMERGED.
+- PR #60 exact-head CI NOT VERIFIED; its base remains stale.
+- Active ruleset #26550182: PR required, review-thread resolution required, 0 approvals, no bypass actors.
+- MediaHub Issue #301 OPEN.
+- Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Independent review remains deferred until actual Cloud Pool launch, per owner direction.
+
+### Next bounded step
+Specify the durable duplicate-POST state machine and add an orchestrator-level regression test covering two separate delivery attempts after delayed marker visibility. Preserve unknown labels and do not enable live GitHub writes until F-02 and operational label ownership are resolved.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
