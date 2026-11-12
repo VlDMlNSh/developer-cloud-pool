@@ -248,7 +248,7 @@ describe("receipt-bound projection orchestration", () => {
       status: "delivered", comment_post_state: "verified", lease_generation_delivery: 2
     });
     const events = await env.POOL_DB.prepare(
-      "SELECT event_type FROM pool_attempt_projection_comment_events WHERE outbox_id = ? ORDER BY created_at, comment_event_id"
+      "SELECT event_type FROM pool_attempt_projection_comment_events WHERE outbox_id = ? ORDER BY rowid"
     ).bind(outboxId).all();
     expect(events.results.map(x => x.event_type)).toEqual(["post_reserved", "marker_verified"]);
   });
@@ -277,6 +277,25 @@ describe("receipt-bound projection orchestration", () => {
       status: "retryable", comment_post_state: "indeterminate",
       delivery_attempts: 2, last_error_code: "COMMENT_POST_INDETERMINATE"
     });
+  });
+
+  it("database triggers prevent resetting an indeterminate POST or ACKing before marker verification", async () => {
+    const outboxId = await createOutbox();
+    const api = apiFactory();
+    api.listComments = async () => [];
+    api.createComment = async () => {};
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime",
+      clock: { now: () => NOW + 10 }
+    });
+    const result = await orchestrator.deliver(outboxId);
+    expect(result.decision).toBe("PROJECTION_RETRYABLE");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET comment_post_state = 'not_attempted' WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow();
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempt_projection_outbox SET status = 'delivered' WHERE outbox_id = ?"
+    ).bind(outboxId).run()).rejects.toThrow();
   });
 
   it("prevents mutation of the immutable outbox event digest", async () => {
