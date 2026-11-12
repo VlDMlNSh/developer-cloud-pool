@@ -113,3 +113,12 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - No dispatch, hosted D1, runtime/executor access, secrets, provider/model calls, deployment, merge or production mutation. Governance/ruleset detail, Actions variables, executor status and hosted D1 entitlement remain NOT VERIFIED.
 - Status: legacy trigger/adapter/plan consistency VERIFIED at source level; candidate plan READ-BACK VERIFIED; complete snapshot implementation NOT RUN; two isolated D1 replays NOT RUN; five negative mutations NOT RUN; new golden digest NOT RUN; migration 0011 NOT RUN; candidate exact-head CI NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: implement the fixture/test changes only when a local Workers-runtime D1 execution path is available; run both isolated replays, PRAGMA/FK checks and all five negative mutations before freezing the new golden. Do not create migration 0011 before that evidence.
+
+
+## D1 PRAGMA support verification — 2026-11-12 12:20 Europe/Vilnius
+
+- Checked the current official Cloudflare D1 SQL statements documentation. It explicitly documents support for `table_info`, `table_xinfo`, `index_list`, `index_xinfo`, `foreign_key_list`, `foreign_key_check`, and `quick_check` through D1's SQL/Worker Bindings interfaces. It states PRAGMA statements apply only to the current transaction.
+- Plan refinement: use `table_xinfo` as canonical column metadata because it includes generated/hidden columns and the `hidden` field; retain FK/index introspection; require zero `foreign_key_check` rows and `quick_check = ok` on each replay DB; use `table_list` only as supplementary inventory; use only fixed source-derived identifiers in PRAGMA statements; do not assume stateful PRAGMA settings persist between D1 calls.
+- Official source: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (Cloudflare docs last updated 2026-04-21; accessed 2026-11-12).
+- Candidate plan updated on `proof/schema-0010-complete-snapshot-2026-11-12`: commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`. Documentation-only change; no source/test/golden/migration changes and no CI run.
+- This verifies the planned metadata statements are documented D1-supported commands, not that the fixture has executed them. Complete snapshot, replay, quick-check/FK-check, negative mutations, golden digest and candidate CI remain NOT RUN.
