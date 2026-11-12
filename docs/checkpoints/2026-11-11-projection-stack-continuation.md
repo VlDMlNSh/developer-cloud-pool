@@ -655,3 +655,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement a separate isolated local test target that applies exactly 0001–0010, seeds the frozen v1 fixture, and produces deterministic full-table baseline snapshots. Do not create migration 0011 until baseline reproducibility is proven.
 - Hosted D1 NOT AUTHORIZED / NOT RUN; independent audits remain deferred until Cloud Pool launch; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Frozen schema-0010 v1 fixture replay — VERIFIED 2026-11-12
+
+- Report: [Frozen schema-0010 fixture replay](../reports/2026-11-12-frozen-schema-0010-fixture-replay.md).
+- Implementation target PR #67 exact HEAD: `320e3c60c74fcec7cb0fb567cba8a48fdd45b616`; OPEN / DRAFT / UNMERGED; base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Added a third synthetic local D1 namespace `REPLAY_DB`; separate test applies exactly migrations 0001–0010 to both `UPGRADE_DB` and `REPLAY_DB`.
+- Fixture seeded supported terminal attempts (succeeded, failed, abandoned), distinct result/provenance digests, five delivery retry generations ending dead-letter, all three comment states and comment events, a nonterminal indeterminate attempt plus reconciliation row, and exact synthetic marker comment strings.
+- Explicit ordered snapshots cover task, attempt, attempt-event, projection-outbox, projection-delivery-event, comment-event and reconciliation tables. Two independent DB replays compare deeply equal including marker bytes.
+- Exact-head [D1 run 43180300405](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43180300405): COMPLETED / SUCCESS; standard suite 5 files / 69 tests; second binding smoke 1 passed; frozen fixture replay 1 passed. [Pool Contract Validation 43180300406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43180300406): COMPLETED / SUCCESS. Combined status contexts empty.
+- Artifact ID `13925458432`; SHA-256 `5781f5e6874ec9dc21d8d795c6369c87cd37eb9ac4eaa83a8f2adc7b502c4cea`.
+- Code blobs: config `6d16df978384d612d7c8a7139c0b965a57f45504`; fixture `09e64e1752972c53c6db635251d63ad245c88beb`; package `42602c2897e6cb47f7396b984068e94a302bef85`; workflow `5679a1a2702cade6f7265d7f6ea5d66235839e09`.
+- This proves deterministic replay across two disposable local DBs, not a static golden digest and not 0010→0011 preservation. Failure atomicity NOT RUN; migration 0011 NOT CREATED/APPLIED; hosted D1 NOT AUTHORIZED / NOT RUN.
+- Next: freeze baseline as a reviewable immutable artifact/digest, add failure-atomicity proof on a fresh synthetic local D1 namespace, then draft/test candidate 0011 against the populated frozen schema-0010 fixture. No v2 writer.
+- PR #67 formal reviews 0 / threads 0; independent audits deferred until pool launch; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
