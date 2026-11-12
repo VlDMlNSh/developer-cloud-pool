@@ -802,3 +802,10 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Candidate plan refined to use `table_xinfo` (including generated/hidden columns), zero-row `foreign_key_check`, `quick_check = ok`, fixed source-derived identifiers, and no assumption that stateful PRAGMA settings persist across D1 calls. `table_list` is supplementary only; `sqlite_master` exact app-object-set remains authoritative.
 - Candidate plan commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`; docs-only change, no CI or runtime execution.
 - Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/. No fixture/test/golden/migration changes. Runtime proof and candidate CI remain NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Whole-database D1 FK check scope — 2026-11-12 12:22 Europe/Vilnius
+
+- Cloudflare D1 docs describe `PRAGMA foreign_key_check` as accepting an optional table selection. Candidate plan now requires the command without a table argument, zero rows after fixture writes/triggers on each isolated replay DB. This is diagnostic; normal D1 FK enforcement remains active for writes. `quick_check` still requires one `ok` row.
+- Candidate plan commit `35e7c29faa81fde865082f6ba7e637f717a85b93`, blob `931c75499beb60312f8d4008a99dc969eee3e956`; documentation-only change, no runtime/test/golden/migration/CI execution.
+- Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/. Complete snapshot/replays/negative mutations/new golden/candidate CI NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
