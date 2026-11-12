@@ -2442,3 +2442,14 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Next: retrieve exact npm artifact, verify SHA-512, inspect shipped declarations/implementation, then inspect pinned Miniflare D1 binding schema. Stop if integrity verification fails.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Independent reviews remain deferred until pool launch per owner direction.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Exact-version Vitest/Miniflare declaration surface — 2026-11-12
+- Extended pinned plugin artifact inspection after retrieving published exact-version package files from unpkg: plugin 1.4.7 package manifest, plugin declaration, cloudflare:test declaration, Miniflare 5.20261019.2-beta manifest and declarations.
+- cloudflare:test in the published 1.4.7 declaration exposes applyD1Migrations(db, migrations, migrationsTableName?); exact declaration signature VERIFIED, runtime invocation NOT RUN.
+- Exact Miniflare declarations expose d1Databases?: V4Namespace, with V4Namespace = Record<string, string | V4IdEntry> | string[] and V4IdEntry containing an ID. Multiple named D1 namespaces are representable in the pinned type surface. Effective plugin/Wrangler config merge, second binding runtime availability and local-only behavior remain NOT VERIFIED.
+- npm tarball bytes remain unreachable; SHA-512 has not been independently recomputed. Exact-version declarations were fetched separately from the CDN; do not describe this as tarball-integrity verification.
+- PR #67 exact head f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81: Isolated D1 Ledger Proof run 43162128594 SUCCESS; Pool Contract Validation run 43162128615 SUCCESS; combined status contexts empty; formal reviews 0; review threads 0. These are existing local proof runs, not hosted D1 qualification.
+- Default branch Основной HEAD remains 221f216c00ca7e5596bcc682ba185ad155a10603. PR #66 is OPEN/DRAFT/UNMERGED at d16afdcb69f95154bd2a38e40e435f72ec7994ba; PR #67 OPEN/DRAFT/UNMERGED at f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81. PR #66 exact-head workflow runs/status contexts empty. PR #67 review queue empty.
+- No code/config/package/SQL/fixture/harness changes. Migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Independent reviews remain deferred until actual pool launch per owner direction.
+- Next: add only a disposable isolated local D1 binding smoke test using the now-confirmed type surface; prove no remote access and applyD1Migrations runtime behavior before building the v1→0011 upgrade harness.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
