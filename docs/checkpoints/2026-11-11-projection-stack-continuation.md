@@ -722,3 +722,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Before migration 0011: add the five omitted tables with stable column ordering; snapshot schema invariants separately; assert row counts/referential consistency; freeze a new digest; add a negative mutation regression proving legacy-table changes are detected. Do not overwrite historical golden semantics.
 - No code/runtime/security-boundary change, workflow dispatch, hosted D1, secrets, provider/model calls, deployment or merge. Effective ruleset, dispatch variable, executors and hosted D1 entitlement NOT VERIFIED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Complete schema-0010 snapshot plan — 2026-11-12
+
+- Report: [complete snapshot plan](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md), commit `152b154ce2c6ecb729aad6672ba212079af79763`.
+- Re-read PR #67 at exact head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; OPEN/DRAFT/UNMERGED, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, 40 ahead / 0 behind; exact-head runs `43182768560` and `43182768593` SUCCESS; reviews 0.
+- Created isolated candidate branch `proof/schema-0010-complete-snapshot-2026-11-12` from that exact SHA. Added plan only: commit `01f9e088e66a7c9233b68dc8fb20f23dbe0e4822`, blob `85e7757a4083b3e91c89b4932373d91f8e19e0d1`; compare 1 ahead / 0 behind. No source/test/golden change and no CI triggered.
+- Plan enumerates the five omitted tables, stable column projections, schema metadata, row-count/relationship checks, isolated replay, negative mutation tests, and new golden artifact while retaining the old seven-table baseline.
+- Complete snapshot implementation, digest, and migration 0011 NOT RUN. No runtime/security change, hosted D1, dispatch, secrets, provider/model calls, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
