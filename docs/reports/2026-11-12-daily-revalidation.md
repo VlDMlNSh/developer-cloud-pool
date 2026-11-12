@@ -66,3 +66,47 @@ This report is documentation evidence only. The default-branch Context Window re
 Next bounded step: create a complete populated schema-0010 state fixture and deterministic full-table snapshot oracle, freeze its digest, then draft migration 0011 only on an isolated candidate branch and compare every legacy row/ID/digest/marker byte plus schema invariants after applying it to a copy. Keep v1 writer semantics unchanged; no v2 writer; no hosted D1. In parallel, locate the actual path-segment adapter source/test paths before judging that branch.
 
 **Final:** audit SUCCEEDED; local schema-0010 baseline proof VERIFIED; hosted D1/runtime NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up Contour A web/routing/governance revalidation — 2026-11-12 19:34 Europe/Vilnius
+
+### Repository and issue state
+
+- Repository metadata: public, not archived; default branch `Основной`. Latest commit search resolves current default HEAD to `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Issues #1, #22 and #26 are OPEN. Last updated: #1 `2026-11-05T20:17:38Z`; #22 `2026-11-06T12:17:38Z`; #26 `2026-11-06T09:11:00Z`. No new issue activity was observed in the refreshed issue snapshots.
+- #1 governance: its comments contain historical evidence for active ruleset 26550182 (PR required, zero required approvals, deletion/non-fast-forward restrictions, no bypass actors) and historical `POOL_DISPATCH_ENABLED=false` read-back on 2026-11-04. This run could not directly re-read effective ruleset details or the current Actions variable through the connected GitHub read actions. Current ruleset state and current variable value remain NOT VERIFIED. Do not treat historical values or successful static CI assertions as live current-state proof.
+- #22 remains an architecture/prototype track, not a deployed authenticated console. #26 remains a design track; no account-isolated production routing, provider qualification or upstream quota evidence was found.
+
+### PR #24 / #25 / #30 / #31
+
+All four remain OPEN / DRAFT / UNMERGED; formal reviews are 0 and inline review threads are 0.
+
+| PR | Head SHA | Base SHA | Relation to current default | Current CI evidence |
+|---|---|---|---|---|
+| #24 | `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3` | `64d2636d4500127e635c214ccfb722c6b3fcda80` | 62 ahead / 64 behind; merge base `64d2636...` | Runs `42982847600` Pool Contract and `42982847694` OpenAPI; jobs/steps COMPLETED / SUCCESS |
+| #25 | `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85` | `64d2636d4500127e635c214ccfb722c6b3fcda80` | 29 ahead / 64 behind; merge base `64d2636...` | Runs `42228269689` Pool Contract and `42228269676` Hono Prototype; jobs/steps COMPLETED / SUCCESS |
+| #30 | `ad9f9ac598a2414b5209b6923094b16be64630ae` | stacked on #25 at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea` | 35 ahead / 64 behind; merge base `64d2636...` | Prior run `42216422883` job `127887461269` and its steps still read COMPLETED / SUCCESS. However, the current exact-commit PR-run query and combined-status query returned empty; exact-head binding is NOT VERIFIED in this pass |
+| #31 | `5470fccbc4a5fe80a750f402d70d703757fc4c1d` | stacked on #25 at `d8521571ede91d7f6d7fb6d5ee37747ac94385ea` | 36 ahead / 64 behind; merge base `64d2636...` | Run `42229917555` Hono Prototype, job `127932882432`; all reported steps COMPLETED / SUCCESS |
+
+Combined commit-status contexts were empty for all four heads. Positive workflow runs are CI evidence only, not independent acceptance, runtime proof or governance approval. PR #30's historical successful job must not be promoted to current exact-head verification without a fresh SHA-bound run record.
+
+### GitHub read adapter path-segment correction
+
+- Branch `fix/github-read-adapter-path-segments-2026-11-06` resolves to immutable tip `dee17350864cb49e8c5dd41cf61859d77d3affca`.
+- Compared with current default: 38 ahead / 64 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`. Compared with PR #31 head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`: 2 ahead / 0 behind; only `src/github-read-adapter.js` (+5/-2) and `tests/github-read-adapter.test.js` (+9) differ. No PR with this head branch was found.
+- Fix-branch source blob `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63` rejects owner/repository dot-segments `.` and `..` after slug parsing. Test blob `bd8ac8d97cdd673bb170a22d67ce08697cf46789` covers `../issues`, `./repo`, `owner/..` and `owner/.`.
+- PR #31 source blob `97d49834085f9ad4466ffaeae76bb927fe322e3b` still has only the slug regex and does not include this dot-segment guard; its test blob is `a2ff0a846c62b61e58a9c4b2729434d6af8d6d99`. Therefore the fix branch is a real, narrowly scoped correction not yet present in PR #31.
+- Exact-head PR workflow runs and combined status for fix tip `dee1735...` were empty: CI NOT VERIFIED. The adapter remains unmounted; PR #31's `src/index.js` blob `0b1f066cc49b77f7a3000c562b731b85d5c164f4` still reports pool status unknown/authentication not configured, returns 503 for protected reads and 405 for non-GET/HEAD API methods.
+- Keep the adapter unmounted. Do not merge or mount the fix without lineage reconciliation against current default, exact-head CI, independent review and the separate OAuth/session/governance gates.
+
+### Executors, controllers and runtime
+
+- SentinelX read-only host inventory: 0 connected hosts; `Voktors-Mini.Dlink` is offline (last connected 2026-11-09); `mh-dev-01` and `mh-dev-02` are disabled. This is not evidence of a running Cloud Pool executor. No pool Worker/Supervisor runtime was invoked or verified.
+- Cloudflare Worker/D1 deployment and free entitlement were not re-read in this non-interactive pass: NOT VERIFIED. No deployment or resource mutation was attempted.
+- No secrets or provider credentials were read. No dispatch, workflow execution, DSH, Resource Probe, provider/model call, deployment, merge or production mutation was performed.
+
+### Documentation branch and next step
+
+- Working documentation branch `docs/projection-stack-reconciliation-2026-11-11` compares 210 ahead / 0 behind current default. Its draft PR #66 is OPEN / DRAFT / UNMERGED; branch changes are not canonical/default and were not merged.
+- Next bounded step: reconcile the two-commit path-segment correction onto a branch based on current default (or explicitly refresh the stacked PR base after lineage review), then require SHA-bound CI and independent review. Keep the read adapter unmounted until OAuth/session, owner authorization, effective governance and live read-only web-console acceptance are separately qualified. Reconcile stale #24/#25 bases before treating their CI as current-base qualification.
+- Status: read-only audit SUCCEEDED; #24/#25/#31 exact-head CI SUCCEEDED; #30 current exact-head CI NOT VERIFIED; path-segment fix CI NOT VERIFIED; ruleset/current dispatch variable NOT VERIFIED; executor/runtime/deployment NOT RUN or NOT VERIFIED; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
