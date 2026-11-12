@@ -48,7 +48,7 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 ## 3. Repository state, branches and governance
 
 - Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-12).
 - Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
 - Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
 - Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
@@ -2474,4 +2474,18 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Scope: local second D1 binding and migration API runtime smoke VERIFIED only. Populated pre-0011 historical fixture and byte-preservation upgrade harness NOT IMPLEMENTED; migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN; no secrets, remote proxy, production, dispatch, model/provider calls or deployment.
 - Next: create frozen schema-0010 v1 fixture plus deterministic snapshot oracle in the separate config; prove all historical rows/marker bytes survive a no-op baseline roundtrip before drafting 0011. Do not add 0011 until baseline fixture is reproducible.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent reviews postponed until actual pool launch per owner direction.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Current continuation — PR #67 upgrade-harness readiness revalidation — 2026-11-12
+
+- Report: [PR #67 upgrade-harness readiness revalidation](../reports/2026-11-12-pr67-upgrade-harness-readiness-revalidation.md).
+- Current default branch revalidated: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 exact head: `e068391ee0a08c7047593c249199a102e1cd0010`, OPEN / DRAFT / UNMERGED; base current default.
+- Exact-head CI: Isolated D1 Ledger Proof run `43176990564` COMPLETED / SUCCESS (5 files / 69 standard tests plus 1 separate local upgrade-binding smoke test); Pool Contract Validation run `43176990553` COMPLETED / SUCCESS.
+- Combined status contexts empty; PR #67 formal reviews 0 and inline threads 0. No independent audit initiated; owner instruction defers it until after pool launch.
+- Verified scope: separate synthetic local `UPGRADE_DB` binding accepts pinned `applyD1Migrations`; migrated table and synthetic row remain isolated from `POOL_DB`.
+- Not proved: populated schema-0010 upgrade, historical v1 byte preservation, candidate migration 0011, failure atomicity, hosted D1 or production readiness.
+- Next bounded step: implement frozen v1 fixture + deterministic full-table snapshot oracle in a separate local-only config. Apply exactly migrations 0001–0010, seed supported historical cases, prove baseline reproducibility; only then consider migration 0011.
+- No production code/schema/workflow/secret/permission/dispatch/hosted-resource/deployment/merge change in this revalidation. Dispatch remains fail-closed; hosted D1 NOT AUTHORIZED / NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
