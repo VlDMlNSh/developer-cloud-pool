@@ -96,3 +96,14 @@ Reviewed established public implementations before retaining a repository-local 
 - [Azure-Samples/transactional-outbox-pattern](https://github.com/Azure-Samples/transactional-outbox-pattern): Cosmos DB Change Feed + Azure Service Bus sample; infrastructure and transport differ from this target.
 
 Disposition: these projects validate the generic transactional-outbox and idempotent-consumer patterns, but none is a compatible, bounded, drop-in component for the local D1 outbox plus GitHub Issues comment projection. No dependency or external runtime was added. The local state machine is limited to this adapter boundary and remains a proof candidate, not production infrastructure.
+
+
+## Operator resolution proposal — 2026-11-12
+
+A separate proposal was added for permanently indeterminate POST outcomes:
+[PROJECTION-COMMENT-INDETERMINATE-OPERATOR-RESOLUTION-PROPOSAL.md](../contracts/PROJECTION-COMMENT-INDETERMINATE-OPERATOR-RESOLUTION-PROPOSAL.md)
+
+The proposal is DESIGN PROPOSAL / NOT ACCEPTED / NOT IMPLEMENTED / NOT AUTHORIZED FOR RUNTIME. It prohibits resetting the at-most-once guard or repeating POST. It separates normal marker confirmation, unresolved quarantine and duplicate/conflict incident handling. It requires a dedicated one-use, exact-scope authority and append-only audit path; no operational owners are currently accepted.
+
+Context Window update commit: `8ab8cda7591eddeda400fadb39e35140956990d6`.
+Checkpoint update commit: `ca486a7d6de63f6b76bb99c8fcf0bd501578102b`.
