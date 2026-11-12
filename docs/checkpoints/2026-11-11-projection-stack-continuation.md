@@ -393,3 +393,36 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - No code/runtime/security-boundary changes, dispatch, secret reads, provider/model calls, deployment, merge or billing changes.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: resolve one-use POST authorization, orphaned fifth-lease recovery authority, exact label allowlist and canonical finalization event semantics before any live projection sender.
+
+
+## Continuation checkpoint — 2026-11-12 08:18 Europe/Vilnius
+
+### Completed bounded pass
+
+- Traced the full PR #60 issuer-contract authoring history. No canonical path/blob/linked issue/PR for “Shared Immutable Claim Lifecycle Contract” or “Trusted Reconciliation Authority Contract” is present in the eight-commit PR history. Their global existence is not disproven, but repository source and normative status remain NOT VERIFIED.
+- Corrected the issuer/time contract in PR #60 branch. Current PR #60 HEAD: `134fe6fe739a09b181fee88463ac848a6b059206`; corrected contract blob: `674e2a601acdc972e1e96f15776d45fa51ae6842`. The contract now distinguishes actual related source artifacts and their acceptance statuses; it does not claim conformance to missing common contracts.
+- Added the provenance evidence to report `docs/reports/2026-11-11-mediahub-authority-contract-source-crosswalk.md`, commit `3d742a366210ddfecdd6b99a1f96635cdf2b79a8`, blob `0de594cf19431306f96a241d51089251a8a2c648`.
+- Context Window refreshed in commit `e6ff5bd71e422ed1b29ff85d593b177d493d5031`, blob `120135f1f050702b465527cf3e5f12b9ed98eae9`.
+
+### Current refs and evidence
+
+- Default branch: `Основной`; last directly observed HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`. A fresh Unicode branch-ref request returned 404 through the connector; treat the SHA as last-observed, not a newly revalidated direct read.
+- Documentation continuation branch / PR #66: OPEN/DRAFT/UNMERGED; head before checkpoint update `e6ff5bd71e422ed1b29ff85d593b177d493d5031` after context write. This is a working docs branch, not default/canonical. Exact-head CI remains NOT VERIFIED unless a matching run is observed.
+- PR #60: OPEN/DRAFT/UNMERGED; corrected head `134fe6fe739a09b181fee88463ac848a6b059206`; base `Основной@864213e2ff5b4fa956ba405dea8137a44d812f49` is stale; mergeability false; exact-head workflow query empty (CI NOT VERIFIED).
+- PR #67: OPEN/DRAFT/UNMERGED at `dea09ffe94059f446c74fada37971087ec4878eb`; exact-head runs `43064261520` and `43064261551` SUCCESS. They prove local D1/contract checks only; no hosted D1, live GitHub API, production authority, or deployment.
+- Ruleset #26550182 active on `refs/heads/Основной`: PR required, deletion/non-fast-forward blocked, review-thread resolution required, 0 required approvals, no bypass actors, current user cannot bypass.
+- MediaHub Issue #301 OPEN. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+### Disposition
+
+- Shared generic contract sources: NOT LOCATED / NOT VERIFIED.
+- Projection Recovery issuer/time contract: PROPOSED / NOT IMPLEMENTED / NOT QUALIFIED.
+- Recovery Actor: NOT IMPLEMENTED / NOT QUALIFIED; exact operation remains `dead_letter_expired_projection` only.
+- Hosted D1: NOT QUALIFIED. Dispatch: FAIL-CLOSED.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Independent review remains deferred until after actual Cloud Pool launch, per owner direction.
+- No secrets read; no dispatch, hosted D1, provider/model calls, deployment, paid resources, or merge.
+
+### Next bounded step
+
+Continue author-side source review of PR #67 projection delivery semantics: delayed-marker duplicate POST prevention, exact managed-label allowlist, canonical finalization event digest and actor attribution, and the separate orphaned fifth-lease recovery boundary. Do not broaden Recovery Actor scope or implement issuer/runtime until operational issuer, key custody, subject registry/revocation, trusted time, audit sink and privacy/retention ownership are evidenced. Do not dispatch independent reviewers before actual pool launch.
