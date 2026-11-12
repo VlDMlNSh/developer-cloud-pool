@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-12 — PR #60 issuer-contract provenance correction
+Last refreshed: 2026-11-12 — terminal event identity and actor semantics decision record
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
 Documentation continuation branch: `docs/projection-stack-reconciliation-2026-11-11`
-Latest documentation commit: current HEAD of draft PR #66 (working documentation branch; not canonical/default)
+Latest documentation commit: `fdddc64cf05bac4cd943cf5184cd8af21b009890` (PR #66 head; working documentation branch, not canonical/default)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
