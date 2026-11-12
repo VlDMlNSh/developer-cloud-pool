@@ -2391,3 +2391,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No code/schema/permission/secret/hosted D1/live GitHub/dispatch/provider/deployment/merge changes. Independent review deferred until actual pool launch by owner direction.
 - Next: source-only compatibility design for v2 event ID/digest and v1 dual-read/rollback; no implementation until normative decisions and operational authority owners are accepted.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Event Digest v2 backward-compatible design — 2026-11-12
+
+- Added [Event Digest v2 backward-compatible design](../reports/2026-11-12-event-digest-v2-backward-compatible-design.md), documentation commit `ef5f37e7eab59c28eb39502594c2ed7a905b3349`.
+- Source audit verified migrations 0004–0010 on PR #67 head `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`: terminal event ID is `attempt-finalized:<attempt_id>`; 0004 trigger currently chooses result-only digest; 0006 copies event ID/digest to outbox; 0009 makes outbox identity immutable; 0010 protects monotonic at-most-once comment state.
+- Proposed design (not accepted): preserve all v1 event IDs/digest bytes/outbox IDs/marker strings; add explicit digest version (existing rows default v1); new v2 identity tuple is event ID + version + digest; RFC 8785 JCS + SHA-256 with domain separation binds immutable terminal fields, including result and provenance digests. No event row or outbox is rewritten or duplicated.
+- Proposed future migration 0011 is NOT CREATED. It would add version fields, enforce terminal evidence immutability, extend outbox identity guard, carry version through envelope/marker/grant, and preserve comment-post state. Dual-read before any v2 writer; rollback disables v2 writes but retains v2 reads/data.
+- Mature component scan: RFC 8785 and `erdtman/canonicalize` identified; fetched package metadata reports v5.1.0, ESM, no runtime dependencies, Node >=22. Official vector comparison repo currently reports v5.0.0, so v5.1.0 and Workers/workerd compatibility remain NOT QUALIFIED. No package added/adopted. Source refs: https://github.com/erdtman/canonicalize and https://github.com/erdtman/json-canonicalisation-comparison.
+- PR #67 remains OPEN/DRAFT/UNMERGED, HEAD `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; exact-head D1 run 43162128594 and Pool Contract Validation run 43162128615 SUCCESS; combined status contexts 0; reviews 0; threads 0. Local proof only.
+- No SQL/code/dependency/workflow/permission/secret/hosted D1/live GitHub/dispatch/provider/deployment changes. Recovery Actor NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: prepare a schema-only migration 0011 review packet and populated v1 fixture inventory; validate byte-for-byte preservation in disposable local D1 before seeking normative acceptance. Do not create/apply migration or enable v2 writer yet.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
