@@ -122,3 +122,12 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Official source: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (Cloudflare docs last updated 2026-04-21; accessed 2026-11-12).
 - Candidate plan updated on `proof/schema-0010-complete-snapshot-2026-11-12`: commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`. Documentation-only change; no source/test/golden/migration changes and no CI run.
 - This verifies the planned metadata statements are documented D1-supported commands, not that the fixture has executed them. Complete snapshot, replay, quick-check/FK-check, negative mutations, golden digest and candidate CI remain NOT RUN.
+
+
+## Whole-database D1 foreign-key check scope — 2026-11-12 12:22 Europe/Vilnius
+
+- Rechecked the official Cloudflare D1 SQL statements documentation. It describes `PRAGMA foreign_key_check` as accepting an optional table selection; the whole-database integrity assertion must therefore omit the table-name argument.
+- Candidate plan now explicitly requires exactly `PRAGMA foreign_key_check` with no table argument, zero result rows after all fixture writes/trigger effects, on each isolated replay DB. This diagnostic does not replace normal D1 FK enforcement during writes. Keep `PRAGMA quick_check` requiring one result row equal to `ok`.
+- Candidate plan update: commit `35e7c29faa81fde865082f6ba7e637f717a85b93`, blob `931c75499beb60312f8d4008a99dc969eee3e956`; plan-only change. No fixture/test/golden/migration code or runtime was changed or executed; candidate CI not run.
+- Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (accessed 2026-11-12).
+- Current status remains: complete snapshot implementation NOT RUN; two isolated D1 replays NOT RUN; five negative mutations NOT RUN; new golden digest NOT RUN; migration 0011 NOT RUN; candidate exact-head CI NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
