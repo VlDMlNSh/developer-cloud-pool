@@ -402,7 +402,7 @@ The reconciler success path returns `PROJECTION_VERIFIED`, `projection_verified:
 - Traced the full PR #60 issuer-contract authoring history. No canonical path/blob/linked issue/PR for “Shared Immutable Claim Lifecycle Contract” or “Trusted Reconciliation Authority Contract” is present in the eight-commit PR history. Their global existence is not disproven, but repository source and normative status remain NOT VERIFIED.
 - Corrected the issuer/time contract in PR #60 branch. Current PR #60 HEAD: `134fe6fe739a09b181fee88463ac848a6b059206`; corrected contract blob: `674e2a601acdc972e1e96f15776d45fa51ae6842`. The contract now distinguishes actual related source artifacts and their acceptance statuses; it does not claim conformance to missing common contracts.
 - Added the provenance evidence to report `docs/reports/2026-11-11-mediahub-authority-contract-source-crosswalk.md`, commit `3d742a366210ddfecdd6b99a1f96635cdf2b79a8`, blob `0de594cf19431306f96a241d51089251a8a2c648`.
-- Context Window refreshed in commit `e6ff5bd71e422ed1b29ff85d593b177d493d5031`, blob `120135f1f050702b465527cf3e5f12b9ed98eae9`.
+- Context Window refreshed in commit `44fff80d6a2195baabbef1141654f214956f1e19`, blob `0927a7e8dd631346e6bf3696561a0e7f722a3be6`.
 
 ### Current refs and evidence
 
