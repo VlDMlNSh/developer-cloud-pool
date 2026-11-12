@@ -2626,3 +2626,11 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Read-only source audit confirms candidate's NULL-`task_key` legacy seed and assertions align with adapter/migrations 0001–0003: claim ID = approval ID, outbox ID = `pool-task:<approval_id>`, both pending; ledger consumed; `CLAIMED_ONCE` only on a one-row update. No source mismatch found. Source blobs are recorded in the latest report.
 - No local D1 execution, fixture/test/golden changes, replay, negative mutations, candidate CI, hosted D1, dispatch, secret/provider access, deployment, merge or production mutation. Rulesets, Actions variables, executor and hosted D1 entitlement remain NOT VERIFIED.
 - Next: implement only when a local Workers-runtime D1 execution path is available; run dual isolated replays, PRAGMA/FK checks and all five negative mutations before freezing the new golden. Migration 0011 remains deferred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## D1 PRAGMA compatibility verification — 2026-11-12 12:20 Europe/Vilnius
+
+- Official Cloudflare D1 SQL statements docs confirm support via Worker Bindings for `table_info`, `table_xinfo`, `index_list`, `index_xinfo`, `foreign_key_list`, `foreign_key_check`, and `quick_check`; PRAGMA statements apply only to the current transaction.
+- Candidate plan now prefers `table_xinfo` for generated/hidden-column completeness, requires zero FK violations and `quick_check = ok` on both isolated databases, uses only fixed source-derived identifiers, and does not assume stateful PRAGMA settings persist across calls. `table_list` is supplementary; `sqlite_master` exact application object-set remains authoritative.
+- Candidate plan commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`; documentation-only change, no fixture/test/golden/migration changes and no CI/runtime execution.
+- Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (accessed 2026-11-12). Full replay, negative mutation tests, new golden digest and candidate CI remain NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
