@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-12 — schema-0010 golden baseline and local D1 batch atomicity
+Last refreshed: 2026-11-12 — daily revalidation of schema-0010 baseline and current PR refs
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -2533,3 +2533,17 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Migration 0011 NOT CREATED / NOT APPLIED; populated 0010→0011 preservation NOT TESTED. Next: create a full populated schema-0010 state fixture, draft candidate 0011 in isolation, compare every legacy row/ID/digest/marker byte and schema invariant after applying to a copy. No v2 writer.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Daily revalidation — 2026-11-12 11:55 Europe/Vilnius
+
+- Report: [daily revalidation](../reports/2026-11-12-daily-revalidation.md), recorded on the working documentation branch.
+- Current PR base refs reconfirm `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`. The Context Window on default branch is stale: blob `8707a0ab0b2f66de9bae3441e0334c1621f89925`, header last refreshed 2026-11-08 and records older HEAD `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Do not silently treat the default copy as current.
+- PR #67 exact head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, OPEN/DRAFT/UNMERGED, 40 ahead / 0 behind. Exact-head local D1 run `43182768560` and Pool Contract run `43182768593` SUCCESS; reviews 0, inline threads 0, combined status contexts empty.
+- PR #66 head `62c58d6d57d68031eb2311ea0c41c58e04743a7e`, OPEN/DRAFT/UNMERGED, 174 ahead / 0 behind; exact-head CI and reviews NOT VERIFIED.
+- Issues #1, #22, #26, #38 remain OPEN. Current effective ruleset, dispatch variable, executors and Cloudflare Worker/D1 inventory NOT VERIFIED in this pass.
+- PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED with 0 reviews each; #30/#31 remain stacked on older Hono prototype SHA `d8521571ede91d7f6d7fb6d5ee37747ac94385ea`. PR #60 is OPEN/DRAFT; #63 is OPEN/DRAFT and mergeable=false.
+- Path-segment branch compares 38 ahead / 64 behind, no standalone PR; exact source path was not located and exact-head CI is NOT VERIFIED.
+- Schema-0010 golden local fixture is VERIFIED at artifact blob `7b5a560a28e1669624981b55141176c393b68191`, canonical SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`. This is not a populated 0010→0011 upgrade proof. Migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN.
+- Next bounded step: populated schema-0010 fixture and deterministic full-table snapshot; freeze digest; only then isolated candidate migration 0011 and byte-preservation/schema-invariant comparison. Keep v1 writer unchanged and no hosted D1.
+- No secrets, provider/model calls, workflow dispatch, agent/DSH/Resource Probe, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
