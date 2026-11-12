@@ -2557,3 +2557,12 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Migration 0011 is deferred until the baseline includes all 12 tables, schema/index/trigger invariants, deterministic row ordering, expected counts, relational checks, and a negative mutation test proving omitted-row changes are detected. Preserve the existing seven-table golden as historical evidence; freeze a new digest for the expanded snapshot.
 - No implementation/runtime/security-boundary change, hosted D1, dispatch, secrets, provider/model calls, deployment or merge. Ruleset, dispatch variable, executors and hosted D1 entitlement NOT VERIFIED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Complete schema-0010 snapshot plan — 2026-11-12
+
+- Report: [complete snapshot plan](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md), commit `152b154ce2c6ecb729aad6672ba212079af79763`.
+- PR #67 rechecked at `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; OPEN/DRAFT/UNMERGED; base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, 40 ahead / 0 behind; exact-head D1/contract runs `43182768560` / `43182768593` SUCCESS; reviews 0.
+- Isolated branch `proof/schema-0010-complete-snapshot-2026-11-12` created from exact PR #67 head. Plan-only commit `01f9e088e66a7c9233b68dc8fb20f23dbe0e4822`; plan blob `85e7757a4083b3e91c89b4932373d91f8e19e0d1`; 1 ahead / 0 behind. No test/source/golden modifications and no CI triggered.
+- Plan addresses all five omitted tables, explicit stable columns/order, sqlite_master schema invariants, expected counts/relationships, two-binding replay, negative mutations, and a separate complete golden while preserving historical seven-table artifact.
+- Implementation, new digest, migration 0011, hosted D1 and runtime remain NOT RUN. Ruleset, Actions variables, executors and hosted D1 entitlement NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
