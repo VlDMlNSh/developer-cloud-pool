@@ -96,3 +96,20 @@ The fifth approval row must satisfy migration 0001 and `validInput()` in `src/cl
 Assert the returned decision is exactly `CLAIMED_ONCE`, `dispatch === false`, and that the returned claim/outbox IDs match the database rows. Assert the ledger row becomes `consumed` while `task_key` remains NULL; the claim and outbox rows both reference the same approval, claim ID equals approval ID, outbox ID equals `pool-task:<approval_id>`, and both begin in `pending`. This makes the fixture's legacy-path setup and its expected row relationships explicit rather than relying on the adapter call alone.
 
 All values remain deterministic synthetic fixture data. This is a specification refinement, not runtime evidence.
+
+
+### Cloudflare D1 PRAGMA compatibility refinement — 2026-11-12 12:20 Europe/Vilnius
+
+The official Cloudflare D1 SQL statements reference documents the required metadata PRAGMAs as supported through the D1 Worker Bindings API: `table_info`, `table_xinfo`, `index_list`, `index_xinfo`, `foreign_key_list`, `foreign_key_check`, and `quick_check`. This removes the concern that the metadata plan relies only on generic SQLite behavior without checking D1's supported subset.
+
+Refine implementation as follows:
+
+- Prefer `PRAGMA table_xinfo("<table>")` as the canonical column metadata capture; it includes the `hidden` field and generated/hidden columns that `table_info` omits. Retain all prior fields (ordinal, name, declared type, nullability, default, primary-key position) and include `hidden` in canonical metadata.
+- Keep `PRAGMA foreign_key_list("<table>")`, `PRAGMA index_list("<table>")`, and `PRAGMA index_xinfo("<index>")`; sort returned records by stable identifiers, not provider-return order.
+- Run `PRAGMA foreign_key_check` and require zero rows on each isolated replay database.
+- Add `PRAGMA quick_check` and require the single result `ok` on each isolated replay database.
+- Optionally use `PRAGMA table_list` as a supplementary inventory (filter to the intended `main` application tables and exclude D1/SQLite system objects); the exact application object-set assertion against `sqlite_master` remains authoritative.
+- Quote only fixed, source-derived table/index identifiers when constructing PRAGMA statements. Do not interpolate fixture/user-controlled values into identifiers.
+- D1 documents that PRAGMA statements apply only to the current transaction. The fixture must not assume stateful PRAGMA settings persist across separate D1 calls; the checks above are read-only introspection/integrity statements.
+
+Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (last updated 2026-04-21; accessed 2026-11-12). Relevant sections document D1 Worker Bindings API execution, `table_xinfo` generated-column coverage, index metadata, `foreign_key_check`, and `quick_check`. This is a documentation-backed implementation refinement only; no fixture/test code, golden, migration, D1 runtime, or CI was changed or executed.
