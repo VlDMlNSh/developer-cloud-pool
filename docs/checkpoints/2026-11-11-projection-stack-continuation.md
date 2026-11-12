@@ -761,3 +761,15 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Open issue search continues to show governance #1, secure web console #22, account-isolated routing/quota #26, and the durable single-use Supervisor claims issue, plus mobile and ephemeral agent-browser runner work. No issue was changed.
 - No source/test/golden edits, no local test execution, no workflow dispatch, no hosted D1, no runtime/executor checks, no secrets/provider/model calls, no deployment, merge or production mutation. Rulesets, Actions variables, executor status and hosted D1 entitlement remain NOT VERIFIED.
 - Status: source trigger-path analysis VERIFIED; candidate plan READ-BACK VERIFIED; complete 12-table snapshot implementation NOT RUN; new golden digest NOT RUN; migration 0011 NOT RUN; hosted D1/runtime NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Schema snapshot source audit continuation — 2026-11-12
+
+- Latest report: [schema-0010 complete snapshot plan and audit](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md), report commit `dcaf6811098935694fd28ee1a6d66b92d52263a7`.
+- Candidate plan commit `59066cbfa2771318ad43ee65a0b20e594cc8ff73`, blob `6e86da34b2f61571b4599f29781108e471f98b57`.
+- Source-level audit of migrations 0001–0010 confirms the twelve application tables and finds no column-projection mismatch in the seven existing fixture projections or the five proposed additions.
+- Refined plan now requires PRAGMA metadata capture (`table_info`, `foreign_key_list`, `index_list`, `index_xinfo`) and zero rows from `foreign_key_check`, alongside deterministic `sqlite_master` object-set comparison. This avoids treating sqlite_master as sufficient evidence for implicit indexes.
+- PR #67 remains OPEN/DRAFT/UNMERGED at `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`; exact-head runs `43182768560` and `43182768593` SUCCESS; formal reviews 0. These runs do not validate the candidate plan.
+- Candidate remains 5 ahead / 0 behind its immutable parent, one plan-only file, 56 additions. No fixture/test/golden implementation, local test, candidate CI, hosted D1, runtime, dispatch, secrets, provider/model calls, deployment, merge or production mutation.
+- Next: implement and execute the local complete snapshot fixture only when execution is available; prove two isolated replays, all five negative mutation cases, PRAGMA/schema equality and FK integrity before freezing a new digest. Migration 0011 remains deferred.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
