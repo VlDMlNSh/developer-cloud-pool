@@ -773,3 +773,13 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Candidate remains 5 ahead / 0 behind its immutable parent, one plan-only file, 56 additions. No fixture/test/golden implementation, local test, candidate CI, hosted D1, runtime, dispatch, secrets, provider/model calls, deployment, merge or production mutation.
 - Next: implement and execute the local complete snapshot fixture only when execution is available; prove two isolated replays, all five negative mutation cases, PRAGMA/schema equality and FK integrity before freezing a new digest. Migration 0011 remains deferred.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Legacy fixture seed contract — 2026-11-12
+
+- Latest report: [schema-0010 complete snapshot plan and audit](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md).
+- Candidate plan latest commit `257a5d172f89e50368e43c2fb00bc9be196dc130`, blob `9d291a95e5f678753537d2a6cc041c4d11172b5d`.
+- Source review confirms the legacy trigger requires NULL `task_key`; `claimAndEnqueue` validates numeric owner/repository IDs, positive issue, lowercase SHA40, exact profile `dsh-headless-probe`, lowercase SHA256 and future expiry. The plan now specifies the complete synthetic seed and matching binding, as well as returned decision/dispatch and database relationship assertions.
+- Candidate compare to immutable PR #67 parent: 7 ahead / 0 behind; one plan-only file, 98 additions. No fixture/test/golden changes and no candidate CI.
+- PR #67 structured metadata remains OPEN/DRAFT/UNMERGED at API head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, 0 formal reviews. Runs `43182768560` and `43182768593` SUCCESS on that exact head; they are not candidate CI.
+- No local tests, dispatch, hosted D1/runtime, secret/provider access, deployment, merge or production mutation. Governance, Actions variables, executor and hosted D1 entitlement NOT VERIFIED.
+- Next: implement and execute only when local D1 execution is available; verify two isolated replays, all five negative mutation cases, PRAGMA metadata and foreign-key integrity before new golden. Migration 0011 remains deferred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
