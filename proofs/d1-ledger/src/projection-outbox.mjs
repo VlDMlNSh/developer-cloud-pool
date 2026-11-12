@@ -151,3 +151,86 @@ export async function deadLetterExpiredProjection(db, outboxId, workerId, genera
   }
 }
 
+
+
+/**
+ * Atomically consumes the one permitted comment-POST opportunity.
+ * The state is persisted before the external side effect. Any later lease
+ * generation is reconciliation-only, even if the first POST never became
+ * visible; this deliberately prefers at-most-once over automatic liveness.
+ */
+export async function reserveProjectionCommentPost(db, outboxId, workerId, generation, now) {
+  if (!db || typeof db.prepare !== "function" || !SAFE_ID.test(outboxId || "") ||
+      !SAFE_ID.test(workerId || "") || !Number.isSafeInteger(generation) || generation < 1 ||
+      !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_PROJECTION_COMMENT_RESERVATION");
+  try {
+    const result = await db.prepare(`
+      UPDATE pool_attempt_projection_outbox
+         SET comment_post_state = 'indeterminate',
+             comment_post_attempted_at = ?, comment_post_attempt_generation = ?,
+             updated_at = ?
+       WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
+         AND lease_generation_delivery = ? AND lease_expires_at > ?
+         AND comment_post_state = 'not_attempted'
+    `).bind(now, generation, now, outboxId, workerId, generation, now).run();
+    if (result?.success !== true || result?.meta?.changes !== 1) {
+      return deny("PROJECTION_COMMENT_POST_RESERVATION_NOT_ACQUIRED");
+    }
+    const row = await db.prepare(`
+      SELECT comment_post_state, comment_post_attempted_at,
+             comment_post_attempt_generation, lease_owner,
+             lease_generation_delivery, lease_expires_at
+        FROM pool_attempt_projection_outbox WHERE outbox_id = ?
+    `).bind(outboxId).first();
+    if (row?.comment_post_state !== "indeterminate" ||
+        row.comment_post_attempted_at !== now ||
+        row.comment_post_attempt_generation !== generation ||
+        row.lease_owner !== workerId ||
+        row.lease_generation_delivery !== generation ||
+        !(row.lease_expires_at > now)) return deny("PROJECTION_COMMENT_POST_RESERVATION_READBACK_MISMATCH");
+    return { decision: "PROJECTION_COMMENT_POST_RESERVED", outboxId, generation, dispatch: false };
+  } catch {
+    return deny("PROJECTION_COMMENT_POST_RESERVATION_AMBIGUOUS");
+  }
+}
+
+/** Persist marker verification under the current delivery lease before ACK. */
+export async function markProjectionCommentVerified(db, outboxId, workerId, generation, now) {
+  if (!db || typeof db.prepare !== "function" || !SAFE_ID.test(outboxId || "") ||
+      !SAFE_ID.test(workerId || "") || !Number.isSafeInteger(generation) || generation < 1 ||
+      !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_PROJECTION_COMMENT_VERIFICATION");
+  try {
+    const current = await db.prepare(`
+      SELECT comment_post_state, lease_owner, lease_generation_delivery, lease_expires_at
+        FROM pool_attempt_projection_outbox
+       WHERE outbox_id = ? AND status = 'leased'
+    `).bind(outboxId).first();
+    if (!current || current.lease_owner !== workerId ||
+        current.lease_generation_delivery !== generation ||
+        !(current.lease_expires_at > now)) return deny("STALE_PROJECTION_COMMENT_VERIFICATION");
+    if (current.comment_post_state === "verified") {
+      return { decision: "PROJECTION_COMMENT_ALREADY_VERIFIED", outboxId, generation, dispatch: false };
+    }
+    const result = await db.prepare(`
+      UPDATE pool_attempt_projection_outbox
+         SET comment_post_state = 'verified', updated_at = ?
+       WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
+         AND lease_generation_delivery = ? AND lease_expires_at > ?
+         AND comment_post_state IN ('not_attempted', 'indeterminate')
+    `).bind(now, outboxId, workerId, generation, now).run();
+    if (result?.success !== true || result?.meta?.changes !== 1) {
+      return deny("PROJECTION_COMMENT_VERIFICATION_NOT_RECORDED");
+    }
+    const row = await db.prepare(`
+      SELECT comment_post_state, lease_owner, lease_generation_delivery, lease_expires_at
+        FROM pool_attempt_projection_outbox WHERE outbox_id = ?
+    `).bind(outboxId).first();
+    return row?.comment_post_state === "verified" &&
+      row.lease_owner === workerId && row.lease_generation_delivery === generation &&
+      row.lease_expires_at > now
+      ? { decision: "PROJECTION_COMMENT_VERIFIED", outboxId, generation, dispatch: false }
+      : deny("PROJECTION_COMMENT_VERIFICATION_READBACK_MISMATCH");
+  } catch {
+    return deny("PROJECTION_COMMENT_VERIFICATION_AMBIGUOUS");
+  }
+}
