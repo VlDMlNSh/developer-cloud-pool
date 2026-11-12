@@ -2616,3 +2616,13 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - PR #67 structured API metadata: OPEN/DRAFT/UNMERGED, API head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, reviews 0. Exact-head runs `43182768560` and `43182768593` SUCCESS with the relevant D1 and security-contract steps SUCCESS. The PR body text contains a stale conflicting head reference; structured head metadata and exact-SHA workflow lookup were used.
 - No source/test/golden changes, local execution, candidate CI, dispatch, hosted D1/runtime, secrets/provider calls, deployment, merge or production mutation. Governance/rulesets, Actions variables, executor status and hosted D1 entitlement remain NOT VERIFIED.
 - Complete snapshot implementation, isolated replays, negative mutations, new golden and migration 0011 remain NOT RUN. Independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Schema-0010 legacy trigger audit — 2026-11-12 12:18 Europe/Vilnius
+
+- Latest report: [schema-0010 complete snapshot plan and source audit](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md).
+- PR #67 structured API HEAD remains `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, OPEN/DRAFT/UNMERGED, formal reviews 0; exact-head workflow runs `43182768560` and `43182768593` SUCCESS. PR body contains a conflicting narrative head `f8280ba...`; do not use it over the structured head.
+- Candidate branch `proof/schema-0010-complete-snapshot-2026-11-12`: 7 ahead / 0 behind immutable parent; one plan-only file, 98 additions; plan blob `9d291a95e5f678753537d2a6cc041c4d11172b5d`. No candidate CI.
+- Read-only source audit confirms candidate's NULL-`task_key` legacy seed and assertions align with adapter/migrations 0001–0003: claim ID = approval ID, outbox ID = `pool-task:<approval_id>`, both pending; ledger consumed; `CLAIMED_ONCE` only on a one-row update. No source mismatch found. Source blobs are recorded in the latest report.
+- No local D1 execution, fixture/test/golden changes, replay, negative mutations, candidate CI, hosted D1, dispatch, secret/provider access, deployment, merge or production mutation. Rulesets, Actions variables, executor and hosted D1 entitlement remain NOT VERIFIED.
+- Next: implement only when a local Workers-runtime D1 execution path is available; run dual isolated replays, PRAGMA/FK checks and all five negative mutations before freezing the new golden. Migration 0011 remains deferred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
