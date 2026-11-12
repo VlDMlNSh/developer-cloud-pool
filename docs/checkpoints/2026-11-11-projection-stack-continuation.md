@@ -641,3 +641,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: create frozen schema-0010 v1 fixture plus deterministic snapshot oracle in the separate config; prove all historical rows/marker bytes survive a no-op baseline roundtrip before drafting 0011. Do not add 0011 until baseline fixture is reproducible.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent reviews postponed until actual pool launch per owner direction.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## PR #67 upgrade-harness readiness revalidation — 2026-11-12
+
+- Report: [PR #67 upgrade-harness readiness revalidation](../reports/2026-11-12-pr67-upgrade-harness-readiness-revalidation.md).
+- Default branch revalidated: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 current exact head: `e068391ee0a08c7047593c249199a102e1cd0010`, OPEN / DRAFT / UNMERGED.
+- Exact-head Isolated D1 Ledger Proof run [43176990564](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990564): COMPLETED / SUCCESS; 69 standard tests + 1 isolated second-binding smoke test passed.
+- Exact-head Pool Contract Validation run [43176990553](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990553): COMPLETED / SUCCESS.
+- PR #67 formal reviews: 0; inline review threads: 0; combined status contexts empty.
+- The second local D1 binding is VERIFIED only for local Miniflare/Workers test runtime. A populated schema-0010 fixture, full byte-preserving upgrade oracle, migration 0011 and failure atomicity remain NOT IMPLEMENTED / NOT RUN.
+- No code/schema/workflow/secret/permission/dispatch/hosted-resource/deployment/merge change in this revalidation.
+- Next: implement a separate isolated local test target that applies exactly 0001–0010, seeds the frozen v1 fixture, and produces deterministic full-table baseline snapshots. Do not create migration 0011 until baseline reproducibility is proven.
+- Hosted D1 NOT AUTHORIZED / NOT RUN; independent audits remain deferred until Cloud Pool launch; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
