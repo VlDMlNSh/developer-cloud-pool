@@ -2462,3 +2462,16 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Next: inspect rerun 43176990564 through final dedicated smoke step and logs. If pass, mark local second-binding smoke VERIFIED and proceed to frozen pre-0011 fixture; if fail, diagnose only the isolated test config.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent reviews remain postponed until pool launch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Second local D1 binding smoke — VERIFIED 2026-11-12
+- Report: docs/reports/2026-11-12-second-local-d1-binding-smoke.md (latest blob after successful CI evidence recorded separately).
+- PR #67 exact head `e068391ee0a08c7047593c249199a102e1cd0010`, still OPEN/DRAFT/UNMERGED, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Added a separate Vitest config with synthetic local `POOL_DB` and distinct `UPGRADE_DB` IDs, no remote proxy. The smoke test applies current migrations only to `UPGRADE_DB`, verifies migration-created table absent in `POOL_DB`, inserts/reads a synthetic row in `UPGRADE_DB`, and confirms no schema bleed into `POOL_DB`.
+- First run 43176833135 failed due smoke filename matching default glob and `readD1Migrations` imported in Worker test context. Corrected by moving migration discovery into Node-side config and renaming the test to `.smoke.ts`; no dependency or lockfile changes.
+- Corrected exact-head D1 workflow [43176990564](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990564) COMPLETED/SUCCESS: standard suite 5 files / 69 tests passed; dedicated isolated D1 smoke 1 file / 1 test passed; artifact 13924647072, ZIP SHA-256 `f3751e7735b7ca90bc3399b6c9f37e1cde7928c424584340d11e2d1358305a40`.
+- Exact-head Pool Contract Validation [43176990553](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990553) COMPLETED/SUCCESS. Combined status contexts remain empty.
+- Verified code blob SHAs: upgrade smoke config `a8dc7803f64812f0ff9ebf420aa54a1d464003c8`; smoke test `d7a500a0e13e1590b19438a0c6df163945a0d33f`; package.json `c9a3282ef4a465bf803bd196808f51770444045f`; workflow `ad1b5582f643b3d181d72e414dc67368f3f57e22`. Lockfile unchanged.
+- PR #66 remains OPEN/DRAFT/UNMERGED at `8ac416de46e9d2e1fa24dd8a12bb6ab4e95b900a`; default HEAD unchanged `221f216c00ca7e5596bcc682ba185ad155a10603`. Exact-head PR #67 runs above; no status contexts.
+- Scope: local second D1 binding and migration API runtime smoke VERIFIED only. Populated pre-0011 historical fixture and byte-preservation upgrade harness NOT IMPLEMENTED; migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN; no secrets, remote proxy, production, dispatch, model/provider calls or deployment.
+- Next: create frozen schema-0010 v1 fixture plus deterministic snapshot oracle in the separate config; prove all historical rows/marker bytes survive a no-op baseline roundtrip before drafting 0011. Do not add 0011 until baseline fixture is reproducible.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent reviews postponed until actual pool launch per owner direction.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
