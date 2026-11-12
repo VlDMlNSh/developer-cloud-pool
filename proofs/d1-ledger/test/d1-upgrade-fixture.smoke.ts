@@ -2,6 +2,7 @@ import { applyD1Migrations } from "cloudflare:test";
 import { env } from "cloudflare:workers";
 import { describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { claimLogicalTask } from "../src/claim-outbox.mjs";
 import {
   acquireAttemptLease,
@@ -176,6 +177,12 @@ describe("frozen schema-0010 v1 fixture baseline", () => {
     expect(replay).toEqual(first);
     const canonical = JSON.stringify(stableValue(first));
     const digest = createHash("sha256").update(canonical, "utf8").digest("hex");
+    const golden = JSON.parse(readFileSync(
+      new URL("../fixtures/schema-0010-v1-golden.json", import.meta.url),
+      "utf8"
+    ));
+    expect(digest).toBe(golden.sha256);
+    expect(Buffer.byteLength(canonical, "utf8")).toBe(golden.canonicalBytes);
     console.log("FROZEN_SCHEMA_0010_GOLDEN_SHA256=" + digest);
     console.log("FROZEN_SCHEMA_0010_CANONICAL_BYTES=" + Buffer.byteLength(canonical, "utf8"));
 
