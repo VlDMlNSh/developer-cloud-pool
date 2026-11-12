@@ -77,3 +77,22 @@ The `sqlite_master` snapshot alone is not a complete structural comparison: SQLi
 Keep metadata records sorted by stable table/index/column identifiers. For `sqlite_master`, compare the exact expected application table/index/trigger object set and definitions, using an explicit predicate for excluding SQLite-internal objects; do not accidentally drop implicit index metadata from the separate PRAGMA capture. Compare all metadata structures between the two isolated databases. These checks are additional to, not a replacement for, the existing twelve-table row snapshot.
 
 This refinement is a source-level specification only. No fixture/test code, golden, migration, runtime or CI was changed or executed.
+
+
+### Legacy approval seed contract (source-derived)
+
+The fifth approval row must satisfy migration 0001 and `validInput()` in `src/claim-outbox.mjs`:
+
+- `approval_id`: unique non-empty text, at most 128 characters.
+- `owner_numeric_id` and `repository_id`: non-empty decimal-digit text (not arbitrary labels).
+- `issue_number`: positive integer.
+- `target_sha`: exactly 40 lowercase hexadecimal characters.
+- `profile`: exactly `dsh-headless-probe`.
+- `envelope_digest`: exactly 64 lowercase hexadecimal characters.
+- `expires_at`: positive integer strictly greater than the supplied `now`.
+- Initial `state`: `ready`; `consumed_at`: NULL. Omit `task_key` entirely from the INSERT so it remains NULL and selects the legacy trigger.
+- Pass a `claimAndEnqueue` binding whose `approvalId`, owner/repository IDs, issue, target SHA, profile and envelope digest exactly match that inserted row; use the same valid `now` value and ensure `expires_at > now`.
+
+Assert the returned decision is exactly `CLAIMED_ONCE`, `dispatch === false`, and that the returned claim/outbox IDs match the database rows. Assert the ledger row becomes `consumed` while `task_key` remains NULL; the claim and outbox rows both reference the same approval, claim ID equals approval ID, outbox ID equals `pool-task:<approval_id>`, and both begin in `pending`. This makes the fixture's legacy-path setup and its expected row relationships explicit rather than relying on the adapter call alone.
+
+All values remain deterministic synthetic fixture data. This is a specification refinement, not runtime evidence.
