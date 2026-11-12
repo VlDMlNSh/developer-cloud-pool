@@ -35,3 +35,11 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
 This contract does not implement or authorize a production Worker, live GitHub API adapter, dispatch, hosted D1, issuer authentication, trusted clock, revocation, nonce replay protection, or deployment. The runtime must wire `clock.now()` from a separately qualified trusted-time authority and bind `workerId` from its runtime identity. The local proof factory accepts injected adapters for deterministic tests; callers of `deliver()` cannot supply timestamps, receipts, worker identity or lease generations.
 
 Required before hosted qualification: wire the real outbox lease → mapper → bounded GitHub adapter → verified projection → fenced D1 acknowledgement path; test crash/restart and lost-response windows; qualify issuer/time/secret isolation; obtain independent security/governance review and hosted account entitlement evidence.
+
+## Label ownership correction — 2026-11-12
+
+The reconciler mutates only the explicit projection-owned label set: `pool:claimed` (the pre-terminal claim label evidenced by the local test fixture) and the terminal labels in `ALLOWED_LABELS` (`pool:probe-complete`, `pool:needs-review`, `pool:completed`, `pool:failed`). It must preserve unrelated labels, including unknown `pool:*` labels, because the prefix alone does not establish ownership. Read-back verifies only this explicit managed set. The complete operational label registry still requires source/governance confirmation before live GitHub qualification.
+
+## Remaining duplicate-POST qualification gap
+
+The current orchestrator invokes reconciliation with `allowPost: true` on every acquired delivery lease. A single invocation does not issue a second POST after a lost response, but a subsequent retry can POST again if the first accepted comment remains temporarily invisible to reads. The existing delayed-visibility unit test covers only a manual follow-up with `allowPost: false`; it does not exercise a second orchestrator delivery, which currently re-enables POST. Therefore the implementation cannot yet claim duplicate-POST prevention across retries. A durable post-attempt/indeterminate state or a documented at-most-once/manual-resolution policy is needed before live GitHub writes. Do not solve this by blindly repeating POST or by marking delivery successful without marker read-back.
