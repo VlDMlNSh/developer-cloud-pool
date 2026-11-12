@@ -13,13 +13,17 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const fixtureCaller = read(".github/workflows/reusable-worker-context-fixture-caller.yml");
+const fixtureReusable = read(".github/workflows/reusable-worker-context-fixture.yml");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
-  ".github/workflows/runner-resource-probe.yml"
+  ".github/workflows/runner-resource-probe.yml",
+  ".github/workflows/reusable-worker-context-fixture-caller.yml",
+  ".github/workflows/reusable-worker-context-fixture.yml"
 ].map((path) => [path, read(path)]);
 
 for (const [path, source] of workflows) {
@@ -39,13 +43,16 @@ for (const [path, source] of workflows) {
   }
 
   for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)) {
+    // Local reusable workflows are immutable within the checked-out commit;
+    // they are validated separately for static path, workflow_call and policy.
+    if (/^\.\/\.github\/workflows\/[^/]+\.ya?ml$/.test(match[1])) continue;
     if (!/@[0-9a-f]{40}$/.test(match[1])) {
       fail(path + " uses an action that is not pinned to a full commit SHA: " + match[1]);
     }
   }
 }
 if (failures.length === 0) pass("workflow inputs are not interpolated into shell run blocks");
-if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /@[0-9a-f]{40}$/.test(m[1])))) {
+if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /^\.\/\.github\/workflows\/[^/]+\.ya?ml$/.test(m[1]) || /@[0-9a-f]{40}$/.test(m[1])))) {
   pass("all external Actions references are pinned to 40-character commit SHAs");
 }
 
@@ -74,6 +81,27 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("DSH and Resource Probe remain manual, read-only and secret-free");
+
+if (!fixtureCaller.includes("uses: ./.github/workflows/reusable-worker-context-fixture.yml")) {
+  fail("Reusable context fixture caller must use a static local job-level workflow reference");
+}
+if (!fixtureReusable.includes("workflow_call:")) {
+  fail("Reusable context fixture must expose workflow_call");
+}
+if (/workflow_dispatch:/.test(fixtureCaller + fixtureReusable)) {
+  fail("Reusable context fixture must not expose workflow_dispatch");
+}
+if (/secrets\./.test(fixtureCaller + fixtureReusable)) {
+  fail("Reusable context fixture must not reference secrets");
+}
+for (const field of ["github.workflow_ref", "github.workflow_sha", "job.workflow_ref", "job.workflow_sha", "job.workflow_repository", "job.workflow_file_path"]) {
+  if (!fixtureReusable.includes(field)) fail("Reusable context fixture must record " + field);
+}
+if (!fixtureReusable.includes("timeout-minutes: 2")) fail("Reusable context fixture must have a two-minute timeout");
+if (!fixtureCaller.includes("contents: read") || !fixtureReusable.includes("contents: read")) {
+  fail("Reusable context fixture caller and callee must be read-only");
+}
+if (failures.length === 0) pass("reusable workflow fixture is static, read-only, secret-free and records caller/callee identity");
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
