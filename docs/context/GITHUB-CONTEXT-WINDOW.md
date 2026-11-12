@@ -2289,3 +2289,18 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: continue bounded author-side source review of projection delivery semantics on PR #67. Resolve delayed-marker duplicate POST, exact managed-label ownership, canonical finalization event digest/actor attribution, and orphaned fifth-lease recovery authority without widening the one-operation Recovery Actor contract. Do not launch runtime until all pre-launch gates are satisfied.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-12 — projection delivery reconciliation audit
+
+- Revalidated refs: default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #67 branch compare is 12 ahead / 0 behind; PR #67 remains OPEN/DRAFT/UNMERGED. Corrected head `d908a9a60609508073f14b32e624558ccd83870d`.
+- Source audit of PR #67 found broad label mutation: prior code treated every `pool:*` label as projection-owned. Corrected in PR #67 branch: explicit mutation/read-back allowlist is the four declared terminal labels plus `pool:claimed`; unknown `pool:*` labels are preserved. Source blob `4d440879a850fec1e3313b01df1b139e71d92fd7`; regression fixture/test blob `32d667fb13731347ec839e8bdfcbff6f2f726fc4`. Governance confirmation of the complete real label registry remains outstanding.
+- Found unresolved retry-level duplicate-comment risk: orchestrator passes `allowPost:true` on every delivery attempt. A successful POST with delayed marker visibility may be followed by a second POST on a later retry. Existing test only checks manual reconciliation with `allowPost:false`, not the next orchestrator delivery. No code change made pending explicit durable-state/at-most-once policy. Integration contract updated: blob `376c94ae61ba0bf6b3f4622a63b690c82eb94350`.
+- Added report `docs/reports/2026-11-12-projection-delivery-reconciliation-audit.md`, commit `66b972c103d58e837685553d1ebaa7be3bdb8c81`. It records evidence, scope, F-01 correction and F-02 blocker.
+- Exact-head workflows on PR #67 corrected head: Pool Contract Validation `43161227426`; Isolated D1 Ledger Proof `43161227797`. Both were IN_PROGRESS at first observation; combined commit status had zero contexts / PENDING. Final workflow conclusions must be checked before calling validation successful. No local test execution claimed.
+- PR #60 remains OPEN/DRAFT/UNMERGED, corrected contract blob `674e2a601acdc972e1e96f15776d45fa51ae6842`, base stale at `864213e2ff5b4fa956ba405dea8137a44d812f49`; exact-head CI NOT VERIFIED.
+- PR #66 remains OPEN/DRAFT/UNMERGED documentation branch; it is not canonical/default. Active ruleset #26550182 remains PR-required with no bypass actors, zero required approvals, and required review-thread resolution. MediaHub Issue #301 remains OPEN.
+- No secrets read; no hosted D1, live GitHub writes, dispatch, provider/model calls, deployment, paid resources, merge or independent review. Independent review remains deferred until after pool launch by owner direction.
+- Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define safe durable duplicate-POST semantics and add a regression test across two separate orchestrator deliveries. Do not enable live GitHub writes until that gap and operational label ownership are resolved.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
