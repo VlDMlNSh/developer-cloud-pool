@@ -2313,3 +2313,22 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
   - Isolated D1 Ledger Proof run `43161227797` — COMPLETED / SUCCESS; job `130992630814` passed adapter syntax and Workers-runtime D1 adversarial tests.
 - This supersedes the earlier observation that both runs were IN_PROGRESS. Combined commit status remains zero contexts / PENDING; do not report required-status contexts green.
 - Audit report updated with final results: commit `53238bd1f9ab551f8ac8c82915ea47fd9036c1f0`, blob `54706a81995a911428335c6d2a49f1931868bc0a`.
+
+
+## 2026-11-12 — durable at-most-once projection comment gate
+
+- Revalidated refs: default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #67 implementation branch `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`, 20 ahead / 0 behind; PR #67 OPEN/DRAFT/UNMERGED. PR #60 and #66 also OPEN/DRAFT/UNMERGED. PR #60 base remains stale at `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Resolved the retry-level duplicate-comment POST code gap using a durable at-most-once state machine, not exactly-once semantics. Migration 0010 adds `comment_post_state` (`not_attempted → indeterminate → verified`), append-only comment evidence events, active-lease transition guards, and a database ACK guard requiring `verified`.
+- Orchestrator now performs read-only reconciliation first. It can reserve the sole POST opportunity only from `not_attempted`, using a conditional D1 update under the active lease. A fenced durable read-back is the authority to proceed. All later delivery leases are read-only until exact marker visibility. Indeterminate result is retryable as `COMMENT_POST_INDETERMINATE`; no automatic second POST/reset is permitted.
+- Regression tests cover two separate delivery leases with delayed marker visibility (second lease verifies; one POST) and permanently invisible marker (remains indeterminate; one POST), plus DB-trigger rejection of state reset and premature ACK.
+- Exact-head CI on `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`:
+  - Isolated D1 run `43162121589`, job `130995529921`: SUCCESS; syntax passed; 5 files / 69 tests passed. Artifact `13918407008`, SHA-256 `3241473c3fc9835b40b2ea854d1c10f136bbc8d1aaef55b0854b8f828cb25623`.
+  - Pool Contract Validation run `43162128615`, job `130995552690`: SUCCESS.
+  - Combined commit status remains 0 contexts / PENDING. Workflow success does not establish required status contexts green.
+- Source blobs: migration `30ac9d0ed0cbede9586c365578c606b47bcce1a7`; outbox helper `06e80d04b4bb16fbc74028cb716b9167dcc965a1`; orchestrator `b09e9248323a57fff5e1c426eae012e2bb7aa3f0`; tests `a1b96a2e122b25594f75e5eb160c816ffff67812`; integration contract `e9bca72fd93709638a14e30210154c5c04759a11`.
+- Implementation report: `docs/reports/2026-11-12-projection-comment-at-most-once-implementation.md`, commit `38dd5d5787f0fe48e10af0e4a1fea0b1403094c0`.
+- The at-most-once trade-off is explicit: crash after reservation but before POST may leave a permanently indeterminate item. Operator resolution policy is NOT IMPLEMENTED and must not reset the guard or send a second POST without an explicit authority decision.
+- No hosted D1, live GitHub comment/label writes, dispatch, provider/model calls, deployment, secrets access, paid services, merge or independent review. Independent review remains deferred until actual Cloud Pool launch.
+- PR #67 remains Draft. Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design a governed manual resolution process for permanently indeterminate comment POSTs without weakening the at-most-once guard; continue review of finalization actor/digest and fifth-lease recovery semantics.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
