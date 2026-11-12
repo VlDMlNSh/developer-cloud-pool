@@ -92,7 +92,7 @@ async function buildFrozenFixture(db, migrations) {
     "0009_projection_outbox_identity_immutable",
     "0010_projection_comment_at_most_once"
   ];
-  expect(migrations.slice(0, 10).map(migration => migration.name.replace(/\\.sql$/, ""))).toEqual(expectedNames);
+  expect(migrations.slice(0, 10).map(migration => migration.name.replace(/\.sql$/, ""))).toEqual(expectedNames);
   await applyD1Migrations(db, migrations.slice(0, 10));
 
   const succeededId = await createTerminal(db, "succeeded");
