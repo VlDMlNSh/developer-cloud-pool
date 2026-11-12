@@ -697,3 +697,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Migration 0011 NOT CREATED/APPLIED; populated 0010→0011 preservation NOT TESTED; hosted D1 NOT AUTHORIZED / NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: candidate 0011 compatibility test against a populated frozen schema-0010 DB copy; preserve v1 IDs/digests/marker bytes and add schema assertions. No v2 writer.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Daily revalidation — 2026-11-12 11:55 Europe/Vilnius
+
+- Report: [2026-11-12 daily revalidation](../reports/2026-11-12-daily-revalidation.md).
+- Revalidated current PR base refs at `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; default-branch Context Window is stale (blob `8707a0ab0b2f66de9bae3441e0334c1621f89925`, header dated 2026-11-08).
+- PR #67 remains OPEN/DRAFT/UNMERGED at `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, 40 ahead / 0 behind; exact-head D1 run `43182768560` and Pool Contract run `43182768593` SUCCESS; 0 reviews, 0 inline threads, combined status contexts empty.
+- PR #66 remains OPEN/DRAFT/UNMERGED at `62c58d6d57d68031eb2311ea0c41c58e04743a7e`; no exact-head CI/reviews returned. Documentation branch compares 174 ahead / 0 behind.
+- Issues #1/#22/#26/#38 remain OPEN. Current ruleset detail, dispatch variable, executors and Cloudflare inventory NOT VERIFIED.
+- GitHub Read Adapter path-segment branch compares 38 ahead / 64 behind; no PR. Guessed source paths returned 404, so actual path/blob and exact-head CI NOT VERIFIED.
+- Revalidated schema-0010 golden fixture blob `7b5a560a28e1669624981b55141176c393b68191`, SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`, fixture test blob `d2f875700243c1874fd0c1bd251b4257ba2bb48f`, and local-only four-binding test topology. This proves the frozen schema-0010 local fixture only; populated 0010→0011 preservation is not implemented.
+- No runtime/security-boundary change, workflow dispatch, hosted D1, secrets, provider/model calls, deployment or merge.
+- Next: create populated schema-0010 state + deterministic full-table snapshot oracle, freeze digest, then isolated candidate 0011 and byte-preservation comparison; separately locate the actual adapter source paths.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
