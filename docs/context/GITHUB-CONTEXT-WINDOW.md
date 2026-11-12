@@ -2304,3 +2304,12 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define safe durable duplicate-POST semantics and add a regression test across two separate orchestrator deliveries. Do not enable live GitHub writes until that gap and operational label ownership are resolved.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Exact-head validation completed — 2026-11-12
+
+- PR #67 exact head `d908a9a60609508073f14b32e624558ccd83870d`:
+  - Pool Contract Validation run `43161227426` — COMPLETED / SUCCESS; job `130992629166` passed workflow syntax, dispatch-disabled assertion, YAML parse and pool contract validation.
+  - Isolated D1 Ledger Proof run `43161227797` — COMPLETED / SUCCESS; job `130992630814` passed adapter syntax and Workers-runtime D1 adversarial tests.
+- This supersedes the earlier observation that both runs were IN_PROGRESS. Combined commit status remains zero contexts / PENDING; do not report required-status contexts green.
+- Audit report updated with final results: commit `53238bd1f9ab551f8ac8c82915ea47fd9036c1f0`, blob `54706a81995a911428335c6d2a49f1931868bc0a`.
