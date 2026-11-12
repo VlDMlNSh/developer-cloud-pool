@@ -5,7 +5,8 @@
   "scripts": {
     "test": "vitest run --config vitest.config.ts",
     "check": "node --check src/consume.mjs && node --check src/claim-outbox.mjs && node --check src/task-lease.mjs && node --check src/task-attempts.mjs && node --check src/projection-outbox.mjs && node --check src/projection-reconciler.mjs && node --check src/projection-envelope.mjs && node --check src/projection-delivery.mjs",
-    "test:upgrade-binding": "vitest run --config vitest.upgrade-smoke.config.ts"
+    "test:upgrade-binding": "vitest run --config vitest.upgrade-smoke.config.ts",
+    "test:upgrade-fixture": "vitest run --config vitest.upgrade-smoke.config.ts --testNamePattern \"frozen schema-0010 v1 fixture baseline\""
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "1.4.7",
