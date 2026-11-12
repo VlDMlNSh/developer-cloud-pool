@@ -23,7 +23,7 @@ Status: LOCAL PROOF CONTRACT / NOT HOSTED QUALIFIED
 
 - One finalized attempt has one outbox row because `attempt_id` is unique and the outbox insert is trigger-backed.
 - Event identity and digest are deterministic and are checked by the projection marker.
-- Lost comment POST response is resolved by read-back; do not blindly POST again during reconciliation-only passes.
+- Comment POST uses a durable at-most-once gate: D1 changes `comment_post_state` from `not_attempted` to `indeterminate` under the active fenced lease before the external POST. A later lease is always read-only while the marker is absent. Once the exact marker is read back, state advances to `verified`; only then may D1 ACK. An ambiguous or lost POST can remain indeterminate indefinitely and requires explicit operator resolution; no automatic second POST is permitted.
 - Duplicate marker or digest conflict is DENY.
 - Partial label updates or ambiguous GitHub responses are RETRYABLE until read-back proves the managed-label projection.
 - Unrelated labels are not intentionally modified by the reconciler.
@@ -43,3 +43,12 @@ The reconciler mutates only the explicit projection-owned label set: `pool:claim
 ## Remaining duplicate-POST qualification gap
 
 The current orchestrator invokes reconciliation with `allowPost: true` on every acquired delivery lease. A single invocation does not issue a second POST after a lost response, but a subsequent retry can POST again if the first accepted comment remains temporarily invisible to reads. The existing delayed-visibility unit test covers only a manual follow-up with `allowPost: false`; it does not exercise a second orchestrator delivery, which currently re-enables POST. Therefore the implementation cannot yet claim duplicate-POST prevention across retries. A durable post-attempt/indeterminate state or a documented at-most-once/manual-resolution policy is needed before live GitHub writes. Do not solve this by blindly repeating POST or by marking delivery successful without marker read-back.
+
+
+## At-most-once comment POST state machine — 2026-11-12
+
+- `not_attempted`: no POST opportunity has been consumed. The orchestrator first performs read-only marker reconciliation. Only an exact `EVENT_MARKER_NOT_VISIBLE` result can lead to reservation.
+- `indeterminate`: migration 0010 has durably consumed the sole POST opportunity under the current active lease before calling the API. The external POST may or may not have been accepted. Every later lease is read-only until the exact event ID + digest marker is visible. A missing marker remains retryable with `COMMENT_POST_INDETERMINATE`; no second POST is allowed.
+- `verified`: exact marker and managed labels were read back. A fenced D1 state transition records marker verification before ACK. A database trigger rejects `delivered` unless this state is already `verified`.
+- The state transition is monotonic; append-only comment events record reservation and marker verification. A crash after reservation but before the POST intentionally sacrifices automatic liveness to prevent duplicate comments. Operator recovery is a separate governance decision and is not implemented.
+- Regression tests cover two separate delivery leases: delayed marker becomes visible on the second lease (one POST total), and permanently invisible marker remains indeterminate (still one POST total).
