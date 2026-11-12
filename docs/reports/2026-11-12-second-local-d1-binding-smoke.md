@@ -48,3 +48,11 @@ The test is deliberately separate from the normal config and does not load the g
 Wait for run 43176833135 to complete. Inspect its job steps and logs. If the isolated-binding step passes, preserve the exact run/job evidence and then build the separate populated schema-0010 fixture/upgrade harness. If it fails, use the exact failure to adjust only the disposable config/test and rerun; do not create migration 0011 until this gate is VERIFIED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## First CI attempt and correction — 2026-11-12
+
+- Initial exact-head D1 workflow run [43176833135](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176833135) FAILED before reaching the dedicated smoke step. The original filename matched the default `test/**/*.test.ts` glob, so the new test was loaded in the standard config. Importing `readD1Migrations` inside the Worker test caused Miniflare module resolution to fail with `No such module "node:process"`. Existing 69 tests passed; one new suite failed to load. This was a test placement/import-context error, not a D1 isolation result.
+- Corrected by renaming the dedicated test to `d1-upgrade-binding.smoke.ts` (outside the default test glob), moving `readD1Migrations` into the Node-side Vitest config, and passing the parsed migrations through the explicit `UPGRADE_MIGRATIONS` binding. The Worker test now imports only `applyD1Migrations` from `cloudflare:test`.
+- Corrected implementation commit / PR #67 head: `e068391ee0a08c7047593c249199a102e1cd0010`.
+- Rerun [43176990564](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990564): RUNNING at report update; checkout, Node setup, dependency install completed; syntax check was running. The dedicated second-D1 smoke step had not yet executed. Pool Contract Validation run 43176990553 was pending.
+- Disposition: the initial test failure is diagnosed and corrected, but second local D1 binding remains NOT VERIFIED pending rerun completion.
