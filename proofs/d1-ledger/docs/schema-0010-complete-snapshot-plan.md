@@ -113,3 +113,10 @@ Refine implementation as follows:
 - D1 documents that PRAGMA statements apply only to the current transaction. The fixture must not assume stateful PRAGMA settings persist across separate D1 calls; the checks above are read-only introspection/integrity statements.
 
 Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (last updated 2026-04-21; accessed 2026-11-12). Relevant sections document D1 Worker Bindings API execution, `table_xinfo` generated-column coverage, index metadata, `foreign_key_check`, and `quick_check`. This is a documentation-backed implementation refinement only; no fixture/test code, golden, migration, D1 runtime, or CI was changed or executed.
+
+
+### Whole-database foreign-key integrity scope — 2026-11-12 12:22 Europe/Vilnius
+
+For each isolated replay database, execute exactly `PRAGMA foreign_key_check` **without a table-name argument** and require zero result rows. Cloudflare's D1 reference describes the optional table argument as limiting the check to the selected table; omitting it is necessary for a whole-database integrity assertion. This is a diagnostic read-back and must not replace D1's normal foreign-key enforcement during fixture writes. Run it after all fixture rows and trigger effects have been written, on both replay databases. Retain the separate `PRAGMA quick_check` requirement (one result row whose value is `ok`).
+
+Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (sections for `foreign_key_check` and `quick_check`; accessed 2026-11-12). Documentation refinement only; no test/source/golden/migration/runtime/CI changes or execution.
