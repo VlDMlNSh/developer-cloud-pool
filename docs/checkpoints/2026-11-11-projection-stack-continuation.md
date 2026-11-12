@@ -711,3 +711,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No runtime/security-boundary change, workflow dispatch, hosted D1, secrets, provider/model calls, deployment or merge.
 - Next: create populated schema-0010 state + deterministic full-table snapshot oracle, freeze digest, then isolated candidate 0011 and byte-preservation comparison; separately locate the actual adapter source paths.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Schema-0010 snapshot coverage audit — 2026-11-12
+
+- Report: [Schema-0010 snapshot coverage audit](../reports/2026-11-12-schema-0010-snapshot-coverage-audit.md), commit `a9159c7d13b929eaaed4e597f6d4df93269ba58b`.
+- Immutable PR #67 target `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, 40 ahead / 0 behind; OPEN / DRAFT / UNMERGED; formal reviews 0.
+- Exact-head D1 run `43182768560` and contract run `43182768593` COMPLETED / SUCCESS; job steps read back successfully. These runs do not prove all-table snapshot coverage, hosted D1 or runtime.
+- Source audit found the golden fixture snapshots 7 tables but migrations 0001–0010 create 12 application tables. Missing from snapshot: `pool_approval_ledger`, `pool_task_claims`, `pool_task_outbox`, `pool_task_approvals`, `pool_task_delivery_outbox`. Fixture inserts approvals and triggers create related rows, but golden digest excludes them. Therefore prior “full-table snapshot” phrasing is too broad; preserve the old golden as a seven-table baseline only.
+- Before migration 0011: add the five omitted tables with stable column ordering; snapshot schema invariants separately; assert row counts/referential consistency; freeze a new digest; add a negative mutation regression proving legacy-table changes are detected. Do not overwrite historical golden semantics.
+- No code/runtime/security-boundary change, workflow dispatch, hosted D1, secrets, provider/model calls, deployment or merge. Effective ruleset, dispatch variable, executors and hosted D1 entitlement NOT VERIFIED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
