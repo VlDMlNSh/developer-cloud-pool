@@ -794,3 +794,11 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Source blobs: adapter `37d75e2b31d9214b04398527eb08dce296f1ff27`; migrations 0001/0002/0003 `a80524ed839b63dd6483978118619495fa550877` / `44b8f7e0658296d287269770c5e91b1c3e25973c` / `49b0798871429d7961e81eb1d86ad892dba0b9b9`.
 - No local D1 execution available; no fixture/test/golden implementation, replay, negative mutation, candidate CI, hosted D1, dispatch, secret/provider access, deployment, merge or production mutation. Governance/rulesets, Actions variables, executor and hosted D1 entitlement NOT VERIFIED.
 - Legacy source consistency VERIFIED; plan READ-BACK VERIFIED; complete snapshot/replays/negative tests/new digest/migration 0011 NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## D1 PRAGMA support verification — 2026-11-12 12:20 Europe/Vilnius
+
+- Official Cloudflare D1 SQL statements docs confirm D1 Worker Bindings support for `table_info`, `table_xinfo`, `index_list`, `index_xinfo`, `foreign_key_list`, `foreign_key_check` and `quick_check`; docs note PRAGMA statements apply only to the current transaction.
+- Candidate plan refined to use `table_xinfo` (including generated/hidden columns), zero-row `foreign_key_check`, `quick_check = ok`, fixed source-derived identifiers, and no assumption that stateful PRAGMA settings persist across D1 calls. `table_list` is supplementary only; `sqlite_master` exact app-object-set remains authoritative.
+- Candidate plan commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`; docs-only change, no CI or runtime execution.
+- Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/. No fixture/test/golden/migration changes. Runtime proof and candidate CI remain NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
