@@ -783,3 +783,14 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - PR #67 structured metadata remains OPEN/DRAFT/UNMERGED at API head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, 0 formal reviews. Runs `43182768560` and `43182768593` SUCCESS on that exact head; they are not candidate CI.
 - No local tests, dispatch, hosted D1/runtime, secret/provider access, deployment, merge or production mutation. Governance, Actions variables, executor and hosted D1 entitlement NOT VERIFIED.
 - Next: implement and execute only when local D1 execution is available; verify two isolated replays, all five negative mutation cases, PRAGMA metadata and foreign-key integrity before new golden. Migration 0011 remains deferred. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Legacy trigger / adapter source consistency audit — 2026-11-12 12:18 Europe/Vilnius
+
+- Report: [schema-0010 complete snapshot plan and source audit](../reports/2026-11-12-schema-0010-complete-snapshot-plan.md).
+- Revalidated PR #67 structured HEAD `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, OPEN/DRAFT/UNMERGED, 0 formal reviews; exact-head runs `43182768560` and `43182768593` SUCCESS, not candidate CI. PR body contains stale/conflicting narrative head `f8280ba...`; structured head remains source of truth.
+- Candidate branch remains 7 ahead / 0 behind its immutable parent, one plan-only file, 98 additions; plan blob `9d291a95e5f678753537d2a6cc041c4d11172b5d`.
+- Read-only source audit of `claimAndEnqueue` and migrations 0001–0003 confirms the planned NULL-`task_key` synthetic approval path: claim ID equals approval ID; per-approval outbox ID is `pool-task:<approval_id>`; trigger creates both pending rows and ledger becomes consumed. Adapter checks the joined rows/binding and only returns `CLAIMED_ONCE` on a one-row conditional update. No source mismatch found.
+- Source blobs: adapter `37d75e2b31d9214b04398527eb08dce296f1ff27`; migrations 0001/0002/0003 `a80524ed839b63dd6483978118619495fa550877` / `44b8f7e0658296d287269770c5e91b1c3e25973c` / `49b0798871429d7961e81eb1d86ad892dba0b9b9`.
+- No local D1 execution available; no fixture/test/golden implementation, replay, negative mutation, candidate CI, hosted D1, dispatch, secret/provider access, deployment, merge or production mutation. Governance/rulesets, Actions variables, executor and hosted D1 entitlement NOT VERIFIED.
+- Legacy source consistency VERIFIED; plan READ-BACK VERIFIED; complete snapshot/replays/negative tests/new digest/migration 0011 NOT RUN; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
