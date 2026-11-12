@@ -94,3 +94,12 @@ Independent technical/security/governance review remains deferred until actual p
 - Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Mature component reuse check
+
+- Cloudflare's official Workers SDK D1 Vitest fixture demonstrates the same supported test topology: read migrations in Vitest config and apply them through the test setup. This repository already uses the pinned official `@cloudflare/vitest-plugin` / Miniflare runtime; the new harness extends that existing supported mechanism rather than adding a second SQLite engine or migration runner. Reference: https://github.com/cloudflare/workers-sdk/tree/main/fixtures/vitest-plugin-examples/d1
+- Cloudflare D1's official migration model is sequential numbered SQL files recorded in `d1_migrations`; this supports using the existing ordered migration list and pinned `applyD1Migrations` helper. Reference: https://developers.cloudflare.com/d1/reference/migrations/
+- `DBDiff/DBDiff` is a multi-engine schema/data diff and migration generator (PHP; supports SQLite), not a D1/Workers fixture lifecycle or Miniflare runtime harness. It does not replace the need to test the exact Cloudflare D1 migration API and trigger semantics. Reference: https://github.com/DBDiff/DBDiff
+- `KanadeK/sqlite-rehearsal` rehearses raw SQLite migration scripts against file-based SQLite snapshots. Its documented workflow is not Cloudflare D1/workerd-compatible and would introduce a second SQL runtime, so it was not adopted. Reference: https://github.com/KanadeK/sqlite-rehearsal
+- Disposition: no mature drop-in was verified for this exact pinned Workers/D1 fixture replay requirement. Reuse the official Cloudflare Vitest integration already pinned by the project; do not add DBDiff or generic SQLite tooling to this proof.
