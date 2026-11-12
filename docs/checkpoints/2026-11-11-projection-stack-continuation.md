@@ -502,3 +502,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Reviewed dotnetcore/CAP, dtm-labs/dtm, aws-samples/transactional-outbox-pattern and Azure-Samples/transactional-outbox-pattern. They are useful established outbox/event-bus references but not compatible drop-in components for the target Cloudflare D1 + GitHub Issues comment adapter; no dependency/runtime added.
 - Detailed fit assessment is appended to report commit `cd60e7689a381235215019c8db565690f08c146a`, blob `396014728be1fc674b5428915506983a47c58354`.
 - Context Window updated in commit `8fdcadf52caa0fa9bf5766d36203935dc8b77174`, blob `0154fccb4fa50ec47bdc136f5a66ea8ccafc77f3`.
+
+
+## Continuation checkpoint — 2026-11-12 operator resolution proposal
+
+- Immutable implementation target remains PR #67 `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; PR #67 OPEN/DRAFT/UNMERGED. No implementation branch changes in this pass.
+- Reviewed current migrations 0006–0010, projection outbox, orchestrator, reconciler, integration contract, and prior PR #59 dead-letter audit.
+- Created proposal `docs/contracts/PROJECTION-COMMENT-INDETERMINATE-OPERATOR-RESOLUTION-PROPOSAL.md`, commit `007cc116387c734df6275d2edef25b6fa183c86e`.
+- Proposal status DESIGN PROPOSAL / NOT ACCEPTED / NOT IMPLEMENTED / NOT AUTHORIZED FOR RUNTIME. It preserves the at-most-once invariant and disallows any reset/re-POST. Permitted dispositions are marker confirmation via normal orchestrator, unresolved quarantine, or duplicate/conflict incident freeze.
+- Proposed grant requires exact repository/outbox/attempt/issue/digest/post-generation/subject/issuer/key/audience/operation/time/policy-epoch/nonce/evidence binding. Named owners for issuer, principal registry, key/revocation, trusted time, audit sink, privacy retention and incident response are not accepted; runtime remains blocked.
+- Recovery Actor remains limited to `dead_letter_expired_projection`; no capability sharing.
+- Context Window updated: commit `8ab8cda7591eddeda400fadb39e35140956990d6`, blob `bea43703dfdea9af67018f86d8147d079652fa0a`.
+- No code/schema/workflow changes, hosted D1, live GitHub writes, dispatch, provider/model calls, deployment, secrets access, merge or independent review.
+- Next: source-level review finalization event actor/digest and fifth-lease recovery semantics; do not implement operator runtime until governance owners and authority are accepted.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
