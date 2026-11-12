@@ -81,18 +81,18 @@ async function createTerminal(db, status) {
 
 async function buildFrozenFixture(db, migrations) {
   const expectedNames = [
-    "0001_create_pool_approval_ledger.sql",
-    "0002_create_task_claim_outbox.sql",
-    "0003_create_logical_task_identity.sql",
-    "0004_create_immutable_task_attempts.sql",
-    "0005_create_attempt_reconciliation_queue.sql",
-    "0006_create_attempt_projection_outbox.sql",
-    "0007_bound_projection_delivery_retries.sql",
-    "0008_enforce_projection_attempt_monotonicity.sql",
-    "0009_projection_outbox_identity_immutable.sql",
-    "0010_projection_comment_at_most_once.sql"
+    "0001_create_pool_approval_ledger",
+    "0002_create_task_claim_outbox",
+    "0003_create_logical_task_identity",
+    "0004_create_immutable_task_attempts",
+    "0005_create_attempt_reconciliation_queue",
+    "0006_create_attempt_projection_outbox",
+    "0007_bound_projection_delivery_retries",
+    "0008_enforce_projection_attempt_monotonicity",
+    "0009_projection_outbox_identity_immutable",
+    "0010_projection_comment_at_most_once"
   ];
-  expect(migrations.slice(0, 10).map(migration => migration.name)).toEqual(expectedNames);
+  expect(migrations.slice(0, 10).map(migration => migration.name.replace(/\\.sql$/, ""))).toEqual(expectedNames);
   await applyD1Migrations(db, migrations.slice(0, 10));
 
   const succeededId = await createTerminal(db, "succeeded");
