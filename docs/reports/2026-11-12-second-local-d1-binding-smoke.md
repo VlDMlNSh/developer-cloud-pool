@@ -56,3 +56,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Corrected implementation commit / PR #67 head: `e068391ee0a08c7047593c249199a102e1cd0010`.
 - Rerun [43176990564](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990564): RUNNING at report update; checkout, Node setup, dependency install completed; syntax check was running. The dedicated second-D1 smoke step had not yet executed. Pool Contract Validation run 43176990553 was pending.
 - Disposition: the initial test failure is diagnosed and corrected, but second local D1 binding remains NOT VERIFIED pending rerun completion.
+## Successful corrected exact-head CI — 2026-11-12
+
+- Corrected PR #67 head: `e068391ee0a08c7047593c249199a102e1cd0010`.
+- Isolated D1 Ledger Proof [run 43176990564](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990564): COMPLETED / SUCCESS. Job `131043540464`.
+- Standard Workers-runtime suite: 5 files / 69 tests PASSED.
+- Dedicated `npm run test:upgrade-binding`: 1 file / 1 test PASSED. It successfully called `applyD1Migrations` against `UPGRADE_DB`, observed the migration-created table only in `UPGRADE_DB`, confirmed it absent from `POOL_DB`, inserted and read back a synthetic row in `UPGRADE_DB`, and confirmed `POOL_DB` remained without that table.
+- Workflow log reports lockfile artifact ID `13924647072`, ZIP SHA-256 `f3751e7735b7ca90bc3399b6c9f37e1cde7928c424584340d11e2d1358305a40`.
+- Pool Contract Validation [run 43176990553](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43176990553): COMPLETED / SUCCESS.
+- Exact-head combined status contexts remain empty. Formal PR reviews and review threads were not rechecked in this CI-only subpass; no merge requested.
+- Disposition: the second local D1 binding and pinned migration API runtime smoke are VERIFIED for this exact PR head and GitHub-hosted runner environment. This proves local binding separation and migration invocation, not a populated pre-0011 upgrade-preservation harness, hosted D1, remote D1 behavior, or production qualification.
+- Next: implement the frozen schema-0010 fixture and byte-preserving upgrade oracle in this separate config. Seed historical v1 event/outbox/marker/comment-state cases before applying a candidate 0011 migration; do not create 0011 until the fixture and baseline snapshot can be reproduced and reviewed.
