@@ -457,3 +457,14 @@ The orchestrator passes `allowPost:true` on every delivery lease. If GitHub acce
 Specify the durable duplicate-POST state machine and add an orchestrator-level regression test covering two separate delivery attempts after delayed marker visibility. Preserve unknown labels and do not enable live GitHub writes until F-02 and operational label ownership are resolved.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Exact-head workflow result correction — 2026-11-12
+
+The two workflows on PR #67 head `d908a9a60609508073f14b32e624558ccd83870d` completed successfully:
+- Pool Contract Validation run `43161227426`, job `130992629166`: SUCCESS.
+- Isolated D1 Ledger Proof run `43161227797`, job `130992630814`: SUCCESS (Workers-runtime D1 adversarial tests and syntax checks).
+This supersedes the initial IN_PROGRESS observation. The combined commit status still has zero contexts and remains PENDING; workflow success is not equivalent to required status contexts being green.
+
+Updated audit report commit: `53238bd1f9ab551f8ac8c82915ea47fd9036c1f0`, blob `54706a81995a911428335c6d2a49f1931868bc0a`.
+Updated Context Window commit: `cbc6281d268aaae3112f125090cae7d7f54addd8`, blob `b6afb5a33e3eb58dc6ca6999fcd5de42debe36a1`.
