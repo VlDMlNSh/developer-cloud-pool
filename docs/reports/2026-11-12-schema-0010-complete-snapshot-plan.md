@@ -45,3 +45,12 @@ It also requires an application schema snapshot from `sqlite_master`, expected r
 - Contour B: DEFERRED.
 
 Next bounded action: implement only the fixture/test coverage on the isolated candidate branch, run it locally and in exact-head CI, and freeze a new digest only after deterministic replay and negative mutation tests pass.
+
+
+## Fixture-path correction — 2026-11-12
+
+A follow-up source-level trace of `claimLogicalTask` and migration 0003 corrected one overstatement in the preceding audit/plan: the current fixture's four logical-task approvals set `task_key` before the consume-trigger fires. Consequently they populate `pool_task_approvals` and `pool_task_delivery_outbox`, but do **not** populate legacy `pool_task_claims` or `pool_task_outbox`; those two tables are empty in the current fixture. The five omitted tables are still absent from the golden snapshot, but only three of them currently contain fixture rows (`pool_approval_ledger`, `pool_task_approvals`, `pool_task_delivery_outbox`).
+
+The candidate plan was corrected to add a fifth, separate synthetic approval consumed through the existing `claimAndEnqueue` compatibility adapter, with `task_key` NULL. This explicitly exercises and populates the legacy claim/outbox path. Planned omitted-table counts after that addition: approval ledger 5; claims 1; per-approval outbox 1; task approvals 4; task delivery outbox 4. These are source-derived expectations, NOT yet runtime-tested. Candidate plan update: commit `214dceac0c208c57ee6a3239876e670f75fce7e3`, blob `7e61e80e190babc5b0985e2ac4831c2d22416d3f`.
+
+No source/test/golden file was changed; no tests or CI were run. Preserve the previous report as an audit trail, but use the corrected candidate plan as the current implementation specification.
