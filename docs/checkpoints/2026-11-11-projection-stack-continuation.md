@@ -570,3 +570,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No SQL/code/dependency/workflow/permission/secret/hosted D1/live GitHub/dispatch/provider/deployment changes. Recovery Actor NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: prepare a schema-only migration 0011 review packet and populated v1 fixture inventory; validate byte-for-byte preservation in disposable local D1 before seeking normative acceptance. Do not create/apply migration or enable v2 writer yet.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Migration 0011 review packet and v1 fixture inventory — 2026-11-12
+
+- Added [Migration 0011 review packet — v1 fixture inventory](../reports/2026-11-12-migration-0011-review-packet-v1-fixture-inventory.md), commit `d0041d2130ee9fd75435d1b8f324e0e8ed046b01`.
+- Revalidated default branch `Основной@221f216c00ca7e5596bcc682ba185ad155a10603` using recent commit search. PR #67 remains OPEN/DRAFT/UNMERGED, head `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; exact-head local runs 43162128594 and 43162128615 SUCCESS; combined status contexts 0; formal reviews 0; threads 0. Local-only proof.
+- PR #66 current head `269546cc83b3fe28072599cb35c63e1048cbf1e3`, OPEN/DRAFT/UNMERGED; no exact-head runs or combined status contexts returned, therefore CI NOT VERIFIED for this docs head.
+- PR #60 remains OPEN/DRAFT/UNMERGED at `134fe6fe739a09b181fee88463ac848a6b059206`, stale base; exact-head CI NOT VERIFIED. PR #63 remains OPEN/DRAFT/UNMERGED at `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`, mergeability false.
+- Source inventory verified migrations 0001–0010 and test blobs. Existing `createOutbox()` helper generates a v1 terminal fixture (result digest differs from provenance digest; event/outbox digest is result-only) after the full migration set is applied. Envelope test uses an in-memory synthetic object. Vitest config reads all migrations and setup applies the complete set to `env.POOL_DB`.
+- Critical gap: no test currently creates a populated schema-0010 database, freezes v1 event/outbox/comment rows, applies candidate 0011, then compares byte-for-byte identity. Successful current CI does not establish populated upgrade compatibility.
+- Review packet specifies frozen v1 fixture matrix, explicit table snapshots, exact marker bytes, isolated D1 upgrade harness and rollback/failure atomicity tests. No SQL/code/harness/migration was authored or applied.
+- Frozen v1 fixture NOT CREATED; isolated upgrade harness NOT IMPLEMENTED; byte-preservation test NOT RUN; migration 0011 NOT CREATED; hosted D1 NOT RUN. Recovery Actor NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect installed `@cloudflare/vitest-plugin@1.4.7` supported APIs for a separate disposable D1 binding; design the upgrade harness before writing migration SQL. Do not implement migration 0011 until a populated pre-0011 upgrade test exists.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
