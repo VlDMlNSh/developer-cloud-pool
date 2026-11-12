@@ -2332,3 +2332,10 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - PR #67 remains Draft. Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: design a governed manual resolution process for permanently indeterminate comment POSTs without weakening the at-most-once guard; continue review of finalization actor/digest and fifth-lease recovery semantics.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Mature component fit review — 2026-11-12
+
+- Reviewed dotnetcore/CAP, dtm-labs/dtm, aws-samples/transactional-outbox-pattern and Azure-Samples/transactional-outbox-pattern before retaining local D1 implementation.
+- These are established outbox/event-bus or reference-pattern projects, but their .NET/broker, separate transaction-service, Aurora/SQS, DynamoDB/Kinesis, or Cosmos/Service Bus architectures are not drop-in Cloudflare D1 + GitHub Issues comment projection components. They reinforce transactional outbox and idempotent consumer principles; no external dependency/runtime added.
+- Fit assessment is recorded in report commit `cd60e7689a381235215019c8db565690f08c146a`, blob `396014728be1fc674b5428915506983a47c58354`.
