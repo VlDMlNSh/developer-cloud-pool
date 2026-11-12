@@ -54,3 +54,26 @@ Keep the seven existing projections unchanged unless source inspection proves a 
 Stop without updating the golden if any table's expected cardinality or relationship is unclear, if schema metadata is unstable between isolated bindings, if row ordering is not deterministic, if the replay differs, or if a negative mutation does not change the snapshot.
 
 No migration 0011 is in scope. Do not add a v2 writer, modify runtime adapters, change dispatch behavior, provision or access hosted D1, read secrets, call providers/models, deploy, or merge. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED until their separately defined gates are satisfied.
+
+
+## Source schema audit refinement — 2026-11-12
+
+A read-only comparison of migrations 0001–0010 against the seven existing fixture projections and the five proposed projections found no column-list mismatch. The application table set is exactly:
+
+- Existing seven: `pool_tasks`, `pool_attempts`, `pool_attempt_events`, `pool_attempt_projection_outbox`, `pool_attempt_projection_events`, `pool_attempt_projection_comment_events`, `pool_attempt_reconciliations`.
+- Five additions: `pool_approval_ledger`, `pool_task_claims`, `pool_task_outbox`, `pool_task_approvals`, `pool_task_delivery_outbox`.
+
+Migration source blobs reviewed: 0001 `a80524ed839b63dd6483978118619495fa550877`; 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; 0006 `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`; 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; 0008 `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; 0009 `86919425f498dc634329bb783a3ca6ae7a0ff6a1`; 0010 `30ac9d0ed0cbede9586c365578c606b47bcce1a7`.
+
+### Required schema-introspection detail
+
+The `sqlite_master` snapshot alone is not a complete structural comparison: SQLite's implicit primary-key/UNIQUE indexes may have `sql IS NULL` and `sqlite_autoindex_*` names. Preserve the table DDL, but also capture deterministic metadata for every application table:
+
+- `PRAGMA table_info(table)`: column ordinal, name, declared type, nullability, default and primary-key position.
+- `PRAGMA foreign_key_list(table)`: referenced table/columns and update/delete/match actions.
+- `PRAGMA index_list(table)` plus `PRAGMA index_xinfo(index)`: uniqueness, origin/partial flags, key columns, order and collation, including implicit indexes.
+- `PRAGMA foreign_key_check`: assert zero violations after fixture construction and on both isolated replay databases.
+
+Keep metadata records sorted by stable table/index/column identifiers. For `sqlite_master`, compare the exact expected application table/index/trigger object set and definitions, using an explicit predicate for excluding SQLite-internal objects; do not accidentally drop implicit index metadata from the separate PRAGMA capture. Compare all metadata structures between the two isolated databases. These checks are additional to, not a replacement for, the existing twelve-table row snapshot.
+
+This refinement is a source-level specification only. No fixture/test code, golden, migration, runtime or CI was changed or executed.
