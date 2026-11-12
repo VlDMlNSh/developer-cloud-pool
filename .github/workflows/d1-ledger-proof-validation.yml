@@ -67,6 +67,9 @@ jobs:
       - name: Verify isolated second local D1 binding and migration API
         run: npm run test:upgrade-binding
 
+      - name: Reproduce frozen schema-0010 fixture in isolated local D1 databases
+        run: npm run test:upgrade-fixture
+
       - name: Preserve resolved lockfile for independent review
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
