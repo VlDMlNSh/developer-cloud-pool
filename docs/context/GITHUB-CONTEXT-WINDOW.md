@@ -2607,3 +2607,12 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - PR #67 revalidated OPEN/DRAFT/UNMERGED at exact head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, 40 commits / 38 files, reviews 0. Exact-head runs `43182768560` and `43182768593` SUCCESS but predate candidate plan.
 - Candidate compare after the latest refinement is 6 ahead / 0 behind parent and changes only the plan document (79 additions in the one plan file). No source/test/golden implementation, local test execution, candidate CI, hosted D1, runtime, dispatch, secrets, provider/model calls, deployment, merge or production mutation.
 - Complete snapshot implementation, new digest and migration 0011 remain NOT RUN. Governance/ruleset details, Actions variables, executor status and hosted D1 entitlement remain NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Legacy fixture seed contract refinement — 2026-11-12
+
+- Latest report and checkpoint contain this cycle's full evidence.
+- Candidate plan commit `257a5d172f89e50368e43c2fb00bc9be196dc130`, blob `9d291a95e5f678753537d2a6cc041c4d11172b5d`; compare to immutable parent `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`: 7 ahead / 0 behind, one plan-only file, 98 additions.
+- The plan now spells out migration 0001 and adapter `validInput()` preconditions for the synthetic legacy approval, exact matching binding, retained NULL `task_key`, `CLAIMED_ONCE`, no dispatch, and matching claim/outbox row identities/statuses. This remains source-derived planned coverage, not runtime evidence.
+- PR #67 structured API metadata: OPEN/DRAFT/UNMERGED, API head `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, reviews 0. Exact-head runs `43182768560` and `43182768593` SUCCESS with the relevant D1 and security-contract steps SUCCESS. The PR body text contains a stale conflicting head reference; structured head metadata and exact-SHA workflow lookup were used.
+- No source/test/golden changes, local execution, candidate CI, dispatch, hosted D1/runtime, secrets/provider calls, deployment, merge or production mutation. Governance/rulesets, Actions variables, executor status and hosted D1 entitlement remain NOT VERIFIED.
+- Complete snapshot implementation, isolated replays, negative mutations, new golden and migration 0011 remain NOT RUN. Independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
