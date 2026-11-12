@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-12 — Migration 0011 review packet and v1 fixture inventory
+Last refreshed: 2026-11-12 — schema-0010 golden baseline and local D1 batch atomicity
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -2517,3 +2517,19 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Effective GitHub ruleset cannot be reverified because no ruleset/branch-protection action is exposed. No merge/dispatch attempted.
 - MediaHub canonical map file retrieval returned empty content at blob `75f62685459ec99ebf8be478f4e9096cdb842b1d`, including base64 attempt. Link remains canonical but document body NOT VERIFIED in this pass.
 - Next: freeze the deterministic schema-0010 fixture as a durable golden artifact/digest; add failure-atomicity proof on a separate fresh synthetic local D1 binding. Only then candidate 0011.
+
+
+## Schema-0010 golden baseline and local D1 batch atomicity — 2026-11-12
+
+- Report: [Schema-0010 golden baseline and local D1 batch atomicity](../reports/2026-11-12-schema-0010-golden-baseline-and-d1-batch-atomicity.md), report commit `e0e4cc5ee5411491c5b34b060e81355a5be2a9e8`.
+- PR #67 exact tested HEAD: `00d806a24c86545e0dfaf2dee47fcfa9747a5b62`, OPEN / DRAFT / UNMERGED; formal reviews 0; inline threads 0.
+- Golden artifact: `proofs/d1-ledger/fixtures/schema-0010-v1-golden.json`, blob `7b5a560a28e1669624981b55141176c393b68191`; canonical SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`, UTF-8 bytes 16160. Canonicalization recursively sorts object keys, preserves array order, then JSON.stringify UTF-8.
+- Test blob: `proofs/d1-ledger/test/d1-upgrade-fixture.smoke.ts` `d2f875700243c1874fd0c1bd251b4257ba2bb48f`; upgrade config blob `74a6f1ecbffb1ef2a83f8574606db66094dce0ff`.
+- Separate synthetic local D1 namespace tested a failing batch after CREATE TABLE + first insert; duplicate UNIQUE insert caused rejection and read-back proved table absent. Local D1 batch rollback VERIFIED. This does not prove arbitrary `applyD1Migrations` malformed-file atomicity or hosted D1.
+- Exact-head D1 run [43182768560](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43182768560), job `131062534343`: SUCCESS; 5 files / 69 standard tests; separate binding smoke; golden fixture + atomicity 2 tests passed. Artifact `13927451100`, SHA-256 `99ac207c743903f1b3aff8d53d58a12c719284b0970a90b456bfcf7b402bfde3`.
+- Exact-head Pool Contract Validation [43182768593](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43182768593): SUCCESS. Combined status contexts empty; do not report them green.
+- Default remains `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #66 docs branch head `5e8399ccaa6e8044f51c857ec08da3af93338f92`. PR #60 head `134fe6fe739a09b181fee88463ac848a6b059206`; PR #63 head `4d2f6ac2d96980f28ecbab53b46b2984d7dda9f6`.
+- Effective ruleset details NOT REVERIFIED because no ruleset action is exposed. Independent audits deferred until pool launch by owner instruction; no Gemini/executor dispatch, secrets, hosted D1, live GitHub write, deployment or merge.
+- Migration 0011 NOT CREATED / NOT APPLIED; populated 0010→0011 preservation NOT TESTED. Next: create a full populated schema-0010 state fixture, draft candidate 0011 in isolation, compare every legacy row/ID/digest/marker byte and schema invariant after applying to a copy. No v2 writer.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
