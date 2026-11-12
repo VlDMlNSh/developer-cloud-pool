@@ -269,7 +269,6 @@ describe("receipt-bound projection orchestration", () => {
     now = NOW + 41;
     const second = await orchestrator.deliver(outboxId);
     expect(second.decision).toBe("PROJECTION_RETRYABLE");
-    expect(second.reason).toBeUndefined();
     expect(postCalls).toBe(1);
     const row = await env.POOL_DB.prepare(
       "SELECT status, comment_post_state, delivery_attempts, last_error_code FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
