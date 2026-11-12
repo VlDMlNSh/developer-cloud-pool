@@ -2367,3 +2367,14 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No code/schema/workflow, hosted D1, live GitHub write, dispatch, provider/model call, deployment, secrets access, merge or independent reviewer dispatch. Independent review remains deferred until actual pool launch.
 - Next: define versioned terminal-event digest/actor semantics and a separately authorized independent fifth-lease reaper contract; no runtime implementation until authority owners and normative semantics are accepted.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Terminal event identity and actor semantics — 2026-11-12
+
+- Added [terminal event identity and actor semantics decision record](../reports/2026-11-12-terminal-event-identity-and-actor-semantics-decision-record.md), documentation commit `f9d75daabd3c41b9a24cc373bc2357380d63e697`.
+- Source audit on PR #67 head `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`: `finalizeTaskAttempt` stores result/provenance digests separately, but current terminal event/outbox digest resolves to result digest only; event actor is the fenced execution lease holder, not an authenticated principal. No source evidence establishes issuer-authenticated finalizer identity.
+- Proposed (not accepted): versioned canonical terminal-event digest binding both result and provenance, preserving v1 IDs/digests; separate execution lease-holder, request initiator, authenticated finalizer principal, and recovery actor identities. Hashing does not authenticate a signer.
+- No code/schema/workflow/permission/secret/hosted-resource/live-write/dispatch/deployment changes. No authority owners are established for issuer, key custody, revocation, trusted time, audit sink or retention; implementation remains unauthorized.
+- PR #67 remains OPEN/DRAFT/UNMERGED; exact-head local D1 run 43162128594 and Pool Contract Validation run 43162128615 completed SUCCESS; combined commit status has zero contexts, and formal reviews/review threads are zero. Local Workers-runtime proof only.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile proposed actor/digest semantics with the corrected narrow Recovery Actor and issuer/time contracts; no runtime implementation before explicit authority acceptance.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
