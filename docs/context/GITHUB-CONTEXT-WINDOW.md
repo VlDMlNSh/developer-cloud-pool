@@ -2430,3 +2430,15 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No code/config/package/SQL changes. No fixture/harness implemented; upgrade test NOT RUN; migration 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect exact installed package artifact/types for 1.4.7 and confirm independent local D1 binding support before writing test code.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pinned Vitest plugin artifact inspection — 2026-11-12
+
+- Added [Pinned Cloudflare Vitest plugin artifact inspection](../reports/2026-11-12-pinned-vitest-plugin-artifact-inspection.md), commit `4d2a356e3013be1354c22fb0e29188fb0a62d95f`.
+- Exact lockfile blob `876c5d3de53bb12efaecdec939cbe8710cbd9e3c` confirms `@cloudflare/vitest-plugin@1.4.7`, npm tarball URL `https://registry.npmjs.org/@cloudflare/vitest-plugin/-/vitest-plugin-1.4.7.tgz`, SHA-512 integrity `sha512-Anm7ethCK3SPnrEw9HBkpwEzXUmQKFI04ekAAnCI3L5CVCAD4yUOn4+CBgbVI7W9dm+o0BjiFD0Id3dhmRMnbQ==`, MIT license, Miniflare `5.20261019.2-beta`, Wrangler `4.152.0`, Vitest `4.1.12`.
+- This is immutable package identity evidence; the tarball and shipped declarations were not retrieved/verified. Exact 1.4.7 type/config surface, second D1 binding, and pinned applyD1Migrations runtime compatibility remain NOT VERIFIED. Current docs/main are not substituted for the pinned artifact.
+- Existing source/config unchanged: one synthetic local `POOL_DB`; global setup applies all migrations. No second binding, fixtures, harness or SQL authored. Migration 0011 NOT CREATED/APPLIED; upgrade test NOT RUN.
+- Current refs rechecked: default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #66 OPEN/DRAFT at `6b23238866116d61c4f96136b0cbb3ac6ec0358f`; PR #67 OPEN/DRAFT at `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`. No new CI/hosted D1 work in this pass.
+- Next: retrieve exact npm artifact, verify SHA-512, inspect shipped declarations/implementation, then inspect pinned Miniflare D1 binding schema. Stop if integrity verification fails.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Independent reviews remain deferred until pool launch per owner direction.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
