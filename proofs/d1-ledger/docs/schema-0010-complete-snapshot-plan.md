@@ -13,7 +13,7 @@ This plan intentionally does not edit the test or golden fixture until the expan
 
 ## Missing tables and deterministic row projections
 
-Add explicit stable projections to the fixture `TABLES` list, with primary-key ordering:
+Add explicit stable projections to the fixture `TABLES` list, with primary-key ordering. The first three legacy per-approval tables have no task-level identity; `pool_approval_ledger.task_key` was added by migration 0003 and must be included:
 
 | Table | Explicit columns | ORDER BY |
 |---|---|---|
@@ -27,13 +27,14 @@ Keep the seven existing projections unchanged unless source inspection proves a 
 
 ## Required assertions
 
-1. **Coverage:** Assert the expected twelve-table name set, no duplicates, and a non-empty explicit projection for every table.
-2. **Counts:** Assert deterministic expected row counts for each table after the fixture has built its four approvals, three terminal tasks, and one indeterminate task.
-3. **Relations:** Assert approval→task/claim/outbox links, task→approval attachment, and task→delivery outbox cardinality and identities.
-4. **Schema invariants:** Snapshot `sqlite_master` definitions for application tables, indexes, and triggers using deterministic `type, name` ordering. Exclude internal SQLite objects by explicit predicate. Keep schema metadata separate from row data in the canonical object.
-5. **Replay:** Build the same fixture in both isolated D1 bindings and compare complete row snapshots, schema snapshots, and marker-body bytes.
-6. **Negative mutation:** On a disposable replay database after capturing the baseline, mutate or delete one representative row in each legacy table category (approval, claim, per-approval outbox, task approval, task delivery outbox). Re-snapshot and assert the canonical object differs from the untouched baseline. Use independent mutation cases or restore/rebuild between cases; never mutate the reference DB.
-7. **Golden:** Only after local execution succeeds, freeze a new fixture artifact with an explicit scope name such as `schema-0010-v1-complete`, canonicalization contract, SHA-256, canonical UTF-8 byte count, migration range, and prohibitions. Keep the previous seven-table golden intact and label its limited scope.
+1. **Fixture setup:** Preserve the four logical-task approvals created through `claimLogicalTask`. Add a fifth, separate synthetic approval with `task_key` left NULL and consume it through the existing `claimAndEnqueue` compatibility adapter. Assert `CLAIMED_ONCE`. This exercises the migration-0003 legacy trigger path without changing the four task-level fixture states.
+2. **Coverage:** Assert the expected twelve-table name set, no duplicates, and a non-empty explicit projection for every table.
+3. **Counts:** Assert deterministic expected row counts for each table. With the additional legacy approval, expected counts for the five omitted tables are: `pool_approval_ledger` = 5, `pool_task_claims` = 1, `pool_task_outbox` = 1, `pool_task_approvals` = 4, `pool_task_delivery_outbox` = 4. Keep all four logical approvals/task attachments and one separate legacy approval distinct. Derive and assert counts for the other seven tables from the deterministic fixture.
+4. **Relations:** Assert logical approval→task/approval-attachment links; legacy approval→claim→per-approval outbox links; task→delivery outbox cardinality and identities.
+5. **Schema invariants:** Snapshot `sqlite_master` definitions for application tables, indexes, and triggers using deterministic `type, name` ordering. Exclude internal SQLite objects by explicit predicate. Keep schema metadata separate from row data in the canonical object.
+6. **Replay:** Build the same fixture in both isolated D1 bindings and compare complete row snapshots, schema snapshots, and marker-body bytes.
+7. **Negative mutation:** On a disposable replay database after capturing the baseline, mutate or delete one representative row in each legacy table category (approval, claim, per-approval outbox, task approval, task delivery outbox). Re-snapshot and assert the canonical object differs from the untouched baseline. Use independent mutation cases or restore/rebuild between cases; never mutate the reference DB.
+8. **Golden:** Only after local execution succeeds, freeze a new fixture artifact with an explicit scope name such as `schema-0010-v1-complete`, canonicalization contract, SHA-256, canonical UTF-8 byte count, migration range, and prohibitions. Keep the previous seven-table golden intact and label its limited scope.
 
 ## Acceptance sequence
 
