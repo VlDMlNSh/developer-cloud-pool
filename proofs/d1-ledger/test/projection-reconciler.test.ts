@@ -107,10 +107,10 @@ describe("fake GitHub terminal projection reconciliation", () => {
   it("converges only pool:* labels and preserves unrelated human labels", async () => {
     const api = new FakeGitHub();
     api.comments.push({ body: "<!-- pool-projection:attempt-finalized:attempt-7:" + "a".repeat(64) + " -->" });
-    api.labels = ["triage", "customer-visible", "pool:claimed", "pool:needs-review"];
+    api.labels = ["triage", "customer-visible", "pool:claimed", "pool:needs-review", "pool:security-hold"];
     const result = await reconcileTerminalProjection(api, envelope());
     expect(result.decision).toBe("PROJECTION_VERIFIED");
-    expect(api.labels.sort()).toEqual(["customer-visible", "pool:probe-complete", "triage"]);
+    expect(api.labels.sort()).toEqual(["customer-visible", "pool:probe-complete", "pool:security-hold", "triage"]);
   });
 
   it("fails closed when a managed-label mutation cannot be confirmed", async () => {
