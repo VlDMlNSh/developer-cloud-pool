@@ -7,6 +7,9 @@ const ALLOWED_LABELS = new Set([
   "pool:completed",
   "pool:failed"
 ]);
+// Only these labels are owned by this projection reconciler. In particular,
+// an unknown pool:* label may belong to another subsystem or a human operator.
+const MANAGED_LABELS = new Set([...ALLOWED_LABELS, "pool:claimed"]);
 
 function retry(reason) {
   return { decision: "RETRYABLE", dispatch: false, projection_verified: false, reason };
@@ -104,7 +107,7 @@ export async function reconcileTerminalProjection(api, envelope, { allowPost = f
   if (!Array.isArray(currentLabels) || currentLabels.some(x => typeof x !== "string")) {
     return deny("INVALID_LABEL_READBACK");
   }
-  const currentManaged = new Set(currentLabels.filter(x => x.startsWith("pool:")));
+  const currentManaged = new Set(currentLabels.filter(x => MANAGED_LABELS.has(x)));
   const desired = new Set(envelope.managedLabels);
   const add = [...desired].filter(x => !currentManaged.has(x));
   const remove = [...currentManaged].filter(x => !desired.has(x));
@@ -124,7 +127,7 @@ export async function reconcileTerminalProjection(api, envelope, { allowPost = f
   if (!Array.isArray(finalLabels) || finalLabels.some(x => typeof x !== "string")) {
     return deny("INVALID_LABEL_READBACK");
   }
-  const finalManaged = new Set(finalLabels.filter(x => x.startsWith("pool:")));
+  const finalManaged = new Set(finalLabels.filter(x => MANAGED_LABELS.has(x)));
   if (finalManaged.size !== desired.size || [...desired].some(x => !finalManaged.has(x))) {
     return retry("MANAGED_LABEL_READBACK_MISMATCH");
   }
