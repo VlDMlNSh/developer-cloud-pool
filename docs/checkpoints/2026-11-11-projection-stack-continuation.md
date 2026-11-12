@@ -809,3 +809,17 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Cloudflare D1 docs describe `PRAGMA foreign_key_check` as accepting an optional table selection. Candidate plan now requires the command without a table argument, zero rows after fixture writes/triggers on each isolated replay DB. This is diagnostic; normal D1 FK enforcement remains active for writes. `quick_check` still requires one `ok` row.
 - Candidate plan commit `35e7c29faa81fde865082f6ba7e637f717a85b93`, blob `931c75499beb60312f8d4008a99dc969eee3e956`; documentation-only change, no runtime/test/golden/migration/CI execution.
 - Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/. Complete snapshot/replays/negative mutations/new golden/candidate CI NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Contour A web/routing/governance revalidation — 2026-11-12 19:34 Europe/Vilnius
+
+- Default branch `Основной` HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603`. Issues #1/#22/#26 remain OPEN (last updated Nov 5/6/6 respectively).
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, formal reviews 0, inline threads 0. Exact-head CI: #24 runs `42982847600` and `42982847694` SUCCESS; #25 `42228269689` and `42228269676` SUCCESS; #31 `42229917555` SUCCESS. PR #30's known run `42216422883` job/steps are SUCCESS, but current exact-commit query/status were empty, so exact-head association is NOT VERIFIED. Combined status contexts are empty for all four.
+- Against current default, #24 is 62 ahead/64 behind; #25 29/64; #30 35/64; #31 36/64. Their merge base is old `64d2636...`; #30/#31 are stacked on old #25 head `d852157...`. Successful old-head CI is not current-base qualification.
+- Path-segment branch tip `dee17350864cb49e8c5dd41cf61859d77d3affca`: 38 ahead/64 behind current default, 2 ahead/0 behind PR #31. It adds dot-segment rejection in source blob `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63` and four negative cases in test blob `bd8ac8d97cdd673bb170a22d67ce08697cf46789`. PR #31 source blob `97d49834085f9ad4466ffaeae76bb927fe322e3b` lacks that guard. No PR and no exact-head CI/status for fix tip; NOT VERIFIED.
+- PR #31's Hono `src/index.js` blob `0b1f066cc49b77f7a3000c562b731b85d5c164f4` confirms protected API reads still fail closed (503), non-GET/HEAD methods return 405, authentication is not configured, pool status unknown. Adapter remains unmounted.
+- Historical Issue #1 comments record ruleset 26550182 and dispatch variable false, but current effective ruleset/current variable could not be re-read: NOT VERIFIED. SentinelX inventory has 0 connected hosts, Voktors-Mini.Dlink offline, mh-dev-01/02 disabled; no pool executor runtime proof. Cloudflare Worker/D1 state and free entitlement NOT VERIFIED.
+- Working docs branch `docs/projection-stack-reconciliation-2026-11-11` is 210 ahead/0 behind default; PR #66 remains OPEN/DRAFT/UNMERGED. This is not canonical/default.
+- No dispatch/workflow/agent/DSH/Resource Probe/provider/model call, secrets read, deployment, merge or production mutation. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile path-segment fix onto current default lineage, run SHA-bound CI, obtain independent review; keep adapter unmounted until OAuth/session, governance and live web-console acceptance gates pass. Reconcile old bases of #24/#25/#30/#31.
+- Detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-daily-revalidation.md).
