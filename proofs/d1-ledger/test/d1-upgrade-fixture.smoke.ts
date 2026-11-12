@@ -1,6 +1,7 @@
 import { applyD1Migrations } from "cloudflare:test";
 import { env } from "cloudflare:workers";
 import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
 import { claimLogicalTask } from "../src/claim-outbox.mjs";
 import {
   acquireAttemptLease,
@@ -159,12 +160,24 @@ async function buildFrozenFixture(db, migrations) {
   return { tables, markerBodies };
 }
 
+function stableValue(value) {
+  if (Array.isArray(value)) return value.map(stableValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.keys(value).sort().map(key => [key, stableValue(value[key])]));
+  }
+  return value;
+}
+
 describe("frozen schema-0010 v1 fixture baseline", () => {
   it("reproduces all historical state and fake marker bytes in two isolated local D1 databases", async () => {
     const migrations = env.UPGRADE_MIGRATIONS;
     const first = await buildFrozenFixture(env.UPGRADE_DB, migrations);
     const replay = await buildFrozenFixture(env.REPLAY_DB, migrations);
     expect(replay).toEqual(first);
+    const canonical = JSON.stringify(stableValue(first));
+    const digest = createHash("sha256").update(canonical, "utf8").digest("hex");
+    console.log("FROZEN_SCHEMA_0010_GOLDEN_SHA256=" + digest);
+    console.log("FROZEN_SCHEMA_0010_CANONICAL_BYTES=" + Buffer.byteLength(canonical, "utf8"));
 
     const outbox = first.tables.pool_attempt_projection_outbox;
     expect(outbox.map(row => row.comment_post_state).sort()).toEqual(["indeterminate", "not_attempted", "verified"]);
@@ -172,5 +185,24 @@ describe("frozen schema-0010 v1 fixture baseline", () => {
     expect(first.tables.pool_attempt_reconciliations).toHaveLength(1);
     expect(first.tables.pool_attempts.some(row => row.status === "indeterminate")).toBe(true);
     expect(first.markerBodies).toHaveLength(3);
+  });
+
+  it("rolls back all statements when a D1 batch migration fails", async () => {
+    const db = env.FAILURE_DB;
+    const tableName = "migration_atomicity_probe";
+    await expect(db.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?"
+    ).bind(tableName).first()).resolves.toBeNull();
+
+    await expect(db.batch([
+      db.prepare("CREATE TABLE migration_atomicity_probe (id INTEGER PRIMARY KEY, value TEXT NOT NULL UNIQUE)"),
+      db.prepare("INSERT INTO migration_atomicity_probe (id, value) VALUES (1, 'first')"),
+      db.prepare("INSERT INTO migration_atomicity_probe (id, value) VALUES (2, 'first')")
+    ])).rejects.toBeTruthy();
+
+    const table = await db.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?"
+    ).bind(tableName).first();
+    expect(table).toBeNull();
   });
 });
