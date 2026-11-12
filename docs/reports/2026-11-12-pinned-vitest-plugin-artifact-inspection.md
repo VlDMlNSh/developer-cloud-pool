@@ -60,3 +60,34 @@ Obtain the exact npm tarball identified above and verify its SHA-512 against the
 - Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Exact-version package declaration inspection — 2026-11-12
+
+### Evidence retrieved from the published 1.4.7 package CDN
+The npm registry tarball endpoint was still unreachable through the available retrieval paths, so the tarball bytes were NOT downloaded and the lockfile SHA-512 was NOT independently recomputed. However, exact-version files served by unpkg were successfully retrieved:
+
+- https://unpkg.com/@cloudflare/vitest-plugin@1.4.7/package.json
+- https://unpkg.com/@cloudflare/vitest-plugin@1.4.7/dist/pool/index.d.mts
+- https://unpkg.com/@cloudflare/vitest-plugin@1.4.7/types/cloudflare-test.d.ts
+- https://unpkg.com/miniflare@5.20261019.2-beta/package.json
+- https://unpkg.com/miniflare@5.20261019.2-beta/dist/src/index.d.ts
+
+Exact-version findings:
+- Plugin package.json confirms version 1.4.7, MIT, main dist/pool/index.mjs, types dist/pool/index.d.mts, cloudflare:test declarations under types/cloudflare-test.d.ts, dependency Miniflare 5.20261019.2-beta, Wrangler 4.152.0, and peer Vitest ^4.1.0 || ^5.0.0.
+- Plugin declarations expose cloudflareTest(options) with WorkersPoolOptions; its miniflare option is typed from Miniflare's V4WorkerOptionsShape (plus plugin worker options), and includes a worker-options array form. This confirms the pinned plugin has an explicit Miniflare configuration surface; it does not prove that arbitrary extra D1 test bindings are correctly merged with the Wrangler config at runtime.
+- The shipped cloudflare:test declaration defines applyD1Migrations(db: D1Database, migrations: D1Migration[], migrationsTableName?: string): Promise<void> and documents that readD1Migrations() supplies the migration array. The function signature is VERIFIED for the published 1.4.7 package declarations; runtime execution compatibility remains NOT VERIFIED.
+- Exact Miniflare declarations define V4WorkerOptionsShape.d1Databases?: V4Namespace; V4Namespace = Record<string, string | V4IdEntry> | string[]; V4IdEntry = { id: string; remoteProxyConnectionString?: ... }. This confirms multiple named D1 namespace entries are representable in the pinned Miniflare type surface. It does not, by itself, prove the plugin's config merge behavior or isolation of an added binding.
+- The Miniflare package manifest confirms its declaration entrypoint dist/src/index.d.ts and exact version 5.20261019.2-beta.
+
+### Corrected gate assessment
+- Published exact-version plugin and Miniflare declaration files: VERIFIED as retrieved through the exact-version CDN URLs.
+- Plugin's applyD1Migrations declaration/signature: VERIFIED.
+- Miniflare D1 namespace type supports multiple named entries: VERIFIED.
+- npm tarball byte retrieval and independent SHA-512 recomputation: NOT VERIFIED.
+- Effective wrangler + miniflare configuration merge for a second distinct local-only D1 binding: NOT VERIFIED.
+- Actual second binding availability and no-remote behavior under pinned plugin runtime: NOT VERIFIED.
+- applyD1Migrations execution under the repository's exact pinned Vitest/Workers runtime: NOT RUN.
+- No code/config/package/fixture/migration/workflow changes. No test harness implemented. Migration 0011 NOT CREATED/APPLIED. Hosted D1 NOT RUN.
+
+### Next bounded step
+Use the confirmed exact type surface to construct a disposable, no-remote, second local D1 binding in an isolated test config, without touching the production POOL_DB binding or normal test setup. First add a minimal type/config smoke fixture and run it under the existing lockfile. Do not add migration 0011 until the second binding is observed as distinct, local-only, and compatible with applyD1Migrations at runtime. If the binding cannot be proven isolated, stop and document the exact blocker.
