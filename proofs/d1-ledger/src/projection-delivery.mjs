@@ -1,4 +1,4 @@
-import { acquireProjectionDelivery, markProjectionRetryable } from "./projection-outbox.mjs";
+import { acquireProjectionDelivery, markProjectionRetryable, reserveProjectionCommentPost, markProjectionCommentVerified } from "./projection-outbox.mjs";
 import { projectionEnvelopeFromOutbox } from "./projection-envelope.mjs";
 import { reconcileTerminalProjection } from "./projection-reconciler.mjs";
 
@@ -21,7 +21,8 @@ async function readProjectionRow(db, outboxId, workerId, generation, now) {
   return db.prepare(`
     SELECT outbox_id, task_key, attempt_id, repository_id, issue_number,
            target_sha, profile, lease_generation, terminal_status, event_digest,
-           status, lease_owner, lease_generation_delivery, lease_expires_at
+           status, lease_owner, lease_generation_delivery, lease_expires_at,
+           comment_post_state, comment_post_attempted_at, comment_post_attempt_generation
       FROM pool_attempt_projection_outbox
      WHERE outbox_id = ? AND status = 'leased' AND lease_owner = ?
        AND lease_generation_delivery = ? AND lease_expires_at > ?
@@ -44,7 +45,7 @@ async function acknowledgeVerifiedProjection(db, identity, workerId, generation,
            lease_expires_at = NULL, delivered_at = ?, updated_at = ?
      WHERE outbox_id = ? AND event_digest = ? AND status = 'leased'
        AND lease_owner = ? AND lease_generation_delivery = ?
-       AND lease_expires_at > ?
+       AND lease_expires_at > ? AND comment_post_state = 'verified'
   `).bind(
     now, now, identity.outboxId, identity.eventDigest,
     workerId, generation, now
@@ -101,11 +102,37 @@ export function createProjectionDeliveryOrchestrator({
         return deny("INVALID_PROJECTION_OUTBOX_ENVELOPE");
       }
 
+      // Always attempt read-only reconciliation first. This discovers an
+      // already-visible marker without consuming the one permitted POST.
       let projection;
       try {
-        projection = await reconcileTerminalProjection(api, mapped.envelope, { allowPost: true });
+        projection = await reconcileTerminalProjection(api, mapped.envelope, { allowPost: false });
       } catch {
         projection = { decision: "RETRYABLE", reason: "PROJECTION_RECONCILIATION_AMBIGUOUS" };
+      }
+
+      if (projection?.decision === "RETRYABLE" &&
+          projection.reason === "EVENT_MARKER_NOT_VISIBLE" &&
+          row.comment_post_state === "not_attempted") {
+        const reserveNow = validNow(clock);
+        if (reserveNow === null) return deny("UNTRUSTED_PROJECTION_CLOCK");
+        const reservation = await reserveProjectionCommentPost(
+          db, outboxId, workerId, generation, reserveNow
+        );
+        if (reservation.decision === "PROJECTION_COMMENT_POST_RESERVED") {
+          try {
+            projection = await reconcileTerminalProjection(api, mapped.envelope, { allowPost: true });
+          } catch {
+            projection = { decision: "RETRYABLE", reason: "PROJECTION_RECONCILIATION_AMBIGUOUS" };
+          }
+        } else {
+          projection = { decision: "RETRYABLE", reason: "PROJECTION_COMMENT_POST_RESERVATION_AMBIGUOUS" };
+        }
+      } else if (projection?.decision === "RETRYABLE" &&
+                 projection.reason === "EVENT_MARKER_NOT_VISIBLE" &&
+                 row.comment_post_state === "indeterminate") {
+        // The first POST may have succeeded. Never POST again on a later lease.
+        projection = { decision: "RETRYABLE", reason: "COMMENT_POST_INDETERMINATE" };
       }
 
       const verified = projection?.decision === "PROJECTION_VERIFIED" &&
@@ -126,6 +153,15 @@ export function createProjectionDeliveryOrchestrator({
           projectionDecision: projection?.decision || "MISSING",
           dispatch: false
         });
+      }
+
+      const verifiedNow = validNow(clock);
+      if (verifiedNow === null) return deny("UNTRUSTED_PROJECTION_CLOCK");
+      const commentVerified = await markProjectionCommentVerified(
+        db, outboxId, workerId, generation, verifiedNow
+      );
+      if (!["PROJECTION_COMMENT_VERIFIED", "PROJECTION_COMMENT_ALREADY_VERIFIED"].includes(commentVerified.decision)) {
+        return deny(commentVerified.reason || "PROJECTION_COMMENT_VERIFICATION_FAILED");
       }
 
       const ackNow = validNow(clock);
