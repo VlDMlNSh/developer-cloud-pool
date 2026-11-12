@@ -608,3 +608,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: retrieve exact npm artifact, verify SHA-512, inspect shipped declarations/implementation, then inspect pinned Miniflare D1 binding schema. Stop if integrity verification fails.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Independent reviews remain deferred until pool launch per owner direction.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pinned D1 API declaration verification — 2026-11-12
+- Exact-version published plugin 1.4.7 and Miniflare 5.20261019.2-beta declarations retrieved; report: pinned plugin artifact/API inspection in docs/reports/2026-11-12-pinned-vitest-plugin-artifact-inspection.md.
+- cloudflare:test declaration confirms applyD1Migrations(db, migrations, migrationsTableName?); runtime not executed.
+- Miniflare's pinned d1Databases type supports multiple named entries. Runtime merge with Wrangler config, second local-only binding isolation and no-remote behavior remain NOT VERIFIED.
+- npm tarball bytes remain inaccessible; lockfile SHA-512 not independently recomputed.
+- PR #67 head f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81: exact-head D1 and contract workflows 43162128594 / 43162128615 SUCCESS; combined contexts empty; no reviews or threads. PR #66 head d16afdcb69f95154bd2a38e40e435f72ec7994ba, no exact-head workflow runs/status contexts returned.
+- Default HEAD unchanged 221f216c00ca7e5596bcc682ba185ad155a10603. No implementation/config/SQL changes; 0011 NOT CREATED/APPLIED; hosted D1 NOT RUN.
+- Next: implement/run a minimal disposable second-D1 binding smoke test, verify local-only isolation and pinned applyD1Migrations runtime before constructing the populated v1 upgrade fixture.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; independent review postponed until after pool launch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
