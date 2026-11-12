@@ -517,3 +517,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: source-level review finalization event actor/digest and fifth-lease recovery semantics; do not implement operator runtime until governance owners and authority are accepted.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Continuation checkpoint — 2026-11-12 finalization provenance / fifth lease audit
+
+- Implementation target unchanged: PR #67 `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`, OPEN/DRAFT/UNMERGED; default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Audit report: `docs/reports/2026-11-12-projection-finalization-provenance-and-fifth-lease-recovery-audit.md`, commit `b1d588034c81c20c3595bcd1bd0f0c465faf9160`.
+- Finalization actor finding: migration 0004 captures the fenced execution lease holder in `attempt.finalized.actor_id` before clearing the task lease. This is not authenticated actor identity.
+- Digest finding: migration 0004's event digest uses `COALESCE(result_digest, provenance_digest, input_digest)`; because result and provenance digests are required, the event/outbox/marker digest binds only result digest. Normative digest meaning and canonical terminal-event payload are not accepted/defined.
+- Fifth-lease finding: acquisition stops at five; `deadLetterExpiredProjection` requires original lease owner and generation. This is same-owner expiry finalization, not an independent reaper. A separate recovery actor must not impersonate the expired worker.
+- Independent reaper requires separate actor identity, one-use exact-scope capability, qualified trusted time/revocation, atomic nonce consumption, exact outbox-only transition, separate expired-owner/recovery-actor audit fields and proof that task/attempt/comment state remains unchanged. Operational owners remain unaccepted.
+- Context Window commit `6257672b0476c9161f660fa3772bbd1b17988c3a`, blob `9148891f7cdd073627f12cd0dc54dd5aa02bf4b0`.
+- No code/schema/workflow/hosted D1/live GitHub write/dispatch/provider call/deployment/secrets/merge/independent review.
+- Next: draft a normative candidate for versioned terminal-event actor/digest contract and independent fifth-lease reaper, but keep it NOT ACCEPTED and do not implement runtime until authority owners are named and approved.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
