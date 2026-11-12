@@ -532,3 +532,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: draft a normative candidate for versioned terminal-event actor/digest contract and independent fifth-lease reaper, but keep it NOT ACCEPTED and do not implement runtime until authority owners are named and approved.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Terminal event identity and actor semantics — 2026-11-12
+
+- Decision record: [terminal event identity and actor semantics](../reports/2026-11-12-terminal-event-identity-and-actor-semantics-decision-record.md), commit `f9d75daabd3c41b9a24cc373bc2357380d63e697`.
+- Target PR #67 exact head: `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Confirmed: current terminal event actor is the fenced execution lease holder; event/outbox digest is result-only although result and provenance digests are stored separately. Authenticated finalizer identity is not established. Fifth-lease helper remains same-owner fenced, not an independent Recovery Actor.
+- Proposal only: versioned canonical event digest binding immutable terminal fields plus both result/provenance digests; separate worker, initiator, authenticated principal and recovery actor fields; preserve all v1 IDs/digests. No authority acceptance, implementation, or runtime authorization.
+- Exact-head D1 run 43162128594 and Pool Contract Validation run 43162128615 SUCCESS; zero combined status contexts; PR #67 has zero formal reviews and zero review threads. Local proof only.
+- No code/schema/permission/secret/hosted D1/live GitHub/dispatch/deployment changes. Dispatch FAIL-CLOSED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile this proposal with the corrected Recovery Actor and issuer/trusted-time contracts, and document unresolved authority owners. Do not implement before acceptance.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
