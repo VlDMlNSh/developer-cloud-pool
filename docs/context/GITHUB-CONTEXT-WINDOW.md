@@ -2489,3 +2489,19 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No production code/schema/workflow/secret/permission/dispatch/hosted-resource/deployment/merge change in this revalidation. Dispatch remains fail-closed; hosted D1 NOT AUTHORIZED / NOT RUN.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Frozen schema-0010 fixture replay — VERIFIED 2026-11-12
+
+- Detailed report: [Frozen schema-0010 fixture replay](../reports/2026-11-12-frozen-schema-0010-fixture-replay.md).
+- PR #67 current exact head: `320e3c60c74fcec7cb0fb567cba8a48fdd45b616`, base default `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`, OPEN / DRAFT / UNMERGED.
+- Harness now uses three distinct synthetic local D1 namespaces: POOL_DB, UPGRADE_DB, REPLAY_DB. The isolated upgrade test applies exactly migrations 0001–0010 to UPGRADE_DB and REPLAY_DB independently, seeds deterministic historical states, and deep-compares explicit ordered snapshots.
+- Fixture cases: succeeded, failed, abandoned; distinct result/provenance digests; projection retry generations 1–5 ending dead-letter; comment states not_attempted / indeterminate / verified and append-only comment events; nonterminal indeterminate attempt plus reconciliation queue; exact synthetic marker body bytes (no API call).
+- Exact-head [Isolated D1 Ledger Proof run 43180300405](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43180300405): COMPLETED / SUCCESS; standard suite 5 files / 69 tests; second-binding smoke passed; fixture replay 1 test passed. [Pool Contract Validation run 43180300406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43180300406): COMPLETED / SUCCESS. Combined status contexts empty.
+- Artifact ID `13925458432`, SHA-256 `5781f5e6874ec9dc21d8d795c6369c87cd37eb9ac4eaa83a8f2adc7b502c4cea`.
+- Code blob SHAs: upgrade config `6d16df978384d612d7c8a7139c0b965a57f45504`; fixture `09e64e1752972c53c6db635251d63ad245c88beb`; package `42602c2897e6cb47f7396b984068e94a302bef85`; workflow `5679a1a2702cade6f7265d7f6ea5d66235839e09`.
+- Important limit: replay equality between two independent local DBs is VERIFIED; a static approved golden snapshot digest is NOT YET FROZEN. No 0010→0011 upgrade has been run; migration 0011 NOT CREATED/APPLIED; failure atomicity NOT RUN; hosted D1 NOT AUTHORIZED / NOT RUN.
+- Next: freeze the reproducible baseline into a reviewable immutable artifact/digest, add a fresh-local-DB failure atomicity proof, then author candidate 0011 only after those controls are reproducible. No v2 writer.
+- PR #67 formal reviews 0, review threads 0, combined status contexts empty. No independent audit/dispatch; owner instruction defers independent reviews until pool launch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
