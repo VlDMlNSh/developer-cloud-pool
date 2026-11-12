@@ -7,7 +7,7 @@
 
 ## Finding being corrected
 
-The existing `d1-upgrade-fixture.smoke.ts` snapshots seven tables. Migrations 0001–0010 create twelve application tables. Five tables with fixture-generated rows are absent from the canonical `TABLES` snapshot, so the current golden digest does not establish all-table preservation.
+The existing `d1-upgrade-fixture.smoke.ts` snapshots seven tables. Migrations 0001–0010 create twelve application tables. Five tables are absent from the canonical `TABLES` snapshot. The current fixture creates four logical-task approvals through `claimLogicalTask`; migration 0003 routes these through `NEW.task_key IS NOT NULL`, populating `pool_task_approvals` and `pool_task_delivery_outbox`. It does not populate the legacy per-approval `pool_task_claims` or `pool_task_outbox` tables, which are empty in the current fixture. The omitted tables therefore comprise `pool_approval_ledger`, the two empty legacy tables, `pool_task_approvals`, and `pool_task_delivery_outbox`. The current golden digest does not establish all-table preservation.
 
 This plan intentionally does not edit the test or golden fixture until the expanded deterministic snapshot can be run locally and its digest independently reproduced. The existing `schema-0010-v1-golden.json` remains a historical seven-table baseline; do not silently redefine it.
 
