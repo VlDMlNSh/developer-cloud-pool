@@ -2634,3 +2634,10 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Candidate plan now prefers `table_xinfo` for generated/hidden-column completeness, requires zero FK violations and `quick_check = ok` on both isolated databases, uses only fixed source-derived identifiers, and does not assume stateful PRAGMA settings persist across calls. `table_list` is supplementary; `sqlite_master` exact application object-set remains authoritative.
 - Candidate plan commit `c08581c0b2aa8e384de073b75ac26464b536c49d`, blob `3ccf916b706875be722ea63d157aeccff07d9bbc`; documentation-only change, no fixture/test/golden/migration changes and no CI/runtime execution.
 - Reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (accessed 2026-11-12). Full replay, negative mutation tests, new golden digest and candidate CI remain NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## D1 whole-database FK integrity scope — 2026-11-12 12:22 Europe/Vilnius
+
+- Candidate plan requires exactly `PRAGMA foreign_key_check` without a table argument to scan the whole database, zero result rows after fixture writes and trigger effects on each isolated replay DB. This diagnostic supplements rather than replaces D1's normal FK enforcement. `PRAGMA quick_check` requires one `ok` row.
+- Candidate plan commit `35e7c29faa81fde865082f6ba7e637f717a85b93`, blob `931c75499beb60312f8d4008a99dc969eee3e956`; docs-only change, no fixture/test/golden/migration/runtime/CI execution.
+- Official reference: https://developers.cloudflare.com/d1/sql-api/sql-statements/ (accessed 2026-11-12). Snapshot implementation, replays, negative tests, new golden and candidate CI remain NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
