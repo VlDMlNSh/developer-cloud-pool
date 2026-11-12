@@ -2353,3 +2353,17 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - No code/schema/workflow changes, hosted D1, live GitHub writes, dispatch, provider/model calls, deployment, secrets access, merge or independent review in this pass.
 - Next: continue source-level review of finalization event actor/digest and fifth-lease recovery semantics; keep operator resolution blocked until named owners and authority are accepted.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-12 — finalization provenance and fifth-lease recovery audit
+
+- Re-read current Context Window/checkpoint, default branch, implementation/docs refs, PR #60/#66/#67, MediaHub Issue #301 and active ruleset #26550182. Default HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`; PR #67 implementation HEAD `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d` OPEN/DRAFT/UNMERGED; docs branch head before this report `7c48ac2ef52ffb523234c27eb2edc7aafc4023a6`.
+- Reviewed migrations 0004, 0006–0010, task-attempt adapter, projection outbox/delivery orchestrator, tests, supervisor/recovery architecture and prior PR #59 / finalizer actor audits.
+- Created `docs/reports/2026-11-12-projection-finalization-provenance-and-fifth-lease-recovery-audit.md`, commit `b1d588034c81c20c3595bcd1bd0f0c465faf9160`.
+- F-01: `attempt.finalized.actor_id` is the fenced execution lease holder captured before task lease clear. It is lease-holder provenance, not authenticated issuer/principal identity.
+- F-02: current terminal event digest is `COALESCE(result_digest, provenance_digest, input_digest)`; with both result and provenance required, it binds only result digest. Outbox and projection marker inherit this result-only digest. No accepted normative definition establishes that this is intentional; canonical terminal-event digest remains undefined.
+- F-03: fifth-lease dead-letter helper requires original lease owner and generation; acquisition is capped at five. It is a same-owner expiry finalizer, not an independent reaper. A distinct Recovery Actor cannot use its own identity and must not impersonate the expired worker.
+- F-04: caller-supplied workerId/time and SQL fencing do not authenticate independent recovery, enforce grants/revocation or provide trusted time. Separate recovery principal/actor evidence, one-use capability, exact row binding and operational owners remain absent.
+- No code/schema/workflow, hosted D1, live GitHub write, dispatch, provider/model call, deployment, secrets access, merge or independent reviewer dispatch. Independent review remains deferred until actual pool launch.
+- Next: define versioned terminal-event digest/actor semantics and a separately authorized independent fifth-lease reaper contract; no runtime implementation until authority owners and normative semantics are accepted.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
