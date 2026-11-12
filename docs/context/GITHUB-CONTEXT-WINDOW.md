@@ -2339,3 +2339,17 @@ The preceding context body contains historical snapshots from 2026-11-06/08 and 
 - Reviewed dotnetcore/CAP, dtm-labs/dtm, aws-samples/transactional-outbox-pattern and Azure-Samples/transactional-outbox-pattern before retaining local D1 implementation.
 - These are established outbox/event-bus or reference-pattern projects, but their .NET/broker, separate transaction-service, Aurora/SQS, DynamoDB/Kinesis, or Cosmos/Service Bus architectures are not drop-in Cloudflare D1 + GitHub Issues comment projection components. They reinforce transactional outbox and idempotent consumer principles; no external dependency/runtime added.
 - Fit assessment is recorded in report commit `cd60e7689a381235215019c8db565690f08c146a`, blob `396014728be1fc674b5428915506983a47c58354`.
+
+
+## 2026-11-12 — operator resolution proposal for indeterminate projection comments
+
+- Revalidated default HEAD `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; PR #67 remains OPEN/DRAFT/UNMERGED at `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; PR #66 OPEN/DRAFT at `e12104cca812d6f622c341b6cdef38b0e3dcdcf2`; PR #60 OPEN/DRAFT on stale base `864213e2ff5b4fa956ba405dea8137a44d812f49`.
+- Ruleset #26550182 remains active on `Основной`: PR required, thread resolution required, 0 approvals, no bypass actors. Issue MediaHub #301 remains OPEN.
+- Source review of migrations 0006–0010 and projection delivery/reconciler confirms: five-attempt delivery budget; terminal dead-letter; monotonic `comment_post_state` `not_attempted → indeterminate → verified`; ACK requires verified marker; no automatic POST retry after reservation.
+- Created `docs/contracts/PROJECTION-COMMENT-INDETERMINATE-OPERATOR-RESOLUTION-PROPOSAL.md` on docs branch. Commit `007cc116387c734df6275d2edef25b6fa183c86e`. Status DESIGN PROPOSAL / NOT ACCEPTED / NOT IMPLEMENTED / NOT AUTHORIZED FOR RUNTIME.
+- Proposal permits only three audited dispositions: `marker_confirmed` (normal orchestrator must still verify and ACK), `unresolved_quarantined` (append disposition, no state reset or POST), and `duplicate_or_conflict_incident` (freeze automation and escalate). It explicitly prohibits `retry_post`, reset to `not_attempted`, direct `verified`/delivered mutation, comment deletion/editing, dead-letter reopen, task/attempt mutation and Recovery Actor reuse.
+- Future capability requires a distinct one-use grant bound to repository/outbox/attempt/issue/digest/post generation/subject/issuer/key/audience/operation/time/policy epoch/nonce/evidence digest. Required operational owners for issuer, principal registry, key/revocation, trusted time, audit sink, privacy retention and incident response are not currently accepted. No issuer or runtime implemented.
+- Recovery Actor remains restricted to `dead_letter_expired_projection`; operator resolution is a separate authority/audience/ledger.
+- No code/schema/workflow changes, hosted D1, live GitHub writes, dispatch, provider/model calls, deployment, secrets access, merge or independent review in this pass.
+- Next: continue source-level review of finalization event actor/digest and fifth-lease recovery semantics; keep operator resolution blocked until named owners and authority are accepted.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
