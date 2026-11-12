@@ -11,7 +11,7 @@ export default defineConfig({
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
       miniflare: {
-        // Both namespaces are synthetic local D1 databases. No remote proxy
+        // All three namespaces are synthetic local D1 databases. No remote proxy
         // connection string or Cloudflare account resource is configured.
         d1Databases: {
           POOL_DB: "00000000-0000-0000-0000-000000000000",
