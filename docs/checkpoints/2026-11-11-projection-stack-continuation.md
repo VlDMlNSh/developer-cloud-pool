@@ -468,3 +468,31 @@ This supersedes the initial IN_PROGRESS observation. The combined commit status 
 
 Updated audit report commit: `53238bd1f9ab551f8ac8c82915ea47fd9036c1f0`, blob `54706a81995a911428335c6d2a49f1931868bc0a`.
 Updated Context Window commit: `cbc6281d268aaae3112f125090cae7d7f54addd8`, blob `b6afb5a33e3eb58dc6ca6999fcd5de42debe36a1`.
+
+
+## Continuation checkpoint — 2026-11-12 at-most-once projection comment gate
+
+### Immutable target and completed work
+- PR #67 head `f8280ba5a78ffcf1c18bf33f0dc8932ebb36a81d`; base `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`; 20 commits ahead / 0 behind; OPEN/DRAFT/UNMERGED.
+- Migration 0010 adds durable comment state `not_attempted → indeterminate → verified`, append-only comment event evidence, active-lease transition guards and an ACK guard requiring verified marker.
+- Orchestrator performs read-only reconciliation first; reserves the one POST opportunity in D1 under the active fenced lease before calling GitHub; uses fenced durable read-back as the permission signal; all later leases are read-only until exact marker is visible.
+- Indeterminate result stays retryable with `COMMENT_POST_INDETERMINATE`; no automatic reset or repeat POST. Crash after reservation but before POST can sacrifice liveness; operator resolution policy remains NOT IMPLEMENTED.
+- Regression coverage: delayed marker visible on second distinct delivery lease (one POST, then verified/ACK); marker remains invisible on second lease (still one POST, indeterminate); DB triggers reject state reset and premature ACK.
+- Exact-head D1 run `43162121589` / job `130995529921`: SUCCESS, 5 files / 69 tests. Artifact `13918407008`, SHA-256 `3241473c3fc9835b40b2ea854d1c10f136bbc8d1aaef55b0854b8f828cb25623`.
+- Exact-head Pool Contract Validation run `43162128615` / job `130995552690`: SUCCESS.
+- Combined commit status remains zero contexts / PENDING; workflow success is not a green required status context.
+- Source blobs: migration `30ac9d0ed0cbede9586c365578c606b47bcce1a7`; outbox helper `06e80d04b4bb16fbc74028cb716b9167dcc965a1`; orchestrator `b09e9248323a57fff5e1c426eae012e2bb7aa3f0`; tests `a1b96a2e122b25594f75e5eb160c816ffff67812`; integration contract `e9bca72fd93709638a14e30210154c5c04759a11`.
+- Audit report commit `38dd5d5787f0fe48e10af0e4a1fea0b1403094c0`.
+- Context Window commit `9bc5c53cbb3af9c7f02db9c20d9ce1d81830c8c7`, blob `0739773b6b39ff09b019b16075bcfa6ef49c9744`.
+
+### Current governance and disposition
+- PR #60 OPEN/DRAFT/UNMERGED; base stale. PR #66 OPEN/DRAFT/UNMERGED. PR #67 OPEN/DRAFT/UNMERGED.
+- Active ruleset #26550182: PR required, review-thread resolution required, 0 approvals, no bypass actors.
+- MediaHub Issue #301 OPEN.
+- No hosted D1, live GitHub writes, dispatch, provider/model calls, deployment, secret reads, paid services, merge or independent review. Independent review remains deferred until after actual Cloud Pool launch.
+- Recovery Actor NOT IMPLEMENTED / NOT QUALIFIED; hosted D1 NOT QUALIFIED; dispatch FAIL-CLOSED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### Next bounded step
+Design the governed operator-resolution contract for a permanently indeterminate comment POST. Preserve the at-most-once guard; do not allow an operator or generic retry to silently reset state or issue a second POST. Require explicit principal/capability, evidence for marker absence or presence, an auditable disposition, and separation from the Recovery Actor's single dead-letter operation. Continue finalization actor/digest and fifth-lease recovery review after that.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
