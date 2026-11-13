@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-12 19:34 Europe/Vilnius — Contour A web/routing/governance and adapter path-segment revalidation
+Last refreshed: 2026-11-13 19:40 Europe/Vilnius — Supervisor, governance, web adapter and quota planner revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -2675,3 +2675,18 @@ Reconcile the two-commit path-segment fix onto a branch based on current default
 Current status: audit SUCCEEDED; #24/#25/#31 CI SUCCEEDED; #30 exact-head CI NOT VERIFIED; path fix CI NOT VERIFIED; governance/current dispatch variable NOT VERIFIED; runtime/deployment NOT RUN or NOT VERIFIED; independent acceptance NOT VERIFIED; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 
 Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-daily-revalidation.md).
+
+
+## Current Contour A revalidation — 2026-11-13 19:40 Europe/Vilnius
+
+- Current default HEAD `221f216c00ca7e5596bcc682ba185ad155a10603`; 6 open Issues and 48 open PRs returned. #1/#22/#26 open; #38 open, last updated Nov 11.
+- Effective ruleset 26550182 active on exact `refs/heads/Основной`, but PR approvals=0, CODEOWNERS review=false, last-push approval=false, no required status checks, thread resolution=true, bypass actors empty. Classic branch protection endpoint 403 and branch object protected=false. Current `POOL_DISPATCH_ENABLED` NOT VERIFIED.
+- #24/#25/#30/#31 all OPEN/DRAFT/UNMERGED, 0 reviews/threads, 64 commits behind current default. Exact-head CI SUCCESS: #24 42982847600/42982847694; #25 42228269689/42228269676; #30 42216422883 (push event; exact SHA, correcting prior NOT VERIFIED); #31 42229917555. Combined status contexts empty.
+- Path fix `fix/github-read-adapter-path-segments-2026-11-06` exact tip `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead/64 behind default and 2 ahead/0 behind #31. Source/test blobs `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63` / `bd8ac8d97cdd673bb170a22d67ce08697cf46789` add dot-segment rejection. No exact-head Actions runs/status; PR #31 lacks guard. Adapter remains unmounted.
+- #61 auth/session local D1 exact run 42991794791 SUCCESS, but Worker entrypoint remains 503/405 and auth module is not wired; 0 reviews. #29 quota planner current source blob `d45791b3...` includes active/new eligibility correction and test blob `26310fc1...`; exact-head contract run 43031920223 SUCCESS, but CI workflow/validator do not execute these unit tests. One CHANGES_REQUESTED review targets older SHA; no current-head approval.
+- #67 exact-head local D1 adversarial + contract runs 43182768560/43182768593 SUCCESS, 40 ahead/0 behind, 0 reviews; no hosted D1/runtime proof. #66 working docs PR OPEN/DRAFT, 213 ahead/0 behind before this report, not canonical.
+- Default Supervisor/Worker source at current HEAD: Supervisor workflow blob `d4bd23d0...` scheduled and privileged (`issues:write`, `actions:write`); Worker blob `fe1ee4c4...` still has direct `workflow_dispatch`. Supervisor script blob `52bf03ca...` uses literal true gate, but current variable is NOT VERIFIED; stale-claim recovery resets after 15 minutes on no matching run, which is not authoritative absence proof.
+- Exact default HEAD query found 8 scheduled Supervisor runs, all COMPLETED/SUCCESS; latest run `43457838985` job/steps SUCCESS. No Worker run on exact current HEAD. SentinelX: 0 connected hosts; Voktors-Mini.Dlink offline; mh-dev-01/02 disabled. Cloudflare Worker/D1/account entitlement NOT VERIFIED because read-only account selection required interaction.
+- Next: fix Supervisor recovery with attempt-specific evidence + durable claim/recovery receipt before any authorization; transplant path-segment guard to current default lineage and require exact-SHA CI; wire PR #29 unit tests into exact-head CI. Keep adapter unmounted and both dispatch gates fail-closed.
+- Detailed report: [2026-11-13 daily revalidation](../reports/2026-11-13-daily-revalidation.md).
+- No secrets, dispatch, workflow, DSH, Resource Probe, provider/model call, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
