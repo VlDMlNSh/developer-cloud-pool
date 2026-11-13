@@ -85,3 +85,11 @@ Current default-branch source was re-read at immutable HEAD `221f216c00ca7e5596b
 - No source/test/workflow/runtime/security-boundary files were changed. No secrets, tokens, provider credentials or values were read. No dispatch, workflow, agent, DSH, Resource Probe, provider/model call, deployment, merge, billing change, variable/ruleset mutation or production action was performed.
 - Next concrete step: before any dispatch authorization, reconcile the default Supervisor stale-claim recovery with attempt-specific evidence and a durable one-winner claim/recovery receipt; keep both dispatch gates fail-closed until current variable, effective governance, trusted issuer/time and independent acceptance are verified. Separately transplant the path-segment guard onto current default lineage and run exact-SHA tests. Wire PR #29 unit tests into exact-head CI before treating the quota planner as tested.
 - Final status: audit SUCCEEDED; tracked old-base web PR CI SUCCEEDED but base divergence remains; PR #30 exact-head CI corrected to SUCCEEDED; path-fix CI NOT VERIFIED; PR #29 regression-test execution NOT VERIFIED; active ruleset VERIFIED but independent approvals/status checks absent; current dispatch variable NOT VERIFIED; Supervisor schedule SUCCEEDED but worker runtime NOT VERIFIED; SentinelX pool hosts unavailable; Cloudflare deployment/account state NOT VERIFIED; independent acceptance NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Documentation change record
+
+- Report initial creation: commit `418c860e904bdac72a52e30d7b7e75ab86be114c`, initial blob `549801ba9d987c768e290631f149ee92f25a3b73`.
+- Checkpoint update: commit `331214ca8ad822f538308c061944701c80a0041f`, blob `120916ff6f7477ff7cbfc5ec049d7e2372132c67`.
+- Unified Context Window update: commit `9fbab5f5c11f3cd1f47de48bf9d7d27464cebfcf`, blob `5183b48253b628ca597f5b9304bf03ec8de2b8f7`.
+- All three files were read back from GitHub and their blobs matched. The documentation branch is a working branch only; PR #66 remains open/draft/unmerged and no changes were merged into `Основной`.
