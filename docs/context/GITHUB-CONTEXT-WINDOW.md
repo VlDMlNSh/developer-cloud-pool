@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-13 19:40 Europe/Vilnius — Supervisor, governance, web adapter and quota planner revalidation
+Last refreshed: 2026-11-14 16:49 Europe/Paris — PR #67/#68 exact-head and launch-boundary revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (revalidated 2026-11-11)
@@ -247,8 +247,8 @@ In parallel, re-read Cloudflare entitlement through available read-only integrat
 
 ## Canonical navigation links
 
-- This unified context window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
-- Continuation checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/checkpoints/2026-11-06-cross-chat-continuation.md
+- This unified context window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/context/GITHUB-CONTEXT-WINDOW.md
+- Continuation checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/checkpoints/2026-11-11-projection-stack-continuation.md
 - Cross-chat report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-06-cross-chat-continuation-report.md
 - Web console issue #22: https://github.com/VlDMlNSh/developer-cloud-pool/issues/22
 - Provider routing issue #26: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
@@ -2690,3 +2690,17 @@ Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-da
 - Next: fix Supervisor recovery with attempt-specific evidence + durable claim/recovery receipt before any authorization; transplant path-segment guard to current default lineage and require exact-SHA CI; wire PR #29 unit tests into exact-head CI. Keep adapter unmounted and both dispatch gates fail-closed.
 - Detailed report: [2026-11-13 daily revalidation](../reports/2026-11-13-daily-revalidation.md).
 - No secrets, dispatch, workflow, DSH, Resource Probe, provider/model call, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 17. Latest /next revalidation — 2026-11-14
+
+- Dated evidence report: [2026-11-14 Cloud Pool continuation revalidation](../reports/2026-11-14-next-continuation-revalidation.md).
+- Default baseline re-read from recent commit search and both active PR base refs: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 current exact head: `a53f6232bd5b50d3e150addf528b8e722002f9dd`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, 47 ahead / 0 behind, OPEN/DRAFT/UNMERGED. Exact-head Pool Contract Validation run `43600901063` SUCCESS; Isolated D1 Ledger Proof run `43600901068` SUCCESS; job log confirms 6 files / 84 tests, upgrade-binding smoke 1 passed, frozen schema-0010 fixture smoke 2 passed. Artifact `14116073951`, digest `97a7e053fa09c53b04275f427f9e3fbe6105512c7ecfbf370eba8519c9b4b524`. Combined status contexts: 0; formal reviews/threads: 0. Local D1 only; hosted D1, production worker, issuer/time, dispatch and provider calls remain NOT RUN.
+- PR #68 current exact head: `074ba379555e51c2204e532cd38b1100876159fa`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, OPEN/DRAFT/UNMERGED, documentation/qualification proposal. Exact-head Runner Resource Probe run `43601781051` SUCCESS; read-only inventory job observed Ubuntu 24.04.5 LTS / Azure / 85.26 GiB available workspace and explicitly installed no agents/accessed no secrets/qualified no profile. Pool Contract Validation run `43601781083` SUCCESS; 30-record qualification matrix validator passed. Formal reviews: 0.
+- PR #66 working docs branch is `docs/projection-stack-reconciliation-2026-11-11`, PR head `c93ee393ada279aeb1d08bcc9617a5e97a9c60f3`, OPEN/DRAFT/UNMERGED. This Context Window/checkpoint remain proposal documentation, not default-branch canonical production code.
+- Issue #22 remains the primary first user-facing milestone: authenticated remote web console and live read-only API. Issue #38 remains open: durable single-use claim and hosted contention qualification. GitHub Issues labels are not CAS.
+- Cloudflare free entitlement/deployment, hosted D1, durable persistence, production OAuth/session, live GitHub adapter, real worker execution, quota enforcement and provider account/quota mapping remain NOT VERIFIED / NOT RUN.
+- Dispatch remains fail-closed; no Worker/DSH/provider call, secret read, hosted resource, billing change, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: use PR #68 Master Handoff/Continuation Protocol/Decision Register/Build Plan as the latest architecture proposal, reconcile against live default refs, and continue the smallest no-card path to production OAuth + read-only API + durable state for Issue #22. Do not merge draft proposals or enable dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
