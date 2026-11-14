@@ -23,7 +23,7 @@
 | PR | Purpose | Branch | Exact head | State |
 |---|---|---|---|---|
 | [#67](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | Isolated D1 ledger, immutable attempts, fenced lifecycle, receipt-bound projection and A0 admission contract proof | `impl/receipt-bound-projection-2026-11-11` | `a53f6232bd5b50d3e150addf528b8e722002f9dd` | Open, Draft, not merged |
-| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `96e6821993858d8741bced6861f575296e81aaa2` | Open, Draft, not merged |
+| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `f052664faf646f59b563d0def9cdd0c47b8d4ea9` | Open, Draft, not merged |
 
 Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad155a10603`. Re-check before acting; PR heads may advance.
 
@@ -147,7 +147,7 @@ Continue from PR #67's actual D1 schema and A0 contract; do not create a paralle
 | Projection integration boundary | [Attempt Outbox → GitHub Projection Contract](../contracts/ATTEMPT-OUTBOX-GITHUB-PROJECTION-INTEGRATION-CONTRACT.md) |
 | Historical pass-by-pass evidence | [Session Log](../reports/SESSION-LOG.md) |
 
-## 7. How to resume in a new ChatGPT chat
+## 7. Documentation completeness and verification\n\nThe continuation document set has been created and linked from the root README and the unified architecture plan. The qualification matrix now has 30 records, including the A0 admission contract proof. The Markdown and JSON matrices are intended to stay synchronized. The README no longer instructs routine users to enable dispatch or use the Issue label as execution approval.\n\nDocumentation commit sequence is recorded in docs/reports/SESSION-LOG.md. Live PR #68 head at this snapshot: `f052664faf646f59b563d0def9cdd0c47b8d4ea9`. This snapshot must be refreshed after any later commit.\n\n## 8. How to resume in a new ChatGPT chat
 
 Start a new chat with:
 
