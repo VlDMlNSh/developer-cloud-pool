@@ -64,3 +64,11 @@ This is a proof extension only. The previous `attempt_count` field remains a leg
 - `createProjectionDeliveryOrchestrator` is the only public delivery boundary. It owns lease acquisition/read-back, envelope derivation, fake GitHub reconciliation, exact event/digest verification, private conditional ACK and D1 read-back. The receipt-free ACK helper is not exported.
 - The local Workers-runtime tests cover verified delivery, missing/ambiguous projection, conflicting marker digest, expired lease, takeover by a newer delivery generation, concurrent calls, and immutable event-digest enforcement. All responses retain `dispatch: false`.
 - This remains an isolated proof. Runtime identity/clock qualification, live GitHub behavior, hosted D1 and deployment are not implemented.
+
+
+## A0 admission contract harness (isolated; not production wiring)
+
+- `src/a0-admission-contract.mjs` defines a fail-closed contract for immutable task/attempt binding, owner-approval verification, single-use capability consumption, allowed cost classes, quota-domain evidence and queue-only behavior while dispatch is disabled.
+- `test/a0-admission-contract.test.ts` exercises missing/invalid approval provenance, capability replay, paid/unknown cost classes, forbidden provider routes, missing/unverified quota evidence, malformed identity and the no-dispatch invariant.
+- The tests use injected in-memory authority adapters. They prove the contract behavior only; they do **not** qualify cryptographic signature verification, durable atomic replay protection, quota-provider truth, trusted time, or production integration. The module is not mounted in the Supervisor or Worker.
+- Existing D1 attempt tests remain the local proof for generation fencing, stale finalizer rejection, expiry handling and bounded task-attempt behavior. This A0 contract is not a substitute for connecting those controls to one authoritative durable admission transaction.
