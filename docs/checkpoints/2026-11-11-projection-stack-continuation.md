@@ -893,3 +893,13 @@ The previous audit updated the PR #68 documentation branch (master handoff and s
 - PR #67 remains exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`, runs 43600901063/43600901068 SUCCESS; 84 tests in 6 files, D1 smoke checks passed. Both PRs still have zero formal reviews / zero inline threads.
 - Mature-component discovery: `panva/jose` is a strong candidate for JWS/JWT signature verification: maintained v6 line, MIT, zero runtime dependencies, ESM, Cloudflare Workers/WebCrypto compatibility. This is only a candidate for a controlled local proof, not adopted or installed. It is a cryptographic protocol primitive, not an authorization framework; issuer governance, fixed algorithm allowlist, key rotation/JWKS trust, audience/issuer/subject, tenant/repository binding, clock policy, jti replay prevention, and atomic D1 consumption remain application responsibilities. Sources: https://github.com/panva/jose and https://github.com/panva/jose/security; package metadata surfaced v6.2.12 and JSR v6.2.17 (verify pinned version/tag and security policy before adoption).
 - No code/dependency changed. No dispatch, provider calls, secret access, hosted resources, deployment, billing changes or merges. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Final live-ref refresh — 2026-11-14
+
+- PR #68 latest exact HEAD `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, OPEN/DRAFT/UNMERGED.
+- Exact-head Runner Resource Probe run 43602513530 SUCCESS (job 132470131134): Ubuntu 24.04.5, AWS image 20261111.127.1, 4 vCPU, 88.46 GiB available workspace; read-only, no agents installed, no secrets accessed, no profile qualified.
+- Exact-head Pool Contract Validation run 43602513555 SUCCESS (job 132470131216): workflow security invariants PASS, fail-closed dispatch, 30 qualification records PASS. Node.js 20 deprecation warning for checkout; no failure.
+- PR #67 remains `a53f6232bd5b50d3e150addf528b8e722002f9dd`, exact-head runs 43600901063/43600901068 SUCCESS; 84 tests / 6 files and D1 smoke checks pass.
+- Latest PR #68 hash supersedes earlier snapshots `3fa24a79...` and `a4c11582...`. Both PRs remain DRAFT/unmerged with 0 formal reviews and 0 inline threads.
+- No deployment, agent installation, secret access, provider call, dispatch, hosted resource, billing change, or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
