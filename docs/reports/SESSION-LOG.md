@@ -166,3 +166,14 @@ PR #67 exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI 4360
 Source audit found A0 remains an injected-adapter contract, not wired to Supervisor/Worker. It omits owner/repository numeric IDs and issue number from its expected binding; its free-quota check is not a production account/route/quota registry. D1 consume is local-only and lacks cryptographic issuer verification. Default Supervisor remains heartbeat-only while dispatch is false; default Worker is not integrated with A0/D1. See [A0 authority boundary report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/reports/2026-11-14-next-a0-authority-boundary-audit.md).
 
 Next: canonicalize approval envelope; assess mature Workers-compatible signature verification; implement issuer/verifier and atomic single-use D1 consume/task/outbox proof locally. Dispatch remains false; no secrets, hosted resources, deployment, billing changes, provider calls or merge.
+
+
+## 2026-11-14 — Live continuation revalidation
+
+PR #67 remains OPEN/DRAFT/UNMERGED at `a53f6232bd5b50d3e150addf528b8e722002f9dd`, based on default `221f216c00ca7e5596bcc682ba185ad155a10603`. Exact-head Pool Contract Validation run 43600901063 and Isolated D1 Ledger Proof run 43600901068 both SUCCESS; this is local contract/Workers-runtime evidence only.
+
+PR #68 remains OPEN/DRAFT/UNMERGED at `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`, same default base. Exact-head Pool Contract Validation run 43602513555 and read-only Runner Resource Probe run 43602513530 both SUCCESS. The probe does not qualify agents, persistent capacity or a production worker profile. Both PRs are mergeable but remain unaccepted; no formal reviews are present in the current review snapshot.
+
+A0 remains injected-adapter-only and unintegrated with Supervisor/Worker. D1 proof is local-only; hosted D1, cryptographic issuer verification, actual quota verification, worker execution, authenticated remote console and A3 qualification are NOT VERIFIED / NOT RUN. Dispatch remains disabled. No code/runtime/schema/secret/provider/hosted-resource/deployment/merge changes were made in this pass.
+
+Next: inspect exact PR #67 D1 transaction APIs and migrations, then design and locally test the atomic A0 approval-to-task/attempt/queue-intent boundary with negative-first cases. Keep dispatch:false.
