@@ -2743,3 +2743,15 @@ Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-da
 - Decision: next bounded engineering pass must reconcile canonical approval envelope (owner/repository numeric IDs, issue, task/task key, attempt, target SHA, profile, tenant, cost/route/quota domain, issued-at, expiry, nonce/jti, schema version, digest), evaluate mature maintained signature-verification libraries for Workers compatibility, then implement issuer/verifier plus atomic single-use consume + task/outbox in local D1 only. Dispatch remains false.
 - No secrets, provider calls, hosted resource, deployment, billing change, merge or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Post-documentation exact-head refresh — 2026-11-14
+
+The previous audit updated the PR #68 documentation branch (master handoff and session log), which advanced PR #68's head. Re-fetched the live PR after those documentation commits; do not use the earlier `3fa24a79...` head as current.
+
+- PR #68 current exact head: `a4c11582eaf66341eafeec60c3f670bc5e2e53f1`; base `221f216c00ca7e5596bcc682ba185ad155a10603`; OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation run [43602453650](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43602453650): SUCCESS. Job 132469947494; workflow syntax/security invariants PASS, dispatch gate false, 30 matrix records PASS. Log includes a Node.js 20 deprecation warning for checkout forced to Node.js 24; track but not a current failure.
+- Exact-head Runner Resource Probe run [43602453656](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43602453656): SUCCESS. Job 132469947531; Ubuntu 24.04.5 / AWS image 20261111.127.1 / 4 vCPU / 88.46 GiB available workspace; read-only, no agents installed, no secrets accessed, no profile qualified.
+- PR #67 remains exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`, runs 43600901063/43600901068 SUCCESS; 84 tests in 6 files, D1 smoke checks passed. Both PRs still have zero formal reviews / zero inline threads.
+- Mature-component discovery: `panva/jose` is a strong candidate for JWS/JWT signature verification: maintained v6 line, MIT, zero runtime dependencies, ESM, Cloudflare Workers/WebCrypto compatibility. This is only a candidate for a controlled local proof, not adopted or installed. It is a cryptographic protocol primitive, not an authorization framework; issuer governance, fixed algorithm allowlist, key rotation/JWKS trust, audience/issuer/subject, tenant/repository binding, clock policy, jti replay prevention, and atomic D1 consumption remain application responsibilities. Sources: https://github.com/panva/jose and https://github.com/panva/jose/security; package metadata surfaced v6.2.12 and JSR v6.2.17 (verify pinned version/tag and security policy before adoption).
+- No code/dependency changed. No dispatch, provider calls, secret access, hosted resources, deployment, billing changes or merges. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
