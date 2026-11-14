@@ -76,3 +76,16 @@ PR #68 head before the final handoff/session-log readback: 1929c2009bf2c12bdf916
 PR #68 exact-head Runner Resource Probe run 43601408557 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1 and AMD EPYC 7763. This is the fourth observation in the same image/version/region family; total read-only observations are now five. This still does not qualify reserved capacity or multi-agent packing.
 
 The JSON and Markdown qualification matrices, README record count and architecture-plan evidence note were updated. The fifth sample was observed only; no agent was installed or run.
+
+
+Documentation commit IDs for the fifth-observation refresh:
+- b64c31b2854d9ca8529fdbbbb784842067491dea — JSON runner evidence updated to five observations.
+- 7c341d41398928f7d5cb09b0da57225002ac9ce4 — Markdown runner evidence updated to five observations.
+- 532b0fe3c6f57cabfd77eb73e193b06a3ce91df8 — README matrix count corrected to 30.
+- 8cc59af1cfbb4b4c5f78654d08484f5c18af2f9c — architecture plan runner evidence refreshed.
+- a8593092b18538535f3460aec53a88eba99f017f — fifth runner observation recorded in this session log.
+
+Validation of the matrix/README/plan update:
+- PR #68 Pool Contract Validation run 43601408575: SUCCESS; log reports COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS.
+- PR #68 Runner Resource Probe run 43601408557: SUCCESS; read-only observation described above.
+- These runs validate the documentation/matrix state at PR head ac64a8d0e012e466ed400b59c6368d761a636da5. A subsequent handoff-only documentation commit followed; no source, workflow, or matrix content changed after those runs.
