@@ -753,7 +753,7 @@ The point-in-time project state, exact active PR heads, exact-head CI, local D1 
 At the later 2026-11-14 continuation checkpoint:
 - PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd passed 84 local Workers-runtime tests, 1 upgrade-binding smoke and 2 frozen fixture tests.
 - The A0 admission contract contributes 14 isolated tests. Its verifier, capability consumer and quota evidence are injected test authorities; the contract is not connected to the production Supervisor/Worker or an atomic hosted admission transaction.
-- Seven read-only GitHub-hosted runner resource observations exist across two cloud providers and three region families: five Azure observations on image 20261111.370.1 (northcentralus and westus3) and two AWS observations on image 20261111.127.1 (us-east-1). CPU model variation remains visible and no capacity is reserved. All observed Ubuntu 24.04.5 x64, 4 vCPU and 15 GiB RAM; observations do not establish reserved capacity or multi-agent packing.
+- Eight read-only GitHub-hosted runner resource observations exist across two cloud providers and four region families: five Azure observations on image 20261111.370.1 (northcentralus and westus3) and three AWS observations on image 20261111.127.1 (us-east-1 and us-west-2). CPU model variation remains visible and no capacity is reserved. All observed Ubuntu 24.04.5 x64, 4 vCPU and 15 GiB RAM; observations do not establish reserved capacity or multi-agent packing.
 - PR #67 and PR #68 remain open Draft PRs, not merged. Dispatch remains disabled.
 
 For the exact current heads and next task, consult the Master Handoff and refresh GitHub metadata before making changes.
