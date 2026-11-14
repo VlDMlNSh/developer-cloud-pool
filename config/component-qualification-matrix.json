@@ -18,14 +18,15 @@
       "version_pin": "ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest",
       "license": "GitHub-hosted service; runner-images repository MIT",
       "security": "ephemeral job; least-privilege permissions; do not expose secrets to untrusted code",
-      "runtime_qualification": "NOT_RUN_FOR_MULTI_AGENT_PROFILE",
+      "runtime_qualification": "TWO_READ_ONLY_RESOURCE_PROBES_PASS; CAPACITY_NOT_QUALIFIED",
       "evidence": [
-        ".github/workflows/pool-worker.yml",
-        "README.md"
+        "PR #68 run 43595157109: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1",
+        "PR #68 run 43595609567: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1"
       ],
       "blockers": [
-        "measure actual CPU/RAM/disk and startup on this repository",
-        "pin toolchain and action SHAs; record image version"
+        "only two observations across different image versions/regions; repeat same image for a stable baseline",
+        "no agent install/benchmark or multi-agent packing test",
+        "hosted runner capacity is ephemeral and not guaranteed reservation"
       ],
       "next_gate": "read-only runner resource probe"
     },
