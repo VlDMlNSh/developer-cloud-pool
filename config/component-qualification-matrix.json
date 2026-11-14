@@ -1,0 +1,513 @@
+{
+  "schema_version": "1.0.0",
+  "matrix_id": "developer-cloud-pool-component-qualification",
+  "as_of": "2026-11-14",
+  "repository": "VlDMlNSh/developer-cloud-pool",
+  "branch": "docs/unified-cloud-pool-jarvis-plan-2026-11-14",
+  "authority": "Decision and evidence register; not an installation manifest. Candidate/selected status never implies runtime qualification.",
+  "dispatch_enabled": false,
+  "secret_values_stored": false,
+  "records": [
+    {
+      "id": "pool-actions-runner",
+      "name": "GitHub-hosted Actions runner",
+      "kind": "execution substrate",
+      "source": "https://github.com/actions/runner-images",
+      "decision": "SELECTED_BOOTSTRAP",
+      "scope": "phase-1 cloud execution",
+      "version_pin": "ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest",
+      "license": "GitHub-hosted service; runner-images repository MIT",
+      "security": "ephemeral job; least-privilege permissions; do not expose secrets to untrusted code",
+      "runtime_qualification": "NOT_RUN_FOR_MULTI_AGENT_PROFILE",
+      "evidence": [
+        ".github/workflows/pool-worker.yml",
+        "README.md"
+      ],
+      "blockers": [
+        "measure actual CPU/RAM/disk and startup on this repository",
+        "pin toolchain and action SHAs; record image version"
+      ],
+      "next_gate": "read-only runner resource probe"
+    },
+    {
+      "id": "pool-supervisor",
+      "name": "Pool Supervisor",
+      "kind": "A0 bootstrap coordinator",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/scripts/pool-supervisor.mjs",
+      "decision": "SELECTED_EXISTING_INTERNAL",
+      "scope": "bootstrap A0 only",
+      "version_pin": "repository commit SHA; current PR head must be recorded per run",
+      "license": "repository license metadata not yet verified",
+      "security": "dispatch fail-closed unless POOL_DISPATCH_ENABLED is literal true; currently false",
+      "runtime_qualification": "IMPLEMENTED_SCAFFOLD_NOT_RUN_ON_PR_HEAD",
+      "evidence": [
+        "scripts/pool-supervisor.mjs",
+        ".github/workflows/pool-supervisor.yml"
+      ],
+      "blockers": [
+        "default-branch governance not proven",
+        "atomic durable leases and tenant-aware admission absent",
+        "only one DSH profile allowlisted"
+      ],
+      "next_gate": "negative tests on a controlled non-dispatch harness"
+    },
+    {
+      "id": "github-issues-queue",
+      "name": "GitHub Issues task queue",
+      "kind": "bootstrap queue and audit trail",
+      "source": "https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues",
+      "decision": "SELECTED_BOOTSTRAP_LIMITED",
+      "scope": "single-repository bootstrap queue",
+      "version_pin": "GitHub service",
+      "license": "GitHub service",
+      "security": "labels and issue fields are not a transactional multi-tenant database",
+      "runtime_qualification": "IMPLEMENTED_SCAFFOLD_NOT_TRANSACTIONALLY_QUALIFIED",
+      "evidence": [
+        "scripts/pool-supervisor.mjs"
+      ],
+      "blockers": [
+        "no atomic multi-resource reservation",
+        "no tenant-isolated namespaces",
+        "retention and idempotency semantics incomplete"
+      ],
+      "next_gate": "race/replay tests; keep as bootstrap only"
+    },
+    {
+      "id": "pool-worker-dsh",
+      "name": "Pool Worker DSH headless probe",
+      "kind": "worker profile",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/.github/workflows/pool-worker.yml",
+      "decision": "SELECTED_PROBE_ONLY",
+      "scope": "no-model, no-provider-secret smoke profile",
+      "version_pin": "DSH 0.2.1-rc.5; Node 24.9.0; Actions pinned to commit SHA",
+      "license": "DSH license/security posture needs upstream review",
+      "security": "probe job receives no provider secrets; immutable target SHA required",
+      "runtime_qualification": "IMPLEMENTED_NOT_RUN_IN_THIS_PASS",
+      "evidence": [
+        ".github/workflows/pool-worker.yml"
+      ],
+      "blockers": [
+        "profile is not a general coding agent",
+        "no provider-backed task execution",
+        "no A3 verification"
+      ],
+      "next_gate": "authorized synthetic smoke task after dispatch governance"
+    },
+    {
+      "id": "dsh-runtime",
+      "name": "DeepSeek Harness",
+      "kind": "agent harness",
+      "source": "https://github.com/deepseek-ai/deepseek-harness",
+      "decision": "CONDITIONAL_PREVIEW",
+      "scope": "headless composition probe only",
+      "version_pin": "0.2.1-rc.5 in existing workflow",
+      "license": "verify exact package/repository license and transitive licenses",
+      "security": "upstream describes developer preview; no security audit claim",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        ".github/workflows/dsh-runtime-evaluation.yml"
+      ],
+      "blockers": [
+        "developer-preview status",
+        "security review absent",
+        "no model-call or production qualification"
+      ],
+      "next_gate": "package provenance, SBOM, permission and sandbox review"
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI and existing multi-agent workflows",
+      "kind": "agent executor",
+      "source": "https://github.com/google-gemini/gemini-cli",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "verify upstream license and dependency notices at selected release",
+      "security": "no pool credential binding or isolated runner profile yet",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "no pool adapter",
+        "credential presence/auth/model probe not performed",
+        "resource footprint unknown"
+      ],
+      "next_gate": "pin release and run secret-free install plus authorized provider probe"
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "kind": "agent executor",
+      "source": "https://docs.claude.com/en/docs/claude-code/overview",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "commercial product terms must be reviewed; not treated as open-source",
+      "security": "tenant-scoped credential delivery and permission profile absent",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "pool adapter absent",
+        "auth/model probe not performed",
+        "terms and resource footprint not recorded"
+      ],
+      "next_gate": "validate supported auth route and terms; no secrets in PR workflows"
+    },
+    {
+      "id": "codex-cli",
+      "name": "OpenAI Codex CLI",
+      "kind": "agent executor",
+      "source": "https://github.com/openai/codex",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "verify exact release license and dependency notices",
+      "security": "pool-specific least-privilege profile and secret scope absent",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "no pool adapter",
+        "auth and model availability not tested",
+        "resource footprint unknown"
+      ],
+      "next_gate": "pin release; install and run non-mutating provider probe"
+    },
+    {
+      "id": "openhands-app",
+      "name": "OpenHands application",
+      "kind": "Jarvis web workspace candidate",
+      "source": "https://github.com/OpenHands/OpenHands",
+      "decision": "PRIMARY_UI_CANDIDATE_NOT_ADOPTED",
+      "scope": "candidate user interface/workspace; subordinate to A0",
+      "version_pin": "no release/commit pinned in pool",
+      "license": "MIT reported in upstream repository; recheck selected commit and bundled components",
+      "security": "multi-tenant isolation, auth, workspace and secret handling not qualified here",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Jarvis repository-reuse decision is research evidence"
+      ],
+      "blockers": [
+        "tenant isolation review absent",
+        "pool task API adapter absent",
+        "deployment and maintenance footprint unmeasured"
+      ],
+      "next_gate": "pin commit and perform threat-model/capability crosswalk"
+    },
+    {
+      "id": "openhands-sdk",
+      "name": "OpenHands Software Agent SDK",
+      "kind": "agent execution SDK",
+      "source": "https://github.com/OpenHands/software-agent-sdk",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "optional execution adapter; not Jarvis UI or A0",
+      "version_pin": "no pool pin",
+      "license": "verify exact repository/release license",
+      "security": "workspace, tool permissions and tenant context need review",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Wave 24 source pin requires refresh"
+      ],
+      "blockers": [
+        "API parity and release pin not refreshed",
+        "no pool adapter",
+        "no sandbox qualification"
+      ],
+      "next_gate": "refresh commit and evaluate minimal task adapter"
+    },
+    {
+      "id": "ecc-toolbox",
+      "name": "Everything Claude Code (public affaan-m/ECC)",
+      "kind": "agent skills/hooks toolbox",
+      "source": "https://github.com/affaan-m/ECC",
+      "decision": "SELECTIVE_CONDITIONAL",
+      "scope": "selected skills/hooks only; not user's Every Cloud Code controller",
+      "version_pin": "no pool pin",
+      "license": "verify exact upstream license and component licenses",
+      "security": "review hooks, shell commands, MCP permissions individually",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub candidate notes"
+      ],
+      "blockers": [
+        "not A0 or a scheduler",
+        "user's Every Cloud Code name remains a separate unresolved identity"
+      ],
+      "next_gate": "map individual modules and permissions; do not bulk-install"
+    },
+    {
+      "id": "personaljarvis",
+      "name": "PersonalJarvis",
+      "kind": "personal assistant UX candidate",
+      "source": "https://github.com/PersonalJarvis/PersonalJarvis",
+      "decision": "HOLD_PROVENANCE",
+      "scope": "not selected",
+      "version_pin": "none",
+      "license": "canonical upstream provenance and license unresolved in prior review",
+      "security": "not reviewed",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Wave 22/24 review notes"
+      ],
+      "blockers": [
+        "canonical upstream identity unresolved",
+        "conflicting lookalike snapshots"
+      ],
+      "next_gate": "resolve authoritative repository before reconsideration"
+    },
+    {
+      "id": "agent-browser",
+      "name": "agent-browser",
+      "kind": "browser automation adapter",
+      "source": "https://github.com/vercel-labs/agent-browser",
+      "decision": "CONDITIONAL_LATER",
+      "scope": "isolated browser profile",
+      "version_pin": "not pinned",
+      "license": "verify selected release license",
+      "security": "separate browser profile, no cross-tenant cookies, restricted network egress",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "candidate listed in consolidated plan"
+      ],
+      "blockers": [
+        "browser sandbox and tenant isolation not implemented"
+      ],
+      "next_gate": "browser threat model and isolated smoke tests"
+    },
+    {
+      "id": "playwright",
+      "name": "Playwright",
+      "kind": "browser QA automation",
+      "source": "https://github.com/microsoft/playwright",
+      "decision": "SELECTED_QA_CANDIDATE",
+      "scope": "QA and browser tests, not A0",
+      "version_pin": "not pinned in pool",
+      "license": "Apache-2.0 upstream; recheck selected release",
+      "security": "ephemeral browser context; no shared profiles or credentials",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "candidate listed in consolidated plan"
+      ],
+      "blockers": [
+        "not integrated",
+        "browser runner resources and artifact redaction not measured"
+      ],
+      "next_gate": "pin version and run isolated browser smoke"
+    },
+    {
+      "id": "litellm",
+      "name": "LiteLLM Proxy",
+      "kind": "model gateway",
+      "source": "https://github.com/BerriAI/litellm",
+      "decision": "DEFERRED",
+      "scope": "future gateway only if direct provider routing is insufficient",
+      "version_pin": "none",
+      "license": "verify exact release license and dependencies",
+      "security": "introduces a high-value credential concentration point",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "not needed for first cloud-only bootstrap",
+        "secret broker and gateway hardening absent"
+      ],
+      "next_gate": "security review, tenancy and key isolation design"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph",
+      "kind": "agent orchestration framework",
+      "source": "https://github.com/langchain-ai/langgraph",
+      "decision": "DEFERRED",
+      "scope": "only if a demonstrated workflow need exceeds GitHub-native orchestration",
+      "version_pin": "none",
+      "license": "verify selected package/release terms",
+      "security": "state persistence and tenant scoping need review",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "no proven need; risks duplicate orchestration beside A0"
+      ],
+      "next_gate": "benchmark against simpler existing workflow before adoption"
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "kind": "durable state store",
+      "source": "https://github.com/postgres/postgres",
+      "decision": "DEFERRED_UNTIL_GAP_PROVEN",
+      "scope": "future durable queue/quota/lease state",
+      "version_pin": "none",
+      "license": "PostgreSQL License",
+      "security": "requires managed lifecycle, backup, tenant row-level access and migrations",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "GitHub-native bootstrap may suffice initially; no scale evidence for DB yet"
+      ],
+      "next_gate": "introduce only after atomicity/durability tests prove a gap"
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "kind": "integration automation",
+      "source": "https://github.com/n8n-io/n8n",
+      "decision": "OPTIONAL_LATER",
+      "scope": "non-privileged notifications and integrations only",
+      "version_pin": "none",
+      "license": "source-available Sustainable Use License; not OSI open source; check use case",
+      "security": "must not own privileged dispatch or hold broad provider secrets",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "not required for pool bootstrap"
+      ],
+      "next_gate": "review license and isolate from A0"
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram Bot API",
+      "kind": "user intake connector",
+      "source": "https://core.telegram.org/bots/api",
+      "decision": "LATER_CONNECTOR",
+      "scope": "identity-bound user notifications/intake",
+      "version_pin": "hosted API",
+      "license": "official API documentation; not a bundled code dependency",
+      "security": "bind chat identity to tenant principal; no command-only authorization",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "tenant identity and scoped API not implemented"
+      ],
+      "next_gate": "identity binding and replay/rate-limit tests"
+    },
+    {
+      "id": "meta-instagram",
+      "name": "Meta Instagram APIs",
+      "kind": "social connector",
+      "source": "https://developers.facebook.com/docs/instagram-platform/",
+      "decision": "LATER_CONNECTOR",
+      "scope": "official supported professional-account operations only",
+      "version_pin": "Meta Graph API version must be pinned at implementation",
+      "license": "official API terms apply",
+      "security": "OAuth scopes, app review and account eligibility required",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "no approved app/scopes or tenant OAuth flow"
+      ],
+      "next_gate": "official API permission and app-review checklist"
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama/local model runtime",
+      "kind": "local model runtime",
+      "source": "https://github.com/ollama/ollama",
+      "decision": "EXTERNAL_NODES_LATER",
+      "scope": "optional user-owned or owned external compute after pool acceptance",
+      "version_pin": "none",
+      "license": "verify release and model-specific licenses separately",
+      "security": "untrusted worker by default; no central tenant secrets; explicit opt-in",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub local-agent fabric is reference only"
+      ],
+      "blockers": [
+        "cloud pool must launch first",
+        "no remote worker trust/attestation contract"
+      ],
+      "next_gate": "separate worker-admission and isolation design"
+    },
+    {
+      "id": "quota-ledger",
+      "name": "Pool quota ledger",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "per-tenant/provider/model reservation and reconciliation",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "atomic reservation, least-privilege secret refs, paid fallback off",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture section 11.6"
+      ],
+      "blockers": [
+        "no executable quota ledger"
+      ],
+      "next_gate": "implement contract and race/reset/429 tests"
+    },
+    {
+      "id": "tenant-isolation",
+      "name": "Tenant isolation boundary",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "tenant-bound repos, keys, memory, workspaces and artifacts",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "cross-tenant denial tests and secret non-disclosure",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture section 11.5"
+      ],
+      "blockers": [
+        "no tenant API or isolation implementation"
+      ],
+      "next_gate": "implement two-tenant adversarial qualification"
+    },
+    {
+      "id": "task-dag",
+      "name": "Task DAG and durable lifecycle",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "idempotency, dependencies, leases, cancellation, retries, checkpoints",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "immutable SHA, authenticated approval provenance, replay protection",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture section 11.8"
+      ],
+      "blockers": [
+        "general checkpoint/resume and DAG absent"
+      ],
+      "next_gate": "typed task contract and failure-injection tests"
+    },
+    {
+      "id": "a3-verifier",
+      "name": "Independent A3 verifier",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "separate-context result verification and evidence manifest",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "worker cannot self-approve; immutable target SHA",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture sections 11.2 and 11.8"
+      ],
+      "blockers": [
+        "no pool A3 executable verifier"
+      ],
+      "next_gate": "independent verifier job and tamper-evident evidence tests"
+    }
+  ]
+}
