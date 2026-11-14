@@ -179,3 +179,12 @@ The exact SHA above is the immutable runtime/evidence snapshot whose CI was insp
 - A0 contract is isolated and injected-adapter-only. It is not wired to Supervisor/Worker and lacks owner/repository numeric IDs and issue number in the expected binding. D1 consume is local-only and does not implement cryptographic issuer verification. The default Supervisor/Worker remain unintegrated with A0/D1.
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/reports/2026-11-14-next-a0-authority-boundary-audit.md
 - Next: reconcile canonical approval envelope, evaluate mature Workers-compatible signature-verification components, then implement local-only A0 issuer/verifier and atomic D1 consume/task/outbox proof. No hosted resources, dispatch or provider calls.
+
+
+## Latest A0 audit addendum — 2026-11-14
+
+The latest source audit is recorded in [A0 authority boundary report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/reports/2026-11-14-next-a0-authority-boundary-audit.md). A0 remains injected-adapter-only and is not wired to Supervisor/Worker. Its binding omits owner/repository numeric IDs and issue number; free-quota validation is not a production route/account/quota registry. D1 consume remains local-only and has no cryptographic issuer/verifier. Default Supervisor is heartbeat-only while dispatch is false; Worker has no A0/D1 composition. Do not enable dispatch or provision hosted state.
+
+PR #68 exact-head successor `a4c11582eaf66341eafeec60c3f670bc5e2e53f1` triggered Pool Contract Validation run `43602453650` and Runner Resource Probe run `43602453656`; both completed SUCCESS. Logs confirm matrix 30 records PASS and a read-only Ubuntu 24.04.5 AWS runner inventory (4 vCPU, 88.46 GiB available); no agents installed, no secrets accessed, no profile qualified. This is documentation-head CI and inventory evidence only.
+
+Next bounded task: canonicalize the approval envelope and compare maintained Workers-compatible signature verification libraries before implementing a local-only issuer/verifier + atomic D1 consume/task/outbox proof. Keep dispatch false.
