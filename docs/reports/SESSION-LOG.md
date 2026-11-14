@@ -146,3 +146,14 @@ PR #68 Pool Contract Validation run 43601849632 completed SUCCESS. Its log confi
 - dispatch remains disabled and no secret values are stored.
 
 The eight-observation JSON/Markdown matrix revision is therefore CI-validated. Runner Resource Probe run 43601849661 also completed SUCCESS, but its subsequent opportunistic sample is outside the intentional evidence cutoff of run 43601762099. Do not automatically expand the qualification snapshot on every PR synchronization; add further observations only in a deliberate measurement batch.
+
+
+## 2026-11-14 — Live state and six-hour launch estimate
+
+PR #68 advanced to exact head `74244d78299417347cdce42b0916871684550399`. Exact-head Runner Resource Probe run 43601943360 and Pool Contract Validation run 43601943374 both completed SUCCESS. Runner job 132468370214 observed Ubuntu 24.04.5 LTS, 4 vCPU and 85.25 GiB available workspace; the log explicitly states this was read-only, with no agents installed, no secrets accessed and no profile qualified. Contract job 132468370263 validated pinned Actions references, permission/fail-closed invariants and the 30-record qualification matrix. This additional probe is opportunistic and excluded from the prior eight-observation qualification cutoff.
+
+PR #67 remains at exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head local D1 runs 43600901063 and 43600901068 remain SUCCESS, with 84 tests plus two fixture/upgrade smoke groups passed. PR #67 and #68 formal review and inline thread counts are 0/0.
+
+The existing estimate's executive pilot target (10–15 eight-hour engineer-days = 80–120 hours) and detailed stage sum (17–34 engineer-days = 136–272 hours before overlap) describe different levels of scope. At six hours/day: optimistic pilot = 14–20 workdays; detailed stage envelope = 23–46 workdays. Practical planning range from current state = 120–180 hours / 20–30 six-hour days, conditional on reuse, overlap and timely no-card backend entitlement. Hosted backend alternative may add 24–56 hours (4–10 six-hour days). Secure multi-tenant v1 remains 160–240 hours / 27–40 six-hour days. Full calculation and assumptions: [dated report](2026-11-14-next-time-estimate-and-live-state.md).
+
+SentinelX host inventory currently has zero connected hosts; Voktors-Mini.Dlink is offline and mh-dev-01/02 disabled. No external/server-based agent work can proceed on current connection state. No secret, provider, hosted resource, deployment, merge, dispatch or paid route was used. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
