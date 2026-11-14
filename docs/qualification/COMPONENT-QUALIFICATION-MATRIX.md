@@ -4,15 +4,15 @@
 - Schema: `1.0.0`
 - Snapshot: 2026-11-14
 - Branch: `docs/unified-cloud-pool-jarvis-plan-2026-11-14`
-- Records: **25**
+- Records: **29**
 - Dispatch: **disabled**
 - Secret values in matrix: **none**
 
-> This is a decision/evidence register, not an installation manifest. `SELECTED` means selected for a bounded architectural role; it does not mean installed, runtime-tested, security-qualified or production-ready. Every candidate remains ineligible for production until its version, license, security review, resource profile, provider authentication and independent verification have evidence.
+> This is a decision/evidence register, not an installation manifest. Selection does not mean production readiness. Local test success does not qualify a hosted service or live provider route.
 
 ## Decision matrix
 
-| Component / upstream | Decision | Runtime status | Version / pin | Next qualification gate |
+| Component / upstream | Decision | Runtime evidence | Version / pin | Next qualification gate |
 |---|---|---|---|---|
 | [GitHub-hosted Actions runner](https://github.com/actions/runner-images) | SELECTED_BOOTSTRAP | NOT_RUN_FOR_MULTI_AGENT_PROFILE | ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest | read-only runner resource probe |
 | [Pool Supervisor](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/scripts/pool-supervisor.mjs) | SELECTED_EXISTING_INTERNAL | IMPLEMENTED_SCAFFOLD_NOT_RUN_ON_PR_HEAD | repository commit SHA; current PR head must be recorded per run | negative tests on a controlled non-dispatch harness |
@@ -35,53 +35,63 @@
 | [Telegram Bot API](https://core.telegram.org/bots/api) | LATER_CONNECTOR | NOT_RUN | hosted API | identity binding and replay/rate-limit tests |
 | [Meta Instagram APIs](https://developers.facebook.com/docs/instagram-platform/) | LATER_CONNECTOR | NOT_RUN | Meta Graph API version must be pinned at implementation | official API permission and app-review checklist |
 | [Ollama/local model runtime](https://github.com/ollama/ollama) | EXTERNAL_NODES_LATER | NOT_RUN | none | separate worker-admission and isolation design |
-| [Pool quota ledger](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | implement contract and race/reset/429 tests |
+| [Pool quota ledger](https://github.com/VlDMlNSh/developer-cloud-pool) | LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED | 43_POLICY_TESTS_PASS; NOT_INTEGRATED_WITH_DISPATCH | PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4 | integrate with authoritative task admission and provider evidence after branch reconciliation |
 | [Tenant isolation boundary](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | implement two-tenant adversarial qualification |
-| [Task DAG and durable lifecycle](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | typed task contract and failure-injection tests |
+| [Task DAG and durable lifecycle](https://github.com/VlDMlNSh/developer-cloud-pool) | LOCAL_PROOF_NOT_HOSTED | PARTIAL_LOCAL_ATTEMPT_LIFECYCLE_PROOF; GENERAL_DAG_NOT_IMPLEMENTED | not implemented | reconcile attempt store as one canonical task lifecycle; add dependency graph only where required |
 | [Independent A3 verifier](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | independent verifier job and tamper-evident evidence tests |
+| [Cloudflare Workers + D1 claim / attempt / projection proof](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | LOCAL_PROOF_NOT_HOSTED | LOCAL_WORKERS_D1_TESTS_PASS_69_PLUS_UPGRADE_SMOKES; NOT_HOSTED | local proof package lock; exact PR #67 head 00d806a24c86545e0dfaf2dee47fcfa9747a5b62 | reconcile stack on current default; implement issuer and hosted test only after explicit authorization |
+| [Provider slot inventory (24 cloud routes)](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29) | INVENTORY_ONLY | 43_POLICY_TESTS_PASS; ALL_24_ACCOUNT_AND_QUOTA_DOMAINS_UNVERIFIED | PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4 | reconcile provider accounts and quota-domain evidence without revealing key material |
+| [Provider quota ledger and agent placement](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29) | LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED | 43_POLICY_TESTS_PASS; NO_LIVE_PROVIDER_OR_SHARED_LEDGER | PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4 | integrate policy into A0 admission and authoritative quota state only after source reconciliation |
+| [Jarvis Hono web console prototype](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25) | DEMO_PROTOTYPE_NOT_PRODUCTION | PROTOTYPE_CI_PASS; NO_HOSTED_DEPLOYMENT | PR #25 head 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85 | reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval |
 
-## Decision semantics
+## Corrections from source reconciliation
 
-- `SELECTED_*`: chosen for a limited bootstrap or test role, not generally qualified.
-- `CONDITIONAL_*`: candidate pending stated evidence and gates.
-- `PRIMARY_UI_CANDIDATE_NOT_ADOPTED`: leading Jarvis UI candidate; not installed or trusted as A0.
-- `HOLD_PROVENANCE`: source identity or provenance is unresolved.
-- `DEFERRED*` / `OPTIONAL_LATER` / `LATER_CONNECTOR` / `EXTERNAL_NODES_LATER`: intentionally outside phase-1.
-- `INTERNAL_GAP_REQUIRED`: required pool capability that does not yet exist as executable code.
+The first 25-record matrix described the quota ledger and task lifecycle too broadly as missing. Existing draft PRs contain meaningful local implementations:
+- PR #29 has a pure provider quota state machine, slot inventory (24 cloud slots), slot admission and agent placement/resource-profile primitives. Its exact-head CI run 43031920223 passed 43 tests. It is not connected to live dispatch; all 24 provider account identities and quota domains remain unverified.
+- PR #54 demonstrates 50-way logical-task contention in local Workers/D1 tests.
+- PR #67 contains a 10-migration local D1 claim/attempt/projection proof. Exact run 43182768560 passed 69 primary tests, plus isolated upgrade-binding and frozen schema-0010 fixture checks. This is not hosted D1.
+- PR #25 contains a fail-closed Hono Jarvis console prototype with successful prototype CI. PR #30/#61 provide synthetic or local authentication/session proofs, not production OAuth or tenant isolation.
+
+These branches remain draft/unmerged. Their code and test evidence must be reconciled onto one current-base integration branch before it becomes a runtime dependency.
 
 ## Qualification ladder
 
-1. **Source integrity:** canonical upstream, pinned release/commit, license and dependency inventory.
-2. **Static review:** supported runtime, installation footprint, permission model, secret access and network behavior.
-3. **Install probe:** isolated ephemeral runner, no provider credentials, resource and startup measurements.
+1. **Source integrity:** canonical upstream, immutable release/commit, license and dependency inventory.
+2. **Static/security review:** runtime, permissions, secret access, network egress, tenant boundary and dependency provenance.
+3. **Install probe:** isolated ephemeral runner, no provider credentials, measured startup and resource footprint.
 4. **Authentication probe:** explicit tenant-bound credential reference; never print or expose key values.
-5. **Execution probe:** synthetic task, immutable target SHA, constrained workspace, recorded usage and artifacts.
-6. **Security qualification:** negative tests for cross-tenant access, secret leakage, privilege escalation and unsafe retries.
+5. **Execution probe:** synthetic task, immutable target SHA, constrained workspace, usage and artifact evidence.
+6. **Security qualification:** negative tests for cross-tenant access, secret leakage, privilege escalation, replay, stale leases and unsafe retries.
 7. **A3 acceptance:** independent verifier, evidence manifest and reproducible result.
 
-A component cannot be marked eligible based only on a successful package install or workflow heartbeat.
+A package install, a successful heartbeat or local test suite alone cannot qualify an agent or production service.
 
-## Phase-1 composition decision
+## Current architecture composition
 
-- **A0 bootstrap:** existing Pool Supervisor + GitHub Issues queue + GitHub Actions. This is deliberately a limited bootstrap, not a durable multi-tenant scheduler.
-- **Runner:** GitHub-hosted ephemeral Ubuntu 24.04 jobs. Measure the actual image and resource envelope before packing multiple agents.
-- **Worker:** only the existing DSH headless no-model probe is currently allowlisted. Gemini, Claude Code and Codex are candidates, not enabled worker profiles.
-- **Jarvis:** OpenHands application is the primary UI/workspace candidate; A0 remains authoritative. Adoption is blocked on tenant isolation and API integration review.
-- **Deferred:** database, gateway, browser automation, Telegram, Instagram and external compute until the specific need and security boundary are proven.
-- **Required internal gaps:** tenant isolation, quota ledger, task DAG/durable lifecycle and independent A3 verifier.
+- **A0 bootstrap:** existing Pool Supervisor + GitHub Issues human intake + GitHub Actions. Current default Supervisor is heartbeat/scaffold, not a qualified transactional dispatcher.
+- **Authoritative claim/task state:** local D1 proof is the preferred implementation candidate, not a hosted service. GitHub Issue labels are not a CAS lock.
+- **Runner:** one live sample of GitHub-hosted Ubuntu 24.04.5 x64; 4 logical CPUs, 15 GiB RAM, 88.46 GiB available workspace filesystem. This is one observation, not verified capacity.
+- **Worker:** only the existing DSH no-model probe is allowlisted in the current bootstrap. Gemini, Claude Code and Codex are candidates, not qualified pool profiles.
+- **Provider routes:** 24 cloud slots inventoried; 0 verified account identities and 0 verified quota domains in the inventory evidence.
+- **Quota and placement:** pure local policy implementation exists; no authenticated provider broker or dispatch integration.
+- **Jarvis:** Hono prototype is a stronger immediate reuse path than starting with OpenHands. OpenHands remains a candidate for later workspace/agent execution integration; neither is an accepted production UI yet.
+- **Required internal gaps:** production issuer/trusted time/revocation, tenant isolation, integration of canonical attempt/outbox to live projection, independent A3 verifier and operational observability.
 
 ## What the automated matrix test checks
 
-`node scripts/validate-component-matrix.mjs` validates JSON syntax, required fields, unique IDs, source URL shape, decision vocabulary, required architecture records, dispatch-disabled invariant and absence of secret values. The CI job also runs the existing workflow/security contract validator and parses workflow YAML.
+`node scripts/validate-component-matrix.mjs` validates JSON syntax, required fields, unique IDs, source URL shape, decision vocabulary, required architecture records, dispatch-disabled invariant and absence of secret values. CI runs it with the existing pool contract validator.
 
-**What it does not check:** live upstream availability, current release freshness, actual license text, vulnerability status, provider key validity, API quotas, model calls, runner resource capacity, multi-agent execution, tenant isolation at runtime or production readiness. Those require separate qualification jobs and evidence.
+**It does not check:** upstream availability, current release freshness, live license status, vulnerability status, provider key validity, API quotas, model calls, runner capacity distribution, multi-agent execution, tenant isolation at runtime or production readiness.
 
 ## Launch blockers
 
-1. No provider-backed multi-agent worker profile is qualified.
-2. A0 durable leases, task DAG, checkpoint/resume and tenant-aware admission are incomplete.
-3. Quota reservation/reconciliation and daily reset policy are not implemented.
-4. Cross-tenant isolation has no executable adversarial test.
-5. Independent pool A3 verification is not implemented.
-6. Runner resource baseline and multi-agent packing have not been measured on this PR head.
-7. Dispatch remains disabled until default-branch governance and explicit owner approval are complete.
+1. Reconcile the draft PR stack (#29, #37, #39/#54, #53, #58/#59/#67) to one canonical current-base implementation and remove conflicting lifecycle paths.
+2. Implement and qualify issuer authentication, trusted time, revocation and nonce/replay protection.
+3. Verify account-specific hosted D1 eligibility and obtain explicit approval before creating one isolated qualification database and test-only Worker.
+4. Run hosted 50+ independent HTTP contention and failure/recovery tests; local Miniflare/workerd evidence is not a substitute.
+5. Integrate quota/slot admission with task dispatch and verify account/quota-domain evidence for provider routes.
+6. Implement tenant isolation and adversarial cross-tenant tests.
+7. Integrate Jarvis auth/API with the pool and add independent A3 verification.
+8. Repeat runner probes and test real agent installs without secrets before provider-backed execution.
+9. Obtain independent security/governance approval on exact final source SHA.
+
