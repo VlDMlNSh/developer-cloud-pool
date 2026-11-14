@@ -253,6 +253,36 @@ describe("receipt-bound projection orchestration", () => {
     expect(events.results.map(x => x.event_type)).toEqual(["post_reserved", "marker_verified"]);
   });
 
+  it("verifies a POST that committed remotely even when the API response throws", async () => {
+    const outboxId = await createOutbox();
+    let postCalls = 0;
+    const api = apiFactory();
+    api.createComment = async (_repo, _issue, body) => {
+      postCalls += 1;
+      api.comments.push({ body });
+      throw new Error("connection dropped after remote commit");
+    };
+    const orchestrator = createProjectionDeliveryOrchestrator({
+      db: env.POOL_DB, api, workerId: "projection-runtime",
+      clock: { now: () => NOW + 10 }
+    });
+
+    const result = await orchestrator.deliver(outboxId);
+    expect(result).toMatchObject({
+      decision: "PROJECTION_DELIVERED",
+      projection_verified: true,
+      dispatch: false
+    });
+    expect(postCalls).toBe(1);
+    expect(api.comments).toHaveLength(1);
+    const row = await env.POOL_DB.prepare(
+      "SELECT status, comment_post_state FROM pool_attempt_projection_outbox WHERE outbox_id = ?"
+    ).bind(outboxId).first();
+    expect(row).toMatchObject({
+      status: "delivered", comment_post_state: "verified"
+    });
+  });
+
   it("never repeats an indeterminate POST when the marker remains invisible on later retries", async () => {
     const outboxId = await createOutbox();
     let now = NOW + 10;
