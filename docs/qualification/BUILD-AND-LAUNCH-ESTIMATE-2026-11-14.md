@@ -63,3 +63,27 @@ Some stages can overlap. The critical path is source reconciliation → authenti
 Plan on **2–3 weeks for a controlled first multi-agent pilot** and **4–6 weeks for a secure multi-tenant v1**. The estimate is medium confidence for engineering effort and lower confidence for calendar time because hosted D1 entitlement, issuer ownership, provider account/quota evidence and independent review are external gates.
 
 No hosted resources, paid services, provider API calls, secret reads, production deployments, merges or dispatch changes are included in this estimate or were performed in this pass.
+
+
+## Remaining effort recalculation — 2026-11-14, owner schedule: 6 hours/day
+
+The executive estimate and detailed stage table above are not directly interchangeable:
+- Executive estimate for the first controlled multi-agent pilot: 10–15 eight-hour engineer-days = 80–120 hours.
+- Detailed stages 0–7 sum to 17–34 eight-hour engineer-days = 136–272 hours before overlap. This includes the full claim/issuer, hosted backend, runner, quota, Jarvis, tenant/A3 and acceptance sequence, and is a wider risk-aware work envelope.
+
+Converted to the owner's six-hour daily sessions:
+| Scope | Engineering hours | Six-hour workdays |
+|---|---:|---:|
+| Demo-only, no provider execution | 16–32 h | 3–6 days |
+| Optimistic first controlled pilot | 80–120 h | 14–20 days |
+| Detailed stage envelope before overlap | 136–272 h | 23–46 days |
+| Practical planning range from verified current state | 120–180 h | 20–30 days |
+| Secure multi-tenant v1 | 160–240 h | 27–40 days |
+
+The practical planning range is a reasoned synthesis, not a new measured benchmark: it allows reuse of existing local proofs and candidate components while retaining integration, authentication, hosted-state and A3 qualification work. It assumes six focused hours every calendar day. If the owner works five days/week, 20–30 workdays correspond to approximately 4–6 calendar weeks.
+
+If hosted D1 entitlement is unavailable or cannot be verified and a different no-card backend must be qualified, the existing plan adds 3–7 eight-hour engineer-days = 24–56 hours = 4–10 additional six-hour sessions. Do not use a paid fallback.
+
+Current blockers driving uncertainty: PRs remain draft/unmerged; local D1 is not hosted; production issuer/trusted time/revocation is not implemented; free quota/account domains are unverified; real agent profiles are not installed or qualified; Issue #22 console has no production OAuth/live API; Issue #38 has no hosted one-winner claim proof; A3 and security acceptance are outstanding.
+
+Evidence: [2026-11-14 live state and six-hour estimate](../reports/2026-11-14-next-time-estimate-and-live-state.md). The latest PR #68 exact head is `74244d78299417347cdce42b0916871684550399`; its resource and contract CI runs 43601943360 and 43601943374 succeeded, but the probe installed no agents and qualified no profile.
