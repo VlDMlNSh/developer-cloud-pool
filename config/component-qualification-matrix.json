@@ -18,16 +18,17 @@
       "version_pin": "ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest",
       "license": "GitHub-hosted service; runner-images repository MIT",
       "security": "ephemeral job; least-privilege permissions; do not expose secrets to untrusted code",
-      "runtime_qualification": "FIVE_READ_ONLY_RESOURCE_PROBES_PASS; FOUR_SAME_IMAGE_OBSERVATIONS; CAPACITY_NOT_QUALIFIED",
+      "runtime_qualification": "SIX_READ_ONLY_RESOURCE_PROBES_PASS; FOUR_AZURE_SAME_IMAGE_OBSERVATIONS; CAPACITY_NOT_QUALIFIED",
       "evidence": [
         "PR #68 run 43595157109: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1",
         "PR #68 run 43595609567: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1",
         "PR #68 exact-head follow-up run 43600395359: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1; repeated same image/version/region family as run 43595609567",
         "PR #68 exact-head follow-up run 43600485990: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1, AMD EPYC 9V74; same image/version/region family as runs 43595609567 and 43600395359, with a different observed CPU model",
-        "PR #68 exact-head follow-up run 43601408557: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1, AMD EPYC 7763; fourth observation in the same image/version/region family"
+        "PR #68 exact-head follow-up run 43601408557: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1, AMD EPYC 7763; fourth observation in the same image/version/region family",
+        "PR #68 exact-head follow-up run 43601557812: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1, Intel Xeon 6975P-C; second observation in the AWS image/region family"
       ],
       "blockers": [
-        "five observations total; four use the same image version and Azure region family but observed CPU model differs (EPYC 7763 vs EPYC 9V74); one is a different image version and AWS region",
+        "six observations total: four Azure northcentralus/image 20261111.370.1 and two AWS us-east-1/image 20261111.127.1; CPU models differ across observed hosts; no reserved capacity or multi-agent packing evidence",
         "no agent install/benchmark or multi-agent packing test",
         "hosted runner capacity is ephemeral and not guaranteed reservation"
       ],
