@@ -95,3 +95,16 @@ A package install, a successful heartbeat or local test suite alone cannot quali
 8. Repeat runner probes and test real agent installs without secrets before provider-backed execution.
 9. Obtain independent security/governance approval on exact final source SHA.
 
+## Mandatory provider and cost policy (owner decision, 2026-11-14)
+
+This policy is a hard admission constraint for the initial pool, not an optional preference:
+
+- **No paid provider APIs or paid API fallback in the initial launch.** Do not create paid API credentials, invoke paid endpoints, or enable billing-dependent routes.
+- **OpenAI is deferred.** Any OpenAI API/Codex provider integration is out of the initial launch and requires a later, explicit owner decision. Do not infer permission from a registered candidate or available credential.
+- **Claude Code:** use only the approved Free Claude Code route, subject to its current supported terms and actual free availability. **Do not authenticate through Anthropic API or use an Anthropic API key/billing route.** If the free route is unavailable or unsupported, mark the profile BLOCKED; do not substitute a paid route.
+- **Local inference:** Ollama with Llama (and other approved local models) is a separate, preferred fallback route, subject to runner/hardware resource qualification.
+- **Gemini, DeepSeek and other external providers:** free quotas/free routes only, where officially available and permitted by provider terms. Record the quota domain, reset window and observed usage without storing secret values.
+- **Quota exhaustion or provider denial:** queue, defer, or route to an independently qualified free/local profile. Never silently incur charges, use paid fallback, or evade limits through account/key rotation.
+- **A0 enforcement:** every task admission must carry an explicit cost_class (free_quota, local, or later paid_explicitly_approved), provider/profile identity and quota evidence. Initial policy allowlist is free_quota and local; paid_explicitly_approved is denied until a separate owner approval and policy change. Fail closed on unknown cost classification.
+
+This policy does not claim that a provider's free tier is guaranteed, unlimited, or available to this account. Each route still requires terms, authentication, quota and runtime qualification. The matrix validator must check that the policy remains present and that dispatch remains disabled until the launch gates are accepted.
