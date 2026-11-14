@@ -925,3 +925,16 @@ The previous audit updated the PR #68 documentation branch (master handoff and s
 - Do not build custom JWT issuer. Next: define normative owner approval envelope, nonce uniqueness, trusted time, task/attempt lifecycle, tenant and cost/route/quota bindings; then local-only integration proof on a fresh current-base branch. Dispatch false.
 - No code/secrets/hosted resources/provider calls/deploy/billing/merge. A0 composition NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-14 — Cross-branch live state revalidation
+
+- Default `Основной`: `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67: OPEN/DRAFT/UNMERGED, exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head Pool Contract Validation 43600901063 and Isolated D1 Ledger Proof 43600901068 SUCCESS (local proof only).
+- PR #68: OPEN/DRAFT/UNMERGED, branch `docs/unified-cloud-pool-jarvis-plan-2026-11-14`, head `8569d0b368b353beb78e8594509d8492abaec170` after this pass's handoff/session-log documentation commits. The preceding source/documentation snapshot `d9afb6f45a7deb465f7fee7aa347469c2f6019b7` had exact-head Pool Contract Validation 43602513555 and Runner Resource Probe 43602513530 SUCCESS. No workflow run is present for the new docs-only head; exact-head CI for `8569d0b...` is therefore NOT VERIFIED.
+- PR #66 documentation branch head at revalidation: `5a752cbb4a2f4a95c98be55a9ecc7f3aa26fcfd4`; OPEN/DRAFT/UNMERGED. This Context Window and checkpoint are maintained on that working branch, not on default.
+- PR #67/#68 formal reviews: 0 each; inline threads not rechecked in this pass. Mergeable status does not imply acceptance.
+- A0 remains injected-adapter-only, not integrated with Supervisor/Worker; D1 is local-only; hosted D1, cryptographic issuer, trusted time, live quota proof, real worker/provider execution and A3 acceptance remain NOT VERIFIED/NOT RUN. Dispatch disabled.
+- No code/runtime/schema/secrets/hosted resource/provider/dispatch/deployment/billing/merge/default-branch changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded task: inspect exact PR #67 migrations and transaction APIs, then specify and test local atomic A0 approval → task/attempt → queue-intent composition, negative-first, always dispatch:false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
