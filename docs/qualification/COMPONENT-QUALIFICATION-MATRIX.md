@@ -4,7 +4,7 @@
 - Schema: `1.0.0`
 - Snapshot: 2026-11-14
 - Branch: `docs/unified-cloud-pool-jarvis-plan-2026-11-14`
-- Records: **29**
+- Records: **30**
 - Dispatch: **disabled**
 - Secret values in matrix: **none**
 
@@ -39,17 +39,17 @@
 | [Tenant isolation boundary](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | implement two-tenant adversarial qualification |
 | [Task DAG and durable lifecycle](https://github.com/VlDMlNSh/developer-cloud-pool) | LOCAL_PROOF_NOT_HOSTED | PARTIAL_LOCAL_ATTEMPT_LIFECYCLE_PROOF; GENERAL_DAG_NOT_IMPLEMENTED | not implemented | reconcile attempt store as one canonical task lifecycle; add dependency graph only where required |
 | [Independent A3 verifier](https://github.com/VlDMlNSh/developer-cloud-pool) | INTERNAL_GAP_REQUIRED | NOT_IMPLEMENTED | not implemented | independent verifier job and tamper-evident evidence tests |
-| [Cloudflare Workers + D1 claim / attempt / projection proof](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | LOCAL_PROOF_NOT_HOSTED | LOCAL_WORKERS_D1_TESTS_PASS_69_PLUS_UPGRADE_SMOKES; NOT_HOSTED | local proof package lock; exact PR #67 head 00d806a24c86545e0dfaf2dee47fcfa9747a5b62 | reconcile stack on current default; implement issuer and hosted test only after explicit authorization |
+| [Cloudflare Workers + D1 claim / attempt / projection proof](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | LOCAL_PROOF_NOT_HOSTED | LOCAL_WORKERS_D1_84_TESTS_PASS; UPGRADE_BINDING_1_PASS; FROZEN_FIXTURE_2_PASS; NOT_HOSTED | local proof package lock; exact PR #67 head a53f6232bd5b50d3e150addf528b8e722002f9dd | integrate A0 admission into one atomic ledger transaction; no hosted D1 without explicit authorization |
 | [Provider slot inventory (24 cloud routes)](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29) | INVENTORY_ONLY | 43_POLICY_TESTS_PASS; ALL_24_ACCOUNT_AND_QUOTA_DOMAINS_UNVERIFIED | PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4 | reconcile provider accounts and quota-domain evidence without revealing key material |
 | [Provider quota ledger and agent placement](https://github.com/VlDMlNSh/developer-cloud-pool/pull/29) | LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED | 43_POLICY_TESTS_PASS; NO_LIVE_PROVIDER_OR_SHARED_LEDGER | PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4 | integrate policy into A0 admission and authoritative quota state only after source reconciliation |
 | [Jarvis Hono web console prototype](https://github.com/VlDMlNSh/developer-cloud-pool/pull/25) | DEMO_PROTOTYPE_NOT_PRODUCTION | PROTOTYPE_CI_PASS; NO_HOSTED_DEPLOYMENT | PR #25 head 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85 | reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval |
 
 ## Corrections from source reconciliation
 
-The first 25-record matrix described the quota ledger and task lifecycle too broadly as missing. Existing draft PRs contain meaningful local implementations:
+The earlier matrix described the quota ledger and task lifecycle too broadly as missing. Existing draft PRs contain meaningful local implementations:
 - PR #29 has a pure provider quota state machine, slot inventory (24 cloud slots), slot admission and agent placement/resource-profile primitives. Its exact-head CI run 43031920223 passed 43 tests. It is not connected to live dispatch; all 24 provider account identities and quota domains remain unverified.
 - PR #54 demonstrates 50-way logical-task contention in local Workers/D1 tests.
-- PR #67 contains a 10-migration local D1 claim/attempt/projection proof. Exact run 43182768560 passed 69 primary tests, plus isolated upgrade-binding and frozen schema-0010 fixture checks. This is not hosted D1.
+- PR #67 contains a 10-migration local D1 claim/attempt/projection proof. Exact current run 43600901068 passed 84 Workers-runtime tests, plus 1 upgrade-binding smoke and 2 frozen schema-0010 fixture tests. The A0 admission contract contributes 14 of the 84 tests and uses injected mock authorities. This is not hosted D1 or production admission.
 - PR #25 contains a fail-closed Hono Jarvis console prototype with successful prototype CI. PR #30/#61 provide synthetic or local authentication/session proofs, not production OAuth or tenant isolation.
 
 These branches remain draft/unmerged. Their code and test evidence must be reconciled onto one current-base integration branch before it becomes a runtime dependency.
@@ -70,7 +70,7 @@ A package install, a successful heartbeat or local test suite alone cannot quali
 
 - **A0 bootstrap:** existing Pool Supervisor + GitHub Issues human intake + GitHub Actions. Current default Supervisor is heartbeat/scaffold, not a qualified transactional dispatcher.
 - **Authoritative claim/task state:** local D1 proof is the preferred implementation candidate, not a hosted service. GitHub Issue labels are not a CAS lock.
-- **Runner:** two live read-only observations of GitHub-hosted Ubuntu 24.04.5 x64: both 4 logical CPUs and 15 GiB RAM; available workspace filesystem 88.46 GiB (AWS us-east-1, image 20261111.127.1) and 85.26 GiB (Azure northcentralus, image 20261111.370.1). Two observations across different image versions/regions are not a stable or reserved capacity guarantee.
+- **Runner:** four read-only observations of GitHub-hosted Ubuntu 24.04.5 x64: all 4 vCPU and 15 GiB RAM. One observation used AWS us-east-1/image 20261111.127.1 with 88.46 GiB workspace; three used Azure northcentralus/image 20261111.370.1 with 85.26 GiB workspace. The three same-image/region-family observations reported different CPU models (EPYC 7763 and EPYC 9V74). These observations do not qualify reserved capacity, stable hardware identity or multi-agent packing.
 - **Worker:** only the existing DSH no-model probe is allowlisted in the current bootstrap. Gemini, Claude Code and Codex are candidates, not qualified pool profiles.
 - **Provider routes:** 24 cloud slots inventoried; 0 verified account identities and 0 verified quota domains in the inventory evidence.
 - **Quota and placement:** pure local policy implementation exists; no authenticated provider broker or dispatch integration.
