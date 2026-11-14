@@ -614,5 +614,26 @@
       ],
       "next_gate": "reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval"
     }
-  ]
+  ],
+  "provider_cost_policy": {
+    "effective_for": "initial_launch",
+    "paid_provider_apis": "DENY",
+    "openai": "DEFERRED_REQUIRES_EXPLICIT_OWNER_APPROVAL",
+    "anthropic_api": "DENY",
+    "claude_code": "FREE_CLAUDE_CODE_ROUTE_ONLY; if unavailable or unsupported, BLOCK profile; never use Anthropic API",
+    "local_models": "OLLAMA_LOCAL_ONLY_AS_QUALIFIED; includes Llama",
+    "external_providers": "OFFICIAL_FREE_QUOTAS_OR_FREE_ROUTES_ONLY",
+    "quota_exhaustion": "QUEUE_DEFER_OR_ROUTE_TO_QUALIFIED_FREE_OR_LOCAL_PROFILE",
+    "account_or_key_rotation_to_evade_limits": "PROHIBITED",
+    "unknown_cost_class": "FAIL_CLOSED",
+    "allowed_cost_classes_initial": [
+      "free_quota",
+      "local"
+    ],
+    "deferred_cost_classes": [
+      "paid_explicitly_approved"
+    ],
+    "secret_values_stored": false,
+    "owner_decision_date": "2026-11-14"
+  }
 }
