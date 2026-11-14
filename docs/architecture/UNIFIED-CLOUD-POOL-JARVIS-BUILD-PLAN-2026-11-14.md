@@ -348,3 +348,167 @@ Therefore:
 - [Jarvis/A0 ingress source reconciliation WB-14](https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/checkpoints/MEDIAHUB-CONTOUR-A-WB-14-JARVIS-A0-AND-DIRECT-LOCAL-ROUTE-SOURCE-RECONCILIATION-2026-10-15.md)
 
 These references are design inputs, not evidence that the Developer Cloud Pool has implemented or qualified A1/A2/A3 execution.
+
+---
+
+## 10. Governing correction: assemble proven projects; do not build a new agent framework
+
+This section supersedes any earlier wording in this document that could be read as a plan to implement a new agent runtime, a fixed three-agent pool, or a full custom orchestration framework.
+
+**Product objective:** assemble a working cloud pool from mature, maintained upstream projects and existing GitHub Actions capabilities. Write only the minimum integration glue, configuration, policy and adapters that are genuinely missing. Do not fork or reimplement an upstream product when a supported component can do the job.
+
+The first deliverable is the cloud pool itself. Local machines, Mac minis, GPU servers and other external compute nodes are explicitly out of scope until the cloud pool is operational and qualified.
+
+### 10.1 Corrected control and execution model
+
+There are three distinct coordination levels; they must not be conflated:
+
+1. **Pool A0 — global coordinator.** Owns the cloud pool's task queue, task admission, runner scheduling, worker registry, quotas, leases, retries, cancellation, task state and final result aggregation. In the first release, use the existing GitHub Actions Pool Supervisor and its issue/workflow state as the bootstrap A0 implementation. A later persistent A0 service is considered only if measured limits require it.
+2. **Runner-local Gemini controller.** Inside a selected runner job, the Gemini controller coordinates the Gemini agent processes assigned to that task. It is subordinate to Pool A0 and cannot create new pool-level authority, choose arbitrary repositories, or grant itself credentials.
+3. **Task agents.** Gemini, Claude, Codex and other provider-backed agents are execution engines. Their count is dynamic; three is not a design limit and one agent per runner is not a requirement.
+
+The runner is an execution container/VM boundary, not an agent identity. One runner job may host several agent processes. A valid initial profile may contain one Gemini controller plus Gemini agents 1, 2 and 3 in the same runner, provided measured CPU/RAM/disk, provider concurrency/rate limits, task isolation and API quotas permit it. Additional providers/agents can be admitted to that same runner profile after measurement. The scheduler may also launch more runner jobs in parallel. These are separate scaling dimensions: **agents per runner** and **concurrent runner jobs**.
+
+Do not hard-code a global agent count. A0 schedules from a capability registry and current measurements, not from a fixed three-agent or twenty-agent roster.
+
+### 10.2 Roles as design guidance, not a code transplant
+
+Use the useful separation of duties observed in MediaHub, but define and qualify the pool's own contracts:
+
+- **A0:** global cloud-pool coordinator described above.
+- **A1:** planning/architecture responsibility — interprets the admitted task, selects a proven toolchain/profile and defines acceptance criteria.
+- **A2:** execution responsibility — one or more bounded agent processes in isolated task workspaces.
+- **A3:** independent verification responsibility — checks exact target SHA, tests, artifact digests, scope and policy compliance. A3 must not simply repeat A2's self-assessment.
+
+A0–A3 are responsibilities, not a requirement to deploy exactly four permanent agents. One agent may take a role on one task and a different role on another. The A3 check should use a fresh context and independently collected evidence; use a separate runner job for higher-risk changes. The cloud-pool A0 is not MediaHub's A0 implementation, and no MediaHub code or authority is imported without a separate source review.
+
+### 10.3 Existing and candidate component register
+
+Status terms: **Selected for phase** means the architecture currently chooses it; it does not mean installed, tested or qualified. **Candidate** means evaluate before adoption. **Deferred** means intentionally not part of the first cloud-pool launch.
+
+| Component / upstream | Intended role | Decision now | Qualification / boundary |
+|---|---|---|---|
+| GitHub Actions hosted jobs | Ephemeral cloud execution and fan-out | SELECTED — phase 1 | Actual account concurrency, runner image, free disk, memory and job startup must be measured. |
+| Existing Pool Supervisor + GitHub Issues task template | Bootstrap Pool A0 and low-volume task ledger | SELECTED — phase 1 | Existing code is a scaffold; dispatch is fail-closed and not yet qualified. Keep POOL_DISPATCH_ENABLED false until governance and negative tests pass. |
+| Gemini controller + Gemini agents | Multi-agent work inside a runner | SELECTED TARGET PROFILE — first agent group | MediaHub's successful dispatch runs are evidence for that separate system only. Requalify the actual Gemini CLI/API invocation, controller, provider limits and result handoff inside this pool. |
+| Everything Claude Code (ECC), official affaan-m/ECC | Reusable agent skills, rules, workflows, hooks and harness adapters | SELECTIVE CANDIDATE — Claude/Codex/Gemini profiles | ECC is a toolbox/harness layer, not Pool A0 or a cloud scheduler. Pin official source/version; select only needed modules; inspect hooks, MCP definitions, permissions and supported-harness parity. Do not install the entire catalogue into every runner. |
+| DeepSeek Harness (deepseek-ai/deepseek-harness) | Composable agent runtime / headless or SDK profile | CONDITIONAL CANDIDATE | Upstream calls it Developer Preview and says it has not had a security audit. Existing pool workflow is only a no-model headless composition probe. Do not make it the mandatory runtime until it passes security, compatibility and workload qualification. |
+| Dodaios (Dodaios/Dodaios) | Operator cockpit / superagent UX and agent dispatch | DEFERRED from core A0 | Upstream describes it as a desktop superagent. It is not automatically a headless cloud controller. Review its permission modes and service model before any use; never let its UI or agent defaults replace Pool A0 policy. |
+| agent-browser + Chromium | Interactive browser automation | SELECTED CANDIDATE — isolated browser profile | Browser profile only; authenticated sessions and secrets require a separate trust review. |
+| Playwright | Deterministic browser tests | SELECTED — QA profile | Keep deterministic QA distinct from exploratory agent-browser actions. |
+| LiteLLM Proxy | Unified model API, provider routing and virtual keys | DEFERRED to gateway phase | Evaluate after multiple provider adapters are running. Database-backed budget enforcement, provider quotas and paid-fallback policy must be tested; no silent paid fallback. |
+| LangGraph | Stateful orchestration / checkpoints | DEFERRED | Do not add to phase 1 while GitHub Actions can perform the required bounded dispatch. Reconsider only when durable multi-step orchestration is a measured requirement. |
+| PostgreSQL / pgvector | Durable task state, leases and retrieval | DEFERRED from bootstrap | GitHub Issues/PRs and workflow metadata suffice for low-volume initial proving. Add PostgreSQL when queue throughput, durable checkpoints or audit queries justify it. |
+| n8n | Notifications and ordinary integrations | OPTIONAL LATER | Must not become the privileged dispatch authority. |
+| Telegram Bot API | Jarvis notifications and task intake | NEXT CONNECTOR AFTER CORE | Bot identity, command authorization and approval binding must be verified server-side. |
+| Instagram Meta APIs | Approved professional-account integration | LATER CONNECTOR | Only official supported API scopes; verify account eligibility, app review and permission requirements before planning an activation date. |
+| External servers / GPU nodes | Additional compute and persistent services | EXPLICITLY AFTER CLOUD POOL | No external node is a launch prerequisite. Add later through a separately qualified worker adapter and network identity. |
+
+### 10.4 ECC naming and adoption note
+
+The public project found for the user's “ECC” reference is affaan-m/ECC (https://github.com/affaan-m/ECC), whose current official distribution surfaces include the ecc-universal and ecc-agentshield packages and the ecc@ecc plugin identifier. The project is now branded simply ECC; "Every Cloud Code" is not the expansion shown by the official repository. Treat the above identification as the working match, not permission to install an unofficial fork or package.
+
+Adoption rule:
+- inventory the exact ECC release/tag and supported adapter matrix;
+- select the smallest useful profile for each harness;
+- do not stack plugin and manual installation methods in the same harness;
+- inspect and explicitly enable hooks/MCPs rather than importing all defaults;
+- run AgentShield against the selected agent/hook/MCP configuration;
+- qualify Claude Code, Codex and Gemini adapters separately instead of assuming feature parity.
+
+### 10.5 Runner packing and scaling policy
+
+The architecture is **many agents per runner where efficient**, plus **many concurrent runner jobs where available**. It is not one agent = one VM.
+
+For the public repository's standard ubuntu-24.04 hosted runner, GitHub currently documents 4 vCPU, 16 GB RAM and 14 GB SSD. GitHub's Free plan lists 20 concurrent standard hosted jobs; public standard-runner use is free and unlimited, but the account concurrency ceiling still applies. These are platform limits, not a promise that all jobs start immediately or that the full disk is free.
+
+Packing rules:
+- Start with one runner job and measure the Gemini controller plus the three Gemini agents as one profile.
+- Record per-process and total peak RSS, CPU, disk delta, cold-start/install time, model latency, API rate-limit responses and task completion quality.
+- Add Claude/Codex/other agents to that same runner only if the measured profile retains safety headroom and the provider's terms/quotas allow the concurrency.
+- Keep each agent's worktree/output directory separate. Never allow concurrent agents to write to the same checkout or shared output path.
+- Use an independent verifier context; use a separate runner for risky or write-capable verification.
+- Split a profile across runner jobs when memory pressure, CPU contention, disk headroom, failure isolation or provider limits require it.
+- Do not install browser binaries, every coding CLI, model weights or every ECC module in every runner.
+- Use pinned dependencies and cache downloads only as an accelerator; cache is neither durable task state nor a security boundary.
+- A runner is ephemeral and a job is limited to six hours. Long work must save bounded checkpoints/artifacts and resume in a new job; do not depend on a process staying alive.
+
+### 10.6 Revised implementation sequence — cloud pool first
+
+**Stage 0 — component inventory and compatibility freeze**
+- Read the exact current repository state and all selected component definitions.
+- For each upstream, record official repository, license, release/tag/commit SHA, maintenance/release activity, security advisories, install footprint, runtime dependencies, supported harnesses, API/auth mode and resource needs.
+- Separate already selected, conditional candidates and deferred components using the register above.
+- Reject duplicate products doing the same job unless a measured gap justifies both.
+- Pin known-good versions; upgrades are deliberate, not floating latest.
+
+**Stage 1 — prove the base cloud runner and Pool A0**
+- Run the existing read-only Runner Resource Probe; do not create a duplicate.
+- Verify branch governance and workflow permissions.
+- Test the existing supervisor's idle, malformed-task, duplicate-claim, invalid-SHA, unauthorized-profile, dispatch-failure and recovery paths with no provider keys.
+- Keep real dispatch disabled until the tests and governance are reviewed.
+- Establish a compact task/result/evidence envelope using the current issue and workflow mechanism; avoid adding a database before it is needed.
+
+**Stage 2 — first multi-agent runner**
+- Assemble one ubuntu-24.04 runner profile containing the Gemini controller and Gemini agent processes.
+- Start with the controller plus three Gemini agents as the initial measured configuration, not as a fixed architectural limit.
+- Use separate workspaces, per-agent task scopes, timeouts and output manifests.
+- Collect actual resource and API quota evidence; determine safe parallelism from measurement.
+- Have an independent A3 verifier inspect outputs and evidence before accepting the task.
+- No external server and no persistent host dependency.
+
+**Stage 3 — additional provider profiles**
+- Add Claude Code with a selective ECC toolchain profile.
+- Add Codex and other API-backed agents as separate adapters/profiles, then optionally co-pack them with Gemini only after measurement.
+- Put provider credentials in narrowly scoped secrets or a model gateway; inject only the key required for that task/profile. Never put keys in Issues, source, prompts, artifacts or logs.
+- Make provider quotas, per-task request/token caps and paid-fallback policy visible to A0.
+
+**Stage 4 — dynamic pool scaling**
+- Let A0 schedule by capability, measured resource demand, provider quota, priority and available GitHub concurrency.
+- Increase the number of simultaneous runner jobs progressively (for example 1 → 2 → 4 → 8 → account ceiling), not by assuming all twenty slots are immediately usable.
+- A runner may host one or many agents; the scheduler chooses packing based on measured profiles.
+- Add security, build, browser and independent-verification profiles as separate capabilities.
+
+**Stage 5 — Jarvis and connector surface**
+- Connect Jarvis to the existing A0 task API/queue after the queue and task contract are stable.
+- Add Telegram intake/notifications with identity-bound commands and approvals.
+- Add browser tasks via isolated agent-browser profiles and deterministic Playwright QA.
+- Add Instagram only after official API eligibility and app permissions are verified.
+- Keep n8n limited to non-privileged integration/notification workflows.
+
+**Stage 6 — operational qualification**
+- Verify task lifecycle, cancellation, duplicate/replay protection, retries, worker loss, checkpoint resume, artifact integrity, secret isolation, quotas and recovery.
+- Publish a qualification report for each runner profile and each provider adapter.
+- Only after cloud pool acceptance consider external servers as additional worker capacity. External nodes must register with A0 through a scoped identity/capability contract and must not become a prerequisite for the already-working cloud pool.
+
+### 10.7 Definition of "cloud pool launched"
+
+The cloud pool is not considered launched merely because workflows exist or a supervisor heartbeat succeeds. Launch acceptance requires:
+- one real admitted task dispatched through A0;
+- controller and multiple agents run inside a measured runner profile;
+- task completes with the exact target SHA recorded;
+- independent A3 verification passes;
+- evidence manifest and artifacts are retained and integrity-checked;
+- failure/cancel/retry paths behave safely;
+- no credential material appears in logs or task records;
+- provider quota and GitHub concurrency behavior are recorded;
+- an operator can submit a task and retrieve the result without manually starting agent processes.
+
+### 10.8 Current facts and external references checked 2026-11-14
+
+- GitHub standard public Linux runner: 4 vCPU, 16 GB RAM, 14 GB SSD; GitHub Free standard hosted-job concurrency: 20. Public standard runner usage is documented as free and unlimited, but concurrency and service limits still apply.
+- GitHub-hosted job maximum duration: six hours.
+- DeepSeek Harness upstream labels itself Developer Preview and explicitly says it has not undergone a security audit.
+- ECC official source is https://github.com/affaan-m/ECC; use official release channels only.
+- Dodaios upstream describes a desktop superagent; its desktop product status does not by itself establish a secure headless cloud A0 implementation.
+
+References:
+- https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+- https://docs.github.com/en/actions/reference/limits
+- https://docs.github.com/en/actions/concepts/security/compromised-runners
+- https://github.com/affaan-m/ECC
+- https://github.com/deepseek-ai/deepseek-harness
+- https://github.com/deepseek-ai/deepseek-harness/blob/main/SAFETY.md
+- https://github.com/Dodaios/Dodaios
+- https://github.com/vercel-labs/agent-browser
+- https://github.com/microsoft/playwright
