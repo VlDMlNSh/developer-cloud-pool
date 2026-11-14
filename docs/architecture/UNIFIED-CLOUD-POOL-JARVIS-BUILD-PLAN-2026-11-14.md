@@ -270,3 +270,81 @@ External dependencies that can extend the schedule: Meta app review and account 
 - Telegram Bot API: https://core.telegram.org/bots/api
 - Telegram Bot Developer Terms: https://telegram.org/tos/bot-developers
 - agent-browser: https://github.com/vercel-labs/agent-browser
+
+
+## 9. Reuse of the MediaHub A1/A2/A3 role model — bounded and explicit
+
+The MediaHub OS repository already defines a mature separation of responsibilities. Reuse the **role pattern and evidence discipline**, not MediaHub's authority or state implementation.
+
+### Role mapping for this independent pool
+
+| Role | MediaHub meaning | Developer Cloud Pool application | Authority boundary |
+|---|---|---|---|
+| Human owner | Final architecture, security and launch authority | Approves architecture, privileged integrations, production changes and launch | Final authority remains human |
+| Pool Control Plane | Not MediaHub A0 | Coordinates only this pool's task queue, leases, dispatch, status and recovery | Owns only pool operational state; it is not ASTRA and does not inherit MediaHub State Authority |
+| A1 — Architect | Architecture, contracts and reconciliation | Defines task/result schemas, connector contracts, worker profiles, policy and ADRs | Cannot deploy or approve its own implementation |
+| A2 — Builder | Bounded implementation | Implements one assigned change in an isolated workspace and declared path boundary | No self-assigned scope, no secret authority, no merge authority |
+| A3 — Verifier | Independent verification | Runs independent tests, security/contract checks and exact-SHA evidence review | Must be a separate process/identity from A2; A2 cannot certify its own work |
+| Executors | Execution only | Gemini, Claude Code, Codex, DSH and browser workers execute admitted tasks | No architecture, policy, credential or queue authority |
+
+**Important separation:** MediaHub's A0-ASTRA is the coordination and state authority inside MediaHub OS. The Developer Cloud Pool must not import or claim that authority. The pool's own Pool Control Plane is a separate system with a narrower operational remit. Jarvis is the user-facing interface; it is not a substitute for the Pool Control Plane or an authorization issuer.
+
+### Mandatory task lifecycle
+
+Adopt the MediaHub evidence chain in a pool-specific schema:
+
+`TASK → CLAIM → WORKER → VERIFY → COMMIT → EVIDENCE → MANIFEST`
+
+Every task must bind:
+- unique task and parent-task IDs;
+- immutable repository and target SHA;
+- requesting principal, approved capability and explicit approval record where needed;
+- A1 contract/version reference;
+- A2 executor identity, worker profile and isolated workspace;
+- allowed paths, commands, domains, network egress and resource/time budgets;
+- A3 verifier identity and independent-process marker;
+- run IDs, exit status, test report and terminal state;
+- artifact names, content digests and retention classification.
+
+The evidence manifest is append-only for the task attempt. A retry creates a new attempt identity and references the previous attempt; it must not overwrite or silently reinterpret prior evidence.
+
+### Concurrency and ownership rules
+
+Start with the conservative MediaHub pattern, adapted to cloud capacity:
+- 1 A1 contract/architecture lane at a time for each shared contract surface.
+- 2 bounded A2 builders initially, increasing to 3 only when claims and workspaces are disjoint.
+- 1 independent A3 verifier lane; verification capacity is not counted as a builder.
+- Exactly one writer per shared file, release surface or integration branch.
+- No two agents edit the same working tree.
+- Pool-wide 20-job concurrency remains a later scheduling ceiling, not initial builder parallelism.
+
+The MediaHub 23-round executor qualification and 24-hour GOLD soak are MediaHub-specific gates. Do not copy their numeric thresholds into the cloud pool without a separate A1 proposal and human approval. The pool must define profile-specific qualification criteria based on actual resource, security, reliability and recovery measurements.
+
+### Promotion states
+
+Keep role completion separate from system readiness:
+
+`DESIGNED → PREFLIGHT → ADMITTED → EXECUTED → VERIFIED → INTEGRATED → QUALIFIED`
+
+Any missing target SHA, claim/lease, independent verifier, test evidence, artifact digest, permission record or recovery proof results in `BLOCKED`. A successful GitHub workflow alone never promotes a worker profile to QUALIFIED.
+
+### Jarvis ingress boundary
+
+MediaHub's WB-14 source reconciliation found that the Jarvis mission-submission → accepted A0 ingress path was not yet proven end-to-end. In particular, a shaped task JSON field is not authentication, and an approval field is not trusted approval attestation without a verified issuer and caller chain.
+
+Therefore:
+- Build the Developer Cloud Pool Jarvis as an independent authenticated UI/API with its own task-ingress contract.
+- Require server-side identity and authorization before a task can enter the queue.
+- Bind approvals to the exact task, capability, target repository/SHA and requested external side effect.
+- Do not wire the MediaHub Jarvis/A0 ingress into this pool by assumption.
+- Any future cross-system bridge must have its own signed envelope, caller identity, replay protection, idempotency and independently reviewed trust contract.
+
+### Source references for the reused pattern
+
+- [ASTRA GOLD complete component scheme](https://github.com/VlDMlNSh/mediahub-os/blob/main/architecture/ASTRA-GOLD-COMPLETE-COMPONENT-SCHEME.md)
+- [ASTRA GOLD unified autonomous development system](https://github.com/VlDMlNSh/mediahub-os/blob/main/architecture/ASTRA-GOLD-UNIFIED-AUTONOMOUS-DEVELOPMENT-SYSTEM.md)
+- [MH-25 autonomous execution blueprint](https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/checkpoints/mh-25-autonomous-execution-blueprint-1.0.md)
+- [ASTRA executor capability matrix](https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/operations/ASTRA-EXECUTOR-CAPABILITY-MATRIX.md)
+- [Jarvis/A0 ingress source reconciliation WB-14](https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/checkpoints/MEDIAHUB-CONTOUR-A-WB-14-JARVIS-A0-AND-DIRECT-LOCAL-ROUTE-SOURCE-RECONCILIATION-2026-10-15.md)
+
+These references are design inputs, not evidence that the Developer Cloud Pool has implemented or qualified A1/A2/A3 execution.
