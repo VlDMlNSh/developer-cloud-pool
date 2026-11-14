@@ -108,3 +108,7 @@ This policy is a hard admission constraint for the initial pool, not an optional
 - **A0 enforcement:** every task admission must carry an explicit cost_class (free_quota, local, or later paid_explicitly_approved), provider/profile identity and quota evidence. Initial policy allowlist is free_quota and local; paid_explicitly_approved is denied until a separate owner approval and policy change. Fail closed on unknown cost classification.
 
 This policy does not claim that a provider's free tier is guaranteed, unlimited, or available to this account. Each route still requires terms, authentication, quota and runtime qualification. The matrix validator must check that the policy remains present and that dispatch remains disabled until the launch gates are accepted.
+
+## CI-enforced cost-policy invariants
+
+The dependency-free matrix validator now rejects the register if any of these owner constraints drift: paid provider APIs are denied; Anthropic API is denied; OpenAI remains deferred pending explicit approval; Claude Code is limited to the approved Free Claude Code route; local Llama execution is represented through Ollama; initial allowed cost classes are exactly `free_quota` and `local`; unknown cost classes fail closed; quota evasion through account/key rotation is prohibited; and provider policy stores no secret values. This is a static consistency guard. It does not prove that provider terms, free quotas, authentication or runtime execution are currently available. Dispatch remains disabled.
