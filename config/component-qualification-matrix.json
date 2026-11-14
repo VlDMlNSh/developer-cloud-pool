@@ -480,7 +480,7 @@
       "name": "Task DAG and durable lifecycle",
       "kind": "internal required capability",
       "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
-      "decision": "INTERNAL_GAP_REQUIRED",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
       "scope": "idempotency, dependencies, leases, cancellation, retries, checkpoints",
       "version_pin": "not implemented",
       "license": "internal project",
