@@ -23,7 +23,7 @@
 | PR | Purpose | Branch | Exact head | State |
 |---|---|---|---|---|
 | [#67](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | Isolated D1 ledger, immutable attempts, fenced lifecycle, receipt-bound projection and A0 admission contract proof | `impl/receipt-bound-projection-2026-11-11` | `a53f6232bd5b50d3e150addf528b8e722002f9dd` | Open, Draft, not merged |
-| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `74244d78299417347cdce42b0916871684550399` | Open, Draft, not merged |
+| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | Runtime/evidence snapshot before docs-only estimate refresh: `74244d78299417347cdce42b0916871684550399`; re-fetch live branch tip on resume | Open, Draft, not merged |
 
 Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad155a10603`. Re-check before acting; PR heads may advance.
 
@@ -167,3 +167,6 @@ A chat's internal memory is helpful but is not the durable source of truth. The 
 - Issue #22 (remote authenticated console) and Issue #38 (durable authenticated single-use claim) remain open. Hosted D1, Workers Free entitlement, production OAuth/issuer, real worker/provider execution and A3 acceptance remain NOT VERIFIED / NOT RUN.
 - No secret values, provider calls, hosted resources, dispatch, deployment, merge or paid services used. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect exact-head D1 migrations/APIs and quota state machine, design the integrated A0 transaction boundary, and map Hono/OAuth proofs into Issue #22. No dispatch enablement or deployment.
+
+
+The exact SHA above is the immutable runtime/evidence snapshot whose CI was inspected. Subsequent commits on this same branch in this pass update only the Master Handoff, Session Log, estimate and dated report; re-fetch the live branch tip before any implementation or review.
