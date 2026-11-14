@@ -96,3 +96,12 @@ Validation of the matrix/README/plan update:
 PR #68 exact-head Runner Resource Probe run 43601557812 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1 and Intel Xeon 6975P-C. This is the second observation in the AWS image/region family; total read-only observations are now six (four Azure family, two AWS family). This does not qualify reserved capacity or multi-agent packing.
 
 The JSON and Markdown qualification matrices and architecture-plan evidence note were updated. The probe installed no agents, accessed no secrets and made no provider/model calls.
+
+
+Documentation commit IDs for the sixth-observation refresh:
+- 31f18c231679ff44327b236e643b67a2b8c0b8b4 — JSON runner evidence updated to six observations.
+- e1daa1042c5b646864ab80eada00b77d6b9dc70c — Markdown runner evidence updated to six observations.
+- dc31e258ce5e74064f2aa51348d0f9bea05f923f — architecture plan refreshed.
+- 639e4f227e97fd018f5dbe157f45b2a48bc14ced — sixth observation recorded in this log.
+
+The matrix/README/plan validator run 43601557792 passed with COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS for the preceding matrix snapshot. The sixth observation was then added to both matrix formats; the next exact-head Pool Contract Validation is required to validate this final matrix revision.
