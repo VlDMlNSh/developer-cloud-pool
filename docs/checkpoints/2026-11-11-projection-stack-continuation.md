@@ -903,3 +903,13 @@ The previous audit updated the PR #68 documentation branch (master handoff and s
 - PR #67 remains `a53f6232bd5b50d3e150addf528b8e722002f9dd`, exact-head runs 43600901063/43600901068 SUCCESS; 84 tests / 6 files and D1 smoke checks pass.
 - Latest PR #68 hash supersedes earlier snapshots `3fa24a79...` and `a4c11582...`. Both PRs remain DRAFT/unmerged with 0 formal reviews and 0 inline threads.
 - No deployment, agent installation, secret access, provider call, dispatch, hosted resource, billing change, or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 21. Latest live ref correction — PR #68 — 2026-11-14
+
+- PR #68 current live head is `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, OPEN/DRAFT/UNMERGED, 83 commits. This supersedes the previous `a4c11582...` snapshot.
+- Exact-head workflow query for `d9afb6f45a7deb465f7fee7aa347469c2f6019b7` returned no PR-triggered runs. Latest-head CI is NOT RUN / NOT VERIFIED. Do not transfer CI from the prior head.
+- The immediately preceding PR #68 head `a4c11582eaf66341eafeec60c3f670bc5e2e53f1` had Pool Contract Validation run 43602453650 SUCCESS and Runner Resource Probe run 43602453656 SUCCESS. These are not exact-head evidence for d9afb6.
+- PR #67 remains `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI 43600901063 and 43600901068 SUCCESS, 84 tests / 6 files and D1 smoke checks. Reviews/threads 0/0.
+- A0 remains mock/injected-adapter-only; no cryptographic issuer, A0/D1 composition, hosted D1, production OAuth, deployed Jarvis or qualified worker. Next: canonical envelope + mature Workers-compatible JWS/JWT verification assessment, then local-only issuer/verifier and atomic D1 consume/task/outbox proof. Dispatch false.
+- Report: [A0 authority boundary audit](../reports/2026-11-14-next-a0-authority-boundary-audit.md).
