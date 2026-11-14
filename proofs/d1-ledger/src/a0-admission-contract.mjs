@@ -21,6 +21,7 @@ function sameBinding(actual, expected) {
  */
 export async function evaluateA0Admission(request, authority = {}) {
   if (!request || typeof request !== "object") return deny("INVALID_REQUEST");
+  if (request.dispatchEnabled !== false) return deny("DISPATCH_MUST_REMAIN_DISABLED");
   const { taskId, attemptId, targetSha, profile, tenantId } = request;
   if (!SAFE.test(taskId || "") || !SAFE.test(attemptId || "") ||
       !SHA40.test(targetSha || "") || !ALLOWED_PROFILES.has(profile) ||
@@ -74,11 +75,9 @@ export async function evaluateA0Admission(request, authority = {}) {
   if (consumed?.consumed !== true) return deny("CAPABILITY_REPLAY_OR_ALREADY_CONSUMED");
 
   return {
-    decision: request.dispatchEnabled === true ? "ADMITTED_DISPATCH_BLOCKED" : "ADMITTED_QUEUED",
+    decision: "ADMITTED_QUEUED",
     taskId, attemptId, approvalId: approval.capabilityId,
     dispatch: false,
-    reason: request.dispatchEnabled === true
-      ? "DISPATCH_REQUIRES_SEPARATE_OWNER_AUTHORIZATION"
-      : "DISPATCH_DISABLED_QUEUE_ONLY"
+    reason: "DISPATCH_DISABLED_QUEUE_ONLY"
   };
 }
