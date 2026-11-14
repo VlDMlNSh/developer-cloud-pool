@@ -2704,3 +2704,14 @@ Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-da
 - Dispatch remains fail-closed; no Worker/DSH/provider call, secret read, hosted resource, billing change, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: use PR #68 Master Handoff/Continuation Protocol/Decision Register/Build Plan as the latest architecture proposal, reconcile against live default refs, and continue the smallest no-card path to production OAuth + read-only API + durable state for Issue #22. Do not merge draft proposals or enable dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 18. Latest /next — 2026-11-14 launch estimate
+
+- Dated report: [Launch estimate and exact-head refresh](../reports/2026-11-14-next-launch-estimate.md).
+- PR #67 remains OPEN/DRAFT/UNMERGED at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head runs 43600901063 and 43600901068 SUCCESS; 84 tests / 6 files and D1 smoke checks pass. Formal reviews/threads 0/0.
+- PR #68 advanced to exact head `74244d78299417347cdce42b0916871684550399`, base `221f216c00ca7e5596bcc682ba185ad155a10603`, OPEN/DRAFT/UNMERGED, 75 commits / 13 files. Exact-head Runner Resource Probe 43601943360 SUCCESS (Ubuntu 24.04.5, 4 vCPU, 85.25 GiB available; read-only, no agents installed/secrets accessed/profile qualified). Exact-head Pool Contract Validation 43601943374 SUCCESS; 30-record matrix validation PASS; dispatch disabled. Formal reviews/threads 0/0.
+- Published executive estimate for controlled pilot is 10–15 engineer-days = 80–120 hours = 13–20 owner workdays at 6 h/day. Detailed stages 0–7 sum to 17–34 engineer-days = 136–272 hours = 23–45 owner workdays. This internal discrepancy is explicitly recorded; use 30–35 six-hour workdays (180–210 hours) as a working planning target, with a wider 23–45 workday conservative envelope. Reforecast after integrated hosted claim and deployed read-only console proofs.
+- Issues #22/#38 remain open. Hosted D1/transactional claim, A0 issuer/trusted time/replay/revocation, OAuth/session, deployed Jarvis API, real worker execution, provider quota mapping, tenant isolation and A3 remain NOT VERIFIED/NOT RUN. No agent profile qualified.
+- No secrets, dispatch, provider calls, hosted resource provisioning, billing change, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #68 handoff with PR #67 current schema, then implement bounded A0 admission boundary proof and negative tests locally. Preserve fail-closed dispatch. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
