@@ -23,7 +23,7 @@
 | PR | Purpose | Branch | Exact head | State |
 |---|---|---|---|---|
 | [#67](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | Isolated D1 ledger, immutable attempts, fenced lifecycle, receipt-bound projection and A0 admission contract proof | `impl/receipt-bound-projection-2026-11-11` | `a53f6232bd5b50d3e150addf528b8e722002f9dd` | Open, Draft, not merged |
-| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `abdc5042469776a836050bcbf15b406d33161b6e` | Open, Draft, not merged |
+| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `9b1a1910dc5338995817c1dc7dfc24530c53b5fb` | Open, Draft, not merged |
 
 Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad155a10603`. Re-check before acting; PR heads may advance.
 
@@ -46,8 +46,8 @@ Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad1
 
 - Pool Contract Validation run `43601557792`: SUCCESS; its log reports 30 matrix records and COMPONENT_MATRIX_VALIDATION=PASS. This run preceded the sixth-observation matrix refresh.
 - Runner Resource Probe run `43601557812`: SUCCESS; read-only sixth observation, AWS us-east-1, image 20261111.127.1, Intel Xeon 6975P-C.
-- Six resource observations are observational only: four Azure northcentralus/image 20261111.370.1 and two AWS us-east-1/image 20261111.127.1. They do not qualify reserved capacity, multi-agent packing, or production worker profiles.
-- The final six-observation matrix revision is awaiting a fresh exact-head Pool Contract Validation run; verify it before claiming the latest matrix CI passed.
+- Seven resource observations are observational only: five Azure/image 20261111.370.1 across northcentralus and westus3, and two AWS/image 20261111.127.1 in us-east-1. CPU models vary across the samples. They do not qualify reserved capacity, multi-agent packing, or production worker profiles.
+- The final seven-observation matrix revision is awaiting a fresh exact-head Pool Contract Validation run; verify it before claiming the latest matrix CI passed.
 
 ## 3. What exists and what it proves
 
@@ -148,7 +148,7 @@ Continue from PR #67's actual D1 schema and A0 contract; do not create a paralle
 | Projection integration boundary | [Attempt Outbox → GitHub Projection Contract](../contracts/ATTEMPT-OUTBOX-GITHUB-PROJECTION-INTEGRATION-CONTRACT.md) |
 | Historical pass-by-pass evidence | [Session Log](../reports/SESSION-LOG.md) |
 
-## 7. Documentation completeness and verification\n\nThe continuation document set has been created and linked from the root README and the unified architecture plan. The qualification matrix now has 30 records, including the A0 admission contract proof. It records six read-only runner observations, not a capacity qualification. The Markdown and JSON matrices are intended to stay synchronized. The README no longer instructs routine users to enable dispatch or use the Issue label as execution approval.\n\nDocumentation commit sequence is recorded in docs/reports/SESSION-LOG.md. Live PR #68 head at this snapshot: `f052664faf646f59b563d0def9cdd0c47b8d4ea9`. This snapshot must be refreshed after any later commit.\n\n## 8. How to resume in a new ChatGPT chat
+## 7. Documentation completeness and verification\n\nThe continuation document set has been created and linked from the root README and the unified architecture plan. The qualification matrix now has 30 records, including the A0 admission contract proof. It records seven read-only runner observations, not a capacity qualification. The Markdown and JSON matrices are intended to stay synchronized. The README no longer instructs routine users to enable dispatch or use the Issue label as execution approval.\n\nDocumentation commit sequence is recorded in docs/reports/SESSION-LOG.md. Live PR #68 head at this snapshot: `f052664faf646f59b563d0def9cdd0c47b8d4ea9`. This snapshot must be refreshed after any later commit.\n\n## 8. How to resume in a new ChatGPT chat
 
 Start a new chat with:
 
