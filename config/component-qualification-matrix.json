@@ -438,19 +438,23 @@
       "name": "Pool quota ledger",
       "kind": "internal required capability",
       "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
-      "decision": "INTERNAL_GAP_REQUIRED",
-      "scope": "per-tenant/provider/model reservation and reconciliation",
-      "version_pin": "not implemented",
+      "decision": "LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED",
+      "scope": "pure provider quota state machine; route eligibility and authoritative reset/cooldown semantics; no durable shared ledger or live router",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
       "license": "internal project",
       "security": "atomic reservation, least-privilege secret refs, paid fallback off",
-      "runtime_qualification": "NOT_IMPLEMENTED",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; NOT_INTEGRATED_WITH_DISPATCH",
       "evidence": [
-        "PR #68 architecture section 11.6"
+        "scripts/provider-quota-ledger.mjs in PR #29",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
       ],
       "blockers": [
-        "no executable quota ledger"
+        "pure in-memory transitions only; no durable shared ledger",
+        "not wired into A0 or provider execution",
+        "provider accounts/quota domains remain unverified",
+        "no provider credential broker"
       ],
-      "next_gate": "implement contract and race/reset/429 tests"
+      "next_gate": "integrate with authoritative task admission and provider evidence after branch reconciliation"
     },
     {
       "id": "tenant-isolation",
@@ -481,14 +485,17 @@
       "version_pin": "not implemented",
       "license": "internal project",
       "security": "immutable SHA, authenticated approval provenance, replay protection",
-      "runtime_qualification": "NOT_IMPLEMENTED",
+      "runtime_qualification": "PARTIAL_LOCAL_ATTEMPT_LIFECYCLE_PROOF; GENERAL_DAG_NOT_IMPLEMENTED",
       "evidence": [
-        "PR #68 architecture section 11.8"
+        "PR #54 50-way logical task contention and immutable attempt/lease tests",
+        "PR #67 local Workers/D1 projection proof run 43182768560"
       ],
       "blockers": [
-        "general checkpoint/resume and DAG absent"
+        "attempt lifecycle exists in local D1 proof but no general dependency DAG",
+        "not hosted or integrated with A0",
+        "trusted issuer and time missing"
       ],
-      "next_gate": "typed task contract and failure-injection tests"
+      "next_gate": "reconcile attempt store as one canonical task lifecycle; add dependency graph only where required"
     },
     {
       "id": "a3-verifier",
@@ -508,6 +515,103 @@
         "no pool A3 executable verifier"
       ],
       "next_gate": "independent verifier job and tamper-evident evidence tests"
+    },
+    {
+      "id": "d1-claim-attempt-projection",
+      "name": "Cloudflare Workers + D1 claim / attempt / projection proof",
+      "kind": "transactional task lifecycle prototype",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/67",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
+      "scope": "transactional claim/outbox, immutable attempts, fenced leases, projection retry and receipt-bound delivery proof only",
+      "version_pin": "local proof package lock; exact PR #67 head 00d806a24c86545e0dfaf2dee47fcfa9747a5b62",
+      "license": "Cloudflare Workers/D1 service terms; local test dependencies pinned in package-lock",
+      "security": "synthetic local D1; no hosted service, production issuer, trusted time or live GitHub write",
+      "runtime_qualification": "LOCAL_WORKERS_D1_TESTS_PASS_69_PLUS_UPGRADE_SMOKES; NOT_HOSTED",
+      "evidence": [
+        "PR #39 12-way local conditional consume proof",
+        "PR #54 50-way logical task contention proof",
+        "PR #67 run 43182768560: 69 tests passed plus isolated upgrade smoke and frozen fixture",
+        "PR #67 remains draft and unmerged"
+      ],
+      "blockers": [
+        "multiple stacked branches and migration 0001-0010 need one reconciled canonical integration",
+        "issuer authentication, trusted time, nonce and revocation absent",
+        "hosted D1 entitlement and real 50+ concurrent HTTP requests not verified",
+        "projection API integration still local/fake; no dispatch"
+      ],
+      "next_gate": "reconcile stack on current default; implement issuer and hosted test only after explicit authorization"
+    },
+    {
+      "id": "provider-slot-inventory",
+      "name": "Provider slot inventory (24 cloud routes)",
+      "kind": "provider/model/credential-reference registry",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/29",
+      "decision": "INVENTORY_ONLY",
+      "scope": "24 cloud slots; local Ollama excluded; no automatic provider independence assumption",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
+      "license": "inventory data; provider-specific API terms apply separately",
+      "security": "opaque credential references only; secret values and presence were not checked",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; ALL_24_ACCOUNT_AND_QUOTA_DOMAINS_UNVERIFIED",
+      "evidence": [
+        "config/provider-slot-inventory.json in PR #29",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
+      ],
+      "blockers": [
+        "verified account identities 0",
+        "verified quota domains 0",
+        "provider/model availability and billing status not checked",
+        "no credential broker or live routing"
+      ],
+      "next_gate": "reconcile provider accounts and quota-domain evidence without revealing key material"
+    },
+    {
+      "id": "provider-quota-placement",
+      "name": "Provider quota ledger and agent placement",
+      "kind": "pure routing/quota/admission/capacity primitives",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/29",
+      "decision": "LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED",
+      "scope": "route cooldown/reset evidence, 20-slot cap, admission and placement policy",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
+      "license": "internal code; no external runtime adopted",
+      "security": "pure state machine; provider reset requires provider-authoritative evidence; no secrets",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; NO_LIVE_PROVIDER_OR_SHARED_LEDGER",
+      "evidence": [
+        "scripts/provider-quota-ledger.mjs",
+        "scripts/agent-placement.mjs",
+        "scripts/runner-capacity-profile.mjs",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
+      ],
+      "blockers": [
+        "not connected to actual agent dispatch",
+        "no durable shared ledger or authenticated provider gateway",
+        "single runner sample cannot satisfy verified capacity evidence",
+        "no provider account/quota-domain proof"
+      ],
+      "next_gate": "integrate policy into A0 admission and authoritative quota state only after source reconciliation"
+    },
+    {
+      "id": "jarvis-hono-console",
+      "name": "Jarvis Hono web console prototype",
+      "kind": "user-facing control panel",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/25",
+      "decision": "DEMO_PROTOTYPE_NOT_PRODUCTION",
+      "scope": "static demo dashboard and fail-closed Hono API prototype",
+      "version_pin": "PR #25 head 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85",
+      "license": "verify dependencies and deployment license notices at adoption",
+      "security": "synthetic auth/fixture tests; no production OAuth, tenant isolation or deployed service",
+      "runtime_qualification": "PROTOTYPE_CI_PASS; NO_HOSTED_DEPLOYMENT",
+      "evidence": [
+        "PR #25 exact-head runs 42228269676 and 42228269689 succeeded",
+        "PR #24 OpenAPI contract candidate",
+        "PR #30 oauth4webapi synthetic compatibility proof",
+        "PR #61 isolated local D1 session/auth tests"
+      ],
+      "blockers": [
+        "OAuth issuer/session lifecycle and account allowlist need production implementation and review",
+        "no tenant-aware task API integration",
+        "not deployed; no live secret store or service binding"
+      ],
+      "next_gate": "reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval"
     }
   ]
 }
