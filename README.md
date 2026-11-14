@@ -24,7 +24,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 
 ## Component qualification
 
-- [Component qualification matrix](docs/qualification/COMPONENT-QUALIFICATION-MATRIX.md) — 29 component records at this snapshot.
+- [Component qualification matrix](docs/qualification/COMPONENT-QUALIFICATION-MATRIX.md) — 30 component records at this snapshot.
 - [Machine-readable matrix](config/component-qualification-matrix.json)
 - [Build and launch estimate](docs/qualification/BUILD-AND-LAUNCH-ESTIMATE-2026-11-14.md)
 
