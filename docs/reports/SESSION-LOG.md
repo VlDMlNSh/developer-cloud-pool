@@ -89,3 +89,10 @@ Validation of the matrix/README/plan update:
 - PR #68 Pool Contract Validation run 43601408575: SUCCESS; log reports COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS.
 - PR #68 Runner Resource Probe run 43601408557: SUCCESS; read-only observation described above.
 - These runs validate the documentation/matrix state at PR head ac64a8d0e012e466ed400b59c6368d761a636da5. A subsequent handoff-only documentation commit followed; no source, workflow, or matrix content changed after those runs.
+
+
+## 2026-11-14 — Sixth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601557812 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1 and Intel Xeon 6975P-C. This is the second observation in the AWS image/region family; total read-only observations are now six (four Azure family, two AWS family). This does not qualify reserved capacity or multi-agent packing.
+
+The JSON and Markdown qualification matrices and architecture-plan evidence note were updated. The probe installed no agents, accessed no secrets and made no provider/model calls.
