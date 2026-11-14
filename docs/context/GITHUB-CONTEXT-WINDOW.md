@@ -2819,3 +2819,11 @@ A subsequent live PR fetch showed PR #68 had advanced again after the preceding 
 - Current effective ruleset and `POOL_DISPATCH_ENABLED` are NOT VERIFIED. Last recorded ruleset snapshot (Nov 13) had 0 required approvals/no required status checks. Today's all-event Supervisor runs unavailable; last verified Nov 13 had 8 scheduled SUCCESS. Supervisor still has privileged write permissions and 15-minute absence-based stale-claim recovery.
 - SentinelX: 0 connected hosts; Voktors-Mini.Dlink offline; mh-dev-01/02 disabled; 0 saved integrations. Cloudflare Worker/D1 entitlement/deployment NOT VERIFIED.
 - No code/runtime/security-boundary changes, secrets, dispatch, workflow invocation, agent/DSH/Resource Probe, provider call, deployment, billing/settings/ruleset mutation or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Final documentation read-back — 2026-11-14 19:56 Europe/Vilnius
+
+- Daily report amended commit/blob: `6267378c13fb090956ab74e13d071d0d85638504` / `31954d7c47a233ed11f1a7a0d904658648276352`.
+- Checkpoint finalization update follows the report amendment; its final commit/blob is recorded in the next read-back and final audit response.
+- Previous Context Window update commit/blob: `ee0299a9888b411c869d6b369df027d1bda45f8a` / `f36aac02a3cc215bcadd40431b88a65d9f98ff8d`.
+- All documents remain on the PR #66 working branch, not the default branch.
