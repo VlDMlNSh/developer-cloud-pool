@@ -23,7 +23,7 @@
 | PR | Purpose | Branch | Exact head | State |
 |---|---|---|---|---|
 | [#67](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | Isolated D1 ledger, immutable attempts, fenced lifecycle, receipt-bound projection and A0 admission contract proof | `impl/receipt-bound-projection-2026-11-11` | `a53f6232bd5b50d3e150addf528b8e722002f9dd` | Open, Draft, not merged |
-| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `37eb267d689aa1a981354dd46a9a36413faae3a2` | Open, Draft, not merged |
+| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `74244d78299417347cdce42b0916871684550399` | Open, Draft, not merged |
 
 Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad155a10603`. Re-check before acting; PR heads may advance.
 
@@ -155,3 +155,15 @@ Start a new chat with:
 > Continue the Developer Cloud Pool project. Treat the repository `VlDMlNSh/developer-cloud-pool` as the durable project record. First read `docs/operations/MASTER-HANDOFF.md`, `docs/operations/CONTINUATION-PROTOCOL.md`, `docs/architecture/ARCHITECTURE-DECISION-REGISTER.md`, the qualification matrix and the latest session log. Then verify live GitHub PR #67/#68 heads and exact-head CI before making changes. Continue the next engineering task from the handoff. Do not ask me to repeat project context. Do not merge, change the default branch, enable dispatch, read secrets, use paid APIs, call providers or deploy anything without explicit authorization. Commit each completed pass separately and update the handoff and session log.
 
 A chat's internal memory is helpful but is not the durable source of truth. The repository documents and verified GitHub state are authoritative. This file is a current snapshot, not a substitute for live verification.
+
+
+## /next live-state and time estimate refresh — 2026-11-14
+
+- PR #68 latest exact head is `74244d78299417347cdce42b0916871684550399` (supersedes the earlier head recorded above); exact-head Runner Resource Probe run `43601943360` and Pool Contract Validation run `43601943374` both SUCCESS. Resource job `132468370214`: Ubuntu 24.04.5, 4 vCPU, 85.25 GiB available workspace; read-only, no agents installed, no secrets accessed, no profile qualified. Contract job `132468370263`: fail-closed workflow/security invariants and 30-record qualification matrix passed.
+- The new resource probe is opportunistic and is not included in the prior eight-observation qualification cutoff.
+- PR #67 remains at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head local D1 CI runs 43600901063 and 43600901068 SUCCESS; 84 tests passed. Reviews/threads for #67 and #68 remain 0/0.
+- Current estimate for first controlled pilot at 6 focused hours/day: practical planning range 120–180 hours = 20–30 six-hour workdays; optimistic reuse path 80–120 hours = 14–20 days; detailed stage envelope 136–272 hours = 23–46 days before overlap. Hosted backend entitlement can add 24–56 hours if alternative qualification is required. Secure multi-tenant v1 remains 160–240 hours = 27–40 days. See [dated estimate and evidence report](../reports/2026-11-14-next-time-estimate-and-live-state.md) and [build/launch estimate](../qualification/BUILD-AND-LAUNCH-ESTIMATE-2026-11-14.md).
+- SentinelX inventory currently has 0 connected hosts; Voktors-Mini.Dlink is offline, mh-dev-01/02 disabled. Server-based agent work is unavailable on the current host connection state.
+- Issue #22 (remote authenticated console) and Issue #38 (durable authenticated single-use claim) remain open. Hosted D1, Workers Free entitlement, production OAuth/issuer, real worker/provider execution and A3 acceptance remain NOT VERIFIED / NOT RUN.
+- No secret values, provider calls, hosted resources, dispatch, deployment, merge or paid services used. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect exact-head D1 migrations/APIs and quota state machine, design the integrated A0 transaction boundary, and map Hono/OAuth proofs into Issue #22. No dispatch enablement or deployment.
