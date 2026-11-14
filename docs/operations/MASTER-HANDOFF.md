@@ -46,7 +46,7 @@ Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad1
 
 - Pool Contract Validation run `43600575423`: SUCCESS.
 - Runner Resource Probe run `43600575523`: SUCCESS.
-- The resource evidence is observational only; it does not qualify reserved capacity, multi-agent packing, or production worker profiles.
+- The five resource observations are observational only; four use the same image/version/region family, but CPU model variation remains visible. They do not qualify reserved capacity, multi-agent packing, or production worker profiles.
 
 ## 3. What exists and what it proves
 
@@ -147,7 +147,7 @@ Continue from PR #67's actual D1 schema and A0 contract; do not create a paralle
 | Projection integration boundary | [Attempt Outbox → GitHub Projection Contract](../contracts/ATTEMPT-OUTBOX-GITHUB-PROJECTION-INTEGRATION-CONTRACT.md) |
 | Historical pass-by-pass evidence | [Session Log](../reports/SESSION-LOG.md) |
 
-## 7. Documentation completeness and verification\n\nThe continuation document set has been created and linked from the root README and the unified architecture plan. The qualification matrix now has 30 records, including the A0 admission contract proof. The Markdown and JSON matrices are intended to stay synchronized. The README no longer instructs routine users to enable dispatch or use the Issue label as execution approval.\n\nDocumentation commit sequence is recorded in docs/reports/SESSION-LOG.md. Live PR #68 head at this snapshot: `f052664faf646f59b563d0def9cdd0c47b8d4ea9`. This snapshot must be refreshed after any later commit.\n\n## 8. How to resume in a new ChatGPT chat
+## 7. Documentation completeness and verification\n\nThe continuation document set has been created and linked from the root README and the unified architecture plan. The qualification matrix now has 30 records, including the A0 admission contract proof. It records five read-only runner observations, not a capacity qualification. The Markdown and JSON matrices are intended to stay synchronized. The README no longer instructs routine users to enable dispatch or use the Issue label as execution approval.\n\nDocumentation commit sequence is recorded in docs/reports/SESSION-LOG.md. Live PR #68 head at this snapshot: `f052664faf646f59b563d0def9cdd0c47b8d4ea9`. This snapshot must be refreshed after any later commit.\n\n## 8. How to resume in a new ChatGPT chat
 
 Start a new chat with:
 
