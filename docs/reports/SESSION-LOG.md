@@ -52,3 +52,20 @@ Created:
 - docs/reports/SESSION-LOG.md — append-only history.
 
 These files must be linked from the root README. The handoff records PR #67 and #68 exact heads as of this snapshot and requires live refresh on every continuation. The docs branch itself must be read back and CI-validated before calling this documentation pass complete.
+
+
+### Documentation commits and qualification refresh
+
+The following documentation commits were written on the PR #68 branch:
+- 1ec32aaf49731adb4cd96ca0d5f89e8edfedb9ac — canonical Master Handoff.
+- 014ef8abce7e1153f2acae14e90eae5ad0521d7d — cross-chat Continuation Protocol.
+- 1c340af820fb54d68d0238562091c9223a012585 — Architecture Decision Register.
+- f9dbd8c2e5c1ad4e820cb7a2578b168b03fdf26e — initial append-only Session Log.
+- f25f04a14ce0cdc477a50c1da1ce0f06c38ba56f — README safe entrypoint and dispatch warning.
+- 1cad9d20e2b8d99a3bad444ad186847637df20ba — machine-readable qualification matrix refreshed to 30 records.
+- f540195654aa1d2f0f6ac35fb2c4b9309c27cc02 — matrix Markdown refreshed for current D1/runner evidence.
+- 63c17e72b7404767a20986a521335bbcc1ca929a — A0 admission contract row added to Markdown matrix.
+- bb0d1776b66605f07073b279819ea552b61a15e2 — README matrix count corrected to 30.
+- 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4 — architecture plan linked to operational continuation documents and refreshed with current evidence boundary.
+
+PR #68 head before the final handoff/session-log readback: 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4. Re-fetch after the final handoff update; the live PR head is authoritative.
