@@ -188,3 +188,14 @@ The latest source audit is recorded in [A0 authority boundary report](https://gi
 PR #68 exact-head successor `a4c11582eaf66341eafeec60c3f670bc5e2e53f1` triggered Pool Contract Validation run `43602453650` and Runner Resource Probe run `43602453656`; both completed SUCCESS. Logs confirm matrix 30 records PASS and a read-only Ubuntu 24.04.5 AWS runner inventory (4 vCPU, 88.46 GiB available); no agents installed, no secrets accessed, no profile qualified. This is documentation-head CI and inventory evidence only.
 
 Next bounded task: canonicalize the approval envelope and compare maintained Workers-compatible signature verification libraries before implementing a local-only issuer/verifier + atomic D1 consume/task/outbox proof. Keep dispatch false.
+
+
+## 2026-11-14 — Live continuation revalidation (supersedes prior PR #68 snapshot)
+
+- Default branch `Основной` remains at `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67: OPEN / DRAFT / UNMERGED; branch `impl/receipt-bound-projection-2026-11-11`; exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; base `221f216c00ca7e5596bcc682ba185ad155a10603`. Exact-head Pool Contract Validation run `43600901063` and Isolated D1 Ledger Proof run `43600901068` both SUCCESS. These are local contract/Workers-runtime proofs only.
+- PR #68: OPEN / DRAFT / UNMERGED; branch `docs/unified-cloud-pool-jarvis-plan-2026-11-14`; exact head `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`; base `221f216c00ca7e5596bcc682ba185ad155a10603`. Exact-head Pool Contract Validation run `43602513555` and Runner Resource Probe run `43602513530` both SUCCESS. Probe is read-only runner inventory; no agent installed, no secret accessed, no worker profile qualified.
+- Both PRs report mergeable=true, which is not acceptance. No formal reviews have been recorded in the current snapshot; independent review and A3 qualification remain deferred until the actual pool is launched, consistent with the owner-directed sequencing.
+- Source A0 boundary remains unchanged: injected test authorities, not production cryptographic verification; not integrated into Supervisor/Worker; D1 consume is local proof, not hosted qualification. Dispatch remains disabled.
+- This pass changed documentation only. No secrets, provider calls, hosted resources, dispatch, deployment, billing, merge or default-branch changes.
+- Next bounded task: inspect current PR #67 migrations and transaction APIs, then define the local-only atomic A0 approval → task/attempt → queue-intent transaction and negative-first test matrix. Preserve `dispatch:false`.
