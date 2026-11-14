@@ -23,7 +23,7 @@
 | PR | Purpose | Branch | Exact head | State |
 |---|---|---|---|---|
 | [#67](https://github.com/VlDMlNSh/developer-cloud-pool/pull/67) | Isolated D1 ledger, immutable attempts, fenced lifecycle, receipt-bound projection and A0 admission contract proof | `impl/receipt-bound-projection-2026-11-11` | `a53f6232bd5b50d3e150addf528b8e722002f9dd` | Open, Draft, not merged |
-| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | Runtime/evidence snapshot before docs-only estimate refresh: `74244d78299417347cdce42b0916871684550399`; re-fetch live branch tip on resume | Open, Draft, not merged |
+| [#68](https://github.com/VlDMlNSh/developer-cloud-pool/pull/68) | Architecture consolidation, qualification matrix, build estimate and continuation audit | `docs/unified-cloud-pool-jarvis-plan-2026-11-14` | `3fa24a79a1af1b1dbf722aacdea367ffdbdf4a26d` (revalidated 2026-11-14) | Open, Draft, not merged |
 
 Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad155a10603`. Re-check before acting; PR heads may advance.
 
@@ -170,3 +170,12 @@ A chat's internal memory is helpful but is not the durable source of truth. The 
 
 
 The exact SHA above is the immutable runtime/evidence snapshot whose CI was inspected. Subsequent commits on this same branch in this pass update only the Master Handoff, Session Log, estimate and dated report; re-fetch the live branch tip before any implementation or review.
+
+
+## 2026-11-14 — A0 authority boundary revalidation
+
+- Current PR #67 exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI runs 43600901063/43600901068 SUCCESS; 84 tests / 6 files and D1 smoke tests passed. 0 formal reviews / 0 threads.
+- Current PR #68 exact head `3fa24a79a1af1b1dbf722aacdea367ffdbdf4a26d`; exact-head CI runs 43602306553/43602306555 SUCCESS; 30 qualification records passed. Runner inventory only: Ubuntu 24.04.5, AWS image 20261111.127.1, 4 vCPU, 88.46 GiB available; no agents installed, no secrets accessed, no profile qualified. 0 formal reviews / 0 threads.
+- A0 contract is isolated and injected-adapter-only. It is not wired to Supervisor/Worker and lacks owner/repository numeric IDs and issue number in the expected binding. D1 consume is local-only and does not implement cryptographic issuer verification. The default Supervisor/Worker remain unintegrated with A0/D1.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/reports/2026-11-14-next-a0-authority-boundary-audit.md
+- Next: reconcile canonical approval envelope, evaluate mature Workers-compatible signature-verification components, then implement local-only A0 issuer/verifier and atomic D1 consume/task/outbox proof. No hosted resources, dispatch or provider calls.
