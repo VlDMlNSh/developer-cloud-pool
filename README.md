@@ -17,6 +17,10 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - Mac mini 2018 and remote GPU server: FUTURE equipment, design only.
 - No local deployment is in scope until the cloud-first pool is qualified.
 
+## Component qualification
+- [Component qualification matrix — 25 records, executable CI validator](docs/qualification/COMPONENT-QUALIFICATION-MATRIX.md)
+- [Machine-readable matrix](config/component-qualification-matrix.json)
+
 ## Architecture
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
 - [Jarvis hybrid platform reference architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
