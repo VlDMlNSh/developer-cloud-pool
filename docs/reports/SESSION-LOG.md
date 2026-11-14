@@ -1,0 +1,179 @@
+# Developer Cloud Pool — Session Log
+
+Append-only record of completed engineering passes. For current status and next action, see docs/operations/MASTER-HANDOFF.md.
+
+## 2026-11-14 — A0 admission contract and cross-chat continuity baseline
+
+Branch: impl/receipt-bound-projection-2026-11-11  
+PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/67  
+Exact head: a53f6232bd5b50d3e150addf528b8e722002f9dd
+
+### Work completed
+
+- Inspected the existing local D1 attempt/lease/projection implementation before adding new code.
+- Confirmed that the local proof already covers immutable attempts, generation-fenced lease lifecycle, stale/expired finalizer rejection, bounded legacy lease attempts, indeterminate attempt handling and projection delivery controls.
+- Added proofs/d1-ledger/src/a0-admission-contract.mjs.
+- Added proofs/d1-ledger/test/a0-admission-contract.test.ts with 14 negative-first tests for missing/mismatched approval authority, replay, paid/unknown cost classes, forbidden provider routes, missing/unverified quota evidence, malformed immutable binding and dispatch enablement.
+- The contract rejects any request with dispatchEnabled other than false; successful outcomes remain queue-only and return dispatch:false.
+- Added the module to syntax validation and documented its limitations in the D1 proof README.
+
+### Commits in the pass
+
+- d58f52e1fcf5eb77bd06588e1527ad446dae3a28 — initial A0 contract.
+- 3d46856d052a6116ed1a0efe93a740410b6c1f4d — negative-first tests.
+- eedc4072c0a9ce4ad56c5d9097742c518ed6a289 — syntax validation.
+- 17d30c06f814d87dfa710a70f1a0efc953def13e — proof scope documentation.
+- b21bbe537a49ba3f6b343ca9b7d31db0b8fb625b — harden dispatch-off precondition.
+- a53f6232bd5b50d3e150addf528b8e722002f9dd — assert dispatch cannot be enabled.
+
+### Exact-head validation
+
+- Pool Contract Validation run 43600901063: SUCCESS.
+- Isolated D1 Ledger Proof run 43600901068: SUCCESS.
+- Workers-runtime suite: 84/84 tests across 6 files.
+- Upgrade-binding smoke: 1 passed.
+- Frozen schema-0010 fixture smoke: 2 passed.
+- Logs confirmed A0 contract file: 14 tests passed.
+
+### Evidence boundary
+
+Local Workers-runtime proof only. No hosted D1, live GitHub writes, worker dispatch, provider/model call, paid API, secret access, deployment or production integration. The A0 verifier/consumer are injected test doubles; cryptographic issuer verification, trusted time, durable atomic capability consumption and actual quota evidence remain unqualified.
+
+## 2026-11-14 — Documentation continuity foundation
+
+Branch: docs/unified-cloud-pool-jarvis-plan-2026-11-14  
+PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/68  
+Base baseline: 221f216c00ca7e5596bcc682ba185ad155a10603
+
+Created:
+- docs/operations/MASTER-HANDOFF.md — canonical state snapshot and next engineering task.
+- docs/operations/CONTINUATION-PROTOCOL.md — required startup, verification and change lifecycle for any new chat.
+- docs/architecture/ARCHITECTURE-DECISION-REGISTER.md — binding project boundaries and decisions.
+- docs/reports/SESSION-LOG.md — append-only history.
+
+These files must be linked from the root README. The handoff records PR #67 and #68 exact heads as of this snapshot and requires live refresh on every continuation. The docs branch itself must be read back and CI-validated before calling this documentation pass complete.
+
+
+### Documentation commits and qualification refresh
+
+The following documentation commits were written on the PR #68 branch:
+- 1ec32aaf49731adb4cd96ca0d5f89e8edfedb9ac — canonical Master Handoff.
+- 014ef8abce7e1153f2acae14e90eae5ad0521d7d — cross-chat Continuation Protocol.
+- 1c340af820fb54d68d0238562091c9223a012585 — Architecture Decision Register.
+- f9dbd8c2e5c1ad4e820cb7a2578b168b03fdf26e — initial append-only Session Log.
+- f25f04a14ce0cdc477a50c1da1ce0f06c38ba56f — README safe entrypoint and dispatch warning.
+- 1cad9d20e2b8d99a3bad444ad186847637df20ba — machine-readable qualification matrix refreshed to 30 records.
+- f540195654aa1d2f0f6ac35fb2c4b9309c27cc02 — matrix Markdown refreshed for current D1/runner evidence.
+- 63c17e72b7404767a20986a521335bbcc1ca929a — A0 admission contract row added to Markdown matrix.
+- bb0d1776b66605f07073b279819ea552b61a15e2 — README matrix count corrected to 30.
+- 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4 — architecture plan linked to operational continuation documents and refreshed with current evidence boundary.
+
+PR #68 head before the final handoff/session-log readback: 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4. Re-fetch after the final handoff update; the live PR head is authoritative.
+
+
+## 2026-11-14 — Fifth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601408557 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1 and AMD EPYC 7763. This is the fourth observation in the same image/version/region family; total read-only observations are now five. This still does not qualify reserved capacity or multi-agent packing.
+
+The JSON and Markdown qualification matrices, README record count and architecture-plan evidence note were updated. The fifth sample was observed only; no agent was installed or run.
+
+
+Documentation commit IDs for the fifth-observation refresh:
+- b64c31b2854d9ca8529fdbbbb784842067491dea — JSON runner evidence updated to five observations.
+- 7c341d41398928f7d5cb09b0da57225002ac9ce4 — Markdown runner evidence updated to five observations.
+- 532b0fe3c6f57cabfd77eb73e193b06a3ce91df8 — README matrix count corrected to 30.
+- 8cc59af1cfbb4b4c5f78654d08484f5c18af2f9c — architecture plan runner evidence refreshed.
+- a8593092b18538535f3460aec53a88eba99f017f — fifth runner observation recorded in this session log.
+
+Validation of the matrix/README/plan update:
+- PR #68 Pool Contract Validation run 43601408575: SUCCESS; log reports COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS.
+- PR #68 Runner Resource Probe run 43601408557: SUCCESS; read-only observation described above.
+- These runs validate the documentation/matrix state at PR head ac64a8d0e012e466ed400b59c6368d761a636da5. A subsequent handoff-only documentation commit followed; no source, workflow, or matrix content changed after those runs.
+
+
+## 2026-11-14 — Sixth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601557812 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1 and Intel Xeon 6975P-C. This is the second observation in the AWS image/region family; total read-only observations are now six (four Azure family, two AWS family). This does not qualify reserved capacity or multi-agent packing.
+
+The JSON and Markdown qualification matrices and architecture-plan evidence note were updated. The probe installed no agents, accessed no secrets and made no provider/model calls.
+
+
+Documentation commit IDs for the sixth-observation refresh:
+- 31f18c231679ff44327b236e643b67a2b8c0b8b4 — JSON runner evidence updated to six observations.
+- e1daa1042c5b646864ab80eada00b77d6b9dc70c — Markdown runner evidence updated to six observations.
+- dc31e258ce5e74064f2aa51348d0f9bea05f923f — architecture plan refreshed.
+- 639e4f227e97fd018f5dbe157f45b2a48bc14ced — sixth observation recorded in this log.
+
+The matrix/README/plan validator run 43601557792 passed with COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS for the preceding matrix snapshot. The sixth observation was then added to both matrix formats; the next exact-head Pool Contract Validation is required to validate this final matrix revision.
+
+
+## 2026-11-14 — Seventh read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601648756 succeeded. It observed Ubuntu 24.04.5 x64, 15 GiB RAM, 85.26 GiB available workspace, Azure westus3, image 20261111.370.1 and AMD EPYC 9V45. This is the first sample from the westus3 region; total read-only observations are now seven across Azure and AWS. No agent was installed or run, no secret was accessed, and no provider/model call was made. This is not reserved-capacity or multi-agent qualification.
+
+
+Documentation commit IDs for the seventh-observation refresh:
+- 8b45d02658e914637faebdb2a9db96d706ff7cc0 — JSON runner evidence updated to seven observations.
+- 85a6f91fb93a4b7384aa45ec5c2e1dff8d184b6d — Markdown runner evidence updated to seven observations.
+- 12ccd15e10de99cd549b6799bb403ca55db474c9 — architecture plan refreshed.
+- a65e47a69d88118633224fb37eb36a0bdfa9ff0b — seventh observation recorded in this log.
+
+PR #68 Pool Contract Validation run 43601648781 succeeded with COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS for the preceding six-observation matrix revision. The seventh observation was then added to both matrix formats; re-run exact-head validation on the new matrix revision.
+
+
+## 2026-11-14 — Eighth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601762099 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-west-2, image 20261111.127.1 and Intel Xeon 6975P-C. This is the first sample from the us-west-2 region; total read-only observations are now eight across two cloud providers and four region families. No agent was installed or run, no secret was accessed, and no provider/model call was made. This is not reserved-capacity or multi-agent qualification.
+
+Documentation evidence cutoff: eight observations, ending at run 43601762099. Later opportunistic probe runs, if any, are not automatically part of this qualification snapshot; update the matrix only as part of an intentional evidence review.
+
+
+Documentation commit IDs for the eighth-observation refresh:
+- d69b2d578db711beed3eca3faeb2c943fa77acc3 — JSON runner evidence updated to eight observations.
+- cbcf2ddde3620e63362f2f6e653320ff30112a49 — Markdown runner evidence updated to eight observations.
+- 15890cd29dc585cf55d822c18abf6967e5da8d39 — architecture plan refreshed.
+- b7cb2f0f39c444389544c3aa458149424af967b3 — eighth observation recorded in this log.
+
+The last confirmed Pool Contract Validation for the seven-observation matrix was run 43601762091 (SUCCESS; 30 records; matrix validation PASS). The eighth-observation matrix update followed that run; a fresh validation result for the eight-observation matrix is not yet confirmed.
+
+
+## 2026-11-14 — Final eight-observation matrix validation
+
+PR #68 Pool Contract Validation run 43601849632 completed SUCCESS. Its log confirms:
+- POOL_CONTRACT_VALIDATION=PASS.
+- COMPONENT_MATRIX_RECORDS=30.
+- COMPONENT_MATRIX_VALIDATION=PASS.
+- dispatch remains disabled and no secret values are stored.
+
+The eight-observation JSON/Markdown matrix revision is therefore CI-validated. Runner Resource Probe run 43601849661 also completed SUCCESS, but its subsequent opportunistic sample is outside the intentional evidence cutoff of run 43601762099. Do not automatically expand the qualification snapshot on every PR synchronization; add further observations only in a deliberate measurement batch.
+
+
+## 2026-11-14 — Live state and six-hour launch estimate
+
+PR #68 advanced to exact head `74244d78299417347cdce42b0916871684550399`. Exact-head Runner Resource Probe run 43601943360 and Pool Contract Validation run 43601943374 both completed SUCCESS. Runner job 132468370214 observed Ubuntu 24.04.5 LTS, 4 vCPU and 85.25 GiB available workspace; the log explicitly states this was read-only, with no agents installed, no secrets accessed and no profile qualified. Contract job 132468370263 validated pinned Actions references, permission/fail-closed invariants and the 30-record qualification matrix. This additional probe is opportunistic and excluded from the prior eight-observation qualification cutoff.
+
+PR #67 remains at exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head local D1 runs 43600901063 and 43600901068 remain SUCCESS, with 84 tests plus two fixture/upgrade smoke groups passed. PR #67 and #68 formal review and inline thread counts are 0/0.
+
+The existing estimate's executive pilot target (10–15 eight-hour engineer-days = 80–120 hours) and detailed stage sum (17–34 engineer-days = 136–272 hours before overlap) describe different levels of scope. At six hours/day: optimistic pilot = 14–20 workdays; detailed stage envelope = 23–46 workdays. Practical planning range from current state = 120–180 hours / 20–30 six-hour days, conditional on reuse, overlap and timely no-card backend entitlement. Hosted backend alternative may add 24–56 hours (4–10 six-hour days). Secure multi-tenant v1 remains 160–240 hours / 27–40 six-hour days. Full calculation and assumptions: [dated report](2026-11-14-next-time-estimate-and-live-state.md).
+
+SentinelX host inventory currently has zero connected hosts; Voktors-Mini.Dlink is offline and mh-dev-01/02 disabled. No external/server-based agent work can proceed on current connection state. No secret, provider, hosted resource, deployment, merge, dispatch or paid route was used. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-14 — A0 authority boundary audit
+
+PR #67 exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI 43600901063/43600901068 SUCCESS, 84 tests / 6 files, D1 smoke tests passed. PR #68 exact head `3fa24a79a1af1b1dbf722aacdea367ffdbdf4a26d`; exact-head CI 43602306553/43602306555 SUCCESS, 30 qualification records validated, read-only runner probe only (Ubuntu 24.04.5, AWS image 20261111.127.1, 4 vCPU, 88.46 GiB available, no agents installed, no secrets accessed, no profile qualified). Both PRs remain OPEN/DRAFT/UNMERGED with zero formal reviews and zero inline threads.
+
+Source audit found A0 remains an injected-adapter contract, not wired to Supervisor/Worker. It omits owner/repository numeric IDs and issue number from its expected binding; its free-quota check is not a production account/route/quota registry. D1 consume is local-only and lacks cryptographic issuer verification. Default Supervisor remains heartbeat-only while dispatch is false; default Worker is not integrated with A0/D1. See [A0 authority boundary report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/projection-stack-reconciliation-2026-11-11/docs/reports/2026-11-14-next-a0-authority-boundary-audit.md).
+
+Next: canonicalize approval envelope; assess mature Workers-compatible signature verification; implement issuer/verifier and atomic single-use D1 consume/task/outbox proof locally. Dispatch remains false; no secrets, hosted resources, deployment, billing changes, provider calls or merge.
+
+
+## 2026-11-14 — Live continuation revalidation
+
+PR #67 remains OPEN/DRAFT/UNMERGED at `a53f6232bd5b50d3e150addf528b8e722002f9dd`, based on default `221f216c00ca7e5596bcc682ba185ad155a10603`. Exact-head Pool Contract Validation run 43600901063 and Isolated D1 Ledger Proof run 43600901068 both SUCCESS; this is local contract/Workers-runtime evidence only.
+
+PR #68 remains OPEN/DRAFT/UNMERGED at `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`, same default base. Exact-head Pool Contract Validation run 43602513555 and read-only Runner Resource Probe run 43602513530 both SUCCESS. The probe does not qualify agents, persistent capacity or a production worker profile. Both PRs are mergeable but remain unaccepted; no formal reviews are present in the current review snapshot.
+
+A0 remains injected-adapter-only and unintegrated with Supervisor/Worker. D1 proof is local-only; hosted D1, cryptographic issuer verification, actual quota verification, worker execution, authenticated remote console and A3 qualification are NOT VERIFIED / NOT RUN. Dispatch remains disabled. No code/runtime/schema/secret/provider/hosted-resource/deployment/merge changes were made in this pass.
+
+Next: inspect exact PR #67 D1 transaction APIs and migrations, then design and locally test the atomic A0 approval-to-task/attempt/queue-intent boundary with negative-first cases. Keep dispatch:false.

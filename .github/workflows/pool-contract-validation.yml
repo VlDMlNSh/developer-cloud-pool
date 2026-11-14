@@ -7,12 +7,16 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "config/component-qualification-matrix.json"
+      - "docs/qualification/**"
   push:
     branches:
       - "Основной"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "config/component-qualification-matrix.json"
+      - "docs/qualification/**"
 
 permissions:
   contents: read
@@ -55,3 +59,4 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/validate-pool-contract.mjs
+          node scripts/validate-component-matrix.mjs
