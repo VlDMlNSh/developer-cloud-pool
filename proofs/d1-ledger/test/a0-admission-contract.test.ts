@@ -129,12 +129,15 @@ describe("A0 fail-closed admission contract (isolated; not production wiring)", 
     expect(called).toBe(false);
   });
 
-  it("never dispatches even if a caller sets dispatchEnabled true", async () => {
-    const result = await evaluateA0Admission(localRequest({ dispatchEnabled: true }), makeAuthority());
-    expect(result).toMatchObject({
-      decision: "ADMITTED_DISPATCH_BLOCKED",
-      dispatch: false,
-      reason: "DISPATCH_REQUIRES_SEPARATE_OWNER_AUTHORIZATION"
+  it("rejects any request that attempts to enable dispatch", async () => {
+    let consumed = false;
+    const authority = makeAuthority({
+      consumeSingleUseCapability: async () => { consumed = true; return { consumed: true }; }
     });
+    const result = await evaluateA0Admission(localRequest({ dispatchEnabled: true }), authority);
+    expect(result).toMatchObject({
+      decision: "DENY", dispatch: false, reason: "DISPATCH_MUST_REMAIN_DISABLED"
+    });
+    expect(consumed).toBe(false);
   });
 });
