@@ -89,5 +89,13 @@ Current PR #68 exact head `8569d0b368b353beb78e8594509d8492abaec170` adds a 30-r
 ## 7. Actions, evidence and next step
 
 - Completed read-only checks of repository/default HEAD, open Issues/PRs, tracked PR heads and divergence, exact-head CI jobs/steps, formal reviews/threads, path-fix branch, PR #67 source contracts, PR #68 matrix/workflow, and SentinelX inventory.
-- Documentation-only update on the working docs branch follows. No source/test/workflow/runtime/security-boundary changes, no secrets, no dispatch/workflow invocation, no agents/DSH/Resource Probe, no provider/model calls, no deployment, no billing/settings/ruleset changes and no merge.
+- Documentation-only updates were committed to the working docs branch and read back. No source/test/workflow/runtime/security-boundary changes, no secrets, no dispatch/workflow invocation, no agents/DSH/Resource Probe, no provider/model calls, no deployment, no billing/settings/ruleset changes and no merge.
 - Contour A: **BLOCKED / NOT ACCEPTED**. Contour B: **DEFERRED**.
+
+
+## Documentation change record
+
+- Report initial creation commit: `f03327ccbea7e3d1fe12fda9ecda5261012c0754`.
+- Checkpoint update: commit `24907d0062c4f2dc8b04e300c7b9eba49261cd49`, blob `f732693545d1b15cc801c2fe03cab4d8f7962b14`.
+- Context Window update: commit `ee0299a9888b411c869d6b369df027d1bda45f8a`, blob `f36aac02a3cc215bcadd40431b88a65d9f98ff8d`.
+- All three documents were fetched again after the writes. The documentation branch is a working branch under PR #66, not the default branch.
