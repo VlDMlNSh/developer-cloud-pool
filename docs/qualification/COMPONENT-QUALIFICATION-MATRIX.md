@@ -70,7 +70,7 @@ A package install, a successful heartbeat or local test suite alone cannot quali
 
 - **A0 bootstrap:** existing Pool Supervisor + GitHub Issues human intake + GitHub Actions. Current default Supervisor is heartbeat/scaffold, not a qualified transactional dispatcher.
 - **Authoritative claim/task state:** local D1 proof is the preferred implementation candidate, not a hosted service. GitHub Issue labels are not a CAS lock.
-- **Runner:** one live sample of GitHub-hosted Ubuntu 24.04.5 x64; 4 logical CPUs, 15 GiB RAM, 88.46 GiB available workspace filesystem. This is one observation, not verified capacity.
+- **Runner:** two live read-only observations of GitHub-hosted Ubuntu 24.04.5 x64: both 4 logical CPUs and 15 GiB RAM; available workspace filesystem 88.46 GiB (AWS us-east-1, image 20261111.127.1) and 85.26 GiB (Azure northcentralus, image 20261111.370.1). Two observations across different image versions/regions are not a stable or reserved capacity guarantee.
 - **Worker:** only the existing DSH no-model probe is allowlisted in the current bootstrap. Gemini, Claude Code and Codex are candidates, not qualified pool profiles.
 - **Provider routes:** 24 cloud slots inventoried; 0 verified account identities and 0 verified quota domains in the inventory evidence.
 - **Quota and placement:** pure local policy implementation exists; no authenticated provider broker or dispatch integration.
