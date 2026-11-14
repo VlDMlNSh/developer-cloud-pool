@@ -5,6 +5,8 @@
 **Branch:** `docs/unified-cloud-pool-jarvis-plan-2026-11-14`  
 **Status:** Architecture consolidation proposal; documentation only; not deployed or qualified.
 
+**Operational continuation:** [Master Handoff](../operations/MASTER-HANDOFF.md) · [Continuation Protocol](../operations/CONTINUATION-PROTOCOL.md) · [Architecture Decision Register](ARCHITECTURE-DECISION-REGISTER.md) · [Session Log](../reports/SESSION-LOG.md).
+
 ## 1. Executive decision
 
 Build an independent, cloud-first Developer Cloud Pool with Jarvis as its remote operator interface. Keep this project separate from MediaHub OS. MediaHub OS Gemini workflows are useful evidence that a GitHub-dispatch pattern works, but they are not workers, capacity, or qualification evidence for this pool.
@@ -742,3 +744,16 @@ Retries create new attempt IDs. A worker never approves itself. A0 owns pool que
 - Which agent processes can share one runner safely. That is a measured packaging decision, not an architectural assumption.
 
 **Launch boundary:** this plan defines the target and decision sequence. It does not claim the pool, Jarvis UI, provider adapters, tenant onboarding, daily quota service or agent profiles are deployed or qualified. Current `POOL_DISPATCH_ENABLED=false` remains unchanged.
+
+
+## 14. Operational evidence update — 2026-11-14
+
+The point-in-time project state, exact active PR heads, exact-head CI, local D1 proof boundaries and next engineering gate are maintained in the Master Handoff. This architecture document is the target design and should not be used as a substitute for that live operational snapshot.
+
+At the later 2026-11-14 continuation checkpoint:
+- PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd passed 84 local Workers-runtime tests, 1 upgrade-binding smoke and 2 frozen fixture tests.
+- The A0 admission contract contributes 14 isolated tests. Its verifier, capability consumer and quota evidence are injected test authorities; the contract is not connected to the production Supervisor/Worker or an atomic hosted admission transaction.
+- Four read-only GitHub-hosted runner resource observations exist. All observed Ubuntu 24.04.5 x64, 4 vCPU and 15 GiB RAM; observations do not establish reserved capacity or multi-agent packing.
+- PR #67 and PR #68 remain open Draft PRs, not merged. Dispatch remains disabled.
+
+For the exact current heads and next task, consult the Master Handoff and refresh GitHub metadata before making changes.
