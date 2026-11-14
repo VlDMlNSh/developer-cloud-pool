@@ -69,3 +69,10 @@ The following documentation commits were written on the PR #68 branch:
 - 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4 — architecture plan linked to operational continuation documents and refreshed with current evidence boundary.
 
 PR #68 head before the final handoff/session-log readback: 1929c2009bf2c12bdf916f2e715efa27b5bc7fb4. Re-fetch after the final handoff update; the live PR head is authoritative.
+
+
+## 2026-11-14 — Fifth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601408557 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1 and AMD EPYC 7763. This is the fourth observation in the same image/version/region family; total read-only observations are now five. This still does not qualify reserved capacity or multi-agent packing.
+
+The JSON and Markdown qualification matrices, README record count and architecture-plan evidence note were updated. The fifth sample was observed only; no agent was installed or run.
