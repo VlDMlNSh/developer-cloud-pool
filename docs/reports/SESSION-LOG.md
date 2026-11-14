@@ -126,3 +126,12 @@ PR #68 Pool Contract Validation run 43601648781 succeeded with COMPONENT_MATRIX_
 PR #68 exact-head Runner Resource Probe run 43601762099 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-west-2, image 20261111.127.1 and Intel Xeon 6975P-C. This is the first sample from the us-west-2 region; total read-only observations are now eight across two cloud providers and four region families. No agent was installed or run, no secret was accessed, and no provider/model call was made. This is not reserved-capacity or multi-agent qualification.
 
 Documentation evidence cutoff: eight observations, ending at run 43601762099. Later opportunistic probe runs, if any, are not automatically part of this qualification snapshot; update the matrix only as part of an intentional evidence review.
+
+
+Documentation commit IDs for the eighth-observation refresh:
+- d69b2d578db711beed3eca3faeb2c943fa77acc3 — JSON runner evidence updated to eight observations.
+- cbcf2ddde3620e63362f2f6e653320ff30112a49 — Markdown runner evidence updated to eight observations.
+- 15890cd29dc585cf55d822c18abf6967e5da8d39 — architecture plan refreshed.
+- b7cb2f0f39c444389544c3aa458149424af967b3 — eighth observation recorded in this log.
+
+The last confirmed Pool Contract Validation for the seven-observation matrix was run 43601762091 (SUCCESS; 30 records; matrix validation PASS). The eighth-observation matrix update followed that run; a fresh validation result for the eight-observation matrix is not yet confirmed.
