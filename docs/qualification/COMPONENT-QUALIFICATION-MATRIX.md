@@ -14,7 +14,7 @@
 
 | Component / upstream | Decision | Runtime evidence | Version / pin | Next qualification gate |
 |---|---|---|---|---|
-| [GitHub-hosted Actions runner](https://github.com/actions/runner-images) | SELECTED_BOOTSTRAP | THREE_READ_ONLY_RESOURCE_PROBES_PASS; TWO_SAME_IMAGE_OBSERVATIONS; CAPACITY_NOT_QUALIFIED | ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest | benchmark pinned no-secret worker profiles and repeat resource measurements before capacity admission |
+| [GitHub-hosted Actions runner](https://github.com/actions/runner-images) | SELECTED_BOOTSTRAP | FOUR_READ_ONLY_RESOURCE_PROBES_PASS; THREE_SAME_IMAGE_OBSERVATIONS; CAPACITY_NOT_QUALIFIED | ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest | benchmark pinned no-secret worker profiles and repeat resource measurements before capacity admission |
 | [Pool Supervisor](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/scripts/pool-supervisor.mjs) | SELECTED_EXISTING_INTERNAL | IMPLEMENTED_SCAFFOLD_NOT_RUN_ON_PR_HEAD | repository commit SHA; current PR head must be recorded per run | negative tests on a controlled non-dispatch harness |
 | [GitHub Issues task queue](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) | SELECTED_BOOTSTRAP_LIMITED | IMPLEMENTED_SCAFFOLD_NOT_TRANSACTIONALLY_QUALIFIED | GitHub service | race/replay tests; keep as bootstrap only |
 | [Pool Worker DSH headless probe](https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/.github/workflows/pool-worker.yml) | SELECTED_PROBE_ONLY | IMPLEMENTED_NOT_RUN_IN_THIS_PASS | DSH 0.2.1-rc.5; Node 24.9.0; Actions pinned to commit SHA | authorized synthetic smoke task after dispatch governance |
