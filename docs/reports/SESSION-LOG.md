@@ -135,3 +135,14 @@ Documentation commit IDs for the eighth-observation refresh:
 - b7cb2f0f39c444389544c3aa458149424af967b3 — eighth observation recorded in this log.
 
 The last confirmed Pool Contract Validation for the seven-observation matrix was run 43601762091 (SUCCESS; 30 records; matrix validation PASS). The eighth-observation matrix update followed that run; a fresh validation result for the eight-observation matrix is not yet confirmed.
+
+
+## 2026-11-14 — Final eight-observation matrix validation
+
+PR #68 Pool Contract Validation run 43601849632 completed SUCCESS. Its log confirms:
+- POOL_CONTRACT_VALIDATION=PASS.
+- COMPONENT_MATRIX_RECORDS=30.
+- COMPONENT_MATRIX_VALIDATION=PASS.
+- dispatch remains disabled and no secret values are stored.
+
+The eight-observation JSON/Markdown matrix revision is therefore CI-validated. Runner Resource Probe run 43601849661 also completed SUCCESS, but its subsequent opportunistic sample is outside the intentional evidence cutoff of run 43601762099. Do not automatically expand the qualification snapshot on every PR synchronization; add further observations only in a deliberate measurement batch.
