@@ -850,3 +850,12 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Dispatch fail-closed. No secrets, provider calls, hosted resource, billing change, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #68 handoff and architecture proposal with live default refs; advance Issue #22's no-card authenticated read-only console and durable-state proof without mounting protected routes or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next launch estimate — 2026-11-14
+
+- Report: [2026-11-14 launch estimate and exact-head refresh](../reports/2026-11-14-next-launch-estimate.md).
+- PR #68 current exact head `74244d78299417347cdce42b0916871684550399`; exact-head Runner Resource Probe 43601943360 and Pool Contract Validation 43601943374 SUCCESS. Runner inventory only; no agents installed/secrets accessed/profile qualified. 30-record matrix validation PASS; dispatch disabled. PR remains OPEN/DRAFT/UNMERGED, no formal reviews.
+- PR #67 remains at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI 43600901063/43600901068 SUCCESS; 84 tests / 6 files and D1 smoke checks passed. OPEN/DRAFT/UNMERGED; no formal reviews.
+- Pilot estimate discrepancy: executive estimate 10–15 engineer-days (80–120h = 13–20 six-hour owner days); detailed stages sum 17–34 engineer-days (136–272h = 23–45 owner days). Working planning target 30–35 six-hour workdays, reforecast after hosted claim and deployed console proofs.
+- Hosted backend, A0 issuer, production OAuth, read-only deployed console, real worker execution, provider quota verification, tenant/A3 remain NOT VERIFIED/NOT RUN. No secrets/dispatch/provider calls/deployment/merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: A0 admission-boundary local proof, negative-first tests, no dispatch. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
