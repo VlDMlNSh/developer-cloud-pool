@@ -42,17 +42,18 @@
       "version_pin": "repository commit SHA; current PR head must be recorded per run",
       "license": "repository license metadata not yet verified",
       "security": "dispatch fail-closed unless POOL_DISPATCH_ENABLED is literal true; currently false",
-      "runtime_qualification": "IMPLEMENTED_SCAFFOLD_NOT_RUN_ON_PR_HEAD",
+      "runtime_qualification": "HEARTBEAT_ONLY_RUN; DISPATCH_DISABLED; NOT_TRANSACTIONAL_DISPATCH_QUALIFIED",
       "evidence": [
         "scripts/pool-supervisor.mjs",
-        ".github/workflows/pool-supervisor.yml"
+        ".github/workflows/pool-supervisor.yml",
+        "Supervisor run 43574445786: heartbeat-only success; log confirms POOL_DISPATCH_ENABLED=false and no worker dispatch"
       ],
       "blockers": [
         "default-branch governance not proven",
         "atomic durable leases and tenant-aware admission absent",
         "only one DSH profile allowlisted"
       ],
-      "next_gate": "negative tests on a controlled non-dispatch harness"
+      "next_gate": "negative tests on a controlled non-dispatch harness; replace GitHub label read-modify-write authority with durable fenced ledger before any dispatch"
     },
     {
       "id": "github-issues-queue",
@@ -526,23 +527,25 @@
       "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/67",
       "decision": "LOCAL_PROOF_NOT_HOSTED",
       "scope": "transactional claim/outbox, immutable attempts, fenced leases, projection retry and receipt-bound delivery proof only",
-      "version_pin": "local proof package lock; exact PR #67 head 00d806a24c86545e0dfaf2dee47fcfa9747a5b62",
+      "version_pin": "local proof package lock; PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd",
       "license": "Cloudflare Workers/D1 service terms; local test dependencies pinned in package-lock",
       "security": "synthetic local D1; no hosted service, production issuer, trusted time or live GitHub write",
-      "runtime_qualification": "LOCAL_WORKERS_D1_TESTS_PASS_69_PLUS_UPGRADE_SMOKES; NOT_HOSTED",
+      "runtime_qualification": "LOCAL_WORKERS_D1_84_TESTS_PASS; UPGRADE_BINDING_1_PASS; FROZEN_FIXTURE_2_PASS; NOT_HOSTED",
       "evidence": [
         "PR #39 12-way local conditional consume proof",
-        "PR #54 50-way logical task contention proof",
-        "PR #67 run 43182768560: 69 tests passed plus isolated upgrade smoke and frozen fixture",
-        "PR #67 remains draft and unmerged"
+        "PR #54 50-way logical-task contention proof",
+        "PR #67 exact-head run 43600901068: 84 Workers-runtime tests passed across 6 files",
+        "PR #67 exact-head upgrade-binding smoke: 1 passed; frozen schema-0010 fixture smoke: 2 passed",
+        "PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd remains draft and unmerged"
       ],
       "blockers": [
-        "multiple stacked branches and migration 0001-0010 need one reconciled canonical integration",
+        "local Workers-runtime proof only; hosted D1 not provisioned or qualified",
         "issuer authentication, trusted time, nonce and revocation absent",
-        "hosted D1 entitlement and real 50+ concurrent HTTP requests not verified",
-        "projection API integration still local/fake; no dispatch"
+        "A0 admission contract uses injected test authorities and is not integrated with Supervisor/Worker",
+        "production quota evidence and atomic durable capability consumption are not qualified",
+        "projection API integration remains local/fake; no dispatch"
       ],
-      "next_gate": "reconcile stack on current default; implement issuer and hosted test only after explicit authorization"
+      "next_gate": "design and test one atomic A0 admission transaction over the existing D1 task/attempt ledger; keep dispatch false and do not provision hosted D1 without explicit authorization"
     },
     {
       "id": "provider-slot-inventory",
@@ -615,6 +618,31 @@
         "not deployed; no live secret store or service binding"
       ],
       "next_gate": "reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval"
+    },
+    {
+      "id": "a0-admission-contract",
+      "name": "A0 fail-closed admission contract harness",
+      "kind": "local admission policy contract proof",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/67",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
+      "scope": "immutable task/attempt binding, owner-approval authority interface, single-use capability contract, cost/quota fail-closed checks and dispatch-off invariant",
+      "version_pin": "PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd",
+      "license": "internal project code; test dependencies pinned in proofs/d1-ledger/package-lock.json",
+      "security": "isolated tests with injected mock authorities; no production cryptographic verifier, trusted clock, durable replay store, provider quota source or Supervisor/Worker integration",
+      "runtime_qualification": "14_A0_CONTRACT_TESTS_PASS; INJECTED_AUTHORITIES; NOT_PRODUCTION_INTEGRATED",
+      "evidence": [
+        "proofs/d1-ledger/src/a0-admission-contract.mjs",
+        "proofs/d1-ledger/test/a0-admission-contract.test.ts",
+        "PR #67 exact-head run 43600901068: A0 admission contract 14 tests passed",
+        "Successful outcomes remain queue-only and dispatch:false; dispatchEnabled=true is rejected"
+      ],
+      "blockers": [
+        "owner approval verification is a test double, not a qualified cryptographic issuer",
+        "single-use capability consumer is injected and not proven atomic/durable",
+        "quota-domain evidence is mocked and not provider-authoritative",
+        "not connected to a single durable A0 admission transaction or production Supervisor/Worker"
+      ],
+      "next_gate": "integrate the contract with the existing durable task/attempt ledger through one atomic admission transaction; retain dispatch:false and add failure/replay/concurrency tests"
     }
   ],
   "provider_cost_policy": {
