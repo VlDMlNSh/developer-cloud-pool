@@ -119,3 +119,10 @@ Documentation commit IDs for the seventh-observation refresh:
 - a65e47a69d88118633224fb37eb36a0bdfa9ff0b — seventh observation recorded in this log.
 
 PR #68 Pool Contract Validation run 43601648781 succeeded with COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS for the preceding six-observation matrix revision. The seventh observation was then added to both matrix formats; re-run exact-head validation on the new matrix revision.
+
+
+## 2026-11-14 — Eighth read-only runner observation
+
+PR #68 exact-head Runner Resource Probe run 43601762099 succeeded. It observed Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-west-2, image 20261111.127.1 and Intel Xeon 6975P-C. This is the first sample from the us-west-2 region; total read-only observations are now eight across two cloud providers and four region families. No agent was installed or run, no secret was accessed, and no provider/model call was made. This is not reserved-capacity or multi-agent qualification.
+
+Documentation evidence cutoff: eight observations, ending at run 43601762099. Later opportunistic probe runs, if any, are not automatically part of this qualification snapshot; update the matrix only as part of an intentional evidence review.
