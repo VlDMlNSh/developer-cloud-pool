@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "developer-cloud-pool-free-first-execution",
+  "snapshot_date": "2026-11-14",
+  "dispatch_enabled": false,
+  "paid_api_policy": {
+    "default": "DENY",
+    "openai": "DEFERRED_EXPLICIT_LATER_PHASE",
+    "anthropic_api": "PROHIBITED_FOR_INITIAL_LAUNCH",
+    "paid_fallback_on_quota_exhaustion": false
+  },
+  "execution_routes": [
+    {
+      "id": "claude-code-free",
+      "name": "Claude Code — Free user route",
+      "route_type": "user_authorized_free_access",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "allowed_auth": "Only a supported free user-facing Claude Code authentication mode explicitly authorized by the account holder and permitted by current Anthropic terms",
+      "prohibited": ["Anthropic API key", "Anthropic paid API billing", "credential sharing", "account rotation", "quota circumvention"],
+      "version_pin": "NOT_PINNED",
+      "runtime_qualification": "NOT_RUN",
+      "next_gate": "Verify current free-route availability, official terms, supported headless/interactive operation, and a safe tenant-bound auth method; no secrets in pull-request jobs"
+    },
+    {
+      "id": "ollama-local",
+      "name": "Ollama local models",
+      "route_type": "user_owned_local_compute",
+      "decision": "LATER_LOCAL_WORKER_CANDIDATE",
+      "allowed_models": ["Llama family, subject to each model's license and hardware fit"],
+      "prohibited": ["Treating local runtime as cloud quota", "assuming model license permits every use", "exposing local host credentials to untrusted jobs"],
+      "version_pin": "NOT_PINNED",
+      "runtime_qualification": "NOT_RUN",
+      "next_gate": "Inventory approved host, RAM/VRAM/storage; pin Ollama and exact model digest; isolate worker and measure a synthetic task"
+    },
+    {
+      "id": "gemini-free",
+      "name": "Gemini free quota",
+      "route_type": "provider_free_quota",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "allowed_auth": "Provider-supported account/API route with documented free quota only",
+      "prohibited": ["Paid billing", "automatic paid upgrade", "account rotation", "quota circumvention"],
+      "version_pin": "NOT_PINNED",
+      "runtime_qualification": "NOT_RUN",
+      "next_gate": "Verify project/account identity, current free quota and reset evidence without exposing credentials; then run a bounded synthetic probe"
+    },
+    {
+      "id": "deepseek-free",
+      "name": "DeepSeek free route",
+      "route_type": "provider_free_quota",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "allowed_auth": "Only a currently documented free allowance, if available to the account",
+      "prohibited": ["Paid API billing", "automatic paid upgrade", "account rotation", "quota circumvention"],
+      "version_pin": "NOT_PINNED",
+      "runtime_qualification": "NOT_RUN",
+      "next_gate": "Verify actual free availability and terms for the account; DSH harness probe is not itself proof of free model access"
+    },
+    {
+      "id": "openai-later",
+      "name": "OpenAI / Codex",
+      "route_type": "explicit_later_phase_exception",
+      "decision": "DEFERRED",
+      "allowed_auth": "No initial-phase auth or API calls",
+      "prohibited": ["Initial launch execution", "implicit billing activation"],
+      "version_pin": "NOT_APPLICABLE",
+      "runtime_qualification": "NOT_RUN",
+      "next_gate": "Separate explicit approval and budget/usage policy in a later phase"
+    }
+  ],
+  "quota_exhaustion": {
+    "action_order": ["TRY_ANOTHER_ALREADY_QUALIFIED_FREE_ROUTE", "QUEUE_WITH_PROVIDER_RESET_EVIDENCE", "FAIL_CLOSED"],
+    "paid_fallback": false,
+    "account_rotation": false,
+    "reset_time_source": "Provider-authoritative evidence only",
+    "unknown_quota_state": "DENY_DISPATCH"
+  },
+  "launch_gates": {
+    "secret_values_in_matrix": false,
+    "provider_auth_in_pull_request_jobs": false,
+    "unqualified_agent_dispatch": false,
+    "independent_a3_required_before_acceptance": true,
+    "initial_worker_allowlist": ["dsh-headless-probe"],
+    "model_call_in_baseline_probe": false
+  }
+}
