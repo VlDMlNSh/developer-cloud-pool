@@ -27,6 +27,19 @@ if (matrix.matrix_id !== "developer-cloud-pool-component-qualification") fail("U
 if (matrix.repository !== "VlDMlNSh/developer-cloud-pool") fail("Matrix repository identity mismatch");
 if (matrix.dispatch_enabled !== false) fail("Matrix must keep dispatch_enabled=false");
 if (matrix.secret_values_stored !== false) fail("Matrix must never store secret values");
+
+const cost = matrix.provider_cost_policy;
+if (!cost || cost.effective_for !== "initial_launch") fail("Missing initial-launch provider cost policy");
+if (!cost || cost.paid_provider_apis !== "DENY") fail("Paid provider APIs must be denied");
+if (!cost || cost.anthropic_api !== "DENY") fail("Anthropic API must be denied");
+if (!cost || cost.openai !== "DEFERRED_REQUIRES_EXPLICIT_OWNER_APPROVAL") fail("OpenAI must remain deferred pending explicit owner approval");
+if (!cost || cost.claude_code !== "FREE_CLAUDE_CODE_ROUTE_ONLY; if unavailable or unsupported, BLOCK profile; never use Anthropic API") fail("Claude Code must use only the approved free route");
+if (!cost || cost.local_models !== "OLLAMA_LOCAL_ONLY_AS_QUALIFIED; includes Llama") fail("Ollama/Llama local route policy missing");
+if (!cost || !Array.isArray(cost.allowed_cost_classes_initial) || JSON.stringify([...cost.allowed_cost_classes_initial].sort()) !== JSON.stringify(["free_quota","local"])) fail("Initial allowed cost classes must be exactly free_quota and local");
+if (!cost || cost.unknown_cost_class !== "FAIL_CLOSED") fail("Unknown cost class must fail closed");
+if (!cost || cost.account_or_key_rotation_to_evade_limits !== "PROHIBITED") fail("Quota evasion by account/key rotation must be prohibited");
+if (!cost || cost.secret_values_stored !== false) fail("Provider policy must not store secret values");
+
 if (!Array.isArray(matrix.records) || matrix.records.length < 20) fail("Expected at least 20 component records");
 
 const ids = new Set();
