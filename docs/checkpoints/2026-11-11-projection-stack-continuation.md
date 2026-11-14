@@ -913,3 +913,15 @@ The previous audit updated the PR #68 documentation branch (master handoff and s
 - PR #67 remains `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head CI 43600901063 and 43600901068 SUCCESS, 84 tests / 6 files and D1 smoke checks. Reviews/threads 0/0.
 - A0 remains mock/injected-adapter-only; no cryptographic issuer, A0/D1 composition, hosted D1, production OAuth, deployed Jarvis or qualified worker. Next: canonical envelope + mature Workers-compatible JWS/JWT verification assessment, then local-only issuer/verifier and atomic D1 consume/task/outbox proof. Dispatch false.
 - Report: [A0 authority boundary audit](../reports/2026-11-14-next-a0-authority-boundary-audit.md).
+
+
+## /next — approval to D1 composition audit — 2026-11-14
+
+- Report: [2026-11-14 approval-to-D1 composition audit](../reports/2026-11-14-next-approval-to-d1-composition-audit.md).
+- PR #55 exact head `edff010388897f23f58bceb92e5180a09970fdff`; fixture CI 42797001864/42797001989 SUCCESS, 11/11 tests. Isolated canonical GitHub owner-comment verifier only; no production invocation, durable nonce/expiry, live event/API qualification, formal review. Branch diverged 6 ahead / 59 behind current default.
+- PR #39 exact head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; local D1 atomic claim/outbox proof 19 tests, run 42329993548 SUCCESS; branch diverged 55 ahead / 62 behind current default; 3 COMMENTED reviews, not approval. PR #67 current D1 schema is more evolved and exact-head CI 43600901063/68 SUCCESS, 84 tests / 6 files.
+- PR #68 exact head `d9afb6f45a7deb465f7fee7aa347469c2f6019b7`; exact-head runs 43602513530/55 SUCCESS; 30 matrix records pass, read-only runner inventory only. Formal reviews/threads for #67/#68 0/0.
+- Mismatch: PR55 comment includes owner/repository/issue/comment IDs and nonce; PR67 D1 has no nonce/issue ID; A0 additionally expects task/attempt/tenant and cost/route/quota bindings. Canonical contract must reconcile these; don't assume repo=tenant or task=attempt.
+- Do not build custom JWT issuer. Next: define normative owner approval envelope, nonce uniqueness, trusted time, task/attempt lifecycle, tenant and cost/route/quota bindings; then local-only integration proof on a fresh current-base branch. Dispatch false.
+- No code/secrets/hosted resources/provider calls/deploy/billing/merge. A0 composition NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
