@@ -47,7 +47,7 @@ Both PRs target `Основной` at baseline `221f216c00ca7e5596bcc682ba185ad1
 - Pool Contract Validation run `43601557792`: SUCCESS; its log reports 30 matrix records and COMPONENT_MATRIX_VALIDATION=PASS. This run preceded the sixth-observation matrix refresh.
 - Runner Resource Probe run `43601557812`: SUCCESS; read-only sixth observation, AWS us-east-1, image 20261111.127.1, Intel Xeon 6975P-C.
 - Eight resource observations are observational only: five Azure/image 20261111.370.1 across northcentralus and westus3, and three AWS/image 20261111.127.1 across us-east-1 and us-west-2. CPU models vary across the samples. They do not qualify reserved capacity, multi-agent packing, or production worker profiles.
-- The last confirmed Pool Contract Validation run 43601762091 passed with 30 records for the seven-observation matrix. The eighth-observation matrix revision was committed afterward and is awaiting a fresh exact-head validation; verify it before claiming the latest matrix CI passed.
+- Pool Contract Validation run 43601849632 passed after the eight-observation matrix update. Its log confirms 30 records, COMPONENT_MATRIX_VALIDATION=PASS, dispatch disabled and no secret values stored. Runner Resource Probe run 43601849661 also passed; its opportunistic sample is intentionally excluded from the evidence cutoff of run 43601762099.
 
 ## 3. What exists and what it proves
 
