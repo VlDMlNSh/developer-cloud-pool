@@ -94,7 +94,7 @@ if (process.env.GITHUB_STEP_SUMMARY) {
     "",
     "### Decision counts",
     ...Object.entries(counts).map(([key, value]) => "- " + key + ": " + value)
-  ].join("\\n");
-  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\\n");
+  ].join("\n");
+  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
 }
 console.log("COMPONENT_MATRIX_VALIDATION=PASS");
