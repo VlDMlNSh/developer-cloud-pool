@@ -839,7 +839,7 @@ No source/test/golden file was changed; no tests or CI were run. Preserve the pr
 - Detailed report: [2026-11-13 daily revalidation](../reports/2026-11-13-daily-revalidation.md).
 
 
-## /next revalidation — 2026-11-14 16:49 Europe/Paris
+## /next revalidation — 2026-11-14 16:49 UTC+03
 
 - Report: [Cloud Pool continuation revalidation](../reports/2026-11-14-next-continuation-revalidation.md).
 - Default baseline: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603` (recent commit search and PR base refs).
