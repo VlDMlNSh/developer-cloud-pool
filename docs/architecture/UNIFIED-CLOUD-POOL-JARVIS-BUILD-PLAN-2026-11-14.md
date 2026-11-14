@@ -512,3 +512,233 @@ References:
 - https://github.com/Dodaios/Dodaios
 - https://github.com/vercel-labs/agent-browser
 - https://github.com/microsoft/playwright
+
+
+---
+
+## 11. MediaHub-wide consolidation: agent fabric, Jarvis source decision, tenants and quota lifecycle
+
+This section is the controlling clarification for the cloud-pool target. It supersedes any reading of earlier sections that treats Gemini as the only agent family, assumes a Gemini-specific controller is the global coordinator, treats ECC as an unambiguous project name, or assumes a fixed three-agent pool.
+
+### 11.1 What the MediaHub source review actually establishes
+
+The following canonical/research sources were read for this consolidation:
+
+- `profiles/agent-registry.json` (schema 1.2.0; 28 registered agent/tool candidates in the current source snapshot).
+- `profiles/providers/astra-gold-hybrid-agent-fabric.yaml` (cloud providers, gateways, local tooling, qualification ladder).
+- `architecture/ASTRA-GOLD-UNIFIED-AUTONOMOUS-DEVELOPMENT-SYSTEM.md` (A0–A3 roles, executor/provider/gateway separation, dynamic task-scoped workers).
+- `architecture/MEDIAHUB-DISTRIBUTED-AI-INFRASTRUCTURE.md` (GitHub-cloud-only and local-Jarvis boundaries, provider routing, future owned/user-contributed compute).
+- `docs/checkpoints/MEDIAHUB-JARVIS-CORPORATION-ARCHITECTURE-PROPOSAL-CROSSWALK-WAVE-01-2026-10-15.md` (Jarvis/ASTRA split, task DAG and tenant/worker gaps).
+- `docs/checkpoints/MEDIAHUB-JARVIS-REPOSITORY-REUSE-AND-INTEGRATION-DECISION-WAVE-21-2026-10-16.md`, `...CANDIDATE-INTAKE-WAVE-22...`, and `...SOURCE-PIN-AND-CAPABILITY-CROSSWALK-WAVE-24...` (Jarvis upstream and OpenHands candidate findings).
+- `docs/checkpoints/MEDIAHUB-GITHUB-CLOUD-ONLY-POOL-AND-LOCAL-JARVIS-BOUNDARY-WAVE-262-2026-10-20.md` (approved cloud-only execution boundary).
+- Mature upstream register `docs/checkpoints/MEDIAHUB-MATURE-PROJECT-CANDIDATE-REGISTER-WAVE-432-2026-10-23.json`, blob `eefd7f64b4631b17278d6b5a1d1972c6ec17069b`, reconciled in Wave 452.
+
+**Verified candidate inventory:** 128 unique repository records: 99 CANDIDATE, 22 CONDITIONAL, 2 REFERENCE_ONLY, 5 EXCLUDED_FROM_ACTIVE_SHORTLIST. Discovery remains OPEN_NOT_FROZEN; formal comparison NOT_STARTED; adoption NOT_STARTED. The repository-bounded source set reviewed here does not contain a second reconciled 200-row register. The owner's reference to "200 projects" is retained as an additional historical/discovery target, but it is not silently combined with the verified 128 or represented as a completed inventory. Recover and reconcile the exact second list before claiming 200 unique reviewed repositories.
+
+A candidate register is a research universe, not an installation manifest. No component becomes active because it appears in JSON or has an API-secret name.
+
+### 11.2 Agent and provider fabric — complete functional groups
+
+Pool A0 must select from a versioned registry. The registry distinguishes agent executors from model providers, API gateways, transport adapters, harnesses and local models. They are not interchangeable identities.
+
+**A. Cloud model/provider identities already named in the MediaHub registry**
+- Gemini / Google
+- Perplexity
+- Kimi
+- DeepSeek
+- ChatGPT / OpenAI
+- GigaChat
+- Claude / Anthropic
+
+**B. Cloud API gateways and aggregators**
+- OpenRouter
+- UnoRouter
+- ZeroRouter
+- NaraRouter
+- OrcaRouter
+
+**C. Additional direct provider candidates**
+- SiliconFlow
+- Novita
+- Z.ai
+- LLM7
+- SambaNova
+- Aion Labs
+- Cloudflare Workers AI
+- Groq
+- Mistral
+- Hugging Face
+- OpenAI direct API
+
+**D. Agent clients / coding executors / harnesses**
+- Gemini CLI and the existing Gemini multi-agent controller/workflows
+- Codex CLI / OpenAI Codex
+- Claude Code
+- Cursor
+- DeepSeek Harness
+- Stagewise
+- OpenHands application and OpenHands Software Agent SDK
+- Agno, smolagents, Pydantic AI, Google ADK, LangGraph, Microsoft Agent Framework and other candidates from the 128-row register, subject to comparison
+- OpenFlux and OpenOPC as qualification-gated desktop/autonomous-system candidates, not controllers or authorities
+
+**E. Local-only or machine-bound capabilities**
+- Ollama and local model runtimes
+- Kimi K3 In-C
+- local Claude Code/FCC-compatible routes, where the exact backend is proven
+- local Cursor/Stagewise and other local tooling
+
+These local components are not part of the first GitHub-hosted cloud pool. They may be evaluated as future adapters only after the cloud pool works. A cloud provider, a gateway, an agent CLI and a model are separate registry records.
+
+**Current status rule:** many names above are registered or candidate only. The MediaHub registry's own qualification ladder is the correct minimum model for each route:
+
+`REGISTERED → CREDENTIAL_PRESENT → AUTH_SUCCESS → MODEL_DISCOVERY_PASS → PROBE_PASS → EXECUTION_PASS → A3_VERIFIED → ELIGIBLE`.
+
+For the pool, use the corresponding pool-specific terminal status; do not reuse MediaHub's ASTRA GOLD eligibility authority. Missing evidence means NOT_PROVEN or BLOCKED.
+
+### 11.3 ECC naming must not be conflated
+
+There are two different meanings in the source history:
+
+1. The user-defined term **Every Cloud Code (ECC)** is a desired cloud-side multi-agent controller/fabric concept. It must be treated as the user's architecture label until its exact source repository is identified.
+2. The public repository `affaan-m/ECC` is branded **Everything Claude Code**. It is a separate upstream toolbox of skills, hooks, rules and harness support; it is not automatically the user's Every Cloud Code controller.
+
+Do not silently equate the two. If the user means the public `affaan-m/ECC` repository, it may supply selected agent-harness practices after pinned review. It does not provide Pool A0, a durable multi-tenant queue, quota authority or a cloud scheduler by itself. The Every Cloud Code controller must be mapped to an exact upstream or explicitly assembled from selected proven components; do not invent a repository identity.
+
+### 11.4 Jarvis source decision — what we take and what we do not claim
+
+MediaHub's source documents define Jarvis as an umbrella architecture, not as one already-selected GitHub repository.
+
+- **Cloud Pool A0 / first control plane:** continue from the existing repository `VlDMlNSh/developer-cloud-pool`, reusing its Pool Supervisor, GitHub issue/task intake and Actions workflows. It is the current project base, not a newly selected third-party product.
+- **Execution substrate:** GitHub Actions with GitHub-hosted ephemeral runners, as established by MediaHub Wave 262. Do not require a VPS, local machine, self-hosted runner or always-on external server.
+- **Jarvis user-facing web/workspace candidate:** `OpenHands/OpenHands` is the strongest currently reachable full web-application candidate in the reviewed set (public MIT repository, active main branch). Treat it as a candidate UI/workspace and possible agent application, not as the pool's authority or scheduler. Its full application must be checked for multi-tenant isolation, authentication, workspace boundaries, API compatibility, secret handling and deployment footprint before selection.
+- **Coding execution SDK candidate:** `OpenHands/software-agent-sdk` is a separate candidate for task execution and streaming/workspace APIs. It is not a full Jarvis interface. A historical source pin exists in Wave 24, but refresh the exact commit, lockfile, license and security evidence before adopting it.
+- **Personal Jarvis candidate:** `PersonalJarvis/PersonalJarvis` was identified in Wave 22 for desktop/voice/personal-agent UX, but Wave 24 could not resolve its canonical upstream provenance; two lookalike snapshots showed conflicting version/license claims. It is NOT the chosen base and must remain on hold until the authoritative repository identity and exact release are verified.
+- **No arbitrary "Jarvis" repository by name:** `sukeesh/jarvis` was screened as a low-fit non-AI CLI assistant and is not a candidate for this system.
+
+**Recommended composition:** current Developer Cloud Pool repository for A0 + GitHub Actions for cloud execution + OpenHands web app as the first UI/workspace candidate + OpenHands SDK as an optional bounded execution adapter. Keep OpenHands' internal orchestration subordinate to A0. PersonalJarvis remains an alternate UX research candidate, not an adopted dependency. This is a selection recommendation for the next source-review gate, not an installation or qualification claim.
+
+### 11.5 Multi-tenant onboarding: how a user's MediaHub joins the cloud pool
+
+A user MediaHub is a **tenant and task producer**, not a trusted worker and not a new authority inside another tenant.
+
+Each tenant receives:
+- immutable `tenant_id` and tenant owner/admin identity;
+- one approved GitHub App/repository installation or an explicitly isolated repository boundary;
+- tenant-specific repo allowlist, branch policy, task scopes and artifact namespace;
+- per-tenant agent/provider allowlist and data-egress/privacy policy;
+- tenant-specific secret references and budget/quota policy;
+- isolated workspace/worktree and result/evidence namespace per task;
+- separate memory/context namespace with no cross-tenant retrieval;
+- audit trail, retention policy, revocation and deletion procedure.
+
+**Onboarding flow**
+1. Tenant owner authorizes a GitHub App installation or names the permitted repository and refs.
+2. Pool validates the tenant principal, repository ownership/access, allowed operations, data class and policy version.
+3. Pool creates a tenant record and capability profile; no provider key is copied into a task payload.
+4. Tenant admin chooses which provider identities and agent profiles may be used; defaults are deny.
+5. Secret references are bound to that tenant's isolated repository/environment and only injected into the specific authorized job that needs them.
+6. A non-mutating admission probe verifies repository read, workflow permission, agent profile availability and secret-presence metadata without revealing secret values.
+7. One bounded test task runs in a fresh ephemeral workspace with synthetic/non-sensitive input.
+8. A3 checks target SHA, tenant scope, output manifest, artifacts and redaction; only then can the tenant be marked ELIGIBLE.
+9. Tenant can suspend/revoke the GitHub App installation, disable provider profiles, cancel tasks and request artifact/data deletion according to retention rules.
+
+**Isolation requirements**
+- No shared writable checkout between tenants.
+- No shared agent memory, browser profile, session cookies, provider key or task artifact namespace.
+- No tenant can enumerate another tenant's repositories, prompts, outputs, usage or credentials.
+- No untrusted pull-request code receives provider secrets.
+- Each runner job is ephemeral; workspace cleanup is verified, not assumed.
+- The pool itself never receives MediaHub Product State Authority. It returns a result/patch/evidence bundle; the tenant's own MediaHub controls whether to accept or apply it.
+
+**User-contributed compute is a separate future feature.** Connecting a user's MediaHub to the pool does not automatically enroll that user's hardware. If user-owned machines are ever offered as workers, that is a separate opt-in, untrusted-by-default pool with sandboxing, resource caps, data minimization, no central secrets, attestation/provenance and revocation. It is not a launch prerequisite and is not enabled by tenant onboarding.
+
+### 11.6 Daily renewable quotas and provider-key handling
+
+The phrase "several hundred tokens per day" is recorded as a proposed per-tenant budget, but the unit and intended scale must remain configurable. The platform must not assume every provider offers a daily token reset or that free quotas are guaranteed.
+
+Implement a quota ledger with independent dimensions:
+- tenant and authenticated caller;
+- provider, account/project, model and credential reference;
+- input tokens and output tokens (separately);
+- requests and concurrency;
+- task/runtime minutes and optional cost ceiling;
+- provider-defined quota scope and reset/cooldown timestamp;
+- reserved, consumed, released and failed usage;
+- source of usage data and confidence/freshness.
+
+**Reservation and accounting**
+1. A0 checks tenant policy and provider eligibility before selecting a credential reference.
+2. Reserve the estimated budget atomically before dispatch.
+3. Execute with explicit max input/output token and request/time caps.
+4. Record provider usage metadata returned by the API; do not infer exact token counts from character length where the provider reports usage.
+5. Reconcile reservation against actual use; release unused reservation; mark unknown usage conservatively.
+6. On rate limit, honor the provider's Retry-After/reset data and persist cooldown at the actual quota scope (provider/account/project/model), not merely at a key index.
+7. At the configured tenant-day boundary, renew the pool's internal allowance only. Provider capacity resets only when the provider's documented quota actually resets.
+8. If quota is exhausted, queue until the permitted reset or choose another provider only if task data policy and provider terms allow it. Otherwise return QUOTA_EXHAUSTED.
+
+**Credential rules**
+- GitHub Secrets are references/containers, not proof of working credentials or available quota. Never read, print, copy or expose secret values in task records, logs, prompts or artifacts.
+- Map each key only into the exact job/profile that needs it; never expose all provider secrets to every agent in a runner.
+- For multiple tenants, do not reuse one repository-wide secret as an implicit shared tenant credential. Use isolated repositories/environments or a separately approved secret broker with tenant-bound authorization.
+- GitHub Actions cannot automatically expose GitHub repository secrets to an unrelated Supabase/LiteLLM/other service. A transfer requires a separately reviewed mechanism; no secret is moved by assumption.
+- No key rotation, account cycling or gateway switching may be used to evade a provider's account/project quota, free-tier limit or terms.
+- No paid fallback unless the tenant explicitly authorized a budget and the task policy allows it. Default paid fallback is OFF.
+
+### 11.7 Cloud-only runtime and capacity model
+
+For the first launch, keep the execution plane GitHub-hosted:
+- GitHub Actions workflows are the job envelope and bootstrap scheduler.
+- GitHub-hosted ephemeral runners execute tasks.
+- GitHub Issues/PRs, run metadata and artifacts hold the minimum initial task/evidence state.
+- No self-hosted runner, VPS, local computer, NAS, user node, external queue server or external database is a dependency.
+- If GitHub-native mechanisms cannot safely provide atomic quota reservations, leases or durable checkpoints at the required scale, stop and document the exact gap. Propose a separate hosted persistence/control service only through a new architecture and governance decision.
+
+A runner can host multiple agent processes. The scheduler chooses a profile based on fresh CPU/RAM/disk measurements, model/API limits and isolation needs. Agent count and runner-job count are separate dimensions. Start with one bounded multi-agent job; scale jobs progressively only after exact evidence. Do not assume a runner slot is equivalent to one agent or that all account-level slots are available.
+
+### 11.8 Required task graph and result contract
+
+The corporation-wide task DAG gap identified in the MediaHub crosswalk must be closed for the pool. A mission may contain dependent subtasks, but only independent branches run concurrently.
+
+Each task record binds:
+- `tenant_id`, `mission_id`, `task_id`, idempotency key and schema version;
+- requester identity/capability and approval provenance;
+- repository, immutable ref/SHA, permitted paths and operation class;
+- task dependencies, parent/child IDs, deadlines and cancellation propagation;
+- data class, egress policy, provider/model/agent allowlist;
+- selected agent profile, exact runtime and route identity;
+- per-tenant/provider budget reservation and actual usage;
+- unique workspace/lease identity and expiry;
+- acceptance criteria, verifier profile and evidence schema;
+- artifact URIs/digests, test results, limitations and terminal disposition.
+
+Lifecycle:
+`REQUESTED → AUTHENTICATED → ADMITTED → PLANNED → QUEUED → CLAIMED → EXECUTING → RESULT_STAGED → A3_VERIFIED → ACCEPTED or REJECTED`.
+
+Retries create new attempt IDs. A worker never approves itself. A0 owns pool queue state; Jarvis UI and tenant MediaHub submit/read tasks through scoped APIs but cannot write leases or verification state directly.
+
+### 11.9 Updated build order
+
+1. **Freeze the source inventory:** reconcile the 128-row register and recover the second "200 projects" list if it exists; compare by capability and remove duplicates. Keep all research candidates uninstalled.
+2. **Qualify the current pool foundation:** verify GitHub governance, current Supervisor/Worker scaffold, runner probe and negative tests. Keep dispatch disabled until gates pass.
+3. **Implement the pool's typed tenant/task/result contract:** tenant identity, task DAG, SHA binding, policy, quota reservation, workspace and evidence. Prefer existing schemas/code where they fit; add only the missing adapter/glue.
+4. **Prove one provider-backed runner:** use one authorized provider profile with a synthetic bounded task; validate usage capture and secret redaction.
+5. **Prove the multi-agent runner profile:** run a mixed profile, not Gemini-only by assumption. Candidate initial coding group can include Gemini CLI/controller, Codex CLI and Claude Code only where each supported authentication route and license/terms are valid. Measure whether they can safely share one runner; separate profiles when their dependencies, credentials, tools or resource contention require it.
+6. **Admit remaining provider identities:** Perplexity, Kimi, DeepSeek, OpenAI, GigaChat and the listed aggregators/direct providers one by one through the same admission ladder.
+7. **Select and qualify Jarvis UI/workspace:** review OpenHands application against tenant isolation and the pool task API. Do not select PersonalJarvis until canonical source provenance is resolved.
+8. **Add connector adapters:** GitHub first; Telegram bot after identity-bound intake; browser via isolated browser profile plus Playwright QA; Instagram only through official supported Meta APIs and required app permissions.
+9. **Run multi-tenant qualification:** two synthetic tenants with disjoint repos, keys, workspaces, memory and artifacts; deliberately attempt cross-tenant access and require denial.
+10. **Run quota/recovery qualification:** parallel reservation race, daily reset, provider reset mismatch, HTTP 429, unknown usage, worker loss, cancellation, retry, replay and paid-fallback denial.
+11. **Launch the cloud pool:** only after a real multi-agent task, independent A3, tenant isolation and quota evidence pass.
+12. **Add external servers later:** register each as a new isolated worker adapter after cloud-pool acceptance; external servers are not required to launch or operate the initial pool.
+
+### 11.10 Explicit unresolved items — do not fabricate
+
+- Exact canonical repository for the user's "Every Cloud Code" term.
+- Exact source identity and intended use of PersonalJarvis; the current MediaHub source record does not qualify it.
+- Exact second 200-project list; only the 128-row register is currently reconciled.
+- Which of the registered provider credentials are valid and what quota each account/project/model actually has. Secret values were not read and must remain private.
+- Whether "several hundred tokens" means hundreds, hundreds of thousands, per user or for the whole pool. The budget schema supports all these configurations; no numeric quota is activated by this plan.
+- Whether GitHub-native task state is sufficient for atomic multi-tenant quota reservations and durable leases at target scale. This must be proven before adding any external database or router.
+- Which agent processes can share one runner safely. That is a measured packaging decision, not an architectural assumption.
+
+**Launch boundary:** this plan defines the target and decision sequence. It does not claim the pool, Jarvis UI, provider adapters, tenant onboarding, daily quota service or agent profiles are deployed or qualified. Current `POOL_DISPATCH_ENABLED=false` remains unchanged.
