@@ -20,6 +20,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 ## Component qualification
 - [Component qualification matrix — 25 records, executable CI validator](docs/qualification/COMPONENT-QUALIFICATION-MATRIX.md)
 - [Machine-readable matrix](config/component-qualification-matrix.json)
+- [Build and launch estimate — critical path and delivery ranges](docs/qualification/BUILD-AND-LAUNCH-ESTIMATE-2026-11-14.md)
 
 ## Architecture
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
