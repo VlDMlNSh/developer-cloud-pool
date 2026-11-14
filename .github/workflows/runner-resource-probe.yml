@@ -1,6 +1,11 @@
 name: Runner Resource Probe
 
 on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/runner-resource-probe.yml"
   workflow_dispatch:
 
 permissions:
