@@ -73,4 +73,4 @@ jobs:
             fi
             echo
             echo "> Read-only baseline. No agents are installed, no secrets are accessed, and no profile is qualified."
-          } >> "$GITHUB_STEP_SUMMARY"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
