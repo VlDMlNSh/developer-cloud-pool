@@ -1,3 +1,4 @@
+// Dependency-free static validator for the machine-readable qualification register.
 import fs from "node:fs";
 
 const path = "config/component-qualification-matrix.json";
