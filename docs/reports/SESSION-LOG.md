@@ -110,3 +110,12 @@ The matrix/README/plan validator run 43601557792 passed with COMPONENT_MATRIX_RE
 ## 2026-11-14 — Seventh read-only runner observation
 
 PR #68 exact-head Runner Resource Probe run 43601648756 succeeded. It observed Ubuntu 24.04.5 x64, 15 GiB RAM, 85.26 GiB available workspace, Azure westus3, image 20261111.370.1 and AMD EPYC 9V45. This is the first sample from the westus3 region; total read-only observations are now seven across Azure and AWS. No agent was installed or run, no secret was accessed, and no provider/model call was made. This is not reserved-capacity or multi-agent qualification.
+
+
+Documentation commit IDs for the seventh-observation refresh:
+- 8b45d02658e914637faebdb2a9db96d706ff7cc0 — JSON runner evidence updated to seven observations.
+- 85a6f91fb93a4b7384aa45ec5c2e1dff8d184b6d — Markdown runner evidence updated to seven observations.
+- 12ccd15e10de99cd549b6799bb403ca55db474c9 — architecture plan refreshed.
+- a65e47a69d88118633224fb37eb36a0bdfa9ff0b — seventh observation recorded in this log.
+
+PR #68 Pool Contract Validation run 43601648781 succeeded with COMPONENT_MATRIX_RECORDS=30 and COMPONENT_MATRIX_VALIDATION=PASS for the preceding six-observation matrix revision. The seventh observation was then added to both matrix formats; re-run exact-head validation on the new matrix revision.
