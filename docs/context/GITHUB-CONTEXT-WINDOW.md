@@ -2729,3 +2729,17 @@ Latest detailed report: [2026-11-12 daily revalidation](../reports/2026-11-12-da
 - No secrets, provider calls, hosted resource, paid fallback, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect exact-head D1 migrations/API and quota state machine; design the integrated A0 transaction boundary, and reconcile Hono/OAuth proofs into Issue #22. No dispatch enablement or deployment.
 - Latest estimate, handoff and session log were updated on PR #68's proposal branch; they are not canonical default-branch changes. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 19. /next — A0 authority boundary audit — 2026-11-14
+
+- Evidence report: [A0 authority boundary audit](../reports/2026-11-14-next-a0-authority-boundary-audit.md).
+- Current default baseline: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67: exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`, OPEN/DRAFT/UNMERGED. Exact-head runs 43600901063 and 43600901068 SUCCESS; D1 job log confirms 6 test files / 84 tests, D1 upgrade smoke 1 and frozen schema fixture smoke 2. Formal reviews/threads 0/0.
+- PR #68: exact head `3fa24a79a1af1bdbf722aacdea367ffdbdf4a26d`, OPEN/DRAFT/UNMERGED. Exact-head runs 43602306553 Pool Contract Validation SUCCESS and 43602306555 Runner Resource Probe SUCCESS. Matrix 30 records PASS; dispatch disabled. Runner observation: Ubuntu 24.04.5, AWS image 20261111.127.1, 4 vCPU, 88.46 GiB available workspace; no agents installed, no secrets accessed, no profile qualified. Formal reviews/threads 0/0.
+- A0 source blob `14c31d66995d6f99ceb6ea5df060ba8e00848464` is an injected-adapter contract only. Its header says it is not wired to Supervisor/Worker. A0 expected binding omits D1 owner numeric ID/repository numeric ID/issue number; free_quota uses an injected quota verifier and deny-list rather than a production allowlisted route/account/quota-domain registry.
+- D1 consume module blob `f71e559a7c13b9a0242a7f619eba998c5906d95e` atomically consumes an already-created ready row against owner/repository/issue/SHA/profile/digest/expiry, but has no production issuer/cryptographic verifier and remains local-only. D1 worker entrypoint is inert. Default Supervisor heartbeat-only unless dispatch explicitly enabled; default Worker remains Issue/label validation, no A0/D1 composition.
+- A0 tests are VERIFIED only as mocked local contract tests (14 A0 tests within 84 total). A0 issuer/crypto, A0↔D1 composition, hosted D1, OAuth/session, live Jarvis, real worker execution and A3 remain NOT IMPLEMENTED / NOT VERIFIED / NOT RUN.
+- Decision: next bounded engineering pass must reconcile canonical approval envelope (owner/repository numeric IDs, issue, task/task key, attempt, target SHA, profile, tenant, cost/route/quota domain, issued-at, expiry, nonce/jti, schema version, digest), evaluate mature maintained signature-verification libraries for Workers compatibility, then implement issuer/verifier plus atomic single-use consume + task/outbox in local D1 only. Dispatch remains false.
+- No secrets, provider calls, hosted resource, deployment, billing change, merge or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
