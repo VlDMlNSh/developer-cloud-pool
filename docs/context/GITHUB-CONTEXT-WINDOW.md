@@ -2435,3 +2435,18 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No source/workflow changes, live dispatch, secrets/variables inspection, provider calls, deployment, hosted D1 or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement isolated controller + pure admission/idempotency tests on branch from immutable default HEAD, with live dispatch disabled; keep D1 trusted-clock repair separate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 341 — 2026-11-15
+
+- Default branch `Основной` remains at base HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Dedicated Cloud Pool control issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) remains OPEN. Issue comment [6900490198](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96#issuecomment-6900490198) links the new proof PR.
+- Created isolated branch `feat/cloud-pool-next-admission-contract-2026-11-15` from the exact default base and draft PR [#97](https://github.com/VlDMlNSh/developer-cloud-pool/pull/97). Head `3ced916ff0d99d8abd8033fdc92f1c5de046dba6`; 5 ahead / 0 behind. PR OPEN/DRAFT/UNMERGED; formal reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Added pure admission predicate `scripts/next-admission.mjs` blob `f1a0546cf9eb1285f82b5f1fddfb3e330df39dbf`, tests `test/next-admission.test.mjs` blob `2f0662d0997ffadb11a4826a7eb506fa60b4e18b`, and read-only workflow `.github/workflows/next-admission-contract.yml` blob `5a17ce057717d9f5523dfe9e23ee26b154789d6e`. Exact event, exact body, owner/OWNER association, issue #96 open/non-PR, repo identity, default branch ref and 40-char SHA are required. Idempotency ID derives only from repository + issue + source comment ID; target SHA is separate.
+- Exact-head CI on `3ced916ff0d99d8abd8033fdc92f1c5de046dba6`: Cloud Pool Next Admission Contract run [43755942025](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43755942025) COMPLETED/SUCCESS (all 8 steps); Pool Contract Validation [43755942008](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43755942008) COMPLETED/SUCCESS (all 7 steps). Formal reviews 0 and aggregate status empty remain NOT VERIFIED.
+- This is a pure predicate only: no durable idempotency store, ambiguity reconciliation, issue_comment trigger on default, controller dispatch or child runs. Dispatch remains fail-closed; no secrets/variables inspection, provider calls, model calls, deployment, hosted D1 or merge.
+- Supplementary MediaHub Issue #301 bridge event created for Wave 341, but Cloud Pool controller/three Gemini child runs are NOT VERIFIED.
+- Report: [Wave 341 — Next Admission Contract Implementation](../reports/2026-11-15-wave341-next-admission-contract-implementation.md).
+- Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable source-comment idempotency + ambiguous dispatch reconciliation; only then owner-only issue_comment controller behind disabled dispatch, with independent review and governance.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
