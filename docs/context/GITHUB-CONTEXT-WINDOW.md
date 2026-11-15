@@ -2553,3 +2553,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Latest PR-context CI remains 11 checks (9 SUCCESS, 2 expected SKIPPED); provenance 11/11 and trigger-path 3/3 passed. Trusted-main probe NOT RUN; Gemini 3/3 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review/governance of PR #649, obtain supported metadata-only confirmation of Actions config, then ruleset-governed integration, trusted-main `/probe`, controlled 3/3 launch, and repeated waves.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — requested Gemini independent review disposition
+
+- Owner requested that the same Gemini agents independently review PR #649 and that all outstanding activation tasks be completed in this pass.
+- Rechecked PR #649: OPEN/DRAFT/UNMERGED at `309fa6a4af866f57c7de07006b375780b726302d`; main remains `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; formal reviews 0; review threads 0.
+- PR-head controller contains a `workflow_dispatch` mode named `review`, but that controller revision is not on default branch. Current `main` controller lacks that mode. Therefore this review mode cannot be invoked through the trusted-main controller until PR #649 is independently reviewed and integrated.
+- The existing main-branch `gemini-fcc-independent-review-wave409.yml` is a read-only reviewer for historical FCC PR patches, uses a fixed FCC scope, and is not an authorized reviewer for PR #649. It was not dispatched and must not be represented as review evidence.
+- The seven exact-head workflow runs associated with PR #649 completed successfully (six checks plus Wave 284 contract validation as returned by the PR workflow-runs query); these are PR-context checks, not Gemini review or live child execution.
+- No Gemini API call, child dispatch, trusted-main probe, merge, deployment, or qualification was performed. Reason: no trusted-main authorized review route for PR #649 exists yet; dispatching child workflows directly would bypass the controller.
+- Next: establish a trusted-main read-only review route after governance approves the controller change, or obtain an independent review through an authorized reviewer. Then re-run exact-head CI, resolve findings, merge through ruleset, execute no-secret `/probe`, and only then controlled 3/3.
