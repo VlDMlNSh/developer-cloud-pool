@@ -2386,3 +2386,9 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Repair PR #649: https://github.com/VlDMlNSh/mediahub-os/pull/649. Workflow change pins Agent2 branch name to unique controller `dispatch_id` and forbids reuse. Commit `a9b8e0a9778f19493dd90080dfcfe8749efae48f`, blob `51f998951a54ee78a61e5c908a9017a3475e7c0c`.
 - PR #649 OPEN/DRAFT, no reviews; exact-head checks pending/in progress at last read. No new dispatch. Agent scale remains three; next wave BLOCKED until PR #649 exact-head CI/review passes.
 - Current Cloud Pool default branch HEAD rechecked: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. PR #91 docs branch remains separate and unmerged.
+
+
+### Latest verification — PR #649 CI
+
+- MediaHub PR #649 exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f`: 11 check runs completed; all active checks SUCCESS; controller dispatch/admission jobs SKIPPED in PR context (expected fail-closed behavior). This is not a child-agent dispatch.
+- PR #649 OPEN/DRAFT, zero reviews. Agent2 branch-collision repair is CI-VERIFIED, review NOT VERIFIED. Do not rerun the three-agent wave until review and controlled dispatch criteria are satisfied.
