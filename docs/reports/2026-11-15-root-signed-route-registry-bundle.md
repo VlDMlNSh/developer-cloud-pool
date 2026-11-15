@@ -73,7 +73,7 @@ Therefore Qualified Route Evidence remains NOT QUALIFIED. Do not pass this verif
 
 ## Executor / dispatch boundary
 
-- MediaHub controller-fix PR #434 is CLOSED / UNMERGED. The controller bridge remains NOT QUALIFIED; no owner `/next` comment was posted and no Gemini dispatch was triggered.
+- MediaHub controller status was refreshed against current `main` @ `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`: PR #433 (syntax fix) and PR #437 (HMAC runtime-contract repair) are MERGED and their merge commits are ancestors of current main. PR #433 exact-head checks all PASS; PR #437 exact-head checks all PASS, including the PR-level non-launching no-secret probe run `39757948751` / job `119754632409` (SUCCESS; dispatch jobs SKIPPED). Both PRs have zero formal reviews. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates. The trusted-main no-secret probe is NOT RUN; a PR-level probe does not qualify main. HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore Gemini bridge remains NOT QUALIFIED; no owner `/next` comment or controller/child dispatch occurred.
 - MediaHub PRs #635/#636/#637 are open but their recorded PR-triggered workflow runs are `action_required`; no formal reviews are recorded. They are not used as independent acceptance evidence.
 - SentinelX currently reports zero connected hosts. Voktors-Mini is offline; mh-dev-01 and mh-dev-02 are user-disabled. The required third/Alamo host is not positively identified or online. Claude Code NOT RUN.
 - No provider login/call, secret access, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. Independent audit remains deferred until the pool is operational, per project decision.
