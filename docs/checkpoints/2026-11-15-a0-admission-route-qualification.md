@@ -449,3 +449,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No code/schema/runtime changes, no tests, no secret reads, provider calls, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile migration ancestry; implement additive revocation event ledger + CAS and adversarial tests on one clean D1 branch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 327 migration ancestry reconciliation
+
+- Report: [Wave 327](../reports/2026-11-15-wave327-d1-migration-ancestry-reconciliation.md); commit `3d61dabf4ec684f7a7ff7eb44bf7c474b6827c13`.
+- Clean candidate `integration/d1-ledger-clean-main-2026-11-15`: ahead 6 / behind 0 from default, canonical migrations 0011–0014. `fix/verified-registry-capability-clean-stack-2026-11-15`: ahead 15 / behind 0, same 0013/0014.
+- Diverged branches `impl/route-registry-d1-cas-schema-2026-11-15` (101/64) and `fix/qualified-route-replay-binding-v2-2026-11-15` (60/64) share old merge base and alternate migration 0013. Do not transplant.
+- No migration 0015/0016 exists in inspected refs. Existing 0014 checks active registry/issuer/evidence but no separate monotonic revocation ledger.
+- No code/schema/test/runtime/dispatch changes. Contour A BLOCKED / NOT ACCEPTED.
+- Next: specify revocation trust root, signer lifecycle, canonical subject/event, trusted time and restore anchor before adding migration 0015.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
