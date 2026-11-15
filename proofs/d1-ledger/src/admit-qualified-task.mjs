@@ -53,12 +53,12 @@ function statements(db, input) {
     AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
     AND q.cost_class = ? AND q.capability_id = ? AND q.evidence_digest = ?
     AND q.registry_version = ? AND q.qualification_status = 'qualified'
-    AND q.revoked_at IS NULL AND q.issued_at <= ? AND q.expires_at > ?
+    AND q.revoked_at IS NULL AND q.issued_at <= ? AND q.issued_at >= ? AND q.expires_at > ?
   `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
-    r.costClass, r.capabilityId, r.evidenceDigest, r.registryVersion, now, now
+    r.costClass, r.capabilityId, r.evidenceDigest, r.registryVersion, now, now - 300, now
   ];
   return [
     db.prepare(`
@@ -137,7 +137,7 @@ function statements(db, input) {
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
              AND q.evidence_digest = a.evidence_digest
-             AND q.issued_at <= ? AND q.expires_at > ?
+             AND q.issued_at <= ? AND q.issued_at >= ? AND q.expires_at > ?
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,

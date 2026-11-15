@@ -47,9 +47,20 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
-  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_atomic_attempt").run();
+  // Append-only guards are disabled only around fixture teardown, then restored
+  // before the test body. Production migration guards remain enabled in tests.
+  for (const name of [
+    "test_abort_atomic_attempt", "pool_admissions_no_update", "pool_admissions_no_delete",
+    "pool_admission_receipts_no_update", "pool_admission_receipts_no_delete",
+    "pool_route_qualification_no_delete", "pool_attempt_events_no_update",
+    "pool_attempt_events_no_delete", "pool_attempt_projection_events_no_update",
+    "pool_attempt_projection_events_no_delete", "pool_attempt_projection_comment_events_no_update",
+    "pool_attempt_projection_comment_events_no_delete"
+  ]) await env.POOL_DB.prepare(`DROP TRIGGER IF EXISTS ${name}`).run();
+
   await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admissions").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_comment_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
@@ -62,6 +73,23 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
   await env.POOL_DB.prepare("DELETE FROM pool_route_qualifications").run();
+
+  const guards = [
+    ["pool_admissions_no_update", "BEFORE UPDATE ON pool_admissions"],
+    ["pool_admissions_no_delete", "BEFORE DELETE ON pool_admissions"],
+    ["pool_admission_receipts_no_update", "BEFORE UPDATE ON pool_admission_commit_receipts"],
+    ["pool_admission_receipts_no_delete", "BEFORE DELETE ON pool_admission_commit_receipts"],
+    ["pool_route_qualification_no_delete", "BEFORE DELETE ON pool_route_qualifications"],
+    ["pool_attempt_events_no_update", "BEFORE UPDATE ON pool_attempt_events"],
+    ["pool_attempt_events_no_delete", "BEFORE DELETE ON pool_attempt_events"],
+    ["pool_attempt_projection_events_no_update", "BEFORE UPDATE ON pool_attempt_projection_events"],
+    ["pool_attempt_projection_events_no_delete", "BEFORE DELETE ON pool_attempt_projection_events"],
+    ["pool_attempt_projection_comment_events_no_update", "BEFORE UPDATE ON pool_attempt_projection_comment_events"],
+    ["pool_attempt_projection_comment_events_no_delete", "BEFORE DELETE ON pool_attempt_projection_comment_events"]
+  ];
+  for (const [name, clause] of guards) {
+    await env.POOL_DB.prepare(`CREATE TRIGGER ${name} ${clause} BEGIN SELECT RAISE(ABORT, '${name.toUpperCase()}'); END`).run();
+  }
   await seed();
 });
 
