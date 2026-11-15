@@ -92,3 +92,10 @@ Latest observed controller wave:
 
 - Re-read exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f`: 11 check runs completed; all executed checks SUCCESS, with the controller's dispatch and admission jobs SKIPPED as required for untrusted pull_request context. This is a safe non-launching validation result, not a live Agent 2 retry.
 - PR #649 remains OPEN/DRAFT and has zero formal reviews. Workflow change is CI-VERIFIED at exact head; merge/independent approval NOT VERIFIED. Agent2 next-wave readiness remains BLOCKED pending review and a later controlled 3/3 dispatch.
+
+## Follow-up verification — Agent 2 repair PR #649 — 2026-11-15
+
+- Rechecked MediaHub main HEAD: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; repair branch head: `a9b8e0a9778f19493dd90080dfcfe8749efae48f`; Agent 2 workflow blob: `51f998951a54ee78a61e5c908a9017a3475e7c0c`.
+- Confirmed controller main workflow generates a UUID `dispatch_id` per child and passes it to workflow_dispatch; Agent 2 declares this required input. The repair instruction's unique branch expression therefore has an upstream producer.
+- PR #649 exact-head check-runs: 11 total; all 9 completed checks SUCCESS, with 2 dispatch-related jobs SKIPPED in pull_request context. No failed/pending checks at recheck. Reviews: zero. PR remains OPEN/DRAFT and unmerged. CI is green for the available PR-context suite, but no independent review and no actual dispatch execution of the modified child workflow yet.
+- No controller dispatch was triggered: main still serves the unrepaired child workflow until PR #649 is accepted/merged, and the repository governance review gate is not satisfied. This is an explicit stop, not an automatic per-chat /next dispatch.
