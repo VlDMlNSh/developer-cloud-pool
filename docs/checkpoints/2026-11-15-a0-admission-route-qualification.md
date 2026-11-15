@@ -265,7 +265,7 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 
 ### PRs
 - PR #98 OPEN / DRAFT / UNMERGED; HEAD `f23cdb5484d5923e02242b3ea142397f9e1f0270`; exact-head checks 3/3 SUCCESS; formal review NOT VERIFIED.
-- PR #99 OPEN / DRAFT / UNMERGED; prior HEAD `e8861649615a397b27c71972ab32f057fa9f97d3`; exact-head checks 0; CI NOT VERIFIED. Context refresh changes this PR's head; re-run/verify CI at the resulting new head before any merge.
+- PR #99 OPEN / DRAFT / UNMERGED; current docs branch/PR HEAD `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; exact-head checks 0; CI NOT VERIFIED. Formal review NOT VERIFIED.
 - No PR merged and no default-branch code changed.
 
 ### Gemini Wave 318
