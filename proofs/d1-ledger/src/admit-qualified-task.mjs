@@ -295,7 +295,7 @@ export async function admitQualifiedTask(db, input) {
                 AND k.registry_version = q.registry_version AND k.status = 'active'
                 AND k.revoked_at IS NULL AND k.valid_from <= ? AND k.valid_until > ?
            )
-           AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
+           AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
       `).bind(
         input.route.qualificationId, input.route.routeId, input.route.providerId,
         input.route.modelId, input.route.issuerId, input.route.accountRef,
