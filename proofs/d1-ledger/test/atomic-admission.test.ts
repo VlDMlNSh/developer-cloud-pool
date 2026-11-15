@@ -128,7 +128,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
       decision: "ADMISSION_ALREADY_COMMITTED",
       admissionId: input.admissionId, dispatch: false
     });
-    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").then(x => x.first()))
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first())
       .toMatchObject({ n: 1 });
   });
 
