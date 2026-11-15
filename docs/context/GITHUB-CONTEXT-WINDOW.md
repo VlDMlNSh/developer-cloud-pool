@@ -2126,3 +2126,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next action: review this documentation branch and open a draft PR for owner review; before any agent dispatch, verify trusted-main controller probe, live non-secret config and governance/permissions using approved paths.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Hybrid parallel policy PR opened — 2026-11-15
+
+- Draft PR #88: https://github.com/VlDMlNSh/developer-cloud-pool/pull/88; title `Adopt hybrid parallel development for every /next`.
+- PR head `78e9773d897c1f7603518dca4829375094f67e20`; base `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; 5 files changed, 215 additions / 2 deletions. PR reports `mergeable=false`; do not merge. No CI result was requested/observed in this pass.
+- Read-back succeeded for policy blob `ed496a8f8795eba7f77f8492adb93793d5889877`, README blob `abb94bb985ea9363196c976845ea78341378cebb`, Context Window blob `826adfc8781e3a540f1895067ef569e706903eb2`, checkpoint blob `bc227afc7bb9ed05fa08496764c96d338910f5d0`, and report blob `112399f8c46fd70998984ff33724a23d23a29765`.
+- PR remains OPEN / DRAFT / UNMERGED. Documentation pass read-back VERIFIED; mergeability NOT VERIFIED / false according to PR API. Gemini dispatch remains NOT RUN / NOT VERIFIED; no agent run IDs.
+- Next: inspect PR #88 diff and mergeability blocker, resolve only documentation-branch issues; separately verify live controller/governance gates before any Gemini dispatch.
