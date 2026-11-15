@@ -141,3 +141,6 @@ The local A0 adapter now requires every route qualification to carry the exact i
 The receipt assertion repeats the active snapshot and issuer-key checks, so a missing or stale registry binding cannot yield a committed receipt. Exact retry performs the same active trust checks before returning an existing receipt. Dispatch remains hard-coded false.
 
 The atomic-admission test fixtures now seed registry-bound route rows. Added adversarial cases reject a stale epoch and a revoked issuer key without consuming approval. Synthetic fixture registry records are test-only; the separate registry persistence suite proves root-signature verification and atomic durable writing. This remains a local proof, not a live provider or production trust qualification.
+
+
+Migration `0014_atomic_admission_registry_assertion.sql` adds an immutable `pool_admission_registry_assertions` row with a database trigger that requires the exact active registry snapshot and active, unrevoked, currently valid issuer key. `admitQualifiedTask` inserts this assertion as the first statement of the same D1 batch as approval consumption and the task/attempt/outbox/receipt writes. Any later batch failure rolls the assertion back as well. The receipt binds to that assertion; exact retries independently re-check the current snapshot and issuer-key validity with a compact join query.
