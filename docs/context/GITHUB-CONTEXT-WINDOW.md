@@ -3315,3 +3315,11 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: inspect exact-head D1 run #43736259303; on success continue PR #92 exact-head and A0 registry assertion adversarial audit; on failure inspect logs and fix only demonstrated cause.
 - Wave 322 report: [D1 registry stale-epoch rollback test](../reports/2026-11-15-wave322-registry-epoch-rollback-test.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Wave 322 CI result update — 2026-11-15
+
+- Exact-head run [#43736259303](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43736259303), job #132879411032, completed SUCCESS on exact PR #93 head `e200838d038b9cd48635233187819302bba6a33e`.
+- Workers-runtime D1 suite: 11 files / 120 tests PASS / 0 FAIL, including new stale-epoch whole-batch rollback regression. Syntax check PASS. Isolated second binding smoke: 1 pass / 2 name-filter skips. Frozen schema-0010 fixture: 2 pass / 1 name-filter skip; golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`.
+- Artifact #14170616460, ZIP SHA-256 `909e27d3bec1ca75933085475431f3ff5e4f9f8578985e1e2670d01336270c5a`.
+- PR #93 remains OPEN/DRAFT/UNMERGED. This is isolated local D1 proof, not hosted D1/live pool qualification. No dispatch/deployment/provider use or secret reads.
