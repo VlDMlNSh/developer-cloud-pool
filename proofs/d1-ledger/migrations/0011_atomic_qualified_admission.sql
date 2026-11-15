@@ -8,6 +8,7 @@ CREATE UNIQUE INDEX pool_approval_admission_id_unique
   ON pool_approval_ledger(admission_id) WHERE admission_id IS NOT NULL;
 
 CREATE TABLE pool_route_qualifications (
+  schema_version INTEGER NOT NULL CHECK (schema_version = 1),
   qualification_id TEXT PRIMARY KEY NOT NULL CHECK (length(qualification_id) BETWEEN 1 AND 128),
   route_id TEXT NOT NULL CHECK (length(route_id) BETWEEN 1 AND 128),
   provider_id TEXT NOT NULL CHECK (length(provider_id) BETWEEN 1 AND 128),
@@ -18,8 +19,11 @@ CREATE TABLE pool_route_qualifications (
   quota_domain_id TEXT,
   cost_class TEXT NOT NULL CHECK (cost_class IN ('local', 'free_quota')),
   capability_id TEXT NOT NULL CHECK (length(capability_id) BETWEEN 1 AND 128),
+  evidence_ref TEXT NOT NULL CHECK (length(evidence_ref) BETWEEN 1 AND 512),
   evidence_digest TEXT NOT NULL CHECK (length(evidence_digest) = 64 AND evidence_digest NOT GLOB '*[^0-9a-f]*'),
+  observed_at INTEGER NOT NULL CHECK (observed_at > 0),
   issued_at INTEGER NOT NULL CHECK (issued_at > 0),
+  revocation_version INTEGER NOT NULL CHECK (revocation_version >= 0),
   expires_at INTEGER NOT NULL CHECK (expires_at > issued_at),
   revoked_at INTEGER,
   registry_version TEXT NOT NULL CHECK (length(registry_version) BETWEEN 1 AND 128),
@@ -33,16 +37,16 @@ CREATE TABLE pool_route_qualifications (
 CREATE TRIGGER pool_route_qualification_identity_immutable
 BEFORE UPDATE OF qualification_id, route_id, provider_id, model_id, issuer_id,
   account_ref, credential_handle_ref, quota_domain_id, cost_class, capability_id,
-  evidence_digest, issued_at, expires_at, registry_version
+  evidence_ref, evidence_digest, observed_at, issued_at, expires_at, registry_version
 ON pool_route_qualifications
 BEGIN SELECT RAISE(ABORT, 'ROUTE_QUALIFICATION_IDENTITY_IMMUTABLE'); END;
 
 CREATE TRIGGER pool_route_qualification_revocation_monotonic
-BEFORE UPDATE OF qualification_status, revoked_at ON pool_route_qualifications
+BEFORE UPDATE OF qualification_status, revoked_at, revocation_version ON pool_route_qualifications
 WHEN NOT (OLD.qualification_status = 'qualified'
       AND NEW.qualification_status = 'revoked'
       AND OLD.revoked_at IS NULL AND NEW.revoked_at IS NOT NULL
-      AND NEW.revoked_at > 0)
+      AND NEW.revoked_at > 0 AND NEW.revocation_version > OLD.revocation_version)
 BEGIN SELECT RAISE(ABORT, 'ROUTE_QUALIFICATION_REVOCATION_MONOTONIC'); END;
 
 CREATE TRIGGER pool_route_qualification_no_delete

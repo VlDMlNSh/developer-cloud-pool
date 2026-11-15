@@ -24,6 +24,9 @@ function valid(input) {
     SAFE_ID.test(r.routeId || "") && SAFE_ID.test(r.providerId || "") &&
     SAFE_ID.test(r.modelId || "") && SAFE_ID.test(r.issuerId || "") &&
     SAFE_ID.test(r.accountRef || "") && SAFE_ID.test(r.credentialHandleRef || "") &&
+    r.schemaVersion === 1 && typeof r.evidenceRef === "string" && r.evidenceRef.length > 0 && r.evidenceRef.length <= 512 &&
+    Number.isSafeInteger(r.observedAt) && r.observedAt > 0 &&
+    Number.isSafeInteger(r.revocationVersion) && r.revocationVersion >= 0 &&
     SAFE_ID.test(r.capabilityId || "") && SAFE_ID.test(r.registryVersion || "") &&
     SHA256.test(r.evidenceDigest || "") && COST_CLASSES.has(r.costClass) &&
     (r.costClass !== "free_quota" || SAFE_ID.test(r.quotaDomainId || "")) &&
@@ -69,13 +72,17 @@ function statements(db, input) {
     AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
     AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
     AND q.cost_class = ? AND q.capability_id = ? AND q.evidence_digest = ?
-    AND q.registry_version = ? AND q.qualification_status = 'qualified'
-    AND q.revoked_at IS NULL AND q.issued_at <= ? AND q.issued_at >= ? AND q.expires_at > ?
+    AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
+    AND q.observed_at = ? AND q.revocation_version = ?
+    AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+    AND q.observed_at <= ? AND q.observed_at >= ? AND q.issued_at <= ? AND q.expires_at > ?
   `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
-    r.costClass, r.capabilityId, r.evidenceDigest, r.registryVersion, now, now - 300, now
+    r.costClass, r.capabilityId, r.evidenceDigest, r.registryVersion,
+    r.schemaVersion, r.evidenceRef, r.observedAt, r.revocationVersion,
+    now, now - 300, now, now
   ];
   return [
     db.prepare(`
@@ -154,14 +161,16 @@ function statements(db, input) {
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
              AND q.evidence_digest = a.evidence_digest
-             AND q.issued_at <= ? AND q.issued_at >= ? AND q.expires_at > ?
+             AND q.schema_version = ? AND q.evidence_ref = ? AND q.observed_at = ?
+             AND q.revocation_version = ? AND q.observed_at <= ? AND q.observed_at >= ?
+             AND q.issued_at <= ? AND q.expires_at > ?
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, now, now - 300, now
+      t.executionIdempotencyKey, now, now - 300, now, now
     )
   ];
 }
@@ -214,7 +223,9 @@ export async function admitQualifiedTask(db, input) {
         input.route.modelId, input.route.issuerId, input.route.accountRef,
         input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
         input.route.costClass, input.route.capabilityId, input.route.evidenceDigest,
-        input.route.registryVersion, input.now, input.now - 300, input.now
+        input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
+        input.route.observedAt, input.route.revocationVersion, input.now,
+        input.now - 300, input.now, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
