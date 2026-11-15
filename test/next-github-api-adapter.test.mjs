@@ -27,7 +27,7 @@ function apiFor({ issueValue = issue, commentValue = comment, defaultSha = sha, 
   const fetchImpl = mockFetch(async (url, options) => {
     if (url.includes("/issues/96/comments?")) return response(comments);
     if (url.endsWith("/issues/96/comments") && options.method === "POST") {
-      comments.push({ body: JSON.parse(options.body).body });
+      comments.push({ body: JSON.parse(options.body).body, user: { login: "VlDMlNSh" }, author_association: "OWNER", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" });
       return response({ id: 987 });
     }
     if (url.includes("/actions/runs?")) return response({ workflow_runs: runs });
