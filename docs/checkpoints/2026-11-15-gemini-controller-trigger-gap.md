@@ -77,3 +77,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Not yet on main; `/probe` not executed. Live 3/3 Gemini remains NOT RUN / NOT VERIFIED. Actions secret/variable metadata NOT VERIFIED. No secrets read, provider calls, merge, deploy or qualification.
 - Next: merge only after gates, then owner-authored `/probe` on Issue #301; verify trusted-main no-secret; only then controlled `/next` 3/3 run.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Owner confirmation and three-Gemini-per-/next activation plan — 2026-11-15
+
+- Owner reports all three Gemini secrets are present in GitHub Actions and tied to three distinct Google accounts/different email addresses. This is owner-reported only; no secret values read. Different email addresses do not prove separate projects, free-tier eligibility, billing state, quota independence or working credentials.
+- GitHub connector blocks Actions secrets/variables endpoints; secret metadata and `MEDIAHUB_GEMINI_BATCH_ENABLED` value remain NOT VERIFIED.
+- PR #649 rechecked: OPEN/DRAFT/UNMERGED at `309fa6a4af866f57c7de07006b375780b726302d`; main unchanged at `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; formal reviews 0. Ruleset 26108066 active, no bypass.
+- Controller source has owner-only Issue #301 `/next` and `/probe` branches, batch flag gate and dispatch job. Three child workflows call the role-specific provenance validator. Source inspection is not live execution evidence.
+- Full ordered plan saved at [three Gemini per /next activation plan](../reports/2026-11-15-three-gemini-per-next-activation-plan.md).
+- Next: independent review/governance; metadata-only Actions configuration confirmation; ruleset-governed merge; trusted-main no-secret `/probe`; controlled 3/3 Gemini dispatch; then at least three separate successful waves before enabling automatic chat bridge.
+- Current: PR-context CI verified; trusted-main probe NOT RUN; Gemini 3/3 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
