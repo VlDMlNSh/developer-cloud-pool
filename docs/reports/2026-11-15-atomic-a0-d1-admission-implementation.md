@@ -58,3 +58,16 @@ Canonical task identity is recomputed from repository, issue, target SHA and pro
 Reconcile PR #67 / PR #72 ancestry with current default without importing stale stack history; verify effective required checks and exact PR-head CI; then obtain independent technical/security/governance review after the pool is operational. Keep dispatch disabled. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final exact-head correction — 2026-11-15
+
+The final branch head advanced after the first successful pass with additional capability-profile, outbox-binding and adversarial checks. This section supersedes the earlier exact-head/test-count/artifact values above.
+
+- Final implementation HEAD: `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`.
+- Final exact-head workflow: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43690143805 — COMPLETED / SUCCESS; job `132738896801`.
+- Workers-runtime: 7 files / 93 tests passed, including 9 atomic-admission tests.
+- Upgrade-binding smoke: 1 passed. Frozen schema-0010 fixture smoke: 2 passed.
+- Artifact `d1-ledger-proof-package-lock`: ID `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- Current default-to-final-implementation compare at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8`: DIVERGED 67 ahead / 27 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #72 remains OPEN / DRAFT / UNMERGED. Combined commit status remains empty; required status contexts NOT VERIFIED. No merge or dispatch.
