@@ -173,7 +173,36 @@ describe("atomic qualified A0 -> D1 admission", () => {
           AND k.bundle_digest = rs.bundle_digest
        WHERE q.qualification_id = ?
     `).bind(input.route.qualificationId).first();
-    console.log("REGISTRY_DEBUG", JSON.stringify({ now: input.now, route: input.route, registryDebug }));
+    const gateDebug = await env.POOL_DB.prepare(`
+      SELECT EXISTS (
+        SELECT 1 FROM pool_route_qualifications q
+        JOIN pool_route_registry_state s ON s.state_id = 1
+        JOIN pool_route_registry_snapshots rs ON rs.registry_epoch = s.current_epoch
+          AND rs.bundle_digest = s.current_bundle_digest
+          AND rs.registry_version = s.current_registry_version
+        JOIN pool_route_registry_issuer_keys k ON k.registry_epoch = rs.registry_epoch
+          AND k.bundle_digest = rs.bundle_digest
+        WHERE q.qualification_id = ? AND q.issuer_id = ? AND q.issuer_key_id = ?
+          AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+          AND q.registry_version = ? AND q.evidence_digest = ?
+          AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+          AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
+          AND s.current_epoch = ? AND s.current_bundle_digest = ?
+          AND rs.accepted_at <= ? AND rs.valid_until > ?
+          AND k.issuer_id = ? AND k.key_id = ? AND k.registry_version = ?
+          AND k.status = 'active' AND k.revoked_at IS NULL
+          AND k.valid_from <= ? AND k.valid_until > ?
+      ) AS eligible
+    `).bind(
+      input.route.qualificationId, input.route.issuerId, input.route.keyId,
+      input.route.registryEpoch, input.route.registryBundleDigest,
+      input.route.registryVersion, input.route.evidenceDigest,
+      input.now, input.now - 300, input.now,
+      input.route.registryEpoch, input.route.registryBundleDigest,
+      input.now, input.now, input.route.issuerId, input.route.keyId,
+      input.route.registryVersion, input.now, input.now
+    ).first();
+    console.log("REGISTRY_DEBUG", JSON.stringify({ now: input.now, route: input.route, registryDebug, gateDebug }));
     const result = await admitQualifiedTask(env.POOL_DB, input);
     expect(result).toMatchObject({
       decision: "ADMITTED_QUEUED", admissionId: input.admissionId,
