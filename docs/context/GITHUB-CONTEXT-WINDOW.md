@@ -2317,3 +2317,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report is design only; revocation authority/watermark and same-batch check remain NOT IMPLEMENTED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: approve the revocation subject/event semantics and trusted-time contract, then implement additive D1 event ledger + monotonic CAS and same-batch admission assertion on a clean reconciled proof ancestry; run adversarial rollback/replay/race tests. Keep `dispatch:false`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 326 revocation admission gap audit
+
+- Report: [Wave 326 revocation admission gap audit](../reports/2026-11-15-wave326-revocation-admission-gap-audit.md); report commit `63e56d6b712b49d6d03afcdb896c88a42d851e6f`.
+- Immutable source scope: default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; PR #87 → #92 → #93, all OPEN/DRAFT/UNMERGED; admission blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`; migration 0013 blob `40b93551c787078e5c65c8861569bb428bd2eb8b`; migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`.
+- Audit confirmed that admission's `input.now` is caller-supplied; `revocationVersion` is bound to the qualification row, and `q.revoked_at IS NULL` is checked, but no distinct authoritative monotonic route/issuer revocation watermark is consulted by the same-batch assertion. Migration 0014 checks active registry snapshot and issuer-key status, not a separate event ledger. This is a qualification gap, not a demonstrated production exploit.
+- Implementation contract requires append-only signed events, per-subject sequence/digest CAS, authorized REVOKE/REINSTATE semantics, trusted time, verifier-issued persistence capability, same-batch route+issuer watermark assertion, and an external signed anti-rollback checkpoint for full DB restore claims.
+- MediaHub bridge not triggered this turn: current controller secret/variable presence and scope metadata could not be independently verified with available actions. No comment, child dispatch, provider call or secret read. Cloud Pool-native controller absent; Gemini Agent 1/2/3 NOT RUN.
+- No code/schema/workflow/runtime changes, tests, deployment or merge. Dispatch remains fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile migration ancestry on one clean D1 branch, implement additive revocation event ledger + CAS head, then same-batch admission guard and adversarial tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
