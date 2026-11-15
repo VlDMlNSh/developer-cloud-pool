@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 — current refs, D1 runtime boundary and Gemini controller repair recheck
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (2026-11-15 commit-search read-back)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -2429,3 +2429,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Controller dispatch NOT RUN; secret/provider access NOT RUN; merge/deployment NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: secure formal governance review and effective ruleset read for PR #649; then, only if all gates pass, one controlled 3-agent dispatch through approved controller. Cloud Pool runtime next engineering slice remains authenticated registry ingestion with trusted platform clock and adversarial Workers tests.
 
+
+
+## Current verified overlay — 2026-11-15
+
+This overlay supersedes stale snapshot values in earlier sections; historical entries below remain historical evidence.
+
+- Latest observed default branch HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default branch remains `Основной`.
+- PR #87 OPEN/DRAFT/UNMERGED; PR #92 OPEN/DRAFT/UNMERGED at `7014961587759b27d2ef6e91c60ce098d077ae83`; PR #91 is the unmerged documentation continuation branch `docs/next-wave-agent-launch-readiness-2026-11-15`.
+- PR #87/#92 formal reviews and inline review threads: 0/0. PR #92 exact-head D1 proof run 43718679258 and Pool Contract Validation run 43718679251 both COMPLETED/SUCCESS; this is local Workers-runtime proof, not hosted D1.
+- D1 Worker entrypoint blob `214622f6dc94623521070eb9e7fbc2f573fdc2c6` remains deliberately inert (404). Trusted registry adapter blob `12f1b09b238d61fa7cf3574221f3cb79f6d4767a` is not exposed over HTTP. Runtime trusted-clock injection and authenticated registry ingestion remain NOT IMPLEMENTED.
+- MediaHub PR #649 repair head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` uses controller-dispatch-ID-specific branch names for all three Gemini roles. Seven exact-head PR-context workflow runs were COMPLETED/SUCCESS; formal reviews 0; PR remains OPEN/DRAFT. Actual repaired controller dispatch NOT RUN. Do not issue another Issue #301 `/next` comment until the repair is accepted and merged.
+- No secrets read, provider calls, hosted D1 provisioning, deployment, merge, dispatch-gate change or production execution occurred in this pass.
+- Current priority: finish issuer/caller authorization and governance contracts, then implement/test the fail-closed Worker boundary with trusted platform time. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Latest recheck report: [2026-11-15 controller-wave readiness and D1 runtime-boundary recheck](../reports/2026-11-15-controller-wave-readiness-and-d1-runtime-boundary-recheck.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
