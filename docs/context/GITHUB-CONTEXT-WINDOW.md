@@ -2230,3 +2230,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: authorize and implement a trusted-main controller only after governance reconciliation; implement real serialization and full run identity correlation; complete adversarial integration tests and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 trusted-main no-secret probe evidence — 2026-11-16
+
+- Owner-authenticated Issue #301 comment `6901747908` with exact body `/probe` triggered the approved controller's non-launching probe path.
+- Controller run `43764634513`: COMPLETED / SUCCESS on MediaHub main target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Probe job `132966862378`: SUCCESS. Context assertion job `132966891092`: SUCCESS. Readiness job `132966863587`: SKIPPED. `dispatch_and_monitor` job `132966864372`: SKIPPED. No artifacts.
+- Job logs confirm `event_name=issue_comment`, workflow ref `VlDMlNSh/mediahub-os/.github/workflows/gemini-batch-dispatch-controller.yml@refs/heads/main`, trusted controller `true`, issue 301, exact `/probe`, author association OWNER. Probe summary explicitly reports no transport/HMAC/provider secrets mapped and Gemini not reachable in probe mode.
+- This upgrades the trusted-main no-secret caller-context probe to VERIFIED. It does NOT verify effective secret/variable presence, scope or permissions; no secret values were read. It does not qualify controller transport, dispatch, child execution or the three-agent batch.
+- No Gemini children were launched; `readiness_gate` and `dispatch_and_monitor` were skipped. REST/HMAC versus approved `workflow_call` governance mismatch and missing independent governance review remain blockers. Do not launch a new batch until those are resolved.
+
+- Updated dated report: [ledger provenance hardening and probe evidence](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
