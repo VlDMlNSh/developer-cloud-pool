@@ -2324,7 +2324,7 @@ This section supersedes the earlier in-progress observation for the 13:35 wave. 
 ### Superseded fixed-roster proposal — rejected
 
 - Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch `feat/six-agent-roster-policy-2026-11-15`, was rejected as an architectural direction and closed unmerged on 2026-11-15 at the owner's request. Its roster/configuration proposal is not an adopted design, must not be merged or used as a scheduler contract, and is retained only as historical GitHub audit material.
-- No fixed six-role or six-worker architecture is approved. Do not derive worker count, role topology, concurrency or credential-slot count from PR #89.
+- No fixed worker count or named role topology is approved. Do not derive worker count, role topology, concurrency or credential-slot count from PR #89.
 - The only immediate parallel-execution target is a repeatable three-Gemini supplementary wave for each explicit ChatGPT `/next`, subject to a correctly integrated, secure Cloud Pool trigger and all controller admission gates. This target does not define the eventual Cloud Pool topology.
 - Future topology must be selected from measured task throughput, end-to-end latency, provider free-tier limits, quota-domain evidence, failure isolation, cost constraints, state durability, security boundaries and operational complexity. Keep the design open; do not pre-commit to a number of agents or named logical roles.
 
@@ -2605,7 +2605,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ## 2026-11-15 — Cloud Pool-native Gemini /next trigger gap
 
-- Rejected fixed six-agent roster proposal: PR #89 CLOSED / UNMERGED at owner direction. No fixed worker count or role topology is approved.
+- PR #89 was closed unmerged at owner direction; its proposal artifacts were removed from the current branch. No fixed worker count or named role topology is approved.
 - Created Cloud Pool control/integration issue #94: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94.
 - Default-branch Pool Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has no `issue_comment` trigger. Pool Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` supports only `dsh-headless-probe`; no Gemini route.
 - Cloud Pool default branch has no `.github/workflows/gemini-batch-dispatch-controller.yml` (404). MediaHub's controller remains separate and fixed to MediaHub Issue #301/repository/workflows; it cannot be silently treated as the Cloud Pool controller.
