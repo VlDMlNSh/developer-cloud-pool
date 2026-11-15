@@ -204,14 +204,13 @@ function statements(db, input) {
              AND g.registry_version = q.registry_version
              AND g.evidence_digest = q.evidence_digest
              AND g.checked_at = a.admitted_at
-             AND ${routeMatch}
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, ...routeValues
+      t.executionIdempotencyKey
     ),
   ];
 }
@@ -265,28 +264,22 @@ export async function admitQualifiedTask(db, input) {
            AND rs.registry_version = s.current_registry_version
           JOIN pool_route_registry_issuer_keys k
             ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
-         WHERE q.qualification_id = ? AND q.route_id = ? AND q.provider_id = ?
-           AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
-           AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
-           AND q.cost_class = ? AND q.capability_id = ? AND q.capability_profile = ? AND q.evidence_digest = ?
-           AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
-           AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
+         WHERE q.qualification_id = ? AND q.evidence_digest = ?
+           AND q.issuer_id = ? AND q.issuer_key_id = ?
+           AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+           AND q.registry_version = ?
            AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
-           AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+           AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
            AND rs.accepted_at <= ? AND rs.valid_until > ?
            AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
            AND k.registry_version = q.registry_version AND k.status = 'active'
            AND k.revoked_at IS NULL AND k.valid_from <= ? AND k.valid_until > ?
-           AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
       `).bind(
-        input.route.qualificationId, input.route.routeId, input.route.providerId,
-        input.route.modelId, input.route.issuerId, input.route.accountRef,
-        input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
-        input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
-        input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
-        input.route.observedAt, input.route.validUntil, input.route.revocationVersion,
-        input.route.keyId, input.route.registryEpoch, input.route.registryBundleDigest,
-        input.now, input.now, input.now, input.now, input.now, input.now - 300, input.now
+        input.route.qualificationId, input.route.evidenceDigest,
+        input.route.issuerId, input.route.keyId,
+        input.route.registryEpoch, input.route.registryBundleDigest,
+        input.route.registryVersion, input.now, input.now - 300, input.now,
+        input.now, input.now, input.now, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
