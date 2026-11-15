@@ -404,3 +404,11 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/gemini-three-agent-next-bridge-2026-11-15/docs/reports/2026-11-15-next-pass-route-registry-revocation-review.md
 - Next: establish the authoritative monotonic revocation record and adversarial D1 tests, then compare exact-head CI and governance. Dispatch remains fail-closed.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Supplemental /next event reconciliation — 2026-11-15
+
+- Current ChatGPT turn created MediaHub Issue #301 comment `6899662679`: https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899662679.
+- A separate owner-authored `/next` comment `6899669400` is also present in the live Issue #301 comment list. These are distinct source event IDs; do not treat them as one idempotent event or claim a shared controller run.
+- The connected GitHub action set did not expose the controller workflow-run listing endpoint. Controller and child run/job/artifact evidence for comment `6899662679` remains NOT VERIFIED. No direct child dispatch was attempted.
+- Updated report: [route registry revocation revalidation review](../reports/2026-11-15-next-pass-route-registry-revocation-review.md), latest report commit `f8f5f59588d9fb261e1450c143caafe2753e13ff`.
