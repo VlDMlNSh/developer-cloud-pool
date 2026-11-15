@@ -75,29 +75,10 @@ function same(row, input) {
 
 function statements(db, input) {
   const { approval: a, route: r, attempt: t, now, admissionId } = input;
+  // The verifier-derived evidence digest commits the complete canonical route
+  // evidence. Pair it with immutable registry/key identity and the active trust
+  // view instead of repeating every evidence field in the deeply nested receipt SQL.
   const routeMatch = `
-    q.qualification_id = ? AND q.route_id = ? AND q.provider_id = ?
-    AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
-    AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
-    AND q.cost_class = ? AND q.capability_id = ? AND q.capability_profile = ? AND q.evidence_digest = ?
-    AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
-    AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
-    AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
-    AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
-    AND q.registry_accepted_at <= ? AND q.registry_valid_until > ?
-    AND q.registry_issuer_status = 'active' AND q.registry_issuer_revoked_at IS NULL
-    AND q.registry_issuer_valid_from <= ? AND q.registry_issuer_valid_until > ?
-    AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
-  `;
-  const routeValues = [
-    r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
-    r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
-    r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
-    r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
-    r.keyId, r.registryEpoch, r.registryBundleDigest,
-    now, now, now, now, now, now - 300, now
-  ];
-  const receiptRouteMatch = `
     q.qualification_id = ? AND q.evidence_digest = ?
     AND q.issuer_key_id = ? AND q.registry_epoch = ?
     AND q.registry_bundle_digest = ? AND q.registry_version = ?
@@ -106,7 +87,7 @@ function statements(db, input) {
     AND q.registry_issuer_valid_from <= ? AND q.registry_issuer_valid_until > ?
     AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
-  const receiptRouteValues = [
+  const routeValues = [
     r.qualificationId, r.evidenceDigest, r.keyId, r.registryEpoch,
     r.registryBundleDigest, r.registryVersion,
     now, now, now, now, now, now - 300, now
@@ -201,14 +182,14 @@ function statements(db, input) {
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.evidence_digest = a.evidence_digest
-             AND ${receiptRouteMatch}
+             AND ${routeMatch}
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, ...receiptRouteValues
+      t.executionIdempotencyKey, ...routeValues
     ),
   ];
 }
