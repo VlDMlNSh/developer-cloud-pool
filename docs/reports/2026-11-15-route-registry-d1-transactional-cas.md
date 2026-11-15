@@ -65,3 +65,8 @@ Do not merge PR #80/#82 independently or enable dispatch.
 - Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
 - Checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/checkpoints/2026-11-15-a0-admission-route-qualification.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Historical status update — 2026-11-15
+
+This report records the earlier standalone CAS-schema pass. Its proposed next step (typed persistence adapter) has since been implemented in the canonical PR #81 → #84 stack, and registry-bound A0 admission has been implemented in PR #85. PR #82's parallel migration 0013 was closed because it conflicts with PR #81's migration 0013. See the current report for live status and evidence: [verifier capability and atomic registry-bound admission](2026-11-15-verifier-capability-and-atomic-admission-registry.md).
