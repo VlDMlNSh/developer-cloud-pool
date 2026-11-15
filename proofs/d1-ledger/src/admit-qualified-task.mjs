@@ -49,7 +49,17 @@ function same(row, input) {
     row.issue_number === a.issueNumber &&
     row.target_sha === a.targetSha &&
     row.profile === a.profile &&
-    row.envelope_digest === a.envelopeDigest;
+    row.envelope_digest === a.envelopeDigest &&
+    row.route_id === r.routeId &&
+    row.provider_id === r.providerId &&
+    row.model_id === r.modelId &&
+    row.issuer_id === r.issuerId &&
+    row.account_ref === r.accountRef &&
+    row.credential_handle_ref === r.credentialHandleRef &&
+    row.quota_domain_id === (r.quotaDomainId ?? null) &&
+    row.cost_class === r.costClass &&
+    row.capability_id === r.capabilityId &&
+    row.registry_version === r.registryVersion;
 }
 
 function statements(db, input) {
@@ -179,10 +189,14 @@ export async function admitQualifiedTask(db, input) {
              a.evidence_digest, a.attempt_id AS requested_attempt_id,
              p.input_digest, p.execution_idempotency_key,
              l.owner_numeric_id, l.repository_id, l.issue_number,
-             l.target_sha, l.profile, l.envelope_digest
+             l.target_sha, l.profile, l.envelope_digest,
+             q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
+             q.credential_handle_ref, q.quota_domain_id, q.cost_class,
+             q.capability_id, q.registry_version
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
         JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
+        JOIN pool_route_qualifications q ON q.qualification_id = a.qualification_id
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
     if (prior) {
