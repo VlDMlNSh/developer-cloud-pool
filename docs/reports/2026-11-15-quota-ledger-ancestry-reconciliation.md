@@ -65,3 +65,17 @@ This pure quota ledger is a selector/state machine, not a qualification authorit
 Implement the trusted route-qualification writer/verifier boundary: canonical evidence serialization and digest verification, authenticated issuer/provenance, exact provider/model/account/quota-domain binding, monotonic revocation and freshness. Then connect only its verified immutable result to the existing A0→D1 transaction. Keep external provider login/calls and dispatch disabled until executor and route qualification gates are passed.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Rebased PR #74 exact-head correction — 2026-11-15
+
+This section supersedes the earlier PR #74 head and workflow run recorded above.
+
+- The three-file quota-ledger change was re-anchored onto the then-current default HEAD `f36c733ed528b0cd1050f05965a5de3154766b13` using a new tree based on that exact commit and a force-with-lease update of only the owned reconciliation branch. Default branch was not changed by the rebase operation.
+- Rebased PR #74 HEAD: `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`; parent is the immutable default snapshot above. Compare at that snapshot: 1 ahead / 0 behind; GitHub PR API reports mergeable=true.
+- Exact-head PR workflow: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43692828719 — COMPLETED / SUCCESS at exact head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`; job `132746870777`.
+- Pool contract validator PASS; YAML parse PASS; quota-ledger tests 13 PASS / 0 FAIL; dispatch gate observed `POOL_DISPATCH_ENABLED=false`.
+- Final blobs unchanged: source `419f010a18c61abefafbb4845c55ea7c6bb1ab90`; tests `d5291729bdcf9261fcdb9be97998a9b8158bea23`; workflow `4e47b8e8850833d930cdd457bea91c2cec507576`.
+- PR #74 remains OPEN / DRAFT / UNMERGED. Combined status contexts are empty and no independent review exists. Required status contexts remain NOT VERIFIED.
+- No provider login/call, secret read, hosted D1, Worker deployment, dispatch, production resource creation or merge.
+- This quota ledger remains non-authoritative: it does not authenticate issuer/provider/account/evidence or prove live quota. Qualified Route Evidence remains NOT QUALIFIED.
