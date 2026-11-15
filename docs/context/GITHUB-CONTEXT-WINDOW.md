@@ -2368,3 +2368,17 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - This wave performed read-only operational reconciliation and documentation updates only; no workflow/source/schema/tests/deployment/merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 336 — 2026-11-15
+
+- Cloud Pool default branch Основной HEAD re-read: 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc.
+- New owner-authored MediaHub Issue #301 event: [comment 6900175631](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900175631), exact body /next read back. Controller/child run IDs were not available through the current connector's run-list surface; this event is DISPATCHED, controller/children NOT VERIFIED. Do not infer success/failure from missing run-list capability.
+- Waves 334 and 335 remain valid historical execution evidence; Wave 335 has three successful child runs and artifact digests in [report](../reports/2026-11-15-next-wave-335-chatgpt-gemini-cloud-pool-pass.md).
+- Issue #94 remains OPEN. MediaHub Issue #301 bridge remains supplementary and is not Cloud Pool-native dispatch.
+- PR #92 head 7014961587759b27d2ef6e91c60ce098d077ae83 and PR #93 head e200838d038b9cd48635233187819302bba6a33e remain OPEN/DRAFT/UNMERGED; formal review listings empty; combined status arrays empty (NOT VERIFIED). PR #93 historical exact-head run 43736264768 succeeded, but does not satisfy current independent review/governance.
+- Source review: PR #92 replay now verifies durable receipt, approval, outbox, task/attempt and registry assertion consistency. PR #93's WeakMap capability protects persistence against copied/forged verifier results, but its verifiedAt is populated from caller-supplied now; this is not a trusted DB clock.
+- Registry epoch monotonicity is not an authoritative revocation ledger. Contract v1's separate signed revocation keyset/event chain, monotonic per-subject sequence/digest, trusted DB time, and same-batch admission checks remain unimplemented/unqualified in reviewed evidence.
+- Report: [Wave 336](../reports/2026-11-15-wave336-revocation-and-dispatch-reconciliation.md).
+- Next: pure revocation keyset/event verifier + deterministic adversarial vectors, followed by D1 CAS/rollback and same-batch admission tests. Keep dispatch disabled and Contour B deferred.
+- This Context Window remains on docs branch docs/gemini-three-agent-next-bridge-2026-11-15, PR #95 OPEN/DRAFT/UNMERGED; it is not default-branch production state.
