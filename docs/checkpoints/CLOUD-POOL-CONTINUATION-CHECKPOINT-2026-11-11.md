@@ -370,3 +370,15 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 Next: implement and test issuer-authenticated claim-service/trusted-time boundary in local proof only; reconcile Agent 1 output opportunistically. No hosted provisioning without verified entitlement and explicit authorization.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 controller and D1 runtime-boundary recheck
+
+- Latest observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #92 exact head `7014961587759b27d2ef6e91c60ce098d077ae83`: D1 proof run 43718679258 SUCCESS (120 tests); Pool Contract run 43718679251 SUCCESS. PR #87/#92 remain OPEN/DRAFT with zero formal reviews and zero inline threads.
+- Worker entrypoint remains inert 404; registry persistence is local-only; no HTTP ingestion/authentication or trusted platform clock exists. Hosted D1 and deployment NOT RUN.
+- MediaHub PR #649 repair head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` has seven successful exact-head PR-context workflow runs and unique dispatch-ID branch expressions for all three Gemini children. It remains OPEN/DRAFT with no formal reviews; actual repaired controller dispatch NOT RUN. Do not post another Issue #301 `/next` comment before acceptance/merge.
+- Next: settle issuer/caller authority and governance, then implement a narrow authenticated Worker boundary with platform time and adversarial tests. No dispatch, secret access, provider calls, provisioning, deployment, or merge performed.
+- Detailed report: [2026-11-15 controller-wave readiness and D1 runtime-boundary recheck](../reports/2026-11-15-controller-wave-readiness-and-d1-runtime-boundary-recheck.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
