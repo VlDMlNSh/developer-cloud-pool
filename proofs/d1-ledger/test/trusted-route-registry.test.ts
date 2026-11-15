@@ -149,6 +149,19 @@ describe("root-signed route registry bundle v1", () => {
     })).toMatchObject({ verified: false, reason: "REGISTRY_BUNDLE_INVALID_OR_STALE" });
   });
 
+  it("rejects registry bundles exceeding issuer-key fanout limits", async () => {
+    const oversized = {
+      ...bundle,
+      issuerKeys: Array.from({ length: 65 }, (_, index) => ({
+        ...bundle.issuerKeys[0],
+        issuerId: `issuer-${String(index).padStart(3, "0")}`
+      }))
+    };
+    expect(await verifyTrustedRouteRegistryBundle({
+      bundle: oversized, signature: rootSignature, env, now: NOW
+    })).toMatchObject({ verified: false, reason: "REGISTRY_BUNDLE_INVALID_OR_STALE" });
+  });
+
   it("rejects unsigned registry-version changes", async () => {
     const changed = { ...bundle, registryVersion: "registry-v4" };
     expect(await verifyTrustedRouteRegistryBundle({
