@@ -72,3 +72,14 @@ This is a proof extension only. The previous `attempt_count` field remains a leg
 - `test/a0-admission-contract.test.ts` exercises missing/invalid approval provenance, capability replay, paid/unknown cost classes, forbidden provider routes, missing/unverified quota evidence, malformed identity and the no-dispatch invariant.
 - The tests use injected in-memory authority adapters. They prove the contract behavior only; they do **not** qualify cryptographic signature verification, durable atomic replay protection, quota-provider truth, trusted time, or production integration. The module is not mounted in the Supervisor or Worker.
 - Existing D1 attempt tests remain the local proof for generation fencing, stale finalizer rejection, expiry handling and bounded task-attempt behavior. This A0 contract is not a substitute for connecting those controls to one authoritative durable admission transaction.
+
+
+## Qualified Route Evidence verifier proof — 2026-11-15
+
+The stacked verifier proof on PR #75 adds:
+- Fixed-position canonical v1 evidence bytes and SHA-256 test vector.
+- Detached ES256 signature verification against an explicitly supplied issuer-key snapshot.
+- Exact route/account/quota-domain/capability/registry/revocation binding, 300-second freshness, expiry and key validity checks.
+- Adversarial tests for signature tampering, issuer/key substitution, cross-account/domain replay, stale/expired evidence, revocation watermark mismatch, unknown fields and missing free-quota domain.
+
+The verifier is an isolated cryptographic component, not a trust-root manager. The caller-supplied registry snapshots are not authoritative merely because they are structurally valid. Trusted registry loading, issuer key custody/rotation, durable revocation authority and atomic D1 version re-check remain unimplemented. Dispatch remains false; no provider call, secrets, hosted D1, deployment or merge.
