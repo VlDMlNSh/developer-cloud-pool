@@ -2478,3 +2478,18 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report: ../reports/2026-11-15-wave343-github-ledger-adapter-prototype.md.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement trusted-main wrapper with actual GitHub API adapter + Actions concurrency lock, still hard no-dispatch; add event-level integration and run-list pagination tests. Require governance/no-secret/independent review before any dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 344 — 2026-11-15
+
+- Default branch Основной HEAD is now 6507823e7ec27caa9b2621daef964dba2d4cf436. This is not the former 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc: one test-only file was accidentally added on default in commit bbc4da7ba1c06cde6c79d9216cdbdcae771ac6db and removed in cleanup commit 6507823e7ec27caa9b2621daef964dba2d4cf436. Read-back confirms the test path is absent on default; cleanup diff deletes only that file. Both commits remain in history and must not be hidden.
+- Default pool-supervisor workflow remains blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; still no issue_comment /next trigger. Default worker remains DSH headless probe only.
+- Issues #94 and #96 remain OPEN. PR #97 remains OPEN / DRAFT / UNMERGED, feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21, base ref SHA 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; formal reviews 0.
+- Wave 344 adds scripts/next-github-api-adapter.mjs blob 9e307f2e40dfc1fa18ffd5142ec205fb6afa3c80 and test/next-github-api-adapter.test.mjs blob 9a386b8fd8d7ae2a6b87ae5cba34b3de67ae029f. It provides paginated Issue #96 comments / Actions runs, ledger-only comment writes, source comment validation (exact /next, OWNER login + association, correct issue) and current-default-head SHA binding. Tests use fake fetch only. No live API token, issue mutation, workflow invocation or dispatch.
+- Contract workflow blob f05454a67defba5e4d9d3a1e163bd282e68b63fb has CI-only concurrency per ref; this is not the production controller lock.
+- Intermediate CI on 7f1551a0794480fbd1ec692389ac0817a0332a7a: run 43757790420 FAILED (45/49, 4 test failures); run 43757790396 Pool Contract Validation SUCCESS (7/7). The pagination matcher and sync/async assertions were corrected after this. Latest feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 has no run in available lookup and no combined status contexts: exact-head CI NOT VERIFIED.
+- Branch comparison now: docs branch ahead 90 / behind 2; PR #97 feature branch ahead 18 / behind 2; merge base remains former default 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. This is due to default add/delete commits. Reconcile ancestry before merge; do not rewrite history.
+- Wave 344 report: ../reports/2026-11-15-wave344-github-api-adapter.md.
+- Live trusted-main wrapper, actual controller concurrency, issue_comment trigger, ledger writes, workflow dispatch and Gemini children remain NOT IMPLEMENTED / NOT RUN. Cloud Pool-native controller NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile default add/delete history against PR #97 and docs branch, obtain exact-head CI for f0ad25ce60e6ef052fcfeab31fb5deab06793f21, then build real trusted-main wrapper with production concurrency lock while dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
