@@ -95,3 +95,14 @@ A real GitHub issue comment was created through the authorized GitHub connector 
   - Agent 3 run `43746305744`, correlation ID `e344fa9c-74ba-4066-a3d6-e5a4305f5644`; authorization job `132910258105` SUCCESS; Gemini job `132910281559` RUNNING.
 - This validates that the GitHub connector can create the owner-authored issue event and that it causes exactly three child dispatches. Final child conclusions and artifact digests are pending; do not mark this smoke wave SUCCEEDED/VERIFIED until those are read back.
 - This test was one intentional event and not a duplicate. For the next user-issued `/next`, create one new comment and reconcile it independently.
+
+
+## Live bridge smoke test — final reconciliation
+
+The smoke test described above is now complete and VERIFIED:
+- Controller run `43746281426`: COMPLETED / SUCCESS. Admission job `132910179205` SUCCESS; dispatch-and-monitor job `132910206815` SUCCESS.
+- Agent 1 run `43746301766`: COMPLETED / SUCCESS; jobs `132910245758` and `132910285304` SUCCESS; artifact `gemini-output`, SHA-256 `d3d7e7d5ea27d1656dbee67b9481554626df8e6704d9a0873f46790e3ce5505f`.
+- Agent 2 run `43746303789`: COMPLETED / SUCCESS; jobs `132910251604` and `132910269920` SUCCESS; artifact `gemini-output`, SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
+- Agent 3 run `43746305744`: COMPLETED / SUCCESS; jobs `132910258105` and `132910281559` SUCCESS; artifact `gemini-output`, SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
+- Controller log confirms all three dispatches were ACCEPTED and correlated to these exact child runs, with the shared immutable target SHA unchanged. No dispatch error or timeout was reported.
+- End-to-end status for this live ChatGPT connector → Issue #301 comment → Controller → three Gemini children path: VERIFIED.
