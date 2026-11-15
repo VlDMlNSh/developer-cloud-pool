@@ -94,3 +94,16 @@ Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-t
 
 Current default HEAD after this pass's report/context/checkpoint commits: `1ce2af5fddb67bbaf63c9b580dc796c91b95e9b7`.
 PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to current default is DIVERGED, 3 ahead / 5 behind; merge base remains `670ed18460506c5cba6757baf15954215a74cb0a`. The additional behind commits are documentation-only commits from this pass. PR remains Draft; no merge or rebase performed. Exact-head CI success remains evidence for the immutable PR head only, not for a rebased head.
+
+
+## Qualified Route Evidence / atomic A0-D1 contract — 2026-11-15
+
+- Contract published on default branch: `docs/contracts/QUALIFIED-ROUTE-EVIDENCE-AND-ATOMIC-A0-D1-ADMISSION.md`
+- Commit: `e342d0c68daa27b900bd04cc9ccdd8ca971025f6`.
+- Contract defines immutable route qualification binding provider/model/issuer/account/credential-handle reference/quota-domain/cost-class/capability/evidence digest/freshness/revocation/registry version; approval/task/attempt/outbox binding; atomic D1 transaction and fail-closed rollback/read-back behavior.
+- This is a design contract, not implementation or qualification. No schema migration, A0/D1 code change, hosted D1, provider calls, deployment, or dispatch.
+- Reviewed source evidence on PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: A0 `14c31d66995d6f99ceb6ea5df060ba8e00848464`; D1 consume `f71e559a7c13b9a0242a7f619eba998c5906d95e`; logical task migration `49b0798871429d7961e81eb1d86ad892dba0b9b9`; immutable attempt migration `0ad590ffdd2589f857257739275c15ed2d54d729`; A0 tests `0070fffdf0595b5ebd9edced0b0e92bebf3af38c`.
+- PR #71 remains OPEN/DRAFT at `40a49acabd12aa178d3aa136244fb4f42231fbde`; do not merge while base/head reconciliation and required checks remain incomplete.
+- Next: design the minimal migration/API delta against existing D1 primitives; build a local atomic-admission proof and adversarial transaction tests, with dispatch false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
