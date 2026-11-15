@@ -1854,3 +1854,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Report commit: `f0d66cdc65432f32bb689f0ebddb8febffc8ae83`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #93 stale verifier-capability review — 2026-11-15
+
+- Re-read default branch HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; PR #93 exact head `99ca50ce11efb380efa6346a1db672585876a8b1`; PR #92 exact head `7014961587759b27d2ef6e91c60ce098d077ae83`.
+- PR #93 exact-head D1 workflow run `43725400300` / job `132846119246`: COMPLETED / SUCCESS, including syntax, Workers-runtime D1 tests, second local D1 binding/migration smoke, frozen schema-0010 fixture smoke and lockfile artifact upload.
+- PR #92 exact-head runs `43718679258` and `43718679251`: COMPLETED / SUCCESS. Formal reviews on PRs #92/#93: zero. Combined commit-status contexts: empty; aggregate status contexts NOT VERIFIED.
+- Security review found stale verifier-capability reuse: PR #93 stores immutable verified bundle/signature in WeakMaps, but persistence accepts the capability indefinitely and uses historical `verifiedAt` as `acceptedAt`; it does not re-check bundle expiry / maximum age against a trusted current clock at persistence or idempotent-success return.
+- Finding posted to PR #93 comment ID `6897189755`: https://github.com/VlDMlNSh/developer-cloud-pool/pull/93#issuecomment-6897189755
+- Dated report: `docs/reports/2026-11-15-pr93-stale-verifier-capability-review.md`; report commit `a66ee2b75da3f35ef46800c8072cb513cbaa6b90`.
+- This review does not imply CI failure; it identifies a gap not covered by the passing workflow. PR #93 remains OPEN / DRAFT / UNMERGED. No code fix, hosted D1, provider call, secret read, deployment, dispatch or merge in this pass.
+- Next bounded step: reject expired/over-age verifier capabilities using a trusted runtime clock before any D1 write or idempotent-success response; add deterministic expiry/age tests proving zero writes; rerun exact-head validation. Keep dispatch false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
