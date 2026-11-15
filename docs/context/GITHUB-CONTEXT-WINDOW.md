@@ -2465,3 +2465,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement trusted-main GitHub adapter for Issue #96 ledger read/append, concurrency lock and run-name reconciliation; fake-API tests for timeout/delayed visibility/crash-after-intent/duplicate deliveries. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 343 — 2026-11-15
+
+- Default branch Основной observed HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; default .github/workflows/pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd still has no issue_comment /next trigger. The Cloud Pool default worker remains the dsh-headless-probe only profile.
+- Issues #94 and #96 re-read OPEN. Dedicated Cloud Pool control issue #96 remains PLANNED control surface only.
+- PR #97 remains OPEN / DRAFT / UNMERGED, base 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc, head b98787604ae53dee5464b49400658e17915f8a9e; formal reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Wave 343 added scripts/next-github-ledger-adapter.mjs blob aa343e4cf10ca1d8b0608957caba5b9ea9fe9956, test/next-github-ledger-adapter.test.mjs blob 13489d07c902827d151a2c059ddc3b2432128b8b, workflow blob 7e94970cb9b13312f272a898f71bdeb1dd788762. Adapter is dependency-injected, requires a caller-held lock, performs ledger read/append with ambiguous-timeout re-read and reconciles exact Actions display_title + head_sha. It NEVER dispatches.
+- Exact-head CI on b98787604ae53dee5464b49400658e17915f8a9e: run 43757112894 Cloud Pool Next Admission Contract COMPLETED/SUCCESS; run 43757112913 Pool Contract Validation COMPLETED/SUCCESS. Initial run 43757024342 failed three run-reconciliation tests; fixed before final successful runs. Combined status contexts empty; formal reviews 0.
+- Live API adapter binding, actual Actions concurrency lock, trusted-main issue_comment trigger, real ledger writes, controller dispatch and Gemini child jobs remain NOT IMPLEMENTED / NOT RUN. No secrets or provider calls. Gemini execution NOT VERIFIED.
+- Report: ../reports/2026-11-15-wave343-github-ledger-adapter-prototype.md.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement trusted-main wrapper with actual GitHub API adapter + Actions concurrency lock, still hard no-dispatch; add event-level integration and run-list pagination tests. Require governance/no-secret/independent review before any dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
