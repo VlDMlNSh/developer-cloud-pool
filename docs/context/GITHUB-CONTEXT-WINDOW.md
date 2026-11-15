@@ -5,7 +5,7 @@
 Last refreshed: 2026-11-15 — clean-main A0-D1 race coverage and exact-head CI
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (latest commit-search read-back)
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (revalidated by compare endpoint)
 Documentation continuation branch: `docs/next-2026-11-15-registry-epoch-hardening`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -48,7 +48,7 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 ## 3. Repository state, branches and governance
 
 - Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Observed default HEAD (revalidated 2026-11-15): `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Earlier HEAD observations below are historical only.
 - Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
 - Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
 - Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
@@ -2235,3 +2235,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: inspect the complete PR #87 diff and migration ordering against the current default, then continue only with local/no-provider qualification. Do not merge or provision hosted D1 until all required gates are explicitly met.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Current verified state — 2026-11-15 (latest pass)
+
+- Default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Clean A0/D1 integration PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87; branch `integration/d1-ledger-clean-main-2026-11-15`; current PR HEAD `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; 6 commits ahead / 0 behind; merge base equals current default HEAD; 49 added files. PR is OPEN / DRAFT / UNMERGED.
+- Latest test blob `proofs/d1-ledger/test/atomic-admission.test.ts`: `4543d1db062da3e94ee839c50c79e3f01016b8b7`. Added full rollback assertions to the deterministic registry-epoch TOCTOU test: approval remains ready; no assertion, admission, commit receipt, attempt, task, or delivery-outbox row may remain after the active registry pointer advances between preflight and D1 batch.
+- Migration order 0001–0014 reviewed at source level. Migrations 0011–0014 are additive after the frozen 0010 baseline. The 0014 trigger checks exact qualification/issuer/key/epoch/bundle/version/evidence binding, active singleton pointer, snapshot validity, route freshness/expiry/revocation and issuer-key lifecycle inside the admission batch. The registry verifier uses a pinned platform root public key and verifies root ES256 bundle signature plus per-route issuer signatures. This is source review, not independent security qualification.
+- Existing exact-head CI applies to prior PR head `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`: D1 run [43712068163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068163) SUCCESS (11 files / 119 tests) and Pool Contract Validation [43712068111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068111) SUCCESS. These results do NOT validate new HEAD `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`.
+- Latest commit workflow-run lookup for `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` returned no PR-associated runs; combined status contexts are empty. Exact-head CI for latest commit: NOT VERIFIED.
+- PR #87 formal reviews: 0; inline threads: 0. PR remains draft. Effective ruleset details not re-read in this pass; no merge attempted.
+- No hosted D1, provider calls, secret reads, deployment, Worker/Supervisor execution, dispatch, merge or independent acceptance. Dispatch remains disabled. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain exact-head CI for `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; inspect run logs if failed. Then complete source audit of PR diff and migration/adapter boundaries. Keep all qualification local and no-provider until required governance gates are verified.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
