@@ -107,3 +107,17 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: design the minimal migration/API delta against existing D1 primitives; build a local atomic-admission proof and adversarial transaction tests, with dispatch false.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## D1 atomic admission minimal migration plan — 2026-11-15
+
+- Published design: `docs/design/D1-ATOMIC-ADMISSION-MINIMAL-MIGRATION-PLAN.md`
+- Commit: `5bc6110a5207499a250de690b02077f74ad6c103`.
+- Reused existing D1 proof evidence: migration 0001 approval ledger `a80524ed839b63dd6483978118619495fa550877`; migration 0003 task/task-approval/task-outbox trigger `49b0798871429d7961e81eb1d86ad892dba0b9b9`; migration 0004 immutable attempts `0ad590ffdd2589f857257739275c15ed2d54d729`; claim adapter `37d75e2b31d9214b04398527eb08dce296f1ff27`; attempt adapter `6cb028e048569700ed623d93462ef55e2392a084`; D1 batch rollback test `ef502247683239d50d3c781240cc5b2595aa0696`.
+- Concrete gap: claimLogicalTask consumes approval and trigger-creates task/outbox, while createTaskAttempt is a separate call. Thus current proof API does not atomically compose approval, task/outbox, admission evidence and attempt.
+- Plan proposes migration 0011 with immutable route qualifications + append-only admissions + approval binding columns, and one ordered D1 batch: conditional consume (existing 0003 trigger), admission row, attempt row (existing 0004 trigger), aborting transaction assertion; then durable read-back. No raw credentials. No external calls inside batch.
+- This is DESIGN only. No migration, adapter, tests, hosted D1, dispatch, provider calls, deployment or merge were performed.
+- PR #67 remains open/unmerged on its stacked branch; do not copy its entire branch into default. PR #71 remains Draft and unmerged.
+- Next: verify PR #67 exact-head D1 workflow and branch ancestry/stack policy; then choose a bounded implementation branch and implement migration 0011 + batch adapter + adversarial Workers-runtime tests, keeping dispatch false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
