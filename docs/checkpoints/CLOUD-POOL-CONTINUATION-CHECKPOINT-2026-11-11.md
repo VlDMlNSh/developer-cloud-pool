@@ -218,3 +218,16 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+## 2026-11-15 — PR #67/#68 live recheck
+
+- Default baseline: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 OPEN/DRAFT/UNMERGED, head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head Pool Contract Validation `43600901063` and Isolated D1 Ledger Proof `43600901068` both SUCCESS. Local Workers-runtime proof only; 84 tests recorded in current Master Handoff. A0 admission remains a mock-authority contract, not production wiring.
+- PR #68 OPEN/DRAFT/UNMERGED, head `8569d0b368b353beb78e8594509d8492abaec170`; exact-head Pool Contract Validation `43604562851` and Runner Resource Probe `43604562855` both SUCCESS. The PR actually modifies two workflows and adds a matrix validator; its inaccurate documentation-only description was corrected. Eight resource observations are not capacity qualification.
+- Both PRs: zero combined status contexts; zero formal reviews and inline threads. Keep Draft/unmerged.
+- No secret access, dispatch, provider calls, hosted provisioning, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-15-pr68-scope-and-pool-state-recheck.md`; report commit `f0d66cdc65432f32bb689f0ebddb8febffc8ae83`.
+- Context Window refresh commit: `e9c01bcd344e280c737cbfd0eb54ae8f5121d968`.
+- Next: local-only atomic A0 admission receipt/queue-intent proof on PR #67, negative-first, tenant/owner/capability/task/attempt/SHA/profile/cost/quota/generation bound, always `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
