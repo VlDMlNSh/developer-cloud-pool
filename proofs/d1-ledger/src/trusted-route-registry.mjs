@@ -9,6 +9,10 @@ const BUNDLE_FIELDS = [
   "validUntil", "rootKeyId", "issuerKeys", "routes"
 ];
 const MAX_REGISTRY_AGE_SECONDS = 300;
+const MAX_REGISTRY_LIFETIME_SECONDS = 3600;
+const MAX_ISSUER_KEYS = 64;
+const MAX_ROUTES = 256;
+const MAX_BUNDLE_BYTES = 512 * 1024;
 const deny = (reason) => Object.freeze({ verified: false, dispatch: false, reason });
 
 function isRecord(value) {
@@ -105,11 +109,11 @@ function validBundle(bundle, now) {
     SAFE_ID.test(bundle.registryVersion || "") &&
     Number.isSafeInteger(bundle.issuedAt) && bundle.issuedAt > 0 &&
     Number.isSafeInteger(bundle.validUntil) && bundle.validUntil > now &&
-    bundle.validUntil - bundle.issuedAt <= 3600 &&
+    bundle.validUntil - bundle.issuedAt <= MAX_REGISTRY_LIFETIME_SECONDS &&
     bundle.issuedAt <= now && now - bundle.issuedAt <= MAX_REGISTRY_AGE_SECONDS &&
     SAFE_ID.test(bundle.rootKeyId || "") &&
-    Array.isArray(bundle.issuerKeys) && bundle.issuerKeys.length > 0 &&
-    Array.isArray(bundle.routes) && bundle.routes.length > 0 &&
+    Array.isArray(bundle.issuerKeys) && bundle.issuerKeys.length > 0 && bundle.issuerKeys.length <= MAX_ISSUER_KEYS &&
+    Array.isArray(bundle.routes) && bundle.routes.length > 0 && bundle.routes.length <= MAX_ROUTES &&
     orderedUnique(bundle.issuerKeys, (x) => isRecord(x) ? `${x.issuerId || ""}/${x.keyId || ""}` : "") &&
     orderedUnique(bundle.routes, (x) => isRecord(x) && isRecord(x.evidence) ? x.evidence.qualificationId || "" : "");
 }
@@ -147,6 +151,7 @@ export async function verifyTrustedRouteRegistryBundle({
     return deny("REGISTRY_BUNDLE_CANONICALIZATION_FAILED");
   }
   const bytes = new TextEncoder().encode(canonical);
+  if (bytes.length > MAX_BUNDLE_BYTES) return deny("REGISTRY_BUNDLE_TOO_LARGE");
   const signatureBytes = decodeBase64Url(signature);
   if (!signatureBytes || signatureBytes.length !== 64) {
     return deny("REGISTRY_SIGNATURE_ENCODING_INVALID");
@@ -208,6 +213,10 @@ export const trustedRouteRegistryPolicy = Object.freeze({
   schemaVersion: 1,
   signatureAlgorithm: "ES256",
   maxRegistryAgeSeconds: MAX_REGISTRY_AGE_SECONDS,
+  maxRegistryLifetimeSeconds: MAX_REGISTRY_LIFETIME_SECONDS,
+  maxIssuerKeys: MAX_ISSUER_KEYS,
+  maxRoutes: MAX_ROUTES,
+  maxBundleBytes: MAX_BUNDLE_BYTES,
   rootKeySource: "platform-environment-binding",
   dispatchEnabled: false
 });
