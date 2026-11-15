@@ -171,7 +171,8 @@ function statements(db, input) {
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, now, now - 300, now, now
+      t.executionIdempotencyKey, r.schemaVersion, r.evidenceRef,
+      r.observedAt, r.revocationVersion, now, now - 300, now, now
     )
   ];
 }
@@ -202,7 +203,8 @@ export async function admitQualifiedTask(db, input) {
              l.target_sha, l.profile, l.envelope_digest,
              q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
              q.credential_handle_ref, q.quota_domain_id, q.cost_class,
-             q.capability_id, q.registry_version
+             q.capability_id, q.registry_version, q.schema_version,
+             q.evidence_ref, q.observed_at, q.revocation_version
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
         JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
