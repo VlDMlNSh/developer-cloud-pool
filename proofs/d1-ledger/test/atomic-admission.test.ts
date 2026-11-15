@@ -203,6 +203,21 @@ describe("atomic qualified A0 -> D1 admission", () => {
       input.route.registryVersion, input.now, input.now
     ).first();
     console.log("REGISTRY_DEBUG", JSON.stringify({ now: input.now, route: input.route, registryDebug, gateDebug }));
+    const manualAssertion = await env.POOL_DB.prepare(`
+      INSERT INTO pool_admission_registry_assertions (
+        admission_id, qualification_id, issuer_id, issuer_key_id,
+        registry_epoch, registry_bundle_digest, registry_version,
+        evidence_digest, checked_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      "manual-debug-assertion", input.route.qualificationId, input.route.issuerId,
+      input.route.keyId, input.route.registryEpoch, input.route.registryBundleDigest,
+      input.route.registryVersion, input.route.evidenceDigest, input.now
+    ).run();
+    console.log("MANUAL_ASSERTION", JSON.stringify(manualAssertion));
+    await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_admission_registry_assertions_no_delete").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_admission_registry_assertions WHERE admission_id = 'manual-debug-assertion'").run();
+    await env.POOL_DB.prepare("CREATE TRIGGER pool_admission_registry_assertions_no_delete BEFORE DELETE ON pool_admission_registry_assertions BEGIN SELECT RAISE(ABORT, 'ADMISSION_REGISTRY_ASSERTION_APPEND_ONLY'); END").run();
     const result = await admitQualifiedTask(env.POOL_DB, input);
     expect(result).toMatchObject({
       decision: "ADMITTED_QUEUED", admissionId: input.admissionId,
