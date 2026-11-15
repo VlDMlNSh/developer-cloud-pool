@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-15 — Cloud Pool integrated admission/registry audit (Wave 323)
+Last refreshed: 2026-11-15 — MediaHub Gemini /next bridge reconciliation (Wave 324)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (re-read 2026-11-15 via Git Database ref API)
@@ -3351,4 +3351,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Remaining security boundary: independently enumerate all registry-table writers and verify no alternate path can bypass the verifier-capability persistence boundary; then map the local proof into production integration contracts without enabling dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Context update follows this report on the documentation branch; branch remains unmerged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — Wave 324 MediaHub Gemini /next bridge and batch reconciliation
+
+- Detailed report: [Wave 324](../reports/2026-11-15-mediahub-gemini-next-bridge-reconciliation-wave324.md), report commit aecf2c69f7c9a6b9c74d4e2d6c66b0880f266f5f.
+- MediaHub main exact HEAD: 1694cde38c7b7d69baf9676b4908c1bb6e197fbe. PR #651 merged at that SHA. Controller blob 7799f0fc713c5bd772ce6820df40a926a83445c8; child Agent 1/2/3 workflow blobs ed9ae2200debe76e39e3e5dfb5816ba94db3950c, fa3b4c407d3c583cbd33133aea89e4bd8a496b69, bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e.
+- Three owner-authored /next comments on MediaHub Issue #301 were verified to launch complete three-agent batches: controller runs #43714051912, #43716783704, #43717570433; all nine child runs completed SUCCESS with successful authorization/task jobs and non-empty gemini-output artifact digests. Shared target for those batches: 41c13e1c2b17ac48dc51c9963a9cda140f79ddb0.
+- A fourth batch, controller #43719738980, failed closed because Agent 2 #43719759616 did not satisfy the actionable-PR postcondition; Agent 1 #43719757692 and Agent 3 #43719761724 succeeded. Artifact digest exists for the failed Agent 2 output, but no successful PR creation was recorded. Treat as PARTIAL/FAILED, not a complete three-agent success.
+- The apparently skipped runs #43733540299/#43733619144/#43733729653 were comments on PR #651, not Issue #301 /next commands. Do not count them as failed /next batches.
+- PR #651 merged at 1694cde38c7b7d69baf9676b4908c1bb6e197fbe. A new owner-authored exact /probe comment #6897928986 on Issue #301 triggered trusted-main controller run #43737810402: observer job #132884178319 and assertion job #132884202705 SUCCESS; readiness/dispatch SKIPPED as required. This proves the post-merge issue_comment context path only; it is deliberately non-launching.
+- ChatGPT /next is not itself a GitHub event. The operational bridge for each future ChatGPT /next is: after checking current refs/governance/metadata gates, create exactly one owner-authored exact /next comment on MediaHub Issue #301 via the connected GitHub comment action; read back the comment ID and OWNER association; correlate next-comment-<id>; verify controller and all three child jobs/artifact digests. Do not directly dispatch child workflows. If the connector or mandatory gates are unavailable, mark BLOCKED/NOT VERIFIED and continue independent Cloud Pool work.
+- PR #651 formal review submissions were zero, so an independent formal review of that PR remains NOT VERIFIED. Current secret/variable metadata was not inspected in this pass; no secret values were read. Previous successful live batches are historical operational evidence, not a substitute for required current metadata checks.
+- Documentation report commit: aecf2c69f7c9a6b9c74d4e2d6c66b0880f266f5f. Continuation checkpoint commit: 025b873b7d6bf8f5f9fcf7efa00b42fa93e7245b; checkpoint blob: 11a40fdbc7d640dfcefa26ceb3e9e7e079e95bb2.
+- This is a cross-project dependency only. Developer Cloud Pool Contour A remains the primary objective; Contour A is NOT ACCEPTED and Contour B remains DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
