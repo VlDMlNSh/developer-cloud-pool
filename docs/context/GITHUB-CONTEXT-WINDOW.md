@@ -2601,3 +2601,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No merge, trusted-main re-probe, secret-value access, provider call, or Gemini child dispatch. Actions variable/secret metadata and scope remain NOT VERIFIED.
 - Next: exact-head contract CI; independent review/governance; ruleset-governed merge; repeat owner /probe on Issue #301 and verify actual issue-comment run; then metadata-only readiness and one controlled 3/3 /next wave.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Cloud Pool-native Gemini /next trigger gap
+
+- Rejected fixed six-agent roster proposal: PR #89 CLOSED / UNMERGED at owner direction. No fixed worker count or role topology is approved.
+- Created Cloud Pool control/integration issue #94: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94.
+- Default-branch Pool Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has no `issue_comment` trigger. Pool Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` supports only `dsh-headless-probe`; no Gemini route.
+- Cloud Pool default branch has no `.github/workflows/gemini-batch-dispatch-controller.yml` (404). MediaHub's controller remains separate and fixed to MediaHub Issue #301/repository/workflows; it cannot be silently treated as the Cloud Pool controller.
+- Cloud Pool-native controller, three Gemini child workflows, trusted-main probe and live dispatch remain NOT IMPLEMENTED / NOT RUN. Secret/Variable metadata remains NOT VERIFIED; no secret values were read.
+- Report: [Cloud Pool-native Gemini /next trigger gap](../reports/2026-11-15-cloud-pool-native-gemini-next-trigger-gap.md).
+- Next: implement a separate Cloud Pool-native least-privilege controller and non-launching probe on a new branch, with adversarial tests. Keep dispatch fail-closed until governance, exact-head CI, secret/variable metadata and trusted-main probe pass.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
