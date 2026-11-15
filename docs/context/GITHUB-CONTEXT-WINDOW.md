@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-15 — clean-main A0-D1 race coverage and exact-head CI
+Last refreshed: 2026-11-15 19:19 Europe/Vilnius — current-default D1 stack and PR #93 capability freshness revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (revalidated by compare endpoint)
@@ -2250,4 +2250,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: continue local/no-provider qualification by reviewing remaining integration boundaries (approval provenance, quota issuer authority and D1-to-Supervisor separation); do not treat the isolated proof as a live pool or enable dispatch before governance and acceptance gates.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Daily live revalidation — 2026-11-15 19:19 Europe/Vilnius
+
+- Live default ref confirmed identical to `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; this is 64 commits beyond the previous recorded `221f216c...` baseline. Repository: 8 open Issues and 67 open PRs.
+- Priority Issues #1/#22/#26/#38 remain OPEN; new #70 (fail-closed free-quota routes) and #94 (proposed Cloud Pool-native Gemini dispatch) are also OPEN. No action was taken on the dispatch proposal.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, based on old `64d2636...` and 128 commits behind current default; formal reviews/threads 0/0. Named exact-head Actions runs are successful, including #30 push run 42216422883. This does not qualify integration/runtime.
+- Path-segment fix remains at `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 128 behind, with no PR and exact-tip CI NOT VERIFIED. Source/test blobs `9f4f9e59...` / `bd8ac8d9...` contain the dot-segment guard and four negative cases.
+- Current-base D1 reconstruction: PR #87 `8cc7b129...` is 6 ahead / 0 behind, 49 files; exact-head D1 + contract workflows 43712647597/43712647615 SUCCESS, 119 tests recorded. PR #92 `70149615...` 10/0, runs 43718679251/258 SUCCESS. PR #93 `e200838d...` 15/0, run 43736264768 SUCCESS. All remain OPEN/DRAFT/UNMERGED; formal reviews and inline threads 0/0.
+- PR #93 current source blob `916581ca07cf94edb21c8c2daa77a4c45db3d666` still reuses `verified.verifiedAt` as persistence `acceptedAt`; no trusted current-clock freshness/expiry check exists before persistence or idempotent-success. Its verifier also accepts `env` and `now` as function arguments, and its Worker entrypoint is deliberately inert (404). Existing comment 6897189755 remains an unresolved top-level finding, not a formal review.
+- PR #71/#74 fail-closed quota policy fixes have exact-head contract CI SUCCESS but remain draft and do not authenticate provider/account/quota evidence.
+- Default Supervisor source still has `issues: write` / `actions: write`, a `workflow_run` trigger and Worker `workflow_dispatch`; the script dispatches only for literal `true`, but the live variable is NOT VERIFIED. Fifteen-minute absence-based claim recovery remains a duplicate-execution risk if dispatch is enabled.
+- Effective ruleset and branch-protection details NOT VERIFIED; last recorded ruleset snapshot 26550182 had 0 approvals and no required status contexts. SentinelX: zero connected hosts; Voktors-Mini offline; mh-dev-01/02 disabled. Cloudflare Worker/D1 entitlement and deployment NOT VERIFIED.
+- No secret reads, workflow/dispatch invocation, agents, DSH, Resource Probe, provider/model calls, deployment, merge or production/security-boundary changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Daily report: [2026-11-15 19:19 revalidation](../reports/2026-11-15-1919-daily-revalidation.md).
 
