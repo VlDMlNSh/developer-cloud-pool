@@ -219,3 +219,25 @@ This section supersedes the previous "trusted route evidence writer/verifier NOT
 Status: verifier component IMPLEMENTED / exact-head CI VERIFIED; trust root and durable registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Root-signed Qualified Route Registry bundle — 2026-11-15
+
+- Report: [Root-signed route registry bundle proof](../reports/2026-11-15-root-signed-route-registry-bundle.md); report commit `9eae83fa0da38a8879c9c772620d5461852940be`.
+- PR #76: https://github.com/VlDMlNSh/developer-cloud-pool/pull/76
+- Branch `proof/root-signed-route-registry-bundle-2026-11-15`; exact HEAD `096737ec5e1a335b367fc7af67c29f7b71541e66`; base PR #75 exact head `f253f68194e65912a91c91f2d158525b97927749`. PR #76 OPEN / DRAFT / UNMERGED; mergeable relative to its declared base.
+- Verifier module blob `9e837c44ed50329930bb393b3bc45bd6cd0f729b`; tests blob `c7876cdc3b3eff39060d44e2890266374f54da4a`; package blob `334011c6b7db5c92cc4c43256d3b43115833b5a9`; workflow blob `415d20eb93a34eb231efb3c8f798faa792c1e412`; README blob `9fae34fdea63b69784444a359046f8518b81735d`; standalone contract blob `e85b664e5d87f54e01a8f78454b4a7b7f29e50a5`.
+- Root key ID/JWK are loaded from platform environment bindings, never from the request or signed bundle. Fixed canonical JSON v1, exact field allowlists, sorted unique issuer/route records, root ES256 signature, and per-route issuer ES256 signatures. Bundle max age 300s, max lifetime 3600s, max 64 issuer keys, 256 routes, 512 KiB and 128 chars per route signature. Immutable verified result, `dispatch:false`.
+- Exact-head CI run `43697493628`, job `132761164474`: COMPLETED / SUCCESS at exact HEAD `096737ec5e1a335b367fc7af67c29f7b71541e66`; syntax PASS; Workers runtime 114 PASS / 0 FAIL across 9 files; second D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS; artifact `14155271322`.
+- Commit status contexts 0 / pending; required status contexts NOT VERIFIED; no independent review. PR #76 remains Draft and unmerged.
+- Critical trust limit: no durable D1 registry persistence, monotonic epoch CAS, rollback protection, root custody/rotation, append-only issuer/revocation writer or atomic D1 admission watermark re-check. The verifier is not wired into `admitQualifiedTask`; production root is not configured. Qualified Route Evidence remains NOT QUALIFIED.
+- At default snapshot `89ff1917b809cd8ed3fc68031c79d0907775046b`: default → #67 DIVERGED 47 ahead / 55 behind; #72 67 / 55; #74 1 / 10; #75 72 / 55; #76 89 / 55. All remain OPEN / DRAFT / UNMERGED.
+- Issue #70 remains OPEN. Active ruleset `26550182` is default-only, requires PR/thread resolution but zero approvals/no required checks; branch protection endpoint 403 / NOT VERIFIED.
+- MediaHub controller-fix PR #434 is CLOSED / UNMERGED; Gemini bridge NOT QUALIFIED; no /next comment or dispatch. MediaHub PRs #635/#636/#637 have action_required workflow runs and no formal reviews; not accepted as independent evidence.
+- SentinelX: zero connected hosts; Voktors-Mini offline; mh-dev-01 and mh-dev-02 user-disabled; Alamo/server 3 not positively identified/online. Claude Code NOT RUN.
+- No provider login/call, secret access, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit. Independent audit deferred until operational pool.
+- Next: append-only D1 registry snapshot + issuer key lifecycle, monotonic watermark CAS, then same-batch admission check of registry epoch/key ID/revocation version, with stale-import/revocation-race/rollback/key-rotation/rollback tests. Keep dispatch false.
+
+Status: root-signed bundle verifier IMPLEMENTED / exact-head CI VERIFIED; durable trusted registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
