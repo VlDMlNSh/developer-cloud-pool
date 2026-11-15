@@ -132,7 +132,7 @@ function statements(db, input) {
       JOIN pool_active_route_qualifications q ON ${routeMatch}
       WHERE l.approval_id = ? AND l.admission_id = ? AND l.state = 'consumed'
         AND l.consumed_at = ? AND t.state = 'pending'
-    `).bind(admissionId, t.attemptId, now, ...routeValues, ...registryValues, a.approvalId, admissionId, now),
+    `).bind(admissionId, t.attemptId, now, ...routeValues, a.approvalId, admissionId, now),
     db.prepare(`
       INSERT INTO pool_attempts (
         attempt_id, task_key, attempt_number, status, input_digest,
