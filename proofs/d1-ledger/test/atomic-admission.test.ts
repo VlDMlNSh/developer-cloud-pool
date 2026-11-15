@@ -376,7 +376,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
           registry_epoch, registry_version, root_key_id, bundle_digest,
           issued_at, valid_until, accepted_at, issuer_key_count, route_count,
           bundle_json, root_signature
-        ) VALUES (?, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 0, '{}', 'synthetic-test-only')
+        ) VALUES (?, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
       `).bind(nextEpoch, nextDigest, NOW - 20, NOW + 3600, acceptedAt),
       db.prepare(`
         INSERT INTO pool_route_registry_issuer_keys (
