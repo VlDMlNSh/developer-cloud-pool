@@ -438,3 +438,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Revocation authority and same-batch enforcement NOT IMPLEMENTED / NOT QUALIFIED. Hosted D1 and external anti-rollback anchoring NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement the additive revocation event ledger and CAS pointer on a reconciled clean D1 branch, then assert current route and issuer revocation state inside the same admission batch; add stale/replay/race/rollback/unavailable-authority tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 326 revocation admission gap audit
+
+- Report: [Wave 326](../reports/2026-11-15-wave326-revocation-admission-gap-audit.md); commit `63e56d6b712b49d6d03afcdb896c88a42d851e6f`.
+- Read-only audit: admission `input.now` is caller-supplied; route `revocationVersion` is compared to the qualification row, but no distinct monotonic revocation authority/watermark is consulted by migration 0014's same-batch assertion. Active registry snapshot and issuer-key status are checked. This is a qualification gap, not a confirmed exploit.
+- Contract needs append-only signed route/issuer events, per-subject strict sequence + digest CAS, authorized REVOKE/REINSTATE, trusted time, verifier-issued persistence capability, same-batch admission assertion, and independent anti-rollback anchor for database restore.
+- MediaHub bridge NOT RUN this turn because controller secret/variable presence and scope metadata could not be independently verified. No comment or dispatch. Cloud Pool-native Gemini remains NOT IMPLEMENTED.
+- No code/schema/runtime changes, no tests, no secret reads, provider calls, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile migration ancestry; implement additive revocation event ledger + CAS and adversarial tests on one clean D1 branch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
