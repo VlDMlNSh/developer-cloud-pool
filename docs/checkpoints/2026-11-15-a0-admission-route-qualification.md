@@ -391,3 +391,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
+
+
+## Daily revalidation — 2026-11-15 19:19 Europe/Vilnius
+
+- Current default `Основной` is exactly `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; it advanced 64 commits beyond the prior `221f216c...` baseline. Open Issues: 8 (#1/#5/#21/#22/#26/#38/#70/#94); open PRs: 67.
+- #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 128 commits behind current default, with 0 formal reviews/threads. Their named exact-head Actions runs remain SUCCESS; #30 evidence is push-run 42216422883, not a PR-triggered run.
+- Path-segment branch tip remains `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 128 behind; source/test blobs `9f4f9e59...` / `bd8ac8d9...`; exact-tip CI NOT VERIFIED.
+- Clean current-base PR #87 is `8cc7b129...`, 6 ahead / 0 behind; exact-head D1 and contract runs 43712647597/43712647615 SUCCESS (119 tests recorded); reviews/threads 0/0. PR #92 `70149615...` is 10/0 with runs 43718679251/258 SUCCESS. PR #93 `e200838d...` is 15/0 with run 43736264768 SUCCESS. All remain draft/unmerged with no independent review.
+- Static source review confirms PR #93's stale verifier-capability finding still applies: current source blob `916581ca...` still uses historical `verifiedAt` as persistence `acceptedAt` and does not re-check expiry/age against trusted current time. The verifier also receives `env` and `now` as arguments; the proof Worker entrypoint remains inert 404. Existing finding comment 6897189755 has no formal review/thread resolution.
+- PR #71/#74 quota fixes each have exact-head Pool Contract Validation SUCCESS but remain draft/unmerged and do not authenticate provider/account/quota evidence.
+- Default Supervisor remains privileged (`issues: write`, `actions: write`), retains `workflow_run` and Worker `workflow_dispatch`, and has 15-minute absence-based claim recovery. Live dispatch variable and current scheduled run inventory NOT VERIFIED.
+- Current ruleset details NOT VERIFIED; last recorded snapshot 26550182 had zero required approvals and no required status contexts. SentinelX: 0 connected hosts, Voktors-Mini offline, mh-dev-01/02 disabled. Cloudflare Worker/D1 entitlement/deployment NOT VERIFIED.
+- Issue #94 proposes Cloud Pool-native Gemini dispatch, but no workflow, agent, child run or provider/model call was launched. Preserve the no-dispatch boundary.
+- No secrets, provider calls, dispatch, workflow invocation, DSH, Resource Probe, deployment, merge or production changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Full report: [2026-11-15 19:19 daily revalidation](../reports/2026-11-15-1919-daily-revalidation.md).
