@@ -2,13 +2,29 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 — Wave 334 current snapshot appended below
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (verified branch API read-back 2026-11-15)
+Documentation continuation branch: `docs/gemini-three-agent-next-bridge-2026-11-15` (PR #95 OPEN / DRAFT / UNMERGED)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next wave 334 — 2026-11-15
+
+- Last refreshed: 2026-11-15 after live GitHub read-back. Cloud Pool default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Do not use older default HEAD values below as current.
+- Current documentation continuation branch: `docs/gemini-three-agent-next-bridge-2026-11-15`, PR #95 OPEN / DRAFT / UNMERGED. This context file and its updates are not on the default branch.
+- Latest report: [Wave 334](../reports/2026-11-15-next-wave-334-chatgpt-gemini-cloud-pool-pass.md).
+- Latest exact user /next source event: MediaHub Issue #301 comment `6899305854`; controller `43747834153` COMPLETED / SUCCESS on MediaHub target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Three child runs `43747856432`, `43747858375`, `43747860131` each completed successfully with authorization/task jobs and non-expired artifacts. Artifact digests and job IDs are in Wave 334 report. This is MediaHub supplementary execution, NOT Cloud Pool-native Gemini.
+- Cloud Pool Issue #94 remains OPEN. Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still has no issue_comment trigger; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` only supports `dsh-headless-probe`. `POOL_DISPATCH_ENABLED` remains fail-closed. Cloud Pool-native Gemini dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+- Latest A0/D1 proof stack: PR #93 head `e200838d038b9cd48635233187819302bba6a33e` stacked on PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`, then PR #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`. PR #93 exact workflow run `43736264768` / job `132879427578` SUCCESS; 120 Workers-runtime tests passed, 0 failed; D1 binding and frozen schema fixture smoke passed. Artifact #14170222915 digest `728f9a25d92a0130b06ee904eb8d8e1d444081574c3b87b55c5147441181fc3b`.
+- PR #93 uses a module-private WeakMap-backed verifier capability for persistence. This narrows caller-supplied bundle/signature risk, but does not establish production trust-root custody, trusted time, authenticated issuer lifecycle/rotation, durable authoritative revocation, hosted D1/Worker deployment, or live account/quota identity. The complete A0/D1 route remains NOT QUALIFIED.
+- Governance: active ruleset #26550182 targets `refs/heads/Основной`, enforces PR + review-thread resolution and deletion/non-fast-forward restrictions, but has 0 required approvals and no required status contexts. PR #93 and its stack remain OPEN / DRAFT / UNMERGED with no formal independent review recorded.
+- No Cloud Pool runtime code/workflow/secrets/variables/dispatch/deployment/provider call/merge changed in Wave 334. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review of trusted-clock and registry lifecycle boundaries in PR #93/#92/#87, then exact-head CI/governance and adversarial rollback/replay coverage. Do not merge the divergent stack wholesale.
+
+---
 
 ---
 
@@ -2111,3 +2127,393 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Verified three-agent Gemini /next bridge — 2026-11-15
+
+This section supersedes earlier statements in this file that the MediaHub Gemini bridge had never dispatched agents or remained wholly unverified. Direct GitHub Actions job-log inspection confirmed four owner-authored `/next` comments on MediaHub Issue #301, each causing one successful Controller run and exactly three successful signed child dispatches. All twelve child runs completed with successful authorization and Gemini execution jobs and a non-expired `gemini-output` artifact digest.
+
+- Detailed evidence: [2026-11-15 Gemini three-agent /next bridge recovery](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+- MediaHub main source target used by all four waves: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Controller blob SHA: `7799f0fc713c5bd772ce6820df40a926a83445c8`; Agent 2 blob SHA: `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`; Agent 3 blob SHA: `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`. Re-read current blobs before future changes.
+- Four source comment IDs and controller runs: `6898434080 → 43741451816`, `6898453275 → 43741600025`, `6898479858 → 43741803725`, `6898513683 → 43742063927`.
+- The last wave's child run IDs: Agent 1 `43742248259`, Agent 2 `43742249899`, Agent 3 `43742251541`; all completed successfully. The last wave's three artifact digests are recorded in the detailed report.
+- The controller already implements owner-authored Issue #301 comment `/next` → readiness gate → HMAC-signed workflow_dispatch to the three child workflows → exact run/job/artifact reconciliation. Its idempotency check keys off the unique source comment ID. Admission gate jobs succeeded in all four observed runs; this operationally confirms the flag was true at those times without reading its value.
+- Required controller secrets were not read; their successful use is evidenced by these dispatches only at the time of the runs. Do not inspect secret values or modify secrets/variables without a specific justified need.
+- **Per ChatGPT /next integration:** on each future exact user command `/next`, create exactly one owner-authored GitHub issue comment with body exactly `/next` on MediaHub Issue #301 using the authorized GitHub issue-comment action. This is the event bridge; do not call child workflows directly or bypass the controller. First reconcile whether this turn's unique source comment already exists to avoid duplicates. Then capture the comment ID and correlate `next-comment-<id>` to controller and child run IDs. If the comment action is unavailable, report BLOCKED and do not claim dispatch.
+- This does not make the MediaHub controller Cloud Pool-native. Cloud Pool Supervisor remains separate and must retain its own fail-closed `POOL_DISPATCH_ENABLED` gate. No Cloud Pool dispatch was enabled or performed.
+- Four waves verify the MediaHub three-agent dispatch path only. Cloud Pool web console, worker qualification, durable state, model routing, quota isolation, independent acceptance and Contour A remain BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+Recovery status: MediaHub three-agent controller path VERIFIED on four consecutive /next events; ChatGPT-to-GitHub event creation is the required per-turn bridge action; Cloud Pool-native agent dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+
+
+## Live ChatGPT /next bridge smoke test — 2026-11-15
+
+- Owner-authored comment ID `6899094688` with exact body `/next` was created through the authorized GitHub connector on MediaHub Issue #301.
+- Controller run `43746281426` started on target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission gate job `132910179205` SUCCESS; controller dispatch/monitor job `132910206815` RUNNING at last read-back.
+- Three exact child runs are confirmed: Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744`. All three signature/authorization jobs succeeded; Gemini execution jobs remain RUNNING at last observation. Artifact digests and final conclusions are pending.
+- This proves the chat-to-issue-comment event bridge works and starts the three agents. Do not claim the smoke wave is complete until child runs, jobs and artifacts are verified.
+- Detailed live evidence and correlation IDs: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+
+
+## Live bridge smoke test — final verification
+
+- Comment `6899094688` → Controller `43746281426`: COMPLETED / SUCCESS; admission and dispatch/monitor jobs SUCCESS.
+- Agent 1 `43746301766`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `d3d7e7d5ea27d1656dbee67b9481554626df8e6704d9a0873f46790e3ce5505f`.
+- Agent 2 `43746303789`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
+- Agent 3 `43746305744`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
+- Controller logs recorded all three accepted dispatches and exact run correlation. ChatGPT connector → owner comment → trusted controller → three Gemini child path is now end-to-end VERIFIED for this smoke event.
+
+
+## Latest /next wave 332 — verified — 2026-11-15
+
+- Existing latest owner-authored MediaHub Issue #301 `/next` comment `6899094688` was already linked to Controller run `43746281426`; it was reused, not duplicated.
+- Controller Wave 332 dispatch job `132910206815` and admission job `132910179205` both completed SUCCESS. Immutable target SHA: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Agent 1 run `43746301766`: both jobs SUCCESS; non-expired artifact SHA-256 `d3d7e7d5ea27d1656dbee67b9481554626df8e6704d9a0873f46790e3ce5505f`.
+- Agent 2 run `43746303789`: both jobs SUCCESS; non-expired artifact SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
+- Agent 3 run `43746305744`: both jobs SUCCESS; non-expired artifact SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
+- Distinct child correlation IDs and full job/run/artifact evidence are recorded in [wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+- Idempotency: the already-existing event was correlated; no second comment was created. Controller log confirms one accepted dispatch for each of the three child workflows.
+- Cloud Pool default branch remains `Основной`, HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Pool Supervisor still has no issue_comment trigger and Pool Worker remains `dsh-headless-probe`; MediaHub execution is not Cloud Pool-native execution.
+- No source workflow, secrets, variables, branch protection, or dispatch authorization changed. Secret values were not read.
+- MediaHub Gemini three-agent wave: VERIFIED. Cloud Pool-native Gemini: NOT IMPLEMENTED / NOT QUALIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+### Wave 332 output review and CI disposition
+
+- Agent output ZIPs were downloaded and inspected. Agent 1 artifact reports a bounded evidence-only pass and Draft PR #666; live backend checks were suppressed and the zero-cost entitlement gate remains pending. Agent 2 artifact reports static/structural contract-to-test traceability and Draft PR #664; no qualification tests were run. Agent 3 artifact reports a static security/provenance audit and Draft PR #665; runner isolation enforcement and HMAC key rotation remain residual risks.
+- PR heads: #664 `750e3944675ef908c7f5e81ade7f591f319cbedf`; #665 `d9be71e1bce02ef94ed4c126bf4cb5ad7fed29c4`; #666 `4f564b93613786bbe8a30aad63cda3b68ab861ef`. All three base SHA values equal the immutable dispatch target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- All three PRs are OPEN / DRAFT / UNMERGED, with one evidence-only file changed each, zero formal reviews and zero review threads. Five required workflow runs per PR ended `action_required`; jobs endpoints returned no jobs. Therefore PR CI is NOT VERIFIED and no tests are evidenced as run.
+- No merge, manual approval, deployment, provider call, or secret read was attempted. Keep all three Draft PRs unmerged pending exact-head CI, formal independent review, and governance checks.
+- Full diffs, PR head SHAs, and CI evidence: [Wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+
+
+## Working configuration frozen — ChatGPT + three Gemini per /next — 2026-11-15
+
+The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.md](../operations/CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.md), commit `bc8b3f429cbd55328c66b51ab07ced8aaa34e60c`. This defines each exact user `/next` as one ChatGPT Cloud Pool Contour A pass plus one supplementary three-agent Gemini wave through the existing MediaHub Issue #301 comment/controller path. The assistant reconciles the current turn's source event first; if absent, it creates exactly one owner-authored comment body `/next`, never duplicates it, and never dispatches child workflows directly. Gemini does not block the main pass.
+
+- Agent roles: Agent 1 Engineering; Agent 2 independent contract/test verification; Agent 3 security/provenance.
+- Verified baseline: wave 332 source comment `6899094688`, controller `43746281426`, children `43746301766`, `43746303789`, `43746305744`; all three child runs and artifacts verified. Immutable target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PRs #664/#665/#666 remain OPEN / DRAFT / UNMERGED; their CI ended `action_required` with no jobs, therefore CI and reviews are NOT VERIFIED. Do not merge.
+- This is a verified MediaHub Gemini event bridge, not Cloud Pool-native dispatch. Cloud Pool `POOL_DISPATCH_ENABLED` remains fail-closed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed run IDs, artifact digests, PR head SHAs, and CI disposition: [wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+
+
+## Latest /next wave 333 — dispatch verified; child tasks running — 2026-11-15
+
+- Exact user `/next` created one owner-authored MediaHub Issue #301 comment `6899220496` (https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899220496); prior latest source event was `6899094688`, so no duplicate existed for this turn.
+- Controller run `43747209052` (Wave 317) on immutable MediaHub target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission job `132913041399` SUCCESS; dispatch/monitor job `132913065730` RUNNING at checkpoint.
+- Agent 1 run `43747229342`, correlation `5f8eb1ea-4e8f-46fe-9fcc-76b739800783`; signature job `132913105304` SUCCESS; task job `132913135482` RUNNING.
+- Agent 2 run `43747231340`, correlation `5322b45c-866e-4504-ab68-f94125634ffe`; signature job `132913112850` SUCCESS; task job `132913141605` RUNNING.
+- Agent 3 run `43747233840`, correlation `acbb513e-0ebc-4607-9ebd-dc6250cc5c3c`; signature job `132913119761` SUCCESS; task job `132913150602` RUNNING.
+- Child artifacts and final conclusions were not yet available. Do not mark this wave SUCCEEDED/VERIFIED until all three task jobs and non-expired artifact SHA-256 values are reconciled. Full evidence: [wave 333 report](../reports/2026-11-15-next-wave-333-chatgpt-gemini-cloud-pool-pass.md).
+- Cloud Pool remains default branch `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Issue #94 OPEN. Supervisor has no `issue_comment` trigger and remains fail-closed unless `POOL_DISPATCH_ENABLED=true`; Worker only offers `dsh-headless-probe`. No Cloud Pool-native Gemini dispatch or provider execution was performed.
+- Existing A0/D1 and Qualified Route Evidence work remains isolated proof; trust-root/registry lifecycle and atomic revocation-watermark integration are the next technical blockers. No runtime code, workflow, secrets, variables, dispatch authority, deployment or merge changed.
+- Current statuses: MediaHub event SUCCEEDED; controller RUNNING; Gemini 1/2/3 RUNNING; Cloud Pool-native Gemini NOT IMPLEMENTED / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+
+## Wave 333 final reconciliation — VERIFIED — 2026-11-15
+
+- Controller 43747209052 COMPLETED / SUCCESS; admission 132913041399 and dispatch/monitor 132913065730 SUCCESS. Controller logs confirm exactly three accepted signed child dispatches on immutable target 1694cde38c7b7d69baf9676b4908c1bb6e197fbe.
+- Agent 1 43747229342 SUCCESS; jobs 132913105304/132913135482 SUCCESS; artifact 14174199836, SHA-256 b0462c60d5c5ab6754737e52cbab99a74058dea9e3e983d3de9711e7323aa456; Draft PR #668 head 79e402376e43f88223b33c3a60dba0164231f8be.
+- Agent 2 43747231340 SUCCESS; jobs 132913112850/132913141605 SUCCESS; artifact 14174748533, SHA-256 cda7e252c736c74e926656652e2c397b200277943eb045ee08722eba3e056aad; Draft PR #667 head 165f533024b05cf1a4963420114d6440f0e8b602.
+- Agent 3 43747233840 SUCCESS; jobs 132913119761/132913150602 SUCCESS; artifact 14174966027, SHA-256 6bf730398cd7e30627644dd271b67231234fc340e0e680f6d973026ca325d185; Draft PR #669 head dc58adfcbb00892958157c296e7aed3c55fb45cb.
+- PRs #667/#668/#669 remain OPEN / DRAFT / UNMERGED, zero formal reviews/threads. Five CI workflows per head concluded action_required, no jobs/check-run contexts exposed: exact-head CI NOT VERIFIED. Agent evidence is not a substitute for test execution or independent qualification.
+- Full record: [wave 333 report](../reports/2026-11-15-next-wave-333-chatgpt-gemini-cloud-pool-pass.md).
+
+
+## /next Wave 335 — 2026-11-15
+
+- Source event: MediaHub Issue #301 comment [6899356314](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899356314).
+- Controller run [43748188993](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43748188993), target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission job 132916049955 SUCCESS. Dispatch/monitor job 132916076078 remained IN_PROGRESS at last read-back; controller terminal state NOT VERIFIED.
+- Gemini Agent 1 run 43748208364: jobs 132916112480/132916130527 SUCCESS; artifact 14175082481 SHA-256 23d054317f82d5f0c531f7c536ea7e5973f14c169a8487244c776de64fe7622e.
+- Gemini Agent 2 run 43748210183: jobs 132916120140/132916148283 SUCCESS; artifact 14175177073 SHA-256 45b49d9c3c09886f8e0f09ab90f0986ba82843cecded8c9ad414d31509a59665.
+- Gemini Agent 3 run 43748212060: jobs 132916124123/132916154030 SUCCESS; artifact 14174513930 SHA-256 5d2f7a3366d1d74b02776bc5b5e9ce422ae63e727ccb042961b61ec76c4d1178.
+- All three child runs completed SUCCESS and artifact metadata is non-expired. Controller monitor remained RUNNING; do not claim full controller completion. Full details: [Wave 335 report](../reports/2026-11-15-next-wave-335-chatgpt-gemini-cloud-pool-pass.md).
+- Cloud Pool default HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN. Supervisor has no issue_comment trigger; POOL_DISPATCH_ENABLED remains fail-closed; Worker only allows dsh-headless-probe. MediaHub Gemini remains a supplementary bridge, not Cloud Pool-native execution.
+- Proof CI SUCCESS on corresponding PR heads: PR #87 run 43712647615/job 132807363825; PR #86 run 43710912595/job 132802030185; PR #92 run 43718679258/job 132825665733; PR #93 run 43736264768/job 132879427578. No formal reviews on these PRs; all remain draft/unmerged. No default-branch runtime changes.
+- A0/D1 local proof only; hosted D1, root custody/key lifecycle, monotonic revocation authority, live quota/account qualification and Supervisor integration remain NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Wave 335 final controller reconciliation
+
+- Controller 43748188993 COMPLETED / SUCCESS; dispatch/monitor job 132916076078 SUCCESS. Logs reconcile all three signed child dispatches, child run IDs, both successful jobs per child, and artifact digests matching GitHub metadata. Controller has no artifact of its own; child artifacts are the evidence.
+- Wave 335 is now VERIFIED at controller and child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
+
+
+## /next Wave 336 — 2026-11-15
+
+- Report: [Wave 336](../reports/2026-11-15-next-wave-336-chatgpt-gemini-cloud-pool-pass.md).
+- Source event MediaHub Issue #301 comment 6899404181; controller run 43748529579 on immutable MediaHub target 1694cde38c7b7d69baf9676b4908c1bb6e197fbe. Admission job 132917094437 SUCCESS; dispatch/monitor 132917123035 IN_PROGRESS at last observation.
+- Gemini Agent 1 run 43748550454 QUEUED; Agent 2 run 43748552273 IN_PROGRESS; Agent 3 run 43748553818 IN_PROGRESS. All target the same immutable SHA. Child execution jobs and artifacts NOT VERIFIED at this checkpoint.
+- Cloud Pool default HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN. Supervisor has no issue_comment trigger; POOL_DISPATCH_ENABLED remains fail-closed; Worker supports only dsh-headless-probe. MediaHub Gemini bridge is not Cloud Pool-native execution.
+- Proof CI for PRs #87/#86/#92/#93 succeeded on their respective heads, but all PRs remain Draft/unmerged with no formal review. These are local Workers/D1 proofs, not hosted production qualification.
+- PR #95 remains OPEN/DRAFT/UNMERGED on the documentation branch. No Cloud Pool runtime/workflow/secrets/variables/dispatch/deployment/provider call/merge changed in this pass.
+- Status: MediaHub controller/children RUNNING or QUEUED, NOT VERIFIED; A0/D1 local proof only; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent trusted-clock, issuer/key lifecycle and durable revocation review; then atomic D1 revocation-watermark admission adversarial proof. Keep dispatch fail-closed.
+
+
+### Final Wave 336 orchestration reconciliation — VERIFIED
+
+- Controller run 43748529579 COMPLETED / SUCCESS; admission job 132917094437 SUCCESS; dispatch/monitor job 132917123035 SUCCESS.
+- Controller log confirms three accepted signed dispatches, all bound to target SHA 1694cde38c7b7d69baf9676b4908c1bb6e197fbe, and reconciles the exact child run IDs, both successful jobs per child and artifact digests matching GitHub artifact metadata.
+- Agent 1 run 43748550454 COMPLETED / SUCCESS; jobs 132917159989 and 132917180150 SUCCESS; artifact 14174339687, non-expired, SHA-256 aa36f95539da214e885039754b801235ccb72c753a4ec13ddad5073394612c44.
+- Agent 2 run 43748552273 COMPLETED / SUCCESS; jobs 132917165288 and 132917193592 SUCCESS; artifact 14175177670, non-expired, SHA-256 2d8702577d2cc7ab8c29f28279a6a72c523a87de3efb4793b49a783134695b0b.
+- Agent 3 run 43748553818 COMPLETED / SUCCESS; jobs 132917172172 and 132917188961 SUCCESS; artifact 14175531437, non-expired, SHA-256 d157762d6192707f12445434e6148b995fd69fe6efabb61b5a131edfc4fad1b2.
+- Controller itself produced no artifact; child artifacts are the output evidence. All three child run conclusions and artifact digests were independently read back from GitHub and matched controller logs.
+- Wave 336 is VERIFIED at MediaHub controller/child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
+
+
+## Latest /next pass — route-registry revocation review — 2026-11-15
+
+- Cloud Pool default branch `Основной` verified at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- One exact owner-authored MediaHub Issue #301 `/next` comment created: `6899669400` (https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899669400). The available GitHub connector did not expose MediaHub workflow-run listing; controller/child runs and artifact digests for this event are NOT VERIFIED. Do not infer completion from comment creation.
+- Inspected A0/D1 proof files: migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`; `admit-qualified-task.mjs` blob `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; registry writer `trusted-route-registry.mjs` blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`.
+- The proof path inserts a registry assertion inside the same D1 batch as approval consume, admission, attempt, outbox and receipt. Migration guard checks active registry epoch/digest/version, snapshot validity, qualification freshness and active/non-revoked issuer key.
+- **Open qualification gap:** inspected admission assertion compares signed route `revocation_version` to the qualification row but does not consult a distinct durable monotonic revocation authority/watermark in that same transaction. This is a source-level gap to resolve, not a demonstrated exploit or failing test. Need a single authenticated revocation authority, monotonic state, rollback/replay semantics and adversarial D1 tests before qualification.
+- No code/schema/workflow/secret/variable/dispatch/deployment change; no tests executed. No safe patch was made because migration/test ancestry across stacked PRs #86/#92/#93 was not fully reconciled.
+- PRs #86/#87/#92/#93 remain OPEN / DRAFT / UNMERGED. PR #95 remains OPEN / DRAFT / UNMERGED at head `4d4a417df94eee1cab7cd1ce746be0fc97e6482c`, base default `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Exact-head workflow runs returned none; combined status contexts empty; CI NOT VERIFIED.
+- Report: [route-registry revocation review](../reports/2026-11-15-next-pass-route-registry-revocation-review.md), commit `fcdcea5df21c99eaab2b72af7ee649429a1127e0`.
+- Cloud Pool-native Gemini dispatch remains NOT IMPLEMENTED / NOT QUALIFIED. `POOL_DISPATCH_ENABLED` remains fail-closed. A0/D1 production admission NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile full migration/test ancestry and define the authoritative monotonic revocation record; add same-transaction watermark checks and adversarial rollback/replay tests without enabling dispatch.
+
+
+## Latest continuation — /next revocation review and event reconciliation — 2026-11-15
+
+- Cloud Pool default branch remains `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Issue #94 OPEN. PR #87/#92/#93 remain OPEN / DRAFT / UNMERGED at heads `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, `7014961587759b27d2ef6e91c60ce098d077ae83`, `e200838d038b9cd48635233187819302bba6a33e` respectively. Exact-head workflow queries still show prior successful proof runs on these heads; formal reviews are empty.
+- PR #93 run `43736264768` / job `132879427578` re-read SUCCESS; artifact `14170222915` remains non-expired with digest `sha256:728f9a25d92a0130b06ee904eb8d8e1d444081574c3b87b55c5147441181fc3b`. These are local Workers/D1 proof results, not hosted production qualification.
+- Static inspection of migration 0012 (`485d8c2d2327a64c8d86ddc004134113d6ae3d80`), migration 0013 (`40b93551c787078e5c65c8861569bb428bd2eb8b`), migration 0014 (`cb8a47d83faba62981daa8f7320da87baa2c55e2`), registry writer (`916581ca07cf94edb21c8c2daa77a4c45db3d666`) and admission module (`878e6ecf70355d05f9738d579b9455124b7ac3f9`) confirms a same-batch active snapshot/issuer-key assertion and monotonic registry epoch. A separate durable monotonic revocation watermark/authority is not evidenced in the inspected admission path; this is a qualification gap, not a demonstrated exploit. Do not add a new authority until its scope, trusted time, authenticated writer and rollback semantics are specified.
+- MediaHub Issue #301 contains two distinct owner-authored `/next` comments observed during overlapping work: `6899662679` (created by this ChatGPT turn) and `6899669400` (separate event). Do not conflate them. Controller/child run/job/artifact status for `6899662679` remains NOT VERIFIED because the connected GitHub action set did not expose workflow-run listing; no direct child dispatch was attempted. This bridge remains separate from Cloud Pool-native dispatch.
+- PR #95 remains OPEN / DRAFT / UNMERGED; head `c70a11481eca0921224174de623778265c95bcb8`, base `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; exact-head workflow-run query returned no runs on the updated head, so CI NOT VERIFIED. Formal review for #95 is empty.
+- Report: [route registry revocation revalidation review](../reports/2026-11-15-next-pass-route-registry-revocation-review.md), report commit `f8f5f59588d9fb261e1450c143caafe2753e13ff`. Checkpoint updated in this commit sequence; latest checkpoint commit `f0466572b758d50b068f1c9345a2cf5e8c80d5b5`.
+- No runtime/schema/workflow/secrets/variables/dispatch/deployment/provider/merge changes. `POOL_DISPATCH_ENABLED` remains fail-closed. Cloud Pool-native Gemini NOT IMPLEMENTED / NOT QUALIFIED. A0/D1 production admission NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define the authoritative monotonic revocation record and trusted-time/writer contract, reconcile migration ancestry, then add same-transaction stale/replay/conflict/rollback/unavailable-authority D1 tests. Do not merge stacked PRs or enable dispatch before independent review and governance.
+
+
+## /next pass — monotonic revocation watermark review — 2026-11-15
+
+- Cloud Pool default `Основной` HEAD rechecked: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Issue #94 remains OPEN.
+- Current turn created exactly one MediaHub Issue #301 owner-authored `/next` event: comment `6899704487`. Controller/child run, job and artifact status NOT VERIFIED because the connected GitHub action set has no workflow-run listing operation; no direct child dispatch was attempted.
+- Re-read root registry module blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`, admission module blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`, migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`, and registry tests blob `c7876cdc3b3eff39060d44e2890266374f54da4a`. Migration 0014 checks active snapshot and issuer-key lifecycle in the admission batch; no distinct durable monotonic revocation authority/watermark is read by the inspected admission path. Qualification gap, not a demonstrated exploit.
+- Proof PRs #86/#87/#92/#93 remain OPEN/DRAFT/UNMERGED with zero formal reviews. Exact-head local Workers/D1 proof runs recorded: #86 run 43710912595 (118 tests); #87 run 43712647597 (119 tests) plus contract run 43712647615; #92 run 43718679258 (120 tests) plus contract run 43718679251; #93 run 43736264768 (120 tests). No hosted D1 or production qualification.
+- PR #95 OPEN/DRAFT/UNMERGED at head `c70a11481eca0921224174de623778265c95bcb8`; exact-head workflow runs empty, combined status contexts empty, formal reviews/threads empty: CI/Governance NOT VERIFIED.
+- Cloud Pool-native Gemini remains NOT IMPLEMENTED / NOT QUALIFIED. Supervisor has no issue_comment trigger, Worker remains `dsh-headless-probe`, `POOL_DISPATCH_ENABLED` fail-closed. MediaHub controller bridge remains separate; this turn's event has NOT VERIFIED run evidence.
+- No code/schema/workflow/secret/variable/dispatch/provider/deployment/merge change. No tests run in this pass.
+- Report: [monotonic revocation watermark review](../reports/2026-11-15-next-pass-monotonic-revocation-watermark-review.md).
+- Next: define revocation subject, monotonic sequence/CAS, authenticated writer, trusted time, rollback/replay/recovery semantics; then implement same-batch D1 guard and adversarial rollback tests on a reconciled proof ancestry. Preserve `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next pass — monotonic revocation authority contract — 2026-11-15
+
+- Cloud Pool default branch observed in current project evidence: `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. PR #95 is a documentation branch and remains OPEN / DRAFT / UNMERGED; do not treat its content as default-branch content.
+- Current turn created exactly one owner-authored MediaHub Issue #301 event, comment `6899808366`, exact body `/next`; read-back confirms owner `VlDMlNSh`. Controller/child runs, jobs and artifacts are NOT VERIFIED because the available GitHub connector does not expose workflow-run listing. No direct child dispatch was attempted.
+- New design report: [Monotonic revocation authority contract](../reports/2026-11-15-next-pass-monotonic-revocation-authority-contract.md). It defines a separate authority and per-subject monotonic sequence/digest, append-only event ledger, CAS pointer, same-D1-batch route+issuer revocation assertions, trusted time, key lifecycle, rollback/restore anchoring and adversarial tests.
+- Source re-read on PR #93 stack: admission module blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`; trusted registry verifier/persistence blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`; atomic-admission test blob `720a13e6ec0fd49c6d165393f4d8c12ef94dd8a9`. The admission currently matches the route's `revocationVersion` and checks registry/issuer state, but the distinct authoritative revocation watermark remains absent from the inspected path.
+- PR #86/#87/#92/#93 remain OPEN / DRAFT / UNMERGED; their historical exact-head CI evidence is not a substitute for current integrated CI or independent review. No merge or ancestry transplant.
+- Gemini bridge: event comment created and verified; controller/three agents NOT VERIFIED. MediaHub bridge remains supplementary; Cloud Pool-native Gemini remains NOT IMPLEMENTED / NOT QUALIFIED. `POOL_DISPATCH_ENABLED` remains fail-closed.
+- No Cloud Pool runtime/schema/workflow/secrets/variables/dispatch/deployment/provider/merge changes. No tests run. No secret values read.
+- Report is design only; revocation authority/watermark and same-batch check remain NOT IMPLEMENTED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: approve the revocation subject/event semantics and trusted-time contract, then implement additive D1 event ledger + monotonic CAS and same-batch admission assertion on a clean reconciled proof ancestry; run adversarial rollback/replay/race tests. Keep `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 326 revocation admission gap audit
+
+- Report: [Wave 326 revocation admission gap audit](../reports/2026-11-15-wave326-revocation-admission-gap-audit.md); report commit `63e56d6b712b49d6d03afcdb896c88a42d851e6f`.
+- Immutable source scope: default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; PR #87 → #92 → #93, all OPEN/DRAFT/UNMERGED; admission blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`; migration 0013 blob `40b93551c787078e5c65c8861569bb428bd2eb8b`; migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`.
+- Audit confirmed that admission's `input.now` is caller-supplied; `revocationVersion` is bound to the qualification row, and `q.revoked_at IS NULL` is checked, but no distinct authoritative monotonic route/issuer revocation watermark is consulted by the same-batch assertion. Migration 0014 checks active registry snapshot and issuer-key status, not a separate event ledger. This is a qualification gap, not a demonstrated production exploit.
+- Implementation contract requires append-only signed events, per-subject sequence/digest CAS, authorized REVOKE/REINSTATE semantics, trusted time, verifier-issued persistence capability, same-batch route+issuer watermark assertion, and an external signed anti-rollback checkpoint for full DB restore claims.
+- MediaHub bridge not triggered this turn: current controller secret/variable presence and scope metadata could not be independently verified with available actions. No comment, child dispatch, provider call or secret read. Cloud Pool-native controller absent; Gemini Agent 1/2/3 NOT RUN.
+- No code/schema/workflow/runtime changes, tests, deployment or merge. Dispatch remains fail-closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile migration ancestry on one clean D1 branch, implement additive revocation event ledger + CAS head, then same-batch admission guard and adversarial tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 327 D1 migration ancestry reconciliation
+
+- Report: [Wave 327 migration ancestry reconciliation](../reports/2026-11-15-wave327-d1-migration-ancestry-reconciliation.md); commit `3d61dabf4ec684f7a7ff7eb44bf7c474b6827c13`.
+- Compared candidate refs against default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. `integration/d1-ledger-clean-main-2026-11-15` is clean (ahead 6 / behind 0) and contains canonical additive migrations 0011–0014. `fix/verified-registry-capability-clean-stack-2026-11-15` is also clean (ahead 15 / behind 0) with same 0013/0014.
+- `impl/route-registry-d1-cas-schema-2026-11-15` is diverged (ahead 101 / behind 64, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`) and has alternate migration 0013 identity. `fix/qualified-route-replay-binding-v2-2026-11-15` is also diverged (ahead 60 / behind 64, same merge base). Do not transplant either branch.
+- Canonical clean 0013 blob `40b93551c787078e5c65c8861569bb428bd2eb8b`; 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`. Existing assertions do not yet consult a separate authoritative monotonic revocation event ledger/head. No 0015/0016 migration exists on inspected refs.
+- Decision: use `integration/d1-ledger-clean-main-2026-11-15` as sole migration ancestry candidate. Do not create schema-only migration 0015 until authority trust root, signer lifecycle, subject identity, canonical signed event, trusted-time evidence and external restore anchor are explicit; premature schema would freeze unresolved security semantics.
+- No branch/schema/code/workflow/runtime changes, tests, secret reads, dispatch, provider calls, deployment or merge. Cloud Pool Gemini NOT RUN; Issue #94 controller absent. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: bind revocation authority and signer lifecycle to root-signed registry model, define canonical event bytes + strict sequence/digest CAS + trusted-time evidence, then implement verifier, migration 0015 and same-batch admission guard on clean candidate with adversarial D1 tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 328 authoritative revocation authority contract
+
+- Contract: [Authoritative Revocation Authority Contract v1](../contracts/AUTHORITATIVE-REVOCATION-AUTHORITY-CONTRACT-V1.md); commit `43da7ea0d1868aab4f6e647b34e4a61712085e27`; read-back blob `9ee7c20ea79f532304b3ecb4cc9ddcd0d532b178`.
+- Source evidence on clean D1 candidate `integration/d1-ledger-clean-main-2026-11-15`: root registry verifier blob `12f1b09b238d61fa7cf3574221f3cb79f6d4767a`; qualified evidence canonicalizer blob `0d5b97ad0bc59173fe8c4c7de28c67965bd09ad0`; migration 0012 blob `485d8c2d2327a64c8d86ddc004134113d6ae3d80`; migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`.
+- Proposed trust model: independent pinned revocation root (separate from route registry root), root-signed delegated signer keyset with mutually exclusive `route.revoke` and `route.reinstate` roles, ES256 fixed-array canonical event bytes, stable route-qualification / issuer-key subject identities, strict sequence + previous-digest CAS, immutable events, and same-batch admission checks.
+- Trusted online time proposal: derive inside D1 transaction using database engine time, never caller `input.now`; bounded skew and clock-health fail-closed. This is an operational trust dependency, not independent cryptographic timestamping.
+- Whole-database restore protection requires an independent signed anti-rollback checkpoint; NOT IMPLEMENTED. Authority custody, delegated signer operators, root rotation/recovery, clock-health policy and checkpoint store remain governance gates. Contract is PROPOSED, not accepted/provisioned.
+- No source/schema/runtime/workflow changes, tests, secrets read, provider calls, dispatch, hosted provisioning, deployment or merge. Cloud Pool Gemini agents NOT RUN; Issue #94's native controller remains absent. `dispatch:false`.
+- Next: implement pure canonical keyset/event verifier and deterministic vectors on the clean integration candidate after governance gates are resolved; then verifier-issued persistence capability, migration 0015, migration 0016 same-batch assertion and adversarial D1 tests. External anti-rollback remains mandatory before restore-safety claims.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 329 operational-state reconciliation
+
+- Report: [Wave 329](../reports/2026-11-15-wave329-operational-state-reconciliation.md); commit fef0c5dc14ceb91cce66d81bd1e5175e7eb7de98; report blob 905d6b5eb8a80e1b551141e6de0eaf81328ef279.
+- Clarification: Wave 328 is this conversation's sequential work-pass counter, not a GitHub PR/release number. PR #92 is a separate OPEN/DRAFT/UNMERGED pull request for exact-replay receipt integrity. PR #93 is OPEN/DRAFT/UNMERGED and stacked on #92. PR #95 is OPEN/DRAFT/UNMERGED documentation.
+- Default branch Основной HEAD 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. Combined status list and PR-triggered workflow-run list were empty: NOT VERIFIED.
+- Cloud Pool .github/workflows/gemini-batch-dispatch-controller.yml absent on default branch (404). pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd has no issue_comment trigger. pool-worker.yml blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4 only permits dsh-headless-probe.
+- Issue #94 remains OPEN. Cloud Pool Gemini agents on each /next have NOT RUN. Do not claim parallel Gemini work or 3/3 dispatch.
+- Priority correction: next engineering focus is Cloud Pool-native controller Issue #94 (owner-only exact /next admission, immutable target SHA, idempotency, child isolation/reconciliation, adversarial tests, governance gates). Revocation ledger remains a separate Contour A dependency. No secret reads or dispatch.
+- This wave performed read-only operational reconciliation and documentation updates only; no workflow/source/schema/tests/deployment/merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 336 — 2026-11-15
+
+- Cloud Pool default branch Основной HEAD re-read: 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc.
+- New owner-authored MediaHub Issue #301 event: [comment 6900175631](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900175631), exact body /next read back. Controller/child run IDs were not available through the current connector's run-list surface; this event is DISPATCHED, controller/children NOT VERIFIED. Do not infer success/failure from missing run-list capability.
+- Waves 334 and 335 remain valid historical execution evidence; Wave 335 has three successful child runs and artifact digests in [report](../reports/2026-11-15-next-wave-335-chatgpt-gemini-cloud-pool-pass.md).
+- Issue #94 remains OPEN. MediaHub Issue #301 bridge remains supplementary and is not Cloud Pool-native dispatch.
+- PR #92 head 7014961587759b27d2ef6e91c60ce098d077ae83 and PR #93 head e200838d038b9cd48635233187819302bba6a33e remain OPEN/DRAFT/UNMERGED; formal review listings empty; combined status arrays empty (NOT VERIFIED). PR #93 historical exact-head run 43736264768 succeeded, but does not satisfy current independent review/governance.
+- Source review: PR #92 replay now verifies durable receipt, approval, outbox, task/attempt and registry assertion consistency. PR #93's WeakMap capability protects persistence against copied/forged verifier results, but its verifiedAt is populated from caller-supplied now; this is not a trusted DB clock.
+- Registry epoch monotonicity is not an authoritative revocation ledger. Contract v1's separate signed revocation keyset/event chain, monotonic per-subject sequence/digest, trusted DB time, and same-batch admission checks remain unimplemented/unqualified in reviewed evidence.
+- Report: [Wave 336](../reports/2026-11-15-wave336-revocation-and-dispatch-reconciliation.md).
+- Next: pure revocation keyset/event verifier + deterministic adversarial vectors, followed by D1 CAS/rollback and same-batch admission tests. Keep dispatch disabled and Contour B deferred.
+- This Context Window remains on docs branch docs/gemini-three-agent-next-bridge-2026-11-15, PR #95 OPEN/DRAFT/UNMERGED; it is not default-branch production state.
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 337 — 2026-11-15
+
+- Cloud Pool default branch Основной HEAD re-read: 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. Latest default commit changes docs/context/GITHUB-CONTEXT-WINDOW.md; default Context Window blob read: 43b22ab291bd07711c0194120646c7fb4c158fcd.
+- Created exact owner-authored supplementary MediaHub Issue #301 /next event: [comment 6900228193](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900228193). Controller/child run IDs were not discoverable through available connector surfaces; this event is DISPATCHED, controller/children NOT VERIFIED. Do not infer 3/3.
+- Waves 334/335 remain verified historical evidence; Wave 335 controller 43748188993 and child runs 43748208364 / 43748210183 / 43748212060 succeeded with artifact digests recorded in PR #95/report.
+- Issue #94 remains OPEN. Cloud Pool default Supervisor blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd has no issue_comment trigger; Worker blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4 only permits dsh-headless-probe. Cloud Pool-native Gemini dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+- Default README states Supervisor/task queue IMPLEMENTED SCAFFOLD / NOT RUN; DSH worker probe IMPLEMENTED / NOT RUN; general-purpose execution and checkpoint/resume NOT IMPLEMENTED. Current POOL_DISPATCH_ENABLED value was not read; preserve fail-closed, do not enable.
+- PR #95 remains OPEN/DRAFT/UNMERGED with zero formal reviews. Its documentation branch compares ahead 69 / behind 0 against default and is not production/default state.
+- Clean D1 migration candidate integration/d1-ledger-clean-main-2026-11-15 compares ahead 6 / behind 0; verified-registry capability clean stack compares ahead 15 / behind 0. Both share default HEAD as merge base; do not merge/transplant without full source/test/review qualification.
+- Revocation contract v1 remains PROPOSED. No durable separate revocation ledger/head or same-batch admission check is evidenced in migrations 0011–0014. Root custody, signer lifecycle, DB clock health and external anti-rollback checkpoint remain unresolved governance gates.
+- Wave 337 report: [dispatch and Contour A reconciliation](../reports/2026-11-15-wave337-next-dispatch-and-contour-a-reconciliation.md).
+- Next: pure canonical revocation keyset/event verifier + deterministic adversarial vectors on the clean integration candidate, without schema/live keys/hosted D1 until governance semantics are approved; continue Issue #94 separately.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 338 — 2026-11-15
+
+- Default branch `Основной` latest observed HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Supplementary MediaHub Issue #301 exact `/next` comment created: [6900299252](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900299252). Controller/child runs NOT VERIFIED via available run-list surface; do not claim 3/3.
+- Clean D1 proof branch `integration/d1-ledger-clean-main-2026-11-15` ahead 6 / behind 0; PR #87 OPEN/DRAFT/UNMERGED. PR #87 body records exact head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, D1 run 43712647597 SUCCESS (119 tests), Pool Contract Validation 43712647615 SUCCESS, push run 43712643907 SUCCESS. Reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Source audit confirmed the A0 adapter still accepts caller-supplied `input.now`, uses it for admission and exact-replay freshness checks, and binds it to migration 0014 `checked_at`. The SQL trigger compares rows against `NEW.checked_at` but does not derive time itself.
+- Registry bundle verifier also accepts caller-supplied `now`; PR #93's WeakMap capability protects object provenance but its `verifiedAt` still derives from that input and is persisted as `accepted_at`/`updated_at`. This does not meet Contract v1's database-clock requirement.
+- Contract v1 requires one DB-derived timestamp materialized inside the D1 consistency boundary for event acceptance/admission. Trusted time NOT IMPLEMENTED / NOT QUALIFIED. This is a proof qualification gap, not evidence of a deployed exploit; dispatch remains false.
+- Wave 338 report: [Trusted-time source audit](../reports/2026-11-15-wave338-trusted-time-source-audit.md).
+- Next: database-derived timestamp row/value shared by admission statements and exact replay; then registry persistence acceptance time and adversarial backdated/future/unavailable-clock rollback tests. Revocation ledger, external anti-rollback and Cloud Pool-native controller remain separate open gates.
+- Docs branch is ahead 72 / behind 0 from default and is not production state. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 339 — 2026-11-15
+
+- Default branch `Основной` HEAD re-read: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Created supplementary MediaHub Issue #301 exact `/next` event [comment 6900348230](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900348230). This is not the Cloud Pool-native controller; controller/child runs NOT VERIFIED.
+- PR #87 live head re-read: `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, base default HEAD; candidate branch `integration/d1-ledger-clean-main-2026-11-15` ahead 6 / behind 0. Exact-head runs 43712647597 (Isolated D1 Ledger Proof) and 43712647615 (Pool Contract Validation) COMPLETED/SUCCESS. Formal reviews 0; combined status contexts empty / NOT VERIFIED. PR remains OPEN/DRAFT/UNMERGED.
+- Documentation branch `docs/gemini-three-agent-next-bridge-2026-11-15` is ahead 75 / behind 0; PR #95 OPEN/DRAFT/UNMERGED. It is not default/production state.
+- Re-read source confirms `admitQualifiedTask` and root registry persistence still use caller-supplied `now`. Migration 0014 validates against supplied `NEW.checked_at`; no DB clock materialization. Atomic admission and registry persistence tests use fixed synthetic `NOW=1_800_000_000`, which must be changed to D1 `unixepoch()` fixtures before DB-clock enforcement.
+- Wave 339 implementation design: use the first admission batch statement to create the registry assertion with DB `unixepoch()`; all later writes read its exact `checked_at`. Exact replay obtains a fresh DB time in one query and rechecks current trust. Registry verification obtains DB time before cryptographic preflight; persisted `accepted_at` and pointer `updated_at` are generated by SQL at the persistence batch boundary and DB-guarded. Do not bind caller time.
+- Do not allocate migration 0015 to clock repair: proposed Revocation Authority Contract v1 reserves 0015/0016 for separate revocation work. Modify only the unmerged candidate migrations 0012–0014 if needed; do not add a conflicting migration or imply hosted D1 adoption.
+- Report: [Wave 339 D1 trusted-clock implementation design](../reports/2026-11-15-wave339-d1-trusted-clock-implementation-design.md).
+- No source/schema/test/workflow changes, hosted D1, secrets, provider calls, dispatch, deployment or merge. Trusted time implementation NOT RUN / NOT QUALIFIED. Issue #94 native controller NOT IMPLEMENTED / NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the DB-time admission + registry persistence changes and convert tests to engine-clock fixtures on the clean PR #87 candidate; verify rollback, replay and exact-head CI. Keep Issue #94 separate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 340 — 2026-11-15
+
+- Default branch `Основной` observed HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has no issue_comment /next trigger; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` only supports `dsh-headless-probe`.
+- Issue #94 re-read OPEN and remains the implementation requirement. Created dedicated owner-authored Cloud Pool control issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96), re-read OPEN. It defines exact top-level owner-only `/next`, exact issue/repo binding, immutable target SHA, source-comment idempotency, ambiguous-outcome reconciliation and evidence requirements. This is a control surface only; controller NOT IMPLEMENTED and dispatch remains disabled.
+- Created supplementary MediaHub Issue #301 event [comment 6900427465](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900427465). It does not prove Cloud Pool controller or child runs; Gemini execution NOT VERIFIED.
+- PR #87 remains OPEN/DRAFT/UNMERGED at `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; historical exact-head D1 proof 43712647597 and Pool Contract Validation 43712647615 SUCCESS; formal reviews 0, aggregate status empty / NOT VERIFIED. Wave 339 DB-time implementation remains NOT RUN.
+- Docs branch `docs/gemini-three-agent-next-bridge-2026-11-15` remains a non-default continuation branch; PR #95 OPEN/DRAFT/UNMERGED. Wave 340 report: [Cloud Pool-native /next control issue](../reports/2026-11-15-wave340-cloud-pool-native-next-control-issue.md).
+- No source/workflow changes, live dispatch, secrets/variables inspection, provider calls, deployment, hosted D1 or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement isolated controller + pure admission/idempotency tests on branch from immutable default HEAD, with live dispatch disabled; keep D1 trusted-clock repair separate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 341 — 2026-11-15
+
+- Default branch `Основной` remains at base HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Dedicated Cloud Pool control issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) remains OPEN. Issue comment [6900490198](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96#issuecomment-6900490198) links the new proof PR.
+- Created isolated branch `feat/cloud-pool-next-admission-contract-2026-11-15` from the exact default base and draft PR [#97](https://github.com/VlDMlNSh/developer-cloud-pool/pull/97). Head `3ced916ff0d99d8abd8033fdc92f1c5de046dba6`; 5 ahead / 0 behind. PR OPEN/DRAFT/UNMERGED; formal reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Added pure admission predicate `scripts/next-admission.mjs` blob `f1a0546cf9eb1285f82b5f1fddfb3e330df39dbf`, tests `test/next-admission.test.mjs` blob `2f0662d0997ffadb11a4826a7eb506fa60b4e18b`, and read-only workflow `.github/workflows/next-admission-contract.yml` blob `5a17ce057717d9f5523dfe9e23ee26b154789d6e`. Exact event, exact body, owner/OWNER association, issue #96 open/non-PR, repo identity, default branch ref and 40-char SHA are required. Idempotency ID derives only from repository + issue + source comment ID; target SHA is separate.
+- Exact-head CI on `3ced916ff0d99d8abd8033fdc92f1c5de046dba6`: Cloud Pool Next Admission Contract run [43755942025](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43755942025) COMPLETED/SUCCESS (all 8 steps); Pool Contract Validation [43755942008](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43755942008) COMPLETED/SUCCESS (all 7 steps). Formal reviews 0 and aggregate status empty remain NOT VERIFIED.
+- This is a pure predicate only: no durable idempotency store, ambiguity reconciliation, issue_comment trigger on default, controller dispatch or child runs. Dispatch remains fail-closed; no secrets/variables inspection, provider calls, model calls, deployment, hosted D1 or merge.
+- Supplementary MediaHub Issue #301 bridge event created for Wave 341, but Cloud Pool controller/three Gemini child runs are NOT VERIFIED.
+- Report: [Wave 341 — Next Admission Contract Implementation](../reports/2026-11-15-wave341-next-admission-contract-implementation.md).
+- Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable source-comment idempotency + ambiguous dispatch reconciliation; only then owner-only issue_comment controller behind disabled dispatch, with independent review and governance.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 342 — 2026-11-15
+
+- Default branch `Основной` HEAD rechecked unchanged: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Issue #94 and dedicated control Issue #96 remain OPEN. Issue #96 Wave 342 evidence comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96#issuecomment-6900567298.
+- PR #97 remains OPEN / DRAFT / UNMERGED, base SHA `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, head `e216d0eb66af182258a9e8552677bbcad3b1d311`. Formal reviews 0; aggregate status contexts empty / NOT VERIFIED. Other open draft stack PRs #87/#92/#93/#95 remain open/unmerged with 0 formal reviews; see Wave 342 report for exact heads.
+- Added write-ahead ledger protocol: `scripts/next-dispatch-ledger.mjs` blob `7b629889b7191f21c1e0099bc65f9dca1eaee460`; tests `test/next-dispatch-ledger.test.mjs` blob `23ca351d00776a5372a9d72aa0ae116e7b13134b`; CI workflow blob `6902e72cd6bd7ce3670986af32f1a8b8a9c4f054`.
+- Ledger state contract requires serialized lock, digest-checked append-only records, ADMITTED then DISPATCH_INTENT, same-invocation-only single dispatch permission, visible-run reconciliation, and AMBIGUOUS_NO_RETRY when intent exists but no run is visible. This is pure protocol code only; no live Issue #96 persistence, Actions concurrency lock, controller run lookup or dispatch integration exists.
+- Exact-head CI on `e216d0eb66af182258a9e8552677bbcad3b1d311`: [run 43756440044](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43756440044) SUCCESS (8/8 steps); [run 43756439898](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43756439898) SUCCESS (7/7 steps). Formal review and aggregate status remain NOT VERIFIED.
+- Supplementary MediaHub Issue #301 bridge event [6900524362](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900524362) was created. It is not the Cloud Pool-native controller; Gemini controller/child run IDs and artifacts NOT VERIFIED.
+- Report: [Wave 342 — Write-ahead /next Dispatch Ledger Contract](../reports/2026-11-15-wave342-write-ahead-next-ledger-contract.md).
+- Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement trusted-main GitHub adapter for Issue #96 ledger read/append, concurrency lock and run-name reconciliation; fake-API tests for timeout/delayed visibility/crash-after-intent/duplicate deliveries. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 343 — 2026-11-15
+
+- Default branch Основной observed HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; default .github/workflows/pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd still has no issue_comment /next trigger. The Cloud Pool default worker remains the dsh-headless-probe only profile.
+- Issues #94 and #96 re-read OPEN. Dedicated Cloud Pool control issue #96 remains PLANNED control surface only.
+- PR #97 remains OPEN / DRAFT / UNMERGED, base 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc, head b98787604ae53dee5464b49400658e17915f8a9e; formal reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Wave 343 added scripts/next-github-ledger-adapter.mjs blob aa343e4cf10ca1d8b0608957caba5b9ea9fe9956, test/next-github-ledger-adapter.test.mjs blob 13489d07c902827d151a2c059ddc3b2432128b8b, workflow blob 7e94970cb9b13312f272a898f71bdeb1dd788762. Adapter is dependency-injected, requires a caller-held lock, performs ledger read/append with ambiguous-timeout re-read and reconciles exact Actions display_title + head_sha. It NEVER dispatches.
+- Exact-head CI on b98787604ae53dee5464b49400658e17915f8a9e: run 43757112894 Cloud Pool Next Admission Contract COMPLETED/SUCCESS; run 43757112913 Pool Contract Validation COMPLETED/SUCCESS. Initial run 43757024342 failed three run-reconciliation tests; fixed before final successful runs. Combined status contexts empty; formal reviews 0.
+- Live API adapter binding, actual Actions concurrency lock, trusted-main issue_comment trigger, real ledger writes, controller dispatch and Gemini child jobs remain NOT IMPLEMENTED / NOT RUN. No secrets or provider calls. Gemini execution NOT VERIFIED.
+- Report: ../reports/2026-11-15-wave343-github-ledger-adapter-prototype.md.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement trusted-main wrapper with actual GitHub API adapter + Actions concurrency lock, still hard no-dispatch; add event-level integration and run-list pagination tests. Require governance/no-secret/independent review before any dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 344 — 2026-11-15
+
+- Default branch Основной HEAD is now 6507823e7ec27caa9b2621daef964dba2d4cf436. This is not the former 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc: one test-only file was accidentally added on default in commit bbc4da7ba1c06cde6c79d9216cdbdcae771ac6db and removed in cleanup commit 6507823e7ec27caa9b2621daef964dba2d4cf436. Read-back confirms the test path is absent on default; cleanup diff deletes only that file. Both commits remain in history and must not be hidden.
+- Default pool-supervisor workflow remains blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd; still no issue_comment /next trigger. Default worker remains DSH headless probe only.
+- Issues #94 and #96 remain OPEN. PR #97 remains OPEN / DRAFT / UNMERGED, feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21, base ref SHA 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; formal reviews 0.
+- Wave 344 adds scripts/next-github-api-adapter.mjs blob 9e307f2e40dfc1fa18ffd5142ec205fb6afa3c80 and test/next-github-api-adapter.test.mjs blob 9a386b8fd8d7ae2a6b87ae5cba34b3de67ae029f. It provides paginated Issue #96 comments / Actions runs, ledger-only comment writes, source comment validation (exact /next, OWNER login + association, correct issue) and current-default-head SHA binding. Tests use fake fetch only. No live API token, issue mutation, workflow invocation or dispatch.
+- Contract workflow blob f05454a67defba5e4d9d3a1e163bd282e68b63fb has CI-only concurrency per ref; this is not the production controller lock.
+- Intermediate CI on 7f1551a0794480fbd1ec692389ac0817a0332a7a: run 43757790420 FAILED (45/49, 4 test failures); run 43757790396 Pool Contract Validation SUCCESS (7/7). The pagination matcher and sync/async assertions were corrected after this. Latest feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 has no run in available lookup and no combined status contexts: exact-head CI NOT VERIFIED.
+- Branch comparison now: docs branch ahead 90 / behind 2; PR #97 feature branch ahead 18 / behind 2; merge base remains former default 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. This is due to default add/delete commits. Reconcile ancestry before merge; do not rewrite history.
+- Wave 344 report: ../reports/2026-11-15-wave344-github-api-adapter.md.
+- Live trusted-main wrapper, actual controller concurrency, issue_comment trigger, ledger writes, workflow dispatch and Gemini children remain NOT IMPLEMENTED / NOT RUN. Cloud Pool-native controller NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile default add/delete history against PR #97 and docs branch, obtain exact-head CI for f0ad25ce60e6ef052fcfeab31fb5deab06793f21, then build real trusted-main wrapper with production concurrency lock while dispatch remains disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Wave 344 CI completion addendum — 2026-11-15
+
+- Exact PR #97 feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 now has verified completed CI: [run 43758033223](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033223) Cloud Pool Next Admission Contract SUCCESS, all 49 tests passed (49/49); [run 43758033182](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033182) Pool Contract Validation SUCCESS, 7/7 steps. This supersedes the prior NOT VERIFIED statement for exact-head CI. Intermediate run 43757790420 failed before corrections and remains recorded.
+- PR #97 formal reviews remain 0; combined status contexts empty / NOT VERIFIED. No live API calls, ledger writes, trigger, production concurrency lock or dispatch occurred.
+- Docs branch now ahead 93 / behind 2; PR #97 feature branch ahead 18 / behind 2; merge base old default 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc.
+
+ 
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 345 — 2026-11-15
+
+- Cloud Pool default branch Основной current immutable HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- Default ancestry correction: commit bbc4da7ba1c06cde6c79d9216cdbdcae771ac6db accidentally added only test/next-github-api-adapter.test.mjs to default; cleanup commit 6507823e7ec27caa9b2621daef964dba2d4cf436 deletes only that file. Both commits remain in history; no rewrite.
+- Prior PR #97 branch head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 diverges from current default by 18 ahead / 2 behind. PR #97 remains OPEN/DRAFT/UNMERGED.
+- Created clean-base branch feat/cloud-pool-next-admission-clean-base-2026-11-15 from exact default HEAD. Draft PR #98 current head f23cdb5484d5923e02242b3ea142397f9e1f0270; base 6507823e7ec27caa9b2621daef964dba2d4cf436; compare 9 ahead / 0 behind; merge base equals current default exactly. PR #98 OPEN/DRAFT/UNMERGED.
+- Nine proof files ported and read-back verified. Blobs: workflow 11a7c465138b3b60e66ff8460d89a853fcc3c1ab; admission f1a0546cf9eb1285f82b5f1fddfb3e330df39dbf; ledger 7b629889b7191f21c1e0099bc65f9dca1eaee460; GitHub API adapter 9e307f2e40dfc1fa18ffd5142ec205fb6afa3c80; ledger adapter aa343e4cf10ca1d8b0608957caba5b9ea9fe9956; tests 2f0662d0997ffadb11a4826a7eb506fa60b4e18b, 23ca351d00776a5372a9d72aa0ae116e7b13134b, 9a386b8fd8d7ae2a6b87ae5cba34b3de67ae029f, 13489d07c902827d151a2c059ddc3b2432128b8b.
+- Exact PR #98 head CI: run 43758657644 Cloud Pool Next Admission Contract COMPLETED/SUCCESS; logs show 49 tests, 49 pass, 0 fail. Run 43758657648 Pool Contract Validation COMPLETED/SUCCESS, 7/7 steps. Formal reviews 0; combined status contexts empty / NOT VERIFIED.
+- Default pool-supervisor remains unchanged blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd with no issue_comment /next trigger; worker remains DSH headless probe only blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb.
+- Issues #94/#96 OPEN. Issue #96 explicitly retains PLANNED status and no controller implementation/dispatch authorization pending gates. No live GitHub API token/write, ledger mutation, secrets/variables inspection, dispatch, Gemini child, provider/model call, deployment or merge.
+- Supplementary MediaHub bridge event: https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900875177; Cloud Pool-native controller/child runs and Gemini artifact digests for this event NOT VERIFIED.
+- Report: ../reports/2026-11-15-wave345-clean-base-admission-reconciliation.md (blob 003a2990f6328dc6b93f8b15007258930e0613fe).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: strengthen event-to-API verifier to bind fetched comment to issue_comment.created, trusted repo identity/ref and immutable SHA; add edited/deleted/replay adversarial tests. Keep live trigger and dispatch disabled until Issue #96 authorization and governance gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
