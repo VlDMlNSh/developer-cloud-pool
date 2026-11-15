@@ -13,7 +13,7 @@ function installBatch(db: D1Database, {
 }) {
   const statements = [
     // CHECK(assertion = 1) turns a failed expected-epoch predicate into a SQL
-    // error. D1 batch atomicity must roll back every later/earlier statement.
+    // error. D1 batch atomicity must roll back every statement in this batch.
     db.prepare(`
       INSERT INTO pool_route_registry_cas_guard (assertion)
       SELECT CASE
@@ -62,11 +62,11 @@ function installBatch(db: D1Database, {
 }
 
 describe("route registry transactional CAS schema", () => {
-  it("installs immutable issuer and route rows and advances the bound watermark", async () => {
+  it("persists immutable child rows and atomically rejects stale writers without orphans", async () => {
     const db = env.POOL_DB;
-    const digest = "a".repeat(64);
+    const firstDigest = "a".repeat(64);
     await installBatch(db, {
-      expectedEpoch: 0, epoch: 1001, digest,
+      expectedEpoch: 0, epoch: 1001, digest: firstDigest,
       version: "registry-v1001", acceptedAt: NOW
     });
 
@@ -76,10 +76,9 @@ describe("route registry transactional CAS schema", () => {
     const route = await db.prepare(
       "SELECT qualification_id, provider_id, account_ref, quota_domain_id FROM pool_route_registry_routes WHERE registry_epoch = 1001"
     ).first();
-    const state = await db.prepare(
+    const firstState = await db.prepare(
       "SELECT current_epoch, current_bundle_digest FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
-
     expect(issuer).toEqual({
       issuer_id: "issuer-a", key_id: "key-a", registry_version: "registry-v1001"
     });
@@ -87,7 +86,7 @@ describe("route registry transactional CAS schema", () => {
       qualification_id: "qualification-a", provider_id: "provider-a",
       account_ref: "account-a", quota_domain_id: "quota-a"
     });
-    expect(state).toEqual({ current_epoch: 1001, current_bundle_digest: digest });
+    expect(firstState).toEqual({ current_epoch: 1001, current_bundle_digest: firstDigest });
 
     await expect(db.prepare(
       "UPDATE pool_route_registry_routes SET account_ref = 'substituted' WHERE registry_epoch = 1001"
@@ -95,51 +94,34 @@ describe("route registry transactional CAS schema", () => {
     await expect(db.prepare(
       "DELETE FROM pool_route_registry_issuer_keys WHERE registry_epoch = 1001"
     ).run()).rejects.toThrow();
-  });
 
-  it("advances only from the expected previous epoch", async () => {
-    const db = env.POOL_DB;
     await installBatch(db, {
-      expectedEpoch: 0, epoch: 1001, digest: "d".repeat(64),
-      version: "registry-v1001", acceptedAt: NOW + 1000
+      expectedEpoch: 1001, epoch: 1002, digest: "b".repeat(64),
+      version: "registry-v1002", acceptedAt: NOW + 1000
     });
-    await installBatch(db, {
-      expectedEpoch: 1001, epoch: 1002, digest: "e".repeat(64),
-      version: "registry-v1002", acceptedAt: NOW + 2000
-    });
-    const state = await db.prepare(
+    const advanced = await db.prepare(
       "SELECT current_epoch, current_registry_version FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
-    expect(state).toEqual({ current_epoch: 1002, current_registry_version: "registry-v1002" });
-  });
+    expect(advanced).toEqual({ current_epoch: 1002, current_registry_version: "registry-v1002" });
 
-  it("rolls back snapshot and child rows when a stale writer loses the CAS", async () => {
-    const db = env.POOL_DB;
-    await installBatch(db, {
-      expectedEpoch: 0, epoch: 1001, digest: "1".repeat(64),
-      version: "registry-v1001", acceptedAt: NOW + 3000
-    });
-    await installBatch(db, {
-      expectedEpoch: 1001, epoch: 1003, digest: "3".repeat(64),
-      version: "registry-v1003", acceptedAt: NOW + 4000
-    });
-
+    // A stale writer has a newer candidate epoch but an obsolete expected
+    // pointer. The CHECK-backed assertion must abort before any rows persist.
     await expect(installBatch(db, {
-      expectedEpoch: 1001, epoch: 1002, digest: "2".repeat(64),
-      version: "registry-v1002", acceptedAt: NOW + 5000
+      expectedEpoch: 1001, epoch: 1003, digest: "c".repeat(64),
+      version: "registry-v1003", acceptedAt: NOW + 2000
     })).rejects.toThrow();
 
     const orphanCounts = await db.prepare(`
       SELECT
-        (SELECT COUNT(*) FROM pool_route_registry_snapshots WHERE registry_epoch = 1002) AS snapshots,
-        (SELECT COUNT(*) FROM pool_route_registry_issuer_keys WHERE registry_epoch = 1002) AS issuers,
-        (SELECT COUNT(*) FROM pool_route_registry_routes WHERE registry_epoch = 1002) AS routes
+        (SELECT COUNT(*) FROM pool_route_registry_snapshots WHERE registry_epoch = 1003) AS snapshots,
+        (SELECT COUNT(*) FROM pool_route_registry_issuer_keys WHERE registry_epoch = 1003) AS issuers,
+        (SELECT COUNT(*) FROM pool_route_registry_routes WHERE registry_epoch = 1003) AS routes
     `).first();
     expect(orphanCounts).toEqual({ snapshots: 0, issuers: 0, routes: 0 });
-    const state = await db.prepare(
+    const finalState = await db.prepare(
       "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
-    expect(state).toEqual({ current_epoch: 1003 });
+    expect(finalState).toEqual({ current_epoch: 1002 });
     const guards = await db.prepare(
       "SELECT COUNT(*) AS count FROM pool_route_registry_cas_guard"
     ).first();
