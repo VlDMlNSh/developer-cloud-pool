@@ -293,3 +293,8 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Wave 317's Agent 2 child failed because it attempted to reuse the already-existing branch `agent-2-contract-verification-20261115` and its existing open PR #638. The Agent2 artifact `14163604242` (SHA-256 `0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`) records branch-create 0/1, file-update 1/1, PR-create 0/1. The runner log shows PullRequests: write, so the primary diagnosis is branch/PR collision, not missing token scope.
 
 Repair proposed in [MediaHub PR #649](https://github.com/VlDMlNSh/mediahub-os/pull/649): require a unique Agent2 branch containing the controller dispatch ID and fail closed on collision. PR is OPEN/DRAFT; exact-head CI and review NOT VERIFIED. No new agent dispatch occurred. Next: complete PR #649 checks/review, then run one controlled three-agent wave and require all three children, unique branches, artifact digests and exact-head evidence to pass before considering the agent wave stable.
+
+
+## PR #649 verification update
+
+PR #649 exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f` now has 11 completed check runs. Every executed check is SUCCESS; dispatch/admission jobs are SKIPPED in pull_request context, as intended. PR remains OPEN/DRAFT with zero reviews. Repair CI-VERIFIED; approval and new Agent2 execution NOT VERIFIED. No new dispatch was run.
