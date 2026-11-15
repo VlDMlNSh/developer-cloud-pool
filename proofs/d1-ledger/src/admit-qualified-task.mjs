@@ -1,3 +1,5 @@
+import { canonicalizeQualifiedRouteEvidence } from "./qualified-route-evidence.mjs";
+
 const SHA40 = /^[a-f0-9]{40}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const NUMERIC_ID = /^[0-9]+$/;
@@ -203,6 +205,22 @@ function statements(db, input) {
  */
 export async function admitQualifiedTask(db, input) {
   if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
+  const r = input.route;
+  const canonicalEvidence = canonicalizeQualifiedRouteEvidence({
+    schemaVersion: r.schemaVersion, qualificationId: r.qualificationId,
+    routeId: r.routeId, providerId: r.providerId, modelId: r.modelId,
+    issuerId: r.issuerId, keyId: r.keyId, accountRef: r.accountRef,
+    credentialHandleRef: r.credentialHandleRef, quotaDomainId: r.quotaDomainId ?? null,
+    costClass: r.costClass, capabilityId: r.capabilityId,
+    capabilityProfile: r.capabilityProfile, evidenceRef: r.evidenceRef,
+    observedAt: r.observedAt, validUntil: r.validUntil,
+    revocationVersion: r.revocationVersion, registryVersion: r.registryVersion,
+    status: "qualified"
+  });
+  const evidenceHash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonicalEvidence));
+  const evidenceDigest = [...new Uint8Array(evidenceHash)]
+    .map((value) => value.toString(16).padStart(2, "0")).join("");
+  if (evidenceDigest !== r.evidenceDigest) return deny("ROUTE_EVIDENCE_DIGEST_MISMATCH");
   const canonicalTask = JSON.stringify(["pool-task-v1", input.approval.repositoryId, input.approval.issueNumber, input.approval.targetSha, input.approval.profile, 1]);
   const taskDigest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonicalTask));
   const expectedTaskKey = [...new Uint8Array(taskDigest)].map((value) => value.toString(16).padStart(2, "0")).join("");
