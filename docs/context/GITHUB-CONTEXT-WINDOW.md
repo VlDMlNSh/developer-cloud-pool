@@ -2344,3 +2344,24 @@ Next: formal ordered review/reconciliation of PR #81 → #84 → #86, then compo
 
 Current report: [verifier capability and atomic registry-bound admission](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 19.9 Clean-main D1 registry race revalidation — 2026-11-15
+
+This section supersedes 19.8 as the current integration checkpoint for the registry-bound A0/D1 proof. PR #81 → #84 → #86 remains historical provenance; the clean-main reconstruction is now the active candidate.
+
+- Default `Основной` live HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87: OPEN / DRAFT / UNMERGED; branch `integration/d1-ledger-clean-main-2026-11-15`; live API HEAD `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`; 5 ahead / 0 behind, merge base exactly default HEAD. 49 added files. PR description is stale and still cites the earlier `5eaaf25...` / 3-ahead snapshot; use live API HEAD.
+- Exact-head D1 run [43712068163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068163), job `132805595342`: SUCCESS; 11 test files / 119 tests PASS; second D1 binding smoke PASS; frozen schema-0010 fixture smoke 2 PASS; artifact `14160831522`, SHA-256 `96beb0f9c62eb2787180f1847bb0d860d7a0d0c9c37f63beeaf3cf62b427e9fb`.
+- Exact-head Pool Contract Validation [43712068111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068111), job `132805595358`: SUCCESS; dispatch-disabled invariant, YAML syntax and security contract checks PASS. Combined status contexts remain empty.
+- Static source read-back: migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`; admission adapter blob `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; atomic-admission test blob `1d39dff5f2c76b35cd05625ef0999578528b07c7`; workflow blob `ab2613a776f1b17daf8d2934528e62bb95fbe9bc`.
+- Assertion insert is first in same D1 batch; trigger validates active registry pointer/snapshot and issuer-key lifecycle; receipt binds to assertion. Deterministic TOCTOU test advances registry after preflight and before batch, then checks fail-closed denial and no approval consume/admission/assertion.
+- This is local Workers-runtime proof, not hosted-D1 concurrency qualification or production Supervisor/Worker integration. Synthetic fixtures only.
+- PR #87 reviews 0 / inline threads 0. Ruleset #26550182 active but requires 0 approvals and no status contexts; default branch metadata `protected=false`. Governance insufficient for acceptance.
+- No hosted D1, secret reads, provider calls, deployment, Worker execution, dispatch, Gemini or independent audit. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [clean-main registry race revalidation](../reports/2026-11-15-clean-main-registry-race-revalidation.md).
+- Next: reconcile stale PR #87 description, complete migration/transaction source audit, then connect the local proof to actual Supervisor/Worker task-envelope/outbox/receipt contracts without dispatch. Keep PR Draft and unmerged.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
