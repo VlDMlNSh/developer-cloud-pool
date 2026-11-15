@@ -2299,3 +2299,47 @@ Next: ordered formal review/reconciliation of PR #81 → #84 → #85, then compo
 
 Report: [verifier capability and registry-bound admission](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 19.8 Final stack reconciliation — PR #86 atomic registry assertion — 2026-11-15
+
+This section supersedes 19.7's reference to PR #85 as the active admission branch.
+
+Live refs:
+- Default `Основной` HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; branch API says `protected=false`.
+- Ruleset #26550182 active; PR + thread resolution required, 0 approvals and no required CI contexts.
+- Canonical active stack is PR #81 → PR #84 → PR #86. No merge.
+
+PR #81:
+- OPEN / DRAFT / UNMERGED; base PR #77 branch HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`; head `68ccf7b5b11857c00c9b5c4250bf95bac361468a`.
+- Provides root-signed registry bundle persistence and the only canonical migration 0013. Exact-head CI previously succeeded. No formal reviews.
+
+PR #84:
+- OPEN / DRAFT / UNMERGED; parent PR #81 HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; head `390ef0a09af2585c79f7e15d789343eb23fa370f`.
+- Ports module-private WeakMap verifier capability binding the original successful result to a deep-frozen exact bundle snapshot and detached root signature. Persistence accepts only that original result object. Copied/forged/denied results fail closed.
+- Exact PR run [43709839460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709839460), job `132798791200`: SUCCESS; push [43709824427](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709824427), job `132798745644`: SUCCESS. Artifact `14160336008`, SHA-256 `6aaf530000d576263782736f915af09740aea4670d6c526fcca73c30715b1614`.
+
+PR #86:
+- OPEN / DRAFT / UNMERGED; parent PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`; exact HEAD `a218f92274eca5491700d8f72a21172f8ce689dc`; 5 commits ahead / 0 behind.
+- Uses migration `0014_atomic_admission_registry_assertion.sql`: append-only `pool_admission_registry_assertions` plus a BEFORE INSERT trigger that verifies exact current pointer/snapshot, route evidence binding, issuer key ID/status/revocation/validity and all time windows.
+- Inserts this assertion as the first statement in the same D1 batch as approval consumption, admission, task/outbox/attempt and immutable receipt. The receipt binds to the assertion row; any subsequent failure rolls the assertion back.
+- Exact retry independently checks the current pointer and issuer key lifecycle.
+- Ported from PR #83's updated passing head `a2e02471438104a5502d505995912c9eedb06480`. PR #83's earlier `46db457` head failed with SQLite expression-depth 100; the later head passed both exact CI runs [43710565281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710565281) and [43710560400](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710560400). PR #83 was closed only to reconcile ancestry; its passing assertion-table implementation is now on PR #86.
+- PR #86 exact PR CI [43710912595](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710912595), job `132802030185`: SUCCESS; push CI [43710887889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710887889), job `132801952692`: SUCCESS. Workers runtime 11 test files / 118 tests PASS / 0 FAIL; migration smoke, second binding and frozen schema-0010 fixture passed.
+- Push artifact `14159919500`, SHA-256 `fde2ce7a1c0c5b7fed55f80d74ee2e5f3b95dfabb6257c6187b3cb7204063710`; PR artifact `14160372747`, SHA-256 `8a1d61c86ecdda5dc58ae1d45cfbc83d09fcc3d53183f2101ebdd36c243745fc`.
+- PR #86 has 0 formal reviews / 0 inline threads. Keep Draft and unmerged.
+
+Superseded/conflicting branches:
+- PR #80 CLOSED / UNMERGED; capability pattern ported into #84.
+- PR #82 CLOSED / UNMERGED; its competing migration 0013 conflicts with PR #81's canonical migration 0013.
+- PR #83 CLOSED / UNMERGED; updated passing implementation ported onto PR #84 ancestry in #86.
+- PR #85 CLOSED / UNMERGED; its alternative migration 0014 active-route view conflicts with #86's assertion-table migration 0014. Do not merge both; only #86's migration 0014 is canonical.
+
+Remaining limits: no production root-key custody/configuration, hosted D1, provider calls, deployment, dispatch, independent audit or Contour B. Synthetic issuer fixtures remain test-only. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+
+Next: formal ordered review/reconciliation of PR #81 → #84 → #86, then compose registry-bound A0 transaction with actual Supervisor/Worker task-envelope/outbox/receipt vertical path without dispatch. Only after web console, executor, persistence restoration, account-isolated quota routing and governance gates may launch qualification proceed.
+
+Current report: [verifier capability and atomic registry-bound admission](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
