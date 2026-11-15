@@ -53,3 +53,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #649: https://github.com/VlDMlNSh/mediahub-os/pull/649
 - Comment: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896580340
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — PR #649 F-01 remediation and current dispatch gate
+
+- Latest PR #649 head: `43e0f57d74f452f31a4e898741751107e2d95ad7`, base `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED.
+- Implemented live branch/PR provenance validator and wired it into all three child workflows. Added actions:read, Agent 2 role alignment, adversarial tests and CI invocation.
+- Exact-head checks: 11 total, 9 SUCCESS, 2 expected SKIPPED, no failures/pending. Contract validation run `43729494613`, job `132858576406`; provenance suite 11/11 PASS, `py_compile` and actionlint PASS.
+- Remediation discussion: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896804744.
+- F-01 implementation is PR-context CI-VERIFIED. No live child dispatch has exercised it. Formal reviews remain 0; PR #649 is not merged. PR #650 single-reviewer path is OPEN/DRAFT/UNMERGED and has not run a reviewer.
+- Active ruleset 26108066 has five required CI contexts, zero required approvals, extra approval for unattributed changes, and no bypass. Project independent review/governance remains outstanding.
+- Chat connector profile matches owner VlDMlNSh / ID 157891068 with admin permission. It can author owner comments; the per-chat bridge requires the assistant to explicitly post exact `/next` to Issue #301 after gates pass. Do not post while PR #649 is unmerged or secret/variable metadata and trusted-main probe remain NOT VERIFIED.
+- Actions secret/variable metadata NOT VERIFIED; no secret values read. Trusted-main no-secret probe NOT RUN. No Gemini dispatch, provider call, merge, deployment or qualification.
+- Detailed report: [PR #649 live branch/PR provenance remediation](../reports/2026-11-15-pr649-live-branch-provenance-validator-remediation.md).
+- Next: independent review/governance, metadata-only gate verification, trusted-main no-secret probe, ruleset-governed integration, then one controlled 3/3 dispatch and full reconciliation.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
