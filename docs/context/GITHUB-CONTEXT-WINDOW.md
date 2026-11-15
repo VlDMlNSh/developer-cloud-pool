@@ -2542,3 +2542,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [PR #649 live branch/PR provenance remediation](../reports/2026-11-15-pr649-live-branch-provenance-validator-remediation.md).
 - Next: after integration, post `/probe` to Issue #301 and verify trusted-main/no-secret; verify Actions metadata without values; then run one controlled 3/3 `/next` dispatch through the controller and reconcile IDs/digests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — owner confirmation and three-Gemini-per-/next plan
+
+- Owner reports all three Gemini secrets already exist in GitHub Actions and belong to three distinct Google accounts registered under different email addresses. Recorded as OWNER-REPORTED, NOT INDEPENDENTLY VERIFIED; no secret values read. Distinct emails do not prove separate quota projects, free-tier eligibility, billing state or working credentials.
+- GitHub connector explicitly blocks Actions secrets/variables endpoint families. Secret names/scopes/timestamps and `MEDIAHUB_GEMINI_BATCH_ENABLED` value therefore remain NOT VERIFIED from this connection.
+- Rechecked PR #649: OPEN/DRAFT/UNMERGED, head `309fa6a4af866f57c7de07006b375780b726302d`, base/main `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; formal reviews 0. Main unchanged. Active ruleset 26108066 requires five CI contexts, resolved review threads, extra approval for unattributed changes, and has no bypass actors.
+- Inspected PR branch controller: owner-only `issue_comment`, exact `/next` and `/probe`, batch variable and dispatch gate are present. All three child workflows invoke role-specific provenance validator. This source inspection does not prove live event execution or provider readiness.
+- Detailed activation plan: [Three Gemini per /next activation plan](../reports/2026-11-15-three-gemini-per-next-activation-plan.md). It covers metadata inventory, distinct account/quota mapping, least privilege, independent review, merge, no-secret trusted-main probe, controlled 3/3 dispatch, three repeatability waves, idempotent chat bridge, and stop conditions.
+- Latest PR-context CI remains 11 checks (9 SUCCESS, 2 expected SKIPPED); provenance 11/11 and trigger-path 3/3 passed. Trusted-main probe NOT RUN; Gemini 3/3 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review/governance of PR #649, obtain supported metadata-only confirmation of Actions config, then ruleset-governed integration, trusted-main `/probe`, controlled 3/3 launch, and repeated waves.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
