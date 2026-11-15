@@ -2382,3 +2382,17 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report: [Wave 336](../reports/2026-11-15-wave336-revocation-and-dispatch-reconciliation.md).
 - Next: pure revocation keyset/event verifier + deterministic adversarial vectors, followed by D1 CAS/rollback and same-batch admission tests. Keep dispatch disabled and Contour B deferred.
 - This Context Window remains on docs branch docs/gemini-three-agent-next-bridge-2026-11-15, PR #95 OPEN/DRAFT/UNMERGED; it is not default-branch production state.
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 337 — 2026-11-15
+
+- Cloud Pool default branch Основной HEAD re-read: 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. Latest default commit changes docs/context/GITHUB-CONTEXT-WINDOW.md; default Context Window blob read: 43b22ab291bd07711c0194120646c7fb4c158fcd.
+- Created exact owner-authored supplementary MediaHub Issue #301 /next event: [comment 6900228193](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900228193). Controller/child run IDs were not discoverable through available connector surfaces; this event is DISPATCHED, controller/children NOT VERIFIED. Do not infer 3/3.
+- Waves 334/335 remain verified historical evidence; Wave 335 controller 43748188993 and child runs 43748208364 / 43748210183 / 43748212060 succeeded with artifact digests recorded in PR #95/report.
+- Issue #94 remains OPEN. Cloud Pool default Supervisor blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd has no issue_comment trigger; Worker blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4 only permits dsh-headless-probe. Cloud Pool-native Gemini dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+- Default README states Supervisor/task queue IMPLEMENTED SCAFFOLD / NOT RUN; DSH worker probe IMPLEMENTED / NOT RUN; general-purpose execution and checkpoint/resume NOT IMPLEMENTED. Current POOL_DISPATCH_ENABLED value was not read; preserve fail-closed, do not enable.
+- PR #95 remains OPEN/DRAFT/UNMERGED with zero formal reviews. Its documentation branch compares ahead 69 / behind 0 against default and is not production/default state.
+- Clean D1 migration candidate integration/d1-ledger-clean-main-2026-11-15 compares ahead 6 / behind 0; verified-registry capability clean stack compares ahead 15 / behind 0. Both share default HEAD as merge base; do not merge/transplant without full source/test/review qualification.
+- Revocation contract v1 remains PROPOSED. No durable separate revocation ledger/head or same-batch admission check is evidenced in migrations 0011–0014. Root custody, signer lifecycle, DB clock health and external anti-rollback checkpoint remain unresolved governance gates.
+- Wave 337 report: [dispatch and Contour A reconciliation](../reports/2026-11-15-wave337-next-dispatch-and-contour-a-reconciliation.md).
+- Next: pure canonical revocation keyset/event verifier + deterministic adversarial vectors on the clean integration candidate, without schema/live keys/hosted D1 until governance semantics are approved; continue Issue #94 separately.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
