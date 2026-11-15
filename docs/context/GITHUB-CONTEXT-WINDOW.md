@@ -1884,3 +1884,19 @@ Recomputed comparisons against this current HEAD:
 - PR #68 `8569d0b368b353beb78e8594509d8492abaec170`: DIVERGED, 85 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
 
 No rebase, cherry-pick, merge or code change was attempted. Documentation commits are on default branch; PR branches remain separate drafts.
+
+
+## Fail-closed Provider Quota Ledger correction — 2026-11-15
+
+- Draft PR #71: https://github.com/VlDMlNSh/developer-cloud-pool/pull/71
+- Branch `fix/quota-ledger-fail-closed-2026-11-15`; head `40a49acabd12aa178d3aa136244fb4f42231fbde`.
+- GitHub PR base snapshot: `Основной` @ `edb3a52809c6ab937c6833c825ab538fdfa052e8`; compare DIVERGED 3 ahead / 2 behind; merge base `670ed18460506c5cba6757baf15954215a74cb0a`. Keep Draft; do not merge on this state.
+- Source blob `175876505bc3b1b240034a2d523d9ff12a6aa20e`; tests blob `7e4c73ea66e08a2b3eb31f86b9ec47afe8f5329a`; workflow blob `4e47b8e8850833d930cdd457bea91c2cec507576`.
+- `listEligibleRoutes()` now requires provider_verified quota evidence and a non-empty quotaDomainId for every billing class. Missing evidence/domain is fail-closed even when caller includes the billing class in its allowlist. Added 12 tests.
+- Exact-head Pool Contract Validation run `43685547993`: COMPLETED / SUCCESS at head `40a49acabd12aa178d3aa136244fb4f42231fbde`. Combined status contexts empty; required ruleset checks NOT VERIFIED.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs/reports/2026-11-15-provider-quota-ledger-fail-closed.md
+- Issue #70 updated: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
+- Limitation: this pure state machine does not authenticate provider/issuer/account evidence; future qualified evidence adapter and atomic A0/D1 integration are still required. No merge, deployment, hosted D1, dispatch, provider/model calls or secret reads.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: review PR #71's base drift and current exact-head CI; then define typed, freshness/revocation-bound route evidence and integrate with D1 approval/task/attempt/outbox without enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
