@@ -150,3 +150,15 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Status: isolated transaction IMPLEMENTED / exact-head CI VERIFIED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final exact-head correction — 2026-11-15
+
+- Final implementation branch HEAD: `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; PR #72 OPEN/DRAFT/UNMERGED.
+- Exact-head workflow `43690143805` SUCCESS; 7 files / 93 tests passed, including 9 atomic-admission tests; upgrade-binding 1 passed; frozen schema-0010 fixture 2 passed.
+- Artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- Default-to-implementation comparison at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8`: DIVERGED 67 ahead / 27 behind. Required status contexts NOT VERIFIED. No merge.
+- Outbox binding to admission/attempt/evidence digest is part of the same D1 batch and the commit receipt/read-back. Dispatch false.
+- Trusted qualification writer, cryptographic issuer/evidence verification, canonical digest generation and live provider/account/quota proof remain NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED.
+- Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
