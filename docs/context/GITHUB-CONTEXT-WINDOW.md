@@ -2306,3 +2306,36 @@ Continue from the current Contour A checkpoint in ChatGPT. First reconcile any n
 - Next: continue the issuer-authenticated claim-service boundary and trusted-time contract on the local proof stack, without enabling runtime dispatch or provisioning hosted resources. Reconcile Agent 1 output when available, but do not wait for it.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Latest distributed-agent scaling reconciliation — 2026-11-15 13:37 UTC
+
+This section supersedes the earlier in-progress observation for the 13:35 wave. Source controller is in the separate MediaHub OS repository; it is NOT the Cloud Pool runtime and does not prove that workers have been integrated into the Pool.
+
+### Latest per-/next Gemini wave (MediaHub OS Issue #301)
+
+- Immutable target SHA: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Controller run [43719738980](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719738980): COMPLETED / FAILURE; controller `dispatch_and_monitor` job `132828944987` failed because Agent 2 did not satisfy the required successful-PR operation.
+- Agent 1 [run 43719757692](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719757692): workflow SUCCESS; signature verification job `132828978575` SUCCESS; engineering job `132829006134` SUCCESS; artifact `14163901823`, SHA-256 `c4144ae187cfd748b7294ebe6b209fb1cfc9113c42d40c68900fe88d4954f96f`; PR [#648](https://github.com/VlDMlNSh/mediahub-os/pull/648) OPEN, non-draft, head `98561625b718a592613196cc9ffbe189d1b55bef`. Exact-head checks 0; formal reviews 0; review threads 0.
+- Agent 2 [run 43719759616](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719759616): workflow FAILURE; signature verification job `132828984099` SUCCESS; engineering job `132829004435` FAILURE. Artifact `14163604242`, SHA-256 `0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`. Gemini output was non-empty and uploaded, but validator reported: `Gemini did not successfully create a Pull Request`. No PR from this wave. Do not classify Agent 2 as successful.
+- Agent 3 [run 43719761724](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719761724): workflow SUCCESS; signature verification job `132828990792` SUCCESS; audit job `132829009661` SUCCESS; artifact `14164380580`, SHA-256 `acaafa4d269855c93b7b7d192f91fab3bd975bae5973f64959981bad648c1bad`; PR [#647](https://github.com/VlDMlNSh/mediahub-os/pull/647) OPEN, non-draft, head `944e40a434b36fbf946522b4bdb97686c6437cf0`. Exact-head checks 0; formal reviews 0; review threads 0.
+- Disposition: 2/3 child workflows SUCCEEDED; 1/3 FAILED; overall controller FAILED. Agent PRs #647/#648 are unreviewed and unqualified. No merge or deployment.
+
+### Six-role Cloud Pool policy — design only
+
+- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch `feat/six-agent-roster-policy-2026-11-15`, head `290966b7dd17c72411c2f6d8b9db7d9d930f1a2d`, base default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`: OPEN / DRAFT / UNMERGED.
+- Policy blob `d6d087d3f0351e263e3c05d00589a58f93d66818`; test blob `74924d21631b3baa474b312de82f143f69c682b2`; workflow blob `27c57b86ecd1c9fc1aad7bd10bbdc4a75539dd3e`.
+- Exact-head Pool Contract Validation [run 43715229460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43715229460): SUCCESS for YAML/security-contract validation. No independent review or runtime qualification.
+- Six logical roles: planner, primary engineer, parallel engineer, architecture researcher, test verifier, exclusive security/provenance auditor. ChatGPT remains owner-side integrator. Policy explicitly avoids no-op/duplicate dispatch, treats credential slots separately from agents, prohibits paid fallback and quota-evasion key rotation, and fails closed on unknown quota scope.
+- This is a static policy contract only. It does NOT mean six workers are deployed or available. The MediaHub controller currently dispatches three fixed Gemini child workflows; Cloud Pool Supervisor/Worker dispatch integration is NOT RUN.
+
+### Scaling decision and next bounded step
+
+- Do NOT raise live concurrency above three or add credential slots as workers until the current 3-agent controller wave is stable and the Agent 2 PR-creation failure is diagnosed and fixed.
+- First qualify repeatable 3/3 dispatch, per-child run/job/artifact reconciliation, exact-head CI, independent reviews, quota-domain admission and failure isolation.
+- Then implement the six logical roles as an explicit Cloud Pool scheduler/worker contract with separate task envelopes, non-overlapping write scopes, exclusive security review, concurrency caps, deterministic quotas, and fail-closed routing. Add no more than two new runtime slots in the first expansion step (3 -> 5); qualify before moving to 6.
+- Integration into Cloud Pool requires its own accepted code, exact-head tests, and governance review. The MediaHub Issue #301 controller is currently only a bootstrap/parallel-assistance mechanism.
+- Cloud Pool default branch remains `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Context Window on this PR branch is a documentation working copy, not default-branch state.
+- Contour A remains IN PROGRESS / NOT ACCEPTED. Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
