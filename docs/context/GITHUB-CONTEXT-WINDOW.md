@@ -2275,7 +2275,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ---
 
-## 19.7 Verifier-capability persistence and atomic registry-bound A0 admission — 2026-11-15
+## 19.7 Historical snapshot — superseded by 19.8; PR #85 is no longer the active admission branch
 
 Live state:
 - Default branch `Основной`: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; branch API reports `protected=false`.
