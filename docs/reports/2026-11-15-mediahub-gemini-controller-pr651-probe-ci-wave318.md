@@ -16,6 +16,12 @@ This report records a cross-repository dependency relevant to the Cloud Pool's d
 - No formal PR reviews or inline review threads were returned.
 - Main branch reports protected=true, but protection.enabled=false and required status checks enforcement off in the returned branch metadata; this is not a substitute for full governance verification.
 
+## Historical trusted-main issue_comment evidence
+
+- Owner comment `/probe` on Issue #301, comment ID `6897245259`, triggered controller run #43732834570 on trusted `main` SHA `46e7395cc7a8755a096f1a8667b750177ed42011`.
+- Run conclusion: FAILURE. Observer job #132868885854 passed; `assert_probe_context` job #132868906005 failed; readiness and dispatch jobs were skipped. The job log shows the reusable workflow lacked the original event payload through `github.event_path`, so trusted caller context could not be asserted. No child agent dispatch occurred.
+- This is the exact production-trigger failure PR #651 is designed to fix. The corrected PR-head probe below is a pull_request-context test only; the owner issue_comment event must be repeated after the fix is merged to trusted `main`.
+
 ## Exact-head evidence
 
 All listed checks below completed successfully on the exact PR head:
