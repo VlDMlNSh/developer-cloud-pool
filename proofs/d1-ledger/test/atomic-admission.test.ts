@@ -158,66 +158,6 @@ beforeEach(async () => {
 
 describe("atomic qualified A0 -> D1 admission", () => {
   it("commits approval, existing task/outbox, evidence receipt and immutable attempt as one unit", async () => {
-    const registryDebug = await env.POOL_DB.prepare(`
-      SELECT q.qualification_id, q.issuer_id, q.issuer_key_id, q.registry_epoch,
-             q.registry_bundle_digest, q.registry_version, q.evidence_digest,
-             q.qualification_status, q.revoked_at, q.observed_at, q.valid_until,
-             s.current_epoch, s.current_bundle_digest, rs.accepted_at, rs.valid_until AS snapshot_valid_until,
-             k.issuer_id AS key_issuer, k.key_id, k.registry_version AS key_registry_version,
-             k.status AS key_status, k.revoked_at AS key_revoked_at, k.valid_from, k.valid_until AS key_valid_until
-        FROM pool_route_qualifications q
-        JOIN pool_route_registry_state s ON s.state_id = 1
-        JOIN pool_route_registry_snapshots rs ON rs.registry_epoch = s.current_epoch
-          AND rs.bundle_digest = s.current_bundle_digest AND rs.registry_version = s.current_registry_version
-        JOIN pool_route_registry_issuer_keys k ON k.registry_epoch = rs.registry_epoch
-          AND k.bundle_digest = rs.bundle_digest
-       WHERE q.qualification_id = ?
-    `).bind(input.route.qualificationId).first();
-    const gateDebug = await env.POOL_DB.prepare(`
-      SELECT EXISTS (
-        SELECT 1 FROM pool_route_qualifications q
-        JOIN pool_route_registry_state s ON s.state_id = 1
-        JOIN pool_route_registry_snapshots rs ON rs.registry_epoch = s.current_epoch
-          AND rs.bundle_digest = s.current_bundle_digest
-          AND rs.registry_version = s.current_registry_version
-        JOIN pool_route_registry_issuer_keys k ON k.registry_epoch = rs.registry_epoch
-          AND k.bundle_digest = rs.bundle_digest
-        WHERE q.qualification_id = ? AND q.issuer_id = ? AND q.issuer_key_id = ?
-          AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
-          AND q.registry_version = ? AND q.evidence_digest = ?
-          AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
-          AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
-          AND s.current_epoch = ? AND s.current_bundle_digest = ?
-          AND rs.accepted_at <= ? AND rs.valid_until > ?
-          AND k.issuer_id = ? AND k.key_id = ? AND k.registry_version = ?
-          AND k.status = 'active' AND k.revoked_at IS NULL
-          AND k.valid_from <= ? AND k.valid_until > ?
-      ) AS eligible
-    `).bind(
-      input.route.qualificationId, input.route.issuerId, input.route.keyId,
-      input.route.registryEpoch, input.route.registryBundleDigest,
-      input.route.registryVersion, input.route.evidenceDigest,
-      input.now, input.now - 300, input.now,
-      input.route.registryEpoch, input.route.registryBundleDigest,
-      input.now, input.now, input.route.issuerId, input.route.keyId,
-      input.route.registryVersion, input.now, input.now
-    ).first();
-    console.log("REGISTRY_DEBUG", JSON.stringify({ now: input.now, route: input.route, registryDebug, gateDebug }));
-    const manualAssertion = await env.POOL_DB.prepare(`
-      INSERT INTO pool_admission_registry_assertions (
-        admission_id, qualification_id, issuer_id, issuer_key_id,
-        registry_epoch, registry_bundle_digest, registry_version,
-        evidence_digest, checked_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(
-      "manual-debug-assertion", input.route.qualificationId, input.route.issuerId,
-      input.route.keyId, input.route.registryEpoch, input.route.registryBundleDigest,
-      input.route.registryVersion, input.route.evidenceDigest, input.now
-    ).run();
-    console.log("MANUAL_ASSERTION", JSON.stringify(manualAssertion));
-    await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_admission_registry_assertions_no_delete").run();
-    await env.POOL_DB.prepare("DELETE FROM pool_admission_registry_assertions WHERE admission_id = 'manual-debug-assertion'").run();
-    await env.POOL_DB.prepare("CREATE TRIGGER pool_admission_registry_assertions_no_delete BEFORE DELETE ON pool_admission_registry_assertions BEGIN SELECT RAISE(ABORT, 'ADMISSION_REGISTRY_ASSERTION_APPEND_ONLY'); END").run();
     const result = await admitQualifiedTask(env.POOL_DB, input);
     expect(result).toMatchObject({
       decision: "ADMITTED_QUEUED", admissionId: input.admissionId,
