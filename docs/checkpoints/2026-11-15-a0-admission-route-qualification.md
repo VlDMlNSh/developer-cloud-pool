@@ -274,3 +274,11 @@ Next: on the next user-issued `/next`, execute the single-comment bridge event a
 - Child Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744` are confirmed RUNNING. All three authorization jobs SUCCESS; Gemini execution jobs RUNNING. Final artifacts/conclusions pending.
 - This validates the event bridge and three child starts. Do not mark the live wave SUCCEEDED/VERIFIED before final run/job/artifact reconciliation.
 - Detailed evidence: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+
+
+## Live bridge smoke test — final verification
+
+- Issue #301 comment `6899094688` triggered Controller `43746281426`: COMPLETED / SUCCESS.
+- Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744`: all COMPLETED / SUCCESS; each authorization and Gemini job SUCCESS; each has a non-expired artifact with SHA-256 recorded in the canonical report.
+- Controller job log records three accepted dispatches, shared target SHA and exact run/job/artifact correlation. The per-turn ChatGPT-to-GitHub bridge is end-to-end VERIFIED.
+- Report: [Gemini three-agent /next bridge recovery](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
