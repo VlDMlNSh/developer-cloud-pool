@@ -2126,3 +2126,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: reconcile the controller transport regression against explicit Option B approval; restore and independently verify controller-only reusable calls or obtain explicit governance for a revised transport. Refresh PR #93 provenance and close the durable revocation-watermark gap. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Live-state revalidation — 2026-11-16
+
+- Default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; do not rely on older HEAD values elsewhere in this document.
+- MediaHub OS main HEAD: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #98: OPEN/DRAFT; exact-head SHA `f23cdb5484d5923e02242b3ea142397f9e1f0270`; three exact-head checks SUCCESS; formal reviews empty; non-dispatching proof only.
+- PR #99: OPEN/DRAFT; exact-head SHA `a92d97e9769d1d772e445fa4cd45c28cbc0b107d`; exact-head check-runs returned zero; reviews empty; CI NOT VERIFIED.
+- MediaHub controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` still uses REST child dispatch and `MEDIAHUB_GITHUB_TOKEN`; child workflows expose `workflow_dispatch`. This diverges from merged Option B PR #421; PR #432 reintroduced REST/HMAC transport. Effective secret presence/scope NOT VERIFIED; no secrets read and no dispatch.
+- Report: [2026-11-16 live-state revalidation](../reports/2026-11-16-cloud-pool-live-state-revalidation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Current disposition: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile controller transport governance before any Gemini launch.
