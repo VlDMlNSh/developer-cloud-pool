@@ -528,3 +528,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No source/schema/test/workflow changes, hosted D1, secrets, provider calls, dispatch, deployment or merge. Trusted time implementation NOT RUN / NOT QUALIFIED. Issue #94 native controller NOT IMPLEMENTED / NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement the DB-time admission + registry persistence changes and convert tests to engine-clock fixtures on the clean PR #87 candidate; verify rollback, replay and exact-head CI. Keep Issue #94 separate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 340 — 2026-11-15
+
+- Default branch `Основной` observed HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has no issue_comment /next trigger; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` only supports `dsh-headless-probe`.
+- Issue #94 re-read OPEN and remains the implementation requirement. Created dedicated owner-authored Cloud Pool control issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96), re-read OPEN. It defines exact top-level owner-only `/next`, exact issue/repo binding, immutable target SHA, source-comment idempotency, ambiguous-outcome reconciliation and evidence requirements. This is a control surface only; controller NOT IMPLEMENTED and dispatch remains disabled.
+- Created supplementary MediaHub Issue #301 event [comment 6900427465](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900427465). It does not prove Cloud Pool controller or child runs; Gemini execution NOT VERIFIED.
+- PR #87 remains OPEN/DRAFT/UNMERGED at `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; historical exact-head D1 proof 43712647597 and Pool Contract Validation 43712647615 SUCCESS; formal reviews 0, aggregate status empty / NOT VERIFIED. Wave 339 DB-time implementation remains NOT RUN.
+- Docs branch `docs/gemini-three-agent-next-bridge-2026-11-15` remains a non-default continuation branch; PR #95 OPEN/DRAFT/UNMERGED. Wave 340 report: [Cloud Pool-native /next control issue](../reports/2026-11-15-wave340-cloud-pool-native-next-control-issue.md).
+- No source/workflow changes, live dispatch, secrets/variables inspection, provider calls, deployment, hosted D1 or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement isolated controller + pure admission/idempotency tests on branch from immutable default HEAD, with live dispatch disabled; keep D1 trusted-clock repair separate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
