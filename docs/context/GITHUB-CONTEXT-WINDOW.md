@@ -2156,7 +2156,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Default HEAD verified: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
 - Documentation branch: `docs/next-2026-11-15-controller-d1-audit`; pre-update HEAD `e8861649615a397b27c71972ab32f057fa9f97d3`.
 - PR #98: OPEN / DRAFT / UNMERGED; HEAD `f23cdb5484d5923e02242b3ea142397f9e1f0270`; base default HEAD above; mergeable=true. Exact-head check-runs: 3/3 SUCCESS (two `contract` runs and `Validate workflow syntax and security invariants`). Formal independent review NOT VERIFIED.
-- PR #99: OPEN / DRAFT / UNMERGED; HEAD `e8861649615a397b27c71972ab32f057fa9f97d3` before this documentation refresh; base default HEAD above; mergeable=true. Exact-head check-runs: 0. CI NOT VERIFIED; formal review NOT VERIFIED.
+- PR #99: OPEN / DRAFT / UNMERGED; documentation branch HEAD after report/context/checkpoint publication: `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; base default HEAD above; mergeable=true. Exact-head check-runs at `5349ae6a07618d6be3d069ae927fc091d8ab3aba`: 0. CI NOT VERIFIED; formal review NOT VERIFIED.
 - Context Window was stale (last refreshed 2026-11-08) and is being brought current in this branch. PR #99 must not be merged until updated-head CI and review are verified.
 
 ### MediaHub Gemini Wave 318 evidence
