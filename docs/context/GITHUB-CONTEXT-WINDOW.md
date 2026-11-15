@@ -2457,3 +2457,20 @@ This overlay supersedes stale snapshot values in earlier sections; historical en
 - Next: obtain independent review of PR #650; only after exact-head governance checks and integration may one Gemini review be dispatched through controller mode `review-pr649`. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
+
+
+## Clean-stack verifier capability boundary — 2026-11-15
+
+- Default branch snapshot: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87 clean D1 proof: OPEN/DRAFT at `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; 6 ahead / 0 behind default.
+- PR #92 exact-replay integrity: OPEN/DRAFT at `7014961587759b27d2ef6e91c60ce098d077ae83`; 10 ahead / 0 behind default; exact-head D1 run 43718679258 and Pool Contract Validation run 43718679251 SUCCESS.
+- Source audit found that the clean #87/#92 stack still used a persistence API accepting caller-supplied bundle/signature/env/clock. The verifier-issued capability implementation existed in separate PR #84 lineage but was not present in the clean stack.
+- Ported the capability boundary onto PR #92 as PR #93: https://github.com/VlDMlNSh/developer-cloud-pool/pull/93. Exact head `99ca50ce11efb380efa6346a1db672585876a8b1`; parent #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; 4 ahead / 0 behind parent.
+- PR #93 exact-head D1 run 43725400300 / job 132846119246 COMPLETED/SUCCESS: syntax PASS; 11 files / 120 tests PASS / 0 FAIL; isolated second D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS. Artifact 14166093756, SHA-256 `f46cb4155f861712d1eafa9afb08ee38880d033c841aca9d8c8b1a26154a5d38`.
+- PR #93 formal reviews 0; inline threads 0; combined status contexts empty / NOT VERIFIED. PR remains OPEN/DRAFT/UNMERGED. No merge.
+- Important remaining boundary: capability proves verifier-issued object provenance only inside the module. Production call-site enforcement that the verifier receives the actual platform env binding and trusted platform clock is NOT IMPLEMENTED / NOT QUALIFIED. No production root custody, hosted D1, Worker entrypoint, provider evidence, dispatch or deployment.
+- No secrets read, provider calls or paid fallback. Dispatch remains false.
+- Report: [2026-11-15 verifier capability clean-stack report](../reports/2026-11-15-verifier-capability-clean-stack.md).
+- Next: explicit trusted platform-env/clock injection boundary and adversarial tests for request-controlled env/time, root substitution, key rotation, revocation race and rollback. Keep Worker inert and dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
