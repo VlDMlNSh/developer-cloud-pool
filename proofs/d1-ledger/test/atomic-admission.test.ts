@@ -17,8 +17,9 @@ const input = {
     providerId: "ollama", modelId: "qwen-local", issuerId: "local-authority",
     accountRef: "local-account-1", credentialHandleRef: "local-handle-1",
     quotaDomainId: null, costClass: "local", capabilityId: "pool.execute.local",
-    evidenceRef: "local-evidence:qualification-001", evidenceDigest: "d".repeat(64),
-    observedAt: NOW - 60, revocationVersion: 1, registryVersion: "registry-v1"
+    capabilityProfile: "dsh-headless-probe", evidenceRef: "local-evidence:qualification-001",
+    evidenceDigest: "d".repeat(64), observedAt: NOW - 60, validUntil: NOW + 3600,
+    revocationVersion: 0, registryVersion: "registry-v1"
   },
   attempt: {
     attemptId: "attempt-atomic-001", inputDigest: "e".repeat(64),
@@ -28,7 +29,7 @@ const input = {
 
 async function seed(overrides = {}) {
   const a = { ...input.approval, ...overrides.approval };
-  const r = { ...input.route, issuedAt: NOW - 60, ...overrides.route };
+  const r = { ...input.route, ...overrides.route };
   await env.POOL_DB.prepare(`
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
@@ -40,12 +41,13 @@ async function seed(overrides = {}) {
     INSERT INTO pool_route_qualifications (
       schema_version, qualification_id, route_id, provider_id, model_id, issuer_id, account_ref,
       credential_handle_ref, quota_domain_id, cost_class, capability_id,
-      evidence_ref, evidence_digest, observed_at, issued_at, expires_at, revocation_version, registry_version
+      capability_profile, evidence_ref, evidence_digest, observed_at, valid_until,
+      revocation_version, registry_version
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(r.schemaVersion, r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
-    r.accountRef, r.credentialHandleRef, r.quotaDomainId, r.costClass,
-    r.capabilityId, r.evidenceRef, r.evidenceDigest, r.observedAt ?? NOW - 60,
-    r.issuedAt ?? NOW - 60, NOW + 3600, r.revocationVersion, r.registryVersion).run();
+    r.accountRef, r.credentialHandleRef, r.quotaDomainId, r.costClass, r.capabilityId,
+    r.capabilityProfile, r.evidenceRef, r.evidenceDigest, r.observedAt, r.validUntil,
+    r.revocationVersion, r.registryVersion).run();
 }
 
 beforeEach(async () => {
@@ -104,6 +106,8 @@ describe("atomic qualified A0 -> D1 admission", () => {
     });
     const rows = await env.POOL_DB.prepare(`
       SELECT l.state, l.admission_id, t.task_key, o.status AS outbox_status,
+             o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
+             o.evidence_digest AS outbox_evidence_digest,
              a.evidence_digest, a.dispatch_enabled, p.status AS attempt_status,
              r.assertion, r.dispatch_enabled AS receipt_dispatch
         FROM pool_approval_ledger l
@@ -117,6 +121,8 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(rows).toMatchObject({
       state: "consumed", admission_id: input.admissionId,
       task_key: input.taskKey, outbox_status: "pending",
+      outbox_admission_id: input.admissionId, outbox_attempt_id: input.attempt.attemptId,
+      outbox_evidence_digest: input.route.evidenceDigest,
       evidence_digest: input.route.evidenceDigest, dispatch_enabled: 0,
       attempt_status: "prepared", assertion: 1, receipt_dispatch: 0
     });
@@ -181,7 +187,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
 
   it("rejects stale route evidence before consuming approval", async () => {
     const staleApproval = { ...input.approval, approvalId: "approval-stale-001" };
-    const staleRoute = { ...input.route, qualificationId: "route-stale-001", observedAt: NOW - 301, issuedAt: NOW - 301 };
+    const staleRoute = { ...input.route, qualificationId: "route-stale-001", observedAt: NOW - 301 };
     await seed({ approval: staleApproval, route: staleRoute });
     const staleInput = {
       ...input, admissionId: "admission-stale-001", approval: staleApproval, route: staleRoute
