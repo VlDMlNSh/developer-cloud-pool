@@ -7,7 +7,9 @@ on:
   pull_request:
     paths:
       - "scripts/next-admission.mjs"
+      - "scripts/next-dispatch-ledger.mjs"
       - "test/next-admission.test.mjs"
+      - "test/next-dispatch-ledger.test.mjs"
       - ".github/workflows/next-admission-contract.yml"
 
 permissions:
@@ -30,6 +32,8 @@ jobs:
       - name: Syntax checks
         run: |
           node --check scripts/next-admission.mjs
+          node --check scripts/next-dispatch-ledger.mjs
           node --check test/next-admission.test.mjs
-      - name: Adversarial admission tests
-        run: node --test test/next-admission.test.mjs
+          node --check test/next-dispatch-ledger.test.mjs
+      - name: Adversarial admission and ledger tests
+        run: node --test test/next-admission.test.mjs test/next-dispatch-ledger.test.mjs
