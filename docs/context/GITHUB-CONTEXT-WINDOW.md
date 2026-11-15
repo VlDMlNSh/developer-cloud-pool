@@ -1973,3 +1973,12 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Documentation PR #73: OPEN / DRAFT, base `Основной` at `3010d6c95f755bb145ee10c201d810dca21916c2`, head is the documentation-only branch. It is not merged because default branch protection requires changes through a PR.
 - Ruleset `26550182` (`Основной — verified`) is active. It requires a PR, thread resolution, and zero configured approving-review count; its required-status-check list is empty. This does not amount to an independent review or qualification.
 - No merge, production deployment, hosted D1, external login, provider call, secret read or dispatch.
+
+## Qualified evidence metadata implementation update — 2026-11-15
+
+- Implementation branch advanced to `923710ac9e67e0aca2680e020db2dc8c46d2437d` (12 commits ahead of PR #67 base `a53f6232bd5b50d3e150addf528b8e722002f9dd`, 0 behind).
+- Migration 0011 now includes `schema_version`, immutable `evidence_ref`, `observed_at`, `issued_at`, `expires_at`, and `revocation_version`; revocation is monotonic and requires a strictly increasing version. Adapter binds those fields during initial admission, commit receipt, and exact replay read-back. Seven atomic tests pass.
+- Latest exact-head workflow run `43689082459`: COMPLETED / SUCCESS at `923710ac9e67e0aca2680e020db2dc8c46d2437d`. 7 test files passed; atomic suite 7 passed; upgrade-binding smoke 1 passed; frozen schema-0010 fixture 2 passed. Artifact ID `14151432729`, SHA-256 `892844fc9fb587155a5353d8639da3218581488bd9e86737d8682a650a1bb90d`.
+- Qualification is still not complete: no cryptographic issuer/signature verification, no live provider/account truth, and no independent authority for the revocation watermark. The D1 row is assumed to be pre-populated by a trusted authority. No route/provider is production-qualified.
+- PR #72 remains OPEN/DRAFT, stacked on PR #67; PR #73 remains OPEN/DRAFT, docs-only to default. No merge. Dispatch false. Contour A remains BLOCKED / NOT ACCEPTED.
+- Next: implement/qualify the trusted evidence verifier and authority write boundary, then add tests proving only that authority can populate qualification records; retain exact-head CI and stack reconciliation gates.
