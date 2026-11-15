@@ -90,3 +90,12 @@ Canonical detailed evidence: [Wave 332 execution report](../reports/2026-11-15-n
 Canonical Context Window: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md).
 Cloud Pool Issue #94: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94
 MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Latest ChatGPT /next source event — 2026-11-15
+
+- Source comment: `6899808366` — https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899808366
+- Read-back confirms exact owner-authored body `/next`.
+- Controller and three child run/job/artifact evidence: NOT VERIFIED in this pass because the available GitHub connector has no workflow-run listing operation. No direct child workflow dispatch was attempted.
+- The bridge is supplementary MediaHub execution only, not Cloud Pool-native Gemini execution. Keep `POOL_DISPATCH_ENABLED` fail-closed.
+- This record must not be promoted to SUCCEEDED/VERIFIED until controller and all three child jobs/artifacts are independently reconciled.
