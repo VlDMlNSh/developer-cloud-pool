@@ -296,3 +296,12 @@ Next: on the next user-issued `/next`, execute the single-comment bridge event a
 - Cloud Pool default branch remains `Основной`, HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Pool Supervisor still has no issue_comment trigger and Pool Worker remains `dsh-headless-probe`; MediaHub execution is not Cloud Pool-native execution.
 - No source workflow, secrets, variables, branch protection, or dispatch authorization changed. Secret values were not read.
 - MediaHub Gemini three-agent wave: VERIFIED. Cloud Pool-native Gemini: NOT IMPLEMENTED / NOT QUALIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+### Wave 332 output review and CI disposition
+
+- Agent output ZIPs were downloaded and inspected. Agent 1 artifact reports a bounded evidence-only pass and Draft PR #666; live backend checks were suppressed and the zero-cost entitlement gate remains pending. Agent 2 artifact reports static/structural contract-to-test traceability and Draft PR #664; no qualification tests were run. Agent 3 artifact reports a static security/provenance audit and Draft PR #665; runner isolation enforcement and HMAC key rotation remain residual risks.
+- PR heads: #664 `750e3944675ef908c7f5e81ade7f591f319cbedf`; #665 `d9be71e1bce02ef94ed4c126bf4cb5ad7fed29c4`; #666 `4f564b93613786bbe8a30aad63cda3b68ab861ef`. All three base SHA values equal the immutable dispatch target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- All three PRs are OPEN / DRAFT / UNMERGED, with one evidence-only file changed each, zero formal reviews and zero review threads. Five required workflow runs per PR ended `action_required`; jobs endpoints returned no jobs. Therefore PR CI is NOT VERIFIED and no tests are evidenced as run.
+- No merge, manual approval, deployment, provider call, or secret read was attempted. Keep all three Draft PRs unmerged pending exact-head CI, formal independent review, and governance checks.
+- Full diffs, PR head SHAs, and CI evidence: [Wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
