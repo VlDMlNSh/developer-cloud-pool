@@ -2221,3 +2221,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Agent 3 43747233840 SUCCESS; jobs 132913119761/132913150602 SUCCESS; artifact 14174966027, SHA-256 6bf730398cd7e30627644dd271b67231234fc340e0e680f6d973026ca325d185; Draft PR #669 head dc58adfcbb00892958157c296e7aed3c55fb45cb.
 - PRs #667/#668/#669 remain OPEN / DRAFT / UNMERGED, zero formal reviews/threads. Five CI workflows per head concluded action_required, no jobs/check-run contexts exposed: exact-head CI NOT VERIFIED. Agent evidence is not a substitute for test execution or independent qualification.
 - Full record: [wave 333 report](../reports/2026-11-15-next-wave-333-chatgpt-gemini-cloud-pool-pass.md).
+
+
+## /next Wave 335 — 2026-11-15
+
+- Source event: MediaHub Issue #301 comment [6899356314](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899356314).
+- Controller run [43748188993](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43748188993), target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission job 132916049955 SUCCESS. Dispatch/monitor job 132916076078 remained IN_PROGRESS at last read-back; controller terminal state NOT VERIFIED.
+- Gemini Agent 1 run 43748208364: jobs 132916112480/132916130527 SUCCESS; artifact 14175082481 SHA-256 23d054317f82d5f0c531f7c536ea7e5973f14c169a8487244c776de64fe7622e.
+- Gemini Agent 2 run 43748210183: jobs 132916120140/132916148283 SUCCESS; artifact 14175177073 SHA-256 45b49d9c3c09886f8e0f09ab90f0986ba82843cecded8c9ad414d31509a59665.
+- Gemini Agent 3 run 43748212060: jobs 132916124123/132916154030 SUCCESS; artifact 14174513930 SHA-256 5d2f7a3366d1d74b02776bc5b5e9ce422ae63e727ccb042961b61ec76c4d1178.
+- All three child runs completed SUCCESS and artifact metadata is non-expired. Controller monitor remained RUNNING; do not claim full controller completion. Full details: [Wave 335 report](../reports/2026-11-15-next-wave-335-chatgpt-gemini-cloud-pool-pass.md).
+- Cloud Pool default HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN. Supervisor has no issue_comment trigger; POOL_DISPATCH_ENABLED remains fail-closed; Worker only allows dsh-headless-probe. MediaHub Gemini remains a supplementary bridge, not Cloud Pool-native execution.
+- Proof CI SUCCESS on corresponding PR heads: PR #87 run 43712647615/job 132807363825; PR #86 run 43710912595/job 132802030185; PR #92 run 43718679258/job 132825665733; PR #93 run 43736264768/job 132879427578. No formal reviews on these PRs; all remain draft/unmerged. No default-branch runtime changes.
+- A0/D1 local proof only; hosted D1, root custody/key lifecycle, monotonic revocation authority, live quota/account qualification and Supervisor integration remain NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
