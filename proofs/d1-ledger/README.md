@@ -125,3 +125,19 @@ Migration `0013_persist_verified_route_registry.sql` and `persistTrustedRouteReg
 - Exact retries return the existing persisted snapshot; conflicting reuse of an epoch is denied. Every response remains `dispatch: false`.
 
 **Important remaining boundary:** this writer is not yet wired into `admitQualifiedTask`. The A0 admission SQL still needs to re-check the active snapshot pointer, route snapshot binding, issuer-key status/validity and revocation watermark inside the same D1 batch that consumes approval and writes the attempt/outbox/receipt. Therefore this persistence proof does not qualify a route for production admission. No hosted D1, provider call, secret read, dispatch or deployment is included.
+
+
+## Atomic admission bound to the active durable registry — 2026-11-15
+
+The local A0 adapter now requires every route qualification to carry the exact issuer key ID, registry epoch and registry bundle digest written by the root-signed registry persistence adapter. Inside the same D1 batch as approval consumption, task/outbox binding, attempt creation and commit receipt, it re-checks:
+
+- the route qualification's immutable registry binding;
+- the singleton active registry pointer and exact snapshot epoch/digest/version;
+- snapshot acceptance and validity window;
+- issuer ID + key ID + registry version;
+- issuer-key active status, revocation state and validity interval;
+- route evidence freshness, validity and revocation version.
+
+The receipt assertion repeats the active snapshot and issuer-key checks, so a missing or stale registry binding cannot yield a committed receipt. Exact retry performs the same active trust checks before returning an existing receipt. Dispatch remains hard-coded false.
+
+The atomic-admission test fixtures now seed registry-bound route rows. Added adversarial cases reject a stale epoch and a revoked issuer key without consuming approval. Synthetic fixture registry records are test-only; the separate registry persistence suite proves root-signature verification and atomic durable writing. This remains a local proof, not a live provider or production trust qualification.
