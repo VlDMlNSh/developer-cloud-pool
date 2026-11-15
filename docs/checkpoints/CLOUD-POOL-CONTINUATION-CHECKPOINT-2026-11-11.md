@@ -382,3 +382,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [2026-11-15 controller-wave readiness and D1 runtime-boundary recheck](../reports/2026-11-15-controller-wave-readiness-and-d1-runtime-boundary-recheck.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
+
+
+## Gemini /next history recovery — 2026-11-15
+
+- Corrected previous status using fresh Actions evidence: four owner-authored Issue #301 exact `/next` comments (6898434080, 6898453275, 6898479858, 6898513683) each produced one successful MediaHub controller run (43741451816, 43741600025, 43741803725, 43742063927) and three successful child Gemini runs. Latest child runs: Agent 1 43742248259, Agent 2 43742249899, Agent 3 43742251541; all signature and engineering jobs succeeded and all three non-expired artifacts have API-verified digests.
+- Shared immutable MediaHub target: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Controller blob: `7799f0fc713c5bd772ce6820df40a926a83445c8`. Full run IDs, job IDs and artifact digests: [Gemini /next run-history recovery report](../reports/2026-11-15-gemini-next-run-history-recovery.md).
+- Idempotency: controller source checks existing issue_comment workflow runs by source comment ID; four distinct comment IDs each map to one observed controller run. This is verified for these events, not an assertion that chat text itself emits an event.
+- Separate Cloud Pool evidence: default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Supervisor schedule run 43739946406 and Issue #94 run 43738088402 succeeded. They do not represent Gemini executions. Cloud Pool Issue #94 remains open; Cloud Pool Supervisor lacks issue_comment trigger and Pool Worker only supports dsh-headless-probe. Cloud Pool-native Gemini dispatch remains NOT IMPLEMENTED / BLOCKED.
+- No secrets were read; no dispatch variable changed; no direct child dispatch, merge, deployment or acceptance.
+- Next: implement a minimal Cloud Pool-native owner-only exact-event admission and replay/idempotency contract, fail-closed with adversarial tests; leave live dispatch disabled until governance, exact-head CI, metadata checks, trusted-main no-secret probe and independent review pass.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
