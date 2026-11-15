@@ -2271,3 +2271,31 @@ Next: implement the typed adapter; only verifier-issued capability is accepted; 
 
 No merge, dispatch, secrets, provider calls, hosted D1, deployment, Gemini, independent audit or Contour B work. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 19.7 Verifier-capability persistence and atomic registry-bound A0 admission — 2026-11-15
+
+Live state:
+- Default branch `Основной`: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; branch API reports `protected=false`.
+- Active ruleset #26550182: PR + review-thread resolution; 0 required approvals and no required status checks.
+- PR #81 is OPEN / DRAFT / UNMERGED, actual base PR #77 branch HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`, current head `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; exact-head CI success, 0 formal reviews/threads.
+- PR #84 is OPEN / DRAFT / UNMERGED, stacked on PR #81 at exact parent `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`. It adds module-private WeakMap capability binding exact deep-frozen bundle snapshot + root signature to original verifier result. Persistence accepts only that genuine result. Copied/forged/denied result tests and caller-input mutation tests pass. Exact PR run [43709839460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709839460), job `132798791200`: SUCCESS; push run [43709824427](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709824427), job `132798745644`: SUCCESS. Artifact `14160336008`, SHA-256 `6aaf530000d576263782736f915af09740aea4670d6c526fcca73c30715b1614`.
+- PR #85 is OPEN / DRAFT / UNMERGED, stacked on PR #84 exact parent `390ef0a09af2585c79f7e15d789343eb23fa370f`; HEAD `b8b0252a2389406b5c6a22c27ef9885cd2faa498`, 16 commits ahead / 0 behind. It carries registry-bound admission from PR #83, adds migration 0014 read view over the active registry pointer/snapshot/issuer key, verifies caller route evidence digest against canonical bytes before first admission, and checks current snapshot and issuer validity in admission, retry and receipt. SQL uses a compact digest-bound predicate to avoid SQLite expression-tree depth overflow. Exact PR run [43710547450](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710547450), job `132800929790`: SUCCESS. Exact push run [43710543522](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710543522), job `132800917969`: SUCCESS. Workers runtime: 11 test files / 118 tests PASS / 0 FAIL; migration smoke and frozen schema-0010 fixture passed. PR artifact `14159912561`, SHA-256 `239e9ddc8bb482c558431ba51dc8e7f0d43ac180f84bd03bcb16eaf1f1eb4b49`.
+- PR #84 and #85 formal reviews/inline threads: 0/0. Keep Draft and unmerged.
+- PR #80 closed / unmerged as superseded by #84. PR #82 closed / unmerged because it defined a competing migration 0013 with duplicate issuer/route table names. PR #83 closed / unmerged because its branch failed exact-head CI with SQLite expression-tree depth 100; its changes were carried forward and corrected in #85. No merges occurred.
+- PR #81, #84, #85 stack is the canonical active persistence/admission path. Do not revive or merge #80/#82/#83.
+
+Key implementation detail:
+- PR #81 migration 0013 is the only registry persistence schema migration. PR #85 adds 0014 view. Do not add another migration 0013.
+- PR #84 WeakMap capability protects verifier-to-persistence boundary.
+- PR #85 active-route view joins route qualifications to singleton current pointer, matching snapshot and issuer key; active/revoked/validity checks are part of the same D1 batch. Canonical route evidence digest is recomputed before first admission; exact retry identity still compares full route identity.
+- Public denial reason remains generic; SQL internals are not leaked.
+
+Remaining: no production root-key custody/configuration, hosted D1, remote concurrency, production provider routing/quota, Web Console deployment, Supervisor/Worker end-to-end execution or persistence restoration qualification. No secret reads, provider calls, deployment, dispatch, Gemini, independent audit or Contour B. `dispatch:false` remains.
+
+Next: ordered formal review/reconciliation of PR #81 → #84 → #85, then compose registry-bound A0 transaction with actual Supervisor/Worker task-envelope/outbox/receipt flow in local proof. Preserve no-dispatch boundary. Only after web console/executor/persistence/quota/governance gates may launch qualification start.
+
+Report: [verifier capability and registry-bound admission](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
