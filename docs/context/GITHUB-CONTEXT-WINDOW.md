@@ -2248,3 +2248,61 @@ At last observation, all three engineering jobs were executing the official Gemi
 
 ### Next primary-work rule
 Continue from the current Contour A checkpoint in ChatGPT. First reconcile any newly completed Agent 1 output without waiting; then select and execute one non-overlapping, bounded, verifiable Contour A engineering task. Keep the Gemini agents' results in parallel review lanes.
+
+
+
+## 20. /next primary engineering pass — A0→D1 exact replay integrity (2026-11-15)
+
+### Primary ChatGPT engineering change
+- Reconciled the current default: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Parent local proof PR #87 remains OPEN/DRAFT/UNMERGED at `integration/d1-ledger-clean-main-2026-11-15@8cc7b12948865bb0e13ce099386c09f3ae32b4f5`.
+- Identified an exact-replay evidence gap: the idempotent A0 admission path verified the admission identity and current route, but did not re-read and verify the immutable commit receipt, task/outbox binding and registry assertion before returning `ADMISSION_ALREADY_COMMITTED`.
+- Implemented a bounded fail-closed hardening in PR #92: [https://github.com/VlDMlNSh/developer-cloud-pool/pull/92](https://github.com/VlDMlNSh/developer-cloud-pool/pull/92).
+- PR #92 branch: `fix/a0-admission-exact-replay-receipt-integrity-2026-11-15`; exact head `7014961587759b27d2ef6e91c60ce098d077ae83`; base is PR #87 branch at `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`.
+- Changed only `proofs/d1-ledger/src/admit-qualified-task.mjs` and `proofs/d1-ledger/test/atomic-admission.test.ts`; 4 commits / 2 files / 97 additions / 1 deletion relative to the parent.
+- Replay now verifies admission, commit receipt, consumed approval, task/current attempt, task outbox, and registry assertion identity/digests, including dispatch-disabled flags. Missing/corrupt durable evidence returns `ADMISSION_RECEIPT_INTEGRITY_MISMATCH`, not success.
+- A later valid retry timestamp is accepted by binding the assertion time to the original committed `admitted_at`, not the retry's clock.
+- Adversarial test simulates privileged deletion of append-only receipt/assertion rows; replay fails closed. Existing exact-replay test now uses a later timestamp.
+
+### Exact-head CI and artifact
+- [Isolated D1 Ledger Proof run 43718679258](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43718679258), job `132825665733`: SUCCESS on exact head `7014961587759b27d2ef6e91c60ce098d077ae83`; 11 test files / 120 tests PASS / 0 FAIL; syntax PASS; isolated second D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS.
+- Artifact ID `14163925436`, SHA-256 `83961df3a8caa97c67d29f70aa34bf4584ce0a53827e802ebb2fec8d8e051475`.
+- [Pool Contract Validation run 43718679251](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43718679251), job `132825665679`: SUCCESS on the same exact head; dispatch-disabled invariant, YAML syntax and pool security contracts PASS.
+- Commit check-runs endpoint: exactly 2 completed SUCCESS checks on the exact SHA. Combined commit-status endpoint: 0 contexts / PENDING; do not claim aggregate contexts green.
+- PR #92 remains OPEN/DRAFT/UNMERGED; reviews 0, inline threads 0. Local Workers-runtime proof only; no hosted D1, deployment, dispatch, merge or qualification.
+
+### Cloudflare read-only resource reconciliation
+- Cloudflare connection returned exactly one accessible standard account.
+- D1 databases: 0. Worker scripts: 0. Existing workers.dev subdomain: `jarvis-developer-cloud-pool`.
+- No resources were created or modified; no secrets were read.
+- Account type `standard`, existing subdomain and empty resource inventory do not establish Workers Free entitlement, billing status or remaining quota. Billing scope was not queried. Account-specific Free entitlement remains NOT VERIFIED.
+- Hosted D1 contention qualification remains BLOCKED / NOT RUN until entitlement, owner authority and a separate no-production synthetic resource boundary are established. Do not provision speculatively.
+
+### Current Cloud Pool PR and governance snapshot
+- Default branch `Основной` remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Active ruleset `26550182` is named `Основной — verified`, but its actual rules require PR and review-thread resolution only: required approvals = 0, no required checks, no CODEOWNERS review, no bypass actors. Do not infer independent review enforcement from the ruleset name.
+- PR #87: OPEN/DRAFT/UNMERGED, parent D1 local proof, 119 tests on its exact head.
+- PR #88: OPEN/DRAFT/UNMERGED; check-runs at inspected head 0 / NOT VERIFIED.
+- PR #89: OPEN/DRAFT/UNMERGED; one workflow syntax/security check SUCCESS at exact head `290966b7dd17c72411c2f6d8b9db7d9d930f1a2d`; no broader qualification.
+- PR #90: OPEN/DRAFT/UNMERGED; exact-head check-runs 0 / NOT VERIFIED. Inventory of 24 credential slots is configuration metadata, not proof of secret presence, validity, independent quota domains or free eligible routes.
+- PR #91: OPEN/DRAFT/UNMERGED; exact-head check-runs 0 / NOT VERIFIED.
+- PR #92: OPEN/DRAFT/UNMERGED; exact-head D1 and Pool Contract workflows SUCCESS as above.
+- None of these PRs was merged in this pass.
+
+### Parallel Gemini lane — no waiting and no duplicate dispatch
+- Existing controller run [43717570433](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717570433) remains RUNNING at last observation; controller job `132822329594` still monitoring. No additional /next trigger comment was created in this pass.
+- Agent 1 run [43717589177](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717589177): signature verification SUCCESS; engineering job `132822386522` still RUNNING; no PR/artifact available at last observation.
+- Agent 2 run [43717590852](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717590852): workflow SUCCESS; artifact `14163690037`, digest `sha256:d41d6474718ff87dbaf032f1beb8104a2d8735a4d4111b1818795e136a8484f3`; PR #645 OPEN/DRAFT at `ee98f99e750b6fd29573dd7ced0b88ddc888a3c5`. Exact-head checks 0; reviews/threads 0.
+- Agent 3 run [43717592625](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717592625): workflow SUCCESS; artifact `14162663618`, digest `sha256:613c817a043a6c9df6380e673f3f79fe4b6e83b4a18e324c943d0f58e03a1595`; PR #644 OPEN/non-draft at `f5b5f0667c0615ef13161404934b4c5a7cb04c30`. Exact-head checks 0; reviews/threads 0.
+- Agent 2 and Agent 3 submissions are not independently qualified. Agent 1 remains in progress. Gemini jobs do not block primary ChatGPT development.
+- No secrets, provider credentials, model API keys or paid fallbacks were read or invoked.
+
+### Current disposition and next bounded step
+- A0→D1 local proof: IMPLEMENTED; exact-head CI VERIFIED at PR #87 and #92 heads; PR #92's replay-integrity hardening is a separate stacked Draft change.
+- Root-signed route registry persistence and same-batch assertion are represented in PR #87's local proof; no hosted service or production issuer has been qualified.
+- Hosted D1: NOT RUN; account entitlement NOT VERIFIED.
+- Supervisor durable single-use claim, trusted issuer API, trusted production clock, lease/fencing/recovery, real hosted contention, and Worker/Supervisor integration remain NOT QUALIFIED.
+- Production dispatch remains FAIL-CLOSED. Contour A NOT ACCEPTED. Contour B DEFERRED.
+- Next: continue the issuer-authenticated claim-service boundary and trusted-time contract on the local proof stack, without enabling runtime dispatch or provisioning hosted resources. Reconcile Agent 1 output when available, but do not wait for it.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
