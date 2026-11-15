@@ -68,3 +68,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: independent review/governance, metadata-only gate verification, trusted-main no-secret probe, ruleset-governed integration, then one controlled 3/3 dispatch and full reconciliation.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — owner-only no-secret probe path added
+
+- PR #649 now includes exact owner-only `/probe` comment trigger on Issue #301; reusable observer checks event payload and trusted main ref. It cannot enter `readiness_gate` or `dispatch_and_monitor`.
+- Latest head `309fa6a4af866f57c7de07006b375780b726302d`; exact-head CI 11 checks: 9 SUCCESS, 2 expected SKIPPED; contract tests PASS (3 trigger-path, 11 provenance), actionlint PASS.
+- PR comment: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896878604.
+- Not yet on main; `/probe` not executed. Live 3/3 Gemini remains NOT RUN / NOT VERIFIED. Actions secret/variable metadata NOT VERIFIED. No secrets read, provider calls, merge, deploy or qualification.
+- Next: merge only after gates, then owner-authored `/probe` on Issue #301; verify trusted-main no-secret; only then controlled `/next` 3/3 run.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
