@@ -302,8 +302,9 @@ export async function admitQualifiedTask(db, input) {
       attemptNumber: committed.attempt_number, dispatch: false,
       reason: "ATOMIC_A0_D1_COMMIT_CONFIRMED"
     };
-  } catch (error) {
-    const diagnostic = String(error?.message || "UNKNOWN").replace(/[^A-Z0-9_]/gi, "_").slice(0, 80);
-    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS_" + diagnostic);
+  } catch {
+    // Do not expose database/parser diagnostics to callers; preserve a stable
+    // fail-closed public reason while CI retains the detailed job log.
+    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS");
   }
 }
