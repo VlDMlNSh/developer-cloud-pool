@@ -2530,3 +2530,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [PR #649 live branch/PR provenance remediation](../reports/2026-11-15-pr649-live-branch-provenance-validator-remediation.md).
 - Next: independent review/governance; metadata-only verification of Actions variables/secrets; trusted-main no-secret probe; then ruleset-governed integration and one controlled 3/3 dispatch. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — owner-only no-secret `/probe` path added to PR #649
+
+- Extended PR #649 controller proposal with exact owner-authored `/probe` on Issue #301. It runs only the reusable no-secret context observer; `readiness_gate` and `dispatch_and_monitor` do not accept `/probe`. The reusable observer verifies trusted `main` workflow ref and exact event payload.
+- Latest PR #649 head `309fa6a4af866f57c7de07006b375780b726302d`; base `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED.
+- Exact-head CI: 11 checks, 9 SUCCESS, 2 expected SKIPPED, no failures/pending. Contract run `43730102946`, job `132860465272`: SUCCESS; trigger-path tests 3/3 PASS; provenance tests 11/11 PASS; actionlint PASS.
+- PR follow-up: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896878604.
+- This enables a safe trusted-main no-secret probe after merge without provider calls. It has NOT been run because the workflow change is still only in the unmerged PR. The owner-authored `/next` path remains separate and dispatches Gemini only if batch gates pass.
+- No Gemini dispatch, provider call, secret-value read, merge, deployment or qualification. Actions variable/secret metadata NOT VERIFIED; live 3/3 NOT RUN / NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [PR #649 live branch/PR provenance remediation](../reports/2026-11-15-pr649-live-branch-provenance-validator-remediation.md).
+- Next: after integration, post `/probe` to Issue #301 and verify trusted-main/no-secret; verify Actions metadata without values; then run one controlled 3/3 `/next` dispatch through the controller and reconcile IDs/digests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
