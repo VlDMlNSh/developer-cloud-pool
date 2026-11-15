@@ -2202,3 +2202,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Atomic A0 admission bound to durable route registry](../reports/2026-11-15-atomic-admission-bound-registry.md).
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean-main D1 proof reconstruction — 2026-11-15
+
+- Clean integration branch `integration/d1-ledger-clean-main-2026-11-15`, HEAD `3436f5f87ed1b237122ea0444265302d99cf2d02`, parent/current default `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87 — OPEN / DRAFT / UNMERGED, 49 added files, 1 ahead / 0 behind.
+- Reconstructed isolated `proofs/d1-ledger` subtree (migrations 0001–0014, adapters, tests, frozen fixture, package lock) and validation workflow by reusing exact blob SHAs. Did not transplant divergent commit history; new commit has only current default as parent.
+- Exact-head D1 workflow [43711509028](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711509028), job `132803868550`: SUCCESS; 11 files / 118 tests; syntax, second D1 binding/migration smoke, frozen schema-0010 upgrade smoke and artifact upload all PASS. Artifact `14159784811`, SHA-256 `6bea4eb8fb91dd6f50d47dbce46efce7fd799c0f93e3a88c6495cea4e392179b`.
+- Exact-head pool contract workflow [43711509085](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711509085), job `132803869022`: SUCCESS; dispatch-disabled invariant, YAML syntax and pool security contract checks PASS.
+- Combined commit status contexts remain 0 / NOT VERIFIED; formal reviews 0; inline threads 0.
+- This is an isolated proof subtree, not production schema adoption. No hosted D1, provider calls, secret reads, deployment, Worker execution or dispatch.
+- Epoch-advance race interleaving remains NOT VERIFIED. Independent review and production qualification NOT RUN.
+- Next: add concurrent registry epoch advance vs admission coverage on clean branch; rerun exact-head workflows.
+- Report: [Clean-main D1 proof reconstruction](../reports/2026-11-15-clean-main-d1-ledger-reconstruction.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
