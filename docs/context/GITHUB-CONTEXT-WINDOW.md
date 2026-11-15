@@ -2129,3 +2129,12 @@ This section supersedes earlier statements in this file that the MediaHub Gemini
 - Four waves verify the MediaHub three-agent dispatch path only. Cloud Pool web console, worker qualification, durable state, model routing, quota isolation, independent acceptance and Contour A remain BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 
 Recovery status: MediaHub three-agent controller path VERIFIED on four consecutive /next events; ChatGPT-to-GitHub event creation is the required per-turn bridge action; Cloud Pool-native agent dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+
+
+## Live ChatGPT /next bridge smoke test — 2026-11-15
+
+- Owner-authored comment ID `6899094688` with exact body `/next` was created through the authorized GitHub connector on MediaHub Issue #301.
+- Controller run `43746281426` started on target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission gate job `132910179205` SUCCESS; controller dispatch/monitor job `132910206815` RUNNING at last read-back.
+- Three exact child runs are confirmed: Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744`. All three signature/authorization jobs succeeded; Gemini execution jobs remain RUNNING at last observation. Artifact digests and final conclusions are pending.
+- This proves the chat-to-issue-comment event bridge works and starts the three agents. Do not claim the smoke wave is complete until child runs, jobs and artifacts are verified.
+- Detailed live evidence and correlation IDs: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
