@@ -2330,3 +2330,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile migration ancestry on one clean D1 branch, implement additive revocation event ledger + CAS head, then same-batch admission guard and adversarial tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 327 D1 migration ancestry reconciliation
+
+- Report: [Wave 327 migration ancestry reconciliation](../reports/2026-11-15-wave327-d1-migration-ancestry-reconciliation.md); commit `3d61dabf4ec684f7a7ff7eb44bf7c474b6827c13`.
+- Compared candidate refs against default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. `integration/d1-ledger-clean-main-2026-11-15` is clean (ahead 6 / behind 0) and contains canonical additive migrations 0011–0014. `fix/verified-registry-capability-clean-stack-2026-11-15` is also clean (ahead 15 / behind 0) with same 0013/0014.
+- `impl/route-registry-d1-cas-schema-2026-11-15` is diverged (ahead 101 / behind 64, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`) and has alternate migration 0013 identity. `fix/qualified-route-replay-binding-v2-2026-11-15` is also diverged (ahead 60 / behind 64, same merge base). Do not transplant either branch.
+- Canonical clean 0013 blob `40b93551c787078e5c65c8861569bb428bd2eb8b`; 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`. Existing assertions do not yet consult a separate authoritative monotonic revocation event ledger/head. No 0015/0016 migration exists on inspected refs.
+- Decision: use `integration/d1-ledger-clean-main-2026-11-15` as sole migration ancestry candidate. Do not create schema-only migration 0015 until authority trust root, signer lifecycle, subject identity, canonical signed event, trusted-time evidence and external restore anchor are explicit; premature schema would freeze unresolved security semantics.
+- No branch/schema/code/workflow/runtime changes, tests, secret reads, dispatch, provider calls, deployment or merge. Cloud Pool Gemini NOT RUN; Issue #94 controller absent. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: bind revocation authority and signer lifecycle to root-signed registry model, define canonical event bytes + strict sequence/digest CAS + trusted-time evidence, then implement verifier, migration 0015 and same-batch admission guard on clean candidate with adversarial D1 tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
