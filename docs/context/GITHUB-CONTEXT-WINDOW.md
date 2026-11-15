@@ -1982,3 +1982,62 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - No change to qualification status: trusted evidence writer, cryptographic issuer/evidence verification, canonical evidence-byte digest, live provider/account/quota proof and required CI contexts remain NOT VERIFIED / NOT QUALIFIED. No provider/login/secret/hosted D1/deploy/dispatch/merge.
 - Canonical final report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Quota-ledger ancestry reconciliation and current recovery state — 2026-11-15
+
+### Immutable snapshot
+
+- Default branch `Основной` before this Context Window publication: `cb1805ec6c42fc22acf426b23bebd2ca8d61a5db`.
+- Repository is public; current task remains Contour A only. No product work or Contour B.
+- This Context Window update is being published after the snapshot above; its resulting commit will advance default once more. Re-read live refs at the next `/next`; do not reuse comparison counts without recomputing them.
+
+### Quota ledger reconciliation
+
+- Original PR #71 source branch `fix/quota-ledger-fail-closed-2026-11-15` @ `40a49acabd12aa178d3aa136244fb4f42231fbde` was stale and diverged from the then-current default. It was not merged.
+- Clean branch: `reconcile/quota-ledger-fail-closed-2026-11-15`; PR #74: https://github.com/VlDMlNSh/developer-cloud-pool/pull/74
+- PR #74 exact HEAD: `e1b51e7165f96c8c459c672943dfa8b862879db4`; base snapshot when created: `55d9af7c71b4b51c2b886176f1d65da192900423`.
+- Three changed paths only: `scripts/provider-quota-ledger.mjs`, `scripts/provider-quota-ledger.test.mjs`, and `.github/workflows/pool-contract-validation.yml`.
+- Final blobs: source `419f010a18c61abefafbb4845c55ea7c6bb1ab90`; tests `d5291729bdcf9261fcdb9be97998a9b8158bea23`; workflow `4e47b8e8850833d930cdd457bea91c2cec507576`.
+- Added prototype-safe own-property route-key creation and `__proto__` adversarial test. The module still remains pure and secret-free.
+- Exact-head PR workflow run `43692093254`: COMPLETED / SUCCESS at exact head `e1b51e7165f96c8c459c672943dfa8b862879db4`; job `132744702990`; pool-contract validator PASS; YAML parse PASS; 13 quota-ledger tests PASS / 0 FAIL; dispatch gate observed false.
+- Combined commit status has zero contexts. Workflow is verified; required status contexts NOT VERIFIED. No independent review. PR #74 remains OPEN / DRAFT / UNMERGED.
+- At immutable default snapshot `cb1805ec6c42fc22acf426b23bebd2ca8d61a5db`, default → PR #74 is DIVERGED 5 ahead / 12 behind. PR API mergeability currently NOT VERIFIED (null); do not merge. The branch has no source conflicts reported in its last successful PR workflow, but its base is behind and must be reconciled before merge consideration.
+
+### Atomic A0→D1 proof stack
+
+- PR #72 remains OPEN / DRAFT / UNMERGED at exact HEAD `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, based on PR #67 branch @ `a53f6232bd5b50d3e150addf528b8e722002f9dd`.
+- Exact-head workflow run `43690143805` / job `132738896801`: COMPLETED / SUCCESS; Workers runtime 7 files / 93 tests, including 9 atomic admission tests; upgrade smoke 1 passed; frozen schema-0010 fixture 2 passed; artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- At default snapshot `cb1805ec6c42fc22acf426b23bebd2ca8d61a5db`: default → PR #72 DIVERGED 67 ahead / 44 behind; default → PR #67 DIVERGED 47 ahead / 44 behind. Do not merge or transplant either complete stack.
+- PR #73 documentation-only branch remains OPEN / DRAFT; at the same default snapshot it is DIVERGED 4 ahead / 17 behind. Its content was reconciled directly into canonical docs, not merged wholesale.
+
+### Governance, issue and trust status
+
+- Active ruleset `26550182` applies only to `refs/heads/Основной`; it requires PR and review-thread resolution, but sets required approving reviews to 0 and defines no required status-check contexts. Branch-protection endpoint returned 403; further branch protection is NOT VERIFIED.
+- PR #67, #71, #72, #73, #74 have no recorded independent reviews in the inspected review lists. Independent technical/security/governance audit remains deferred until the pool is operational, per project decision.
+- Issue #70 remains OPEN. Added reconciliation comment `6891408074` with current PR #72/#74 evidence and explicit trust limits.
+- The quota ledger is a selector/state machine, not an evidence authority. It does not authenticate provider issuer signatures, canonical evidence bytes, account identity, or live quota. The trusted Qualified Route Evidence writer/verifier remains NOT IMPLEMENTED / NOT QUALIFIED.
+- Atomic admission remains IMPLEMENTED in an isolated D1 proof only. Qualified Route Evidence remains NOT QUALIFIED. Dispatch remains hard-coded false / DISABLED.
+- No provider login/call, secret read, hosted D1, Worker deployment, executor qualification, production resource creation, independent audit or merge occurred.
+
+### Documentation publication evidence
+
+- Report: [Quota-ledger ancestry reconciliation](../reports/2026-11-15-quota-ledger-ancestry-reconciliation.md); final report blob `34ee29d37e1a052d8986607255f84033f563976f`.
+- Continuation checkpoint latest commit: `0ff34dd5eb8c288cf5a921c2603549712dfef448`; blob `641fa768b511332956a0662bd91b08c4fc49e488`.
+- Route qualification checkpoint latest commit: `09f58d2040c137badb218193bc8fd2dd78230918`; blob `8b363714e173bb8153f1bb82137fbe42d71f2810`.
+- Qualified Route Evidence contract latest commit: `cb1805ec6c42fc22acf426b23bebd2ca8d61a5db`; blob `2350e5f4c43467233930acdb44d3f8e507453eb1`.
+- This Context Window publication is the final documentation write in this pass; its commit SHA is returned by GitHub and is the next default HEAD.
+
+### Next bounded engineering step
+
+Implement the trusted Qualified Route Evidence writer/verifier without provider login or secrets:
+1. Define a canonical, versioned evidence-byte serialization and SHA-256 digest contract with fixed test vectors.
+2. Define the issuer trust root/key rotation and signature verification interface; do not accept caller-supplied `authority: "provider"` as proof.
+3. Bind issuer, provider, model, accountRef, credential-handle reference, quotaDomainId, cost class and capability profile to one versioned registry record.
+4. Enforce freshness and monotonic revocation under the same authoritative version boundary consumed by A0→D1 admission; fail closed on stale or raced revocation.
+5. Add adversarial tests for signature mismatch, issuer substitution, cross-account/domain replay, digest mismatch, canonicalization ambiguity, expiry and revocation race. Then connect only the verified immutable result to the existing atomic D1 batch.
+6. Keep `dispatch:false`; do not deploy or call providers. Exact-head CI before any further promotion; independent audit remains after pool operation.
+
+Status: quota ledger IMPLEMENTED / exact-head CI VERIFIED in Draft PR #74; atomic A0→D1 IMPLEMENTED / exact-head CI VERIFIED in Draft PR #72; route qualification NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
