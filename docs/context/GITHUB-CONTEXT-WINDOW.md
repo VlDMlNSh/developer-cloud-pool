@@ -3366,3 +3366,10 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Documentation report commit: aecf2c69f7c9a6b9c74d4e2d6c66b0880f266f5f. Continuation checkpoint commit: 025b873b7d6bf8f5f9fcf7efa00b42fa93e7245b; checkpoint blob: 11a40fdbc7d640dfcefa26ceb3e9e7e079e95bb2.
 - This is a cross-project dependency only. Developer Cloud Pool Contour A remains the primary objective; Contour A is NOT ACCEPTED and Contour B remains DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+### Wave 324 documentation-branch verification
+
+- Documentation continuation branch HEAD after Wave 324: 4497b23fb381c13913ade7ced82c2217711ae3c9.
+- Existing documentation PR #27 remains OPEN / DRAFT / UNMERGED, head 4497b23fb381c13913ade7ced82c2217711ae3c9, base 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- Exact-head check-runs API returned total_count=0; combined Status API returned state=pending with zero status contexts. Therefore PR #27 exact-head CI is NOT VERIFIED. Do not claim the documentation changes passed CI or merge them.
+- Context Window latest blob before this small verification append: 0351a778dac2ec5e6bdc3ecff5cb2d87c746c260.
