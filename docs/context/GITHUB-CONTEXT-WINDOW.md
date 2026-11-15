@@ -2321,20 +2321,19 @@ This section supersedes the earlier in-progress observation for the 13:35 wave. 
 - Agent 3 [run 43719761724](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719761724): workflow SUCCESS; signature verification job `132828990792` SUCCESS; audit job `132829009661` SUCCESS; artifact `14164380580`, SHA-256 `acaafa4d269855c93b7b7d192f91fab3bd975bae5973f64959981bad648c1bad`; PR [#647](https://github.com/VlDMlNSh/mediahub-os/pull/647) OPEN, non-draft, head `944e40a434b36fbf946522b4bdb97686c6437cf0`. Exact-head checks 0; formal reviews 0; review threads 0.
 - Disposition: 2/3 child workflows SUCCEEDED; 1/3 FAILED; overall controller FAILED. Agent PRs #647/#648 are unreviewed and unqualified. No merge or deployment.
 
-### Six-role Cloud Pool policy — design only
+### Superseded fixed-roster proposal — rejected
 
-- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch `feat/six-agent-roster-policy-2026-11-15`, head `290966b7dd17c72411c2f6d8b9db7d9d930f1a2d`, base default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`: OPEN / DRAFT / UNMERGED.
-- Policy blob `d6d087d3f0351e263e3c05d00589a58f93d66818`; test blob `74924d21631b3baa474b312de82f143f69c682b2`; workflow blob `27c57b86ecd1c9fc1aad7bd10bbdc4a75539dd3e`.
-- Exact-head Pool Contract Validation [run 43715229460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43715229460): SUCCESS for YAML/security-contract validation. No independent review or runtime qualification.
-- Six logical roles: planner, primary engineer, parallel engineer, architecture researcher, test verifier, exclusive security/provenance auditor. ChatGPT remains owner-side integrator. Policy explicitly avoids no-op/duplicate dispatch, treats credential slots separately from agents, prohibits paid fallback and quota-evasion key rotation, and fails closed on unknown quota scope.
-- This is a static policy contract only. It does NOT mean six workers are deployed or available. The MediaHub controller currently dispatches three fixed Gemini child workflows; Cloud Pool Supervisor/Worker dispatch integration is NOT RUN.
+- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch `feat/six-agent-roster-policy-2026-11-15`, was rejected as an architectural direction and closed unmerged on 2026-11-15 at the owner's request. Its roster/configuration proposal is not an adopted design, must not be merged or used as a scheduler contract, and is retained only as historical GitHub audit material.
+- No fixed six-role or six-worker architecture is approved. Do not derive worker count, role topology, concurrency or credential-slot count from PR #89.
+- The only immediate parallel-execution target is a repeatable three-Gemini supplementary wave for each explicit ChatGPT `/next`, subject to a correctly integrated, secure Cloud Pool trigger and all controller admission gates. This target does not define the eventual Cloud Pool topology.
+- Future topology must be selected from measured task throughput, end-to-end latency, provider free-tier limits, quota-domain evidence, failure isolation, cost constraints, state durability, security boundaries and operational complexity. Keep the design open; do not pre-commit to a number of agents or named logical roles.
 
-### Scaling decision and next bounded step
+### Current per-/next qualification sequence
 
-- Do NOT raise live concurrency above three or add credential slots as workers until the current 3-agent controller wave is stable and the Agent 2 PR-creation failure is diagnosed and fixed.
-- First qualify repeatable 3/3 dispatch, per-child run/job/artifact reconciliation, exact-head CI, independent reviews, quota-domain admission and failure isolation.
-- Then implement the six logical roles as an explicit Cloud Pool scheduler/worker contract with separate task envelopes, non-overlapping write scopes, exclusive security review, concurrency caps, deterministic quotas, and fail-closed routing. Add no more than two new runtime slots in the first expansion step (3 -> 5); qualify before moving to 6.
-- Integration into Cloud Pool requires its own accepted code, exact-head tests, and governance review. The MediaHub Issue #301 controller is currently only a bootstrap/parallel-assistance mechanism.
+- Verify repeatable 3/3 dispatch, child run/job/artifact reconciliation, exact-head CI, independent review and quota/failure isolation.
+- Implement a Cloud Pool-native trigger and dispatch integration only after a trusted execution boundary, immutable task envelopes, deduplication/idempotency, least-privilege permissions, free-tier eligibility and durable evidence are established.
+- Do not treat a chat message alone as a GitHub Actions event. The existing MediaHub Issue #301 controller is a separate project integration; its fixed workflows and OWNER/comment gates cannot be bypassed or silently treated as Cloud Pool-native orchestration.
+- Cloud Pool default branch remains `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Context Window on this PR branch is a documentation working copy, not default-branch state.
 - Cloud Pool default branch remains `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Context Window on this PR branch is a documentation working copy, not default-branch state.
 - Contour A remains IN PROGRESS / NOT ACCEPTED. Contour B DEFERRED.
 
