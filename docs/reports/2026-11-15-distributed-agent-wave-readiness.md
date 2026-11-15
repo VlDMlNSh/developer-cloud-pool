@@ -91,3 +91,46 @@ The next wave must read this report and inspect PRs #638, #639 and #640, their b
 - MediaHub Issue #301: https://github.com/VlDMlNSh/mediahub-os/issues/301
 - Gemini controller workflow: https://github.com/VlDMlNSh/mediahub-os/blob/main/.github/workflows/gemini-batch-dispatch-controller.yml
 - Cloud Pool Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-wave-agent-launch-readiness-2026-11-15/docs/context/GITHUB-CONTEXT-WINDOW.md
+
+
+## 17. New distributed Gemini wave dispatched — 2026-11-15
+
+This is an append-only operational update after the initial readiness report.
+
+### Trigger and controller
+
+- New Issue #301 comment: [comment 6894700986](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6894700986), exact body `/next`, authenticated author `VlDMlNSh`, GitHub `author_association=OWNER`.
+- Previous comment 6894320791 had already been reconciled to controller run 43714051912; it was not reused.
+- New controller run: [43716783704](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43716783704), event `issue_comment`, run number 289, display title `next-comment-6894700986`, target SHA `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Admission gate job `132819928772`: SUCCESS.
+- Controller dispatch job `132819950774`: RUNNING at last observation. Controller reconciliation is not yet complete.
+
+### Child dispatches
+
+All three child workflows were observed on the same immutable target SHA and their signature-verification jobs completed SUCCESS:
+
+| Role | Child run | Signature job | Engineering job | Current state |
+|---|---:|---:|---:|---|
+| Agent 1 — bounded engineering | [43716802221](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43716802221) | `132819988221` SUCCESS | `132820008851` | RUNNING |
+| Agent 2 — research/contracts | [43716804119](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43716804119) | `132819994332` SUCCESS | `132820020866` | RUNNING |
+| Agent 3 — security/verification | [43716805721](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43716805721) | `132819999249` SUCCESS | `132820027695` | RUNNING |
+
+At last observation, all three engineering jobs were executing the official Gemini CLI step; no child artifacts or final PR outputs were yet available. Do not claim SUCCEEDED, VERIFIED or QUALIFIED until each run reaches a terminal result and its artifact/report/PR is inspected.
+
+### Boundaries
+
+- The workflow used the approved signed child-dispatch path. No manual/alternate provider dispatch was performed.
+- The immutable target was the observed MediaHub main SHA above.
+- No secret values were read or disclosed.
+- No merge, deployment, runtime qualification, or Contour A acceptance occurred.
+- The Cloud Pool PR #91 remains OPEN/DRAFT/UNMERGED; exact-head CI was previously NOT VERIFIED and must be rechecked after this documentation update.
+
+### Current status
+
+- New owner trigger comment: VERIFIED.
+- Admission gate: SUCCEEDED.
+- Three child signature checks: SUCCEEDED.
+- Three Gemini engineering tasks: RUNNING at last observation.
+- Controller reconciliation: RUNNING at last observation.
+- Child artifacts/PRs from this wave: NOT YET AVAILABLE / NOT VERIFIED.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
