@@ -3252,3 +3252,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Decision: Recovery Actor remains BLOCKED / NOT IMPLEMENTED / NOT QUALIFIED. No code, schema, workflow, permission, secret, deployment, merge, dispatch, provider/model call or live projection write. Keep all production dispatch and side-effect paths fail-closed.
 - Next step: establish an owner-approved issuer authority and operational principal, evidence revocation and audit interfaces, and qualify one trusted-time source. Only then prototype verifier composition and adversarial one-use/concurrency tests. If no qualifying authority exists, preserve fail-closed behavior and record non-selection.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — MediaHub Gemini controller PR #651 cross-project dependency (Wave 318)
+
+- This is a cross-repository dependency record only. The Gemini controller change is in MediaHub OS; it does not represent deployment or acceptance of this separate Developer Cloud Pool repository. Preserve project, authority, secret, quota, and acceptance boundaries.
+- MediaHub PR #651 head `ec860a9b7698058d18a0b77efdce1643dd011bc8`, base/main `46e7395cc7a8755a096f1a8667b750177ed42011`, remains OPEN / DRAFT / UNMERGED; no formal reviews or inline threads returned.
+- Exact-head PR-context controller probe run #43733462873 SUCCESS: observer and assert_probe_context passed; readiness_gate and dispatch_and_monitor were intentionally SKIPPED.
+- Exact-head Gemini workflow contract validation #43733462861 SUCCESS, including lint, reusable context, transport, HMAC authorization, trigger-path, and dispatch provenance adversarial contracts. Astra Verify #43733462850, Astra Cloud Runtime Validation #43733462886, provider contract #43733462875, and AI Factory #43733463463 also SUCCESS.
+- This verifies PR-context negative probe only. Trusted-main owner `/probe` issue_comment event remains NOT VERIFIED; no Gemini child dispatch, secret inspection, merge, or deployment occurred. Independent review remains NOT VERIFIED.
+- Report: [MediaHub Gemini Controller PR #651 — exact-head probe CI (Wave 318)](../reports/2026-11-15-mediahub-gemini-controller-pr651-probe-ci-wave318.md).
+- Next: independent review, normal governance merge, trusted-main owner `/probe` verification, non-disclosing secret/variable presence checks, then explicitly authorized 3-child dispatch with run/job/artifact evidence. Three-agent operation remains NOT RUN / NOT QUALIFIED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
