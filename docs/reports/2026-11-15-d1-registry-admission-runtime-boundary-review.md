@@ -86,3 +86,9 @@ Latest observed controller wave:
 - Bounded repair created on MediaHub PR #649: `.github/workflows/gemini-agent-2.yml` now instructs Agent 2 to use a fresh branch `agent-2-contract-verification-${{ inputs.dispatch_id }}` for each controller invocation, never reuse a prior branch/PR, and stop on collision. Base SHA `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; commit `a9b8e0a9778f19493dd90080dfcfe8749efae48f`; workflow blob `51f998951a54ee78a61e5c908a9017a3475e7c0c`.
 - PR #649 is OPEN/DRAFT, no reviews. At inspection, 10 checks existed: six in progress/queued, reusable workflow observation SUCCESS, controller dispatch jobs SKIPPED as expected for PR context. Exact-head CI therefore NOT VERIFIED; no merge.
 - No new agent dispatch, secret access, provider call, merge, deployment, or qualification occurred. Keep three-agent scale; next wave remains blocked until PR #649 passes exact-head CI and is reviewed, then one controlled three-agent wave must prove 3/3 child success with unique branches and artifacts.
+
+
+### PR #649 exact-head CI follow-up — 2026-11-15
+
+- Re-read exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f`: 11 check runs completed; all executed checks SUCCESS, with the controller's dispatch and admission jobs SKIPPED as required for untrusted pull_request context. This is a safe non-launching validation result, not a live Agent 2 retry.
+- PR #649 remains OPEN/DRAFT and has zero formal reviews. Workflow change is CI-VERIFIED at exact head; merge/independent approval NOT VERIFIED. Agent2 next-wave readiness remains BLOCKED pending review and a later controlled 3/3 dispatch.
