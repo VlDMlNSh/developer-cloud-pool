@@ -2147,3 +2147,17 @@ Recovery status: MediaHub three-agent controller path VERIFIED on four consecuti
 - Agent 2 `43746303789`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
 - Agent 3 `43746305744`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
 - Controller logs recorded all three accepted dispatches and exact run correlation. ChatGPT connector → owner comment → trusted controller → three Gemini child path is now end-to-end VERIFIED for this smoke event.
+
+
+## Latest /next wave 332 — verified — 2026-11-15
+
+- Existing latest owner-authored MediaHub Issue #301 `/next` comment `6899094688` was already linked to Controller run `43746281426`; it was reused, not duplicated.
+- Controller Wave 332 dispatch job `132910206815` and admission job `132910179205` both completed SUCCESS. Immutable target SHA: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Agent 1 run `43746301766`: both jobs SUCCESS; non-expired artifact SHA-256 `d3d7e7d5ea27d1656dbee67b9481554626df8e6704d9a0873f46790e3ce5505f`.
+- Agent 2 run `43746303789`: both jobs SUCCESS; non-expired artifact SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
+- Agent 3 run `43746305744`: both jobs SUCCESS; non-expired artifact SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
+- Distinct child correlation IDs and full job/run/artifact evidence are recorded in [wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+- Idempotency: the already-existing event was correlated; no second comment was created. Controller log confirms one accepted dispatch for each of the three child workflows.
+- Cloud Pool default branch remains `Основной`, HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Pool Supervisor still has no issue_comment trigger and Pool Worker remains `dsh-headless-probe`; MediaHub execution is not Cloud Pool-native execution.
+- No source workflow, secrets, variables, branch protection, or dispatch authorization changed. Secret values were not read.
+- MediaHub Gemini three-agent wave: VERIFIED. Cloud Pool-native Gemini: NOT IMPLEMENTED / NOT QUALIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
