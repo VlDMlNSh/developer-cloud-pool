@@ -492,3 +492,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Detailed evidence: [Wave 336 report](../reports/2026-11-15-wave336-revocation-and-dispatch-reconciliation.md).
 - Next: implement pure revocation verifier + adversarial vectors, then D1 append-only/CAS/rollback and admission revocation checks. Dispatch remains disabled; Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Wave 337 continuation — 2026-11-15
+
+- New owner-authored supplementary MediaHub Issue #301 event [6900228193](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900228193). Controller/children NOT VERIFIED through available run-list connector.
+- Default Cloud Pool HEAD 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. Supervisor still has no issue_comment trigger; Worker still only allows dsh-headless-probe. Cloud Pool-native Gemini controller NOT IMPLEMENTED.
+- PR #95 remains OPEN/DRAFT/UNMERGED; docs branch ahead 69 / behind 0 from default; zero formal reviews.
+- Clean D1 migration candidate ahead 6 / behind 0; verified-registry clean stack ahead 15 / behind 0. Revocation event ledger + same-batch admission integration remain unimplemented/unqualified.
+- Current POOL_DISPATCH_ENABLED not read; do not enable. No secrets, live keys, hosted D1, provider calls, deployment or merge.
+- Detailed evidence: [Wave 337 report](../reports/2026-11-15-wave337-next-dispatch-and-contour-a-reconciliation.md).
+- Next: pure revocation keyset/event verifier and adversarial vectors on clean candidate, then D1 CAS/rollback + same-batch admission checks after governance gates. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
