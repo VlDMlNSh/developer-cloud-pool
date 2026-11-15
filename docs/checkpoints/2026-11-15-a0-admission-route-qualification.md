@@ -292,3 +292,21 @@ Important limitation: this is storage primitives only. Typed root-verifier adapt
 Next: implement typed persistence adapter and atomic snapshot+watermark batch, test rollback and competing writers, then bind issuer keys and registry identity into qualification/admission/receipt.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Six-hour work-cycle revalidation — 2026-11-15
+
+Status: RECOVERY VERIFIED / INTEGRATION PARTIAL / CONTOUR A BLOCKED / NOT ACCEPTED.
+
+- Default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (direct branch API read-back). Documentation branch HEAD before this update: `58c96be2ecdfa87d6aedcb8273e4fe1179280307`.
+- PR #72/#75/#76/#77 remain OPEN / DRAFT / UNMERGED and stacked. #77 exact HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`; base #76 `096737ec5e1a335b367fc7af67c29f7b71541e66`. #77 CI run `43707407472` / job `132791362558` SUCCESS; reviews 0, threads 0. #76 run `43697493628` SUCCESS; #75 run `43694628561` SUCCESS; #72 workflow lookup returned no runs (NOT VERIFIED).
+- Ruleset `26550182` active for default branch, but required approval count 0 and no required status checks; branch protection API reports disabled. Governance enforcement insufficient for acceptance.
+- Integration map: Web Console/API/OAuth/session remain separate draft proofs; no deployed OAuth/session or mobile QA. Supervisor/Worker remain scaffolded and have caller-authority/recovery gaps; no live task execution. A0/D1 and route evidence remain stacked proof branches; #77 schema is not yet wired to root verifier or admission. Quota inventory has 24 slots but 0 verified account identities / 0 verified quota domains. No hosted D1, persistent cross-runner recovery, web deployment or end-to-end console→execution→evidence→console flow.
+- No code changed in this pass; this was a source reconciliation and integration-boundary pass, not six elapsed hours. Report: [six-hour-cycle revalidation](../reports/2026-11-15-cloud-pool-six-hour-cycle-revalidation.md).
+- No secrets, provider calls, dispatch, deployment, hosted D1 provisioning or independent audit. `POOL_DISPATCH_ENABLED` not read; keep dispatch disabled. Contour B DEFERRED.
+
+Next implementation: typed, in-process-branded root-verifier → D1 persistence adapter with true atomic snapshot + CAS watermark; test concurrent writers and rollback (including no orphan snapshot), then persist issuer/route rows and bind epoch/digest/key ID into A0/D1 admission, outbox and immutable receipt.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md

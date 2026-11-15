@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 — Cloud Pool six-hour-cycle recovery and integration boundary revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (GitHub branch API read-back 2026-11-15)
+Documentation continuation branch: `docs/next-2026-11-15-route-registry-revalidation` @ `58c96be2ecdfa87d6aedcb8273e4fe1179280307`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -2138,4 +2138,55 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/reports/2026-11-15-pr77-durable-route-registry-snapshot-ledger.md
 PR #77: https://github.com/VlDMlNSh/developer-cloud-pool/pull/77
 Exact-head CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43707407472
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## 18. Six-hour work-cycle recovery and integration revalidation — 2026-11-15
+
+**Status: RECOVERY VERIFIED / INTEGRATION PARTIAL / CONTOUR A BLOCKED / NOT ACCEPTED.** This pass refreshed live GitHub refs and evaluated the requested six-hour work plan against current implementation evidence. It did not claim six elapsed engineering hours; it completed one bounded recovery and integration-boundary pass.
+
+### 18.1 Immutable baseline and governance
+- Default branch `Основной`: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, read directly from the branch API. API reports `protected=false`.
+- Documentation branch: `docs/next-2026-11-15-route-registry-revalidation` @ `58c96be2ecdfa87d6aedcb8273e4fe1179280307`; separate from default and unmerged.
+- Open PR stack relevant to the current A0/route chain: #72 (A0/D1), #75 (Qualified Route Evidence), #76 (root-signed registry verifier), #77 (durable snapshot ledger). All OPEN / DRAFT / UNMERGED; ancestry is stacked: #72 → #75 → #76 → #77. PR #77 HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`, base #76 HEAD `096737ec5e1a335b367fc7af67c29f7b71541e66`.
+- PR #77 reviews: 0; review threads: 0. PR #76 reviews: 0. PR #77 combined status contexts: 0. Exact-head workflow run #77 `43707407472` / job `132791362558`: SUCCESS at exact HEAD. PR #76 exact-head run `43697493628`: SUCCESS (114 tests per prior verified run record). PR #75 exact-head run `43694628561`: SUCCESS. PR #72 exact-head workflow lookup: no runs returned; CI NOT VERIFIED.
+- Other adjacent proofs: PR #74 exact-head run `43692828719` SUCCESS; PR #71 run `43685547993` SUCCESS; PR #61 auth D1 run `42991794791` SUCCESS; PR #25 prototype runs `42228269689` and `42228269676` SUCCESS. These are separate proof branches, not integrated acceptance.
+- Active ruleset ID `26550182`, `Основной — verified`, selects only `refs/heads/Основной`. It enforces PR, thread resolution, deletion and non-fast-forward restrictions, but required approval count is 0 and no required status-check rule exists. Effective branch protection reports disabled. Required CI/review enforcement is therefore NOT VERIFIED / insufficient for acceptance.
+- Current branch inventory contains many old OPEN/DRAFT PRs (including #6–#77); do not treat this as an integrated stack. Avoid merging divergent PRs independently.
+
+### 18.2 Six-hour plan — current evidence map
+| Planned path | Current evidence | Gap / status |
+|---|---|---|
+| Web Console → Experience API | PR #25 Hono prototype, PR #24 hosting/API design, PR #30 synthetic oauth4webapi compatibility, PR #61 local auth/session D1 proof; all separate draft branches | No live OAuth, production session persistence, owner numeric-ID enforcement in deployed service, mobile browser QA or deployment. NOT QUALIFIED |
+| Experience API → Pool Bridge → Task Envelope | Existing task-envelope, projection and GitHub read-adapter work across older draft PRs | No proven end-to-end request path connecting web console to the authoritative task ledger. NOT VERIFIED |
+| Task Envelope → Supervisor → Worker | Supervisor/Worker workflow scaffolds and separate authorization/recovery PRs exist | Default-branch Supervisor retains privileged `workflow_run` path; Worker direct `workflow_dispatch` caller/approval provenance and single-writer lifecycle remain blockers in prior source audit. No live Worker execution. NOT QUALIFIED |
+| Worker → Execution Result → Evidence Store → Console | Attempt, receipt and projection-delivery proof components exist in the historical PR stack | No single deployed read path connecting real task status/result evidence back to the console. NOT VERIFIED |
+| A0 → D1 + Qualified Route Evidence | PR #72 atomic admission proof; #75 signed evidence verifier; #76 root-signed registry verifier; #77 snapshot/watermark schema | Components remain stacked and unmerged. #77 only adds persistence primitives; verifier not wired to typed persistence; issuer keys not stored; admission/receipt do not bind registry epoch/digest/key ID; no same-batch current-watermark check. NOT QUALIFIED |
+| Provider Routing + Quota Ledger | PR #29 quota state machine, PR #71/#74 fail-closed fixes, provider inventory | 24 slots inventory-only, 0 verified account identities and 0 verified quota domains in the recorded source audit. No provider route qualified; no real credentials/calls. NOT QUALIFIED |
+| Persistent state / recovery | Local D1 migrations and isolated Workers-runtime tests | No hosted D1, cross-runner durable recovery, or production state service qualification. NOT QUALIFIED |
+| Remote hosting | Hono + Workers Static Assets candidate | Cloudflare free entitlement and persistent host/deployment path not verified. GitHub Actions runners are ephemeral and not web hosts. NOT DEPLOYED |
+| Independent acceptance | Deferred by owner direction until pool is operational | NOT RUN; Contour A cannot be ACCEPTED |
+
+### 18.3 Verified engineering facts and limits
+- PR #77 migration blob `10934e566aafdfd4f38aee433d8c7110dece26f0` creates append-only `pool_route_registry_snapshots` and singleton `pool_route_registry_state` with FK/trigger guards. Test blob `89f96abda56dd661835eae3f328bb14a52dd874c`; workflow blob `40d372003d1ad35d191762bd0c4ce6ed94d33b59`.
+- Root verifier source blob `9e837c44ed50329930bb393b3bc45bd6cd0f729b` produces immutable `verified:true`, `dispatch:false` result with epoch and digest. It does not establish durable acceptance. `admit-qualified-task.mjs` blob `df5e93d9fd60ac90bee2c5f7610634b991428312` checks current qualification fields but not registry epoch/digest/key ID or current registry watermark.
+- No new source-code integration was made in this pass. The requested vertical path is not yet connected. The highest-value next implementation remains a typed, unforgeable verifier-to-D1 acceptance adapter, followed by qualification/admission/receipt binding and adversarial CAS/rollback/replay tests. This must be done on top of PR #77 without changing default branch.
+- Mature component reuse remains the rule: preserve Hono, oauth4webapi, existing D1 ledger, verifier and quota state machine; do not create parallel auth, queue, or registry systems.
+
+### 18.4 Safety and operational gates
+- No secrets or credential values were read. No provider/model calls, paid fallback, hosted D1 provisioning, Worker deployment, task dispatch or Gemini/Claude dispatch occurred.
+- `POOL_DISPATCH_ENABLED` was not read in this pass; keep all dispatch paths fail-closed and do not infer current variable state from older notes.
+- No external independent audit was run. Per owner direction, independent qualification remains deferred until the pool is operational; this does not waive later independent acceptance.
+- Contour B remains DEFERRED.
+
+### 18.5 Next bounded implementation
+1. On top of PR #77 immutable HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`, implement a narrow typed persistence function that accepts only an in-process root-verifier-branded result and the exact verified bundle.
+2. Persist snapshot + monotonic watermark with a real compare-and-swap/atomic batch; prove concurrent writers yield one winner and losing writes leave no orphan snapshot. Do not rely on a zero-row UPDATE as a rollback assertion.
+3. Persist issuer-key/route snapshot rows, then add registry epoch + digest + issuer key ID to qualification, admission identity, outbox/receipt and same-batch watermark check.
+4. Run Workers-runtime tests for rollback, stale epoch, same-epoch digest substitution, replay, key revocation/rotation, concurrent writers and storage failure; exact-head CI and artifact readback required.
+5. Only after A0/D1 is integrated, return to Supervisor/Worker and the web read-only vertical path. Keep dispatch false until governance and production auth/state gates pass.
+
+Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/reports/2026-11-15-cloud-pool-six-hour-cycle-revalidation.md
+Checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/checkpoints/2026-11-15-a0-admission-route-qualification.md
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
