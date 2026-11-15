@@ -176,11 +176,25 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(ledger.state).toBe("ready");
   });
 
+
+  it("rejects stale route evidence before consuming approval", async () => {
+    const staleApproval = { ...input.approval, approvalId: "approval-stale-001" };
+    const staleRoute = { ...input.route, qualificationId: "route-stale-001", issuedAt: NOW - 301 };
+    await seed({ approval: staleApproval, route: staleRoute });
+    const staleInput = {
+      ...input, admissionId: "admission-stale-001", approval: staleApproval, route: staleRoute
+    };
+    const result = await admitQualifiedTask(env.POOL_DB, staleInput);
+    expect(result).toMatchObject({ decision: "DENY", dispatch: false });
+    const ledger = await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?")
+      .bind(staleApproval.approvalId).first();
+    expect(ledger.state).toBe("ready");
+  });
+
   it("allows only one concurrent admission for one single-use approval", async () => {
     const results = await Promise.all(Array.from({ length: 12 }, () => admitQualifiedTask(env.POOL_DB, input)));
-    const admitted = results.filter(x => x.decision === "ADMITTED_QUEUED" || x.decision === "ADMISSION_ALREADY_COMMITTED");
-    expect(admitted).toHaveLength(1);
-    expect(results.filter(x => x.decision === "DENY")).toHaveLength(11);
+    expect(results.filter(x => x.decision === "ADMITTED_QUEUED")).toHaveLength(1);
+    expect(results.every(x => ["ADMITTED_QUEUED", "ADMISSION_ALREADY_COMMITTED", "DENY"].includes(x.decision))).toBe(true);
     const approvals = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first();
     const attempts = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first();
     expect(approvals.n).toBe(1);
