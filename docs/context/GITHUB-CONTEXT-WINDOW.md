@@ -2240,3 +2240,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 
 - Controller 43748188993 COMPLETED / SUCCESS; dispatch/monitor job 132916076078 SUCCESS. Logs reconcile all three signed child dispatches, child run IDs, both successful jobs per child, and artifact digests matching GitHub metadata. Controller has no artifact of its own; child artifacts are the evidence.
 - Wave 335 is now VERIFIED at controller and child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
+
+
+## /next Wave 336 — 2026-11-15
+
+- Report: [Wave 336](../reports/2026-11-15-next-wave-336-chatgpt-gemini-cloud-pool-pass.md).
+- Source event MediaHub Issue #301 comment 6899404181; controller run 43748529579 on immutable MediaHub target 1694cde38c7b7d69baf9676b4908c1bb6e197fbe. Admission job 132917094437 SUCCESS; dispatch/monitor 132917123035 IN_PROGRESS at last observation.
+- Gemini Agent 1 run 43748550454 QUEUED; Agent 2 run 43748552273 IN_PROGRESS; Agent 3 run 43748553818 IN_PROGRESS. All target the same immutable SHA. Child execution jobs and artifacts NOT VERIFIED at this checkpoint.
+- Cloud Pool default HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN. Supervisor has no issue_comment trigger; POOL_DISPATCH_ENABLED remains fail-closed; Worker supports only dsh-headless-probe. MediaHub Gemini bridge is not Cloud Pool-native execution.
+- Proof CI for PRs #87/#86/#92/#93 succeeded on their respective heads, but all PRs remain Draft/unmerged with no formal review. These are local Workers/D1 proofs, not hosted production qualification.
+- PR #95 remains OPEN/DRAFT/UNMERGED on the documentation branch. No Cloud Pool runtime/workflow/secrets/variables/dispatch/deployment/provider call/merge changed in this pass.
+- Status: MediaHub controller/children RUNNING or QUEUED, NOT VERIFIED; A0/D1 local proof only; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent trusted-clock, issuer/key lifecycle and durable revocation review; then atomic D1 revocation-watermark admission adversarial proof. Keep dispatch fail-closed.
