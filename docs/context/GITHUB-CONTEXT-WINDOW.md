@@ -2184,3 +2184,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 owner-triggered batch 6901529560 report: [2026-11-16-wave318-gemini-and-cloud-pool-state.md](../reports/2026-11-16-wave318-gemini-and-cloud-pool-state.md)
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-16 — project restore and PR #98 admission security review
+
+- Immutable refs: Cloud Pool `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Latest confirmed MediaHub Gemini batch remains owner comment `6901529560`, controller run `43763042415` SUCCESS; child runs `43763061253`, `43763062743`, `43763064255` and artifact SHA-256 digests are recorded in [the 2026-11-16 restore/security report](../reports/2026-11-16-pr98-admission-security-review.md). This batch predates this ChatGPT pass; no duplicate trigger was created.
+- Agent PRs #730–#732 remain OPEN/DRAFT; exact-head checks and formal reviews are zero. Their execution artifacts exist, but their claims are not accepted.
+- MediaHub controller source blob `7799f0fc713c5bd772ce6820df40a926a83445c8` still uses REST dispatch/HMAC and `workflow_dispatch` children, diverging from merged Option B workflow_call architecture. Transport governance, formal independent review, effective secret/variable scope and trusted-main no-secret probe remain NOT VERIFIED. Do not post another Issue #301 `/next` until these gates are reconciled.
+- Cloud Pool PR #98 is OPEN/DRAFT at `f23cdb5484d5923e02242b3ea142397f9e1f0270`, base exact current default; exact-head checks `43758616823`, `43758657644`, `43758657648` all SUCCESS; formal reviews zero. It is a non-dispatching contract proof only. Cloud Pool Issue #96 explicitly remains PLANNED with no controller implementation/dispatch authorization.
+- Static review identified HIGH ledger-authenticity gap (unkeyed SHA-256, no author/HMAC verification), MEDIUM caller-asserted lock/same-invocation booleans, MEDIUM run-correlation lacking workflow/event/repository identity, plus missing adversarial runtime cases. Full evidence and remediation criteria are in the linked report.
+- No secrets, provider calls, dispatch, merge, deployment, qualification or Contour B work occurred. Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED.
+- Next: harden PR #98's ledger authenticity and run correlation; implement enforceable serialization/capability; add adversarial tests; obtain exact-head CI and independent review. Separately resolve MediaHub controller transport/governance before a new Gemini batch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
