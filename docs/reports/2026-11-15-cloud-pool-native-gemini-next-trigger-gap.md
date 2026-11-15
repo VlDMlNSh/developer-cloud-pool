@@ -2,7 +2,7 @@
 
 ## Status
 
-The six-agent roster proposal has been rejected. PR #89 is CLOSED / UNMERGED. No fixed worker count or named role topology is approved.
+The previous fixed-roster proposal has been rejected. PR #89 is CLOSED / UNMERGED. No fixed worker count or named role topology is approved.
 
 The immediate requirement is exactly three supplementary Gemini executions per explicit ChatGPT `/next`, but the current Cloud Pool default branch does not yet contain a trusted trigger/dispatch integration.
 
