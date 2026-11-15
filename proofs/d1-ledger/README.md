@@ -83,3 +83,17 @@ The stacked verifier proof on PR #75 adds:
 - Adversarial tests for signature tampering, issuer/key substitution, cross-account/domain replay, stale/expired evidence, revocation watermark mismatch, unknown fields and missing free-quota domain.
 
 The verifier is an isolated cryptographic component, not a trust-root manager. The caller-supplied registry snapshots are not authoritative merely because they are structurally valid. Trusted registry loading, issuer key custody/rotation, durable revocation authority and atomic D1 version re-check remain unimplemented. Dispatch remains false; no provider call, secrets, hosted D1, deployment or merge.
+
+
+## Root-signed route registry bundle proof — 2026-11-15
+
+The isolated module `src/trusted-route-registry.mjs` verifies a versioned registry bundle using a public P-256 root key loaded from platform environment bindings (`ROUTE_REGISTRY_ROOT_KEY_ID` and `ROUTE_REGISTRY_ROOT_PUBLIC_JWK`). The root public key is not accepted from the request or bundle.
+
+- Fixed-position canonical JSON bundle v1; exact top-level and nested key allowlists.
+- Issuer-key and route records must be uniquely and lexicographically ordered; duplicate/unsorted records fail closed.
+- Root detached ES256 signature authenticates the complete issuer-key set and all route evidence/signatures.
+- Each route evidence record is then independently verified against the issuer key inside that root-signed bundle using the existing canonical evidence verifier.
+- Bundle freshness is capped at 300 seconds and bundle lifetime at one hour.
+- Registry version, issuer key ID, route/account/credential/quota/capability identity and issuer signature are bound. Output is immutable and retains `dispatch: false`.
+
+This is an isolated cryptographic bundle verifier only. It does NOT persist registry state, enforce monotonic registry epochs across requests, prevent replay/rollback against a durable watermark, provide root-key rotation/custody, or bind registry epoch into the D1 admission transaction. The platform environment binding is a trust anchor only when deployment/configuration permissions and its value are independently controlled. No production root key is configured by this proof. No live provider, secret, hosted D1 or Worker deployment is used.
