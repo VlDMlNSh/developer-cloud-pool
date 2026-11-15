@@ -235,3 +235,13 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Status: isolated atomic proof IMPLEMENTED / exact-head CI VERIFIED; route NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #67 / #72 ancestry with current default and verify effective required checks. Independent technical/security/governance review remains deferred until the pool is operational. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final ref / governance refresh — 2026-11-15
+
+- Default HEAD before this checkpoint update: `3ad05683ae818c2064f5d8a17091fc348e5be041`.
+- Qualified Route Evidence contract status is `IMPLEMENTED IN ISOLATED PROOF / NOT QUALIFIED`; implementation blockers remain trusted writer, cryptographic issuer/evidence verification, canonical evidence digest, live provider/account/quota proof, required CI contexts and independent review.
+- Current implementation branch HEAD: `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`; PR #72 OPEN/DRAFT/UNMERGED, stacked on PR #67 branch. Default-to-implementation comparison remains DIVERGED 53 ahead / 20 behind.
+- Default ruleset `26550182` is active only on `Основной`; PR/thread resolution required, approvals 0, no required status-check contexts. Combined status for implementation HEAD empty. Do not merge.
+- Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
