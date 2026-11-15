@@ -2576,3 +2576,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [Gemini three-agent post-merge reconciliation](../reports/2026-11-15-gemini-three-agent-post-merge-reconciliation.md).
 - Next: verify metadata-only readiness and trusted-main no-secret `/probe`; only then perform one controlled owner-authorized Issue #301 `/next`, reconcile all three child run IDs/artifacts, repeat reliability waves, and then implement a uniquely correlated idempotent ChatGPT-to-GitHub bridge. No direct child dispatch or controller bypass.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Preflight for next three-Gemini wave
+
+- Current MediaHub OS `main` HEAD verified: `46e7395cc7a8755a096f1a8667b750177ed42011`; PR #649 is merged at this SHA.
+- Current source blobs: controller `48b424d14d3ae982479685b5815930148225e297`; Agent 1 `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`; Agent 2 `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`; Agent 3 `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`; no-secret reusable probe `4b9ea8b8f1501323a3ad741f164c2eb7220cc3a8`.
+- Controller accepts exact owner-authored `/probe` and `/next` comments on non-PR Issue #301; probe is non-launching. workflow_dispatch also supports probe and explicitly confirmed agents modes.
+- Three-agent dispatch requires Actions variable `MEDIAHUB_GEMINI_BATCH_ENABLED=true` and controller secrets `MEDIAHUB_GITHUB_TOKEN`, `MEDIAHUB_DISPATCH_HMAC_KEY`; children reference separate `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, `GEMINI_API_KEY_3`. No credential values were read. Metadata/presence/scope could not be verified using the available GET-only GitHub connection.
+- Child workflows verify signed HMAC payload/trusted main context before provider use, and enforce dispatch-specific branches. Controller monitors child run IDs, jobs, and artifact digests, failing closed if any child lacks successful evidence.
+- No-secret probe and real dispatch were NOT RUN because the available GitHub tool surface has no Issue-comment creation or workflow-dispatch operation. No claim of 3/3 execution.
+- Critical distinction: ChatGPT `/next` does not create a GitHub `issue_comment` event; no chat-to-GitHub bridge exists in the inspected controller. Next real controlled wave requires a trusted Issue #301 trigger after metadata-only readiness and no-secret probe. Then reconcile all three child runs and evidence. Bridge implementation/qualification follows only after repeated successful waves.
+- Detailed report: [Next Gemini wave preflight](../reports/2026-11-15-next-gemini-wave-preflight.md).
+- Current status: source VERIFIED; readiness NOT VERIFIED; probe NOT RUN; 3/3 NOT RUN; chat bridge NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
