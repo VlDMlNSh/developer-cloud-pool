@@ -231,7 +231,7 @@ export async function admitQualifiedTask(db, input) {
            AND credential_handle_ref = ? AND quota_domain_id IS ?
            AND cost_class = ? AND capability_id = ? AND capability_profile = ? AND evidence_digest = ?
            AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
-           AND observed_at = ? AND revocation_version = ?
+           AND observed_at = ? AND valid_until = ? AND revocation_version = ?
            AND qualification_status = 'qualified' AND revoked_at IS NULL
            AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
       `).bind(
