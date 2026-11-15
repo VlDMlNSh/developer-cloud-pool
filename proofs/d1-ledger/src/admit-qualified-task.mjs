@@ -30,6 +30,8 @@ function valid(input) {
     Number.isSafeInteger(r.observedAt) && r.observedAt > 0 &&
     Number.isSafeInteger(r.revocationVersion) && r.revocationVersion >= 0 &&
     SAFE_ID.test(r.capabilityId || "") && SAFE_ID.test(r.registryVersion || "") &&
+    SAFE_ID.test(r.keyId || "") && Number.isSafeInteger(r.registryEpoch) && r.registryEpoch > 0 &&
+    SHA256.test(r.registryBundleDigest || "") &&
     SHA256.test(r.evidenceDigest || "") && COST_CLASSES.has(r.costClass) &&
     (r.costClass !== "free_quota" || SAFE_ID.test(r.quotaDomainId || "")) &&
     (r.quotaDomainId == null || SAFE_ID.test(r.quotaDomainId)) &&
@@ -64,6 +66,8 @@ function same(row, input) {
     row.quota_domain_id === (r.quotaDomainId ?? null) &&
     row.cost_class === r.costClass &&
     row.capability_id === r.capabilityId && row.registry_version === r.registryVersion &&
+    row.issuer_key_id === r.keyId && row.registry_epoch === r.registryEpoch &&
+    row.registry_bundle_digest === r.registryBundleDigest &&
     row.schema_version === r.schemaVersion && row.evidence_ref === r.evidenceRef &&
     row.observed_at === r.observedAt && row.valid_until === r.validUntil &&
     row.capability_profile === r.capabilityProfile && row.revocation_version === r.revocationVersion;
@@ -79,6 +83,23 @@ function statements(db, input) {
     AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
     AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
     AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+    AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+    AND EXISTS (
+      SELECT 1 FROM pool_route_registry_state s
+      JOIN pool_route_registry_snapshots rs
+        ON rs.registry_epoch = s.current_epoch
+       AND rs.bundle_digest = s.current_bundle_digest
+       AND rs.registry_version = s.current_registry_version
+      JOIN pool_route_registry_issuer_keys k
+        ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
+       WHERE s.state_id = 1 AND s.current_epoch = q.registry_epoch
+         AND s.current_bundle_digest = q.registry_bundle_digest
+         AND rs.accepted_at <= ? AND rs.valid_until > ?
+         AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
+         AND k.registry_version = q.registry_version
+         AND k.status = 'active' AND k.revoked_at IS NULL
+         AND k.valid_from <= ? AND k.valid_until > ?
+    )
     AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
   const routeValues = [
@@ -86,6 +107,7 @@ function statements(db, input) {
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
     r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
     r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
+    r.keyId, r.registryEpoch, r.registryBundleDigest, now, now, now, now,
     now, now - 300, now
   ];
   return [
@@ -222,6 +244,7 @@ export async function admitQualifiedTask(db, input) {
              q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
              q.credential_handle_ref, q.quota_domain_id, q.cost_class,
              q.capability_id, q.capability_profile, q.registry_version, q.schema_version,
+             q.issuer_key_id, q.registry_epoch, q.registry_bundle_digest,
              q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
@@ -240,6 +263,21 @@ export async function admitQualifiedTask(db, input) {
            AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
            AND observed_at = ? AND valid_until = ? AND revocation_version = ?
            AND qualification_status = 'qualified' AND revoked_at IS NULL
+           AND issuer_key_id = ? AND registry_epoch = ? AND registry_bundle_digest = ?
+           AND EXISTS (
+             SELECT 1 FROM pool_route_registry_state s
+             JOIN pool_route_registry_snapshots rs
+               ON rs.registry_epoch = s.current_epoch AND rs.bundle_digest = s.current_bundle_digest
+              AND rs.registry_version = s.current_registry_version
+             JOIN pool_route_registry_issuer_keys k
+               ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
+              WHERE s.state_id = 1 AND s.current_epoch = registry_epoch
+                AND s.current_bundle_digest = registry_bundle_digest
+                AND rs.accepted_at <= ? AND rs.valid_until > ?
+                AND k.issuer_id = issuer_id AND k.key_id = issuer_key_id
+                AND k.registry_version = registry_version AND k.status = 'active'
+                AND k.revoked_at IS NULL AND k.valid_from <= ? AND k.valid_until > ?
+           )
            AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
       `).bind(
         input.route.qualificationId, input.route.routeId, input.route.providerId,
@@ -247,8 +285,9 @@ export async function admitQualifiedTask(db, input) {
         input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
         input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
         input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
-        input.route.observedAt, input.route.validUntil, input.route.revocationVersion, input.now,
-        input.now - 300, input.now
+        input.route.observedAt, input.route.validUntil, input.route.revocationVersion,
+        input.route.keyId, input.route.registryEpoch, input.route.registryBundleDigest,
+        input.now, input.now, input.now, input.now, input.now, input.now - 300, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
