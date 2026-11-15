@@ -9,10 +9,11 @@ const sourceCommentId = 987654321;
 const targetSha = "9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc";
 const admitted = makeLedgerRecord({ sourceCommentId, targetSha, state: "ADMITTED" });
 const intent = makeLedgerRecord({ sourceCommentId, targetSha, state: "DISPATCH_INTENT" });
+const ownerComment = body => ({ body, user: { login: "VlDMlNSh" }, author_association: "OWNER", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" });
 
 test("ledger comment round-trips a digest-checked write-ahead record", () => {
   const body = encodeLedgerComment(admitted);
-  const records = parseLedgerComments([{ body }]);
+  const records = parseLedgerComments([ownerComment(body)]);
   assert.deepEqual(records, [admitted]);
 });
 
@@ -78,4 +79,16 @@ test("source comment cannot be rebound to another target SHA", () => {
   });
   assert.equal(result.action, "DENY");
   assert.equal(result.reason, "SOURCE_COMMENT_BINDING_CONFLICT");
+});
+
+test("ignores ledger-looking comments not authored by the repository owner on the control issue", () => {
+  const body = encodeLedgerComment(admitted);
+  const untrusted = [
+    { body, user: { login: "attacker" }, author_association: "CONTRIBUTOR", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
+    { body, user: { login: "VlDMlNSh" }, author_association: "COLLABORATOR", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
+    { body, user: { login: "VlDMlNSh" }, author_association: "OWNER", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/95" },
+    { body }
+  ];
+  assert.deepEqual(parseLedgerComments(untrusted), []);
+  assert.deepEqual(parseLedgerComments([ownerComment(body)]), [admitted]);
 });
