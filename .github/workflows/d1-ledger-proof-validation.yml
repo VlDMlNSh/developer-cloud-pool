@@ -21,6 +21,7 @@ on:
       - "fix/route-registry-epoch-order-2026-11-15"
       - "proof/persist-root-signed-route-registry-2026-11-15"
       - "fix/verified-capability-registry-persistence-2026-11-15"
+      - "fix/atomic-admission-registry-assertion-2026-11-15"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
@@ -39,6 +40,7 @@ on:
       - "fix/route-registry-epoch-order-2026-11-15"
       - "proof/persist-root-signed-route-registry-2026-11-15"
       - "fix/verified-capability-registry-persistence-2026-11-15"
+      - "fix/atomic-admission-registry-assertion-2026-11-15"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
