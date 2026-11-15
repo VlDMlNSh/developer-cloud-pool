@@ -5,14 +5,15 @@ import { reconcileNextLedgerEvent, deterministicControllerRunName } from "../scr
 
 const sourceCommentId = 123456789;
 const targetSha = "9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc";
+const trusted = body => ({ body, user: { login: "VlDMlNSh" }, author_association: "OWNER", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" });
 function fakeApi(seed = []) {
-  const comments = seed.map(record => ({ body: "<!-- cloud-pool-next-ledger:v1 " + JSON.stringify(record) + " -->" }));
+  const comments = seed.map(record => trusted("<!-- cloud-pool-next-ledger:v1 " + JSON.stringify(record) + " -->"));
   let runs = [];
   return {
     comments,
     setRuns(value) { runs = value; },
     async listIssueComments(issue) { assert.equal(issue, 96); return [...comments]; },
-    async createIssueComment(issue, body) { assert.equal(issue, 96); comments.push({ body }); },
+    async createIssueComment(issue, body) { assert.equal(issue, 96); comments.push(trusted(body)); },
     async listWorkflowRuns() { return [...runs]; }
   };
 }
