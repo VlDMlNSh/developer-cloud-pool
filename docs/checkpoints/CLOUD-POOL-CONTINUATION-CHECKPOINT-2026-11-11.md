@@ -245,3 +245,15 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - Default ruleset `26550182` is active only on `Основной`; PR/thread resolution required, approvals 0, no required status-check contexts. Combined status for implementation HEAD empty. Do not merge.
 - Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final implementation exact-head correction — 2026-11-15
+
+- Final implementation branch HEAD `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; stacked PR #72 OPEN/DRAFT/UNMERGED on PR #67 implementation branch.
+- Exact-head workflow `43690143805` / job `132738896801`: SUCCESS; 7 Workers-runtime files / 93 tests passed, including 9 atomic-admission tests; upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- Final transaction binds the existing task outbox one-way to admission ID, attempt ID and evidence digest; CHECK-backed receipt and post-commit read-back verify the binding. Dispatch false.
+- Default-to-implementation comparison at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8`: DIVERGED 67 ahead / 27 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Current default advanced afterward via documentation commits; re-read at next pass.
+- Required CI contexts remain NOT VERIFIED (combined status empty; active default ruleset has no required status contexts). Trusted qualification writer, cryptographic issuer/evidence verification, canonical digest generation and live provider/account/quota truth remain NOT QUALIFIED.
+- No provider/login/secret/hosted D1/deployment/dispatch/merge or independent review. Independent review remains deferred until pool operation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
