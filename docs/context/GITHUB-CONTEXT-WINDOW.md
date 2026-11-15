@@ -2138,3 +2138,12 @@ Recovery status: MediaHub three-agent controller path VERIFIED on four consecuti
 - Three exact child runs are confirmed: Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744`. All three signature/authorization jobs succeeded; Gemini execution jobs remain RUNNING at last observation. Artifact digests and final conclusions are pending.
 - This proves the chat-to-issue-comment event bridge works and starts the three agents. Do not claim the smoke wave is complete until child runs, jobs and artifacts are verified.
 - Detailed live evidence and correlation IDs: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+
+
+## Live bridge smoke test — final verification
+
+- Comment `6899094688` → Controller `43746281426`: COMPLETED / SUCCESS; admission and dispatch/monitor jobs SUCCESS.
+- Agent 1 `43746301766`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `d3d7e7d5ea27d1656dbee67b9481554626df8e6704d9a0873f46790e3ce5505f`.
+- Agent 2 `43746303789`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `44971fc923161b1a8d8f0360340412de2825d58cfad5b1a86c1bb053a0f37bab`.
+- Agent 3 `43746305744`: COMPLETED / SUCCESS; both jobs SUCCESS; artifact SHA-256 `438906bfc7ce4b737de802b28c3ae27b6d6cd43a18b80c709a9ca293dabeda56`.
+- Controller logs recorded all three accepted dispatches and exact run correlation. ChatGPT connector → owner comment → trusted controller → three Gemini child path is now end-to-end VERIFIED for this smoke event.
