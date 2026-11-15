@@ -358,3 +358,16 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - No Gemini launch from this ChatGPT turn, no direct child dispatch, no secret access, no provider call, no deployment, no merge or qualification.
 - Next: investigate and correct controller transport drift under explicit governance; then independently verify caller guards, least privilege, secret boundaries and exact-head checks. Continue D1 revocation watermark work. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Live-state revalidation — 2026-11-16
+
+- Cloud Pool default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main HEAD: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #98 exact-head checks: 3/3 SUCCESS; still Draft, no formal reviews, non-dispatching proof.
+- PR #99 exact-head checks: 0; CI NOT VERIFIED; still Draft, no formal reviews.
+- Current Gemini controller source remains REST dispatch + `workflow_dispatch` children, contrary to merged Option B PR #421; PR #432 reintroduced REST/HMAC. Secret presence/scope NOT VERIFIED; no new dispatch.
+- Detailed report: [2026-11-16 live-state revalidation](../reports/2026-11-16-cloud-pool-live-state-revalidation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: resolve controller transport/governance divergence, then resume gated qualification.
