@@ -3372,3 +3372,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Existing documentation PR #27 remains OPEN / DRAFT / UNMERGED and tracks this continuation branch; base is 64d2636d4500127e635c214ccfb722c6b3fcda80.
 - At the previously observed documentation head 4fa783c63500726b726f1ab366122a06725e2691, exact-head check-runs returned total_count=0 and combined Status API returned pending with zero status contexts. The subsequent context-only correction is a newer documentation commit; exact-head CI for the latest head has not been verified. Keep PR #27 Draft and do not claim CI passed or merge.
 - Latest prior context blob before this correction: 9455a99f04dd3a130d852c660898020ce5f59e91.
+
+
+## 2026-11-15 — Wave 325 registry writer-boundary audit
+
+- Report: [Wave 325 registry writer-boundary audit](../reports/2026-11-15-wave325-registry-writer-boundary-audit.md); report commit `86ab6f9d869e52216bd3454a5b2b19d3b6663fa0`.
+- Immutable stack: default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; PR #87 @ `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` → PR #92 @ `7014961587759b27d2ef6e91c60ce098d077ae83` → PR #93 @ `e200838d038b9cd48635233187819302bba6a33e`. All OPEN/DRAFT/UNMERGED.
+- Read-only inventory of all 13 D1 proof source modules found one intended registry writer: `persistTrustedRouteRegistryBundle()` in `trusted-route-registry.mjs`, guarded by the exact verifier-issued WeakMap capability. A0 admission only reads registry rows and inserts a trust assertion; migration 0014 validates it in the same D1 batch. Worker entrypoint remains inert/404.
+- Migration 0013 allows legacy qualification rows with all registry binding columns NULL; migration 0014's trusted admission assertion cannot admit those rows. Production DB binding/writer isolation remains NOT VERIFIED because the D1 proof is not deployed or wired into Supervisor/Worker.
+- Exact-head local D1 CI remains successful as recorded in Wave 323. Formal reviews 0; combined status contexts empty; independent review NOT RUN / NOT VERIFIED.
+- Cloud Pool-native Gemini controller remains absent from default branch; Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` has no issue_comment trigger; Worker remains DSH-only. Issue #94 requires Cloud Pool-native control and forbids MediaHub Issue #301 as a substitute. Gemini Agent 1/2/3 NOT RUN; no MediaHub bridge event was emitted, no child dispatch/provider call/secret read/deployment/merge.
+- Next: advance Issue #94 controller contract and adversarial/no-secret test design; independently review #87/#92/#93 before integration. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
