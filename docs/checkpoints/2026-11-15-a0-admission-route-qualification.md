@@ -351,3 +351,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Active ruleset #26550182: PR required, review-thread resolution, deletion/non-fast-forward restrictions; 0 required approvals and no required status contexts.
 - No Cloud Pool runtime code, workflows, secrets, variables, dispatch authority, deployment, provider calls or merges changed. Trust-root custody, trusted time, issuer lifecycle, durable revocation, hosted D1 integration and live quota/account evidence remain open. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent trusted-clock/registry-lifecycle review on PR #93/#92/#87; preserve fail-closed dispatch and do not merge divergent stack wholesale.
+
+
+## /next Wave 335 reconciliation — 2026-11-15
+
+- Report: [Wave 335 ChatGPT + Gemini + Cloud Pool pass](../reports/2026-11-15-next-wave-335-chatgpt-gemini-cloud-pool-pass.md).
+- MediaHub source comment 6899356314; controller 43748188993 on immutable target 1694cde38c7b7d69baf9676b4908c1bb6e197fbe. Admission job 132916049955 SUCCESS; dispatch/monitor job 132916076078 still IN_PROGRESS at last read. Controller completion NOT VERIFIED.
+- Agent 1 run 43748208364 SUCCESS; artifact 14175082481 SHA-256 23d054317f82d5f0c531f7c536ea7e5973f14c169a8487244c776de64fe7622e.
+- Agent 2 run 43748210183 SUCCESS; artifact 14175177073 SHA-256 45b49d9c3c09886f8e0f09ab90f0986ba82843cecded8c9ad414d31509a59665.
+- Agent 3 run 43748212060 SUCCESS; artifact 14174513930 SHA-256 5d2f7a3366d1d74b02776bc5b5e9ce422ae63e727ccb042961b61ec76c4d1178.
+- Cloud Pool default HEAD 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN; Supervisor no issue_comment trigger; fail-closed dispatch remains. No Cloud Pool-native Gemini execution.
+- PR #87/#86/#92/#93 corresponding proof workflows SUCCESS, but no formal reviews; all draft/unmerged. Local Workers/D1 tests are not hosted production qualification.
+- No runtime code, secrets, variables, dispatch gates, provider calls, deployment or merges changed. Root custody, issuer lifecycle, durable revocation, hosted D1 and Supervisor integration remain blockers. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
