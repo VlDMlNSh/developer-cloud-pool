@@ -265,3 +265,12 @@ This is an execution-bridge correction only; it does not change the A0/D1 implem
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 
 Next: on the next user-issued `/next`, execute the single-comment bridge event and verify the new controller run plus all three child runs, while continuing the next bounded Cloud Pool A0/D1 engineering pass independently.
+
+
+## Live ChatGPT /next bridge smoke test — 2026-11-15
+
+- GitHub connector created owner-authored MediaHub Issue #301 comment `6899094688`, exact body `/next`.
+- Controller `43746281426` started on target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission gate SUCCESS; dispatch/monitor RUNNING at last read-back.
+- Child Agent 1 `43746301766`, Agent 2 `43746303789`, Agent 3 `43746305744` are confirmed RUNNING. All three authorization jobs SUCCESS; Gemini execution jobs RUNNING. Final artifacts/conclusions pending.
+- This validates the event bridge and three child starts. Do not mark the live wave SUCCEEDED/VERIFIED before final run/job/artifact reconciliation.
+- Detailed evidence: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
