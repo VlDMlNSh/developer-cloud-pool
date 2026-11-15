@@ -476,3 +476,16 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 ## 2026-11-15 — latest pass: PR #93 atomic registry rollback audit (Wave 322)
 
 See [Wave 322 report](../reports/2026-11-15-pr93-verified-registry-atomic-rollback-wave322.md). PR #93 target `e200838d038b9cd48635233187819302bba6a33e` has exact-head local D1 push and PR CI SUCCESS (#43736259303, #43736264768). Its test suite includes lower unseen epoch rollback (2000 after 2001), asserting no partial snapshot/issuer/qualification rows and unchanged active pointer. Prior provisional claim that this case was absent is corrected. PR #93 remains OPEN/DRAFT, stacked on #92 → #87, with zero formal reviews and zero inline threads. Active ruleset has zero required approvals and no required check contexts; independent security/governance gate NOT VERIFIED. Remote D1, live runtime, web UI, executor routing and Contour A acceptance remain NOT VERIFIED / NOT ACCEPTED. Gemini children NOT RUN. Contour B DEFERRED. Next: independent review/governance for the entire #87/#92/#93 stack, then integrated stack audit. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 323 integrated admission/registry audit
+
+- Detailed report: [Wave 323](../reports/2026-11-15-pr87-pr92-pr93-integrated-admission-registry-audit-wave323.md).
+- Default branch `Основной` exact ref: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Stack: PR #87 @ `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` → PR #92 @ `7014961587759b27d2ef6e91c60ce098d077ae83` → PR #93 @ `e200838d038b9cd48635233187819302bba6a33e`. All OPEN/DRAFT/UNMERGED.
+- Exact-head D1 CI: #87 run #43712647597 SUCCESS; #92 #43718679258 SUCCESS; #93 push #43736259303 and PR #43736264768 SUCCESS. PR #87/#92 Pool Contract Validation runs #43712647615/#43718679251 SUCCESS. PR #93 artifact #14170616460 SHA-256 `909e27d3bec1ca75933085475431f3ff5e4f9f8578985e1e2670d01336270c5a`.
+- Static audit confirms migration 0014 admission registry assertion guard and PR #92 complete exact-replay receipt validation; PR #93 verifier-issued WeakMap persistence capability. CI proves local Workers-runtime D1 only.
+- Formal reviews all 0; ruleset #26550182 active but zero approving reviews and no required status contexts. Independent review NOT RUN / NOT VERIFIED. Combined status contexts empty.
+- Next: enumerate every registry-table writer and production integration surface; preserve no-dispatch boundary.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No dispatch, secret reads, provider calls, deployment, merge or paid resource.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
