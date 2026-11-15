@@ -191,7 +191,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
 
   it("rejects replay but returns the same durable receipt for an exact retry", async () => {
     const first = await admitQualifiedTask(env.POOL_DB, input);
-    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    const replay = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW + 5 });
     const changedAccountReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, accountRef: "other-account" } });
     const changedOwnerReplay = await admitQualifiedTask(env.POOL_DB, { ...input, approval: { ...input.approval, ownerNumericId: "99999" } });
     const changedValidityReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, validUntil: input.route.validUntil + 1 } });
