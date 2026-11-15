@@ -43,7 +43,7 @@ async function seed(overrides = {}) {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId, r.costClass,
-    r.capabilityId, r.evidenceDigest, NOW - 60, NOW + 3600, r.registryVersion).run();
+    r.capabilityId, r.evidenceDigest, r.issuedAt ?? NOW - 60, NOW + 3600, r.registryVersion).run();
 }
 
 beforeEach(async () => {
