@@ -1,6 +1,24 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
+import { canonicalizeQualifiedRouteEvidence } from "../src/qualified-route-evidence.mjs";
+
+async function evidenceDigest(route) {
+  const evidence = {
+    schemaVersion: route.schemaVersion, qualificationId: route.qualificationId,
+    routeId: route.routeId, providerId: route.providerId, modelId: route.modelId,
+    issuerId: route.issuerId, keyId: route.keyId, accountRef: route.accountRef,
+    credentialHandleRef: route.credentialHandleRef, quotaDomainId: route.quotaDomainId ?? null,
+    costClass: route.costClass, capabilityId: route.capabilityId,
+    capabilityProfile: route.capabilityProfile, evidenceRef: route.evidenceRef,
+    observedAt: route.observedAt, validUntil: route.validUntil,
+    revocationVersion: route.revocationVersion, registryVersion: route.registryVersion,
+    status: "qualified"
+  };
+  const digest = await crypto.subtle.digest("SHA-256",
+    new TextEncoder().encode(canonicalizeQualifiedRouteEvidence(evidence)));
+  return [...new Uint8Array(digest)].map((value) => value.toString(16).padStart(2, "0")).join("");
+}
 
 const NOW = 1_800_000_000;
 const input = {
@@ -79,6 +97,7 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
+  input.route.evidenceDigest = await evidenceDigest(input.route);
   // Append-only guards are disabled only around fixture teardown, then restored
   // before the test body. Production migration guards remain enabled in tests.
   for (const name of [
@@ -220,6 +239,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
   it("rejects stale route evidence before consuming approval", async () => {
     const staleApproval = { ...input.approval, approvalId: "approval-stale-001" };
     const staleRoute = { ...input.route, qualificationId: "route-stale-001", observedAt: NOW - 301 };
+    staleRoute.evidenceDigest = await evidenceDigest(staleRoute);
     await seed({ approval: staleApproval, route: staleRoute });
     const staleInput = {
       ...input, admissionId: "admission-stale-001", approval: staleApproval, route: staleRoute
@@ -304,6 +324,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
       registryVersion: "registry-v2", registryEpoch: 2002,
       registryBundleDigest: digest
     };
+    route.evidenceDigest = await evidenceDigest(route);
     const attempt = { ...input.attempt, attemptId: "attempt-revoked-key-001" };
     await seed({ approval, route });
     const result = await admitQualifiedTask(env.POOL_DB, {
