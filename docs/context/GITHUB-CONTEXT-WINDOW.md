@@ -3323,3 +3323,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Workers-runtime D1 suite: 11 files / 120 tests PASS / 0 FAIL, including new stale-epoch whole-batch rollback regression. Syntax check PASS. Isolated second binding smoke: 1 pass / 2 name-filter skips. Frozen schema-0010 fixture: 2 pass / 1 name-filter skip; golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`.
 - Artifact #14170616460, ZIP SHA-256 `909e27d3bec1ca75933085475431f3ff5e4f9f8578985e1e2670d01336270c5a`.
 - PR #93 remains OPEN/DRAFT/UNMERGED. This is isolated local D1 proof, not hosted D1/live pool qualification. No dispatch/deployment/provider use or secret reads.
+
+
+## 2026-11-15 — PR #93 verified registry persistence / stale epoch rollback (Wave 322)
+
+- Report: [PR #93 verified registry atomic rollback audit](../reports/2026-11-15-pr93-verified-registry-atomic-rollback-wave322.md), report commit `af7fd8f6bad0ee5147de6b6b9dff41e14c4e7594`.
+- PR #93 exact head `e200838d038b9cd48635233187819302bba6a33e`, base PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; OPEN/DRAFT, 5 ahead / 0 behind, mergeable clean. PR #92 is stacked on PR #87; treat #87/#92/#93 as one dependency chain.
+- Correction: latest PR #93 test blob `1a4b33b1765194ccc3b401dcd63aa775041e4b05` already includes lower unseen epoch 2000 rollback after epoch 2001. It asserts no snapshot, issuer key, or qualification rows survive and active pointer stays at 2001. Prior provisional statement that this test was absent was incorrect; do not repeat it.
+- Migration 0012 monotonic-epoch trigger rejects epochs <= max persisted epoch; persistence is a single D1 batch. Current static + test evidence supports atomic rollback for this case.
+- Exact-head D1 CI: push #43736259303 SUCCESS; PR #43736264768 SUCCESS on `e200838...`. This is local Workers-runtime D1 proof, not remote D1 qualification.
+- PR #93 formal reviews 0; inline review threads 0. Active ruleset #26550182 on `Основной` requires PR and thread resolution, but zero approving reviews and no required status-check contexts; independent security-review governance remains NOT VERIFIED.
+- Gemini Cloud Pool-specific review route NOT RUN; three Gemini children NOT RUN; no child IDs/artifacts. Do not reuse the MediaHub controller outside its approved scope. No Claude host execution, secrets, provider/model calls, deployment or dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: authorized independent review/governance for stacked PRs #87/#92/#93, then integrated stack audit before any merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
