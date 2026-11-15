@@ -78,3 +78,20 @@ Continue Cloud Pool Contour A from its current A0/D1 checkpoint on the Cloud Poo
 - Cloud Pool Issue #94: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94
 - MediaHub Issue #301: https://github.com/VlDMlNSh/mediahub-os/issues/301
 - MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Post-dispatch PR and CI reconciliation
+
+The three agents each created a separate Draft PR against `main`, all with base SHA equal to the immutable dispatch target. The diffs were read and contained one evidence/checkpoint file each; no runtime implementation or secret material was introduced.
+
+| PR | Role | Head SHA | Changed content | Review state | CI state |
+|---|---|---|---|---|---|
+| [#664](https://github.com/VlDMlNSh/mediahub-os/pull/664) | Agent 2 | `750e3944675ef908c7f5e81ade7f591f319cbedf` | 49-line contract/test traceability checkpoint | 0 formal reviews; 0 threads | Five associated workflow runs terminal `action_required`; jobs endpoint returned zero jobs. CI NOT VERIFIED. |
+| [#665](https://github.com/VlDMlNSh/mediahub-os/pull/665) | Agent 3 | `d9be71e1bce02ef94ed4c126bf4cb5ad7fed29c4` | 63-line security/provenance audit report | 0 formal reviews; 0 threads | Five associated workflow runs terminal `action_required`; jobs endpoint returned zero jobs. CI NOT VERIFIED. |
+| [#666](https://github.com/VlDMlNSh/mediahub-os/pull/666) | Agent 1 | `4f564b93613786bbe8a30aad63cda3b68ab861ef` | 34-line bounded-pass evidence JSON | 0 formal reviews; 0 threads | Five associated workflow runs terminal `action_required`; jobs endpoint returned zero jobs. CI NOT VERIFIED. |
+
+All PRs remain OPEN / DRAFT / UNMERGED and report mergeable=true in metadata. Do not treat that as approval. The five named workflows associated with each head are: Gemini workflow contract validation (Wave 284), provider contract verification, Astra Verify, AI Factory verification, and Astra Cloud Runtime Validation. Every associated run concluded `action_required` with no jobs returned, so no CI test execution is evidenced. No merge or manual approval was attempted.
+
+Agent 2's artifact states static/structural verification and explicitly says no qualification run; it does not claim those tests were executed. Agent 3's audit is a static security/provenance assessment and lists runner isolation enforcement and HMAC key rotation as residual risks. Agent 1's evidence lists live backend execution checks as suppressed and the zero-cost entitlement gate as pending. These are useful candidate reports, not independent qualification or acceptance.
+
+Disposition: execution of all three agents VERIFIED; their output artifacts VERIFIED; PR creation VERIFIED; PR review and CI NOT VERIFIED; no code merge, runtime qualification, deployment, or Contour A acceptance.
