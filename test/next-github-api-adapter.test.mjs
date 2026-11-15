@@ -64,7 +64,7 @@ test("GitHub adapter paginates workflow runs across pages", async () => {
 test("GitHub adapter refuses unexpected issue and malformed ledger writes", async () => {
   const { api } = apiFor();
   assert.throws(() => api.listIssueComments(95), /Unexpected control issue/);
-  assert.throws(() => api.createIssueComment(96, "not a ledger"), /Invalid ledger comment/);
+  await assert.rejects(() => api.createIssueComment(96, "not a ledger"), /Invalid ledger comment/);
 });
 
 test("verified event admits only exact owner /next on open control issue at current default SHA", async () => {
