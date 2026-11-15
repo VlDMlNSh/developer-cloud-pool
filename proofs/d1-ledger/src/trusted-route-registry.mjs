@@ -221,3 +221,155 @@ export const trustedRouteRegistryPolicy = Object.freeze({
   rootKeySource: "platform-environment-binding",
   dispatchEnabled: false
 });
+
+
+/**
+ * Verify and durably persist a complete root-signed registry snapshot.
+ *
+ * Snapshot metadata, the exact bundle/signature, issuer-key records, route
+ * qualifications and active singleton pointer are committed in one D1 batch.
+ * Existing route rows remain append-only. This writer never enables dispatch.
+ * A0 admission must still re-check the active snapshot and issuer-key row in
+ * its own D1 batch; persistence alone is not an admission decision.
+ */
+export async function persistTrustedRouteRegistryBundle({
+  db, bundle, signature, env, now
+} = {}) {
+  if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
+    return Object.freeze({ persisted: false, verified: false, dispatch: false, reason: "STORAGE_UNAVAILABLE" });
+  }
+
+  const verified = await verifyTrustedRouteRegistryBundle({ bundle, signature, env, now });
+  if (!verified.verified) {
+    return Object.freeze({ ...verified, persisted: false });
+  }
+
+  const bundleJson = JSON.stringify(bundle);
+  try {
+    const prior = await db.prepare(`
+      SELECT bundle_digest, bundle_json
+        FROM pool_route_registry_snapshots
+       WHERE registry_epoch = ?
+    `).bind(verified.registryEpoch).first();
+    if (prior) {
+      if (prior.bundle_digest !== verified.bundleDigest || prior.bundle_json !== bundleJson) {
+        return Object.freeze({
+          verified: true, persisted: false, dispatch: false,
+          reason: "REGISTRY_EPOCH_ALREADY_BOUND"
+        });
+      }
+      const state = await db.prepare(`
+        SELECT current_epoch, current_bundle_digest
+          FROM pool_route_registry_state WHERE state_id = 1
+      `).first();
+      return Object.freeze({
+        verified: true, persisted: true, alreadyPersisted: true,
+        active: state?.current_epoch === verified.registryEpoch &&
+          state?.current_bundle_digest === verified.bundleDigest,
+        registryEpoch: verified.registryEpoch,
+        bundleDigest: verified.bundleDigest,
+        dispatch: false,
+        reason: "REGISTRY_SNAPSHOT_ALREADY_PERSISTED"
+      });
+    }
+
+    const statements = [
+      db.prepare(`
+        INSERT INTO pool_route_registry_snapshots (
+          registry_epoch, registry_version, root_key_id, bundle_digest,
+          issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+          bundle_json, root_signature
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        verified.registryEpoch, verified.registryVersion, verified.rootKeyId,
+        verified.bundleDigest, bundle.issuedAt, bundle.validUntil, now,
+        verified.issuerKeyCount, verified.routeCount, bundleJson, signature
+      )
+    ];
+
+    for (const key of bundle.issuerKeys) {
+      statements.push(db.prepare(`
+        INSERT INTO pool_route_registry_issuer_keys (
+          registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+          status, revoked_at, valid_from, valid_until, public_key_jwk
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        verified.registryEpoch, verified.bundleDigest, key.issuerId, key.keyId,
+        key.registryVersion, key.status, key.revokedAt, key.validFrom,
+        key.validUntil, JSON.stringify(key.publicKeyJwk)
+      ));
+    }
+
+    for (let index = 0; index < bundle.routes.length; index += 1) {
+      const evidence = bundle.routes[index].evidence;
+      const routeProof = verified.routes[index];
+      if (!routeProof || routeProof.qualificationId !== evidence.qualificationId) {
+        return Object.freeze({
+          verified: true, persisted: false, dispatch: false,
+          reason: "REGISTRY_VERIFIED_ROUTE_ORDER_MISMATCH"
+        });
+      }
+      statements.push(db.prepare(`
+        INSERT INTO pool_route_qualifications (
+          schema_version, qualification_id, route_id, provider_id, model_id,
+          issuer_id, account_ref, credential_handle_ref, quota_domain_id,
+          cost_class, capability_id, capability_profile, evidence_ref,
+          evidence_digest, observed_at, valid_until, revocation_version,
+          revoked_at, registry_version, issuer_key_id, registry_epoch,
+          registry_bundle_digest
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?, ?)
+      `).bind(
+        evidence.schemaVersion, evidence.qualificationId, evidence.routeId,
+        evidence.providerId, evidence.modelId, evidence.issuerId,
+        evidence.accountRef, evidence.credentialHandleRef, evidence.quotaDomainId,
+        evidence.costClass, evidence.capabilityId, evidence.capabilityProfile,
+        evidence.evidenceRef, routeProof.evidenceDigest, evidence.observedAt,
+        evidence.validUntil, evidence.revocationVersion, evidence.registryVersion,
+        evidence.keyId, verified.registryEpoch, verified.bundleDigest
+      ));
+    }
+
+    statements.push(db.prepare(`
+      INSERT OR IGNORE INTO pool_route_registry_state (
+        state_id, current_epoch, current_bundle_digest,
+        current_registry_version, updated_at
+      ) VALUES (1, ?, ?, ?, ?)
+    `).bind(
+      verified.registryEpoch, verified.bundleDigest, verified.registryVersion, now
+    ));
+    statements.push(db.prepare(`
+      UPDATE pool_route_registry_state
+         SET current_epoch = ?, current_bundle_digest = ?,
+             current_registry_version = ?, updated_at = ?
+       WHERE state_id = 1 AND current_epoch < ?
+    `).bind(
+      verified.registryEpoch, verified.bundleDigest, verified.registryVersion,
+      now, verified.registryEpoch
+    ));
+
+    await db.batch(statements);
+    const state = await db.prepare(`
+      SELECT current_epoch, current_bundle_digest
+        FROM pool_route_registry_state WHERE state_id = 1
+    `).first();
+    const active = state?.current_epoch === verified.registryEpoch &&
+      state?.current_bundle_digest === verified.bundleDigest;
+    if (!active) {
+      return Object.freeze({
+        verified: true, persisted: false, dispatch: false,
+        reason: "REGISTRY_ACTIVE_POINTER_NOT_ADVANCED"
+      });
+    }
+    return Object.freeze({
+      verified: true, persisted: true, alreadyPersisted: false,
+      active: true, registryEpoch: verified.registryEpoch,
+      bundleDigest: verified.bundleDigest, dispatch: false,
+      reason: "ROOT_SIGNED_REGISTRY_SNAPSHOT_PERSISTED"
+    });
+  } catch {
+    return Object.freeze({
+      verified: true, persisted: false, dispatch: false,
+      reason: "REGISTRY_PERSISTENCE_FAILED"
+    });
+  }
+}
