@@ -2354,3 +2354,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: continue the Pool's trusted issuer/claim-service and durable admission boundary; keep GODMOD3 outside the trusted control plane. Revisit only as an isolated research UI after Pool routing, quota, authentication, and persistence are operational and AGPL/security review is complete.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## D1 registry/admission runtime-boundary review — 2026-11-15
+
+- Read-only source review target: PR #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` plus stacked PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; both OPEN/DRAFT/UNMERGED and have zero formal reviews.
+- PR #92 exact-head D1 Proof run `43718679258`: SUCCESS, 120 tests PASS / 0 FAIL; exact-head Pool Contract Validation `43718679251`: SUCCESS. Combined commit status contexts empty. These prove the local test stack only.
+- Source blobs: registry adapter `12f1b09b238d61fa7cf3574221f3cb79f6d4767a`; admission adapter `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; migrations 0012/0013/0014 `485d8c2d2327a64c8d86ddc004134113d6ae3d80` / `40b93551c787078e5c65c8861569bb428bd2eb8b` / `cb8a47d83faba62981daa8f7320da87baa2c55e2`; atomic test `4543d1db062da3e94ee839c50c79e3f01016b8b7`.
+- Positive local proof: root-pinned signature verification; D1-batched snapshot/key/route/pointer persistence; append-only monotonic snapshot history; admission-time assertion binds active snapshot and issuer key; assertion + approval consume + admission + attempt + outbox + receipt share a D1 batch; replay and registry-race adversarial tests; dispatch remains false.
+- Critical boundary finding: `proofs/d1-ledger/src/worker.mjs` blob `214622f6dc94623521070eb9e7fbc2f573fdc2c6` deliberately returns HTTP 404. Adapters are test-imported, not exposed through a live Worker API. Both registry and admission adapters accept caller-supplied `now`; no trusted Worker clock boundary is wired. Authenticated registry ingestion is not implemented.
+- Full report: [D1 registry and admission runtime-boundary review](../reports/2026-11-15-d1-registry-admission-runtime-boundary-review.md), commit `5448abc1dce009a98db13631f5988d091c438cb3`.
+- Current default HEAD was not re-established from branch enumeration in this pass; prior observed snapshot `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` is retained as last known, NOT claimed current. Documentation branch `docs/next-wave-agent-launch-readiness-2026-11-15` is unmerged and PR #91 remains OPEN/DRAFT.
+- Next: build a separate fail-closed Worker boundary with authenticated registry ingestion, platform-sourced time, strict request bounds/schema, D1 binding validation and tests. Keep dispatch false; no hosted provisioning or secret access.
+- Contour A IN PROGRESS / BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
