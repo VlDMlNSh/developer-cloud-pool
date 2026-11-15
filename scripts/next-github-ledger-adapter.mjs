@@ -81,8 +81,7 @@ export async function reconcileNextLedgerEvent({
       ? Object.freeze({ action: "ADMITTED", dispatchId: initial.record.dispatchId, targetSha })
       : Object.freeze({ action: "AMBIGUOUS_APPEND", reason: result.reason });
   }
-  if (initial.action === "DENY" || initial.action === "INCIDENT" ||
-      initial.action === "AMBIGUOUS_NO_RETRY") return initial;
+  if (initial.action === "DENY" || initial.action === "INCIDENT") return initial;
 
   if (initial.action === "PERSIST_DISPATCH_INTENT") {
     const result = await append(initial.record);
@@ -111,7 +110,7 @@ export async function reconcileNextLedgerEvent({
   }
   const expectedName = deterministicControllerRunName(current.dispatchId);
   const matches = (visibleRuns || []).filter(run =>
-    run?.name === expectedName && run?.head_sha === current.targetSha
+    run?.display_title === expectedName && run?.head_sha === current.targetSha
   );
   const plan = planNextDispatch({
     sourceCommentId, targetSha, records,
