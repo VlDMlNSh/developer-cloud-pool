@@ -3301,3 +3301,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: OWNER posts exact `/probe` on [Issue #301](https://github.com/VlDMlNSh/mediahub-os/issues/301) after merge; inspect observer/assertion SUCCESS and readiness/dispatch SKIPPED on exact main SHA. Then separately complete independent security review and metadata-only secret/variable checks before any controlled three-agent dispatch. Do not use ChatGPT `/next` as a substitute for an Issue #301 comment.
 - Developer Cloud Pool Contour A remains primary; this MediaHub controller integration is a cross-project dependency only and does not qualify or accept the pool.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 322 D1 registry stale-epoch rollback regression
+
+- Primary default branch is named `Основной`, observed HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; do not assume branch `main` for Developer Cloud Pool.
+- PR #93 remains OPEN / DRAFT / UNMERGED, stacked on PR #92. Target pre-change `99ca50ce11efb380efa6346a1db672585876a8b1`; updated exact head `e200838d038b9cd48635233187819302bba6a33e`.
+- Added test-only stale registry epoch regression to `proofs/d1-ledger/test/trusted-route-registry-persistence.test.ts`; blob `1a4b33b1765194ccc3b401dcd63aa775041e4b05`. Test first persists epoch 2001, then attempts lower unseen epoch 2000 with a unique qualification identity, and asserts no snapshot/issuer/route rows survive and pointer remains at 2001.
+- Static review correction: migration 0012 has a BEFORE INSERT monotonicity trigger rejecting epoch <= MAX persisted epoch via RAISE(ABORT). D1 batch atomicity means stale epoch should roll back the whole batch; the earlier hypothesized partial-write risk is not supported. New test closes a coverage gap rather than fixing a proven implementation defect.
+- Exact-head CI run [#43736259303](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43736259303), job #132879411032, was RUNNING when recorded; result NOT YET VERIFIED. Prior runs #43725400300 and #43725394531 passed all steps on the previous SHA only.
+- PR #93 remains draft, no merge. No secrets/provider calls/deploy/dispatch. Gemini agents NOT RUN / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- MediaHub PR #651 is merged at `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Full Issue #301 comments show only owner `/probe` #6897245259, before merge; corresponding run #43732834570 used old SHA and failed assertion. No post-merge trigger found; no comment was posted by this pass.
+- Next: inspect exact-head D1 run #43736259303; on success continue PR #92 exact-head and A0 registry assertion adversarial audit; on failure inspect logs and fix only demonstrated cause.
+- Wave 322 report: [D1 registry stale-epoch rollback test](../reports/2026-11-15-wave322-registry-epoch-rollback-test.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
