@@ -105,7 +105,8 @@ describe("atomic qualified A0 -> D1 admission", () => {
       taskKey: input.taskKey, attemptId: input.attempt.attemptId, dispatch: false
     });
     const rows = await env.POOL_DB.prepare(`
-      SELECT l.state, l.admission_id, t.task_key, o.status AS outbox_status,
+      SELECT l.state, l.admission_id, t.task_key, t.current_attempt_id, t.attempt_number,
+             o.status AS outbox_status, o.event_type AS outbox_event_type,
              o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
              o.evidence_digest AS outbox_evidence_digest,
              a.evidence_digest, a.dispatch_enabled, p.status AS attempt_status,
@@ -120,7 +121,8 @@ describe("atomic qualified A0 -> D1 admission", () => {
     `).bind(input.approval.approvalId).first();
     expect(rows).toMatchObject({
       state: "consumed", admission_id: input.admissionId,
-      task_key: input.taskKey, outbox_status: "pending",
+      task_key: input.taskKey, current_attempt_id: input.attempt.attemptId, attempt_number: 1,
+      outbox_status: "pending", outbox_event_type: "pool.task.ready",
       outbox_admission_id: input.admissionId, outbox_attempt_id: input.attempt.attemptId,
       outbox_evidence_digest: input.route.evidenceDigest,
       evidence_digest: input.route.evidenceDigest, dispatch_enabled: 0,
@@ -133,8 +135,10 @@ describe("atomic qualified A0 -> D1 admission", () => {
     const replay = await admitQualifiedTask(env.POOL_DB, input);
     const changedAccountReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, accountRef: "other-account" } });
     const changedOwnerReplay = await admitQualifiedTask(env.POOL_DB, { ...input, approval: { ...input.approval, ownerNumericId: "99999" } });
+    const changedValidityReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, validUntil: input.route.validUntil + 1 } });
     expect(changedAccountReplay).toMatchObject({ decision: "DENY", reason: "ADMISSION_IDENTITY_CONFLICT", dispatch: false });
     expect(changedOwnerReplay).toMatchObject({ decision: "DENY", reason: "ADMISSION_IDENTITY_CONFLICT", dispatch: false });
+    expect(changedValidityReplay).toMatchObject({ decision: "DENY", reason: "ADMISSION_IDENTITY_CONFLICT", dispatch: false });
     expect(first.decision).toBe("ADMITTED_QUEUED");
     expect(replay).toMatchObject({
       decision: "ADMISSION_ALREADY_COMMITTED",
@@ -199,6 +203,21 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(ledger.state).toBe("ready");
   });
 
+  it("rejects a mismatched capability profile before consuming approval", async () => {
+    const result = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, capabilityProfile: "other-profile" } });
+    expect(result).toMatchObject({ decision: "DENY", reason: "INVALID_ADMISSION_BINDING", dispatch: false });
+    const row = await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?").bind(input.approval.approvalId).first();
+    expect(row.state).toBe("ready");
+  });
+
+  it("prevents mutation of an already-bound task outbox identity", async () => {
+    await admitQualifiedTask(env.POOL_DB, input);
+    await expect(env.POOL_DB.prepare("UPDATE pool_task_delivery_outbox SET evidence_digest = ? WHERE task_key = ?")
+      .bind("f".repeat(64), input.taskKey).run()).rejects.toThrow();
+    const row = await env.POOL_DB.prepare("SELECT admission_id, attempt_id, evidence_digest FROM pool_task_delivery_outbox WHERE task_key = ?")
+      .bind(input.taskKey).first();
+    expect(row).toMatchObject({ admission_id: input.admissionId, attempt_id: input.attempt.attemptId, evidence_digest: input.route.evidenceDigest });
+  });
   it("allows only one concurrent admission for one single-use approval", async () => {
     const results = await Promise.all(Array.from({ length: 12 }, () => admitQualifiedTask(env.POOL_DB, input)));
     expect(results.filter(x => x.decision === "ADMITTED_QUEUED")).toHaveLength(1);

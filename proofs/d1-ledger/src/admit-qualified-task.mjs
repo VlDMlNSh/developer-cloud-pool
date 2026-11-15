@@ -77,7 +77,7 @@ function statements(db, input) {
     AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
     AND q.cost_class = ? AND q.capability_id = ? AND q.capability_profile = ? AND q.evidence_digest = ?
     AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
-    AND q.observed_at = ? AND q.revocation_version = ?
+    AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
     AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
     AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
@@ -85,7 +85,7 @@ function statements(db, input) {
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
     r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
-    r.schemaVersion, r.evidenceRef, r.observedAt, r.revocationVersion,
+    r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
     now, now - 300, now
   ];
   return [
@@ -142,9 +142,14 @@ function statements(db, input) {
     db.prepare(`
       UPDATE pool_task_delivery_outbox
          SET admission_id = ?, attempt_id = ?, evidence_digest = ?
-       WHERE task_key = ? AND status = 'pending'
+       WHERE task_key = ? AND event_type = 'pool.task.ready' AND status = 'pending'
          AND admission_id IS NULL AND attempt_id IS NULL AND evidence_digest IS NULL
-    `).bind(admissionId, t.attemptId, r.evidenceDigest, input.taskKey),
+         AND EXISTS (SELECT 1 FROM pool_admissions a JOIN pool_attempts p
+           ON p.attempt_id = a.attempt_id AND p.task_key = a.task_key
+           WHERE a.admission_id = ? AND a.task_key = pool_task_delivery_outbox.task_key
+             AND a.attempt_id = ? AND a.evidence_digest = ?)
+    `).bind(admissionId, t.attemptId, r.evidenceDigest, input.taskKey,
+      admissionId, t.attemptId, r.evidenceDigest),
     db.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, attempt_id, qualification_id,
@@ -168,6 +173,8 @@ function statements(db, input) {
              AND l.consumed_at = a.admitted_at
              AND o.status = 'pending' AND o.admission_id = a.admission_id
              AND o.attempt_id = a.attempt_id AND o.evidence_digest = a.evidence_digest
+             AND t.current_attempt_id = a.attempt_id AND t.attempt_number = a.attempt_number
+             AND EXISTS (SELECT 1 FROM pool_attempt_events e WHERE e.attempt_id = a.attempt_id AND e.event_type = 'attempt.created')
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
@@ -255,19 +262,24 @@ export async function admitQualifiedTask(db, input) {
       SELECT a.admission_id, a.approval_id, a.task_key, a.attempt_id,
              a.attempt_number, a.qualification_id, a.evidence_digest,
              a.dispatch_enabled, r.assertion, r.committed_at,
-             l.state AS approval_state, o.status AS outbox_status,
+             l.state AS approval_state, o.status AS outbox_status, o.event_type AS outbox_event_type,
              o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
              o.evidence_digest AS outbox_evidence_digest,
+             t.current_attempt_id AS task_current_attempt_id, t.attempt_number AS task_attempt_number,
              p.status AS attempt_status, p.input_digest, p.execution_idempotency_key
         FROM pool_admissions a
         JOIN pool_admission_commit_receipts r ON r.admission_id = a.admission_id
         JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
         JOIN pool_task_delivery_outbox o ON o.task_key = a.task_key
+        JOIN pool_tasks t ON t.task_key = a.task_key
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id AND p.task_key = a.task_key
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
     if (!committed || committed.assertion !== 1 ||
         committed.approval_state !== "consumed" || committed.outbox_status !== "pending" ||
+        committed.outbox_event_type !== "pool.task.ready" ||
+        committed.task_current_attempt_id !== committed.attempt_id ||
+        committed.task_attempt_number !== committed.attempt_number ||
         committed.input_digest !== input.attempt.inputDigest ||
         committed.execution_idempotency_key !== input.attempt.executionIdempotencyKey ||
         committed.outbox_admission_id !== committed.admission_id ||

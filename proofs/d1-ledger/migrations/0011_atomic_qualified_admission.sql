@@ -83,6 +83,7 @@ WHEN NOT (
   AND EXISTS (SELECT 1 FROM pool_admissions a WHERE a.admission_id = NEW.admission_id
     AND a.task_key = NEW.task_key AND a.attempt_id = NEW.attempt_id
     AND a.evidence_digest = NEW.evidence_digest)
+  AND EXISTS (SELECT 1 FROM pool_attempts p WHERE p.attempt_id = NEW.attempt_id AND p.task_key = NEW.task_key)
 )
 BEGIN SELECT RAISE(ABORT, 'TASK_OUTBOX_ADMISSION_BINDING_INVALID'); END;
 
