@@ -185,5 +185,34 @@ describe("atomic persistence of root-signed route registry", () => {
     expect(await db.prepare(
       "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
     ).first()).toMatchObject({ current_epoch: 2001 });
+
+    // A lower unseen epoch must be rejected by the database monotonicity
+    // trigger, and the entire D1 batch must roll back (snapshot, issuer key,
+    // route qualification and active pointer).
+    const stale = await makeBundle(
+      2000, "registry-persist-stale-v0", "qualification-persist-stale-000"
+    );
+    const staleVerification = await verifyTrustedRouteRegistryBundle({
+      ...stale, env: envBindings, now: NOW + 2
+    });
+    const staleResult = await persistTrustedRouteRegistryBundle({
+      db, verification: staleVerification
+    });
+    expect(staleResult).toMatchObject({
+      verified: true, persisted: false, dispatch: false,
+      reason: "REGISTRY_PERSISTENCE_FAILED"
+    });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_route_registry_snapshots WHERE registry_epoch = 2000"
+    ).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_route_registry_issuer_keys WHERE registry_epoch = 2000"
+    ).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_route_qualifications WHERE qualification_id = 'qualification-persist-stale-000'"
+    ).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first()).toMatchObject({ current_epoch: 2001 });
   });
 });
