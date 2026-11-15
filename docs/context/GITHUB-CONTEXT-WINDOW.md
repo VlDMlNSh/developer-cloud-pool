@@ -2450,3 +2450,18 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: durable source-comment idempotency + ambiguous dispatch reconciliation; only then owner-only issue_comment controller behind disabled dispatch, with independent review and governance.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 342 — 2026-11-15
+
+- Default branch `Основной` HEAD rechecked unchanged: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Issue #94 and dedicated control Issue #96 remain OPEN. Issue #96 Wave 342 evidence comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96#issuecomment-6900567298.
+- PR #97 remains OPEN / DRAFT / UNMERGED, base SHA `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, head `e216d0eb66af182258a9e8552677bbcad3b1d311`. Formal reviews 0; aggregate status contexts empty / NOT VERIFIED. Other open draft stack PRs #87/#92/#93/#95 remain open/unmerged with 0 formal reviews; see Wave 342 report for exact heads.
+- Added write-ahead ledger protocol: `scripts/next-dispatch-ledger.mjs` blob `7b629889b7191f21c1e0099bc65f9dca1eaee460`; tests `test/next-dispatch-ledger.test.mjs` blob `23ca351d00776a5372a9d72aa0ae116e7b13134b`; CI workflow blob `6902e72cd6bd7ce3670986af32f1a8b8a9c4f054`.
+- Ledger state contract requires serialized lock, digest-checked append-only records, ADMITTED then DISPATCH_INTENT, same-invocation-only single dispatch permission, visible-run reconciliation, and AMBIGUOUS_NO_RETRY when intent exists but no run is visible. This is pure protocol code only; no live Issue #96 persistence, Actions concurrency lock, controller run lookup or dispatch integration exists.
+- Exact-head CI on `e216d0eb66af182258a9e8552677bbcad3b1d311`: [run 43756440044](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43756440044) SUCCESS (8/8 steps); [run 43756439898](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43756439898) SUCCESS (7/7 steps). Formal review and aggregate status remain NOT VERIFIED.
+- Supplementary MediaHub Issue #301 bridge event [6900524362](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900524362) was created. It is not the Cloud Pool-native controller; Gemini controller/child run IDs and artifacts NOT VERIFIED.
+- Report: [Wave 342 — Write-ahead /next Dispatch Ledger Contract](../reports/2026-11-15-wave342-write-ahead-next-ledger-contract.md).
+- Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement trusted-main GitHub adapter for Issue #96 ledger read/append, concurrency lock and run-name reconciliation; fake-API tests for timeout/delayed visibility/crash-after-intent/duplicate deliveries. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
