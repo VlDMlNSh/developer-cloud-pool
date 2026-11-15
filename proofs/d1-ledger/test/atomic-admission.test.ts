@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
 
-const NOW = 1_800_000_000;
+let NOW = 1_800_000_000;
+let registryReadyForTest = false;
 const input = {
   admissionId: "admission-001",
   taskKey: "16eb82ba2f090f2f56d5ca3e63c0c86d4622ba2443cee60bbfec5ab42d13cd99",
@@ -29,29 +30,55 @@ const input = {
 };
 
 async function ensureRegistry() {
+  if (registryReadyForTest) return;
   const db = env.POOL_DB;
-  const state = await db.prepare("SELECT state_id FROM pool_route_registry_state WHERE state_id = 1").first();
-  if (state) return;
+  const state = await db.prepare(
+    "SELECT current_epoch, updated_at FROM pool_route_registry_state WHERE state_id = 1"
+  ).first();
+  const maxRow = await db.prepare(
+    "SELECT COALESCE(MAX(registry_epoch), 0) AS max_epoch FROM pool_route_registry_snapshots"
+  ).first();
+  const epoch = Number(maxRow.max_epoch) + 1;
+  NOW = Math.max(NOW, Number(state?.updated_at || 0) + 10);
+  const digest = epoch.toString(16).padStart(64, "0");
+  const acceptedAt = NOW - 5;
+
   await db.prepare(`
     INSERT INTO pool_route_registry_snapshots (
       registry_epoch, registry_version, root_key_id, bundle_digest,
       issued_at, valid_until, accepted_at, issuer_key_count, route_count,
       bundle_json, root_signature
-    ) VALUES (2001, 'registry-v1', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
-  `).bind("f".repeat(64), NOW - 60, NOW + 3600, NOW - 30).run();
+    ) VALUES (?, 'registry-v1', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+  `).bind(epoch, digest, NOW - 60, NOW + 3600, acceptedAt).run();
   await db.prepare(`
     INSERT INTO pool_route_registry_issuer_keys (
       registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
       status, revoked_at, valid_from, valid_until, public_key_jwk
-    ) VALUES (2001, ?, 'local-authority', 'issuer-key-001', 'registry-v1',
+    ) VALUES (?, ?, 'local-authority', 'issuer-key-001', 'registry-v1',
       'active', NULL, ?, ?, ?)
-  `).bind("f".repeat(64), NOW - 100, NOW + 3600,
+  `).bind(epoch, digest, NOW - 100, NOW + 3600,
     JSON.stringify({ kty: "EC", crv: "P-256", x: "A".repeat(43), y: "B".repeat(43) })).run();
-  await db.prepare(`
-    INSERT INTO pool_route_registry_state (
-      state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
-    ) VALUES (1, 2001, ?, 'registry-v1', ?)
-  `).bind("f".repeat(64), NOW - 30).run();
+  if (state) {
+    await db.prepare(`
+      UPDATE pool_route_registry_state
+         SET current_epoch = ?, current_bundle_digest = ?,
+             current_registry_version = 'registry-v1', updated_at = ?
+       WHERE state_id = 1
+    `).bind(epoch, digest, acceptedAt).run();
+  } else {
+    await db.prepare(`
+      INSERT INTO pool_route_registry_state (
+        state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
+      ) VALUES (1, ?, ?, 'registry-v1', ?)
+    `).bind(epoch, digest, acceptedAt).run();
+  }
+
+  input.now = NOW;
+  input.route.observedAt = NOW - 60;
+  input.route.validUntil = NOW + 3600;
+  input.route.registryEpoch = epoch;
+  input.route.registryBundleDigest = digest;
+  registryReadyForTest = true;
 }
 
 async function seed(overrides = {}) {
@@ -79,6 +106,7 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
+  registryReadyForTest = false;
   // Append-only guards are disabled only around fixture teardown, then restored
   // before the test body. Production migration guards remain enabled in tests.
   for (const name of [
@@ -278,33 +306,37 @@ describe("atomic qualified A0 -> D1 admission", () => {
   it("rejects a route whose issuer key is revoked in the active root-signed registry snapshot", async () => {
     const db = env.POOL_DB;
     const digest = "e".repeat(64);
-    const acceptedAt = NOW - 5;
+    const current = await db.prepare(
+      "SELECT current_epoch, updated_at FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
+    const epoch = Number(current.current_epoch) + 1;
+    const acceptedAt = NOW - 1;
     await db.prepare(`
       INSERT INTO pool_route_registry_snapshots (
         registry_epoch, registry_version, root_key_id, bundle_digest,
         issued_at, valid_until, accepted_at, issuer_key_count, route_count,
         bundle_json, root_signature
-      ) VALUES (2002, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
-    `).bind(digest, NOW - 20, NOW + 300, acceptedAt).run();
+      ) VALUES (?, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+    `).bind(epoch, digest, NOW - 20, NOW + 300, acceptedAt).run();
     await db.prepare(`
       INSERT INTO pool_route_registry_issuer_keys (
         registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
         status, revoked_at, valid_from, valid_until, public_key_jwk
-      ) VALUES (2002, ?, 'local-authority', 'issuer-key-001', 'registry-v2',
+      ) VALUES (?, ?, 'local-authority', 'issuer-key-001', 'registry-v2',
         'revoked', ?, ?, ?, ?)
-    `).bind(digest, NOW - 10, NOW - 100, NOW + 1000,
+    `).bind(epoch, digest, NOW - 10, NOW - 100, NOW + 1000,
       JSON.stringify({ kty: "EC", crv: "P-256", x: "A".repeat(43), y: "B".repeat(43) })).run();
     await db.prepare(`
       UPDATE pool_route_registry_state
-         SET current_epoch = 2002, current_bundle_digest = ?,
+         SET current_epoch = ?, current_bundle_digest = ?,
              current_registry_version = 'registry-v2', updated_at = ?
        WHERE state_id = 1
-    `).bind(digest, acceptedAt).run();
+    `).bind(epoch, digest, acceptedAt).run();
 
     const approval = { ...input.approval, approvalId: "approval-revoked-key-001" };
     const route = {
       ...input.route, qualificationId: "route-revoked-key-001",
-      registryVersion: "registry-v2", registryEpoch: 2002,
+      registryVersion: "registry-v2", registryEpoch: epoch,
       registryBundleDigest: digest
     };
     const attempt = { ...input.attempt, attemptId: "attempt-revoked-key-001" };
