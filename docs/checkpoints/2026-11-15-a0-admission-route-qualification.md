@@ -412,3 +412,17 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - A separate owner-authored `/next` comment `6899669400` is also present in the live Issue #301 comment list. These are distinct source event IDs; do not treat them as one idempotent event or claim a shared controller run.
 - The connected GitHub action set did not expose the controller workflow-run listing endpoint. Controller and child run/job/artifact evidence for comment `6899662679` remains NOT VERIFIED. No direct child dispatch was attempted.
 - Updated report: [route registry revocation revalidation review](../reports/2026-11-15-next-pass-route-registry-revocation-review.md), latest report commit `f8f5f59588d9fb261e1450c143caafe2753e13ff`.
+
+
+## /next pass — monotonic revocation watermark review — 2026-11-15
+
+- Cloud Pool default `Основной` HEAD rechecked: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Issue #94 remains OPEN.
+- Current turn created exactly one MediaHub Issue #301 owner-authored `/next` event: comment `6899704487`. Controller/child run, job and artifact status NOT VERIFIED because the connected GitHub action set has no workflow-run listing operation; no direct child dispatch was attempted.
+- Re-read root registry module blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`, admission module blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`, migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`, and registry tests blob `c7876cdc3b3eff39060d44e2890266374f54da4a`. Migration 0014 checks active snapshot and issuer-key lifecycle in the admission batch; no distinct durable monotonic revocation authority/watermark is read by the inspected admission path. Qualification gap, not a demonstrated exploit.
+- Proof PRs #86/#87/#92/#93 remain OPEN/DRAFT/UNMERGED with zero formal reviews. Exact-head local Workers/D1 proof runs recorded: #86 run 43710912595 (118 tests); #87 run 43712647597 (119 tests) plus contract run 43712647615; #92 run 43718679258 (120 tests) plus contract run 43718679251; #93 run 43736264768 (120 tests). No hosted D1 or production qualification.
+- PR #95 OPEN/DRAFT/UNMERGED at head `c70a11481eca0921224174de623778265c95bcb8`; exact-head workflow runs empty, combined status contexts empty, formal reviews/threads empty: CI/Governance NOT VERIFIED.
+- Cloud Pool-native Gemini remains NOT IMPLEMENTED / NOT QUALIFIED. Supervisor has no issue_comment trigger, Worker remains `dsh-headless-probe`, `POOL_DISPATCH_ENABLED` fail-closed. MediaHub controller bridge remains separate; this turn's event has NOT VERIFIED run evidence.
+- No code/schema/workflow/secret/variable/dispatch/provider/deployment/merge change. No tests run in this pass.
+- Report: [monotonic revocation watermark review](../reports/2026-11-15-next-pass-monotonic-revocation-watermark-review.md).
+- Next: define revocation subject, monotonic sequence/CAS, authenticated writer, trusted time, rollback/replay/recovery semantics; then implement same-batch D1 guard and adversarial rollback tests on a reconciled proof ancestry. Preserve `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
