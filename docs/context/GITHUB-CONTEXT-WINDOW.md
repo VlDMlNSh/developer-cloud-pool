@@ -7,7 +7,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (current PR base read-back)
 Documentation continuation branch: `docs/next-2026-11-15-pr68-scope-audit`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Latest daily report commit: `f0d66cdc65432f32bb689f0ebddb8febffc8ae83` (`docs/reports/2026-11-15-pr68-scope-and-pool-state-recheck.md`; documentation PR #69 remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
