@@ -2342,3 +2342,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No branch/schema/code/workflow/runtime changes, tests, secret reads, dispatch, provider calls, deployment or merge. Cloud Pool Gemini NOT RUN; Issue #94 controller absent. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: bind revocation authority and signer lifecycle to root-signed registry model, define canonical event bytes + strict sequence/digest CAS + trusted-time evidence, then implement verifier, migration 0015 and same-batch admission guard on clean candidate with adversarial D1 tests.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 328 authoritative revocation authority contract
+
+- Contract: [Authoritative Revocation Authority Contract v1](../contracts/AUTHORITATIVE-REVOCATION-AUTHORITY-CONTRACT-V1.md); commit `43da7ea0d1868aab4f6e647b34e4a61712085e27`; read-back blob `9ee7c20ea79f532304b3ecb4cc9ddcd0d532b178`.
+- Source evidence on clean D1 candidate `integration/d1-ledger-clean-main-2026-11-15`: root registry verifier blob `12f1b09b238d61fa7cf3574221f3cb79f6d4767a`; qualified evidence canonicalizer blob `0d5b97ad0bc59173fe8c4c7de28c67965bd09ad0`; migration 0012 blob `485d8c2d2327a64c8d86ddc004134113d6ae3d80`; migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`.
+- Proposed trust model: independent pinned revocation root (separate from route registry root), root-signed delegated signer keyset with mutually exclusive `route.revoke` and `route.reinstate` roles, ES256 fixed-array canonical event bytes, stable route-qualification / issuer-key subject identities, strict sequence + previous-digest CAS, immutable events, and same-batch admission checks.
+- Trusted online time proposal: derive inside D1 transaction using database engine time, never caller `input.now`; bounded skew and clock-health fail-closed. This is an operational trust dependency, not independent cryptographic timestamping.
+- Whole-database restore protection requires an independent signed anti-rollback checkpoint; NOT IMPLEMENTED. Authority custody, delegated signer operators, root rotation/recovery, clock-health policy and checkpoint store remain governance gates. Contract is PROPOSED, not accepted/provisioned.
+- No source/schema/runtime/workflow changes, tests, secrets read, provider calls, dispatch, hosted provisioning, deployment or merge. Cloud Pool Gemini agents NOT RUN; Issue #94's native controller remains absent. `dispatch:false`.
+- Next: implement pure canonical keyset/event verifier and deterministic vectors on the clean integration candidate after governance gates are resolved; then verifier-issued persistence capability, migration 0015, migration 0016 same-batch assertion and adversarial D1 tests. External anti-rollback remains mandatory before restore-safety claims.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
