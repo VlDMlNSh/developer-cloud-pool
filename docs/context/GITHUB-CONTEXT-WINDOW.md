@@ -1933,3 +1933,17 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: verify PR #67 exact-head D1 workflow and branch ancestry/stack policy; then choose a bounded implementation branch and implement migration 0011 + batch adapter + adversarial Workers-runtime tests, keeping dispatch false.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #67 ancestry reconciliation and implementation branch — 2026-11-15
+
+- PR #67 head remains `a53f6232bd5b50d3e150addf528b8e722002f9dd`, base recorded by PR is `221f216c00ca7e5596bcc682ba185ad155a10603`; PR is OPEN / DRAFT / unmerged.
+- PR #67 exact-head workflows: Pool Contract Validation run `43600901063` SUCCESS; Isolated D1 Ledger Proof run `43600901068` SUCCESS. Combined commit status returned zero contexts; required ruleset checks remain NOT VERIFIED.
+- Current default branch ref `Основной` resolves to `d92c17150e4beebe95e8fa382064133cb6332bcf`. Compare current default → PR #67 head: DIVERGED, PR head 47 commits ahead and 18 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge PR #67 or transplant its entire branch without a dedicated ancestry/file-level reconciliation.
+- The PR #67 D1 proof includes migrations 0001–0010 and a frozen schema-0010 fixture. Migration 0011 must be strictly additive; the fixture's 10-migration baseline must remain frozen and upgrade tests must apply 0011 only after verifying the old baseline.
+- Created branch `proof/atomic-a0-d1-admission-2026-11-15` from immutable PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`. It is a planned stacked implementation branch; no code commits have been added yet. Any PR from it must target PR #67's branch, not default, until the dependency stack is reconciled.
+- Important implementation constraint from inspected SQL: migration 0003's approval-consumed trigger creates the logical task, task approval and task-level outbox; migration 0004's attempt insert trigger updates current_attempt_id and appends attempt.created. Existing APIs invoke claim and attempt as separate calls. A composite adapter must perform both in one D1 batch and use a transaction-aborting assertion; application-only post-batch validation cannot roll back committed writes.
+- PR #71 remains OPEN / DRAFT at `40a49acabd12aa178d3aa136244fb4f42231fbde`; its fail-closed quota ledger proof remains independent and unmerged.
+- Next: implement migration 0011 additively on the new stacked branch, preserve schema-0010 frozen fixture, then add composite batch adapter and adversarial local Workers-runtime tests. Exact-head CI required before considering proof verified. Keep dispatch false; no hosted D1, provider calls, secrets, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
