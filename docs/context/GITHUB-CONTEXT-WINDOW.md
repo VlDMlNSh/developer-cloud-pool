@@ -2111,3 +2111,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+
+## Provider credential inventory — 2026-11-15
+
+- Documentation branch: `docs/provider-credential-inventory-2026-11-15`; immutable starting default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Report: [Provider credential inventory — 2026-11-15](../reports/2026-11-15-provider-credential-inventory.md); report commit `d2dbb5f33f405e405f5626623f4ae5bd872b630e`.
+- Source registry: MediaHub `main` HEAD `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`, path `ops/qualification/provider_model_registry.json`, blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`, schema `mediahub.provider-model-registry.v1`.
+- Parsed `selection_order` contains exactly 24 cloud slots plus one separate local Ollama route. The report records all 24 slot IDs, provider names, credential environment-variable references (names only), configured cost and persistence labels.
+- No secret values, GitHub Actions secret metadata, provider authentication, provider API calls, model inference, deployment or dispatch were attempted.
+- 24 configured slots are NOT 24 proven independent credentials/accounts/quota pools. GitHub secret existence/scope, credential validity, account/project identity, independent quota domains, live free-tier eligibility, current quota/reset, model availability and route health remain NOT VERIFIED / NOT RUN.
+- Registry cost labels are source configuration only, not proof of current free eligibility. Paid API routes must remain excluded under the no-paid-fallback policy; router routes require route/model billing evidence. Aliases within a slot do not create extra slots. Unknown same-provider quota domains are conservatively shared.
+- PR #88 current observed head `36089f56f19fadeb3ec77b580d22504b1a240540`, OPEN/DRAFT/UNMERGED; exact-head check-runs collection returned 0, CI NOT VERIFIED.
+- PR #89 current observed head `290966b7dd17c72411c2f6d8b9db7d9d930f1a2d`, OPEN/DRAFT/UNMERGED; exact-head workflow run `43715229460` / job `132815216309` SUCCESS for syntax/security invariants only. No independent review, runtime qualification or ledger integration is claimed.
+- Recommended model remains adaptive logical roles over dynamically selected, independently qualified provider quota domains. Do not instantiate one executor per key.
+- Next: create a machine-readable provider-slot manifest in Cloud Pool, add deterministic tests for alias/domain/paid-route/error/cooldown/fail-closed cases, then separately establish account and quota evidence. Keep dispatch disabled and Contour B deferred.
