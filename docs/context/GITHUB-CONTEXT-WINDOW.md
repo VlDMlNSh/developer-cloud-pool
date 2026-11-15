@@ -2,13 +2,29 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 — Wave 334 current snapshot appended below
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (verified branch API read-back 2026-11-15)
+Documentation continuation branch: `docs/gemini-three-agent-next-bridge-2026-11-15` (PR #95 OPEN / DRAFT / UNMERGED)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next wave 334 — 2026-11-15
+
+- Last refreshed: 2026-11-15 after live GitHub read-back. Cloud Pool default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Do not use older default HEAD values below as current.
+- Current documentation continuation branch: `docs/gemini-three-agent-next-bridge-2026-11-15`, PR #95 OPEN / DRAFT / UNMERGED. This context file and its updates are not on the default branch.
+- Latest report: [Wave 334](../reports/2026-11-15-next-wave-334-chatgpt-gemini-cloud-pool-pass.md).
+- Latest exact user /next source event: MediaHub Issue #301 comment `6899305854`; controller `43747834153` COMPLETED / SUCCESS on MediaHub target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Three child runs `43747856432`, `43747858375`, `43747860131` each completed successfully with authorization/task jobs and non-expired artifacts. Artifact digests and job IDs are in Wave 334 report. This is MediaHub supplementary execution, NOT Cloud Pool-native Gemini.
+- Cloud Pool Issue #94 remains OPEN. Supervisor blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd` still has no issue_comment trigger; Worker blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4` only supports `dsh-headless-probe`. `POOL_DISPATCH_ENABLED` remains fail-closed. Cloud Pool-native Gemini dispatch NOT IMPLEMENTED / NOT QUALIFIED.
+- Latest A0/D1 proof stack: PR #93 head `e200838d038b9cd48635233187819302bba6a33e` stacked on PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`, then PR #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`. PR #93 exact workflow run `43736264768` / job `132879427578` SUCCESS; 120 Workers-runtime tests passed, 0 failed; D1 binding and frozen schema fixture smoke passed. Artifact #14170222915 digest `728f9a25d92a0130b06ee904eb8d8e1d444081574c3b87b55c5147441181fc3b`.
+- PR #93 uses a module-private WeakMap-backed verifier capability for persistence. This narrows caller-supplied bundle/signature risk, but does not establish production trust-root custody, trusted time, authenticated issuer lifecycle/rotation, durable authoritative revocation, hosted D1/Worker deployment, or live account/quota identity. The complete A0/D1 route remains NOT QUALIFIED.
+- Governance: active ruleset #26550182 targets `refs/heads/Основной`, enforces PR + review-thread resolution and deletion/non-fast-forward restrictions, but has 0 required approvals and no required status contexts. PR #93 and its stack remain OPEN / DRAFT / UNMERGED with no formal independent review recorded.
+- No Cloud Pool runtime code/workflow/secrets/variables/dispatch/deployment/provider call/merge changed in Wave 334. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review of trusted-clock and registry lifecycle boundaries in PR #93/#92/#87, then exact-head CI/governance and adversarial rollback/replay coverage. Do not merge the divergent stack wholesale.
+
+---
 
 ---
 
