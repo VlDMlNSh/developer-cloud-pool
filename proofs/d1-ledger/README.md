@@ -111,3 +111,17 @@ The isolated module `src/trusted-route-registry.mjs` verifies a versioned regist
 - Output is immutable and retains `dispatch: false`.
 
 This is an isolated cryptographic bundle verifier only. It does NOT persist registry state, enforce monotonic registry epochs across requests, prevent replay/rollback against a durable watermark, provide root-key custody/rotation, or bind registry epoch into the D1 admission transaction. The platform environment binding is a trust anchor only when deployment/configuration permissions and its value are independently controlled. No production root key is configured by this proof. No live provider, secret, hosted D1 or Worker deployment is used.
+
+
+## Durable root-signed route registry persistence — 2026-11-15
+
+Migration `0013_persist_verified_route_registry.sql` and `persistTrustedRouteRegistryBundle` add a local D1 persistence adapter for the verified root-signed registry:
+
+- Re-verifies the root signature against platform-bound root key ID/JWK before writing.
+- Stores the exact registry bundle JSON and root signature alongside the immutable snapshot digest and metadata.
+- Persists issuer key records in a normalized append-only table, bound to the snapshot epoch and digest.
+- Persists each verified route qualification with issuer key ID, registry epoch and bundle digest; insert triggers reject partial or mismatched bindings.
+- Inserts the snapshot, issuer keys, route qualifications and advances the singleton active pointer in one D1 batch. A failed route insert must roll back the snapshot and pointer changes.
+- Exact retries return the existing persisted snapshot; conflicting reuse of an epoch is denied. Every response remains `dispatch: false`.
+
+**Important remaining boundary:** this writer is not yet wired into `admitQualifiedTask`. The A0 admission SQL still needs to re-check the active snapshot pointer, route snapshot binding, issuer-key status/validity and revocation watermark inside the same D1 batch that consumes approval and writes the attempt/outbox/receipt. Therefore this persistence proof does not qualify a route for production admission. No hosted D1, provider call, secret read, dispatch or deployment is included.
