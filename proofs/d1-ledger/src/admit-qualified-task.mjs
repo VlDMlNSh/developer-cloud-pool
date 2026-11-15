@@ -217,11 +217,11 @@ function statements(db, input) {
 }
 
 /**
- * Local-only composite D1 admission proof. Route rows must already have been
- * written by a trusted qualification authority. This adapter verifies exact
- * binding/freshness/revocation and atomically consumes approval, creates the
- * existing task/outbox, records admission, creates/reuses one immutable attempt,
- * and writes a constraint-backed commit receipt. It never dispatches.
+ * Local-only composite D1 admission proof. Route rows must already be persisted
+ * from a verified root-signed registry. The first batch statement inserts a
+ * guarded registry assertion; its migration trigger checks the current snapshot
+ * and issuer-key lifecycle in the same D1 transaction as approval consumption,
+ * task/outbox binding, attempt creation and receipt. It never dispatches.
  */
 export async function admitQualifiedTask(db, input) {
   if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
@@ -330,8 +330,7 @@ export async function admitQualifiedTask(db, input) {
       attemptNumber: committed.attempt_number, dispatch: false,
       reason: "ATOMIC_A0_D1_COMMIT_CONFIRMED"
     };
-  } catch (error) {
-    const diagnostic = String(error?.message || "UNKNOWN").replace(/[^A-Z0-9_]/gi, "_").slice(0, 80);
-    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS_" + diagnostic);
+  } catch {
+    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS");
   }
 }
