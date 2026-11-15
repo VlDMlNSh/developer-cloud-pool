@@ -68,3 +68,12 @@ The file was then recreated on the intended feature branch. Read-back on the def
 First reconcile the two default-branch history commits with PR #97 and the documentation branch without rewriting or force-pushing history. Then obtain exact-head CI evidence for `f0ad25ce60e6ef052fcfeab31fb5deab06793f21`. Only after that, implement a trusted-main wrapper that provides a real repository-wide Actions concurrency lock and calls the verified API adapter, still with dispatch hard-disabled. Do not wire a live issue_comment trigger until the wrapper, governance, no-secret probe and independent review are verified.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI reconciliation addendum — 2026-11-15
+
+The latest feature head `f0ad25ce60e6ef052fcfeab31fb5deab06793f21` subsequently received exact-head workflow runs:
+- [Cloud Pool Next Admission Contract — run 43758033223](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033223): COMPLETED / SUCCESS; job `contract` SUCCESS; syntax checks and all 49 Node tests passed (49 pass, 0 fail).
+- [Pool Contract Validation — run 43758033182](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033182): COMPLETED / SUCCESS; all 7 steps passed, including worker-dispatch-disabled and YAML/security invariants.
+
+This supersedes the earlier statement that exact-head CI was NOT VERIFIED. The earlier intermediate failure run 43757790420 remains part of the audit trail and was corrected before the exact-head successful runs. Combined status contexts remain empty and formal PR reviews remain 0 / NOT VERIFIED.
