@@ -2234,3 +2234,9 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Cloud Pool default HEAD remains 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; Issue #94 OPEN. Supervisor has no issue_comment trigger; POOL_DISPATCH_ENABLED remains fail-closed; Worker only allows dsh-headless-probe. MediaHub Gemini remains a supplementary bridge, not Cloud Pool-native execution.
 - Proof CI SUCCESS on corresponding PR heads: PR #87 run 43712647615/job 132807363825; PR #86 run 43710912595/job 132802030185; PR #92 run 43718679258/job 132825665733; PR #93 run 43736264768/job 132879427578. No formal reviews on these PRs; all remain draft/unmerged. No default-branch runtime changes.
 - A0/D1 local proof only; hosted D1, root custody/key lifecycle, monotonic revocation authority, live quota/account qualification and Supervisor integration remain NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Wave 335 final controller reconciliation
+
+- Controller 43748188993 COMPLETED / SUCCESS; dispatch/monitor job 132916076078 SUCCESS. Logs reconcile all three signed child dispatches, child run IDs, both successful jobs per child, and artifact digests matching GitHub metadata. Controller has no artifact of its own; child artifacts are the evidence.
+- Wave 335 is now VERIFIED at controller and child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
