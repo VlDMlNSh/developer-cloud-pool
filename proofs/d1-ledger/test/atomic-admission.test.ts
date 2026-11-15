@@ -429,6 +429,18 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(await db.prepare(
       "SELECT COUNT(*) AS n FROM pool_admission_registry_assertions WHERE admission_id = ?"
     ).bind(input.admissionId).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admission_commit_receipts WHERE admission_id = ?"
+    ).bind(input.admissionId).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempts WHERE attempt_id = ?"
+    ).bind(input.attempt.attemptId).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_tasks WHERE task_key = ?"
+    ).bind(input.taskKey).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_task_delivery_outbox WHERE task_key = ?"
+    ).bind(input.taskKey).first()).toMatchObject({ n: 0 });
   });
 
 });
