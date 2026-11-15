@@ -17,17 +17,26 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - Mac mini 2018 and remote GPU server: FUTURE equipment, design only.
 - No local deployment is in scope until the cloud-first pool is qualified.
 
+## Operating policy
+- **Hybrid parallel development is the required operating model for every future /next.** Re-read [Hybrid Parallel Development Policy](docs/governance/HYBRID-PARALLEL-DEVELOPMENT-POLICY-2026-11-15.md).
+- Each pass refreshes GitHub state, pins an immutable target SHA, decomposes independent bounded work for up to three Gemini roles, and launches agents only through the approved MediaHub controller when its live gates pass.
+- ChatGPT continues independent implementation/integration while authorized agents work. If controller/governance gates are not verified, record NOT RUN with the exact blocker and continue safe independent work; never bypass the controller or invent dispatch.
+- Progressively assemble the pool in vertical slices: repository-only contracts and D1 proof; local/no-provider D1 → Supervisor → Worker integration; hosted readiness; controlled deployment; executor onboarding; operational qualification.
+- Additional providers/models and capacity are onboarded one at a time after identity, capability, data policy, quota, expiry/revocation, secret-isolation and evidence gates pass.
+- This policy does not mean that Gemini is currently dispatched or that the hosted pool is running. See the dated policy for the adoption baseline and current trust limits.
+
 ## Architecture
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
 - [Jarvis hybrid platform reference architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
 - [DeepSeek Harness adoption and cloud-first build plan](docs/architecture/DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md)
 - [GitHub Pool Supervisor and recovery architecture](docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md)
+- [Hybrid Parallel Development Policy](docs/governance/HYBRID-PARALLEL-DEVELOPMENT-POLICY-2026-11-15.md)
 
 ## Cloud pool control
 1. Create a [Cloud Pool Task issue](https://github.com/VlDMlNSh/developer-cloud-pool/issues/new?template=pool-task.yml).
 2. Specify an exact 40-character target commit SHA.
-3. First enable default-branch governance, then set the repository variable `POOL_DISPATCH_ENABLED=true`.
-4. Review the task and apply the `pool:ready` label to approve dispatch.
+3. First enable default-branch governance, then set the repository variable POOL_DISPATCH_ENABLED=true.
+4. Review the task and apply the pool:ready label to approve dispatch.
 5. The supervisor claims and dispatches only the currently allowlisted DSH headless probe.
 6. Worker completion wakes the supervisor; a five-minute scheduled reconciliation is the fallback.
 

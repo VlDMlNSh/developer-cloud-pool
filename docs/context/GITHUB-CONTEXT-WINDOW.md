@@ -2111,3 +2111,26 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Hybrid parallel development policy adopted — 2026-11-15
+
+- Operating policy: [Hybrid Parallel Development Policy](../governance/HYBRID-PARALLEL-DEVELOPMENT-POLICY-2026-11-15.md), commit `dfa6fcb94f57ba0f925841ed13897d9cd2f24fff`.
+- README now links the policy and states that every `/next` must evaluate gated Gemini batch dispatch while ChatGPT continues independent Contour A engineering: commit `0d91870817800fc56584451151cee5460b0ebfe9`, README blob `abb94bb985ea9363196c976845ea78341378cebb`.
+- Policy branch: `docs/hybrid-parallel-next-policy-2026-11-15`, created from observed default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. These are documentation changes on a non-default branch; not merged and not canonical default state.
+- MediaHub Gemini controller source was fetched from `main`, blob SHA `0a1246f6755020faf8b7e48d07bfff790bbaece3`. It exposes `probe`, `agents`, `review` modes; explicit `confirm`; trusted-main dispatch checks; and `MEDIAHUB_GEMINI_BATCH_ENABLED`. Probe is explicitly non-launching. The source fetch did not verify live variable/secret readiness, default-branch probe success or child runs.
+- This pass did not dispatch Gemini, access secrets, make provider calls, deploy infrastructure, enable pool dispatch or run a worker. Agent dispatch remains NOT RUN / NOT VERIFIED until all live controller and governance gates are proven.
+- Every `/next` now has a documented operating requirement: refresh refs and governance; pin immutable SHA; prepare up to three independent bounded roles; dispatch only through the trusted approved controller if gates pass; otherwise record exact NOT RUN blocker and continue safe parallel ChatGPT work; verify provenance/CI; update report and Context Window.
+- Progressive pool implementation is required in vertical slices: repository contracts/D1 proof; no-provider D1→Supervisor→Worker integration; hosted readiness; controlled deployment; executor onboarding; operational qualification.
+- Contour B remains DEFERRED until Contour A ACCEPTED.
+- Next action: review this documentation branch and open a draft PR for owner review; before any agent dispatch, verify trusted-main controller probe, live non-secret config and governance/permissions using approved paths.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Hybrid parallel policy PR opened — 2026-11-15
+
+- Draft PR #88: https://github.com/VlDMlNSh/developer-cloud-pool/pull/88; title `Adopt hybrid parallel development for every /next`.
+- PR head `78e9773d897c1f7603518dca4829375094f67e20`; base `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; 5 files changed, 215 additions / 2 deletions. PR reports `mergeable=false`; do not merge. No CI result was requested/observed in this pass.
+- Read-back succeeded for policy blob `ed496a8f8795eba7f77f8492adb93793d5889877`, README blob `abb94bb985ea9363196c976845ea78341378cebb`, Context Window blob `826adfc8781e3a540f1895067ef569e706903eb2`, checkpoint blob `bc227afc7bb9ed05fa08496764c96d338910f5d0`, and report blob `112399f8c46fd70998984ff33724a23d23a29765`.
+- PR remains OPEN / DRAFT / UNMERGED. Documentation pass read-back VERIFIED; mergeability NOT VERIFIED / false according to PR API. Gemini dispatch remains NOT RUN / NOT VERIFIED; no agent run IDs.
+- Next: inspect PR #88 diff and mergeability blocker, resolve only documentation-branch issues; separately verify live controller/governance gates before any Gemini dispatch.
