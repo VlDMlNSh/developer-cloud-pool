@@ -107,3 +107,11 @@ Executor/runtime:
 - Next: fix PR #93 trusted-time/freshness boundary and add zero-write expiry regressions; then exact-head D1 CI. Independently, reconstruct the path-segment fix on a fresh current-default branch and obtain exact-SHA CI. Do not integrate the D1 stack until independent security review and governance gates are satisfied.
 
 **Status:** audit SUCCEEDED; PR #87/#92/#93 local D1 proof runs SUCCEEDED; stale verifier-capability hardening NOT VERIFIED; governance/runtime/production qualification NOT VERIFIED / NOT RUN; **Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED**.
+
+
+## Documentation publication record
+
+- Daily report initial creation: commit `8c21cadadb6f18b1c33cbc16b708b233a5984e8c`, blob `df3d9d6c669d5dca1e6e65585aae5c6688acff76`; this publication note is a subsequent documentation-only amendment.
+- Checkpoint update: commit `49a8c43d29f35140c518330e66b23418ba007966`, blob `8c953c9dce97c37459d1c61d72b8b9d0e6657ef7`.
+- Context Window update: commit `4e2561dd62e1520ee7e80f9cf43c6081d95b92f3`, blob `9153cf7e43c57f06f8d19008514258baf3ee2f3d`.
+- Checkpoint, Context Window and report were fetched after their writes; their blob SHAs were read back. All changes are on the working documentation branch `docs/next-2026-11-15-registry-epoch-hardening`, not on default.
