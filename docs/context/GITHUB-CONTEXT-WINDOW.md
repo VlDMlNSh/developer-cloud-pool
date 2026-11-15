@@ -2444,3 +2444,16 @@ This overlay supersedes stale snapshot values in earlier sections; historical en
 - Current priority: finish issuer/caller authorization and governance contracts, then implement/test the fail-closed Worker boundary with trusted platform time. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Latest recheck report: [2026-11-15 controller-wave readiness and D1 runtime-boundary recheck](../reports/2026-11-15-controller-wave-readiness-and-d1-runtime-boundary-recheck.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## MediaHub PR #650 — one-Gemini PR #649 review path (2026-11-15)
+
+- User requested one Gemini independent review of MediaHub OS PR #649. Existing main controller `review` mode is pinned to an unrelated FCC SHA; `agents` launches three agents. No bypass/direct child dispatch used.
+- Added a bounded candidate in MediaHub OS PR #650: https://github.com/VlDMlNSh/mediahub-os/pull/650. Head `eca542d7ecc9dba548e66860dc19ddbc51ff4077`, base `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED, 6 files, 0 formal reviews.
+- PR #650 adds fixed `review-pr649` controller mode pinned to PR #649 head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`, a single read-only child workflow with HMAC/trusted-main/UUID gates, exact patch manifest, and contract tests.
+- Exact-head CI on PR #650: 9 check-runs, 7 SUCCESS, 2 expected SKIPPED, 0 failed/pending. All five required ruleset contexts succeeded. New PR #649 review contract suite passed 5/5; Astra Verify 482 tests passed. This is PR-context CI only.
+- PR #649 remains OPEN/DRAFT at `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`, 0 formal reviews. Gemini review of #649 NOT RUN; PR #650 formal independent review NOT VERIFIED; no merge/dispatch/secrets/provider calls/deployment.
+- Report: [Single-Gemini PR #649 review readiness](../reports/2026-11-15-single-gemini-pr649-review-readiness.md).
+- Next: obtain independent review of PR #650; only after exact-head governance checks and integration may one Gemini review be dispatched through controller mode `review-pr649`. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
