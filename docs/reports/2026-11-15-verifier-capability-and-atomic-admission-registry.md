@@ -54,7 +54,7 @@ Exact-head CI at `a218f92274eca5491700d8f72a21172f8ce689dc`:
 
 - PR #81, #84 and #86 remain Draft / OPEN / UNMERGED; formal reviews and inline review threads are 0 for #84 and #86.
 - PR #83 updated to HEAD `a2e02471438104a5502d505995912c9eedb06480` and both exact-head workflows passed (runs 43710565281 and 43710560400); it was closed to reconcile the branch ancestry and its passing assertion-table implementation was ported into #86. Its initial `46db457` head had the SQLite expression-depth failure.
-- PR #80, #82, #83 and #85 are CLOSED / UNMERGED. #82 had a conflicting duplicate migration 0013; #85 had a competing migration 0014 read-view approach; #83's passing assertion implementation was ported into #86. No merge occurred.
+- PR #78, #80, #82, #83 and #85 are CLOSED / UNMERGED. #78's epoch-order migration change is included in PR #81. #82 had a conflicting duplicate migration 0013; #85 had a competing migration 0014 read-view approach; #83's passing assertion implementation was ported into #86. No merge occurred.
 - Default branch `Основной` remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, branch API reports `protected=false`.
 - Active ruleset #26550182 still requires PR and review-thread resolution but 0 approvals and no required status checks. CI success is evidence, not formal independent review.
 - PR #81 actual base is `impl/durable-route-registry-d1-2026-11-15` at PR #77 HEAD `e63f1dda4c046d485ae9c2f08392a1943a06553d`; its body provenance was corrected. It includes the epoch-order hardening patch but remains unreviewed.
