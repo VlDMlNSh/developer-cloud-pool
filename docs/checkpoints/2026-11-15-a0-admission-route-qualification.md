@@ -251,3 +251,27 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+
+## 2026-11-15 continuation update — exact replay hardening
+
+- Current default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Parent PR #87 exact head: `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, local Workers/D1 119 tests PASS, Pool Contract PASS.
+- New stacked PR #92: https://github.com/VlDMlNSh/developer-cloud-pool/pull/92
+  - branch `fix/a0-admission-exact-replay-receipt-integrity-2026-11-15`
+  - exact head `7014961587759b27d2ef6e91c60ce098d077ae83`
+  - base PR #87 branch; 2 files changed, no schema/migration changes
+  - D1 run 43718679258/job 132825665733 SUCCESS: 11 files / 120 tests PASS, syntax and migration/upgrade fixtures PASS
+  - Pool Contract run 43718679251/job 132825665679 SUCCESS
+  - artifact 14163925436, SHA-256 `83961df3a8caa97c67d29f70aa34bf4584ce0a53827e802ebb2fec8d8e051475`
+  - reviews 0, threads 0, OPEN/DRAFT/UNMERGED
+- Exact replay now verifies admission + immutable receipt + consumed approval + task/current attempt + outbox + registry assertion, and returns DENY if any component is absent or inconsistent. Later valid retries are bound to original commit timestamp.
+- Cloudflare read-only inventory: one standard account, 0 D1 databases, 0 Worker scripts, existing workers.dev subdomain. No resources or secrets read/created; Workers Free account entitlement NOT VERIFIED.
+- Ruleset #26550182 is PR-only with zero required approvals and no required checks/CODEOWNERS review.
+- Gemini controller 43717570433 and Agent 1 engineering run 43717589177 remain RUNNING at last observation. Agent 2 PR #645 and Agent 3 PR #644 have zero exact-head checks and no reviews/threads. Do not wait for them or dispatch duplicate waves.
+- Production dispatch FAIL-CLOSED; hosted D1 NOT RUN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next: implement and test issuer-authenticated claim-service/trusted-time boundary in local proof only; reconcile Agent 1 output opportunistically. No hosted provisioning without verified entitlement and explicit authorization.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
