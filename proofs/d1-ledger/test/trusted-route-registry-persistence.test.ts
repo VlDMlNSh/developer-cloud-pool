@@ -140,7 +140,7 @@ describe("atomic persistence of root-signed route registry", () => {
     });
 
     const invalid = await persistTrustedRouteRegistryBundle({
-      db, bundle: first.bundle, signature: first.signature.slice(0, -1) + "A",
+      db, bundle: first.bundle, signature: (first.signature[0] === "A" ? "B" : "A") + first.signature.slice(1),
       env: envBindings, now: NOW
     });
     expect(invalid).toMatchObject({ verified: false, persisted: false, dispatch: false });
