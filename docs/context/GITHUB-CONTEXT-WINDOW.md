@@ -2474,3 +2474,19 @@ This overlay supersedes stale snapshot values in earlier sections; historical en
 - Next: explicit trusted platform-env/clock injection boundary and adversarial tests for request-controlled env/time, root substitution, key rotation, revocation race and rollback. Keep Worker inert and dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Per-/next Gemini orchestration gate reconciliation — 2026-11-15 17:58 MSK
+
+- Controller source read from MediaHub main: `.github/workflows/gemini-batch-dispatch-controller.yml`, blob `0a1246f6755020faf8b7e48d07bfff790bbaece3`, MediaHub main snapshot `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- The controller already dispatches three distinct signed child workflows (Agent 1 engineering, Agent 2 contracts/research, Agent 3 security/provenance) against one immutable target SHA and monitors child run/job/artifact digests. It has an issue-comment trigger restricted to Issue #301, exact `/next`, OWNER association, trusted main ref, and `MEDIAHUB_GEMINI_BATCH_ENABLED=true`.
+- A ChatGPT chat `/next` is not a GitHub Actions event. The chat integration must explicitly create one owner-authored Issue #301 comment to invoke this trigger. The current chat connector does not perform that automatically.
+- The alternate workflow_dispatch path requires mode=agents and confirm=true; no direct child dispatch or bypass is permitted.
+- Current non-launching probe run `43722469665` and PR-context denial probe `43722469720` succeeded, but both were PR-context probes. Admission/dispatch jobs in run `43722469665` were SKIPPED. Trusted-main no-secret probe remains NOT VERIFIED.
+- PR #649 branch-collision repair remains OPEN/DRAFT/UNMERGED, exact head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; last recorded 11 check-runs: 9 SUCCESS, 2 expected SKIPPED, 0 failed/pending. Formal independent reviews: 0. Actual repaired 3/3 controller dispatch: NOT RUN.
+- PR #650 adds a separate single-agent review proposal; OPEN/DRAFT/UNMERGED; it does not execute a review and does not satisfy the three-agent gate.
+- Actions variable/secret metadata and effective scope remain NOT VERIFIED; no secret values read. Independent security review and effective governance approval for #649 remain NOT VERIFIED.
+- This pass created no Issue #301 comment and launched no agent. Dispatch state: BLOCKED / NOT RUN. No merge, deployment, provider call, or qualification.
+- Detailed report: [Per-/next Gemini orchestration gate reconciliation](../reports/2026-11-15-per-next-gemini-orchestration-gate-reconciliation.md), report commit `948264d6d475561d2ae564de6a64608f1b3bd55f`.
+- Next: independent review/governance for #649; verify secret/variable metadata only and trusted-main non-launching probe; then one controlled 3/3 wave. Only after this passes should chat-to-Issue #301 per-turn event bridging be enabled.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
