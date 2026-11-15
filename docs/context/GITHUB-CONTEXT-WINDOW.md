@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 19:19 Europe/Vilnius — current-default D1 stack and PR #93 capability freshness revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (revalidated by compare endpoint)
+Documentation continuation branch: `docs/next-2026-11-15-registry-epoch-hardening`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -48,7 +48,7 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 ## 3. Repository state, branches and governance
 
 - Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- Observed default HEAD (revalidated 2026-11-15): `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Earlier HEAD observations below are historical only.
 - Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
 - Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
 - Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
@@ -2111,3 +2111,159 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Atomic A0→D1 and durable route-registry epoch-order hardening — 2026-11-15
+
+- Current default HEAD at recheck: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- A0/D1 proof stack current refs: PR #72 `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; PR #75 `f253f68194e65912a91c91f2d158525b97927749`; PR #76 `096737ec5e1a335b367fc7af67c29f7b71541e66`; PR #77 `e63f1dda4c046d485ae9c2f08392a1943a06553d`. All OPEN / DRAFT / UNMERGED and stacked; do not treat them as integrated production code.
+- PR #77 adds migration 0012 durable append-only root-signed route-registry snapshots and singleton pointer. Exact-head run `43707424040` SUCCESS; job `132791415186`; syntax, Workers-runtime D1 tests, isolated second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload succeeded. It does not yet wire root verifier output to persistence/admission.
+- Review found a monotonicity gap: the original snapshot insert trigger compared only against the active pointer, allowing a lower unseen epoch to be appended after a higher snapshot had already been stored while the pointer lagged.
+- PR #78: https://github.com/VlDMlNSh/developer-cloud-pool/pull/78; branch `fix/route-registry-epoch-order-2026-11-15`; exact HEAD `54250f9c39111dd7cfeb7928fc3fd56169353a95`; base PR #77 at `e63f1dda4c046d485ae9c2f08392a1943a06553d`; OPEN / DRAFT / UNMERGED.
+- PR #78 compares new epochs with `MAX(registry_epoch)` over the complete append-only snapshot table. Regression inserts epoch 1003 while pointer is 1001 and proves epoch 1002 is rejected. Exact-head run `43708444649` COMPLETED / SUCCESS; job `132794554442`; all steps completed. Artifact `14158817485`, SHA-256 `261a1eff4d93d58598d1b4495bf2f0e9b1632b71b4c9e03fa33b4b9b249f6e5f`.
+- PR #78 blobs: migration `485d8c2d2327a64c8d86ddc004134113d6ae3d80`; test `9bae1d2e621c9792dbdb3374459f44106b1edadd`; workflow `772702d98c665c145237a5fe2b5a57c0770a4264`. Exact-head combined status contexts 0; formal reviews 0; inline threads 0.
+- PR #72 exact-head D1 run `43690143805` SUCCESS (93 tests, nine atomic admission tests); PR #75 run `43694628561` SUCCESS (103 tests); PR #76 run `43697493628` SUCCESS (114 tests). Each remains a separate draft stack layer, not one qualified system.
+- Active ruleset #26550182 targets only `refs/heads/Основной`; PR required, review-thread resolution required, zero required approvals, no required status contexts and no bypass actors. Classic branch protection endpoint remains NOT VERIFIED. Do not infer independent review from CI.
+- No hosted D1, production trust root, provider call, secret access, dispatch, Worker/Supervisor execution, deployment or merge. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [route-registry epoch-order hardening](../reports/2026-11-15-route-registry-epoch-order-hardening.md).
+- Next: atomically compose the trusted registry/revocation watermark with A0 approval consumption, immutable task/attempt/outbox binding and receipt; adversarially test stale epoch, key substitution, revocation race, rollback and unavailable storage. Keep `dispatch:false`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Current ancestry and integration boundary recheck — 2026-11-15
+
+- Re-read default branch API: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Compare current default to PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: DIVERGED, 47 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Compare current default to PR #72 head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`: DIVERGED, 67 ahead / 64 behind; same merge base.
+- Compare current default to PR #77 head `e63f1dda4c046d485ae9c2f08392a1943a06553d`: DIVERGED, 90 ahead / 64 behind; same merge base.
+- Compare current default to PR #78 head `54250f9c39111dd7cfeb7928fc3fd56169353a95`: DIVERGED, 93 ahead / 64 behind; same merge base.
+- Therefore PRs #67/#72/#75/#76/#77/#78 are a draft proof stack on a stale base, not a candidate for merge or production integration. Reconstruct a minimal integration branch from current default only after reviewing and selectively transplanting the source files/migrations, preserving provenance; do not merge the divergent history or retarget the stacked PRs blindly.
+- PR #78 exact-head D1 workflow run `43708444649` is COMPLETED / SUCCESS. Its combined commit-status endpoint is empty; required status contexts remain NOT VERIFIED. PR #78 has no formal reviews or inline threads.
+- PR #79 documentation branch is 3 commits ahead / 0 behind current default, merge base equals current default. PR #79 is OPEN / DRAFT / UNMERGED; documentation-only validation was not returned by exact-head Actions lookup (CI NOT VERIFIED).
+- Ruleset #26550182 is active only for `refs/heads/Основной`, with PR and thread-resolution requirements, 0 required approvals, no required status contexts, and no bypass actors. It does not supply independent approval for these draft proof branches.
+- The current integration gap is now more specific: local atomic admission and cryptographic verification components exist as separately tested draft layers, but their trusted registry persistence and same-batch A0 admission composition are not wired together; Supervisor/Worker and Experience API are also not connected to this proof.
+
+
+## Vertical-slice integration gap map — 2026-11-15
+
+| Boundary | Existing evidence | Actual status / missing connection |
+|---|---|---|
+| Graphite Web Console | PR #6 static dashboard; PR #25 Hono prototype | UI prototype only; no deployed authenticated service or live task/evidence API |
+| OAuth / Session | PR #30 synthetic oauth4webapi proof; PR #61 local D1 session proof | No live GitHub OAuth, owner numeric-ID enforcement, production cookie/session or durable deployed auth |
+| Experience API | PR #24 API/hosting contract | Contract/design; protected reads remain fail-closed; no live Pool Bridge |
+| Pool Bridge / Task Envelope | Existing task/approval/attempt contracts and PR #67 D1 local ledger | No single production API converts authorized user intent into an admitted task |
+| Supervisor | Default heartbeat-only workflow; PR #37 reusable Worker boundary draft | No transactional dispatch qualification; do not enable dispatch |
+| Worker | DSH headless probe profile | No qualified real execution; DSH probe not run |
+| Evidence Store | D1 attempts, outbox, projection receipts in PR #67 stack | Local proof only; no live Worker result → durable evidence → web read-model path |
+| Route / quota | PR #74 pure quota ledger tests; PR #75/#76 cryptographic verifier; PR #77/#78 durable snapshot ledger | Separate draft components; no authenticated account/quota source and no same-batch A0 registry/revocation re-check |
+
+- Issue #22 (web console), #26 (provider routing/quota), #38 (durable claims) and #70 (fail-closed route admission) remain OPEN.
+- Issue #70's remaining point is not solved merely by adding cryptographic bundle verification: PR #75 accepts explicit trusted snapshots; PR #76 verifies a root-signed bundle using a platform-bound public key; PR #77 persists snapshot metadata; PR #78 enforces epoch ordering. None yet composes trusted registry loading, route/account/quota identity, revocation watermark, approval consumption and task/attempt/outbox receipt in one atomic admission operation.
+- PR #74 exact head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144` has Pool Contract Validation run `43692828719` SUCCESS (13 pure quota-ledger tests); it remains draft/unmerged and does not authenticate provider evidence or live quota.
+- The web path remains separate from the D1 proof: PR #25 prototype + PR #30 synthetic OAuth + PR #61 local session proof are not mounted to the A0 admission or live task ledger.
+- No end-to-end vertical slice has been demonstrated. The next integration task is the atomic trusted registry + admission composition, followed by a no-provider-call local integration adapter that returns only evidence/queue state with `dispatch:false`; then connect read-only Experience API only after auth/session gates are qualified.
+
+
+## Root-signed registry durable persistence — 2026-11-15
+
+- Implementation PR #81: https://github.com/VlDMlNSh/developer-cloud-pool/pull/81
+- Branch: `proof/persist-root-signed-route-registry-2026-11-15`; final HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; base PR #77 branch `impl/durable-route-registry-d1-2026-11-15` at `e63f1dda4c046d485ae9c2f08392a1943a06553d`. PR #81 includes the dependent PR #78 epoch-order hardening layer.
+- Migration 0013 adds exact signed bundle JSON/root signature storage, append-only issuer-key rows bound to snapshot epoch+digest, and registry binding fields on route qualification rows with insert/immutability guards.
+- New `persistTrustedRouteRegistryBundle` verifies the root-signed bundle against the platform-pinned root and persists snapshot, issuer keys, route qualification rows and active singleton pointer in one D1 batch. Exact retry is idempotent; conflicting epoch reuse denies; deliberate route identity collision proves full batch rollback. All responses dispatch false.
+- Exact-head PR run `43709291531`, job `132797151113`: COMPLETED / SUCCESS. Workers runtime 11 files / 116 tests PASS / 0 FAIL; syntax check, isolated second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload all SUCCESS. Artifact `14159369399`, SHA-256 `bdbaafba5c832b65061e6720c2747f9e961141dfe4426cf270e2ee09b21272f8`.
+- An initial run `43709221098` exposed a pre-existing flaky verifier tamper test that altered unused base64url padding bits. The test was repaired to flip a decoded signature byte; final exact-head run passes.
+- Final blobs: migration `40b93551c787078e5c65c8861569bb428bd2eb8b`; writer `12f1b09b238d61fa7cf3574221f3cb79f6d4767a`; persistence test `0c52812ba17f77781231322a315f4d7b2d46283b`; README `7f80f9b3183f257d8b6188d5a8685a89879e2f38`; crypto tamper regression `dd3769b34a5cef9b0d85d006af35787b429425b5`; workflow `f6cfa6a43f5217576668ec6a027765250bda8de3`.
+- Critical limitation: the existing `admitQualifiedTask` still does not require current registry pointer, route snapshot digest/epoch, issuer-key validity/status and revocation watermark inside the same approval-consumption D1 batch. Legacy fixture-seeded route rows remain accepted by that isolated helper. Durable registry persistence is therefore NOT equivalent to qualified production admission.
+- PR #81 OPEN / DRAFT / UNMERGED; formal reviews 0, inline threads 0, combined commit-status contexts 0 / NOT VERIFIED. Actions success is not independent review.
+- Current default remains `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default → PR #78 DIVERGED 93 ahead / 64 behind; default → PR #81 DIVERGED 100 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge stale proof history; selectively reconstruct from current default after review.
+- No hosted D1, provider calls, secret reads, deployment, Supervisor/Worker execution, dispatch, merge or independent acceptance.
+- Next: change A0 admission so the current registry pointer, exact route snapshot/digest, issuer key status/validity and revocation watermark are re-checked inside the same D1 batch that consumes approval and writes task/attempt/outbox/receipt. Add stale-pointer, revoked-key, epoch-advance race, replay and rollback tests.
+- Report: [Root-signed route registry persistence proof](../reports/2026-11-15-root-signed-route-registry-persistence.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Atomic A0 admission bound to durable registry — 2026-11-15
+
+- Implementation branch: `proof/atomic-admission-bound-registry-2026-11-15`; final HEAD `a2e02471438104a5502d505995912c9eedb06480`; stacked on PR #81 HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`.
+- Migration 0014 creates immutable `pool_admission_registry_assertions` plus a trigger that requires exact current snapshot epoch/digest/version, accepted/unexpired snapshot, active/unrevoked/valid issuer key, and fresh/unrevoked qualified route.
+- `admitQualifiedTask` inserts the guarded assertion as the first statement in the same D1 batch as approval consumption, task/outbox binding, attempt and receipt writes. Any later failure rolls the assertion back too. Exact retry rechecks the currently active registry/key through a compact join. Dispatch remains false.
+- Added stale epoch and revoked issuer key adversarial cases. The fixture now advances the registry epoch monotonically per test because Workers test files share D1 state.
+- Exact final-head Actions run [43710565281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710565281), job `132800985815`: COMPLETED / SUCCESS; 11 test files / 118 tests PASS; syntax, second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload all PASS.
+- Artifact `14160202640`, SHA-256 `65c6812eacf6d20ae59ff62cae114ecd792e730712d34e9abc837b4d3fd85d03`.
+- Final blobs: migration 0014 `cb8a47d83faba62981daa8f7320da87baa2c55e2`; admission source `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; tests `0bd28c6e0af6d416a256bf529c2ff1b735e24ae4`; README `c7d78c857c15cdf67009af51cdb9beff8d87d430`; workflow `c6d9212666a628f918d95b419a97d4294836b488`.
+- PR #83 was closed by repository owner at 2026-11-15T11:47:29Z after exact-head CI success. Respect the closed state; do not reopen or create a replacement PR in this pass. No formal reviews or inline threads. Combined commit status contexts 0 / NOT VERIFIED.
+- PR #81 remains OPEN / DRAFT / UNMERGED. PR #79 documentation remains OPEN / DRAFT.
+- Current default `Основной` remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default → proof branch DIVERGED 125 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge or transplant proof history wholesale.
+- Epoch-advance race interleaving remains NOT VERIFIED. Hosted D1, real provider calls, secrets, deployment, executor run, dispatch and independent acceptance were NOT RUN.
+- Status: registry persistence VERIFIED; registry-bound A0 admission IMPLEMENTED / exact-head CI VERIFIED; production qualification NOT RUN; Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: selectively reconstruct migrations/source/tests on a fresh branch from current default; add epoch-advance race coverage; run exact-head CI on that clean integration branch. Keep dispatch disabled.
+- Report: [Atomic A0 admission bound to durable route registry](../reports/2026-11-15-atomic-admission-bound-registry.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean-main D1 proof reconstruction — 2026-11-15
+
+- Clean integration branch `integration/d1-ledger-clean-main-2026-11-15`, HEAD `3436f5f87ed1b237122ea0444265302d99cf2d02`, parent/current default `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87 — OPEN / DRAFT / UNMERGED, 49 added files, 1 ahead / 0 behind.
+- Reconstructed isolated `proofs/d1-ledger` subtree (migrations 0001–0014, adapters, tests, frozen fixture, package lock) and validation workflow by reusing exact blob SHAs. Did not transplant divergent commit history; new commit has only current default as parent.
+- Exact-head D1 workflow [43711509028](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711509028), job `132803868550`: SUCCESS; 11 files / 118 tests; syntax, second D1 binding/migration smoke, frozen schema-0010 upgrade smoke and artifact upload all PASS. Artifact `14159784811`, SHA-256 `6bea4eb8fb91dd6f50d47dbce46efce7fd799c0f93e3a88c6495cea4e392179b`.
+- Exact-head pool contract workflow [43711509085](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711509085), job `132803869022`: SUCCESS; dispatch-disabled invariant, YAML syntax and pool security contract checks PASS.
+- Combined commit status contexts remain 0 / NOT VERIFIED; formal reviews 0; inline threads 0.
+- This is an isolated proof subtree, not production schema adoption. No hosted D1, provider calls, secret reads, deployment, Worker execution or dispatch.
+- Epoch-advance race interleaving remains NOT VERIFIED. Independent review and production qualification NOT RUN.
+- Next: add concurrent registry epoch advance vs admission coverage on clean branch; rerun exact-head workflows.
+- Report: [Clean-main D1 proof reconstruction](../reports/2026-11-15-clean-main-d1-ledger-reconstruction.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Deterministic registry-advance interleaving and exact-head CI — 2026-11-15
+
+- Current default: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Clean integration PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87; branch `integration/d1-ledger-clean-main-2026-11-15`; latest verified head `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`; 5 commits ahead / 0 behind; merge base is the exact current default SHA. PR remains OPEN / DRAFT / UNMERGED.
+- Deterministic TOCTOU test now forces this order: admission preflight completes; trusted registry snapshot + issuer key + active pointer advance atomically to a higher epoch; then the original admission batch is released. It asserts fail-closed denial, approval remains ready, and no admission/assertion rows are committed.
+- Test blob: `1d39dff5f2c76b35cd05625ef0999578528b07c7`. The first test attempt failed because the synthetic snapshot used `route_count=0`, violating migration 0012's CHECK constraint (route_count must be 1–256). The fixture was corrected to route_count 1; no production migration or admission code changed for this correction.
+- Workflow blob: `ab2613a776f1b17daf8d2934528e62bb95fbe9bc`; the clean integration branch is included in the isolated D1 workflow push allowlist.
+- Failed diagnostic run on prior test revision `d920a8512a2ac2c32a201a4ed84c041bb97d1a04`: [43711949365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711949365), job `132805227807`; 118 passed / 1 failed, solely the invalid synthetic route_count fixture. The accompanying Pool Contract Validation run [43711949474](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711949474) passed.
+- Corrected exact-head D1 run [43712068163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068163), job `132805595342`: COMPLETED / SUCCESS; syntax PASS; 11 test files / 119 tests PASS / 0 FAIL; second isolated D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS; lockfile artifact upload PASS. Artifact ID `14160831522`, SHA-256 `96beb0f9c62eb2787180f1847bb0d860d7a0d0c9c37f63beeaf3cf62b427e9fb`.
+- Corrected exact-head Pool Contract Validation run [43712068111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068111), job `132805595358`: COMPLETED / SUCCESS; dispatch-disabled invariant, workflow YAML syntax and pool security contract checks PASS.
+- Combined commit status contexts: 0 / NOT VERIFIED. Formal PR reviews: 0; inline review threads: 0. Actions workflow success is verified; aggregate status contexts and independent review are separate and remain unverified/not run.
+- This remains an isolated local D1 proof, not production schema adoption. Hosted D1, provider calls, secret reads, deployment, Worker/Supervisor execution, dispatch, merge and independent acceptance were NOT RUN. Dispatch remains disabled. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect the complete PR #87 diff and migration ordering against the current default, then continue only with local/no-provider qualification. Do not merge or provision hosted D1 until all required gates are explicitly met.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Current verified state — 2026-11-15 (latest pass)
+
+- Default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Clean A0/D1 integration PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87; branch `integration/d1-ledger-clean-main-2026-11-15`; current PR HEAD `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; 6 commits ahead / 0 behind; merge base equals current default HEAD; 49 added files. PR is OPEN / DRAFT / UNMERGED.
+- Latest test blob `proofs/d1-ledger/test/atomic-admission.test.ts`: `4543d1db062da3e94ee839c50c79e3f01016b8b7`. Deterministic registry-epoch TOCTOU test now asserts complete rollback after active registry pointer advances between preflight and D1 batch: approval remains ready; no assertion, admission, commit receipt, attempt, task, or delivery-outbox row remains.
+- Source-level review covered migrations 0001–0014 and route-registry/evidence/admission adapters. Migrations 0011–0014 are additive after frozen schema-0010. Admission trigger 0014 checks exact qualification/issuer/key/epoch/bundle/version/evidence binding, active singleton pointer, snapshot validity, route freshness/expiry/revocation and issuer-key lifecycle inside the admission batch. Root-signed registry verification uses a pinned platform root public key and verifies root ES256 bundle signature plus per-route issuer signatures. This is source review, not independent security qualification.
+- Exact-head D1 workflow [43712647597](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712647597), job `132807363651`: COMPLETED / SUCCESS. 11 test files / 119 tests PASS / 0 FAIL; syntax PASS; second isolated D1 binding/migration smoke PASS (1 passed, 2 skipped); frozen schema-0010 fixture smoke PASS (2 passed, 1 skipped); lockfile artifact upload PASS. Artifact `14160748701`, SHA-256 `d726348e305b52406de9b6de7c8ba93e43e349b59089c7e700443554977311c9`.
+- Exact-head Pool Contract Validation [43712647615](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712647615), job `132807363825`: COMPLETED / SUCCESS; dispatch-disabled invariant, workflow YAML syntax and pool security contracts PASS. Additional push-triggered D1 run [43712643907](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712643907), job `132807352140`: SUCCESS on the same exact HEAD.
+- Combined commit status contexts remain empty / NOT VERIFIED; successful named Actions workflows are separately verified. PR #87 formal reviews: 0; inline threads: 0. PR remains draft. Effective ruleset details not re-read in this pass; no merge attempted.
+- No hosted D1, provider calls, secret reads, deployment, Worker/Supervisor execution, dispatch, merge or independent acceptance. Dispatch remains disabled. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue local/no-provider qualification by reviewing remaining integration boundaries (approval provenance, quota issuer authority and D1-to-Supervisor separation); do not treat the isolated proof as a live pool or enable dispatch before governance and acceptance gates.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Daily live revalidation — 2026-11-15 19:19 Europe/Vilnius
+
+- Live default ref confirmed identical to `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; this is 64 commits beyond the previous recorded `221f216c...` baseline. Repository: 8 open Issues and 67 open PRs.
+- Priority Issues #1/#22/#26/#38 remain OPEN; new #70 (fail-closed free-quota routes) and #94 (proposed Cloud Pool-native Gemini dispatch) are also OPEN. No action was taken on the dispatch proposal.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, based on old `64d2636...` and 128 commits behind current default; formal reviews/threads 0/0. Named exact-head Actions runs are successful, including #30 push run 42216422883. This does not qualify integration/runtime.
+- Path-segment fix remains at `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 128 behind, with no PR and exact-tip CI NOT VERIFIED. Source/test blobs `9f4f9e59...` / `bd8ac8d9...` contain the dot-segment guard and four negative cases.
+- Current-base D1 reconstruction: PR #87 `8cc7b129...` is 6 ahead / 0 behind, 49 files; exact-head D1 + contract workflows 43712647597/43712647615 SUCCESS, 119 tests recorded. PR #92 `70149615...` 10/0, runs 43718679251/258 SUCCESS. PR #93 `e200838d...` 15/0, run 43736264768 SUCCESS. All remain OPEN/DRAFT/UNMERGED; formal reviews and inline threads 0/0.
+- PR #93 current source blob `916581ca07cf94edb21c8c2daa77a4c45db3d666` still reuses `verified.verifiedAt` as persistence `acceptedAt`; no trusted current-clock freshness/expiry check exists before persistence or idempotent-success. Its verifier also accepts `env` and `now` as function arguments, and its Worker entrypoint is deliberately inert (404). Existing comment 6897189755 remains an unresolved top-level finding, not a formal review.
+- PR #71/#74 fail-closed quota policy fixes have exact-head contract CI SUCCESS but remain draft and do not authenticate provider/account/quota evidence.
+- Default Supervisor source still has `issues: write` / `actions: write`, a `workflow_run` trigger and Worker `workflow_dispatch`; the script dispatches only for literal `true`, but the live variable is NOT VERIFIED. Fifteen-minute absence-based claim recovery remains a duplicate-execution risk if dispatch is enabled.
+- Effective ruleset and branch-protection details NOT VERIFIED; last recorded ruleset snapshot 26550182 had 0 approvals and no required status contexts. SentinelX: zero connected hosts; Voktors-Mini offline; mh-dev-01/02 disabled. Cloudflare Worker/D1 entitlement and deployment NOT VERIFIED.
+- No secret reads, workflow/dispatch invocation, agents, DSH, Resource Probe, provider/model calls, deployment, merge or production/security-boundary changes. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Daily report: [2026-11-15 19:19 revalidation](../reports/2026-11-15-1919-daily-revalidation.md).
+
