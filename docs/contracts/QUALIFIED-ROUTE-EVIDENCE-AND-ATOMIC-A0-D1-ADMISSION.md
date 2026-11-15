@@ -160,7 +160,7 @@ Therefore Sections 3–9 remain normative acceptance requirements. Status remain
 
 The implementation evidence above was superseded by final head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`. Exact-head workflow run `43690143805` completed SUCCESS: 7 Workers-runtime test files / 93 tests passed, including 9 atomic-admission tests; upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
 
-The final migration/adapter also binds the existing task outbox one-way to admission ID, attempt ID and evidence digest, and checks that binding in the transaction receipt and post-commit read-back. PR #72 remains OPEN/DRAFT/UNMERGED. Default-to-implementation comparison at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8` is DIVERGED 67 ahead / 27 behind.
+The final migration/adapter also binds the existing task outbox one-way to admission ID, attempt ID and evidence digest, and checks that binding in the transaction receipt and post-commit read-back. PR #72 remains OPEN/DRAFT/UNMERGED. At later immutable comparison snapshot `a0200d102f25771bbb52e6dcacaa663dd46da6f8`, default → PR #72 was DIVERGED 67 ahead / 40 behind.
 
 No change to qualification status: trusted qualification writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest generation and live provider/account/quota proof remain NOT IMPLEMENTED/NOT QUALIFIED. Combined status has zero contexts. Dispatch remains false.
 
@@ -174,8 +174,8 @@ No change to qualification status: trusted qualification writer, cryptographic i
 - Added safe own-property route-key construction and a `__proto__` regression. Exact-head run https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43692093254 COMPLETED / SUCCESS; job `132744702990`; contract validator PASS; YAML parse PASS; 13 quota tests passed; dispatch gate observed false.
 - Combined commit-status contexts remain empty; required contexts NOT VERIFIED. PR #74 remains OPEN / DRAFT / UNMERGED; no independent review.
 - Quota ledger remains a pure selector/state machine, not a trusted provider evidence verifier. It does not authenticate issuer, signature, provider account, evidence bytes or live quota. Qualified Route Evidence remains NOT QUALIFIED.
-- PR #72 remains OPEN / DRAFT / UNMERGED at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, exact-head run `43690143805` SUCCESS, stacked on PR #67. Current default → #72 is DIVERGED 67 ahead / 32 behind; default → #67 is DIVERGED 47 ahead / 32 behind. Do not transplant either full stack.
-- PR #73 documentation branch remains OPEN / DRAFT and diverged from current default 4 ahead / 6 behind; its docs are being reconciled directly into canonical files, not merged wholesale.
+- PR #72 remains OPEN / DRAFT / UNMERGED at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, exact-head run `43690143805` SUCCESS, stacked on PR #67. At snapshot `a0200d102f25771bbb52e6dcacaa663dd46da6f8`, default → PR #72 was DIVERGED 67 ahead / 40 behind; default → PR #67 was DIVERGED 47 ahead / 40 behind. Do not transplant either full stack.
+- At snapshot `a0200d102f25771bbb52e6dcacaa663dd46da6f8`, PR #73 documentation branch was OPEN / DRAFT and diverged 4 ahead / 13 behind; its docs are being reconciled directly into canonical files, not merged wholesale.
 - Active ruleset `26550182` applies only to default branch, requires PR and review-thread resolution, but has 0 required approvals and no required status contexts. Branch-protection endpoint remains NOT VERIFIED (403).
 - No provider login/call, secret read, hosted D1, Worker deployment, dispatch, merge or production resource creation.
 - Report: [Quota-ledger ancestry reconciliation](../reports/2026-11-15-quota-ledger-ancestry-reconciliation.md).
