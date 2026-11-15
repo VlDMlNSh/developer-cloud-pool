@@ -310,3 +310,23 @@ Next implementation: typed, in-process-branded root-verifier → D1 persistence 
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
+
+
+## PR #78 and PR #80 — 2026-11-15 registry hardening continuation
+
+Status: PR #78 exact-head PR CI VERIFIED; PR #80 exact-head PR + push CI VERIFIED; D1 acceptance adapter NOT IMPLEMENTED; Contour A NOT ACCEPTED.
+
+- PR #78 HEAD `54250f9c39111dd7cfeb7928fc3fd56169353a95`, base PR #77 `e63f1dda4c046d485ae9c2f08392a1943a06553d`; exact PR workflow run `43708444649` / job `132794554442` SUCCESS. Migration 0012 now compares new epoch to MAX persisted epoch, preventing out-of-order append even when active pointer lags.
+- PR #78 separate push run `43708418101` failed due an existing non-deterministic modified-signature test, which sometimes mutated Base64URL trailing bits into an invalid encoding.
+- PR #80 HEAD `4dc81a377004502e8cae35583a734be5cc74cce6`, base PR #78 HEAD `54250f9c39111dd7cfeb7928fc3fd56169353a95`; 2 commits ahead / 0 behind. It adds module-private WeakMap capability and deep-frozen exact verified bundle snapshot, plus regression tests for forged/copied results and post-verification input mutation.
+- PR #80 also repairs the flaky negative signature test by flipping an actual decoded signature byte and canonical re-encoding. Initial PR run `43708647446` failed on the same pre-existing flake; final exact-head PR run `43708731241` / job `132795442992` SUCCESS and push run `43708726255` SUCCESS.
+- Final CI: 10 files / 116 tests passed; upgrade-binding smoke passed; frozen schema-0010 fixture passed, golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`. Artifact `14159089149`, SHA-256 `4977c83201c93bf05fe932531cc123f6c5424e14dea4d39775945a677736584c`.
+- PR #78 and #80 are OPEN / DRAFT / UNMERGED, each has 0 formal reviews and 0 review threads. Ruleset #26550182 still has 0 required approvals and no required status checks. Default branch HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- The WeakMap capability is process-local and not a persistence or production trust mechanism. No D1 adapter, issuer/route row persistence, atomic watermark CAS or admission/receipt binding yet. No secrets, hosted D1, provider calls, dispatch, deployment or independent audit. Keep `dispatch:false`; Contour B deferred.
+
+Next: typed D1 adapter consumes only the verifier-issued capability, atomically persists snapshot + issuer/route rows + monotonic watermark with a DB-enforced CAS assertion and full rollback tests. Then bind registry epoch/digest/key IDs into admission and immutable receipt.
+
+PR #78: https://github.com/VlDMlNSh/developer-cloud-pool/pull/78
+PR #80: https://github.com/VlDMlNSh/developer-cloud-pool/pull/80
+Exact-head CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

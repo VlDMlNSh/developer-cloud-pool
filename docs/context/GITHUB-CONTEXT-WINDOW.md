@@ -2190,3 +2190,54 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/reports/2026-11-15-cloud-pool-six-hour-cycle-revalidation.md
 Checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/checkpoints/2026-11-15-a0-admission-route-qualification.md
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 19. Registry epoch-order hardening and verifier capability boundary — 2026-11-15
+
+**Status: PR #78 EXACT-HEAD PR-CI VERIFIED / PR #80 EXACT-HEAD CI VERIFIED / CAPABILITY BOUNDARY IMPLEMENTED / D1 ACCEPTANCE ADAPTER NOT IMPLEMENTED / CONTOUR A NOT ACCEPTED.**
+
+### 19.1 Live refs and immutable targets
+- Default `Основной` remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; branch API reports `protected=false`.
+- Documentation branch before this update: `docs/next-2026-11-15-route-registry-revalidation` @ `af32bd1f858b0326bd104ef6ce6c219b12a3d900`.
+- PR #78: OPEN / DRAFT / UNMERGED; head `54250f9c39111dd7cfeb7928fc3fd56169353a95`, base PR #77 `e63f1dda4c046d485ae9c2f08392a1943a06553d`. Compare: 3 ahead / 0 behind. Reviews 0, threads 0.
+- PR #80: OPEN / DRAFT / UNMERGED; head `4dc81a377004502e8cae35583a734be5cc74cce6`, base PR #78 `54250f9c39111dd7cfeb7928fc3fd56169353a95`. Compare: 2 ahead / 0 behind. Reviews 0, threads 0.
+- Stack now: #72 → #75 → #76 → #77 → #78 → #80 (separate quota, auth, Supervisor and projection branches remain separate). Do not merge stacked PRs independently.
+- Ruleset #26550182 unchanged: active for default, requires PR and thread resolution, but 0 required approvals and no required status checks. Governance remains insufficient for acceptance.
+
+### 19.2 PR #78 — snapshot history epoch monotonicity
+- Finding: the previous trigger compared a new snapshot only against the current singleton pointer. A future epoch could be inserted while pointer remained behind, followed by an out-of-order lower epoch.
+- Change: migration 0012 now compares `NEW.registry_epoch` with `MAX(registry_epoch)` across all persisted snapshots; Workers-runtime test covers epoch 1003 inserted while pointer is 1001, followed by rejection of epoch 1002.
+- Migration blob: `485d8c2d2327a64c8d86ddc004134113d6ae3d80`.
+- Test blob: `9bae1d2e621c9792dbdb3374459f44106b1edadd`.
+- Workflow blob: `772702d98c665c145237a5fe2b5a57c0770a4264`.
+- PR event exact-head run `43708444649` / job `132794554442`: SUCCESS. 115 tests in suite and upgrade/fixture smoke passed. The separate push event run `43708418101` failed on the pre-existing flaky signature-mutation test described below; it did not invalidate the successful PR event run, but the discrepancy is explicitly recorded.
+
+### 19.3 PR #80 — verifier-issued in-process capability
+- Branch `impl/verified-registry-capability-2026-11-15`; exact HEAD `4dc81a377004502e8cae35583a734be5cc74cce6`.
+- `trusted-route-registry.mjs` now associates successful verifier result objects with a private WeakMap containing a deep-frozen JSON snapshot of the exact bundle that was verified. Exported accessor returns that snapshot only for the original verifier-issued result object. Caller-created `verified:true`, shallow-copied result objects and denied results return null.
+- Regression test confirms nested snapshot immutability and independence from later mutation of the caller's original bundle.
+- Source blob: `e5e667d79d9d7d4dc47b8aa1e5d6cb9c91e5e84d`.
+- Registry capability test blob: `9f7eed1c0a6212877a37336889119835ea08dc7d`.
+- Existing Qualified Route Evidence signature-negative test blob: `9711ab2a4b8b2d9c536757f3e4813581e23139d6`.
+- Workflow blob: `1107402ade211b310108e9e58d6bc078c5610964`.
+- PR #80 exact-head PR run `43708731241` / job `132795442992`: SUCCESS. Push run `43708726255`: SUCCESS. Both point to exact head `4dc81a377004502e8cae35583a734be5cc74cce6`.
+- Test evidence: 10 test files / 116 tests passed; isolated upgrade-binding smoke passed; frozen schema-0010 fixture passed with golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`, canonical bytes 16160.
+- Artifact `14159089149`, 18,253 bytes, SHA-256 `4977c83201c93bf05fe932531cc123f6c5424e14dea4d39775945a677736584c`.
+
+### 19.4 CI flake root cause and repair
+- Both PR #78 push run `43708418101` and initial PR #80 PR run `43708647446` failed at `test/qualified-route-evidence.test.ts > rejects a modified signature`. The test changed the final Base64URL character; depending on trailing unused bits, the mutation could create a non-canonical encoding and produce `SIGNATURE_ENCODING_INVALID` rather than the intended cryptographic `ISSUER_SIGNATURE_INVALID`.
+- PR #80 fixes the test by decoding the signature, flipping one actual signature byte, and re-encoding canonical Base64URL. This keeps encoding valid and makes the negative assertion deterministic.
+- Final exact-head PR and push runs both passed. The earlier failed runs remain in history and are not concealed.
+
+### 19.5 Remaining boundary — not yet a D1 adapter
+- The WeakMap capability proves only that an in-process result object came from this module instance and binds it to an immutable verified input snapshot. It does not persist that snapshot, add issuer/route rows, or provide cross-process authenticity.
+- The registry snapshot migration still has no typed persistence adapter, atomic snapshot + watermark CAS, transactional CAS failure assertion, qualification/admission/receipt binding, or same-transaction current-watermark check.
+- No production admission, deployment, hosted D1, provider calls, secrets, dispatch or independent audit. `dispatch:false` remains.
+- Next: implement the D1 persistence adapter consuming only `getVerifiedTrustedRouteRegistryBundle(result)`; persist snapshot + issuer-key + route rows and advance watermark in a single batch with a database-enforced expected-previous-epoch assertion that aborts the entire batch on CAS miss. Test first install, monotonic advance, stale writers, competing writers, no orphan rows on failure, digest substitution and storage outage. Then bind epoch/digest/root key/issuer key into A0/D1 admission and immutable receipt.
+- Do not claim Contour A acceptance; Contour B remains DEFERRED.
+
+PR #78: https://github.com/VlDMlNSh/developer-cloud-pool/pull/78
+PR #80: https://github.com/VlDMlNSh/developer-cloud-pool/pull/80
+PR #80 exact-head PR CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241
+PR #80 exact-head push CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708726255
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
