@@ -508,3 +508,13 @@ See [Wave 322 report](../reports/2026-11-15-pr93-verified-registry-atomic-rollba
 - PR #651 formal independent review remains NOT VERIFIED (review submissions 0). No secret values were read; current secret/variable metadata was not inspected. The probe verified event context only, not Gemini dispatch.
 - MediaHub controller bridge is a cross-project dependency. Developer Cloud Pool remains primary; Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 325 registry writer-boundary audit
+
+- Report: [Wave 325](../reports/2026-11-15-wave325-registry-writer-boundary-audit.md); report commit `86ab6f9d869e52216bd3454a5b2b19d3b6663fa0`.
+- Read-only inventory across all 13 D1 proof source modules found one registry writer, `persistTrustedRouteRegistryBundle()`, gated by the verifier-issued WeakMap capability. A0 admission only reads registry rows and writes a trigger-guarded trust assertion; Worker entrypoint is inert/404. Migration 0013 permits legacy unbound rows, but migration 0014 cannot admit them through the trusted registry assertion.
+- Production DB binding/writer isolation remains NOT VERIFIED; the D1 proof is not deployed/wired into Supervisor/Worker. PR #87/#92/#93 remain OPEN/DRAFT/UNMERGED with zero formal reviews; independent review NOT RUN.
+- Cloud Pool-native Gemini controller absent; Issue #94 prohibits MediaHub Issue #301 as substitute. Gemini children NOT RUN. No dispatch, provider calls, secret reads, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: Issue #94 controller contract + adversarial/no-secret test design and independent stack review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
