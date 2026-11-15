@@ -335,7 +335,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 ## Route registry D1 transaction schema proof — 2026-11-15
 
 - Report: [route registry D1 transactional CAS proof](../reports/2026-11-15-route-registry-d1-transactional-cas.md).
-- PR #82: OPEN / DRAFT / UNMERGED; stacked on PR #80 at immutable parent `4dc81a377004502e8cae35583a734be5cc74cce6`; head `6a088b63a5f068665db286301bd6d360204fa288`, 3 ahead / 0 behind.
+- PR #82: OPEN / DRAFT / UNMERGED; stacked on PR #80 at immutable parent `4dc81a377004502e8cae35583a734be5cc74cce6`; head `6a088b63a5f068665db286301bd6d360204fa288`, 6 ahead / 0 behind.
 - Migration `0013_route_registry_rows_and_cas_guard.sql` adds immutable issuer and route tables, composite issuer/key FK, append-only controls, late child-row insert denial and CHECK-backed expected-epoch CAS gate.
 - Workers-runtime test proves initial install, epoch advance, late insert rejection, stale-writer rollback with zero orphan rows and exactly one successful contender from two competing batches.
 - Exact-head PR CI [43709327229](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709327229) / job `132797255446`: SUCCESS.
