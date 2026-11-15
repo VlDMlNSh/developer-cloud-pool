@@ -582,3 +582,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No live GitHub API binding, real Actions concurrency, issue_comment trigger, live ledger write, controller/Gemini dispatch, secret/provider call, deployment or merge. Cloud Pool-native controller NOT IMPLEMENTED / NOT QUALIFIED; Gemini NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: trusted-main wrapper + actual GitHub API adapter and Actions concurrency lock, with dispatch still disabled; test exact event and run-list pagination.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Wave 344 — GitHub API adapter and branch cleanup — 2026-11-15
+
+- Default branch Основной HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436. Accidental test-only file add commit bbc4da7ba1c06cde6c79d9216cdbdcae771ac6db was removed by cleanup commit 6507823e7ec27caa9b2621daef964dba2d4cf436. The file is absent from current default tree; history remains and is disclosed.
+- PR #97 OPEN/DRAFT/UNMERGED, feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21, base SHA 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc, formal reviews 0. Feature branch ahead 18 / behind 2; docs branch ahead 90 / behind 2; merge base old default HEAD. Reconcile before merge.
+- Added GitHub API adapter blob 9e307f2e40dfc1fa18ffd5142ec205fb6afa3c80; fake API tests blob 9a386b8fd8d7ae2a6b87ae5cba34b3de67ae029f; contract workflow blob f05454a67defba5e4d9d3a1e163bd282e68b63fb.
+- API layer paginates Issue #96 comments and Actions workflow runs; validates canonical issue/source comment, exact /next, OWNER login/association and current default-branch SHA; uses injected fetch. No live credentials/API calls or ledger mutations.
+- Intermediate run 43757790420 FAILED (45/49, 4 test failures); run 43757790396 Pool Contract Validation SUCCESS. Tests corrected after the failed run. Latest exact-head CI NOT VERIFIED: no workflow run/status contexts returned for f0ad25ce60e6ef052fcfeab31fb5deab06793f21.
+- No trusted-main workflow, actual production lock, issue_comment trigger, dispatch or Gemini children. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile default history ancestry; obtain exact-head CI; only then implement trusted-main wrapper with real Actions concurrency lock and dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
