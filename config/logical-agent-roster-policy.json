@@ -1,0 +1,106 @@
+{
+  "schema": "developer-cloud-pool.logical-agent-roster.v1",
+  "source_issue": 26,
+  "target_roster_size": 6,
+  "dispatch_policy": {
+    "every_next_evaluates_all_roles": true,
+    "dispatch_only_when_independent_useful_work_exists": true,
+    "do_not_force_noop_or_duplicate_tasks": true,
+    "maximum_concurrent_logical_agents": 6,
+    "security_review_is_exclusive": true,
+    "chatgpt_integration_role": "owner-side integration, evidence reconciliation and final acceptance recommendation"
+  },
+  "roles": [
+    {
+      "role_id": "task-planner",
+      "purpose": "decompose immutable target into bounded independent tasks",
+      "preferred_capabilities": [
+        "reasoning",
+        "general"
+      ],
+      "independence": "may run with all roles"
+    },
+    {
+      "role_id": "primary-engineer",
+      "purpose": "implement highest-priority bounded engineering slice",
+      "preferred_capabilities": [
+        "coding",
+        "reasoning"
+      ],
+      "independence": "separate worktree and task envelope"
+    },
+    {
+      "role_id": "parallel-engineer",
+      "purpose": "implement non-overlapping engineering slice or research reusable components",
+      "preferred_capabilities": [
+        "coding",
+        "general"
+      ],
+      "independence": "must not write primary engineer files"
+    },
+    {
+      "role_id": "architecture-researcher",
+      "purpose": "research mature components, interfaces and compatibility",
+      "preferred_capabilities": [
+        "reasoning",
+        "large_context",
+        "general"
+      ],
+      "independence": "read-only unless separately assigned"
+    },
+    {
+      "role_id": "test-verifier",
+      "purpose": "design and execute deterministic tests against immutable target",
+      "preferred_capabilities": [
+        "coding",
+        "reasoning"
+      ],
+      "independence": "must not author implementation under test"
+    },
+    {
+      "role_id": "security-provenance-auditor",
+      "purpose": "review authority, secret isolation, provenance and adversarial cases",
+      "preferred_capabilities": [
+        "reasoning",
+        "security_review"
+      ],
+      "independence": "exclusive; never co-located with implementation"
+    }
+  ],
+  "credential_failover": {
+    "credential_slots_are_not_agents": true,
+    "never_rotate_keys_to_evade_provider_limits": true,
+    "quota_exhaustion": {
+      "same_quota_domain": "cool down all routes in provider-confirmed quota domain and wait for authoritative reset",
+      "unknown_quota_domain": "treat same-provider slots as potentially sharing quota; do not rotate among them",
+      "different_provider_or_confirmed_independent_domain": "fail over only when independently qualified, credential-available, model-eligible, policy-allowed and current free-eligible evidence exists",
+      "zero_quota": "deny route until authoritative reset or new independent qualified route"
+    },
+    "http_status_policy": {
+      "401": "mark route auth_failed; no key rotation",
+      "402": "mark route billing_blocked; never use paid fallback",
+      "403": "mark route auth_failed; no key rotation",
+      "429_with_retry_after": "cool down evidence-supported route or quota domain",
+      "429_without_scope_or_reset_evidence": "needs_reconciliation; fail closed"
+    },
+    "quota_warning_fraction_remaining": 0.2,
+    "paid_fallback_allowed": false,
+    "provider_terms_and_account_boundaries_must_be_respected": true
+  },
+  "admission_requirements": [
+    "opaque credential reference; no secret values in manifests/artifacts",
+    "credential presence established through authorized metadata-only evidence",
+    "provider account identity and quota domain independently evidenced or remain unknown",
+    "model explicitly allowlisted for selected route",
+    "current free eligibility and billing policy verified for selected model",
+    "route qualification accepted and not expired",
+    "task data policy permits provider"
+  ],
+  "non_goals": [
+    "no automatic creation of provider accounts",
+    "no secret copying between repositories",
+    "no raw API key exposure to agent prompts or workspaces",
+    "no provider calls or dispatch as part of this static roster policy",
+    "no paid fallback or quota-limit circumvention"
+  ]
+}
