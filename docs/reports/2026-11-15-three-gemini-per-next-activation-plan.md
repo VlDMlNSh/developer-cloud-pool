@@ -67,3 +67,11 @@
 - Next: independent review/governance for PR #649; supported owner-side metadata confirmation; then ruleset-governed merge, trusted-main `/probe`, and one controlled 3/3 wave.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Addendum — independent Gemini review request (2026-11-15)
+
+- PR #649 remains OPEN/DRAFT/UNMERGED; formal reviews 0; main unchanged. The PR-head controller includes a `review` workflow_dispatch mode, but the mode is not present in the current `main` controller. A workflow_dispatch cannot be treated as trusted-main execution of unmerged PR code.
+- The existing main-branch `gemini-fcc-independent-review-wave409.yml` is scoped to fixed historical FCC patch reviews, not PR #649. It was not run.
+- Directly dispatching child workflows or using the FCC reviewer for a different target would bypass authorization or misstate review scope. Gemini independent review is therefore NOT RUN, with exact blocker documented.
+- Seven PR-associated workflow runs completed successfully, but they are PR-context CI and not an independent Gemini review.
+- No merge, provider call, trusted-main probe, or deployment occurred.
