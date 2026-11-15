@@ -154,3 +154,12 @@ https://github.com/VlDMlNSh/developer-cloud-pool/pull/72
 This is not a qualified route or production admission. The proof assumes route qualification rows were inserted by a trusted authority. It does not implement or qualify that writer, cryptographically authenticate issuer provenance, prove canonical evidence-byte serialization/digest generation, verify current provider-account identity or establish live quota availability. Synthetic evidence fixtures are not provider evidence. Combined commit status has zero contexts and required status checks remain NOT VERIFIED. No independent technical/security/governance review has been performed; per project decision, independent review remains deferred until the pool is operational.
 
 Therefore Sections 3–9 remain normative acceptance requirements. Status remains NOT QUALIFIED; dispatch must remain disabled; Contour A is not accepted.
+
+
+### Final exact-head correction — 2026-11-15
+
+The implementation evidence above was superseded by final head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`. Exact-head workflow run `43690143805` completed SUCCESS: 7 Workers-runtime test files / 93 tests passed, including 9 atomic-admission tests; upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+
+The final migration/adapter also binds the existing task outbox one-way to admission ID, attempt ID and evidence digest, and checks that binding in the transaction receipt and post-commit read-back. PR #72 remains OPEN/DRAFT/UNMERGED. Default-to-implementation comparison at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8` is DIVERGED 67 ahead / 27 behind.
+
+No change to qualification status: trusted qualification writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest generation and live provider/account/quota proof remain NOT IMPLEMENTED/NOT QUALIFIED. Combined status has zero contexts. Dispatch remains false.
