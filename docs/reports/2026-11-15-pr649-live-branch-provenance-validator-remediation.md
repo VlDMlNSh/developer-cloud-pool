@@ -47,3 +47,14 @@
 Obtain independent review/governance for PR #649 and PR #650 as required; verify Actions variable/secret metadata without reading values; perform a trusted-main non-launching probe; then merge only through the active ruleset and execute one controlled 3/3 wave through the approved controller. Reconcile exact child run IDs, role branches, PRs, job conclusions and artifact digests. Only after repeatable 3/3 success enable per-chat `/next` bridging.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Follow-up — owner-only no-secret `/probe` trigger
+
+- Extended `.github/workflows/gemini-batch-dispatch-controller.yml` so an exact owner-authored `/probe` comment on Issue #301 invokes only the reusable no-secret caller-context observer.
+- The reusable observer now validates the trusted main workflow ref and the event payload (Issue #301, not a PR, exact `/probe`, OWNER association). The controller probe and assertion jobs include this event; `readiness_gate` and `dispatch_and_monitor` explicitly exclude it. Run names distinguish probe-comment IDs from next-comment IDs.
+- Added regression tests proving `/probe` is owner-only and cannot enter any dispatch job.
+- Latest PR #649 head: `309fa6a4af866f57c7de07006b375780b726302d`, base `main@41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED.
+- Latest exact-head CI: 11 check-runs, 9 SUCCESS, 2 expected SKIPPED, 0 failed/pending. Contract validation run `43730102946`, job `132860465272`: SUCCESS; trigger-path suite 3/3 PASS; dispatch provenance suite 11/11 PASS; actionlint PASS.
+- Follow-up PR comment: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896878604.
+- `/probe` was not triggered: PR is not on main. This adds a safe route to run a trusted-main no-secret probe after integration, without invoking Gemini. `/next` remains a separate OWNER-only path that can dispatch all three roles only when the batch variable and controller gates pass.
+- Live 3/3 Gemini execution remains NOT RUN / NOT VERIFIED. Secret/variable metadata remains NOT VERIFIED; no secret values read; no provider call, merge, deployment or qualification.
