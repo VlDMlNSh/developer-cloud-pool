@@ -489,3 +489,10 @@ See [Wave 322 report](../reports/2026-11-15-pr93-verified-registry-atomic-rollba
 - Next: enumerate every registry-table writer and production integration surface; preserve no-dispatch boundary.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No dispatch, secret reads, provider calls, deployment, merge or paid resource.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Wave 323 documentation ref update
+
+- Context Window metadata refreshed after Wave 323: commit `2cd3f42c47037f22dcffd35361ef669837ffc5b6`, blob `c1c8af7b38203468675174a309f7c95093e05a2d`.
+- Report commit: `25aa7f3f7be1f22e6042f7b031720074479c88d8`; report blob verified by read-back.
+- Context and checkpoint remain on `docs/cross-chat-continuation-2026-11-06`; PR #27 remains DRAFT / UNMERGED. Do not treat this documentation branch as default branch.
