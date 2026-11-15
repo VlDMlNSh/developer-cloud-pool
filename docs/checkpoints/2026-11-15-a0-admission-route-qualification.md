@@ -152,3 +152,12 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: complete schema-versioned immutable evidence metadata and freshness/revocation binding on the proof branch, add adversarial tests, rerun exact-head CI, then reconcile the PR stack. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Revalidation addendum — 2026-11-15
+
+- Subsequent branch activity advanced PR #72 / implementation branch from `ff8ced3309f69f45762a097d576c208d7ec2d617` to `da9a82e780c14c425f3feb4c01f10ec0daa6bc52` (10 commits ahead of PR #67 base, 0 behind). The only delta from ff8ced visible in commit da9a82 is a stale-evidence test fixture timestamp override; it does not add the missing schema-version/evidence-reference/observed-at/revocation-watermark columns. Re-read the migration and adapter at da9a82 confirms the contract-completeness limitation remains.
+- Latest exact-head workflow run `43688537854`: COMPLETED / SUCCESS at `da9a82e780c14c425f3feb4c01f10ec0daa6bc52`; Workers-runtime 7 files / 91 tests passed, atomic suite 7 passed; upgrade binding 1 passed; frozen schema-0010 fixture 2 passed. Artifact ID `14150714256`, SHA-256 `89f4fab41271ff1d8a80b729ed16b8249f387a725ff75bfc4106e81f85777422`.
+- PR #72 re-read: OPEN / DRAFT, head `da9a82e780c14c425f3feb4c01f10ec0daa6bc52`, base PR #67 branch at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; unmerged.
+- Documentation PR #73: OPEN / DRAFT, base `Основной` at `3010d6c95f755bb145ee10c201d810dca21916c2`, head is the documentation-only branch. It is not merged because default branch protection requires changes through a PR.
+- Ruleset `26550182` (`Основной — verified`) is active. It requires a PR, thread resolution, and zero configured approving-review count; its required-status-check list is empty. This does not amount to an independent review or qualification.
+- No merge, production deployment, hosted D1, external login, provider call, secret read or dispatch.
