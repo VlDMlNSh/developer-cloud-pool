@@ -391,3 +391,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Agent 3 run 43748553818 COMPLETED / SUCCESS; jobs 132917172172 and 132917188961 SUCCESS; artifact 14175531437, non-expired, SHA-256 d157762d6192707f12445434e6148b995fd69fe6efabb61b5a131edfc4fad1b2.
 - Controller itself produced no artifact; child artifacts are the output evidence. All three child run conclusions and artifact digests were independently read back from GitHub and matched controller logs.
 - Wave 336 is VERIFIED at MediaHub controller/child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
+
+
+## Latest continuation — revocation-watermark review — 2026-11-15
+
+- Default HEAD rechecked: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Static source inspection confirms migration 0014's admission assertion checks the active root-signed registry snapshot and issuer-key lifecycle inside the admission D1 batch. The A0 admission SQL binds route `revocation_version` to the persisted qualification row.
+- Unresolved qualification gap: no distinct durable monotonic revocation authority/watermark is read by the inspected admission transaction. Do not describe this as an exploit or failing test; the exact required semantics (issuer/key vs route scope, trusted time, rollback/replay and restoration) must first be specified.
+- Inspected immutable blobs: migration 0014 `cb8a47d83faba62981daa8f7320da87baa2c55e2`; admission module `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; registry writer `916581ca07cf94edb21c8c2daa77a4c45db3d666`.
+- No code/schema change or tests in this pass; PR #86/#87/#92/#93 remain draft/unmerged and their complete ancestry/test paths need reconciliation before patching.
+- MediaHub Issue #301 comment `6899669400` created for this /next; controller/child runs and artifacts NOT VERIFIED due unavailable run-list operation in the connected GitHub action set.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/gemini-three-agent-next-bridge-2026-11-15/docs/reports/2026-11-15-next-pass-route-registry-revocation-review.md
+- Next: establish the authoritative monotonic revocation record and adversarial D1 tests, then compare exact-head CI and governance. Dispatch remains fail-closed.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
