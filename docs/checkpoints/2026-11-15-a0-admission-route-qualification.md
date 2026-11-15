@@ -251,3 +251,17 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Gemini three-agent /next bridge recovery — 2026-11-15
+
+This is an execution-bridge correction only; it does not change the A0/D1 implementation or dispatch authority.
+
+- Four owner-authored `/next` comments on MediaHub Issue #301 were matched to four successful MediaHub Gemini Controller runs: `6898434080 → 43741451816`, `6898453275 → 43741600025`, `6898479858 → 43741803725`, `6898513683 → 43742063927`.
+- Direct controller job-log inspection confirms exactly three signed child dispatches per event. All 12 child runs completed successfully, each with successful authorization and Gemini execution jobs and a recorded artifact SHA-256. Full child run IDs and digests: [Gemini bridge recovery report](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+- Shared immutable MediaHub target: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. The existing controller already performs source-comment idempotency, HMAC signing, exact child run correlation and artifact verification. Admission gate was successful on all four observed events. No secret values were read.
+- For each future exact ChatGPT `/next`, the assistant must create exactly one owner-authored comment with body exactly `/next` on MediaHub Issue #301 through the authorized issue-comment action, after checking that this turn has not already created an event. Do not bypass the controller or directly dispatch children. This is not an owner manual action.
+- MediaHub controller is not the Cloud Pool Supervisor. Cloud Pool `POOL_DISPATCH_ENABLED` remains separate and fail-closed; no Cloud Pool dispatch, provider call, deployment, merge or secret change occurred.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+Next: on the next user-issued `/next`, execute the single-comment bridge event and verify the new controller run plus all three child runs, while continuing the next bounded Cloud Pool A0/D1 engineering pass independently.
