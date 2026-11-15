@@ -88,3 +88,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: independent review/governance; metadata-only Actions configuration confirmation; ruleset-governed merge; trusted-main no-secret `/probe`; controlled 3/3 Gemini dispatch; then at least three separate successful waves before enabling automatic chat bridge.
 - Current: PR-context CI verified; trusted-main probe NOT RUN; Gemini 3/3 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Requested Gemini independent review — disposition (2026-11-15)
+
+- PR #649 still OPEN/DRAFT/UNMERGED at `309fa6a4af866f57c7de07006b375780b726302d`; `main` remains `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; formal reviews and review threads are zero.
+- The PR branch controller has a `review` workflow_dispatch mode, but current `main` controller SHA `0a1246f6755020faf8b7e48d07bfff790bbaece3` does not. Thus no trusted-main controller route currently exists to dispatch this review task.
+- Existing main-branch FCC Gemini reviewer is fixed to historical FCC patch scope and is not a valid reviewer for PR #649. Not run.
+- Seven PR-associated workflow runs completed successfully; these are PR-context checks, not Gemini review or live dispatch.
+- Gemini independent review: NOT RUN. Direct child dispatch would bypass the approved controller. No provider call, secret read, merge, trusted-main probe, or deployment.
+- Detailed disposition appended to Context Window and activation report. Next: independent authorized review route, exact-head CI, ruleset-governed merge, trusted-main no-secret probe, then controlled 3/3 launch.
