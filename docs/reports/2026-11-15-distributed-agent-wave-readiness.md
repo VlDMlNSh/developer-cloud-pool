@@ -174,3 +174,26 @@ At last observation, all three engineering jobs were executing the official Gemi
 
 ### Next primary-work rule
 Continue from the current Contour A checkpoint in ChatGPT. First reconcile any newly completed Agent 1 output without waiting; then select and execute one non-overlapping, bounded, verifiable Contour A engineering task. Keep the Gemini agents' results in parallel review lanes.
+
+
+
+## 20. /next primary engineering pass — A0→D1 exact replay integrity (2026-11-15)
+
+- Current default: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87 parent local proof: OPEN/DRAFT/UNMERGED, exact head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, 11 test files / 119 tests SUCCESS at run 43712068163, plus Pool Contract Validation run 43712068111 SUCCESS.
+- Identified gap: exact A0 admission replay verified admission identity and active route but did not re-read receipt, task/outbox and registry assertion chain before returning ALREADY_COMMITTED.
+- Implemented [PR #92](https://github.com/VlDMlNSh/developer-cloud-pool/pull/92), branch `fix/a0-admission-exact-replay-receipt-integrity-2026-11-15`, exact head `7014961587759b27d2ef6e91c60ce098d077ae83`, stacked on PR #87 exact head. Two files changed, no migrations/schema changes.
+- Replay now validates immutable admission, receipt, consumed approval, task/current attempt, outbox binding, registry assertion, original committed timestamp and `dispatch_enabled=0`; missing/inconsistent chain fails closed.
+- Added missing-receipt/assertion corruption regression and later-clock exact-replay test.
+- Exact-head [D1 Proof run 43718679258](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43718679258) job `132825665733`: SUCCESS; 11 files / 120 tests PASS / 0 FAIL; syntax, second binding migration smoke and frozen schema-0010 fixture PASS.
+- Exact-head [Pool Contract run 43718679251](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43718679251) job `132825665679`: SUCCESS.
+- Artifact `14163925436`, SHA-256 `83961df3a8caa97c67d29f70aa34bf4584ce0a53827e802ebb2fec8d8e051475`.
+- Exact check-runs: 2 SUCCESS. Combined commit status contexts: 0/PENDING. PR #92 OPEN/DRAFT/UNMERGED; reviews/threads 0/0.
+- Read-only Cloudflare inventory: one accessible standard account, 0 D1 databases, 0 Worker scripts, existing workers.dev subdomain `jarvis-developer-cloud-pool`. No resource/secret/billing access. Workers Free account entitlement remains NOT VERIFIED.
+- Ruleset #26550182: PR required, thread resolution required; 0 required approvals, no required checks or CODEOWNERS review. Ruleset name does not imply independent review enforcement.
+- PRs #88/#89/#90/#91 remain open Draft; #89 has one workflow syntax/security check SUCCESS, while #88/#90/#91 have zero exact-head checks. PR #87 and #92 remain unmerged.
+- MediaHub Gemini wave controller run 43717570433 remains RUNNING; Agent 1 run 43717589177 engineering step RUNNING; Agent 2 PR #645 and Agent 3 PR #644 exist but have zero exact-head checks/reviews/threads. No new trigger comment created. Their work does not block ChatGPT primary development.
+- No hosted D1, dispatch, provider calls, secrets, deployment, merge, runtime qualification or Contour A acceptance.
+- Next: continue the issuer-authenticated claim-service boundary and trusted-time contract using local tests; reconcile Agent 1 output opportunistically; hosted provisioning stays blocked pending entitlement and explicit resource authorization.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
