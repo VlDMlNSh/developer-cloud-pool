@@ -2332,6 +2332,7 @@ PR #86:
 - PR #86 has 0 formal reviews / 0 inline threads. Keep Draft and unmerged.
 
 Superseded/conflicting branches:
+- PR #78 CLOSED / UNMERGED; its epoch-order migration-0012 hardening is included in PR #81.
 - PR #80 CLOSED / UNMERGED; capability pattern ported into #84.
 - PR #82 CLOSED / UNMERGED; its competing migration 0013 conflicts with PR #81's canonical migration 0013.
 - PR #83 CLOSED / UNMERGED; updated passing implementation ported onto PR #84 ancestry in #86.
