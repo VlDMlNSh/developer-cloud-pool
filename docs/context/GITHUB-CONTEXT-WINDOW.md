@@ -2418,3 +2418,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Expanded PR head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` now has 11 check-runs: 9 SUCCESS, 2 SKIPPED (dispatch/admission jobs intentionally do not run for pull_request context), zero pending and zero failed at final recheck.
 - All three workflow blobs were read back and verified to contain their own dispatch-ID-derived branch expression. PR #649 remains OPEN/DRAFT, 3 files changed, zero formal reviews; no merge.
 - The available PR-context CI is green, but it does not exercise a controller-dispatched child run. Actual 3/3 execution and independent review remain NOT VERIFIED. No new dispatch was triggered in this pass.
+
+
+## Recheck — 2026-11-15 agent dispatch hardening gate
+
+- Latest observed Cloud Pool default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Latest observed MediaHub OS `main` HEAD: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- MediaHub PR #649 remains OPEN/DRAFT/UNMERGED at `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; 11 exact-head check-runs (9 SUCCESS, 2 SKIPPED), 0 formal reviews. Branch uniqueness fix has not yet been exercised by a controller dispatch. Do not dispatch or merge before governance review and effective ruleset verification.
+- Cloud Pool PR #87 OPEN/DRAFT at `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` (3 exact-head checks SUCCESS, 0 formal reviews); PR #92 OPEN/DRAFT at `7014961587759b27d2ef6e91c60ce098d077ae83` (2 exact-head checks SUCCESS, 0 formal reviews); PR #91 OPEN/DRAFT at `7584e56bbea8dedde1aab33e830dd7e66ab76404` (0 checks observed, 0 formal reviews). All remain unmerged.
+- Current documentation branch recheck report: [2026-11-15 agent dispatch hardening gate recheck](../reports/2026-11-15-agent-dispatch-hardening-gate-recheck.md). This branch is documentation-only and remains unmerged; it is not default-branch runtime evidence.
+- Controller dispatch NOT RUN; secret/provider access NOT RUN; merge/deployment NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: secure formal governance review and effective ruleset read for PR #649; then, only if all gates pass, one controlled 3-agent dispatch through approved controller. Cloud Pool runtime next engineering slice remains authenticated registry ingestion with trusted platform clock and adversarial Workers tests.
+
