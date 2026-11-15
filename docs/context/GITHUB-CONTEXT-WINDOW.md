@@ -2505,3 +2505,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #649: https://github.com/VlDMlNSh/mediahub-os/pull/649
 - Comment: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896580340
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-15 — staged onboarding of additional development agents
+
+- Owner direction: gradually add additional agents to the development effort, beyond the initial Gemini trio; this is a staged expansion policy, not an immediate unbounded dispatch.
+- Baseline remains three Gemini roles: Agent 1 engineering/research, Agent 2 contract/test verification, Agent 3 security/provenance review. First qualify reliable 3/3 operation through the approved controller.
+- After repeatable 3/3 runs are evidenced, evaluate additional agents one at a time. Each candidate requires a defined role, free-tier route, separate identity/account/quota domain, least-privilege permissions, resource/time limits, output/provenance contract, and bounded evaluation before any write/dispatch authority.
+- No paid fallback, no credential/quota/authority mixing, no controller bypass, no self-approval, and no expansion that distracts from Contour A critical path. More agents are not considered qualified merely because a model/tool is available.
+- Regular participation in /next waves or increased concurrency is conditional on reliability evidence, independent review, adversarial tests, security/governance approval, and explicit chat-to-Issue #301 event bridging. Chat /next alone does not trigger GitHub Actions.
+- Current status: additional-agent onboarding PLANNED / NOT DISPATCHED; initial Gemini 3/3 live repaired run NOT VERIFIED; PR #649 remains OPEN/DRAFT/UNMERGED with F-01 open. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Decision report: [2026-11-15 staged additional-agent onboarding](../reports/2026-11-15-staged-additional-agent-onboarding.md).
+- Next: machine-enforce PR #649 branch/PR provenance, add adversarial tests, obtain independent review/governance, then execute one controlled 3-agent run. Only after repeatable qualification evaluate the first additional agent.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
