@@ -21,8 +21,8 @@
 
 ### PR #99 — controller/D1 documentation audit
 
-- OPEN / DRAFT / UNMERGED; head branch `docs/next-2026-11-15-controller-d1-audit`, exact HEAD before this report `e8861649615a397b27c71972ab32f057fa9f97d3`; base default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; mergeable=true.
-- Exact-head check-runs API returned 0 checks. CI: NOT VERIFIED.
+- OPEN / DRAFT / UNMERGED; head branch `docs/next-2026-11-15-controller-d1-audit`, pre-refresh HEAD `e8861649615a397b27c71972ab32f057fa9f97d3`; current branch/PR HEAD after report/context/checkpoint publication `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; base default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; mergeable=true.
+- Exact-head check-runs API at current HEAD `5349ae6a07618d6be3d069ae927fc091d8ab3aba` returned 0 checks. CI: NOT VERIFIED.
 - Context Window blob `3f0c33775e1f8a48bdfbb81e4d495593e5d8723c` was stale (Last refreshed 2026-11-08, default HEAD 197ba98..., continuation branch docs/cross-chat-continuation-2026-11-06). This report corrects the recorded live state; the context and checkpoint are updated in the same documentation branch.
 - Do not merge PR #99 until exact-head CI and formal review are available.
 
