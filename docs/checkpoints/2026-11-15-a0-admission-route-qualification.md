@@ -368,3 +368,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 ### Wave 335 final controller reconciliation
 
 - Controller 43748188993 COMPLETED / SUCCESS; dispatch/monitor job 132916076078 SUCCESS. Logs reconcile the three signed child runs and their successful jobs/artifact digests. Wave 335 controller + child orchestration VERIFIED. This remains MediaHub bridge execution, not Cloud Pool-native Gemini qualification.
+
+
+## /next Wave 336 — 2026-11-15
+
+- Source comment: MediaHub Issue #301 #6899404181; controller #43748529579; immutable MediaHub target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Admission job 132917094437 SUCCESS; dispatch/monitor 132917123035 IN_PROGRESS at last read-back.
+- Child Agent 1 #43748550454 QUEUED; Agent 2 #43748552273 IN_PROGRESS; Agent 3 #43748553818 IN_PROGRESS. Outputs/artifacts not yet verified.
+- Cloud Pool default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Issue #94 OPEN. Supervisor has no issue_comment trigger, Worker limited to dsh-headless-probe, dispatch fail-closed.
+- PRs #87/#86/#92/#93 proof CI SUCCESS on their corresponding heads, but all draft/unmerged and no formal reviews. Local D1 proof is not hosted production qualification.
+- No Cloud Pool runtime code, workflows, secrets, variables, dispatch authority, deployment, provider calls or merge changed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: independent issuer/trusted-time/revocation review and atomic D1 re-check proof.
+- Full report: [Wave 336](../reports/2026-11-15-next-wave-336-chatgpt-gemini-cloud-pool-pass.md).
