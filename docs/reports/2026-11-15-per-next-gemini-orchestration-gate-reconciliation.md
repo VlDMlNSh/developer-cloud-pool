@@ -52,3 +52,43 @@ The project contract forbids bypassing the approved controller. The controller r
 No secrets, provider calls, merge, deployment, paid fallback, or Contour B work occurred.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Actual owner /probe event and PR #651 remediation
+
+### Event evidence
+- Issue #301 contains owner-authored /probe comment 6897245259.
+- Actual event-triggered controller run #315 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43732834570), display title probe-comment-6897245259, ran on main SHA 46e7395cc7a8755a096f1a8667b750177ed42011. It entered the non-launching observer, then FAILED at assert_probe_context; admission and dispatch were skipped. The comment was processed, but the probe did not pass.
+- This run is distinct from PR-context checks, which do not prove trusted-main issue-comment behavior.
+
+### Remediation and evidence
+- PR #651 (https://github.com/VlDMlNSh/mediahub-os/pull/651), branch fix/gemini-probe-reusable-event-context-20261115, is OPEN/DRAFT/UNMERGED, 8 commits ahead / 0 behind main. Exact head: ec860a9b7698058d18a0b77efdce1643dd011bc8.
+- Controller now passes four caller context values as explicit reusable-workflow inputs. The reusable observer checks issue #301, non-PR, exact /probe, owner association, event name and trusted main workflow ref. No secret/token/provider/model capability is added.
+- Contract run #192 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43733447307) on preceding commit 0b7e22c2a678363549132b6f5936303b880264e2 succeeded, including trigger-path and controller/child contract suites. Earlier run #189 failed because a test asserted incorrectly against a mapping; corrected on branch.
+- Latest controller PR-context run #321 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43733462873) on exact head ec860a9b7698058d18a0b77efdce1643dd011bc8 succeeded: observer/assertion passed; admission/dispatch skipped as expected.
+- Final test-only correction was committed after run #192, so exact-head Wave 284 contract CI remains NOT VERIFIED.
+- Formal reviews 0; inline review threads 0. Reconciliation comment: https://github.com/VlDMlNSh/mediahub-os/pull/651#issuecomment-6897342717.
+
+### Gate decision
+| Gate | Status |
+|---|---|
+| Owner /probe comment exists | VERIFIED |
+| Actual main issue-comment run #315 | FAILED at caller-context assertion |
+| Proposed explicit context propagation | IMPLEMENTED on PR #651 |
+| Latest PR-context controller probe | SUCCESS; not trusted-main proof |
+| Contract CI at latest exact head | NOT VERIFIED |
+| Independent review/governance | NOT VERIFIED |
+| Merge / trusted-main retry | NOT RUN |
+| Three Gemini child dispatches | NOT RUN |
+| Automatic chat /next bridge | NOT IMPLEMENTED |
+
+### Next bounded steps
+1. Obtain exact-head contract CI for ec860a9b7698058d18a0b77efdce1643dd011bc8.
+2. Obtain independent review/governance; keep PR #651 draft until satisfied.
+3. Merge only through the ruleset.
+4. Repeat owner /probe on Issue #301 and reconcile the actual event-triggered run.
+5. Verify Actions metadata/scope without reading values, then execute one controlled owner /next through the approved controller and reconcile all three child runs, jobs and artifact digests.
+
+No Gemini child dispatch, provider call, secret read, merge, deployment or qualification occurred. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
