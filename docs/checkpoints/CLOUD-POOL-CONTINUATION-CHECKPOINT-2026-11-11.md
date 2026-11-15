@@ -384,3 +384,17 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next: remediate PR #98 security findings and obtain independent review; separately reconcile MediaHub controller transport governance before another batch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — PR #100 ledger provenance hardening
+
+- Cloud Pool default `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #100 https://github.com/VlDMlNSh/developer-cloud-pool/pull/100 is a dependent Draft on PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; branch HEAD `f9711f67d9b683e687c7ec5481c10b9e5626c61e`. Ledger parser now authenticates owner login, OWNER association and exact Issue #96 URL metadata; untrusted marker comments are ignored. Four source/test blobs and full report are in [dated report](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
+- Exact-head CI run `43764511321` / job `132966477817`: SUCCESS; syntax PASS; 50/50 tests pass. Formal review 0; Draft unmerged.
+- PR #98: three exact-head CI checks SUCCESS, no reviews. PR #99 exact-head CI and review NOT VERIFIED.
+- No controller, actual repository-wide lock, full workflow identity reconciliation or dispatch exists in Cloud Pool. Issue #96 remains PLANNED.
+- MediaHub new Gemini batch NOT RUN because controller transport/governance drift and trusted-main no-secret probe remain unresolved. Last confirmed owner batch `6901529560` / controller `43763042415` and three child runs remains historical evidence.
+- No secret access, provider call, deployment, merge, qualification or Contour B work. Contour A BLOCKED / NOT ACCEPTED.
+- Next: trusted-main controller after governance approval, enforced serialization, exact run identity and adversarial integration tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
