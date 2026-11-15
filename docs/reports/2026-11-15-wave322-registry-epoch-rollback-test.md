@@ -58,6 +58,6 @@ These prior runs do not substitute for the new exact-head run.
 
 ## Next step
 
-Wait for and inspect exact-head run #43736259303. If SUCCESS, keep PR #93 draft and continue the stacked review: inspect PR #92 exact-head CI, then independently audit the atomic admission registry assertions and stale/replay/revocation behavior before any merge. If FAILED, inspect the failing step/log and patch only the demonstrated cause.
+Exact-head run #43736259303 is SUCCESS. Keep PR #93 draft and unmerged. Next bounded pass: inspect PR #92 exact-head CI and the atomic A0 admission/registry assertion boundary, then test replay, stale epoch and revocation races before any merge or live qualification.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
