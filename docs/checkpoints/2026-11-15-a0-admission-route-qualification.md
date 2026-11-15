@@ -347,3 +347,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Current default HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; documentation branch is separate/unmerged. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 - Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
+
+
+## Verifier-capability persistence and registry-bound A0 admission — 2026-11-15
+
+- Report: [verifier capability and atomic admission registry](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
+- Canonical stack: PR #81 → PR #84 → PR #85. No merge performed.
+- PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`, parent PR #81 HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; exact PR CI [43709839460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709839460) and push CI [43709824427](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709824427): SUCCESS. Module-private capability binds original verifier result to deep-frozen bundle snapshot + signature; persistence consumes only that result.
+- PR #85 HEAD `b8b0252a2389406b5c6a22c27ef9885cd2faa498`, parent PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`, 16 ahead / 0 behind. Exact PR CI [43710547450](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710547450) and push CI [43710543522](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710543522): SUCCESS. 11 test files / 118 tests PASS / 0 FAIL. Migration smoke, second D1 binding and frozen schema-0010 fixture passed.
+- PR #85 adds migration 0014 view over current pointer/snapshot/issuer key and binds A0 admission, exact retry and immutable receipt to active registry state. The view plus compact digest-bound SQL predicate removes the expression-depth failure found in PR #83. Canonical route evidence digest is recomputed from the caller input before first admission.
+- PR #81, #84, #85 remain Draft and unmerged; formal reviews 0, inline threads 0 for #84/#85. Keep all unmerged pending formal review.
+- PR #80 closed as superseded by #84; PR #82 closed due duplicate/conflicting migration 0013; PR #83 closed after CI failure and supersession by #85. No merge.
+- Do not revive PR #82 migration 0013; PR #81's migration 0013 is the only persistence schema. PR #85 migration 0014 is additive.
+- Default branch remains `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, `protected=false`; ruleset #26550182 still has 0 required approvals and no required status checks.
+- Limits: synthetic issuer fixtures only; no production root key custody/configuration, hosted D1, provider calls, deployment, dispatch, independent audit or Contour B. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED.
+- Next: formal ordered review/reconciliation of PR #81 → #84 → #85; then integrate registry-bound admission with the actual Supervisor/Worker task-envelope/outbox/receipt vertical path, still without dispatch.
+- Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
