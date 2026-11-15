@@ -470,3 +470,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Next: pure canonical keyset/event verifier and deterministic vectors on clean migration ancestry after governance gates; then verifier-issued persistence, migration 0015, migration 0016 and adversarial D1 tests. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 329: clarify wave vs PR numbers and Gemini reality
+
+- Report: [Wave 329](../reports/2026-11-15-wave329-operational-state-reconciliation.md); commit fef0c5dc14ceb91cce66d81bd1e5175e7eb7de98.
+- Wave 328 is the conversation's work-pass counter, not PR #328. PR #92 remains OPEN/DRAFT/UNMERGED; PR #93 is OPEN/DRAFT/UNMERGED stacked on #92; PR #95 is OPEN/DRAFT/UNMERGED docs.
+- Cloud Pool-native Gemini controller is absent from default branch; Supervisor has no issue_comment trigger; Worker has only dsh-headless-probe. Gemini Agent 1/2/3 NOT RUN for each /next. Issue #94 is the controlling implementation task.
+- Main HEAD 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc; empty status/workflow-run results are NOT VERIFIED.
+- Next: prioritize Issue #94 controller implementation and tests; keep revocation ledger as separate Contour A dependency; no secret reads or live dispatch before gates.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
