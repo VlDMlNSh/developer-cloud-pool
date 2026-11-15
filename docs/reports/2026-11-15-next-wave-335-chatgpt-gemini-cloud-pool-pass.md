@@ -40,3 +40,9 @@ Date: 2026-11-15
 ## Next concrete step
 
 Continue the integration audit from the immutable default HEAD. First produce a reviewed, tested integration path that consumes the root-signed registry and monotonic revocation state inside the same admission consistency boundary, then wire the qualified decision into the Cloud Pool-native Supervisor/Worker route while retaining fail-closed dispatch. Obtain independent security review and exact-head CI before merge. Do not turn on `POOL_DISPATCH_ENABLED` as part of that work.
+
+
+## Final controller reconciliation
+
+- Controller run 43748188993 COMPLETED / SUCCESS; dispatch/monitor job 132916076078 SUCCESS. Controller logs independently list all three accepted signed child dispatches on target SHA 1694cde38c7b7d69baf9676b4908c1bb6e197fbe, with exact child run IDs, both successful jobs per child, and non-empty SHA-256 artifact digests matching GitHub artifact metadata.
+- Controller artifact list is empty; child artifacts are the execution evidence. No controller artifact was expected or inferred.
