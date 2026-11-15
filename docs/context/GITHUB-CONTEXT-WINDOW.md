@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-15 — PR #67/#68 live recheck and scope correction
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `221f216c00ca7e5596bcc682ba185ad155a10603` (current PR base read-back)
+Documentation continuation branch: `docs/next-2026-11-15-pr68-scope-audit`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -1840,3 +1840,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+## Live recheck — 2026-11-15 (PR #67/#68)
+
+- Default baseline observed: `Основной@221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #67 OPEN/DRAFT/UNMERGED, head `a53f6232bd5b50d3e150addf528b8e722002f9dd`, 47 ahead / 0 behind, 40 files. Exact-head Pool Contract Validation run `43600901063` SUCCESS; Isolated D1 Ledger Proof run `43600901068` SUCCESS. Local Workers-runtime proof only; source handoff records 84 tests plus upgrade/schema fixture smokes. Combined status contexts: zero. Reviews/threads: 0/0.
+- PR #67 A0 admission remains an isolated mock-authority contract, not a durable/production issuer boundary. Next bounded code task: local-only atomic A0 admission receipt/queue-intent proof, negative-first, with tenant + owner + capability + immutable task/attempt/SHA/profile + cost/quota + generation binding; all success paths remain `dispatch:false`.
+- PR #68 OPEN/DRAFT/UNMERGED, head `8569d0b368b353beb78e8594509d8492abaec170`, 85 ahead / 0 behind, 14 files. Its former “documentation only/no workflow changes” description was inaccurate: it modifies Pool Contract Validation path filters/matrix validator invocation and adds a PR-scoped read-only Runner Resource Probe trigger. PR description was corrected on 2026-11-15 to reflect the actual scope and evidence.
+- PR #68 exact-head Pool Contract Validation run `43604562851` SUCCESS; Runner Resource Probe run `43604562855` SUCCESS. The probe is observational only; eight samples do not qualify capacity or agent packing. Combined status contexts: zero. Reviews/threads: 0/0.
+- No secrets, provider calls, dispatch, hosted D1/Worker provisioning, deployment or merge occurred. No change to dispatch gate.
+- Report: `docs/reports/2026-11-15-pr68-scope-and-pool-state-recheck.md`.
+- Report commit: `f0d66cdc65432f32bb689f0ebddb8febffc8ae83`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
