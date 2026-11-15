@@ -2182,3 +2182,23 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Root-signed route registry persistence proof](../reports/2026-11-15-root-signed-route-registry-persistence.md).
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Atomic A0 admission bound to durable registry — 2026-11-15
+
+- Implementation branch: `proof/atomic-admission-bound-registry-2026-11-15`; final HEAD `a2e02471438104a5502d505995912c9eedb06480`; stacked on PR #81 HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`.
+- Migration 0014 creates immutable `pool_admission_registry_assertions` plus a trigger that requires exact current snapshot epoch/digest/version, accepted/unexpired snapshot, active/unrevoked/valid issuer key, and fresh/unrevoked qualified route.
+- `admitQualifiedTask` inserts the guarded assertion as the first statement in the same D1 batch as approval consumption, task/outbox binding, attempt and receipt writes. Any later failure rolls the assertion back too. Exact retry rechecks the currently active registry/key through a compact join. Dispatch remains false.
+- Added stale epoch and revoked issuer key adversarial cases. The fixture now advances the registry epoch monotonically per test because Workers test files share D1 state.
+- Exact final-head Actions run [43710565281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710565281), job `132800985815`: COMPLETED / SUCCESS; 11 test files / 118 tests PASS; syntax, second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload all PASS.
+- Artifact `14160202640`, SHA-256 `65c6812eacf6d20ae59ff62cae114ecd792e730712d34e9abc837b4d3fd85d03`.
+- Final blobs: migration 0014 `cb8a47d83faba62981daa8f7320da87baa2c55e2`; admission source `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; tests `0bd28c6e0af6d416a256bf529c2ff1b735e24ae4`; README `c7d78c857c15cdf67009af51cdb9beff8d87d430`; workflow `c6d9212666a628f918d95b419a97d4294836b488`.
+- PR #83 was closed by repository owner at 2026-11-15T11:47:29Z after exact-head CI success. Respect the closed state; do not reopen or create a replacement PR in this pass. No formal reviews or inline threads. Combined commit status contexts 0 / NOT VERIFIED.
+- PR #81 remains OPEN / DRAFT / UNMERGED. PR #79 documentation remains OPEN / DRAFT.
+- Current default `Основной` remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default → proof branch DIVERGED 125 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge or transplant proof history wholesale.
+- Epoch-advance race interleaving remains NOT VERIFIED. Hosted D1, real provider calls, secrets, deployment, executor run, dispatch and independent acceptance were NOT RUN.
+- Status: registry persistence VERIFIED; registry-bound A0 admission IMPLEMENTED / exact-head CI VERIFIED; production qualification NOT RUN; Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: selectively reconstruct migrations/source/tests on a fresh branch from current default; add epoch-advance race coverage; run exact-head CI on that clean integration branch. Keep dispatch disabled.
+- Report: [Atomic A0 admission bound to durable route registry](../reports/2026-11-15-atomic-admission-bound-registry.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
