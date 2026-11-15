@@ -94,6 +94,17 @@ describe("route registry transactional CAS schema", () => {
     await expect(db.prepare(
       "DELETE FROM pool_route_registry_issuer_keys WHERE registry_epoch = 1001"
     ).run()).rejects.toThrow();
+    await expect(db.prepare(`
+      INSERT INTO pool_route_registry_routes (
+        registry_epoch, qualification_id, route_id, issuer_id, key_id,
+        provider_id, model_id, account_ref, credential_handle_ref, quota_domain_id,
+        cost_class, capability_id, capability_profile, evidence_digest,
+        observed_at, valid_until, revocation_version, status, evidence_json, issuer_signature
+      ) VALUES (1001, 'late-qualification', 'route-b', 'issuer-a', 'key-a',
+        'provider-a', 'model-a', 'account-a', 'handle-a', 'quota-a',
+        'free_quota', 'pool.execute', 'headless-probe', ?, ?, ?, 1,
+        'qualified', '{}', 'synthetic-signature')
+    `).bind("f".repeat(64), NOW, NOW + 120).run()).rejects.toThrow();
 
     await installBatch(db, {
       expectedEpoch: 1001, epoch: 1002, digest: "b".repeat(64),
@@ -122,6 +133,31 @@ describe("route registry transactional CAS schema", () => {
       "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
     expect(finalState).toEqual({ current_epoch: 1002 });
+
+    // Two writers race from the same expected epoch. D1 must serialize the
+    // batches so exactly one can advance the singleton watermark.
+    const contenders = await Promise.allSettled([
+      installBatch(db, {
+        expectedEpoch: 1002, epoch: 1004, digest: "4".repeat(64),
+        version: "registry-v1004", acceptedAt: NOW + 4000
+      }),
+      installBatch(db, {
+        expectedEpoch: 1002, epoch: 1005, digest: "5".repeat(64),
+        version: "registry-v1005", acceptedAt: NOW + 5000
+      })
+    ]);
+    expect(contenders.filter((item) => item.status === "fulfilled")).toHaveLength(1);
+    expect(contenders.filter((item) => item.status === "rejected")).toHaveLength(1);
+    const winner = await db.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first<{ current_epoch: number }>();
+    expect([1004, 1005]).toContain(winner?.current_epoch);
+    const acceptedCandidates = await db.prepare(`
+      SELECT COUNT(*) AS count FROM pool_route_registry_snapshots
+       WHERE registry_epoch IN (1004, 1005)
+    `).first();
+    expect(acceptedCandidates).toEqual({ count: 1 });
+
     const guards = await db.prepare(
       "SELECT COUNT(*) AS count FROM pool_route_registry_cas_guard"
     ).first();
