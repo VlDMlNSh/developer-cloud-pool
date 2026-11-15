@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-15 — MediaHub PR #651 exact-head check-suite diagnosis (Wave 320)
+Last refreshed: 2026-11-15 — Cloud Pool integrated admission/registry audit (Wave 323)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (re-read 2026-11-11 11:12 Europe/Vilnius)
+Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (re-read 2026-11-15 via Git Database ref API)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
-Latest daily report commit: `11fe2c4248b226b5ee62079c4882aab3f283cae1` (2026-11-10 live audit; documentation branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-15-pr87-pr92-pr93-integrated-admission-registry-audit-wave323.md` (Wave 323; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
