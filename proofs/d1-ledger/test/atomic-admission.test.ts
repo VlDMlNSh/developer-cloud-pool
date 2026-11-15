@@ -231,6 +231,75 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(replay.decision).not.toBe("ADMISSION_ALREADY_COMMITTED");
   });
 
+
+  it("denies an exact replay after the active registry snapshot advances", async () => {
+    const first = await admitQualifiedTask(env.POOL_DB, input);
+    expect(first).toMatchObject({
+      decision: "ADMITTED_QUEUED",
+      admissionId: input.admissionId,
+      dispatch: false
+    });
+
+    const db = env.POOL_DB;
+    const maximum = await db.prepare(
+      "SELECT COALESCE(MAX(registry_epoch), 0) AS max_epoch FROM pool_route_registry_snapshots"
+    ).first();
+    const current = await db.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
+    const nextEpoch = Number(maximum.max_epoch) + 1;
+    const nextDigest = nextEpoch.toString(16).padStart(64, "0");
+    const acceptedAt = NOW;
+
+    // A newer, root-verified snapshot supersedes the snapshot that authorized
+    // the original admission. The old qualification remains immutable but is
+    // no longer eligible for an "already committed" replay acknowledgement.
+    await db.batch([
+      db.prepare(`
+        INSERT INTO pool_route_registry_snapshots (
+          registry_epoch, registry_version, root_key_id, bundle_digest,
+          issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+          bundle_json, root_signature
+        ) VALUES (?, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+      `).bind(nextEpoch, nextDigest, NOW - 10, NOW + 3600, acceptedAt),
+      db.prepare(`
+        INSERT INTO pool_route_registry_issuer_keys (
+          registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+          status, revoked_at, valid_from, valid_until, public_key_jwk
+        ) VALUES (?, ?, 'local-authority', 'issuer-key-next', 'registry-v2',
+          'active', NULL, ?, ?, ?)
+      `).bind(nextEpoch, nextDigest, NOW - 10, NOW + 3600,
+        JSON.stringify({ kty: "EC", crv: "P-256", x: "C".repeat(43), y: "D".repeat(43) })),
+      db.prepare(`
+        UPDATE pool_route_registry_state
+           SET current_epoch = ?, current_bundle_digest = ?,
+               current_registry_version = 'registry-v2', updated_at = ?
+         WHERE state_id = 1 AND current_epoch = ?
+      `).bind(nextEpoch, nextDigest, acceptedAt, current.current_epoch)
+    ]);
+
+    const replay = await admitQualifiedTask(db, { ...input, now: NOW + 1 });
+    expect(replay).toMatchObject({
+      decision: "DENY",
+      reason: "ROUTE_EVIDENCE_REVOKED_OR_STALE",
+      dispatch: false
+    });
+
+    // The previously committed receipt remains immutable; the failed replay
+    // does not create another attempt or alter the consumed approval.
+    expect(await db.prepare(
+      "SELECT state, admission_id FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first()).toMatchObject({
+      state: "consumed", admission_id: input.admissionId
+    });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admission_commit_receipts WHERE admission_id = ?"
+    ).bind(input.admissionId).first()).toMatchObject({ n: 1 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_attempts WHERE attempt_id = ?"
+    ).bind(input.attempt.attemptId).first()).toMatchObject({ n: 1 });
+  });
+
   it("rejects revoked route evidence before consuming approval", async () => {
     await env.POOL_DB.prepare(`
       UPDATE pool_route_qualifications
