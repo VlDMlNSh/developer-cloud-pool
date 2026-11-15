@@ -290,3 +290,26 @@ This section supersedes the earlier PR #74 head and workflow run recorded above.
 - PR #74 remains OPEN / DRAFT / UNMERGED. Combined status contexts are empty and no independent review exists. Required status contexts remain NOT VERIFIED.
 - No provider login/call, secret read, hosted D1, Worker deployment, dispatch, production resource creation or merge.
 - This quota ledger remains non-authoritative: it does not authenticate issuer/provider/account/evidence or prove live quota. Qualified Route Evidence remains NOT QUALIFIED.
+
+
+## Qualified Route Evidence verifier proof — 2026-11-15
+
+This section supersedes the previous "trusted route evidence writer/verifier NOT IMPLEMENTED" detail only for the isolated cryptographic verifier component. It does NOT qualify the registry trust source or any live provider route.
+
+- Report: [Qualified Route Evidence verifier proof](../reports/2026-11-15-qualified-route-evidence-verifier.md).
+- PR #75: https://github.com/VlDMlNSh/developer-cloud-pool/pull/75
+- Feature branch: `proof/qualified-route-evidence-verifier-2026-11-15`; exact HEAD `f253f68194e65912a91c91f2d158525b97927749`.
+- Base branch is the existing atomic A0→D1 PR #72 at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`. PR #75 is OPEN / DRAFT / UNMERGED.
+- Added `proofs/d1-ledger/src/qualified-route-evidence.mjs` (blob `0d5b97ad0bc59173fe8c4c7de28c67965bd09ad0`) and `proofs/d1-ledger/test/qualified-route-evidence.test.ts` (blob `7624eedcb13884982ae434819e50882163de4cff`). Package check blob `e7f9e9967032e94f4d15a1008353e558375a6d52`; D1 workflow blob `9e40f72298bf07dd7928154eba75b28033ac2ec6`; README blob `b1d2b092bc9df9d0a0ce2addd64d24f839d8754c`.
+- Canonical v1 evidence bytes are UTF-8 JSON for a fixed-position array with exact field allowlist and explicit null; SHA-256 fixed test digest `3d409b69df838b6ba0826a950c7d43940b5127aba25fc320b192d9c2b33d43da`.
+- Detached ES256 verification (ECDSA P-256 / SHA-256) checks signature, issuer/key ID, provider/model/account/credential/quota-domain/capability/registry/revocation binding, maximum evidence age 300s, expiry and key validity. Unknown fields fail closed.
+- Ten new adversarial test cases. Exact-head run `43694628561`, job `132752333196`: COMPLETED / SUCCESS at exact HEAD `f253f68194e65912a91c91f2d158525b97927749`; syntax check PASS; Workers-runtime suite 103 PASS / 0 FAIL; upgrade-binding smoke PASS; frozen schema-0010 fixture smoke PASS; lockfile artifact `14153962592`.
+- Combined commit-status contexts remain empty (0); required status contexts NOT VERIFIED. No independent review. Active ruleset `26550182` applies only to default branch and configures 0 required approvals / no required status contexts; branch protection endpoint remains NOT VERIFIED (403).
+- At default snapshot `3f3d4a25024f6d3475f16c46bee383c174b5756c`: default → PR #72 DIVERGED 67 ahead / 50 behind; default → PR #74 DIVERGED 1 ahead / 5 behind; default → PR #75 DIVERGED 72 ahead / 50 behind (PR #75 is stacked on #72).
+- CRITICAL TRUST LIMIT: verifier accepts caller-supplied `trustedRoute` and `trustedIssuer` snapshots and verifies their consistency; it cannot establish that those snapshots are authoritative. Pinned/access-controlled trust root, registry loader, key custody/rotation, durable revocation writer and atomic D1 re-check are NOT IMPLEMENTED. Verifier output is not wired into `admitQualifiedTask`.
+- No provider login/call, secret access, hosted D1, Worker deployment, dispatch, production resource creation, executor qualification or merge. Test keys are ephemeral only. Dispatch remains disabled.
+- Next: implement the trusted registry source and key lifecycle; then bind verified digest plus exact registry/revocation watermark into the same D1 transaction as approval consumption. Add revocation-race and rollback tests. Do not treat caller-supplied trust snapshots as production authority.
+
+Status: verifier component IMPLEMENTED / exact-head CI VERIFIED; trust root and durable registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
