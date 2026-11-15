@@ -84,6 +84,7 @@ beforeEach(async () => {
   for (const name of [
     "test_abort_atomic_attempt", "pool_admissions_no_update", "pool_admissions_no_delete",
     "pool_admission_receipts_no_update", "pool_admission_receipts_no_delete",
+    "pool_admission_registry_assertions_no_delete",
     "pool_route_qualification_no_delete", "pool_attempt_events_no_update",
     "pool_attempt_events_no_delete", "pool_attempt_projection_events_no_update",
     "pool_attempt_projection_events_no_delete", "pool_attempt_projection_comment_events_no_update",
@@ -91,6 +92,7 @@ beforeEach(async () => {
   ]) await env.POOL_DB.prepare(`DROP TRIGGER IF EXISTS ${name}`).run();
 
   await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_admission_registry_assertions").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admissions").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_comment_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
@@ -111,6 +113,7 @@ beforeEach(async () => {
     ["pool_admissions_no_delete", "BEFORE DELETE ON pool_admissions"],
     ["pool_admission_receipts_no_update", "BEFORE UPDATE ON pool_admission_commit_receipts"],
     ["pool_admission_receipts_no_delete", "BEFORE DELETE ON pool_admission_commit_receipts"],
+    ["pool_admission_registry_assertions_no_delete", "BEFORE DELETE ON pool_admission_registry_assertions"],
     ["pool_route_qualification_no_delete", "BEFORE DELETE ON pool_route_qualifications"],
     ["pool_attempt_events_no_update", "BEFORE UPDATE ON pool_attempt_events"],
     ["pool_attempt_events_no_delete", "BEFORE DELETE ON pool_attempt_events"],
