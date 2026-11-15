@@ -80,3 +80,18 @@ If the GitHub comment action is unavailable, or the controller event does not st
 - MediaHub Issue #301: https://github.com/VlDMlNSh/mediahub-os/issues/301
 - MediaHub Controller: https://github.com/VlDMlNSh/mediahub-os/blob/main/.github/workflows/gemini-batch-dispatch-controller.yml
 - MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Live ChatGPT-to-GitHub bridge smoke test — 2026-11-15 18:21 UTC
+
+A real GitHub issue comment was created through the authorized GitHub connector to validate the per-turn bridge action:
+- MediaHub Issue #301 comment ID: `6899094688`, exact body `/next`, author `VlDMlNSh`.
+- Controller run: `43746281426`, run title `MediaHub Gemini controller — next-comment-6899094688 — Wave 317`, event `issue_comment`, target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Admission gate job `132910179205`: SUCCESS.
+- `dispatch_and_monitor` job `132910206815`: RUNNING at last observation.
+- Three child workflows were observed in GitHub Actions, all `workflow_dispatch` / RUNNING:
+  - Agent 1 run `43746301766`, correlation ID `12bb36e0-d4bd-4704-9354-152647cb9bf4`; authorization job `132910245758` SUCCESS; Gemini job `132910285304` RUNNING.
+  - Agent 2 run `43746303789`, correlation ID `a0945539-acef-4914-93bf-c41e49ff6767`; authorization job `132910251604` SUCCESS; Gemini job `132910269920` RUNNING.
+  - Agent 3 run `43746305744`, correlation ID `e344fa9c-74ba-4066-a3d6-e5a4305f5644`; authorization job `132910258105` SUCCESS; Gemini job `132910281559` RUNNING.
+- This validates that the GitHub connector can create the owner-authored issue event and that it causes exactly three child dispatches. Final child conclusions and artifact digests are pending; do not mark this smoke wave SUCCEEDED/VERIFIED until those are read back.
+- This test was one intentional event and not a duplicate. For the next user-issued `/next`, create one new comment and reconcile it independently.
