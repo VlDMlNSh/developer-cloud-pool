@@ -275,3 +275,14 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 Next: implement and test issuer-authenticated claim-service/trusted-time boundary in local proof only; reconcile Agent 1 output opportunistically. No hosted provisioning without verified entitlement and explicit authorization.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Registry/admission runtime boundary review — 2026-11-15
+
+- PR #87/#92 local source review: #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; both Draft/unmerged/unreviewed.
+- PR #92 exact-head CI: D1 Proof run `43718679258` SUCCESS (120/120 tests); Pool Contract run `43718679251` SUCCESS. This is local test proof, not live service qualification.
+- Registry snapshot/key/route persistence, monotonic epoch guard, active-pointer assertion and atomic A0→D1 batch are present in local proof. Dispatch remains false.
+- Runtime blocker: Worker entrypoint blob `214622f6dc94623521070eb9e7fbc2f573fdc2c6` returns 404 by design; adapters are not exposed as an HTTP service. Registry/admission APIs accept caller-provided `now`; trusted platform time is not wired. Authenticated registry ingestion is absent.
+- Report: [D1 registry/admission runtime-boundary review](../reports/2026-11-15-d1-registry-admission-runtime-boundary-review.md), commit `5448abc1dce009a98db13631f5988d091c438cb3`.
+- Next: implement a separate fail-closed authenticated Worker boundary, inject platform time internally, bound/validate requests and verify D1 binding. No deploy/provision/secret read/dispatch until separately authorized.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
