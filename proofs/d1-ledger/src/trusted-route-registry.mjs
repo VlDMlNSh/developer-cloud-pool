@@ -105,12 +105,13 @@ function validBundle(bundle, now) {
     SAFE_ID.test(bundle.registryVersion || "") &&
     Number.isSafeInteger(bundle.issuedAt) && bundle.issuedAt > 0 &&
     Number.isSafeInteger(bundle.validUntil) && bundle.validUntil > now &&
+    bundle.validUntil - bundle.issuedAt <= 3600 &&
     bundle.issuedAt <= now && now - bundle.issuedAt <= MAX_REGISTRY_AGE_SECONDS &&
     SAFE_ID.test(bundle.rootKeyId || "") &&
     Array.isArray(bundle.issuerKeys) && bundle.issuerKeys.length > 0 &&
     Array.isArray(bundle.routes) && bundle.routes.length > 0 &&
-    orderedUnique(bundle.issuerKeys, (x) => `${x.issuerId}/${x.keyId}`) &&
-    orderedUnique(bundle.routes, (x) => x.evidence?.qualificationId);
+    orderedUnique(bundle.issuerKeys, (x) => isRecord(x) ? `${x.issuerId || ""}/${x.keyId || ""}` : "") &&
+    orderedUnique(bundle.routes, (x) => isRecord(x) && isRecord(x.evidence) ? x.evidence.qualificationId || "" : "");
 }
 
 function parsePinnedRoot(env, rootKeyId) {
