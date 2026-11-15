@@ -2135,7 +2135,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Scope is persistence primitives only. No typed verifier persistence adapter, issuer-key snapshot rows, qualification/admission/receipt epoch+digest+key binding, atomic registry acceptance batch or admission watermark check yet. Durable registry remains NOT QUALIFIED. No hosted D1, deployment, dispatch, provider calls, secret reads, or independent audit. Contour B remains DEFERRED.
 - Next: implement typed registry persistence adapter with atomic snapshot + watermark CAS and rollback/concurrent-writer tests, then add issuer-key snapshot and admission/receipt binding. Keep dispatch false.
 
-Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/impl/durable-route-registry-d1-2026-11-15/docs/reports/2026-11-15-pr77-durable-route-registry-snapshot-ledger.md
+Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/reports/2026-11-15-pr77-durable-route-registry-snapshot-ledger.md
 PR #77: https://github.com/VlDMlNSh/developer-cloud-pool/pull/77
 Exact-head CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43707407472
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
