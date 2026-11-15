@@ -2223,3 +2223,28 @@ At last observation, all three engineering jobs were executing the official Gemi
 - Previous wave (comment 6894700986) was terminal before this trigger; no duplicate was created.
 - No secrets were read. No merge, deployment, qualification, or Contour A acceptance occurred.
 - Status: trigger VERIFIED; admission SUCCEEDED; child signature checks SUCCEEDED; engineering tasks RUNNING; final outputs NOT YET AVAILABLE; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 19. Operating model decision — ChatGPT primary, Gemini supplementary (2026-11-15)
+
+### Binding collaboration policy
+- ChatGPT in the active development conversation remains the primary engineering coordinator and continues bounded Contour A implementation, repository inspection, integration, testing, evidence reconciliation, and next-step selection.
+- Gemini Agents 1/2/3 are supplementary parallel capacity. Their dispatch, runtime, quota delays, failures, or unfinished tasks MUST NOT pause or gate the primary ChatGPT workstream.
+- Do not wait for all agents to finish before continuing. Continue the next independently actionable and authorized Contour A task while agent jobs execute.
+- Reconcile agent outputs opportunistically as they become available: verify immutable target SHA, artifact digest, branch/PR head, changed paths, source blobs, exact-head CI, reviews, and provenance. Treat agent claims as unverified until independently reproduced where required.
+- Agent output is advisory/evidence or a proposed change, not authority to merge, deploy, qualify, alter governance, access secrets, or cross issuer/capability boundaries.
+- Avoid duplicate work: before selecting a ChatGPT implementation slice, inspect active agent scopes and existing open PRs; choose a non-overlapping task or explicitly record why overlap is necessary.
+- Preserve no-paid-fallback, free-tier/quota separation, secret non-disclosure, Baseline 2.0, historical IDs, Product State Authority and Contour A-before-B constraints.
+- A new distributed wave is optional capacity, not a prerequisite for ChatGPT to continue. Do not issue duplicate triggers; reconcile existing comment/run IDs first.
+
+### Wave 2026-11-15 partial result reconciliation
+- Controller run https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717570433 remains RUNNING at the last check; controller job `132822329594` had dispatched all three children.
+- Agent 1 run https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717589177: signature job `132822362742` SUCCESS; engineering job `132822386522` RUNNING; no artifact yet.
+- Agent 2 run https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717590852: terminal SUCCESS; signature job `132822367693` and engineering job `132822387229` SUCCESS; artifact `14163690037`. Draft PR https://github.com/VlDMlNSh/mediahub-os/pull/645, head `ee98f99e750b6fd29573dd7ced0b88ddc888a3c5`, target `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; checkpoint blob `f37f73eff1a665de9c24c807e34d9243a507342b`. Report is primarily static/contract mapping and explicitly states branch ruleset visibility is gated; live qualification was not performed.
+- Agent 3 run https://github.com/VlDMlNSh/mediahub-os/actions/runs/43717592625: terminal SUCCESS; signature job `132822372652` and engineering job `132822391922` SUCCESS; artifact `14162663618`. PR https://github.com/VlDMlNSh/mediahub-os/pull/644, head `f5b5f0667c0615ef13161404934b4c5a7cb04c30`, target `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; audit blob `a3e48b5af5745f27874c94f1a344827e5467e6d5`. Audit is a draft security/provenance review. Its table uses “Verified (Pass)” labels, but no attached direct test-run evidence was found in the artifact; treat those labels as static inspection claims, not executed test proof. PR is OPEN, non-draft, one documentation file, not merged.
+- Agent 2 artifact stderr records GitHub MCP read failures and Gemini free-tier input-token/minute quota exhaustion followed by retry. Despite workflow success, this does not establish broad provider capacity or live executor qualification.
+- Agent 1 implementation remains RUNNING; do not block ChatGPT work waiting for it.
+- No PR merge, deployment, runtime qualification, or Contour A acceptance occurred. Contour A NOT ACCEPTED; Contour B GATED.
+
+### Next primary-work rule
+Continue from the current Contour A checkpoint in ChatGPT. First reconcile any newly completed Agent 1 output without waiting; then select and execute one non-overlapping, bounded, verifiable Contour A engineering task. Keep the Gemini agents' results in parallel review lanes.
