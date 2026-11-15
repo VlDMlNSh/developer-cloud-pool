@@ -2111,3 +2111,57 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+---
+
+## 16. Distributed Gemini wave — 2026-11-15 verified execution checkpoint
+
+Last refreshed: 2026-11-15.
+This is a documentation-branch checkpoint; it is not merged into default branch `Основной`.
+
+### Immutable source and controller execution
+
+- MediaHub target SHA: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Controller workflow blob at target: `0a1246f6755020faf8b7e48d07bfff790bbaece3`.
+- Child workflow blobs: Agent 1 `155a02159912ca371e6f826c51325ca269857aad`; Agent 2 `fff1820a6b97d379b23674f36bd62227b7d4dec2`; Agent 3 `781df56e8aa7c75ba453c08378611857862b2e44`.
+- Controller run [#43714051912](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43714051912), job `132811661950`, completed SUCCESS. Admission job `132811641940` completed SUCCESS.
+- Trigger was Issue #301 comment ID `6894320791`; controller verified exact target SHA and accepted three signed child dispatches.
+- Agent 1 run [#43714073343](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43714073343), job `132811727759`, artifact SHA-256 `8b5f82299ec1795c698c44b5cb068ab2f95d572d2da18724947c743d4dbbbf4b`.
+- Agent 2 run [#43714075955](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43714075955), job `132811736192`, artifact SHA-256 `13eca9fbdadb6f2b3745097fbe852747b14273518c3ae483cff85f31ae242f04`.
+- Agent 3 run [#43714077999](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43714077999), job `132811755648`, artifact SHA-256 `66c771865cf99226d149764f0172ae94d266765c18bf351c67ca79c05411165f`.
+- Controller log confirmed all child jobs success, correlation IDs reconciled and artifact digests recorded. This proves execution/artifact production, not output correctness.
+
+### Agent PRs — current observed state
+
+- [MediaHub PR #638](https://github.com/VlDMlNSh/mediahub-os/pull/638), Agent 2, head `0f04dd98046fb50d96b2cb18d03f28df7922c593`, evidence blob `f0db69d5d30d1fb3e2d5cbdb104e8c65a5ce0f21`. OPEN, exact-head checks 0, reviews 0.
+- [MediaHub PR #639](https://github.com/VlDMlNSh/mediahub-os/pull/639), Agent 3, head `3b2514c7d31b935883b102e2d595cd73db1d1b75`, checkpoint blob `a30a7a0e333db5cca42265faa7f7eeac44d89210`. OPEN, exact-head checks 0, reviews 0.
+- [MediaHub PR #640](https://github.com/VlDMlNSh/mediahub-os/pull/640), Agent 1, head `9e5953f3cf978c7c7898de96174180af57856cab`, checkpoint blob `f189651835ac6a8d3ab92f8f6c72cae21c24100e`, evidence JSON blob `682638646e82596f15b91543ac496cd2876c5135`. OPEN, exact-head checks 0, reviews 0; content is documentation/evidence only.
+
+### Incidents and limitations
+
+- Agent 1 stderr recorded Gemini free-tier input-token-per-minute quota error (limit 250000, model gemini-3.5-flash-lite); workflow still completed SUCCESS after retry.
+- Agent 2/3 logs include failed GitHub MCP read calls; Agent 3 attempted unsupported update_topic. Reports require independent reproduction.
+- Agent 2 states all candidate cloud executor paths remain NOT_PROVEN pending fresh 23-round qualification and independent A3 verification.
+- Historical controller admission flag/secrets were operational for this run only; future readiness must be re-evaluated by the controller. No secret values were read.
+- The 24-slot provider inventory in Cloud Pool PR #90 remains an inventory, not evidence of credential validity, account separation, quota independence or live routing.
+
+### Next distributed /next protocol
+
+- A chat message `/next` alone does not invoke Actions. The approved trigger is exactly one new GitHub issue comment whose body is exactly `/next` on [MediaHub Issue #301](https://github.com/VlDMlNSh/mediahub-os/issues/301).
+- The controller requires issue_comment on Issue #301, exact body, author association OWNER, trusted main workflow, enabled `MEDIAHUB_GEMINI_BATCH_ENABLED`, required controller GitHub API/HMAC secrets, immutable SHA validation and child signature checks.
+- Duplicate runs for one source comment are suppressed. Reconcile any ambiguous run before retrying.
+- On the next explicit user `/next`, first refresh target SHA, controller workflow, admission/governance and existing child/PR/CI state. If all gates are met, post exactly one `/next` comment on Issue #301 and monitor controller + child runs, jobs, artifacts and digests. Do not claim dispatch until the controller actually accepts it.
+- Next task split: Agent 1 implements one concrete missing Contour A slice not covered by PRs #638–#640; Agent 2 independently reproduces non-secret checks and exact evidence; Agent 3 performs read-only authority/provenance/security review of existing PRs and the new diff. All share one immutable target SHA.
+- No provider calls, secret reads, paid fallback, merge, deployment, qualification or nested dispatch without explicit governance gates.
+
+### Current status
+
+- Historical distributed controller path: VERIFIED EXECUTED for run #43714051912.
+- Three child jobs and artifacts: VERIFIED EXECUTED for the listed run IDs/digests.
+- PR content correctness and qualification: NOT VERIFIED.
+- Exact-head CI and formal review for PRs #638–#640: NOT VERIFIED (zero checks/reviews at inspection).
+- Future controller admission: NOT VERIFIED until next run.
+- Cloud Pool Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+- Detailed report: [2026-11-15 distributed agent wave readiness](../reports/2026-11-15-distributed-agent-wave-readiness.md).
+- MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
