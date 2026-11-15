@@ -2099,3 +2099,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Status: root-signed bundle verifier IMPLEMENTED / exact-head CI VERIFIED; durable trusted registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Gemini controller bridge status correction — 2026-11-15
+
+- Default snapshot immediately before this Context Window write: `Основной` @ `3d84f04bbc28385fe4da0cbdf47535a01eb9be1b`.
+- The previous note that PR #434 was the pending HMAC syntax fix is superseded: PR #433 (syntax fix) and PR #437 (HMAC runtime-contract repair) are MERGED into MediaHub `main`; both merge commits are ancestors of current main HEAD `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- PR #433 exact-head checks PASS; PR #437 exact-head checks PASS, including PR-level non-launching no-secret probe run `39757948751` / job `119754632409` SUCCESS. Its dispatch jobs were SKIPPED. Both PRs have zero formal review submissions. PR #432 also has zero formal reviews. PRs #434/#435/#436 are CLOSED / UNMERGED duplicate attempts.
+- The PR-level probe does not establish the trusted-main no-secret probe. That main probe remains NOT RUN. HMAC secret/variable values were not read; effective configuration/permissions remain NOT VERIFIED. No owner-authored `/next` comment, Gemini controller dispatch or child run was created. Gemini bridge remains NOT QUALIFIED.
+- MediaHub PRs #635/#636/#637 remain open; their PR-triggered runs report `action_required` and formal reviews are absent. They are not accepted as independent evidence.
+- Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
+- Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
+- No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
