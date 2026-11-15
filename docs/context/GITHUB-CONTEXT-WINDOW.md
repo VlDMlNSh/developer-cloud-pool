@@ -2377,3 +2377,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Latest checked Wave 317 controller run `43719738980` failed. Agent 1 `43719757692` and Agent 3 `43719761724` succeeded and created PRs #648/#647, but both PRs remain unreviewed and their subsequent checks were `action_required`. Agent 2 `43719759616` failed because its workflow validator did not observe a successful `create_pull_request` tool operation; artifact `14163604242`, digest `sha256:0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`, exists. The controller correctly marked the batch FAILURE.
 - No new child dispatch occurred in this pass. Do not claim three agents run on every chat `/next` automatically. Next distributed wave is BLOCKED pending Agent 2 PR-creation/validator repair; retain three agents, no scale-up.
 - Related runtime-boundary review report updated: `docs/reports/2026-11-15-d1-registry-admission-runtime-boundary-review.md`, commit `b26fe3572bf0563f01536f6ee09db02279b57b4e`, blob `be137eca2d740e53a5eb64704aeb61db054ffa2d`.
+
+
+## 2026-11-15 Agent 2 branch-collision repair
+
+- MediaHub main immutable target verified: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Wave 317 Agent 2 run `43719759616`, job `132829004435`, artifact `14163604242`, digest `sha256:0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`. Agent2 tool telemetry: branch create failed, file update succeeded, PR create failed. The branch `agent-2-contract-verification-20261115` and open PR #638 pre-existed (branch head `0c1e8fa1cbd2369815f4178274fb0e7c0791235d`), so this is a deterministic branch/PR collision; runner effective permissions included PullRequests: write.
+- Repair PR #649: https://github.com/VlDMlNSh/mediahub-os/pull/649. Workflow change pins Agent2 branch name to unique controller `dispatch_id` and forbids reuse. Commit `a9b8e0a9778f19493dd90080dfcfe8749efae48f`, blob `51f998951a54ee78a61e5c908a9017a3475e7c0c`.
+- PR #649 OPEN/DRAFT, no reviews; exact-head checks pending/in progress at last read. No new dispatch. Agent scale remains three; next wave BLOCKED until PR #649 exact-head CI/review passes.
+- Current Cloud Pool default branch HEAD rechecked: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. PR #91 docs branch remains separate and unmerged.
