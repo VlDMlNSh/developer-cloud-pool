@@ -2078,3 +2078,24 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next bounded step: trusted issuer/route registry loader and authenticated key lifecycle, then a single D1 consistency boundary that re-checks exact registry/revocation watermark before approval consumption. Add revocation race + rollback tests. Do not trust caller-supplied snapshots.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Root-signed route registry bundle proof — latest checkpoint 2026-11-15
+
+- Default branch snapshot before this Context Window write: `Основной` @ `62ce8545403cad93bb0d4dc9a3dc2bc9f0499bb4`. This Context Window commit advances default again; re-read current refs at next `/next`.
+- Report: [Root-signed route registry bundle proof](../reports/2026-11-15-root-signed-route-registry-bundle.md), report commit `9eae83fa0da38a8879c9c772620d5461852940be`.
+- PR #76: https://github.com/VlDMlNSh/developer-cloud-pool/pull/76; branch `proof/root-signed-route-registry-bundle-2026-11-15`; exact HEAD `096737ec5e1a335b367fc7af67c29f7b71541e66`; base PR #75 head `f253f68194e65912a91c91f2d158525b97927749`. OPEN / DRAFT / UNMERGED; mergeable relative to declared base.
+- Changed blobs: verifier `9e837c44ed50329930bb393b3bc45bd6cd0f729b`; tests `c7876cdc3b3eff39060d44e2890266374f54da4a`; package `334011c6b7db5c92cc4c43256d3b43115833b5a9`; workflow `415d20eb93a34eb231efb3c8f798faa792c1e412`; README `9fae34fdea63b69784444a359046f8518b81735d`; standalone contract `e85b664e5d87f54e01a8f78454b4a7b7f29e50a5`.
+- Exact-head run `43697493628` / job `132761164474`: COMPLETED / SUCCESS at exact HEAD; syntax PASS; Workers-runtime 114 PASS / 0 FAIL across 9 files; second D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS; artifact `14155271322`.
+- Bundle verifier loads root public JWK/key ID from platform environment bindings; it does not accept root from request/bundle. Fixed canonical v1; exact field allowlists; ordered unique issuer/route records; root ES256 signature authenticates issuer keys and route signatures; per-route issuer ES256 verification; age <=300s, lifetime <=3600s, max 64 issuer keys, 256 routes, 512KiB and 128-char route signatures. Output immutable, dispatch false. No new dependency (native WebCrypto selected after mature `panva/jose` source review).
+- Critical limits: no D1 persistence, monotonic registry epoch/CAS, durable rollback prevention, root custody/rotation, append-only key/revocation writer, atomic D1 admission watermark re-check, or integration into `admitQualifiedTask`. No production root configured. Qualified Route Evidence remains NOT QUALIFIED.
+- Pool ancestry at default snapshot `89ff1917b809cd8ed3fc68031c79d0907775046b`: #67 47 ahead / 55 behind; #72 67 / 55; #74 1 / 10; #75 72 / 55; #76 89 / 55. PRs #67/#72/#74/#75/#76 all OPEN / DRAFT / UNMERGED. Recalculate after any default updates.
+- Issue #70 OPEN. Ruleset `26550182` default-only; PR and thread resolution required; 0 approvals/no required status contexts. PR #76 status contexts 0/pending; no independent review. Branch-protection API 403 / NOT VERIFIED.
+- MediaHub controller fix PR #434 CLOSED / UNMERGED. Gemini chat bridge NOT QUALIFIED; no issue comment `/next` posted and no controller/child dispatch. PRs #635/#636/#637 are open, their PR-triggered runs show `action_required`, no formal reviews; do not use as independent acceptance evidence.
+- SentinelX zero connected hosts; Voktors-Mini offline; mh-dev-01 and mh-dev-02 disabled by user; Alamo/server 3 not positively identified/online. Claude Code NOT RUN.
+- No provider login/call, secret access, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit. Independent audit remains deferred until operational pool.
+- Next bounded task: append-only D1 registry snapshot and issuer-key lifecycle, monotonic watermark CAS, then atomic same-batch check of registry epoch/key ID/revocation version in A0→D1 admission; add stale-import, revocation-race, rollback and key-rotation tests. Keep dispatch false.
+
+Status: root-signed bundle verifier IMPLEMENTED / exact-head CI VERIFIED; durable trusted registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
