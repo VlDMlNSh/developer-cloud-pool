@@ -63,7 +63,7 @@ test("intent with delayed run visibility returns no-retry ambiguity", async () =
 test("reconciles one visible deterministic controller run", async () => {
   const intent = record("DISPATCH_INTENT");
   const api = fakeApi([intent]);
-  api.setRuns([{ id: 555, name: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha }]);
+  api.setRuns([{ id: 555, display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha }]);
   const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
   assert.equal(result.action, "RECONCILED");
   assert.equal(result.controllerRunId, 555);
@@ -71,7 +71,7 @@ test("reconciles one visible deterministic controller run", async () => {
 
 test("duplicate visible controller runs are an incident", async () => {
   const intent = record("DISPATCH_INTENT");
-  const run = { name: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha };
+  const run = { display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha };
   const api = fakeApi([intent]);
   api.setRuns([{ ...run, id: 555 }, { ...run, id: 556 }]);
   const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
