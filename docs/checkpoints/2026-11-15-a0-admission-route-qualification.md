@@ -426,3 +426,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report: [monotonic revocation watermark review](../reports/2026-11-15-next-pass-monotonic-revocation-watermark-review.md).
 - Next: define revocation subject, monotonic sequence/CAS, authenticated writer, trusted time, rollback/replay/recovery semantics; then implement same-batch D1 guard and adversarial rollback tests on a reconciled proof ancestry. Preserve `dispatch:false`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next pass — monotonic revocation authority contract — 2026-11-15
+
+- Current MediaHub Issue #301 source event: comment `6899808366`, owner-authored exact `/next`, read-back VERIFIED. Controller run, three child runs/jobs and artifact digests NOT VERIFIED; no workflow-run listing is exposed by the connected GitHub actions. No direct child dispatch was attempted.
+- New report: [Monotonic revocation authority contract](../reports/2026-11-15-next-pass-monotonic-revocation-authority-contract.md).
+- Design defines a distinct revocation authority with per-subject sequence/CAS, append-only event ledger, trusted signature and time, same-batch route+issuer admission assertion, explicit whole-database rollback/restore anchor, and adversarial qualification matrix.
+- Inspected admission blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`, trusted registry blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`, and atomic test blob `720a13e6ec0fd49c6d165393f4d8c12ef94dd8a9`. Existing checks do not consult a separate authoritative monotonic revocation watermark in the inspected admission path.
+- No code/schema/workflow changes, no tests, no secrets, no provider calls, no deployment or merge. `dispatch:false` unchanged.
+- Revocation authority and same-batch enforcement NOT IMPLEMENTED / NOT QUALIFIED. Hosted D1 and external anti-rollback anchoring NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the additive revocation event ledger and CAS pointer on a reconciled clean D1 branch, then assert current route and issuer revocation state inside the same admission batch; add stale/replay/race/rollback/unavailable-authority tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
