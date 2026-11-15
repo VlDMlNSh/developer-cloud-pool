@@ -2323,7 +2323,7 @@ This section supersedes the earlier in-progress observation for the 13:35 wave. 
 
 ### Superseded fixed-roster proposal — rejected
 
-- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch `feat/six-agent-roster-policy-2026-11-15`, was rejected as an architectural direction and closed unmerged on 2026-11-15 at the owner's request. Its roster/configuration proposal is not an adopted design, must not be merged or used as a scheduler contract, and is retained only as historical GitHub audit material.
+- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89), branch associated with PR #89, was rejected as an architectural direction and closed unmerged on 2026-11-15 at the owner's request. Its roster/configuration proposal is not an adopted design, must not be merged or used as a scheduler contract, and is retained only as historical GitHub audit material.
 - No fixed worker count or named role topology is approved. Do not derive worker count, role topology, concurrency or credential-slot count from PR #89.
 - The only immediate parallel-execution target is a repeatable three-Gemini supplementary wave for each explicit ChatGPT `/next`, subject to a correctly integrated, secure Cloud Pool trigger and all controller admission gates. This target does not define the eventual Cloud Pool topology.
 - Future topology must be selected from measured task throughput, end-to-end latency, provider free-tier limits, quota-domain evidence, failure isolation, cost constraints, state durability, security boundaries and operational complexity. Keep the design open; do not pre-commit to a number of agents or named logical roles.
