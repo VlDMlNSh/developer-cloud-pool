@@ -2241,3 +2241,33 @@ PR #80: https://github.com/VlDMlNSh/developer-cloud-pool/pull/80
 PR #80 exact-head PR CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241
 PR #80 exact-head push CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708726255
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 19.6 Route-registry D1 transaction schema proof — 2026-11-15
+
+Fresh live read-back for this pass:
+- Default branch `Основной` HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; branch API still reports `protected=false`.
+- Active ruleset #26550182 applies to `refs/heads/Основной`, requires PR and review-thread resolution, but has 0 required approvals and no required status checks.
+- Documentation continuation branch is `docs/next-2026-11-15-route-registry-revalidation`. Before this report its HEAD was `f8eb501c1beb4dc606d2993b0d62ab9af25900d2`; report commit `ea60830b720d9d0341bb3cb74fe1d6d9c087d9a3` records the current pass. This documentation branch remains separate and unmerged.
+- PR #79 exists as a separate open documentation PR on `docs/next-2026-11-15-registry-epoch-hardening`; do not confuse it with the active continuation branch.
+- PR #80 remains OPEN / DRAFT / UNMERGED at `4dc81a377004502e8cae35583a734be5cc74cce6`.
+- New PR #82 is OPEN / DRAFT / UNMERGED, stacked on PR #80; current head `6a088b63a5f068665db286301bd6d360204fa288`, exactly 3 commits ahead / 0 behind its immutable parent. Formal reviews 0; inline review threads 0.
+
+PR #82 implementation:
+- Migration `proofs/d1-ledger/migrations/0013_route_registry_rows_and_cas_guard.sql` adds issuer-key rows, qualified-route rows, composite issuer/key foreign key, append-only triggers, post-acceptance child-insert denial and a CHECK-backed CAS assertion table.
+- Test `proofs/d1-ledger/test/route-registry-transactional-cas.test.ts` covers initial install, watermark advance, immutable child rows, late insert rejection, stale writer rollback with no orphan snapshot/issuer/route rows, and competing writers in local Workers runtime.
+- Workflow `.github/workflows/d1-ledger-proof-validation.yml` includes the new push branch and PR base branch.
+- Exact-head PR run [43709327229](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709327229), job `132797255446`: SUCCESS at `6a088b63a5f068665db286301bd6d360204fa288`.
+- Exact-head push run [43709322278](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709322278), job `132797240505`: SUCCESS at the same SHA.
+- Both completed syntax, Workers-runtime D1 tests, isolated second binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload.
+- Artifact `14160225386`, 18,253 bytes, SHA-256 `7bdcb411dc43a8a39028339bf1e81f00737cbc3813aa04038098b154ec7990b9`.
+- D1 batch rollback semantics are documented by Cloudflare: https://developers.cloudflare.com/d1/worker-api/d1-database/#batch. Local Workers runtime evidence is not hosted/production D1 qualification.
+
+Important limitation: PR #82 implements database primitives and tests only. The typed adapter consuming only `getVerifiedTrustedRouteRegistryBundle(result)` is NOT IMPLEMENTED. No production admission binding, receipt binding, hosted D1, root/key lifecycle, cross-process authenticity or end-to-end execution.
+
+Next: implement the typed adapter; only verifier-issued capability is accepted; atomically persist snapshot + issuer + route rows + watermark using this guard; read back and verify digest/counts; test forged/copied/denied verifier results, replay, storage outage and competing/stale writers. Then bind epoch/digest/root key/issuer key to qualification, A0/D1 admission and immutable receipt.
+
+No merge, dispatch, secrets, provider calls, hosted D1, deployment, Gemini, independent audit or Contour B work. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
