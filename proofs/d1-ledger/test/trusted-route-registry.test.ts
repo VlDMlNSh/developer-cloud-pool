@@ -108,8 +108,13 @@ describe("root-signed route registry bundle v1", () => {
   });
 
   it("rejects a changed root signature", async () => {
-    const altered = rootSignature.slice(0, -1) +
-      (rootSignature.endsWith("A") ? "B" : "A");
+    const raw = rootSignature.replace(/-/g, "+").replace(/_/g, "/");
+    const bytes = Uint8Array.from(
+      atob(raw + "=".repeat((4 - raw.length % 4) % 4)),
+      (character) => character.charCodeAt(0)
+    );
+    bytes[0] ^= 1;
+    const altered = base64url(bytes);
     expect(await verifyTrustedRouteRegistryBundle({
       bundle, signature: altered, env, now: NOW
     })).toMatchObject({ verified: false, reason: "REGISTRY_ROOT_SIGNATURE_INVALID" });
