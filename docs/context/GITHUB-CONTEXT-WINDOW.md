@@ -2590,3 +2590,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [Next Gemini wave preflight](../reports/2026-11-15-next-gemini-wave-preflight.md).
 - Current status: source VERIFIED; readiness NOT VERIFIED; probe NOT RUN; 3/3 NOT RUN; chat bridge NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Issue #301 /probe failure and PR #651 remediation
+- Owner-authored /probe comment 6897245259 exists on Issue #301. Actual issue-comment controller run #315 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43732834570), display title probe-comment-6897245259, ran on main SHA 46e7395cc7a8755a096f1a8667b750177ed42011 and FAILED at assert_probe_context. Admission and dispatch remained skipped. This is a failed non-launching probe, not Gemini execution.
+- PR #651 (https://github.com/VlDMlNSh/mediahub-os/pull/651) is OPEN/DRAFT/UNMERGED, 8 commits ahead / 0 behind main; exact branch head ec860a9b7698058d18a0b77efdce1643dd011bc8.
+- Remediation passes four caller values (issue number, PR discriminator, comment body, author association) as explicit reusable-workflow inputs. Reusable observer validates them with event name and trusted main workflow ref. Probe remains permissions: {}, no checkout, no credentials/provider secrets, no model invocation, and separate from /next.
+- Contract run #192 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43733447307) succeeded on preceding commit 0b7e22c2a678363549132b6f5936303b880264e2, including trigger-path, reusable workflow, controller transport, signed-child and provenance contracts. Earlier run #189 failed on an assertion-shape bug, which was corrected.
+- Latest controller PR-context run #321 (https://github.com/VlDMlNSh/mediahub-os/actions/runs/43733462873) on exact head ec860a9b7698058d18a0b77efdce1643dd011bc8 succeeded; observer and assertion passed, readiness and dispatch skipped as expected for PR context.
+- Final test-only correction at exact head happened after contract run #192; exact-head Wave 284 contract CI remains NOT VERIFIED. PR formal reviews 0; inline review threads 0. Reconciliation comment: https://github.com/VlDMlNSh/mediahub-os/pull/651#issuecomment-6897342717.
+- No merge, trusted-main re-probe, secret-value access, provider call, or Gemini child dispatch. Actions variable/secret metadata and scope remain NOT VERIFIED.
+- Next: exact-head contract CI; independent review/governance; ruleset-governed merge; repeat owner /probe on Issue #301 and verify actual issue-comment run; then metadata-only readiness and one controlled 3/3 /next wave.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
