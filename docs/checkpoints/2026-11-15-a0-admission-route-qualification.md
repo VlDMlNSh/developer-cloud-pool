@@ -305,3 +305,14 @@ Next: on the next user-issued `/next`, execute the single-comment bridge event a
 - All three PRs are OPEN / DRAFT / UNMERGED, with one evidence-only file changed each, zero formal reviews and zero review threads. Five required workflow runs per PR ended `action_required`; jobs endpoints returned no jobs. Therefore PR CI is NOT VERIFIED and no tests are evidenced as run.
 - No merge, manual approval, deployment, provider call, or secret read was attempted. Keep all three Draft PRs unmerged pending exact-head CI, formal independent review, and governance checks.
 - Full diffs, PR head SHAs, and CI evidence: [Wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+
+
+## Working configuration frozen — ChatGPT + three Gemini per /next — 2026-11-15
+
+The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.md](../operations/CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.md), commit `bc8b3f429cbd55328c66b51ab07ced8aaa34e60c`. This defines each exact user `/next` as one ChatGPT Cloud Pool Contour A pass plus one supplementary three-agent Gemini wave through the existing MediaHub Issue #301 comment/controller path. The assistant reconciles the current turn's source event first; if absent, it creates exactly one owner-authored comment body `/next`, never duplicates it, and never dispatches child workflows directly. Gemini does not block the main pass.
+
+- Agent roles: Agent 1 Engineering; Agent 2 independent contract/test verification; Agent 3 security/provenance.
+- Verified baseline: wave 332 source comment `6899094688`, controller `43746281426`, children `43746301766`, `43746303789`, `43746305744`; all three child runs and artifacts verified. Immutable target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PRs #664/#665/#666 remain OPEN / DRAFT / UNMERGED; their CI ended `action_required` with no jobs, therefore CI and reviews are NOT VERIFIED. Do not merge.
+- This is a verified MediaHub Gemini event bridge, not Cloud Pool-native dispatch. Cloud Pool `POOL_DISPATCH_ENABLED` remains fail-closed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed run IDs, artifact digests, PR head SHAs, and CI disposition: [wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
