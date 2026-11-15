@@ -163,3 +163,22 @@ The implementation evidence above was superseded by final head `a391f5c9b08c7ccf
 The final migration/adapter also binds the existing task outbox one-way to admission ID, attempt ID and evidence digest, and checks that binding in the transaction receipt and post-commit read-back. PR #72 remains OPEN/DRAFT/UNMERGED. Default-to-implementation comparison at default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8` is DIVERGED 67 ahead / 27 behind.
 
 No change to qualification status: trusted qualification writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest generation and live provider/account/quota proof remain NOT IMPLEMENTED/NOT QUALIFIED. Combined status has zero contexts. Dispatch remains false.
+
+
+## Quota-ledger ancestry reconciliation — 2026-11-15
+
+- Current default at start of reconciliation: `Основной` @ `55d9af7c71b4b51c2b886176f1d65da192900423`.
+- Stale PR #71 source branch `fix/quota-ledger-fail-closed-2026-11-15` @ `40a49acabd12aa178d3aa136244fb4f42231fbde` was 3 commits ahead / 27 behind current default. It was not merged.
+- Clean reconciliation branch `reconcile/quota-ledger-fail-closed-2026-11-15`; Draft PR #74: https://github.com/VlDMlNSh/developer-cloud-pool/pull/74
+- PR #74 exact HEAD `e1b51e7165f96c8c459c672943dfa8b862879db4`; current base compare 5 ahead / 0 behind. Three paths only: pure quota ledger, its test suite, and the existing pool-contract workflow extended to run that suite.
+- Added safe own-property route-key construction and a `__proto__` regression. Exact-head run https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43692093254 COMPLETED / SUCCESS; job `132744702990`; contract validator PASS; YAML parse PASS; 13 quota tests passed; dispatch gate observed false.
+- Combined commit-status contexts remain empty; required contexts NOT VERIFIED. PR #74 remains OPEN / DRAFT / UNMERGED; no independent review.
+- Quota ledger remains a pure selector/state machine, not a trusted provider evidence verifier. It does not authenticate issuer, signature, provider account, evidence bytes or live quota. Qualified Route Evidence remains NOT QUALIFIED.
+- PR #72 remains OPEN / DRAFT / UNMERGED at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, exact-head run `43690143805` SUCCESS, stacked on PR #67. Current default → #72 is DIVERGED 67 ahead / 32 behind; default → #67 is DIVERGED 47 ahead / 32 behind. Do not transplant either full stack.
+- PR #73 documentation branch remains OPEN / DRAFT and diverged from current default 4 ahead / 5 behind; its docs are being reconciled directly into canonical files, not merged wholesale.
+- Active ruleset `26550182` applies only to default branch, requires PR and review-thread resolution, but has 0 required approvals and no required status contexts. Branch-protection endpoint remains NOT VERIFIED (403).
+- No provider login/call, secret read, hosted D1, Worker deployment, dispatch, merge or production resource creation.
+- Report: [Quota-ledger ancestry reconciliation](../reports/2026-11-15-quota-ledger-ancestry-reconciliation.md).
+- Next: implement authenticated trusted route-evidence writer/verifier (canonical serialization/digest, issuer/provenance, exact provider/model/account/quota-domain binding, freshness and monotonic revocation), then bind its immutable verified result into the existing atomic A0→D1 transaction. Dispatch remains disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
