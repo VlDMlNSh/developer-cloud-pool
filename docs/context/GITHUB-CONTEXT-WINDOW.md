@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — Wave 318 evidence and Cloud Pool live-state revalidation
+Last refreshed: 2026-11-16 — owner-triggered batch 6901529560 evidence and Cloud Pool live-state revalidation
 
 > The dated 2026-11-16 addendum at the end of this file supersedes older repository/PR/controller status snapshots below. Historical sections remain for provenance and must not be treated as current without revalidation.
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
@@ -2146,7 +2146,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ---
 
-## 2026-11-16 live-state addendum — Wave 318
+## 2026-11-16 live-state addendum — owner-triggered batch 6901529560
 
 **This is the newest authoritative status section.** Older status paragraphs in this file are historical snapshots and are superseded where they conflict with this addendum.
 
@@ -2159,7 +2159,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #99: OPEN / DRAFT / UNMERGED; documentation branch HEAD after report/context/checkpoint publication: `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; base default HEAD above; mergeable=true. Exact-head check-runs at `5349ae6a07618d6be3d069ae927fc091d8ab3aba`: 0. CI NOT VERIFIED; formal review NOT VERIFIED.
 - Context Window was stale (last refreshed 2026-11-08) and is being brought current in this branch. PR #99 must not be merged until updated-head CI and review are verified.
 
-### MediaHub Gemini Wave 318 evidence
+### MediaHub Gemini owner-triggered batch 6901529560 evidence
 
 - Owner-authenticated Issue #301 comment `6901529560` triggered controller run `43763042415`, COMPLETED / SUCCESS, target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
 - Controller admission job `132961893463` and dispatch/monitor job `132961922334`: SUCCESS.
@@ -2173,7 +2173,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ### Status and next step
 
-- Gemini Wave 318: SUCCEEDED (controller + 3 children + provenance validation + artifact SHA-256 evidence).
+- Gemini owner-triggered batch 6901529560: SUCCEEDED (controller + 3 children + provenance validation + artifact SHA-256 evidence).
 - Cloud Pool PR #98: exact-head CI VERIFIED; review NOT VERIFIED; remains Draft.
 - Cloud Pool PR #99: exact-head CI NOT VERIFIED; review NOT VERIFIED; remains Draft.
 - MediaHub PR #730/#731/#732: exact-head CI NOT VERIFIED; no independent review; remain Draft.
@@ -2181,6 +2181,6 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No Cloud Pool application code changed; no secrets read, provider calls, provisioning, deployment, merge, or dispatch gate change.
 - Next bounded action: inspect agent PRs/artifacts independently, require exact-head CI and evidence-backed claims; continue Cloud Pool A0→D1 reconciliation from immutable current default SHA.
 
-Wave 318 report: [2026-11-16-wave318-gemini-and-cloud-pool-state.md](../reports/2026-11-16-wave318-gemini-and-cloud-pool-state.md)
+owner-triggered batch 6901529560 report: [2026-11-16-wave318-gemini-and-cloud-pool-state.md](../reports/2026-11-16-wave318-gemini-and-cloud-pool-state.md)
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
