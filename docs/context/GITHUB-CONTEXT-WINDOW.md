@@ -2208,3 +2208,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Continuation checkpoint commit: `28f6d0d8ab5585fd03718a06e2b5581697c967e5`; checkpoint blob SHA: `596be3f573618e5a3ab778f9d0c9efdaad33fcf7`.
 - Context Window blob immediately before this publication note: `6c852e658d659db057b0d158f1f10c47843f90b1`; previous branch HEAD: `28f6d0d8ab5585fd03718a06e2b5581697c967e5`.
 - The final context publication below records its own resulting commit/blob SHA; this documentation branch remains a Draft PR branch, not the default branch.
+
+
+## Final GitHub read-back — 2026-11-16
+
+- Documentation branch observed immediately before this refresh: `docs/next-2026-11-15-controller-d1-audit@341d427253f1f9a3e597a778a45bac3b69d1aa9e`.
+- Context Window blob read back: `34382e8cd9f2fb5c854969bb08baaa32535bad6e`.
+- PR #99 remains OPEN / DRAFT / UNMERGED, base `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; its head matched the documentation branch at `341d427253f1f9a3e597a778a45bac3b69d1aa9e` at read-back. Exact-head checks: 0; formal reviews: 0; CI/review NOT VERIFIED.
+- Report blob: `63af3e4f009ffbd6374579f505265e5a6ee344a6`; checkpoint blob: `596be3f573618e5a3ab778f9d0c9efdaad33fcf7`.
