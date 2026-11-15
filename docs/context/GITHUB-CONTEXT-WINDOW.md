@@ -1854,3 +1854,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No code changes, merge, hosted D1 provisioning, deployment, production dispatch, provider/model call, or secret access in this pass. Independent qualification remains deferred until the pool is running. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded engineering stage: reconcile the existing provider slot inventory and pure quota ledger with the A0 admission contract; define a typed, issuer/account/quota-domain-bound route qualification contract and adversarial tests. Do not claim routes qualified from inventory or mock adapters.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Provider quota ↔ A0 integration pass — 2026-11-15
+
+- Current default HEAD before report/issue/context updates: `beb92ded640ed8824ab566ae574d9409f26b5ef2`.
+- PR #29 quota-ledger branch head `e4c8d642bbc054e7c52b391356965b492dad32b4`; OPEN/DRAFT; compare current default: DIVERGED 36 ahead / 66 behind (merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`). Do not wholesale cherry-pick; reconcile source/test patches file-by-file.
+- PR #67 A0/D1 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; OPEN/DRAFT; compare current default: DIVERGED 47 ahead / 2 behind.
+- PR #68 architecture/matrix head `8569d0b368b353beb78e8594509d8492abaec170`; OPEN/DRAFT; compare current default: DIVERGED 85 ahead / 2 behind.
+- PR #29 quota source blob `4ea35b4ee565fc97b7ee437a521170d38c2b46b1`, tests `257efb123f3a9393c04ba64586931733f2648e11`. `listEligibleRoutes()` does not require `quotaEvidence=provider_verified`; tests explicitly include an unknown-account route in eligible results. This is a selector-only API until fail-closed semantics are fixed.
+- Provider inventory blob `42789e7408ba688b4af323deffe63eb2e15f50b8`: 24 slots, 0 verified account IDs, 0 verified quota domains; account/domain null means unverified; credential presence and billing eligibility not checked; declared cost class is inventory metadata only.
+- Placement policy blob `e11e0fb4058e9bb63c237fa2d0d8395c191210aa`; slot planner requires accepted qualification/available credential/ready route/model/billing allowlist but is not an issuer/account/quota authority.
+- A0 source/test blobs `14c31d66995d6f99ceb6ea5df060ba8e00848464` / `0070fffdf0595b5ebd9edced0b0e92bebf3af38c`. D1 consume blob `f71e559a7c13b9a0242a7f619eba998c5906d95e`. A0 is not integrated with consume/task/attempt/outbox as one atomic admission API.
+- PR #29 exact-head Pool Contract Validation run `43031920223` SUCCESS; combined status contexts empty. PR #67 runs `43600901063` / `43600901068` SUCCESS. PR #68 runs `43604562851` / `43604562855` SUCCESS. These do not establish production route or agent qualification.
+- Detailed analysis: https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs/reports/2026-11-15-provider-quota-a0-integration-analysis.md
+- Issue #70 updated with quota-ledger eligibility and branch divergence findings: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
+- No source changes, merge, dispatch, provider/model calls, hosted resources, deployment or secret reads. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #29 quota-ledger files against current default, fix unknown/unverified eligibility semantics with adversarial tests, then specify atomic A0 + D1 route-evidence admission. Keep dispatch false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
