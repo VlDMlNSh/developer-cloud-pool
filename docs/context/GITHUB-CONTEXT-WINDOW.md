@@ -2411,3 +2411,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Expanded PR head: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; base remains immutable `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; 3 files changed, read-back confirmed all branch expressions.
 - At latest check: 11 exact-head check-runs; 9 completed SUCCESS, 2 dispatch/admission jobs SKIPPED in PR context, and Astra Verify still IN_PROGRESS. No reviews. PR #649 remains OPEN/DRAFT. Exact-head CI is therefore NOT YET VERIFIED, and actual dispatch behavior remains NOT VERIFIED.
 - No new controller dispatch, no secret/provider access, no merge/deployment/qualification. Next gate: wait for all exact-head checks to complete and obtain independent review; only then run one controlled three-agent wave and verify 3/3 child success with unique branches.
+
+
+## Final exact-head CI recheck for expanded PR #649 — 2026-11-15
+
+- Expanded PR head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` now has 11 check-runs: 9 SUCCESS, 2 SKIPPED (dispatch/admission jobs intentionally do not run for pull_request context), zero pending and zero failed at final recheck.
+- All three workflow blobs were read back and verified to contain their own dispatch-ID-derived branch expression. PR #649 remains OPEN/DRAFT, 3 files changed, zero formal reviews; no merge.
+- The available PR-context CI is green, but it does not exercise a controller-dispatched child run. Actual 3/3 execution and independent review remain NOT VERIFIED. No new dispatch was triggered in this pass.
