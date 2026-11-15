@@ -16,6 +16,7 @@ on:
       - "impl/receipt-bound-projection-2026-11-11"
       - "proof/atomic-a0-d1-admission-2026-11-15"
       - "proof/qualified-route-evidence-verifier-2026-11-15"
+      - "proof/root-signed-route-registry-bundle-2026-11-15"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
