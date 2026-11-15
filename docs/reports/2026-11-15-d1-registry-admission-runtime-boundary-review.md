@@ -64,3 +64,15 @@ Do not merge the local proof stack, deploy a Worker, provision D1, enable dispat
 - Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Distributed-agent dispatch clarification — 2026-11-15
+
+A separate read-only check of MediaHub Issue #301 and the approved Gemini controller confirms that /next is not an automatic ChatGPT-side trigger. A controller run is created only when the assistant explicitly posts a /next comment to Issue #301; the controller then dispatches its three fixed child workflows against one immutable SHA.
+
+Latest observed controller wave:
+- Controller run [43719738980](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719738980), Wave 317, target `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`, conclusion FAILURE.
+- Agent 1 run `43719757692`: workflow SUCCESS; created PR #648 (OPEN, no reviews; its later pull_request checks returned `action_required`, not passing CI).
+- Agent 3 run `43719761724`: workflow SUCCESS; created PR #647 (OPEN, no reviews; its later pull_request checks returned `action_required`, not passing CI).
+- Agent 2 run `43719759616`: workflow FAILURE. Its artifact was non-empty and uploaded (artifact `14163604242`, digest `sha256:0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`). The child validator explicitly failed because tool telemetry did not record a successful `create_pull_request` operation. The controller therefore failed the complete 3-agent batch.
+- No new dispatch was started in this pass. Keep dispatch at 3; do not claim the agents run for every chat /next automatically. Before the next wave, repair and verify Agent 2's PR-creation path/allowlist and validator contract, then require all three child runs, exact-head checks and evidence to pass.
