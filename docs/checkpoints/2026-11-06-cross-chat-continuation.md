@@ -417,3 +417,14 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Context Window concurrent read-back now includes the same current-head evidence at blob `fb4325edb8fa41f2b81b2b0845f5a528186d254b`; the detailed report is [here](../reports/2026-11-11-pr61-future-session-time-guard.md), blob `7c26c4f1efff8ab09569daed4ae7377c569e54d7`.
 - Next: continue PR #61 source audit for ambiguous writes, revocation and authority composition; preserve fail-closed API and no production deployment.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 319 Gemini controller trigger reconciliation
+
+- MediaHub PR #651 remains OPEN/DRAFT/UNMERGED at `ec860a9b7698058d18a0b77efdce1643dd011bc8`; PR-context probe and contract suite passed, but no formal independent review exists.
+- Trusted-main `/probe` run #43732834570 failed at `assert_probe_context`: reusable workflow received empty `github.event_path`; no readiness or child dispatch occurred. PR #651 contains the explicit `workflow_call` input propagation fix but is not merged.
+- The recent issue_comment runs #43733619144 and #43733729653 were created by comments on PR #651, not Issue #301, and all jobs were correctly skipped. A ChatGPT `/next` command is not automatically posted as an Issue #301 comment in the currently connected integration. The existing controller requires an OWNER `/next` comment on Issue #301 and `MEDIAHUB_GEMINI_BATCH_ENABLED=true`; required secrets must also be present, otherwise fail-closed.
+- No three-agent dispatch, child run IDs, jobs or artifact digests are evidenced. Status: NOT RUN / NOT QUALIFIED. No secret values inspected, no bypass, no merge/deployment.
+- Report commit `db8740447573b7b48559d7f9241b6ff79d66edaa`; Context Window commit `3f032f8110f64db1615555c0954e5b219faded5f` (blob `cd4148db68636e7c9c0317e4af71aef1d62aec70`).
+- Next: owner posts `/next` on https://github.com/VlDMlNSh/mediahub-os/issues/301 and we verify the resulting controller run; independently review/merge PR #651 through normal governance, then repeat trusted-main `/probe`. Keep Cloud Pool Contour A as the primary project and do not infer its acceptance from MediaHub controller work.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
