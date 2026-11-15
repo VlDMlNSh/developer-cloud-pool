@@ -40,9 +40,16 @@ function same(row, input) {
     row.approval_id === a.approvalId &&
     row.qualification_id === r.qualificationId &&
     row.evidence_digest === r.evidenceDigest &&
+    row.task_key === input.taskKey &&
     row.requested_attempt_id === t.attemptId &&
     row.input_digest === t.inputDigest &&
-    row.execution_idempotency_key === t.executionIdempotencyKey;
+    row.execution_idempotency_key === t.executionIdempotencyKey &&
+    row.owner_numeric_id === a.ownerNumericId &&
+    row.repository_id === a.repositoryId &&
+    row.issue_number === a.issueNumber &&
+    row.target_sha === a.targetSha &&
+    row.profile === a.profile &&
+    row.envelope_digest === a.envelopeDigest;
 }
 
 function statements(db, input) {
@@ -168,21 +175,33 @@ export async function admitQualifiedTask(db, input) {
 
   try {
     const prior = await db.prepare(`
-      SELECT a.admission_id, a.approval_id, a.qualification_id,
+      SELECT a.admission_id, a.approval_id, a.task_key, a.qualification_id,
              a.evidence_digest, a.attempt_id AS requested_attempt_id,
-             p.input_digest, p.execution_idempotency_key
+             p.input_digest, p.execution_idempotency_key,
+             l.owner_numeric_id, l.repository_id, l.issue_number,
+             l.target_sha, l.profile, l.envelope_digest
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
+        JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       const active = await db.prepare(`
         SELECT 1 AS ok FROM pool_route_qualifications
-         WHERE qualification_id = ? AND evidence_digest = ?
-           AND qualification_status = 'qualified' AND revoked_at IS NULL
-           AND issued_at <= ? AND issued_at >= ? AND expires_at > ?
-      `).bind(input.route.qualificationId, input.route.evidenceDigest, input.now, input.now - 300, input.now).first();
+         WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
+           AND model_id = ? AND issuer_id = ? AND account_ref = ?
+           AND credential_handle_ref = ? AND quota_domain_id IS ?
+           AND cost_class = ? AND capability_id = ? AND evidence_digest = ?
+           AND registry_version = ? AND qualification_status = 'qualified'
+           AND revoked_at IS NULL AND issued_at <= ? AND issued_at >= ? AND expires_at > ?
+      `).bind(
+        input.route.qualificationId, input.route.routeId, input.route.providerId,
+        input.route.modelId, input.route.issuerId, input.route.accountRef,
+        input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
+        input.route.costClass, input.route.capabilityId, input.route.evidenceDigest,
+        input.route.registryVersion, input.now, input.now - 300, input.now
+      ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
         decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,

@@ -27,7 +27,7 @@ const input = {
 
 async function seed(overrides = {}) {
   const a = { ...input.approval, ...overrides.approval };
-  const r = { ...input.route, ...overrides.route };
+  const r = { ...input.route, issuedAt: NOW - 60, ...overrides.route };
   await env.POOL_DB.prepare(`
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
@@ -123,6 +123,10 @@ describe("atomic qualified A0 -> D1 admission", () => {
   it("rejects replay but returns the same durable receipt for an exact retry", async () => {
     const first = await admitQualifiedTask(env.POOL_DB, input);
     const replay = await admitQualifiedTask(env.POOL_DB, input);
+    const changedAccountReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, accountRef: "other-account" } });
+    const changedOwnerReplay = await admitQualifiedTask(env.POOL_DB, { ...input, approval: { ...input.approval, ownerNumericId: "99999" } });
+    expect(changedAccountReplay).toMatchObject({ decision: "DENY", reason: "ADMISSION_IDENTITY_CONFLICT", dispatch: false });
+    expect(changedOwnerReplay).toMatchObject({ decision: "DENY", reason: "ADMISSION_IDENTITY_CONFLICT", dispatch: false });
     expect(first.decision).toBe("ADMITTED_QUEUED");
     expect(replay).toMatchObject({
       decision: "ADMISSION_ALREADY_COMMITTED",
