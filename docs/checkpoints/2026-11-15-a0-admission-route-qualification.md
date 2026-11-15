@@ -481,3 +481,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Next: prioritize Issue #94 controller implementation and tests; keep revocation ledger as separate Contour A dependency; no secret reads or live dispatch before gates.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Wave 336 continuation — 2026-11-15
+
+- New /next source event: MediaHub Issue #301 comment [6900175631](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900175631), owner-authored and read back. Controller/child run IDs NOT VERIFIED via current connector run-list capabilities.
+- PR #92/#93 remain OPEN/DRAFT/UNMERGED; no formal reviews; combined status contexts empty. PR #93 historical proof run 43736264768 SUCCESS at its immutable head.
+- Review confirms replay receipt integrity and verifier-issued WeakMap persistence capability, but verifiedAt still originates from caller-supplied now; no authoritative DB clock proof.
+- Separate signed revocation keyset/event chain and same-batch D1 admission checks remain NOT IMPLEMENTED / NOT QUALIFIED. Registry epoch monotonicity alone is insufficient.
+- Detailed evidence: [Wave 336 report](../reports/2026-11-15-wave336-revocation-and-dispatch-reconciliation.md).
+- Next: implement pure revocation verifier + adversarial vectors, then D1 append-only/CAS/rollback and admission revocation checks. Dispatch remains disabled; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
