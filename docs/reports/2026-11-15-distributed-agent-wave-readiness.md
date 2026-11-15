@@ -197,3 +197,24 @@ Continue from the current Contour A checkpoint in ChatGPT. First reconcile any n
 - Next: continue the issuer-authenticated claim-service boundary and trusted-time contract using local tests; reconcile Agent 1 output opportunistically; hosted provisioning stays blocked pending entitlement and explicit resource authorization.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Reconciliation — next wave 478 / 13:35 UTC (supersedes earlier RUNNING snapshot)
+
+- Shared target SHA: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- Controller [43719738980](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719738980): COMPLETED / FAILURE; dispatch-and-monitor job `132828944987` failed because Agent 2 did not successfully create a PR.
+- Agent 1 [43719757692](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719757692): SUCCESS; job `132829006134`; artifact `14163901823`, SHA-256 `c4144ae187cfd748b7294ebe6b209fb1cfc9113c42d40c68900fe88d4954f96f`; PR [#648](https://github.com/VlDMlNSh/mediahub-os/pull/648), head `98561625b718a592613196cc9ffbe189d1b55bef`, open/non-draft. Exact-head checks 0, reviews 0, threads 0.
+- Agent 2 [43719759616](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719759616): FAILURE; signature verification passed but job `132829004435` failed the controller validator: `Gemini did not successfully create a Pull Request`. Artifact `14163604242`, SHA-256 `0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`. No PR created in this wave.
+- Agent 3 [43719761724](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43719761724): SUCCESS; job `132829009661`; artifact `14164380580`, SHA-256 `acaafa4d269855c93b7b7d192f91fab3bd975bae5973f64959981bad648c1bad`; PR [#647](https://github.com/VlDMlNSh/mediahub-os/pull/647), head `944e40a434b36fbf946522b4bdb97686c6437cf0`, open/non-draft. Exact-head checks 0, reviews 0, threads 0.
+- Overall: 2/3 child workflows succeeded; 1 failed; controller failed. Agent 1/3 PRs are not independently reviewed or qualified.
+- Cloud Pool PR [#89](https://github.com/VlDMlNSh/developer-cloud-pool/pull/89) defines six logical roles and quota/failover policy. Its exact-head Pool Contract Validation run [43715229460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43715229460) succeeded, but PR remains OPEN/DRAFT/UNMERGED and is a static policy contract, not six deployed workers.
+- MediaHub's controller still dispatches three fixed Gemini workflows. Cloud Pool Supervisor/Worker integration is NOT RUN. The two systems must not be conflated.
+- Scaling gate: remain at three until 3/3 controller waves are repeatable, Agent 2 PR creation is fixed, each child has exact-head checks and independent review, and quota/concurrency/failure isolation is qualified. Then expand first to five logical/runtime slots, qualify, then to six.
+- No secrets read, provider API calls, paid fallback, deployment, merge or qualification occurred in this reconciliation.
+
+Cloud Pool Context Window update on the same documentation branch:
+- Commit: `daa988917d9e4c85bdd251d08574b79b6a217485`
+- Context blob: `041ad27cc11d583b5032a1404c8f2143735e3d8e`
+- Branch: `docs/next-wave-agent-launch-readiness-2026-11-15` (unmerged working documentation branch; not default branch).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
