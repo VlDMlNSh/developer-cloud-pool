@@ -19,7 +19,7 @@ test("ledger comment round-trips a digest-checked write-ahead record", () => {
 
 test("rejects tampered ledger data", () => {
   const body = encodeLedgerComment(admitted).replace(targetSha, "3d84f04bbc28385fe4da0cbdf47535a01eb9be1b");
-  assert.throws(() => parseLedgerComments([{ body }]), /integrity|corrupted/i);
+  assert.throws(() => parseLedgerComments([ownerComment(body)]), /integrity|corrupted/i);
 });
 
 test("requires serialized controller lock", () => {
