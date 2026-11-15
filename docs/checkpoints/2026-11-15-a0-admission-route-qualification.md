@@ -303,3 +303,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #74 exact head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144` has Pool Contract Validation run `43692828719` SUCCESS (13 pure quota-ledger tests); it remains draft/unmerged and does not authenticate provider evidence or live quota.
 - The web path remains separate from the D1 proof: PR #25 prototype + PR #30 synthetic OAuth + PR #61 local session proof are not mounted to the A0 admission or live task ledger.
 - No end-to-end vertical slice has been demonstrated. The next integration task is the atomic trusted registry + admission composition, followed by a no-provider-call local integration adapter that returns only evidence/queue state with `dispatch:false`; then connect read-only Experience API only after auth/session gates are qualified.
+
+
+## Root-signed registry durable persistence — 2026-11-15
+
+- Implementation PR #81: https://github.com/VlDMlNSh/developer-cloud-pool/pull/81
+- Branch: `proof/persist-root-signed-route-registry-2026-11-15`; final HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; base PR #77 branch `impl/durable-route-registry-d1-2026-11-15` at `e63f1dda4c046d485ae9c2f08392a1943a06553d`. PR #81 includes the dependent PR #78 epoch-order hardening layer.
+- Migration 0013 adds exact signed bundle JSON/root signature storage, append-only issuer-key rows bound to snapshot epoch+digest, and registry binding fields on route qualification rows with insert/immutability guards.
+- New `persistTrustedRouteRegistryBundle` verifies the root-signed bundle against the platform-pinned root and persists snapshot, issuer keys, route qualification rows and active singleton pointer in one D1 batch. Exact retry is idempotent; conflicting epoch reuse denies; deliberate route identity collision proves full batch rollback. All responses dispatch false.
+- Exact-head PR run `43709291531`, job `132797151113`: COMPLETED / SUCCESS. Workers runtime 11 files / 116 tests PASS / 0 FAIL; syntax check, isolated second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload all SUCCESS. Artifact `14159369399`, SHA-256 `bdbaafba5c832b65061e6720c2747f9e961141dfe4426cf270e2ee09b21272f8`.
+- An initial run `43709221098` exposed a pre-existing flaky verifier tamper test that altered unused base64url padding bits. The test was repaired to flip a decoded signature byte; final exact-head run passes.
+- Final blobs: migration `40b93551c787078e5c65c8861569bb428bd2eb8b`; writer `12f1b09b238d61fa7cf3574221f3cb79f6d4767a`; persistence test `0c52812ba17f77781231322a315f4d7b2d46283b`; README `7f80f9b3183f257d8b6188d5a8685a89879e2f38`; crypto tamper regression `dd3769b34a5cef9b0d85d006af35787b429425b5`; workflow `f6cfa6a43f5217576668ec6a027765250bda8de3`.
+- Critical limitation: the existing `admitQualifiedTask` still does not require current registry pointer, route snapshot digest/epoch, issuer-key validity/status and revocation watermark inside the same approval-consumption D1 batch. Legacy fixture-seeded route rows remain accepted by that isolated helper. Durable registry persistence is therefore NOT equivalent to qualified production admission.
+- PR #81 OPEN / DRAFT / UNMERGED; formal reviews 0, inline threads 0, combined commit-status contexts 0 / NOT VERIFIED. Actions success is not independent review.
+- Current default remains `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Default → PR #78 DIVERGED 93 ahead / 64 behind; default → PR #81 DIVERGED 100 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge stale proof history; selectively reconstruct from current default after review.
+- No hosted D1, provider calls, secret reads, deployment, Supervisor/Worker execution, dispatch, merge or independent acceptance.
+- Next: change A0 admission so the current registry pointer, exact route snapshot/digest, issuer key status/validity and revocation watermark are re-checked inside the same D1 batch that consumes approval and writes task/attempt/outbox/receipt. Add stale-pointer, revoked-key, epoch-advance race, replay and rollback tests.
+- Report: [Root-signed route registry persistence proof](../reports/2026-11-15-root-signed-route-registry-persistence.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
