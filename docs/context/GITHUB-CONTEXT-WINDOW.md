@@ -1872,3 +1872,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - No source changes, merge, dispatch, provider/model calls, hosted resources, deployment or secret reads. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #29 quota-ledger files against current default, fix unknown/unverified eligibility semantics with adversarial tests, then specify atomic A0 + D1 route-evidence admission. Keep dispatch false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Post-publication branch reconciliation — 2026-11-15
+
+After publishing the report, Issue #70 update, Context Window and checkpoint, current default HEAD is `670ed18460506c5cba6757baf15954215a74cb0a`.
+
+Recomputed comparisons against this current HEAD:
+- PR #29 `e4c8d642bbc054e7c52b391356965b492dad32b4`: DIVERGED, 36 ahead / 69 behind; merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- PR #67 `a53f6232bd5b50d3e150addf528b8e722002f9dd`: DIVERGED, 47 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #68 `8569d0b368b353beb78e8594509d8492abaec170`: DIVERGED, 85 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+
+No rebase, cherry-pick, merge or code change was attempted. Documentation commits are on default branch; PR branches remain separate drafts.
