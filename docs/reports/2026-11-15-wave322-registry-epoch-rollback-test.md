@@ -29,9 +29,13 @@ This is test-only; no migration or production route behavior changed.
 
 New exact-head D1 workflow run:
 - Run #43736259303: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43736259303
-- Job #132879411032: Local Workers-runtime D1 adversarial tests
-- At report creation: RUNNING / NOT YET VERIFIED.
-- Target SHA: `e200838d038b9cd48635233187819302bba6a33e`.
+- Job #132879411032: Local Workers-runtime D1 adversarial tests — COMPLETED / SUCCESS.
+- Exact target SHA: `e200838d038b9cd48635233187819302bba6a33e`, matching PR #93 head at recheck.
+- Syntax check: SUCCESS.
+- Workers-runtime D1 suite: 11 test files / 120 tests PASS / 0 FAIL. The updated `trusted-route-registry-persistence.test.ts` including stale-epoch rollback case passed.
+- Isolated second D1 binding/migration smoke: 1 passed, 2 skipped by test-name filter.
+- Frozen schema-0010 fixture smoke: 2 passed, 1 skipped by test-name filter; golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`.
+- Lockfile artifact ID `14170616460`; ZIP SHA-256 `909e27d3bec1ca75933085475431f3ff5e4f9f8578985e1e2670d01336270c5a`.
 
 Prior pre-change exact-head checks on `99ca50ce11efb380efa6346a1db672585876a8b1`:
 - Run #43725400300 / job #132846119246: SUCCESS; all steps passed including syntax, D1 tests, second binding/migration API, frozen schema-0010 fixture and artifact upload.
