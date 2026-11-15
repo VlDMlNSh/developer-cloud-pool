@@ -3369,7 +3369,7 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 ### Wave 324 documentation-branch verification
 
-- Documentation continuation branch HEAD after Wave 324: 4497b23fb381c13913ade7ced82c2217711ae3c9.
-- Existing documentation PR #27 remains OPEN / DRAFT / UNMERGED, head 4497b23fb381c13913ade7ced82c2217711ae3c9, base 64d2636d4500127e635c214ccfb722c6b3fcda80.
+- Documentation continuation branch HEAD after Wave 324: 4fa783c63500726b726f1ab366122a06725e2691.
+- Existing documentation PR #27 remains OPEN / DRAFT / UNMERGED, head 4fa783c63500726b726f1ab366122a06725e2691, base 64d2636d4500127e635c214ccfb722c6b3fcda80.
 - Exact-head check-runs API returned total_count=0; combined Status API returned state=pending with zero status contexts. Therefore PR #27 exact-head CI is NOT VERIFIED. Do not claim the documentation changes passed CI or merge them.
 - Context Window latest blob before this small verification append: 0351a778dac2ec5e6bdc3ecff5cb2d87c746c260.
