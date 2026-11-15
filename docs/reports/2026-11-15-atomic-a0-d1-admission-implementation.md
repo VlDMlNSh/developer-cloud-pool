@@ -58,3 +58,37 @@ Canonical task identity is recomputed from repository, issue, target SHA and pro
 Reconcile PR #67 / PR #72 ancestry with current default without importing stale stack history; verify effective required checks and exact PR-head CI; then obtain independent technical/security/governance review after the pool is operational. Keep dispatch disabled. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Exact-head hardening update — 2026-11-15
+
+**Implementation HEAD:** `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`  
+**Exact-head CI:** [run 43690143805](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43690143805) — SUCCESS  
+**PR:** [#72](https://github.com/VlDMlNSh/developer-cloud-pool/pull/72) — OPEN / DRAFT / UNMERGED
+
+### Changes in this pass
+
+- Corrected migration/adapter alignment for `capability_profile` and `valid_until`, including immutable profile binding and exact replay validity comparison.
+- Bound the existing task delivery outbox row to the exact admission, attempt and evidence digest within the same D1 batch.
+- Added a database trigger requiring the outbox binding to reference the corresponding admission and attempt.
+- Strengthened the commit receipt to verify task attempt pointer and `attempt.created` event, as well as approval, route and outbox binding.
+- Added tests for capability-profile substitution, outbox identity mutation and replay with altered validity metadata. Atomic-admission suite: 9 tests.
+
+### Verification
+
+- Workers-runtime: 7 files / 93 tests passed.
+- Atomic admission: 9 tests passed.
+- Isolated upgrade-binding smoke: 1 passed.
+- Frozen schema-0010 fixture: 2 passed; golden SHA-256 unchanged: `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`.
+- Artifact ID `14152082768`; SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+
+### Qualification and governance limits
+
+This remains a local D1 transaction proof. Route records are pre-populated by an assumed trusted authority; no trusted writer, cryptographic issuer/signature verification, canonical evidence-byte digesting or live provider/account/quota verification is implemented. No provider calls, secret reads, external login, hosted D1, deployment or dispatch occurred. Dispatch remains false.
+
+PR #72 has no reviews or review threads. Combined commit-status contexts are empty; required contexts are NOT VERIFIED. PR #67 and #72 remain stacked and unmerged; current default ancestry is divergent. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Next: reconcile the stacked PR ancestry and implement the trusted qualification authority boundary before any production route qualification.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

@@ -1971,3 +1971,21 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Remaining qualification blockers: trusted evidence writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest, live provider/account/quota proof, required CI contexts and independent review.
 - Dated route-qualification checkpoint updated at default HEAD `3db97887be1fe096aa4bb59f4e4857a50023e09f`. Active default ruleset requires PR/thread resolution but zero approvals and no required status contexts; implementation PR #72 remains stacked and unmerged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Atomic A0 -> D1 exact-head hardening — 2026-11-15
+
+- Implementation branch `proof/atomic-a0-d1-admission-2026-11-15`; current HEAD `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; PR #72 OPEN / DRAFT / UNMERGED, base is PR #67 branch at `a53f6232bd5b50d3e150addf528b8e722002f9dd`.
+- Found and corrected a schema/adapter mismatch introduced by migration 0011's `capability_profile` and `valid_until` columns. Adapter, fixture seed and replay/readback now use the same schema fields. Capability profile is immutable and validated.
+- Bound the existing `pool_task_delivery_outbox` row to the exact admission ID, attempt ID and evidence digest in the same D1 batch. Migration trigger requires a matching admission and attempt. Commit receipt verifies the outbox binding, current task attempt pointer and `attempt.created` event. Durable read-back verifies the bound outbox and task pointer.
+- Added adversarial coverage for capability-profile substitution, outbox identity mutation, and exact replay with changed validity metadata. Atomic suite now 9 tests.
+- Exact-head workflow run `43690143805`: COMPLETED / SUCCESS at exact HEAD `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; job `132738896801`. Workers-runtime 7 files / 93 tests passed; atomic suite 9 passed; upgrade-binding smoke 1 passed; frozen schema-0010 fixture 2 passed. Golden digest `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187` unchanged.
+- Artifact ID `14152082768`; SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- PR #72 body updated to point to exact run and correct current head. No PR reviews or review threads exist. Combined commit-status endpoint has zero contexts; required status contexts NOT VERIFIED.
+- Default branch `Основной` HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8`. PR #67 remains OPEN/DRAFT at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; default-to-PR67 compare DIVERGED 47 ahead / 20 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. PR #72 is 20 commits ahead of PR #67 and must remain stacked. Current default-to-PR72 compare DIVERGED 67 ahead / 27 behind; do not merge or transplant wholesale.
+- Active default ruleset `26550182` requires PR and review-thread resolution, but zero approving reviews and no required status-check contexts. It applies only to default `Основной`; PR #72 is stacked on a non-default branch. No independent review has been performed.
+- Qualification limit remains: local route records are assumed to be pre-populated by a trusted authority. No trusted writer, cryptographic issuer/signature verification, canonical evidence-byte digesting, or live provider/account/quota verification. Therefore route remains NOT QUALIFIED and this does not qualify production routing.
+- No secrets, external login, provider calls, hosted D1, Worker deployment, executor dispatch, or merge. Dispatch remains false.
+- Status: local atomic admission IMPLEMENTED / exact-head CI VERIFIED; route qualification NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #67 / #72 ancestry and the proof stack with current default; define and implement the trusted qualification writer/verifier boundary before any production route can be qualified. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
