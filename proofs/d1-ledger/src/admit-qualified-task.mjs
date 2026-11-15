@@ -144,7 +144,7 @@ function statements(db, input) {
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, now, now
+      t.executionIdempotencyKey, now, now - 300, now
     )
   ];
 }
@@ -181,8 +181,8 @@ export async function admitQualifiedTask(db, input) {
         SELECT 1 AS ok FROM pool_route_qualifications
          WHERE qualification_id = ? AND evidence_digest = ?
            AND qualification_status = 'qualified' AND revoked_at IS NULL
-           AND issued_at <= ? AND expires_at > ?
-      `).bind(input.route.qualificationId, input.route.evidenceDigest, input.now, input.now).first();
+           AND issued_at <= ? AND issued_at >= ? AND expires_at > ?
+      `).bind(input.route.qualificationId, input.route.evidenceDigest, input.now, input.now - 300, input.now).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
         decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
