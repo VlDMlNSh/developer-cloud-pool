@@ -1971,3 +1971,14 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Remaining qualification blockers: trusted evidence writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest, live provider/account/quota proof, required CI contexts and independent review.
 - Dated route-qualification checkpoint updated at default HEAD `3db97887be1fe096aa4bb59f4e4857a50023e09f`. Active default ruleset requires PR/thread resolution but zero approvals and no required status contexts; implementation PR #72 remains stacked and unmerged.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final implementation exact-head correction — 2026-11-15
+
+- Final branch HEAD: `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; PR #72 remains OPEN/DRAFT/UNMERGED and targets PR #67's implementation branch.
+- Final exact-head workflow `43690143805` / job `132738896801`: SUCCESS; 7 Workers-runtime files / 93 tests passed, including 9 atomic-admission tests; upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152082768`, SHA-256 `be9cc8ff9c1d88525eebe5504cf78cfbd3650d0d785917a08f2764ef3401a098`.
+- At default HEAD `94ad1c1bb01e64a8db64fcb11ad1f6464dd80eb8`, default-to-implementation compare is DIVERGED 67 ahead / 27 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Current default has since advanced with documentation updates; re-read refs at next pass.
+- Final code includes one-way outbox binding to admission ID, attempt ID and evidence digest, verified by transactional CHECK-backed receipt and post-commit read-back. Dispatch remains false.
+- No change to qualification status: trusted evidence writer, cryptographic issuer/evidence verification, canonical evidence-byte digest, live provider/account/quota proof and required CI contexts remain NOT VERIFIED / NOT QUALIFIED. No provider/login/secret/hosted D1/deploy/dispatch/merge.
+- Canonical final report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
