@@ -15,6 +15,27 @@ const MAX_ROUTES = 256;
 const MAX_BUNDLE_BYTES = 512 * 1024;
 const deny = (reason) => Object.freeze({ verified: false, dispatch: false, reason });
 
+// A verifier-issued object is the only persistence authority. The exact input
+// snapshot and detached root signature remain private to this module.
+const verifiedBundleSnapshots = new WeakMap();
+const verifiedBundleSignatures = new WeakMap();
+
+function freezeDeep(value) {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    for (const child of Object.values(value)) freezeDeep(child);
+    Object.freeze(value);
+  }
+  return value;
+}
+
+export function getVerifiedTrustedRouteRegistryBundle(result) {
+  return verifiedBundleSnapshots.get(result) ?? null;
+}
+
+function getVerifiedTrustedRouteRegistrySignature(result) {
+  return verifiedBundleSignatures.get(result) ?? null;
+}
+
 function isRecord(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -196,18 +217,23 @@ export async function verifyTrustedRouteRegistryBundle({
   }
 
   const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return Object.freeze({
+  const snapshot = freezeDeep(JSON.parse(JSON.stringify(bundle)));
+  const result = Object.freeze({
     verified: true,
     dispatch: false,
-    registryEpoch: bundle.registryEpoch,
-    registryVersion: bundle.registryVersion,
-    rootKeyId: bundle.rootKeyId,
+    verifiedAt: now,
+    registryEpoch: snapshot.registryEpoch,
+    registryVersion: snapshot.registryVersion,
+    rootKeyId: snapshot.rootKeyId,
     bundleDigest: [...new Uint8Array(digest)].map((x) => x.toString(16).padStart(2, "0")).join(""),
-    issuerKeyCount: bundle.issuerKeys.length,
+    issuerKeyCount: snapshot.issuerKeys.length,
     routeCount: verifiedRoutes.length,
     routes: Object.freeze(verifiedRoutes),
     reason: "ROOT_SIGNED_REGISTRY_BUNDLE_VERIFIED"
   });
+  verifiedBundleSnapshots.set(result, snapshot);
+  verifiedBundleSignatures.set(result, signature);
+  return result;
 }
 
 export const trustedRouteRegistryPolicy = Object.freeze({
@@ -233,17 +259,19 @@ export const trustedRouteRegistryPolicy = Object.freeze({
  * its own D1 batch; persistence alone is not an admission decision.
  */
 export async function persistTrustedRouteRegistryBundle({
-  db, bundle, signature, env, now
+  db, verification
 } = {}) {
   if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
     return Object.freeze({ persisted: false, verified: false, dispatch: false, reason: "STORAGE_UNAVAILABLE" });
   }
 
-  const verified = await verifyTrustedRouteRegistryBundle({ bundle, signature, env, now });
-  if (!verified.verified) {
-    return Object.freeze({ ...verified, persisted: false });
+  const bundle = getVerifiedTrustedRouteRegistryBundle(verification);
+  const signature = getVerifiedTrustedRouteRegistrySignature(verification);
+  if (!bundle || !signature || verification?.verified !== true || verification?.dispatch !== false) {
+    return Object.freeze({ persisted: false, verified: false, dispatch: false, reason: "VERIFIER_CAPABILITY_REQUIRED" });
   }
-
+  const verified = verification;
+  const acceptedAt = verified.verifiedAt;
   const bundleJson = JSON.stringify(bundle);
   try {
     const prior = await db.prepare(`
@@ -282,7 +310,7 @@ export async function persistTrustedRouteRegistryBundle({
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         verified.registryEpoch, verified.registryVersion, verified.rootKeyId,
-        verified.bundleDigest, bundle.issuedAt, bundle.validUntil, now,
+        verified.bundleDigest, bundle.issuedAt, bundle.validUntil, acceptedAt,
         verified.issuerKeyCount, verified.routeCount, bundleJson, signature
       )
     ];
@@ -335,7 +363,7 @@ export async function persistTrustedRouteRegistryBundle({
         current_registry_version, updated_at
       ) VALUES (1, ?, ?, ?, ?)
     `).bind(
-      verified.registryEpoch, verified.bundleDigest, verified.registryVersion, now
+      verified.registryEpoch, verified.bundleDigest, verified.registryVersion, acceptedAt
     ));
     statements.push(db.prepare(`
       UPDATE pool_route_registry_state
@@ -344,7 +372,7 @@ export async function persistTrustedRouteRegistryBundle({
        WHERE state_id = 1 AND current_epoch < ?
     `).bind(
       verified.registryEpoch, verified.bundleDigest, verified.registryVersion,
-      now, verified.registryEpoch
+      acceptedAt, verified.registryEpoch
     ));
 
     await db.batch(statements);
