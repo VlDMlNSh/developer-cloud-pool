@@ -60,3 +60,15 @@ Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs
 Issue #70: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
 
 Next: reconcile PR #29 quota-ledger source/tests file-by-file against current default; correct unverified-route eligibility and add negative tests; then implement/test the atomic A0 + D1 route-evidence boundary. No branch merge, provider calls, secret access, hosted provisioning, deployment or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Post-publication branch reconciliation — 2026-11-15
+
+After publishing the report, Issue #70 update, Context Window and checkpoint, current default HEAD is `670ed18460506c5cba6757baf15954215a74cb0a`.
+
+Recomputed comparisons against this current HEAD:
+- PR #29 `e4c8d642bbc054e7c52b391356965b492dad32b4`: DIVERGED, 36 ahead / 69 behind; merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`.
+- PR #67 `a53f6232bd5b50d3e150addf528b8e722002f9dd`: DIVERGED, 47 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- PR #68 `8569d0b368b353beb78e8594509d8492abaec170`: DIVERGED, 85 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+
+No rebase, cherry-pick, merge or code change was attempted. Documentation commits are on default branch; PR branches remain separate drafts.
