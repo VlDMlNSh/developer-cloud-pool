@@ -269,3 +269,17 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next: atomically compose the trusted registry/revocation watermark with A0 approval consumption, immutable task/attempt/outbox binding and receipt; adversarially test stale epoch, key substitution, revocation race, rollback and unavailable storage. Keep `dispatch:false`.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Current ancestry and integration boundary recheck — 2026-11-15
+
+- Re-read default branch API: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Compare current default to PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: DIVERGED, 47 ahead / 64 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
+- Compare current default to PR #72 head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`: DIVERGED, 67 ahead / 64 behind; same merge base.
+- Compare current default to PR #77 head `e63f1dda4c046d485ae9c2f08392a1943a06553d`: DIVERGED, 90 ahead / 64 behind; same merge base.
+- Compare current default to PR #78 head `54250f9c39111dd7cfeb7928fc3fd56169353a95`: DIVERGED, 93 ahead / 64 behind; same merge base.
+- Therefore PRs #67/#72/#75/#76/#77/#78 are a draft proof stack on a stale base, not a candidate for merge or production integration. Reconstruct a minimal integration branch from current default only after reviewing and selectively transplanting the source files/migrations, preserving provenance; do not merge the divergent history or retarget the stacked PRs blindly.
+- PR #78 exact-head D1 workflow run `43708444649` is COMPLETED / SUCCESS. Its combined commit-status endpoint is empty; required status contexts remain NOT VERIFIED. PR #78 has no formal reviews or inline threads.
+- PR #79 documentation branch is 3 commits ahead / 0 behind current default, merge base equals current default. PR #79 is OPEN / DRAFT / UNMERGED; documentation-only validation was not returned by exact-head Actions lookup (CI NOT VERIFIED).
+- Ruleset #26550182 is active only for `refs/heads/Основной`, with PR and thread-resolution requirements, 0 required approvals, no required status contexts, and no bypass actors. It does not supply independent approval for these draft proof branches.
+- The current integration gap is now more specific: local atomic admission and cryptographic verification components exist as separately tested draft layers, but their trusted registry persistence and same-batch A0 admission composition are not wired together; Supervisor/Worker and Experience API are also not connected to this proof.
