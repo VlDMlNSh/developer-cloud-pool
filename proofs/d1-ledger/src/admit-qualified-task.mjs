@@ -205,6 +205,21 @@ function statements(db, input) {
              AND q.capability_profile = ? AND q.valid_until = ?
              AND q.revocation_version = ? AND q.observed_at <= ? AND q.observed_at >= ?
              AND q.valid_until > ?
+             AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+             AND EXISTS (
+               SELECT 1 FROM pool_route_registry_state s
+               JOIN pool_route_registry_snapshots rs
+                 ON rs.registry_epoch = s.current_epoch AND rs.bundle_digest = s.current_bundle_digest
+                AND rs.registry_version = s.current_registry_version
+               JOIN pool_route_registry_issuer_keys k
+                 ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
+                WHERE s.state_id = 1 AND s.current_epoch = q.registry_epoch
+                  AND s.current_bundle_digest = q.registry_bundle_digest
+                  AND rs.accepted_at <= ? AND rs.valid_until > ?
+                  AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
+                  AND k.registry_version = q.registry_version AND k.status = 'active'
+                  AND k.revoked_at IS NULL AND k.valid_from <= ? AND k.valid_until > ?
+             )
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
@@ -212,7 +227,9 @@ function statements(db, input) {
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
       t.executionIdempotencyKey, r.schemaVersion, r.evidenceRef,
-      r.observedAt, r.capabilityProfile, r.validUntil, r.revocationVersion, now, now - 300, now
+      r.observedAt, r.capabilityProfile, r.validUntil, r.revocationVersion,
+      now, now - 300, now, r.keyId, r.registryEpoch, r.registryBundleDigest,
+      now, now, now, now
     ),
   ];
 }
