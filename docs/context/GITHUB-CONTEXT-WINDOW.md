@@ -2563,3 +2563,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - The seven exact-head workflow runs associated with PR #649 completed successfully (six checks plus Wave 284 contract validation as returned by the PR workflow-runs query); these are PR-context checks, not Gemini review or live child execution.
 - No Gemini API call, child dispatch, trusted-main probe, merge, deployment, or qualification was performed. Reason: no trusted-main authorized review route for PR #649 exists yet; dispatching child workflows directly would bypass the controller.
 - Next: establish a trusted-main read-only review route after governance approves the controller change, or obtain an independent review through an authorized reviewer. Then re-run exact-head CI, resolve findings, merge through ruleset, execute no-secret `/probe`, and only then controlled 3/3.
+
+
+## 2026-11-15 — Gemini three-agent post-merge reconciliation
+
+- PR #649 is MERGED at `46e7395cc7a8755a096f1a8667b750177ed42011`. Current main controller blob inspected: `48b424d14d3ae982479685b5815930148225e297`; Agent 2 blob `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`; Agent 3 blob `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`.
+- Main controller source confirms three signed child tasks (implementation, contract/test verification, security/provenance), shared immutable target SHA, unique dispatch IDs, HMAC verification, owner-only Issue #301 exact `/next` trigger, and explicit `MEDIAHUB_GEMINI_BATCH_ENABLED=true` gate. It also has explicit `workflow_dispatch` mode `agents` with confirmation.
+- Pull-request events run non-launching probe/contract jobs. Exact check-runs for commit `eca542d7ecc9dba548e66860dc19ddbc51ff4077` show probe and contract checks SUCCESS while `readiness_gate` and `dispatch_and_monitor` are SKIPPED. This is not evidence of Gemini execution.
+- The ChatGPT conversation's `/next` is not itself a GitHub event. No chat-to-Issue #301 bridge exists in the inspected controller. Therefore per-ChatGPT-`/next` automatic dispatch remains NOT IMPLEMENTED / NOT VERIFIED.
+- Actions variable and secret metadata were not available from this GitHub connection; no secret values were accessed. Batch enablement and credential presence remain NOT VERIFIED.
+- PR #650 is a separate open draft for a single historical PR #649 read-only reviewer; it is not the three-agent execution path and is not evidence of 3/3.
+- Detailed report: [Gemini three-agent post-merge reconciliation](../reports/2026-11-15-gemini-three-agent-post-merge-reconciliation.md).
+- Next: verify metadata-only readiness and trusted-main no-secret `/probe`; only then perform one controlled owner-authorized Issue #301 `/next`, reconcile all three child run IDs/artifacts, repeat reliability waves, and then implement a uniquely correlated idempotent ChatGPT-to-GitHub bridge. No direct child dispatch or controller bypass.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
