@@ -51,3 +51,13 @@ The pool itself is progressively assembled in deployable vertical slices: reposi
 Read back policy, README and Context Window from this branch; verify content and branch HEAD; create a draft PR targeting the current default branch for review. Then, in the next /next, refresh current controller and governance state and execute only the approved non-launching probe or approved dispatch path that the live gates permit.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Follow-up read-back and PR state
+
+- Read-back of policy, README, Context Window, checkpoint and adoption report succeeded. Latest observed blob SHAs: policy `ed496a8f8795eba7f77f8492adb93793d5889877`; README `abb94bb985ea9363196c976845ea78341378cebb`; Context Window before this follow-up `826adfc8781e3a540f1895067ef569e706903eb2`; checkpoint `bc227afc7bb9ed05fa08496764c96d338910f5d0`; report `112399f8c46fd70998984ff33724a23d23a29765`.
+- Draft PR #88 opened: https://github.com/VlDMlNSh/developer-cloud-pool/pull/88. Head at creation `78e9773d897c1f7603518dca4829375094f67e20`; base `Основной` at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; 5 files, 215 additions / 2 deletions.
+- PR API returned `mergeable=false`; PR remains OPEN / DRAFT / UNMERGED. No merge attempted. CI not run/observed; no CI claim.
+- Documentation content read-back: VERIFIED. PR mergeability: NOT VERIFIED (API false). Gemini dispatch: NOT RUN / NOT VERIFIED.
+- Context Window follow-up commit: `e8d1f9d3f8f14f2a27edeea36a45eac9f345f9a3`.
+
+Next: inspect PR #88 diff and determine why GitHub reports mergeable=false; fix only safe documentation issues on this branch, then recheck exact-head CI and PR status. Continue Contour A engineering independently; keep Contour B deferred.
