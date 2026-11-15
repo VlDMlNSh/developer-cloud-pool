@@ -335,3 +335,15 @@ PR #649 exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f` now has 11 complet
 - Status: CI evidence on selected PR heads only; governance review NOT VERIFIED; runtime dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: formal review + exact governance recheck for PR #649; then a single approved controller wave if accepted. Continue D1 Worker runtime-boundary implementation only on an isolated branch and without enabling dispatch.
 
+
+
+## Single-Gemini review route for PR #649 — 2026-11-15
+
+- Existing controller has one-agent `review` mode pinned to FCC target SHA `074f20eb495666946a14410ab88d566aaa754f24`; `agents` launches three roles. Neither is suitable for a one-agent review of PR #649. No bypass used.
+- Candidate controller extension: MediaHub OS PR #650, head `eca542d7ecc9dba548e66860dc19ddbc51ff4077`, base `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED; 0 formal reviews.
+- Exact-head CI: 9 check-runs, 7 SUCCESS, 2 expected SKIPPED, 0 pending/failed; all five required contexts SUCCESS. New review contract suite 5/5; Astra Verify 482 tests. No runtime Gemini invocation.
+- Target PR #649 head pinned in new mode: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`. PR #649 remains OPEN/DRAFT with 0 formal reviews.
+- Report: [Single-Gemini PR #649 review readiness](../reports/2026-11-15-single-gemini-pr649-review-readiness.md).
+- Status: candidate implementation SUCCEEDED on branch; exact-head CI VERIFIED; independent review of PR #650 NOT VERIFIED; integration NOT RUN; Gemini review of PR #649 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review PR #650; then integrate only after required governance checks and invoke one reviewer through the trusted controller. No direct child dispatch.
+
