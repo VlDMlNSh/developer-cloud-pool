@@ -86,24 +86,6 @@ function statements(db, input) {
     AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
     AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
-  const trustedRegistryMatch = `
-    AND EXISTS (
-      SELECT 1 FROM pool_route_registry_state s
-      JOIN pool_route_registry_snapshots rs
-        ON rs.registry_epoch = s.current_epoch
-       AND rs.bundle_digest = s.current_bundle_digest
-       AND rs.registry_version = s.current_registry_version
-      JOIN pool_route_registry_issuer_keys k
-        ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
-       WHERE s.state_id = 1 AND s.current_epoch = q.registry_epoch
-         AND s.current_bundle_digest = q.registry_bundle_digest
-         AND rs.accepted_at <= ? AND rs.valid_until > ?
-         AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
-         AND k.registry_version = q.registry_version
-         AND k.status = 'active' AND k.revoked_at IS NULL
-         AND k.valid_from <= ? AND k.valid_until > ?
-    )
-  `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
@@ -111,8 +93,20 @@ function statements(db, input) {
     r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
     r.keyId, r.registryEpoch, r.registryBundleDigest, now, now - 300, now
   ];
-  const registryValues = [now, now, now, now];
   return [
+    // The migration trigger verifies current snapshot + issuer-key status inside this
+    // D1 batch. If any later statement fails, this assertion row rolls back with it.
+    db.prepare(`
+      INSERT INTO pool_admission_registry_assertions (
+        admission_id, qualification_id, issuer_id, issuer_key_id,
+        registry_epoch, registry_bundle_digest, registry_version,
+        evidence_digest, checked_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      admissionId, r.qualificationId, r.issuerId, r.keyId,
+      r.registryEpoch, r.registryBundleDigest, r.registryVersion,
+      r.evidenceDigest, now
+    ),
     db.prepare(`
       UPDATE pool_approval_ledger
          SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = ?
@@ -120,11 +114,11 @@ function statements(db, input) {
          AND issue_number = ? AND target_sha = ? AND profile = ?
          AND envelope_digest = ? AND state = 'ready' AND consumed_at IS NULL
          AND expires_at > ?
-         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch} ${trustedRegistryMatch})
+         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch})
     `).bind(
       now, input.taskKey, admissionId, a.approvalId, a.ownerNumericId,
       a.repositoryId, a.issueNumber, a.targetSha, a.profile, a.envelopeDigest,
-      now, ...routeValues, ...registryValues
+      now, ...routeValues
     ),
     db.prepare(`
       INSERT INTO pool_admissions (
@@ -144,10 +138,10 @@ function statements(db, input) {
       FROM pool_approval_ledger l
       JOIN pool_tasks t ON t.task_key = l.task_key
       JOIN pool_task_approvals ta ON ta.approval_id = l.approval_id AND ta.task_key = t.task_key
-      JOIN pool_route_qualifications q ON ${routeMatch} ${trustedRegistryMatch}
+      JOIN pool_route_qualifications q ON ${routeMatch}
       WHERE l.approval_id = ? AND l.admission_id = ? AND l.state = 'consumed'
         AND l.consumed_at = ? AND t.state = 'pending'
-    `).bind(admissionId, t.attemptId, now, ...routeValues, ...registryValues, a.approvalId, admissionId, now),
+    `).bind(admissionId, t.attemptId, now, ...routeValues, a.approvalId, admissionId, now),
     db.prepare(`
       INSERT INTO pool_attempts (
         attempt_id, task_key, attempt_number, status, input_digest,
@@ -189,6 +183,7 @@ function statements(db, input) {
             JOIN pool_task_delivery_outbox o ON o.task_key = a.task_key
             JOIN pool_attempts p ON p.attempt_id = a.attempt_id AND p.task_key = a.task_key
             JOIN pool_route_qualifications q ON q.qualification_id = a.qualification_id
+            JOIN pool_admission_registry_assertions g ON g.admission_id = a.admission_id
            WHERE a.admission_id = ? AND a.approval_id = ?
              AND a.task_key = ? AND a.attempt_id = ?
              AND a.qualification_id = ? AND a.evidence_digest = ?
@@ -202,6 +197,13 @@ function statements(db, input) {
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.evidence_digest = a.evidence_digest
+             AND g.qualification_id = a.qualification_id
+             AND g.issuer_id = q.issuer_id AND g.issuer_key_id = q.issuer_key_id
+             AND g.registry_epoch = q.registry_epoch
+             AND g.registry_bundle_digest = q.registry_bundle_digest
+             AND g.registry_version = q.registry_version
+             AND g.evidence_digest = q.evidence_digest
+             AND g.checked_at = a.admitted_at
              AND ${routeMatch}
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
