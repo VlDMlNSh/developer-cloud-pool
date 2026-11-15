@@ -357,4 +357,84 @@ describe("atomic qualified A0 -> D1 admission", () => {
     ).first()).toMatchObject({ n: 0 });
   });
 
+
+  it("serializes admission against a concurrent trusted-registry epoch advance", async () => {
+    const db = env.POOL_DB;
+    const current = await db.prepare(`
+      SELECT current_epoch, current_bundle_digest, current_registry_version
+        FROM pool_route_registry_state WHERE state_id = 1
+    `).first();
+    const maximum = await db.prepare(
+      "SELECT COALESCE(MAX(registry_epoch), 0) AS max_epoch FROM pool_route_registry_snapshots"
+    ).first();
+    const nextEpoch = Number(maximum.max_epoch) + 1;
+    const nextDigest = "a".repeat(64);
+    const acceptedAt = NOW - 1;
+
+    // Advance the trusted snapshot as one D1 batch while admission attempts
+    // to assert the old snapshot. Either serial order is valid; a mixed result
+    // (old admission accepted after the new pointer wins) is not.
+    const advanceRegistry = db.batch([
+      db.prepare(`
+        INSERT INTO pool_route_registry_snapshots (
+          registry_epoch, registry_version, root_key_id, bundle_digest,
+          issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+          bundle_json, root_signature
+        ) VALUES (?, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 0, '{}', 'synthetic-test-only')
+      `).bind(nextEpoch, nextDigest, NOW - 20, NOW + 3600, acceptedAt),
+      db.prepare(`
+        INSERT INTO pool_route_registry_issuer_keys (
+          registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+          status, revoked_at, valid_from, valid_until, public_key_jwk
+        ) VALUES (?, ?, 'local-authority', 'issuer-key-002', 'registry-v2',
+          'active', NULL, ?, ?, ?)
+      `).bind(nextEpoch, nextDigest, NOW - 100, NOW + 3600,
+        JSON.stringify({ kty: "EC", crv: "P-256", x: "C".repeat(43), y: "D".repeat(43) })),
+      db.prepare(`
+        UPDATE pool_route_registry_state
+           SET current_epoch = ?, current_bundle_digest = ?,
+               current_registry_version = 'registry-v2', updated_at = ?
+         WHERE state_id = 1 AND current_epoch = ?
+      `).bind(nextEpoch, nextDigest, acceptedAt, current.current_epoch)
+    ]);
+
+    const [admission] = await Promise.all([
+      admitQualifiedTask(db, input),
+      advanceRegistry
+    ]);
+
+    const pointer = await db.prepare(
+      "SELECT current_epoch, current_bundle_digest FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
+    expect(pointer).toMatchObject({
+      current_epoch: nextEpoch,
+      current_bundle_digest: nextDigest
+    });
+
+    const ledger = await db.prepare(
+      "SELECT state FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first();
+    const assertion = await db.prepare(
+      "SELECT registry_epoch, registry_bundle_digest FROM pool_admission_registry_assertions WHERE admission_id = ?"
+    ).bind(input.admissionId).first();
+    const admissions = await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admissions WHERE admission_id = ?"
+    ).bind(input.admissionId).first();
+
+    if (admission.decision === "ADMITTED_QUEUED") {
+      expect(ledger.state).toBe("consumed");
+      expect(admissions.n).toBe(1);
+      expect(assertion).toMatchObject({
+        registry_epoch: input.route.registryEpoch,
+        registry_bundle_digest: input.route.registryBundleDigest
+      });
+    } else {
+      expect(admission).toMatchObject({ decision: "DENY", dispatch: false });
+      expect(ledger.state).toBe("ready");
+      expect(admissions.n).toBe(0);
+      expect(assertion).toBeNull();
+    }
+    expect(admission.dispatch).toBe(false);
+  });
+
 });
