@@ -2111,3 +2111,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Hybrid parallel development policy adopted — 2026-11-15
+
+- Operating policy: [Hybrid Parallel Development Policy](../governance/HYBRID-PARALLEL-DEVELOPMENT-POLICY-2026-11-15.md), commit `dfa6fcb94f57ba0f925841ed13897d9cd2f24fff`.
+- README now links the policy and states that every `/next` must evaluate gated Gemini batch dispatch while ChatGPT continues independent Contour A engineering: commit `0d91870817800fc56584451151cee5460b0ebfe9`, README blob `abb94bb985ea9363196c976845ea78341378cebb`.
+- Policy branch: `docs/hybrid-parallel-next-policy-2026-11-15`, created from observed default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. These are documentation changes on a non-default branch; not merged and not canonical default state.
+- MediaHub Gemini controller source was fetched from `main`, blob SHA `0a1246f6755020faf8b7e48d07bfff790bbaece3`. It exposes `probe`, `agents`, `review` modes; explicit `confirm`; trusted-main dispatch checks; and `MEDIAHUB_GEMINI_BATCH_ENABLED`. Probe is explicitly non-launching. The source fetch did not verify live variable/secret readiness, default-branch probe success or child runs.
+- This pass did not dispatch Gemini, access secrets, make provider calls, deploy infrastructure, enable pool dispatch or run a worker. Agent dispatch remains NOT RUN / NOT VERIFIED until all live controller and governance gates are proven.
+- Every `/next` now has a documented operating requirement: refresh refs and governance; pin immutable SHA; prepare up to three independent bounded roles; dispatch only through the trusted approved controller if gates pass; otherwise record exact NOT RUN blocker and continue safe parallel ChatGPT work; verify provenance/CI; update report and Context Window.
+- Progressive pool implementation is required in vertical slices: repository contracts/D1 proof; no-provider D1→Supervisor→Worker integration; hosted readiness; controlled deployment; executor onboarding; operational qualification.
+- Contour B remains DEFERRED until Contour A ACCEPTED.
+- Next action: review this documentation branch and open a draft PR for owner review; before any agent dispatch, verify trusted-main controller probe, live non-secret config and governance/permissions using approved paths.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
