@@ -3336,3 +3336,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Gemini Cloud Pool-specific review route NOT RUN; three Gemini children NOT RUN; no child IDs/artifacts. Do not reuse the MediaHub controller outside its approved scope. No Claude host execution, secrets, provider/model calls, deployment or dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: authorized independent review/governance for stacked PRs #87/#92/#93, then integrated stack audit before any merge.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 323 integrated PR #87/#92/#93 admission and registry audit
+
+- Report: [Wave 323 integrated admission/registry audit](../reports/2026-11-15-pr87-pr92-pr93-integrated-admission-registry-audit-wave323.md).
+- Default branch ref re-read directly: `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; exact-head Pool Contract Validation #43712647615 and D1 Proof #43712647597 SUCCESS.
+- PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; exact-head Pool Contract Validation #43718679251 and D1 Proof #43718679258 SUCCESS.
+- PR #93 head `e200838d038b9cd48635233187819302bba6a33e`; push D1 run #43736259303 / job #132879411032 and PR D1 run #43736264768 / job #132879427578 SUCCESS. Artifact #14170616460 SHA-256 `909e27d3bec1ca75933085475431f3ff5e4f9f8578985e1e2670d01336270c5a`.
+- Integrated static audit: migration 0013 binds persisted route qualifications to registry snapshot/issuer-key identities; migration 0014 admission assertion trigger re-checks active snapshot, freshness and issuer-key lifecycle in the same D1 batch as admission; PR #92 verifies complete durable replay receipt chain; PR #93 uses verifier-issued WeakMap capability and immutable bundle snapshot for persistence. Lower unseen epoch rollback test remains present and passed.
+- All three PRs remain OPEN/DRAFT/UNMERGED, stacked #87 → #92 → #93. Formal reviews on each = 0. Combined status contexts = 0. Active ruleset #26550182 has zero required approvals and no required status contexts; review-thread resolution and PR required, no bypass actors. Independent review NOT RUN / NOT VERIFIED.
+- CI is local Workers-runtime D1 proof only. Hosted D1, production Supervisor/Worker wiring, authenticated web UI, provider routing, secrets isolation, and Contour A qualification remain NOT VERIFIED. Gemini Cloud Pool route and children NOT RUN; no dispatch, provider calls, secrets, deployment, merge or paid resources.
+- Remaining security boundary: independently enumerate all registry-table writers and verify no alternate path can bypass the verifier-capability persistence boundary; then map the local proof into production integration contracts without enabling dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Context update follows this report on the documentation branch; branch remains unmerged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
