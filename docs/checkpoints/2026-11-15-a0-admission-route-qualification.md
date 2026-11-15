@@ -255,7 +255,7 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 
 ---
 
-## 2026-11-16 continuation update — Wave 318
+## 2026-11-16 continuation update — owner-triggered batch 6901529560
 
 ### Verified refs
 - Cloud Pool default `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
@@ -268,7 +268,7 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #99 OPEN / DRAFT / UNMERGED; current docs branch/PR HEAD `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; exact-head checks 0; CI NOT VERIFIED. Formal review NOT VERIFIED.
 - No PR merged and no default-branch code changed.
 
-### Gemini Wave 318
+### Gemini owner-triggered batch 6901529560
 - Owner Issue #301 comment `6901529560`; controller run `43763042415` COMPLETED / SUCCESS.
 - Agent 1 run/job `43763061253` / `132961975123`, SUCCESS; artifact `14181440011`, SHA-256 `f1eb9f7b934bac10030b7cf9ddf0617991aa700bb3463e4bc118d44a1259bd51`.
 - Agent 2 run/job `43763062743` / `132961977561`, SUCCESS; artifact `14181202709`, SHA-256 `ad3a3393cd776d7babd86a95d9dd4b970645de6a12bcf4a13e8eb64f854f75a7`.
@@ -276,7 +276,7 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - All three agents opened Draft PRs #730–#732. Their exact-head check-runs are 0. Agent 1 produced documentation only; Agent 2 did not execute tests; Agent 3's static security assertions lack reproducible exact-head evidence. Do not accept or merge them based on workflow success alone.
 
 ### Disposition
-- Gemini dispatch/execution/provenance path: SUCCEEDED for Wave 318.
+- Gemini dispatch/execution/provenance path: SUCCEEDED for owner-triggered batch 6901529560.
 - Cloud Pool implementation/runtime acceptance: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
 - No secrets, provider calls, hosted provisioning, deployment, merge, or dispatch-gate changes.
