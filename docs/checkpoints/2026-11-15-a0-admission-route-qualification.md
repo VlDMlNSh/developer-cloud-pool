@@ -240,3 +240,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Status: root-signed bundle verifier IMPLEMENTED / exact-head CI VERIFIED; durable trusted registry NOT IMPLEMENTED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## MediaHub controller bridge correction — 2026-11-15
+
+The earlier note that PR #434 was the pending HMAC syntax fix is superseded by current MediaHub main evidence:
+
+- Current MediaHub main HEAD: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`.
+- PR #433 (syntax fix) MERGED as `79196054d84b1197cea1447dd1db5ad075302834`; its exact-head checks all PASS. PR #437 (HMAC runtime-contract repair) MERGED as `7cbbc0025ce01b8c476d512cfc5e12dc35fd952c`; compare confirms both merge commits are ancestors of current main.
+- PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
+- PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
+- Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
