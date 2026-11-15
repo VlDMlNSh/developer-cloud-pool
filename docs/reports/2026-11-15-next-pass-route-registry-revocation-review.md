@@ -36,7 +36,7 @@
 ## Verification and disposition
 
 - Live default HEAD: verified `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
-- PR #95: OPEN / DRAFT / UNMERGED; head `4d4a417df94eee1cab7cd1ce746be0fc97e6482c`, base `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #95: OPEN / DRAFT / UNMERGED; head `c70a11481eca0921224174de623778265c95bcb8`, base `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
 - Exact-head workflow runs for PR #95: none returned by the commit workflow-run query. Combined commit status contexts: empty. Exact-head CI = **NOT VERIFIED**.
 - PR #86: OPEN / DRAFT / UNMERGED, head `a218f92274eca5491700d8f72a21172f8ce689dc`.
 - PR #87: OPEN / DRAFT / UNMERGED, head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`.
