@@ -503,3 +503,13 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Detailed evidence: [Wave 337 report](../reports/2026-11-15-wave337-next-dispatch-and-contour-a-reconciliation.md).
 - Next: pure revocation keyset/event verifier and adversarial vectors on clean candidate, then D1 CAS/rollback + same-batch admission checks after governance gates. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Wave 338 — trusted-time source audit — 2026-11-15
+
+- Exact supplementary MediaHub Issue #301 event [6900299252](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900299252); controller/children NOT VERIFIED.
+- Confirmed in clean integration branch that `admitQualifiedTask` uses caller `input.now` for admission, registry assertion `checked_at`, approval expiry, route freshness, and exact replay. Migration 0014 compares against `NEW.checked_at` but does not derive DB time.
+- Root registry verifier accepts caller `now`; verifier-issued persistence capability in PR #93 does not change time provenance: `verifiedAt` derives from caller input and becomes persisted `accepted_at`/`updated_at`.
+- PR #87 historical exact-head CI recorded SUCCESS: 119/119 D1 tests, Pool Contract Validation SUCCESS; PR remains DRAFT, 0 formal reviews, aggregate status contexts empty / NOT VERIFIED.
+- Detailed source evidence and disposition: [Wave 338 report](../reports/2026-11-15-wave338-trusted-time-source-audit.md).
+- Next implementation: materialize one DB-derived timestamp inside D1 batch; use it for first admission and exact replay; then trusted registry persistence time + adversarial backdated/future/unavailable-clock tests. Do not add revocation schema until governance decisions are closed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
