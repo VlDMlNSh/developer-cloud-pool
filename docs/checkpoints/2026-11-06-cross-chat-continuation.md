@@ -440,3 +440,14 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Next: resolve/re-run the Freebuff Web check through the app's own controls and re-read the PR merge box. Continue only through normal GitHub governance.
 - Context Window commit: `b7a5378a3b5da3e0121468709fcb3e32b0b0d53a`, blob `35b0fb70db3be89bd9f0da5dc2a5e8b649e87758`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 321 MediaHub PR #651 post-merge probe gate
+
+- Report: [Wave 321 post-merge verification](../reports/2026-11-15-mediahub-pr651-post-merge-probe-verification-wave321.md).
+- PR #651 merged at `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; this is current MediaHub `main`. Commit signature verified by GitHub.
+- Post-merge Astra Verify run #43735377046 / job #132876692497 SUCCESS. Controller and reusable observer blobs were read back; explicit caller fields are passed and `github.event_path` dependency removed.
+- Trusted-main OWNER `/probe` after merge: NOT RUN / NOT VERIFIED. The latest matching owner comment #6897245259 predates merge. Three Gemini child workflows: NOT RUN / NOT QUALIFIED.
+- Freebuff Web suite #118407346000 remains QUEUED with zero checks; it is not a required ruleset context. Independent security review and metadata-only secret/variable scope checks remain outstanding. No credentials read, provider call, agent dispatch, deployment or bypass.
+- Next: OWNER posts exact `/probe` on Issue #301 after merge; inspect the resulting controller observer/assertion. Keep all dispatch gates fail-closed and Developer Cloud Pool Contour A primary.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
