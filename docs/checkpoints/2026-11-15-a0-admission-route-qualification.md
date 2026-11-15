@@ -135,3 +135,18 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: implement migration 0011 additively on the new stacked branch, preserve schema-0010 frozen fixture, then add composite batch adapter and adversarial local Workers-runtime tests. Exact-head CI required before considering proof verified. Keep dispatch false; no hosted D1, provider calls, secrets, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Atomic admission implementation follow-up — 2026-11-15
+
+- Design moved to an isolated implementation proof on branch `proof/atomic-a0-d1-admission-2026-11-15`, exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`, stacked Draft PR #72: https://github.com/VlDMlNSh/developer-cloud-pool/pull/72.
+- Migration 0011 adds typed route qualification evidence, immutable admission and commit receipt, one-per-task admission uniqueness, and outbox binding to admission/attempt/evidence digest.
+- Composite D1 batch composes existing approval-consumption/task/outbox trigger, admission record, existing immutable attempt trigger, outbox binding and constraint-backed receipt. Failure of the receipt assertion aborts the batch. Read-back follows commit.
+- Evidence binding includes schemaVersion, route/provider/model/issuer/account/credential handle/quota domain, capability ID/profile, evidence reference/digest, observedAt/validUntil, revocationVersion and registryVersion. Maximum evidence age 300 seconds. Revocation is monotonic.
+- Exact-head CI run `43689591339` SUCCESS; 91 Workers-runtime tests passed (7 atomic admission tests); upgrade-binding 1 passed; frozen schema-0010 fixture 2 passed. Artifact `14152175385`, SHA-256 `8f7b384af448bd58210cddb60843d3a01e83b402bef141e091a53a8cdfd8d236`.
+- Important limit: this is only an isolated D1 proof. Route rows are assumed to have been issued by a trusted authority; cryptographic issuer verification, canonical evidence serialization/digest generation, live provider-account/quota proof and trusted qualification writer are NOT IMPLEMENTED/QUALIFIED. No external provider/login/secret use.
+- Combined commit status is empty; required CI contexts NOT VERIFIED. PR #72 base is PR #67's stacked implementation branch; default-to-head comparison diverged 53 ahead / 20 behind. Do not merge or transplant the stack wholesale.
+- Dispatch remains false. No hosted D1, Worker deployment, executor qualification or independent review. Independent review remains deferred until the pool is operational.
+- Status: isolated transaction IMPLEMENTED / exact-head CI VERIFIED; Qualified Route Evidence NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
