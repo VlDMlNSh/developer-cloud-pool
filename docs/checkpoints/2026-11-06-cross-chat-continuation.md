@@ -428,3 +428,15 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Report commit `db8740447573b7b48559d7f9241b6ff79d66edaa`; Context Window commit `3f032f8110f64db1615555c0954e5b219faded5f` (blob `cd4148db68636e7c9c0317e4af71aef1d62aec70`).
 - Next: owner posts `/next` on https://github.com/VlDMlNSh/mediahub-os/issues/301 and we verify the resulting controller run; independently review/merge PR #651 through normal governance, then repeat trusted-main `/probe`. Keep Cloud Pool Contour A as the primary project and do not infer its acceptance from MediaHub controller work.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — MediaHub PR #651 exact-head checks diagnosis (Wave 320)
+
+- Report: [PR #651 exact-head checks and merge-blocker diagnosis](../reports/2026-11-15-mediahub-pr651-checks-blocker-diagnosis.md).
+- PR #651 OPEN/ready-for-review/UNMERGED; head `ec860a9b7698058d18a0b77efdce1643dd011bc8`; API says `mergeable=true`, `mergeable_state=clean`.
+- All five required status contexts in active ruleset #26108066 are SUCCESS on exact head; 9 check runs SUCCESS, 2 PR-context dispatch/admission jobs SKIPPED as designed.
+- One extra Freebuff Web check suite #118402324737 remains QUEUED with zero check runs; it is not named as a required ruleset context. Legacy commit status is pending but has zero status contexts. Exact UI merge-block reason remains NOT VERIFIED.
+- No source patch justified by CI; no merge/bypass, secrets access, agent dispatch or deployment. Three Gemini agents remain NOT RUN / NOT QUALIFIED.
+- Next: resolve/re-run the Freebuff Web check through the app's own controls and re-read the PR merge box. Continue only through normal GitHub governance.
+- Context Window commit: `b7a5378a3b5da3e0121468709fcb3e32b0b0d53a`, blob `35b0fb70db3be89bd9f0da5dc2a5e8b649e87758`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
