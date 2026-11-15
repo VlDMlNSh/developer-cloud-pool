@@ -5,7 +5,7 @@ import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
 const NOW = 1_800_000_000;
 const input = {
   admissionId: "admission-001",
-  taskKey: "a".repeat(64),
+  taskKey: "16eb82ba2f090f2f56d5ca3e63c0c86d4622ba2443cee60bbfec5ab42d13cd99",
   now: NOW,
   approval: {
     approvalId: "approval-atomic-001", ownerNumericId: "10001",
@@ -47,10 +47,11 @@ async function seed(overrides = {}) {
 }
 
 beforeEach(async () => {
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS test_abort_atomic_attempt").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admissions").run();
-  await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
@@ -146,7 +147,8 @@ describe("atomic qualified A0 -> D1 admission", () => {
   it("allows only one concurrent admission for one single-use approval", async () => {
     const results = await Promise.all(Array.from({ length: 12 }, () => admitQualifiedTask(env.POOL_DB, input)));
     const admitted = results.filter(x => x.decision === "ADMITTED_QUEUED" || x.decision === "ADMISSION_ALREADY_COMMITTED");
-    expect(admitted).toHaveLength(12);
+    expect(admitted).toHaveLength(1);
+    expect(results.filter(x => x.decision === "DENY")).toHaveLength(11);
     const approvals = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first();
     const attempts = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first();
     expect(approvals.n).toBe(1);

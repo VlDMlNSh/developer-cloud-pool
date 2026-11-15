@@ -13,6 +13,7 @@ function valid(input) {
   return Boolean(
     input && Number.isSafeInteger(input.now) && input.now > 0 &&
     SAFE_ID.test(input.admissionId || "") &&
+    SHA256.test(input.taskKey || "") &&
     a && SAFE_ID.test(a.approvalId || "") &&
     NUMERIC_ID.test(a.ownerNumericId || "") &&
     NUMERIC_ID.test(a.repositoryId || "") &&
@@ -157,6 +158,10 @@ function statements(db, input) {
  */
 export async function admitQualifiedTask(db, input) {
   if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
+  const canonicalTask = JSON.stringify(["pool-task-v1", input.approval.repositoryId, input.approval.issueNumber, input.approval.targetSha, input.approval.profile, 1]);
+  const taskDigest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonicalTask));
+  const expectedTaskKey = [...new Uint8Array(taskDigest)].map((value) => value.toString(16).padStart(2, "0")).join("");
+  if (input.taskKey !== expectedTaskKey) return deny("TASK_KEY_BINDING_MISMATCH");
   if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
     return deny("STORAGE_UNAVAILABLE");
   }
