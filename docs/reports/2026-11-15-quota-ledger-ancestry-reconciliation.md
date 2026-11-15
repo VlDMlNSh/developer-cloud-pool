@@ -11,7 +11,7 @@ Reconcile the fail-closed provider quota ledger from stale PR #71 onto the curre
 - PR #71 exact-head Pool Contract Validation run `43685547993`: COMPLETED / SUCCESS. Its branch is stale relative to current default (3 ahead / 27 behind), so the branch itself was not merged or rebased.
 - Reconciled branch: `reconcile/quota-ledger-fail-closed-2026-11-15`.
 - Reconciled PR #74: https://github.com/VlDMlNSh/developer-cloud-pool/pull/74
-- Exact PR #74 HEAD: `e1b51e7165f96c8c459c672943dfa8b862879db4`; at initial immutable base the compare was 5 ahead / 0 behind. After canonical documentation refresh advanced default to `c424e62c89ce40a6fb72202e41659ce27c168f03`, compare is 5 ahead / 1 behind; GitHub PR API reports mergeable=true.
+- Exact PR #74 HEAD: `e1b51e7165f96c8c459c672943dfa8b862879db4`; at initial immutable base the compare was 5 ahead / 0 behind. After subsequent canonical documentation refresh, the default snapshot reached `a0200d102f25771bbb52e6dcacaa663dd46da6f8`; compare is DIVERGED 5 ahead / 8 behind. PR metadata currently reports mergeable=null (NOT VERIFIED).
 
 ## Changes
 
