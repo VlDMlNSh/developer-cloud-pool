@@ -27,11 +27,14 @@ CREATE TABLE pool_route_registry_state (
     REFERENCES pool_route_registry_snapshots(registry_epoch, bundle_digest)
 );
 
+-- Compare against the highest persisted epoch, not only the active pointer.
+-- Otherwise a future snapshot can be inserted first and a lower, unseen epoch
+-- can still be appended while the singleton pointer remains unchanged.
 CREATE TRIGGER pool_route_registry_snapshot_epoch_monotonic
 BEFORE INSERT ON pool_route_registry_snapshots
-WHEN EXISTS (
-  SELECT 1 FROM pool_route_registry_state
-   WHERE state_id = 1 AND NEW.registry_epoch <= current_epoch
+WHEN NEW.registry_epoch <= COALESCE(
+  (SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots),
+  0
 )
 BEGIN
   SELECT RAISE(ABORT, 'ROUTE_REGISTRY_EPOCH_NOT_MONOTONIC');
