@@ -2059,3 +2059,22 @@ This section supersedes the earlier PR #74 head `e1b51e7165f96c8c459c672943dfa8b
 - Next bounded step: implement the trusted Qualified Route Evidence writer/verifier with canonical serialization/digest, authenticated issuer provenance, provider/model/account/quota-domain binding, freshness and monotonic revocation; then bind only verified immutable evidence to the existing A0→D1 transaction. Keep dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Qualified Route Evidence verifier — latest checkpoint 2026-11-15
+
+- Default branch snapshot immediately before this Context Window update: `Основной` @ `c14bb3f79a1aeb154d5be37dba65575cfe735450`. This Context Window commit will advance default once more; re-read exact refs at next `/next`.
+- New isolated verifier PR #75: https://github.com/VlDMlNSh/developer-cloud-pool/pull/75
+- Branch `proof/qualified-route-evidence-verifier-2026-11-15`; exact HEAD `f253f68194e65912a91c91f2d158525b97927749`; base is PR #72 branch `proof/atomic-a0-d1-admission-2026-11-15` at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`. PR #75 OPEN / DRAFT / UNMERGED.
+- Verifier module blob `0d5b97ad0bc59173fe8c4c7de28c67965bd09ad0`; adversarial tests blob `7624eedcb13884982ae434819e50882163de4cff`; package blob `e7f9e9967032e94f4d15a1008353e558375a6d52`; workflow blob `9e40f72298bf07dd7928154eba75b28033ac2ec6`; README blob `b1d2b092bc9df9d0a0ce2addd64d24f839d8754c`.
+- Exact-head run `43694628561` / job `132752333196`: COMPLETED / SUCCESS at exact head `f253f68194e65912a91c91f2d158525b97927749`; syntax PASS; Workers-runtime 103 PASS / 0 FAIL (includes 10 verifier cases); upgrade-binding smoke PASS; frozen schema-0010 fixture smoke PASS; artifact `14153962592`.
+- Canonical evidence encoding v1 is UTF-8 JSON fixed-position array with exact allowlist and explicit null. Fixed SHA-256 test vector `3d409b69df838b6ba0826a950c7d43940b5127aba25fc320b192d9c2b33d43da`. Detached ES256 (ECDSA P-256 / SHA-256) signature verified against supplied issuer snapshot; binds route/provider/model/issuer/key/account/credential/quota/capability/registry/revocation fields; max evidence age 300s; expiry and issuer key validity checked.
+- Critical trust limitation: `trustedRoute` and `trustedIssuer` are supplied snapshots. The verifier cannot prove their source authority. Pinned trust root, access-controlled registry loader, key custody/rotation, durable revocation writer, and atomic D1 re-check are NOT IMPLEMENTED. Verifier is not wired into `admitQualifiedTask`. Therefore route remains NOT QUALIFIED.
+- PR #75 commit-status contexts: 0; required status contexts NOT VERIFIED; no independent review. PR mergeable=true relative to its declared PR #72 base. Active default-only ruleset `26550182` still has 0 required approvals/no required status contexts; branch protection API 403.
+- At default snapshot `3f3d4a25024f6d3475f16c46bee383c174b5756c`, ancestry: PR #72 DIVERGED 67 ahead / 50 behind; PR #74 DIVERGED 1 ahead / 5 behind; PR #75 DIVERGED 72 ahead / 50 behind (stacked on #72). These numbers are historical snapshot-specific; recalculate next time.
+- Canonical report: [Qualified Route Evidence verifier proof](../reports/2026-11-15-qualified-route-evidence-verifier.md); report commit `8a300fa3d1b247c05487704f0f2a11cace886a9b`.
+- Continuation checkpoint commit `5be332daa4165b1b2763df16513e1fbf7630e149`; route checkpoint commit `9a1d9db3b79ab9f0eb5318dd3fc0385c76fd33fb`; contract commit `c14bb3f79a1aeb154d5be37dba65575cfe735450`.
+- No provider login/call, secret access, hosted D1, Worker deployment, production trust root, executor qualification, dispatch or merge. Dispatch remains false. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: trusted issuer/route registry loader and authenticated key lifecycle, then a single D1 consistency boundary that re-checks exact registry/revocation watermark before approval consumption. Add revocation race + rollback tests. Do not trust caller-supplied snapshots.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
