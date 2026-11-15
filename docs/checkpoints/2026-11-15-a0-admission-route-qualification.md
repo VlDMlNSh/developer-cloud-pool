@@ -44,3 +44,19 @@ https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-2026101
 ## Context Window
 
 https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs/context/GITHUB-CONTEXT-WINDOW.md
+
+
+## Expanded integration checkpoint — 2026-11-15
+
+Current default HEAD before this documentation update: `beb92ded640ed8824ab566ae574d9409f26b5ef2`.
+
+PR #29 is OPEN/DRAFT at `e4c8d642bbc054e7c52b391356965b492dad32b4`, diverged from current default by 36 ahead / 66 behind (merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`). Its pure quota source and tests are reusable only after file-level reconciliation. Current `listEligibleRoutes()` returns `quotaEvidence=unknown` routes as eligible; an existing test expects this behavior. Treat it as a selector, not an authorization decision, until fixed.
+
+Provider inventory blob `42789e7408ba688b4af323deffe63eb2e15f50b8`: 24 cloud slots, 0 verified account identities, 0 verified quota domains. Credential presence and billing eligibility are not checked; declared cost class is inventory metadata only.
+
+PR #67 A0/D1 and PR #68 architecture branches are each 2 commits behind current default after documentation updates. A0 still lacks authoritative route registry resolution and is not integrated with the D1 approval/task/attempt/outbox transaction. Required target: typed route evidence bound to provider/model/account/issuer/quota domain/evidence freshness/revocation, followed by atomic approval consume + task/attempt + queue intent. Fail closed before consuming approval on any missing/ambiguous evidence. Dispatch remains false.
+
+Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs/reports/2026-11-15-provider-quota-a0-integration-analysis.md
+Issue #70: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
+
+Next: reconcile PR #29 quota-ledger source/tests file-by-file against current default; correct unverified-route eligibility and add negative tests; then implement/test the atomic A0 + D1 route-evidence boundary. No branch merge, provider calls, secret access, hosted provisioning, deployment or dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
