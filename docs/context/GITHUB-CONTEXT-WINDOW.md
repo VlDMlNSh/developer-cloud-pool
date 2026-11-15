@@ -2041,3 +2041,21 @@ Implement the trusted Qualified Route Evidence writer/verifier without provider 
 Status: quota ledger IMPLEMENTED / exact-head CI VERIFIED in Draft PR #74; atomic A0→D1 IMPLEMENTED / exact-head CI VERIFIED in Draft PR #72; route qualification NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final PR #74 rebase and documentation correction — 2026-11-15
+
+This section supersedes the earlier PR #74 head `e1b51e7165f96c8c459c672943dfa8b862879db4` and run `43692093254` recorded above.
+
+- Default snapshot before this Context Window update: `ea156150becba685640f4cf38014fc6f373154da`.
+- PR #74 branch `reconcile/quota-ledger-fail-closed-2026-11-15` was re-anchored with a Git tree based on immutable default `f36c733ed528b0cd1050f05965a5de3154766b13`, preserving the exact three verified blobs. The branch ref update used force-with-lease with expected prior head `e1b51e7165f96c8c459c672943dfa8b862879db4`; default branch was not changed by this operation.
+- Current PR #74 head: `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`, parent `f36c733ed528b0cd1050f05965a5de3154766b13`; at that parent it was 1 ahead / 0 behind and PR API reported mergeable=true.
+- Exact-head workflow run `43692828719` / job `132746870777`: COMPLETED / SUCCESS at exact head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`; pool-contract validator PASS; YAML parse PASS; 13 quota tests PASS / 0 FAIL; dispatch gate false.
+- Final blobs: source `419f010a18c61abefafbb4845c55ea7c6bb1ab90`; tests `d5291729bdcf9261fcdb9be97998a9b8158bea23`; workflow `4e47b8e8850833d930cdd457bea91c2cec507576`.
+- At default snapshot `ea156150becba685640f4cf38014fc6f373154da`, default → PR #74 is DIVERGED 1 ahead / 4 behind; default → PR #72 is DIVERGED 67 ahead / 49 behind; default → PR #67 is DIVERGED 47 ahead / 49 behind; default → PR #73 is DIVERGED 4 ahead / 22 behind. The subsequent Context Window publication advances default once more. Re-read exact refs and comparisons on next `/next`.
+- PR #74 remains OPEN / DRAFT / UNMERGED. Its exact-head CI is verified, but combined status contexts are empty, no independent review exists, and required status contexts remain NOT VERIFIED.
+- Canonical report final blob: `a3d9dfde251062658629801168ade3ee3a758670`; checkpoint final blob: `d29b03c7f12a6ac8b9866b423c40db09a2b8ba87`; route checkpoint final blob: `e611b50c8d517637f64425d8e7a0981574037d1b`; contract final blob: `cd5ea0e6bae8927a50d2f9447a58032343e3e39e`.
+- No provider login/call, secret read, hosted D1, Worker deployment, dispatch, production resource creation or merge. Qualified Route Evidence remains NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: implement the trusted Qualified Route Evidence writer/verifier with canonical serialization/digest, authenticated issuer provenance, provider/model/account/quota-domain binding, freshness and monotonic revocation; then bind only verified immutable evidence to the existing A0→D1 transaction. Keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
