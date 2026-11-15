@@ -2253,7 +2253,7 @@ Fresh live read-back for this pass:
 - Documentation continuation branch is `docs/next-2026-11-15-route-registry-revalidation`. Before this report its HEAD was `f8eb501c1beb4dc606d2993b0d62ab9af25900d2`; report commit `ea60830b720d9d0341bb3cb74fe1d6d9c087d9a3` records the current pass. This documentation branch remains separate and unmerged.
 - PR #79 exists as a separate open documentation PR on `docs/next-2026-11-15-registry-epoch-hardening`; do not confuse it with the active continuation branch.
 - PR #80 remains OPEN / DRAFT / UNMERGED at `4dc81a377004502e8cae35583a734be5cc74cce6`.
-- New PR #82 is OPEN / DRAFT / UNMERGED, stacked on PR #80; current head `6a088b63a5f068665db286301bd6d360204fa288`, exactly 3 commits ahead / 0 behind its immutable parent. Formal reviews 0; inline review threads 0.
+- New PR #82 is OPEN / DRAFT / UNMERGED, stacked on PR #80; current head `6a088b63a5f068665db286301bd6d360204fa288`, exactly 6 commits ahead / 0 behind its immutable parent. Formal reviews 0; inline review threads 0.
 
 PR #82 implementation:
 - Migration `proofs/d1-ledger/migrations/0013_route_registry_rows_and_cas_guard.sql` adds issuer-key rows, qualified-route rows, composite issuer/key foreign key, append-only triggers, post-acceptance child-insert denial and a CHECK-backed CAS assertion table.
