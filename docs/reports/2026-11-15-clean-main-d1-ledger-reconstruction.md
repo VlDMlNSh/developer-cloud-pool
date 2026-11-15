@@ -68,18 +68,18 @@ Add deterministic concurrent registry-epoch advancement versus admission coverag
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 
-## Deterministic registry-advance interleaving — 2026-11-15
+## Deterministic registry-advance interleaving and exact-head CI — 2026-11-15
 
-- Clean integration branch: `integration/d1-ledger-clean-main-2026-11-15`.
-- Latest implementation commit: `d920a8512a2ac2c32a201a4ed84c041bb97d1a04`; preceding workflow commit: `5eaaf25fa4933bf537f0fd932e1867f16c3fd03d`. The branch is 3 commits ahead / 0 behind `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; merge base is the exact default HEAD.
-- PR #87 remains the clean integration PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87.
-- Added deterministic TOCTOU interleaving coverage in `proofs/d1-ledger/test/atomic-admission.test.ts`: the admission preflight completes, the trusted registry pointer advances atomically to a higher epoch, then the admission D1 batch is released. Expected fail-closed result: no admission assertion, no consumed approval, no task admission, and `dispatch:false`.
-- Test blob: `85f57c34a8e953a5ed3143f9af12cc4ab9f7dee2`.
-- Updated `.github/workflows/d1-ledger-proof-validation.yml` push allowlist to include the clean integration branch, so the isolated D1 validation workflow is eligible on branch pushes. Workflow blob: `ab2613a776f1b17daf8d2934528e62bb95fbe9bc`.
-- Latest implementation target before this documentation update: `5eaaf25fa4933bf537f0fd932e1867f16c3fd03d` (workflow commit; includes the race-test commit `d920a8512a2ac2c32a201a4ed84c041bb97d1a04)).
-- Exact-head CI for the new target: NOT VERIFIED. The prior two successful workflows (runs `43711509028` and `43711509085`) apply only to the earlier head `3436f5f87ed1b237122ea0444265302d99cf2d02`; they do not validate the new test/workflow commits. Latest commit workflow lookup returned no runs and combined commit status contexts remain empty. Do not infer success.
-- PR #87 formal reviews: 0; inline review threads: 0 (latest available review query). PR remains draft/unmerged.
-- No hosted D1, provider calls, secret reads, deployment, Worker/Supervisor execution, dispatch or merge. Contour A remains IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
-- Next: obtain exact-head Actions results for `5eaaf25fa4933bf537f0fd932e1867f16c3fd03d`; inspect any failure logs and repair only the failing contract. After exact-head CI, inspect the full PR diff and continue integration qualification. Keep dispatch disabled.
+- Current default: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Clean integration PR #87: https://github.com/VlDMlNSh/developer-cloud-pool/pull/87; branch `integration/d1-ledger-clean-main-2026-11-15`; latest verified head `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`; 5 commits ahead / 0 behind; merge base is the exact current default SHA. PR remains OPEN / DRAFT / UNMERGED.
+- Deterministic TOCTOU test now forces this order: admission preflight completes; trusted registry snapshot + issuer key + active pointer advance atomically to a higher epoch; then the original admission batch is released. It asserts fail-closed denial, approval remains ready, and no admission/assertion rows are committed.
+- Test blob: `1d39dff5f2c76b35cd05625ef0999578528b07c7`. The first test attempt failed because the synthetic snapshot used `route_count=0`, violating migration 0012's CHECK constraint (route_count must be 1–256). The fixture was corrected to route_count 1; no production migration or admission code changed for this correction.
+- Workflow blob: `ab2613a776f1b17daf8d2934528e62bb95fbe9bc`; the clean integration branch is included in the isolated D1 workflow push allowlist.
+- Failed diagnostic run on prior test revision `d920a8512a2ac2c32a201a4ed84c041bb97d1a04`: [43711949365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711949365), job `132805227807`; 118 passed / 1 failed, solely the invalid synthetic route_count fixture. The accompanying Pool Contract Validation run [43711949474](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43711949474) passed.
+- Corrected exact-head D1 run [43712068163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068163), job `132805595342`: COMPLETED / SUCCESS; syntax PASS; 11 test files / 119 tests PASS / 0 FAIL; second isolated D1 binding/migration smoke PASS; frozen schema-0010 fixture smoke PASS; lockfile artifact upload PASS. Artifact ID `14160831522`, SHA-256 `96beb0f9c62eb2787180f1847bb0d860d7a0d0c9c37f63beeaf3cf62b427e9fb`.
+- Corrected exact-head Pool Contract Validation run [43712068111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068111), job `132805595358`: COMPLETED / SUCCESS; dispatch-disabled invariant, workflow YAML syntax and pool security contract checks PASS.
+- Combined commit status contexts: 0 / NOT VERIFIED. Formal PR reviews: 0; inline review threads: 0. Actions workflow success is verified; aggregate status contexts and independent review are separate and remain unverified/not run.
+- This remains an isolated local D1 proof, not production schema adoption. Hosted D1, provider calls, secret reads, deployment, Worker/Supervisor execution, dispatch, merge and independent acceptance were NOT RUN. Dispatch remains disabled. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect the complete PR #87 diff and migration ordering against the current default, then continue only with local/no-provider qualification. Do not merge or provision hosted D1 until all required gates are explicitly met.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
