@@ -126,6 +126,15 @@ describe("root-signed route registry bundle v1", () => {
     })).toMatchObject({ verified: false, reason: "REGISTRY_ROOT_SIGNATURE_INVALID" });
   });
 
+  it("rejects private key material in the configured root binding", async () => {
+    const privateJwk = await crypto.subtle.exportKey("jwk", rootPrivate);
+    expect(await verifyTrustedRouteRegistryBundle({
+      bundle, signature: rootSignature,
+      env: { ...env, ROUTE_REGISTRY_ROOT_PUBLIC_JWK: JSON.stringify(privateJwk) },
+      now: NOW
+    })).toMatchObject({ verified: false, reason: "REGISTRY_ROOT_NOT_PINNED" });
+  });
+
   it("rejects stale and expired registry snapshots", async () => {
     expect(await verifyTrustedRouteRegistryBundle({
       bundle, signature: rootSignature, env, now: NOW + 301
