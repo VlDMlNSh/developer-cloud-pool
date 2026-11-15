@@ -1947,3 +1947,19 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: implement migration 0011 additively on the new stacked branch, preserve schema-0010 frozen fixture, then add composite batch adapter and adversarial local Workers-runtime tests. Exact-head CI required before considering proof verified. Keep dispatch false; no hosted D1, provider calls, secrets, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Atomic A0 -> D1 implementation — 2026-11-15 (isolated proof only)
+
+- Report: [Atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md); report commit `5e7c65a3cda6decef444cb1fe7bc3f8252e678fb`.
+- Implementation branch `proof/atomic-a0-d1-admission-2026-11-15`, exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`; stacked Draft PR #72 https://github.com/VlDMlNSh/developer-cloud-pool/pull/72.
+- PR #72 base is `impl/receipt-bound-projection-2026-11-11` @ PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`. PR #72 OPEN/DRAFT/UNMERGED. Default → PR #72 head DIVERGED 53 ahead / 20 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge or transplant the stack wholesale.
+- Migration 0011 adds typed append-only route qualification evidence, immutable admission + CHECK-backed commit receipt, one admission per logical task, and one-way admission/attempt/evidence binding on the existing task outbox. Composite `admitQualifiedTask()` D1 batch: conditional approval consume -> existing 0003 task/approval/outbox trigger -> admission -> existing 0004 immutable attempt -> outbox binding -> constraint-backed receipt. Durable read-back follows commit.
+- Route binding covers schema version, route/provider/model/issuer/account/credential-handle/quota-domain, capability profile, evidence ref/digest, observedAt/validUntil, registry and revocation version; max evidence age 300s. Canonical task key is recomputed. Dispatch is hard-coded false.
+- Exact-head workflow run `43689591339`, job `132737204218`, SUCCESS at exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`: 7 files / 91 Workers-runtime tests passed (7 atomic admission tests); upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152175385`, SHA-256 `8f7b384af448bd58210cddb60843d3a01e83b402bef141e091a53a8cdfd8d236`.
+- Combined commit-status array empty; required status contexts NOT VERIFIED. Active ruleset `26550182` applies only to default `Основной`; it requires PR/thread resolution, but required approvals = 0 and no required status-check contexts. Branch-protection endpoint 403; further branch policy NOT VERIFIED. PR #72 is stacked on a non-default branch and is not covered by that default-only ruleset.
+- Trust boundary: qualification rows are assumed to be pre-qualified by a trusted authority. This adapter validates stored bindings/freshness/revocation but does NOT authenticate issuer cryptographically or prove provider/account/quota truth. Trusted qualification writer is not implemented.
+- No provider login/call, secret read, hosted D1, Worker deployment, dispatch, executor qualification, independent security review or merge. Independent review remains deferred until pool operation, per project decision.
+- Status: local atomic proof IMPLEMENTED / exact-head CI VERIFIED; route NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #67 / #72 ancestry with current default without stale stack import; verify effective required checks; after pool operation, perform independent technical/security/governance review. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
