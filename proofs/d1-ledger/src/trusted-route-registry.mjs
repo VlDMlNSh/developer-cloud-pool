@@ -15,6 +15,26 @@ const MAX_ROUTES = 256;
 const MAX_BUNDLE_BYTES = 512 * 1024;
 const deny = (reason) => Object.freeze({ verified: false, dispatch: false, reason });
 
+// Module-private capability: only results created by this verifier can be
+// associated with the exact bundle bytes/rows that were verified.
+const verifiedBundleSnapshots = new WeakMap();
+
+function freezeDeep(value) {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    for (const child of Object.values(value)) freezeDeep(child);
+    Object.freeze(value);
+  }
+  return value;
+}
+
+/**
+ * Return the immutable bundle snapshot associated with a successful result.
+ * A caller-created object, a copied result, or a denied result has no capability.
+ */
+export function getVerifiedTrustedRouteRegistryBundle(result) {
+  return verifiedBundleSnapshots.get(result) ?? null;
+}
+
 function isRecord(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -196,7 +216,7 @@ export async function verifyTrustedRouteRegistryBundle({
   }
 
   const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return Object.freeze({
+  const result = Object.freeze({
     verified: true,
     dispatch: false,
     registryEpoch: bundle.registryEpoch,
@@ -208,6 +228,12 @@ export async function verifyTrustedRouteRegistryBundle({
     routes: Object.freeze(verifiedRoutes),
     reason: "ROOT_SIGNED_REGISTRY_BUNDLE_VERIFIED"
   });
+  // Snapshot the exact verified input before returning the capability. The
+  // caller may mutate its original bundle after this point without changing
+  // what a downstream persistence adapter is authorized to store.
+  const immutableBundle = freezeDeep(JSON.parse(JSON.stringify(bundle)));
+  verifiedBundleSnapshots.set(result, immutableBundle);
+  return result;
 }
 
 export const trustedRouteRegistryPolicy = Object.freeze({

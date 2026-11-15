@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { canonicalizeQualifiedRouteEvidence } from "../src/qualified-route-evidence.mjs";
 import {
   canonicalizeTrustedRouteRegistryBundle,
+  getVerifiedTrustedRouteRegistryBundle,
   trustedRouteRegistryPolicy,
   verifyTrustedRouteRegistryBundle
 } from "../src/trusted-route-registry.mjs";
@@ -105,6 +106,28 @@ describe("root-signed route registry bundle v1", () => {
       schemaVersion: 1, signatureAlgorithm: "ES256",
       rootKeySource: "platform-environment-binding", dispatchEnabled: false
     });
+  });
+
+  it("exposes only the immutable bundle snapshot bound to a verifier-issued result", async () => {
+    const result = await verifyTrustedRouteRegistryBundle({
+      bundle, signature: rootSignature, env, now: NOW
+    });
+    const snapshot = getVerifiedTrustedRouteRegistryBundle(result);
+    expect(snapshot).not.toBeNull();
+    expect(snapshot).toEqual(bundle);
+    expect(Object.isFrozen(snapshot)).toBe(true);
+    expect(Object.isFrozen(snapshot.issuerKeys)).toBe(true);
+    expect(Object.isFrozen(snapshot.issuerKeys[0].publicKeyJwk)).toBe(true);
+    expect(getVerifiedTrustedRouteRegistryBundle({ ...result })).toBeNull();
+    expect(getVerifiedTrustedRouteRegistryBundle({
+      verified: true, dispatch: false, registryEpoch: bundle.registryEpoch
+    })).toBeNull();
+    expect(getVerifiedTrustedRouteRegistryBundle(
+      await verifyTrustedRouteRegistryBundle({ bundle, signature: "invalid", env, now: NOW })
+    )).toBeNull();
+    bundle.registryVersion = "mutated-after-verification";
+    expect(snapshot.registryVersion).toBe("registry-v3");
+    bundle.registryVersion = "registry-v3";
   });
 
   it("rejects a changed root signature", async () => {
