@@ -2111,3 +2111,21 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Verified three-agent Gemini /next bridge — 2026-11-15
+
+This section supersedes earlier statements in this file that the MediaHub Gemini bridge had never dispatched agents or remained wholly unverified. Direct GitHub Actions job-log inspection confirmed four owner-authored `/next` comments on MediaHub Issue #301, each causing one successful Controller run and exactly three successful signed child dispatches. All twelve child runs completed with successful authorization and Gemini execution jobs and a non-expired `gemini-output` artifact digest.
+
+- Detailed evidence: [2026-11-15 Gemini three-agent /next bridge recovery](../reports/2026-11-15-gemini-three-agent-next-bridge-recovery.md).
+- MediaHub main source target used by all four waves: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Controller blob SHA: `7799f0fc713c5bd772ce6820df40a926a83445c8`; Agent 2 blob SHA: `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`; Agent 3 blob SHA: `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`. Re-read current blobs before future changes.
+- Four source comment IDs and controller runs: `6898434080 → 43741451816`, `6898453275 → 43741600025`, `6898479858 → 43741803725`, `6898513683 → 43742063927`.
+- The last wave's child run IDs: Agent 1 `43742248259`, Agent 2 `43742249899`, Agent 3 `43742251541`; all completed successfully. The last wave's three artifact digests are recorded in the detailed report.
+- The controller already implements owner-authored Issue #301 comment `/next` → readiness gate → HMAC-signed workflow_dispatch to the three child workflows → exact run/job/artifact reconciliation. Its idempotency check keys off the unique source comment ID. Admission gate jobs succeeded in all four observed runs; this operationally confirms the flag was true at those times without reading its value.
+- Required controller secrets were not read; their successful use is evidenced by these dispatches only at the time of the runs. Do not inspect secret values or modify secrets/variables without a specific justified need.
+- **Per ChatGPT /next integration:** on each future exact user command `/next`, create exactly one owner-authored GitHub issue comment with body exactly `/next` on MediaHub Issue #301 using the authorized GitHub issue-comment action. This is the event bridge; do not call child workflows directly or bypass the controller. First reconcile whether this turn's unique source comment already exists to avoid duplicates. Then capture the comment ID and correlate `next-comment-<id>` to controller and child run IDs. If the comment action is unavailable, report BLOCKED and do not claim dispatch.
+- This does not make the MediaHub controller Cloud Pool-native. Cloud Pool Supervisor remains separate and must retain its own fail-closed `POOL_DISPATCH_ENABLED` gate. No Cloud Pool dispatch was enabled or performed.
+- Four waves verify the MediaHub three-agent dispatch path only. Cloud Pool web console, worker qualification, durable state, model routing, quota isolation, independent acceptance and Contour A remain BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+Recovery status: MediaHub three-agent controller path VERIFIED on four consecutive /next events; ChatGPT-to-GitHub event creation is the required per-turn bridge action; Cloud Pool-native agent dispatch NOT IMPLEMENTED / NOT QUALIFIED.
