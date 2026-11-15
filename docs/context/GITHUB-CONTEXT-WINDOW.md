@@ -2200,3 +2200,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: harden PR #98's ledger authenticity and run correlation; implement enforceable serialization/capability; add adversarial tests; obtain exact-head CI and independent review. Separately resolve MediaHub controller transport/governance before a new Gemini batch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Publication read-back — 2026-11-16
+
+- Dated report commit: `2020cc489232c0af2d614fd411ca7709e94a004c`; report blob SHA: `63af3e4f009ffbd6374579f505265e5a6ee344a6`.
+- Continuation checkpoint commit: `28f6d0d8ab5585fd03718a06e2b5581697c967e5`; checkpoint blob SHA: `596be3f573618e5a3ab778f9d0c9efdaad33fcf7`.
+- Context Window blob immediately before this publication note: `6c852e658d659db057b0d158f1f10c47843f90b1`; previous branch HEAD: `28f6d0d8ab5585fd03718a06e2b5581697c967e5`.
+- The final context publication below records its own resulting commit/blob SHA; this documentation branch remains a Draft PR branch, not the default branch.
