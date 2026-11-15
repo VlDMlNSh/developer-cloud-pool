@@ -84,6 +84,9 @@ function statements(db, input) {
     AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
     AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
     AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+    AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
+  `;
+  const trustedRegistryMatch = `
     AND EXISTS (
       SELECT 1 FROM pool_route_registry_state s
       JOIN pool_route_registry_snapshots rs
@@ -100,16 +103,15 @@ function statements(db, input) {
          AND k.status = 'active' AND k.revoked_at IS NULL
          AND k.valid_from <= ? AND k.valid_until > ?
     )
-    AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
     r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
     r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
-    r.keyId, r.registryEpoch, r.registryBundleDigest, now, now, now, now,
-    now, now - 300, now
+    r.keyId, r.registryEpoch, r.registryBundleDigest, now, now - 300, now
   ];
+  const registryValues = [now, now, now, now];
   return [
     db.prepare(`
       UPDATE pool_approval_ledger
@@ -118,11 +120,11 @@ function statements(db, input) {
          AND issue_number = ? AND target_sha = ? AND profile = ?
          AND envelope_digest = ? AND state = 'ready' AND consumed_at IS NULL
          AND expires_at > ?
-         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch})
+         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch} ${trustedRegistryMatch})
     `).bind(
       now, input.taskKey, admissionId, a.approvalId, a.ownerNumericId,
       a.repositoryId, a.issueNumber, a.targetSha, a.profile, a.envelopeDigest,
-      now, ...routeValues
+      now, ...routeValues, ...registryValues
     ),
     db.prepare(`
       INSERT INTO pool_admissions (
@@ -142,10 +144,10 @@ function statements(db, input) {
       FROM pool_approval_ledger l
       JOIN pool_tasks t ON t.task_key = l.task_key
       JOIN pool_task_approvals ta ON ta.approval_id = l.approval_id AND ta.task_key = t.task_key
-      JOIN pool_route_qualifications q ON ${routeMatch}
+      JOIN pool_route_qualifications q ON ${routeMatch} ${trustedRegistryMatch}
       WHERE l.approval_id = ? AND l.admission_id = ? AND l.state = 'consumed'
         AND l.consumed_at = ? AND t.state = 'pending'
-    `).bind(admissionId, t.attemptId, now, ...routeValues, a.approvalId, admissionId, now),
+    `).bind(admissionId, t.attemptId, now, ...routeValues, ...registryValues, a.approvalId, admissionId, now),
     db.prepare(`
       INSERT INTO pool_attempts (
         attempt_id, task_key, attempt_number, status, input_digest,
