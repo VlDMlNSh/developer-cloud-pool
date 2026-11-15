@@ -358,12 +358,11 @@ describe("atomic qualified A0 -> D1 admission", () => {
   });
 
 
-  it("serializes admission against a concurrent trusted-registry epoch advance", async () => {
+  it("rejects an epoch advance interleaved after admission preflight and before its D1 batch", async () => {
     const db = env.POOL_DB;
-    const current = await db.prepare(`
-      SELECT current_epoch, current_bundle_digest, current_registry_version
-        FROM pool_route_registry_state WHERE state_id = 1
-    `).first();
+    const current = await db.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
     const maximum = await db.prepare(
       "SELECT COALESCE(MAX(registry_epoch), 0) AS max_epoch FROM pool_route_registry_snapshots"
     ).first();
@@ -371,10 +370,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
     const nextDigest = "a".repeat(64);
     const acceptedAt = NOW - 1;
 
-    // Advance the trusted snapshot as one D1 batch while admission attempts
-    // to assert the old snapshot. Either serial order is valid; a mixed result
-    // (old admission accepted after the new pointer wins) is not.
-    const advanceRegistry = db.batch([
+    const advanceRegistry = async () => db.batch([
       db.prepare(`
         INSERT INTO pool_route_registry_snapshots (
           registry_epoch, registry_version, root_key_id, bundle_digest,
@@ -398,10 +394,17 @@ describe("atomic qualified A0 -> D1 admission", () => {
       `).bind(nextEpoch, nextDigest, acceptedAt, current.current_epoch)
     ]);
 
-    const [admission] = await Promise.all([
-      admitQualifiedTask(db, input),
-      advanceRegistry
-    ]);
+    // Force the TOCTOU interleaving at the storage boundary: the admission's
+    // preflight read has completed, but its atomic assertion/consume batch has
+    // not started. The new registry pointer must make the old route fail closed.
+    const interleavedDb = {
+      prepare: (...args) => db.prepare(...args),
+      batch: async (statements) => {
+        await advanceRegistry();
+        return db.batch(statements);
+      }
+    };
+    const admission = await admitQualifiedTask(interleavedDb, input);
 
     const pointer = await db.prepare(
       "SELECT current_epoch, current_bundle_digest FROM pool_route_registry_state WHERE state_id = 1"
@@ -410,31 +413,22 @@ describe("atomic qualified A0 -> D1 admission", () => {
       current_epoch: nextEpoch,
       current_bundle_digest: nextDigest
     });
+    expect(admission).toMatchObject({
+      decision: "DENY",
+      reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS",
+      dispatch: false
+    });
 
     const ledger = await db.prepare(
       "SELECT state FROM pool_approval_ledger WHERE approval_id = ?"
     ).bind(input.approval.approvalId).first();
-    const assertion = await db.prepare(
-      "SELECT registry_epoch, registry_bundle_digest FROM pool_admission_registry_assertions WHERE admission_id = ?"
-    ).bind(input.admissionId).first();
-    const admissions = await db.prepare(
+    expect(ledger.state).toBe("ready");
+    expect(await db.prepare(
       "SELECT COUNT(*) AS n FROM pool_admissions WHERE admission_id = ?"
-    ).bind(input.admissionId).first();
-
-    if (admission.decision === "ADMITTED_QUEUED") {
-      expect(ledger.state).toBe("consumed");
-      expect(admissions.n).toBe(1);
-      expect(assertion).toMatchObject({
-        registry_epoch: input.route.registryEpoch,
-        registry_bundle_digest: input.route.registryBundleDigest
-      });
-    } else {
-      expect(admission).toMatchObject({ decision: "DENY", dispatch: false });
-      expect(ledger.state).toBe("ready");
-      expect(admissions.n).toBe(0);
-      expect(assertion).toBeNull();
-    }
-    expect(admission.dispatch).toBe(false);
+    ).bind(input.admissionId).first()).toMatchObject({ n: 0 });
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admission_registry_assertions WHERE admission_id = ?"
+    ).bind(input.admissionId).first()).toMatchObject({ n: 0 });
   });
 
 });
