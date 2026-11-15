@@ -2216,3 +2216,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Context Window blob read back: `34382e8cd9f2fb5c854969bb08baaa32535bad6e`.
 - PR #99 remains OPEN / DRAFT / UNMERGED, base `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; its head matched the documentation branch at `341d427253f1f9a3e597a778a45bac3b69d1aa9e` at read-back. Exact-head checks: 0; formal reviews: 0; CI/review NOT VERIFIED.
 - Report blob: `63af3e4f009ffbd6374579f505265e5a6ee344a6`; checkpoint blob: `596be3f573618e5a3ab778f9d0c9efdaad33fcf7`.
+
+
+## 2026-11-16 — PR #100 Cloud Pool ledger provenance hardening
+
+- Revalidated immutable default refs: Cloud Pool `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #98 remains OPEN/DRAFT at `f23cdb5484d5923e02242b3ea142397f9e1f0270`; three exact-head CI checks SUCCESS; formal reviews 0.
+- New dependent PR #100: https://github.com/VlDMlNSh/developer-cloud-pool/pull/100; branch `fix/next-ledger-owner-auth-2026-11-16` HEAD `f9711f67d9b683e687c7ec5481c10b9e5626c61e`; base PR #98 head above. It validates GitHub-provided owner login, OWNER association and exact Issue #96 URL before accepting ledger marker comments; untrusted marker comments are ignored. Four files read back; blobs and details in [dated report](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
+- PR #100 exact-head run `43764511321` / job `132966477817`: COMPLETED/SUCCESS; syntax PASS; 50 tests PASS / 0 FAIL / 0 skipped. PR remains Draft, formal review 0; no merge.
+- Remaining Cloud Pool gaps: no trusted-main controller; `lockHeld` remains caller-asserted; run reconciliation lacks exact workflow identity/path/event/repository/ref binding. Issue #96 remains PLANNED and dispatch disabled.
+- MediaHub controller remains REST/HMAC + workflow_dispatch children, diverging from approved Option B workflow_call. Trusted-main no-secret probe and governance/secret-scope evidence remain NOT VERIFIED. No new Issue #301 comment and no Gemini wave dispatched this pass. Last confirmed Wave 317 remains prior evidence only.
+- No secrets, provider calls, live ledger writes, workflow dispatch, deployment, merge, qualification or Contour B work occurred. Contour A BLOCKED / NOT ACCEPTED.
+- Next: authorize and implement a trusted-main controller only after governance reconciliation; implement real serialization and full run identity correlation; complete adversarial integration tests and independent review.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
