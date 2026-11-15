@@ -24,7 +24,9 @@ function valid(input) {
     SAFE_ID.test(r.routeId || "") && SAFE_ID.test(r.providerId || "") &&
     SAFE_ID.test(r.modelId || "") && SAFE_ID.test(r.issuerId || "") &&
     SAFE_ID.test(r.accountRef || "") && SAFE_ID.test(r.credentialHandleRef || "") &&
-    r.schemaVersion === 1 && typeof r.evidenceRef === "string" && r.evidenceRef.length > 0 && r.evidenceRef.length <= 512 &&
+    r.schemaVersion === 1 && r.capabilityProfile === a.profile &&
+    Number.isSafeInteger(r.validUntil) && r.validUntil > r.observedAt &&
+    typeof r.evidenceRef === "string" && r.evidenceRef.length > 0 && r.evidenceRef.length <= 512 &&
     Number.isSafeInteger(r.observedAt) && r.observedAt > 0 &&
     Number.isSafeInteger(r.revocationVersion) && r.revocationVersion >= 0 &&
     SAFE_ID.test(r.capabilityId || "") && SAFE_ID.test(r.registryVersion || "") &&
@@ -63,7 +65,8 @@ function same(row, input) {
     row.cost_class === r.costClass &&
     row.capability_id === r.capabilityId && row.registry_version === r.registryVersion &&
     row.schema_version === r.schemaVersion && row.evidence_ref === r.evidenceRef &&
-    row.observed_at === r.observedAt && row.revocation_version === r.revocationVersion;
+    row.observed_at === r.observedAt && row.valid_until === r.validUntil &&
+    row.capability_profile === r.capabilityProfile && row.revocation_version === r.revocationVersion;
 }
 
 function statements(db, input) {
@@ -72,18 +75,18 @@ function statements(db, input) {
     q.qualification_id = ? AND q.route_id = ? AND q.provider_id = ?
     AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
     AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
-    AND q.cost_class = ? AND q.capability_id = ? AND q.evidence_digest = ?
+    AND q.cost_class = ? AND q.capability_id = ? AND q.capability_profile = ? AND q.evidence_digest = ?
     AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
     AND q.observed_at = ? AND q.revocation_version = ?
     AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
-    AND q.observed_at <= ? AND q.observed_at >= ? AND q.issued_at <= ? AND q.expires_at > ?
+    AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
   `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
-    r.costClass, r.capabilityId, r.evidenceDigest, r.registryVersion,
+    r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
     r.schemaVersion, r.evidenceRef, r.observedAt, r.revocationVersion,
-    now, now - 300, now, now
+    now, now - 300, now
   ];
   return [
     db.prepare(`
@@ -137,6 +140,12 @@ function statements(db, input) {
          ))
     `).bind(t.inputDigest, t.executionIdempotencyKey, now, admissionId, t.attemptId),
     db.prepare(`
+      UPDATE pool_task_delivery_outbox
+         SET admission_id = ?, attempt_id = ?, evidence_digest = ?
+       WHERE task_key = ? AND status = 'pending'
+         AND admission_id IS NULL AND attempt_id IS NULL AND evidence_digest IS NULL
+    `).bind(admissionId, t.attemptId, r.evidenceDigest, input.taskKey)
+    db.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, attempt_id, qualification_id,
         evidence_digest, committed_at, assertion, dispatch_enabled
@@ -157,14 +166,16 @@ function statements(db, input) {
              AND a.admitted_at = ? AND a.dispatch_enabled = 0
              AND l.state = 'consumed' AND l.admission_id = a.admission_id
              AND l.consumed_at = a.admitted_at
-             AND o.status = 'pending'
+             AND o.status = 'pending' AND o.admission_id = a.admission_id
+             AND o.attempt_id = a.attempt_id AND o.evidence_digest = a.evidence_digest
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
              AND q.evidence_digest = a.evidence_digest
              AND q.schema_version = ? AND q.evidence_ref = ? AND q.observed_at = ?
+             AND q.capability_profile = ? AND q.valid_until = ?
              AND q.revocation_version = ? AND q.observed_at <= ? AND q.observed_at >= ?
-             AND q.issued_at <= ? AND q.expires_at > ?
+             AND q.valid_until > ?
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
@@ -172,8 +183,8 @@ function statements(db, input) {
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
       t.executionIdempotencyKey, r.schemaVersion, r.evidenceRef,
-      r.observedAt, r.revocationVersion, now, now - 300, now, now
-    )
+      r.observedAt, r.capabilityProfile, r.validUntil, r.revocationVersion, now, now - 300, now
+    ),
   ];
 }
 
@@ -203,8 +214,8 @@ export async function admitQualifiedTask(db, input) {
              l.target_sha, l.profile, l.envelope_digest,
              q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
              q.credential_handle_ref, q.quota_domain_id, q.cost_class,
-             q.capability_id, q.registry_version, q.schema_version,
-             q.evidence_ref, q.observed_at, q.revocation_version
+             q.capability_id, q.capability_profile, q.registry_version, q.schema_version,
+             q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
         JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
@@ -218,19 +229,19 @@ export async function admitQualifiedTask(db, input) {
          WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
            AND model_id = ? AND issuer_id = ? AND account_ref = ?
            AND credential_handle_ref = ? AND quota_domain_id IS ?
-           AND cost_class = ? AND capability_id = ? AND evidence_digest = ?
+           AND cost_class = ? AND capability_id = ? AND capability_profile = ? AND evidence_digest = ?
            AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
            AND observed_at = ? AND revocation_version = ?
            AND qualification_status = 'qualified' AND revoked_at IS NULL
-           AND observed_at <= ? AND observed_at >= ? AND issued_at <= ? AND expires_at > ?
+           AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
       `).bind(
         input.route.qualificationId, input.route.routeId, input.route.providerId,
         input.route.modelId, input.route.issuerId, input.route.accountRef,
         input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
-        input.route.costClass, input.route.capabilityId, input.route.evidenceDigest,
+        input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
         input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
-        input.route.observedAt, input.route.revocationVersion, input.now,
-        input.now - 300, input.now, input.now
+        input.route.observedAt, input.route.validUntil, input.route.revocationVersion, input.now,
+        input.now - 300, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
