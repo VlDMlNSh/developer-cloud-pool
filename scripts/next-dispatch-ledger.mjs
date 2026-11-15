@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 
 const OWNER_REPO = "VlDMlNSh/developer-cloud-pool";
 const CONTROL_ISSUE = 96;
+const OWNER_LOGIN = "VlDMlNSh";
+const CONTROL_ISSUE_URL = "https://api.github.com/repos/" + OWNER_REPO + "/issues/" + CONTROL_ISSUE;
 const PREFIX = "<!-- cloud-pool-next-ledger:v1 ";
 const SUFFIX = " -->";
 
@@ -47,6 +49,14 @@ export function parseLedgerComments(comments) {
     const body = String(comment?.body || "");
     const start = body.indexOf(PREFIX);
     if (start < 0) continue;
+
+    // A plain digest detects payload corruption; it does not authenticate
+    // who posted the GitHub comment. Trust only server-provided author,
+    // owner association and exact control-issue URL metadata.
+    // Untrusted marker comments are ignored and cannot poison ledger state.
+    if (comment?.user?.login !== OWNER_LOGIN ||
+        comment?.author_association !== "OWNER" ||
+        comment?.issue_url !== CONTROL_ISSUE_URL) continue;
     const end = body.indexOf(SUFFIX, start + PREFIX.length);
     if (end < 0 || body.slice(0, start).trim() || body.slice(end + SUFFIX.length).trim()) {
       throw new Error("Malformed Cloud Pool ledger comment.");
