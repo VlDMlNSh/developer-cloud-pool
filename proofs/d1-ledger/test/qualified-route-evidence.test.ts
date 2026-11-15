@@ -113,8 +113,12 @@ describe("Qualified Route Evidence v1 canonicalization and ES256 verifier", () =
     expect(Object.isFrozen(result.route)).toBe(true);
   });
 
-  it("rejects a modified signature", async () => {
-    const changed = signature.slice(0, -1) + (signature.endsWith("A") ? "B" : "A");
+  it("rejects a modified signature while preserving canonical base64url encoding", async () => {
+    const normalized = signature.replace(/-/g, "+").replace(/_/g, "/");
+    const binary = atob(normalized + "=".repeat((4 - normalized.length % 4) % 4));
+    const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+    bytes[0] ^= 1;
+    const changed = base64url(bytes);
     expect(await verify({ signature: changed })).toMatchObject({
       verified: false, dispatch: false, reason: "ISSUER_SIGNATURE_INVALID"
     });
