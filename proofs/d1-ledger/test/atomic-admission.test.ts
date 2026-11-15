@@ -19,7 +19,8 @@ const input = {
     quotaDomainId: null, costClass: "local", capabilityId: "pool.execute.local",
     capabilityProfile: "dsh-headless-probe", evidenceRef: "local-evidence:qualification-001",
     evidenceDigest: "d".repeat(64), observedAt: NOW - 60, validUntil: NOW + 3600,
-    revocationVersion: 0, registryVersion: "registry-v1"
+    revocationVersion: 0, registryVersion: "registry-v1",
+    keyId: "issuer-key-001", registryEpoch: 2001, registryBundleDigest: "f".repeat(64)
   },
   attempt: {
     attemptId: "attempt-atomic-001", inputDigest: "e".repeat(64),
@@ -27,7 +28,34 @@ const input = {
   }
 };
 
+async function ensureRegistry() {
+  const db = env.POOL_DB;
+  const state = await db.prepare("SELECT state_id FROM pool_route_registry_state WHERE state_id = 1").first();
+  if (state) return;
+  await db.prepare(`
+    INSERT INTO pool_route_registry_snapshots (
+      registry_epoch, registry_version, root_key_id, bundle_digest,
+      issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+      bundle_json, root_signature
+    ) VALUES (2001, 'registry-v1', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+  `).bind("f".repeat(64), NOW - 60, NOW + 3600, NOW - 30).run();
+  await db.prepare(`
+    INSERT INTO pool_route_registry_issuer_keys (
+      registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+      status, revoked_at, valid_from, valid_until, public_key_jwk
+    ) VALUES (2001, ?, 'local-authority', 'issuer-key-001', 'registry-v1',
+      'active', NULL, ?, ?, ?)
+  `).bind("f".repeat(64), NOW - 100, NOW + 3600,
+    JSON.stringify({ kty: "EC", crv: "P-256", x: "A".repeat(43), y: "B".repeat(43) })).run();
+  await db.prepare(`
+    INSERT INTO pool_route_registry_state (
+      state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
+    ) VALUES (1, 2001, ?, 'registry-v1', ?)
+  `).bind("f".repeat(64), NOW - 30).run();
+}
+
 async function seed(overrides = {}) {
+  await ensureRegistry();
   const a = { ...input.approval, ...overrides.approval };
   const r = { ...input.route, ...overrides.route };
   await env.POOL_DB.prepare(`
@@ -42,12 +70,12 @@ async function seed(overrides = {}) {
       schema_version, qualification_id, route_id, provider_id, model_id, issuer_id, account_ref,
       credential_handle_ref, quota_domain_id, cost_class, capability_id,
       capability_profile, evidence_ref, evidence_digest, observed_at, valid_until,
-      revocation_version, registry_version
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      revocation_version, registry_version, issuer_key_id, registry_epoch, registry_bundle_digest
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(r.schemaVersion, r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId, r.costClass, r.capabilityId,
     r.capabilityProfile, r.evidenceRef, r.evidenceDigest, r.observedAt, r.validUntil,
-    r.revocationVersion, r.registryVersion).run();
+    r.revocationVersion, r.registryVersion, r.keyId, r.registryEpoch, r.registryBundleDigest).run();
 }
 
 beforeEach(async () => {
@@ -228,4 +256,70 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(attempts.n).toBe(1);
     expect(results.every(x => x.dispatch === false)).toBe(true);
   });
+  it("rejects an admission whose route registry epoch is not the active snapshot", async () => {
+    const result = await admitQualifiedTask(env.POOL_DB, {
+      ...input, route: { ...input.route, registryEpoch: 2000 }
+    });
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS",
+      dispatch: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT state FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first();
+    expect(row.state).toBe("ready");
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first())
+      .toMatchObject({ n: 0 });
+  });
+
+  it("rejects a route whose issuer key is revoked in the active root-signed registry snapshot", async () => {
+    const db = env.POOL_DB;
+    const digest = "e".repeat(64);
+    const acceptedAt = NOW - 5;
+    await db.prepare(`
+      INSERT INTO pool_route_registry_snapshots (
+        registry_epoch, registry_version, root_key_id, bundle_digest,
+        issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+        bundle_json, root_signature
+      ) VALUES (2002, 'registry-v2', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+    `).bind(digest, NOW - 20, NOW + 300, acceptedAt).run();
+    await db.prepare(`
+      INSERT INTO pool_route_registry_issuer_keys (
+        registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+        status, revoked_at, valid_from, valid_until, public_key_jwk
+      ) VALUES (2002, ?, 'local-authority', 'issuer-key-001', 'registry-v2',
+        'revoked', ?, ?, ?, ?)
+    `).bind(digest, NOW - 10, NOW - 100, NOW + 1000,
+      JSON.stringify({ kty: "EC", crv: "P-256", x: "A".repeat(43), y: "B".repeat(43) })).run();
+    await db.prepare(`
+      UPDATE pool_route_registry_state
+         SET current_epoch = 2002, current_bundle_digest = ?,
+             current_registry_version = 'registry-v2', updated_at = ?
+       WHERE state_id = 1
+    `).bind(digest, acceptedAt).run();
+
+    const approval = { ...input.approval, approvalId: "approval-revoked-key-001" };
+    const route = {
+      ...input.route, qualificationId: "route-revoked-key-001",
+      registryVersion: "registry-v2", registryEpoch: 2002,
+      registryBundleDigest: digest
+    };
+    const attempt = { ...input.attempt, attemptId: "attempt-revoked-key-001" };
+    await seed({ approval, route });
+    const result = await admitQualifiedTask(env.POOL_DB, {
+      ...input, admissionId: "admission-revoked-key-001", approval, route, attempt
+    });
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS",
+      dispatch: false
+    });
+    const row = await db.prepare(
+      "SELECT state FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(approval.approvalId).first();
+    expect(row.state).toBe("ready");
+    expect(await db.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admissions WHERE admission_id = 'admission-revoked-key-001'"
+    ).first()).toMatchObject({ n: 0 });
+  });
+
 });
