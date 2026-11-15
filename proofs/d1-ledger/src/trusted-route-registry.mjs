@@ -80,7 +80,8 @@ export function canonicalizeTrustedRouteRegistryBundle(bundle) {
     return canonicalIssuer(key);
   });
   const routes = bundle.routes.map((entry) => {
-    if (!exactKeys(entry, ["evidence", "signature"])) {
+    if (!exactKeys(entry, ["evidence", "signature"]) ||
+        typeof entry.signature !== "string" || entry.signature.length > 128) {
       throw new TypeError("REGISTRY_ROUTE_SCHEMA_INVALID");
     }
     return [JSON.parse(canonicalizeQualifiedRouteEvidence(entry.evidence)), entry.signature];
