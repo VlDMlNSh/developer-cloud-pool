@@ -2355,3 +2355,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Next: implement pure canonical keyset/event verifier and deterministic vectors on the clean integration candidate after governance gates are resolved; then verifier-issued persistence capability, migration 0015, migration 0016 same-batch assertion and adversarial D1 tests. External anti-rollback remains mandatory before restore-safety claims.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 329 operational-state reconciliation
+
+- Report: [Wave 329](../reports/2026-11-15-wave329-operational-state-reconciliation.md); commit fef0c5dc14ceb91cce66d81bd1e5175e7eb7de98; report blob 905d6b5eb8a80e1b551141e6de0eaf81328ef279.
+- Clarification: Wave 328 is this conversation's sequential work-pass counter, not a GitHub PR/release number. PR #92 is a separate OPEN/DRAFT/UNMERGED pull request for exact-replay receipt integrity. PR #93 is OPEN/DRAFT/UNMERGED and stacked on #92. PR #95 is OPEN/DRAFT/UNMERGED documentation.
+- Default branch Основной HEAD 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc. Combined status list and PR-triggered workflow-run list were empty: NOT VERIFIED.
+- Cloud Pool .github/workflows/gemini-batch-dispatch-controller.yml absent on default branch (404). pool-supervisor.yml blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd has no issue_comment trigger. pool-worker.yml blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb4 only permits dsh-headless-probe.
+- Issue #94 remains OPEN. Cloud Pool Gemini agents on each /next have NOT RUN. Do not claim parallel Gemini work or 3/3 dispatch.
+- Priority correction: next engineering focus is Cloud Pool-native controller Issue #94 (owner-only exact /next admission, immutable target SHA, idempotency, child isolation/reconciliation, adversarial tests, governance gates). Revocation ledger remains a separate Contour A dependency. No secret reads or dispatch.
+- This wave performed read-only operational reconciliation and documentation updates only; no workflow/source/schema/tests/deployment/merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
