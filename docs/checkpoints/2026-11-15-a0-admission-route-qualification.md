@@ -383,3 +383,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: formal ordered review/reconciliation PR #81 → #84 → #86; then integrate registry-bound A0 transaction into actual Supervisor/Worker task-envelope/outbox/receipt vertical path, no dispatch.
 - Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Clean-main D1 registry race revalidation — 2026-11-15
+
+- Report: [clean-main registry race revalidation](../reports/2026-11-15-clean-main-registry-race-revalidation.md).
+- Current implementation candidate is PR #87, not the former stacked PR #81 → #84 → #86 chain. PR #87 is OPEN / DRAFT / UNMERGED on `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; live API head `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`; 5 ahead / 0 behind; 49 added proof files. PR description remains stale and must be reconciled.
+- Exact-head D1 run [43712068163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068163): SUCCESS; 11 files / 119 tests; second binding smoke PASS; frozen schema-0010 fixture 2 PASS. Artifact `14160831522`, SHA-256 `96beb0f9c62eb2787180f1847bb0d860d7a0d0c9c37f63beeaf3cf62b427e9fb`.
+- Exact-head contract run [43712068111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43712068111): SUCCESS; dispatch-disabled, YAML and security contract checks PASS.
+- Deterministic registry epoch-advance interleaving test now exists: it advances the active registry after admission preflight and before the D1 batch; admission fails closed, approval remains ready, no admission/assertion rows are written.
+- Migration 0014 assertion trigger is first in the batch and checks active snapshot/issuer lifecycle; receipt joins the assertion row. This is still a local Workers-runtime proof, not hosted D1 concurrency or production execution qualification.
+- Formal PR reviews 0 / inline threads 0. Ruleset #26550182 active but 0 approvals and no required CI contexts. No merge, hosted D1, deployment, secret/provider activity, dispatch or independent audit.
+- Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED; `dispatch:false`.
+- Next: correct stale PR #87 description; continue full migration and transaction audit, then wire the proof into actual Supervisor/Worker task-envelope/outbox/receipt contracts without dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
