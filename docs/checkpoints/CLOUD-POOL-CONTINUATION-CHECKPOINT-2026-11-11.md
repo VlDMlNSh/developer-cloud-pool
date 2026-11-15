@@ -218,3 +218,20 @@ This checkpoint is a recovery aid, not an execution or provisioning authorizatio
 - After publishing this report and refreshing canonical context/checkpoint, default `Основной` advanced to `9288c9bcf9f65a69f52e5f964442a2755fe06301`.
 - Fresh compare from current default to PR #65 head `3d67783e4da60296f26547174b0bdeae58d9a3f2`: DIVERGED, 4 commits ahead / 5 behind, merge base still `c3add54d3409122eedaa697f0af5e7ec43753426`. PR API now reports mergeable=false. Earlier mergeable=true was only a transient read against the old declared base and must not be used as current mergeability evidence.
 - PR #65 remains OPEN / DRAFT. Do not merge. Next step should create a refreshed documentation branch from current `Основной` and cherry-pick/recreate only its four intended documents after confirming no content drift, or close/replace PR #65. Preserve the canonical context/checkpoint; never merge stale base history.
+
+
+## Atomic A0 -> D1 admission implementation — 2026-11-15
+
+- Report: [2026-11-15 atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md).
+- Implementation branch: `proof/atomic-a0-d1-admission-2026-11-15`; exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`.
+- PR #72: https://github.com/VlDMlNSh/developer-cloud-pool/pull/72 — OPEN / DRAFT / UNMERGED, base `impl/receipt-bound-projection-2026-11-11` at `a53f6232bd5b50d3e150addf528b8e722002f9dd` (PR #67 head).
+- PR #67 remains OPEN/DRAFT/unmerged. Default → PR #72 head is DIVERGED 53 ahead / 20 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Preserve stacked dependency; no wholesale merge/transplant.
+- Migration 0011 and composite adapter now implement a single local D1 batch: exact approval consume; existing 0003 task/task-approval/outbox trigger; immutable admission; existing 0004 attempt trigger; bind outbox to admission/attempt/evidence; CHECK-backed commit receipt. The transaction rolls back if the final assertion fails. Durable read-back follows commit.
+- Route evidence record is typed and append-only with schema version, route/provider/model/issuer/account/credential handle/quota domain, capability profile, evidence ref/digest, observed/validity timestamps, registry and revocation version. Exact binding, 300-second freshness and revocation are checked. One admission per logical task. Canonical task key recomputed.
+- Adversarial tests: happy path, exact replay, changed owner/account replay, stale evidence, revoked evidence, synthetic attempt-insert rollback, 12-way concurrent replay. Dispatch remains hard-coded false.
+- Exact-head workflow `43689591339` / job `132737204218`: SUCCESS at `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`; Workers runtime 7 files / 91 tests passed; upgrade binding 1 passed; frozen schema-0010 fixture 2 passed. Artifact `14152175385`, SHA-256 `8f7b384af448bd58210cddb60843d3a01e83b402bef141e091a53a8cdfd8d236`.
+- Combined status array empty; required CI contexts NOT VERIFIED. Active ruleset `26550182` applies only to default branch; required approvals 0, no required status-check contexts. Branch protection endpoint 403. PR #72 is stacked on non-default branch and outside that ruleset.
+- Route qualification rows are assumed pre-qualified by a trusted authority; this pass does not implement cryptographic issuer verification or prove live provider/account/quota truth. No trusted writer, provider call/login, secret read, hosted D1, Worker deployment, dispatch, executor qualification, independent review or merge.
+- Status: isolated atomic proof IMPLEMENTED / exact-head CI VERIFIED; route NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #67 / #72 ancestry with current default and verify effective required checks. Independent technical/security/governance review remains deferred until the pool is operational. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
