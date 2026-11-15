@@ -3,7 +3,9 @@ import { env } from "cloudflare:workers";
 import { canonicalizeQualifiedRouteEvidence } from "../src/qualified-route-evidence.mjs";
 import {
   canonicalizeTrustedRouteRegistryBundle,
-  persistTrustedRouteRegistryBundle
+  getVerifiedTrustedRouteRegistryBundle,
+  persistTrustedRouteRegistryBundle,
+  verifyTrustedRouteRegistryBundle
 } from "../src/trusted-route-registry.mjs";
 
 const NOW = 1_800_001_000;
@@ -78,9 +80,27 @@ describe("atomic persistence of root-signed route registry", () => {
   it("persists the signed payload, issuer keys, qualified routes and active pointer as one D1 batch", async () => {
     const db = env.POOL_DB;
     const first = await makeBundle(2001, "registry-persist-v1");
-    const result = await persistTrustedRouteRegistryBundle({
-      db, ...first, env: envBindings, now: NOW
+    const originalBundleJson = JSON.stringify(first.bundle);
+    const verification = await verifyTrustedRouteRegistryBundle({
+      ...first, env: envBindings, now: NOW
     });
+    expect(verification).toMatchObject({ verified: true, dispatch: false });
+    const verifiedSnapshot = getVerifiedTrustedRouteRegistryBundle(verification);
+    expect(verifiedSnapshot).not.toBe(first.bundle);
+    expect(Object.isFrozen(verifiedSnapshot)).toBe(true);
+    expect(Object.isFrozen(verifiedSnapshot.routes[0].evidence)).toBe(true);
+
+    const copied = { ...verification };
+    await expect(persistTrustedRouteRegistryBundle({ db, verification: copied }))
+      .resolves.toMatchObject({ verified: false, persisted: false, reason: "VERIFIER_CAPABILITY_REQUIRED" });
+    await expect(persistTrustedRouteRegistryBundle({
+      db, verification: { verified: true, dispatch: false, ...verification }
+    })).resolves.toMatchObject({ verified: false, persisted: false, reason: "VERIFIER_CAPABILITY_REQUIRED" });
+
+    // Mutating caller-owned input after verification cannot change the exact
+    // immutable snapshot and detached signature authorized by the verifier.
+    first.bundle.routes[0].evidence.accountRef = "mutated-after-verification";
+    const result = await persistTrustedRouteRegistryBundle({ db, verification });
     expect(result).toMatchObject({
       verified: true, persisted: true, alreadyPersisted: false,
       active: true, registryEpoch: 2001, dispatch: false,
@@ -94,7 +114,7 @@ describe("atomic persistence of root-signed route registry", () => {
     `).first();
     expect(snapshot).toMatchObject({
       registry_epoch: 2001, registry_version: "registry-persist-v1",
-      bundle_digest: result.bundleDigest, bundle_json: JSON.stringify(first.bundle),
+      bundle_digest: result.bundleDigest, bundle_json: originalBundleJson,
       root_signature: first.signature, issuer_key_count: 1, route_count: 1
     });
 
@@ -130,26 +150,30 @@ describe("atomic persistence of root-signed route registry", () => {
       current_registry_version: "registry-persist-v1"
     });
 
-    const retry = await persistTrustedRouteRegistryBundle({
-      db, ...first, env: envBindings, now: NOW
-    });
+    const retry = await persistTrustedRouteRegistryBundle({ db, verification });
     expect(retry).toMatchObject({
       verified: true, persisted: true, alreadyPersisted: true,
       active: true, dispatch: false,
       reason: "REGISTRY_SNAPSHOT_ALREADY_PERSISTED"
     });
 
-    const invalid = await persistTrustedRouteRegistryBundle({
-      db, bundle: first.bundle, signature: (first.signature[0] === "A" ? "B" : "A") + first.signature.slice(1),
+    const deniedVerification = await verifyTrustedRouteRegistryBundle({
+      bundle: verifiedSnapshot,
+      signature: (first.signature[0] === "A" ? "B" : "A") + first.signature.slice(1),
       env: envBindings, now: NOW
     });
+    expect(deniedVerification).toMatchObject({ verified: false, dispatch: false });
+    const invalid = await persistTrustedRouteRegistryBundle({ db, verification: deniedVerification });
     expect(invalid).toMatchObject({ verified: false, persisted: false, dispatch: false });
 
     // A new snapshot that collides with the immutable qualification identity
     // must roll back its snapshot, issuer key and active-pointer writes together.
     const colliding = await makeBundle(2002, "registry-persist-v2");
+    const collidingVerification = await verifyTrustedRouteRegistryBundle({
+      ...colliding, env: envBindings, now: NOW + 1
+    });
     const failed = await persistTrustedRouteRegistryBundle({
-      db, ...colliding, env: envBindings, now: NOW + 1
+      db, verification: collidingVerification
     });
     expect(failed).toMatchObject({
       verified: true, persisted: false, dispatch: false,
