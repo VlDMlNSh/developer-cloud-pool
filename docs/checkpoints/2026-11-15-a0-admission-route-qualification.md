@@ -324,3 +324,14 @@ PR #649 exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f` now has 11 complet
 - Expanded PR head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` now has 11 check-runs: 9 SUCCESS, 2 SKIPPED (dispatch/admission jobs intentionally do not run for pull_request context), zero pending and zero failed at final recheck.
 - All three workflow blobs were read back and verified to contain their own dispatch-ID-derived branch expression. PR #649 remains OPEN/DRAFT, 3 files changed, zero formal reviews; no merge.
 - The available PR-context CI is green, but it does not exercise a controller-dispatched child run. Actual 3/3 execution and independent review remain NOT VERIFIED. No new dispatch was triggered in this pass.
+
+
+## Agent dispatch gate recheck — 2026-11-15
+
+- MediaHub main HEAD `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; Cloud Pool default `Основной` HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #649 remains OPEN/DRAFT at `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; exact-head checks 9 SUCCESS / 2 SKIPPED; formal reviews 0. No post-fix controller dispatch. Keep dispatch NOT RUN until governance review and effective ruleset verification.
+- Cloud Pool PR #87/#92/#91 remain OPEN/DRAFT/UNMERGED with respectively 3/2/0 observed exact-head check-runs and zero formal reviews each. PR #91 checks remain NOT VERIFIED.
+- Detailed report: [Agent dispatch hardening gate recheck](../reports/2026-11-15-agent-dispatch-hardening-gate-recheck.md).
+- Status: CI evidence on selected PR heads only; governance review NOT VERIFIED; runtime dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: formal review + exact governance recheck for PR #649; then a single approved controller wave if accepted. Continue D1 Worker runtime-boundary implementation only on an isolated branch and without enabling dispatch.
+
