@@ -451,3 +451,15 @@ Selected official GitHub-maintained `@octokit/rest@22.0.1`; current verifier sur
 - Freebuff Web suite #118407346000 remains QUEUED with zero checks; it is not a required ruleset context. Independent security review and metadata-only secret/variable scope checks remain outstanding. No credentials read, provider call, agent dispatch, deployment or bypass.
 - Next: OWNER posts exact `/probe` on Issue #301 after merge; inspect the resulting controller observer/assertion. Keep all dispatch gates fail-closed and Developer Cloud Pool Contour A primary.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 322 D1 registry epoch rollback test
+
+- Report: [Wave 322](../reports/2026-11-15-wave322-registry-epoch-rollback-test.md).
+- PR #93 test branch updated from `99ca50ce11efb380efa6346a1db672585876a8b1` to `e200838d038b9cd48635233187819302bba6a33e`; test blob `1a4b33b1765194ccc3b401dcd63aa775041e4b05`.
+- Added lower-unseen-epoch 2000 test after persisting epoch 2001; verifies no snapshot, issuer key or route rows survive and pointer remains at 2001.
+- Migration 0012 monotonicity trigger was inspected and correctly aborts non-increasing epochs; the earlier suspected partial-write path is disproven by trigger + D1 batch atomicity.
+- Exact-head CI run #43736259303 / job #132879411032 was RUNNING at checkpoint; NOT YET VERIFIED.
+- PR #93 remains OPEN/DRAFT. No merge, secrets, provider calls, dispatch, deployment. Gemini NOT RUN; Contour A NOT ACCEPTED.
+- Next: inspect exact-head CI; continue PR #92/A0 admission trust assertions after success.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
