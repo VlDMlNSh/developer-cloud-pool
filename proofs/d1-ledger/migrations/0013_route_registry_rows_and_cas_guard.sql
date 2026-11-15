@@ -66,3 +66,24 @@ BEFORE DELETE ON pool_route_registry_routes
 BEGIN
   SELECT RAISE(ABORT, 'ROUTE_REGISTRY_ROUTE_APPEND_ONLY');
 END;
+
+-- Child rows may only be appended while their snapshot is newer than the
+-- active watermark. This prevents late mutation-by-insertion after acceptance.
+CREATE TRIGGER pool_route_registry_issuer_insert_before_acceptance
+BEFORE INSERT ON pool_route_registry_issuer_keys
+WHEN EXISTS (
+  SELECT 1 FROM pool_route_registry_state
+   WHERE current_epoch >= NEW.registry_epoch
+)
+BEGIN
+  SELECT RAISE(ABORT, 'ROUTE_REGISTRY_ISSUER_SNAPSHOT_ALREADY_ACCEPTED');
+END;
+CREATE TRIGGER pool_route_registry_route_insert_before_acceptance
+BEFORE INSERT ON pool_route_registry_routes
+WHEN EXISTS (
+  SELECT 1 FROM pool_route_registry_state
+   WHERE current_epoch >= NEW.registry_epoch
+)
+BEGIN
+  SELECT RAISE(ABORT, 'ROUTE_REGISTRY_ROUTE_SNAPSHOT_ALREADY_ACCEPTED');
+END;
