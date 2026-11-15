@@ -2369,3 +2369,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A IN PROGRESS / BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Per-/next three-agent dispatch clarification — 2026-11-15
+
+- A chat `/next` does not itself start GitHub Actions. The approved MediaHub Gemini controller is triggered only when the assistant explicitly posts `/next` to Issue #301; it then dispatches three fixed Gemini child workflows against one immutable SHA.
+- Latest checked Wave 317 controller run `43719738980` failed. Agent 1 `43719757692` and Agent 3 `43719761724` succeeded and created PRs #648/#647, but both PRs remain unreviewed and their subsequent checks were `action_required`. Agent 2 `43719759616` failed because its workflow validator did not observe a successful `create_pull_request` tool operation; artifact `14163604242`, digest `sha256:0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`, exists. The controller correctly marked the batch FAILURE.
+- No new child dispatch occurred in this pass. Do not claim three agents run on every chat `/next` automatically. Next distributed wave is BLOCKED pending Agent 2 PR-creation/validator repair; retain three agents, no scale-up.
+- Related runtime-boundary review report updated: `docs/reports/2026-11-15-d1-registry-admission-runtime-boundary-review.md`, commit `b26fe3572bf0563f01536f6ee09db02279b57b4e`, blob `be137eca2d740e53a5eb64704aeb61db054ffa2d`.
