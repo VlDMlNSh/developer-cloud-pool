@@ -61,8 +61,9 @@ function same(row, input) {
     row.credential_handle_ref === r.credentialHandleRef &&
     row.quota_domain_id === (r.quotaDomainId ?? null) &&
     row.cost_class === r.costClass &&
-    row.capability_id === r.capabilityId &&
-    row.registry_version === r.registryVersion;
+    row.capability_id === r.capabilityId && row.registry_version === r.registryVersion &&
+    row.schema_version === r.schemaVersion && row.evidence_ref === r.evidenceRef &&
+    row.observed_at === r.observedAt && row.revocation_version === r.revocationVersion;
 }
 
 function statements(db, input) {
@@ -216,8 +217,10 @@ export async function admitQualifiedTask(db, input) {
            AND model_id = ? AND issuer_id = ? AND account_ref = ?
            AND credential_handle_ref = ? AND quota_domain_id IS ?
            AND cost_class = ? AND capability_id = ? AND evidence_digest = ?
-           AND registry_version = ? AND qualification_status = 'qualified'
-           AND revoked_at IS NULL AND issued_at <= ? AND issued_at >= ? AND expires_at > ?
+           AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
+           AND observed_at = ? AND revocation_version = ?
+           AND qualification_status = 'qualified' AND revoked_at IS NULL
+           AND observed_at <= ? AND observed_at >= ? AND issued_at <= ? AND expires_at > ?
       `).bind(
         input.route.qualificationId, input.route.routeId, input.route.providerId,
         input.route.modelId, input.route.issuerId, input.route.accountRef,
