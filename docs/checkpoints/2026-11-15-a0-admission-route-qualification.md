@@ -316,3 +316,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - PRs #664/#665/#666 remain OPEN / DRAFT / UNMERGED; their CI ended `action_required` with no jobs, therefore CI and reviews are NOT VERIFIED. Do not merge.
 - This is a verified MediaHub Gemini event bridge, not Cloud Pool-native dispatch. Cloud Pool `POOL_DISPATCH_ENABLED` remains fail-closed. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Detailed run IDs, artifact digests, PR head SHAs, and CI disposition: [wave 332 report](../reports/2026-11-15-next-wave-332-three-agent-execution.md).
+
+
+## Latest /next wave 333 — dispatch verified; child tasks running — 2026-11-15
+
+- Exact user `/next` created one owner-authored MediaHub Issue #301 comment `6899220496` (https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899220496); prior latest source event was `6899094688`, so no duplicate existed for this turn.
+- Controller run `43747209052` (Wave 317) on immutable MediaHub target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; admission job `132913041399` SUCCESS; dispatch/monitor job `132913065730` RUNNING at checkpoint.
+- Agent 1 run `43747229342`, correlation `5f8eb1ea-4e8f-46fe-9fcc-76b739800783`; signature job `132913105304` SUCCESS; task job `132913135482` RUNNING.
+- Agent 2 run `43747231340`, correlation `5322b45c-866e-4504-ab68-f94125634ffe`; signature job `132913112850` SUCCESS; task job `132913141605` RUNNING.
+- Agent 3 run `43747233840`, correlation `acbb513e-0ebc-4607-9ebd-dc6250cc5c3c`; signature job `132913119761` SUCCESS; task job `132913150602` RUNNING.
+- Child artifacts and final conclusions were not yet available. Do not mark this wave SUCCEEDED/VERIFIED until all three task jobs and non-expired artifact SHA-256 values are reconciled. Full evidence: [wave 333 report](../reports/2026-11-15-next-wave-333-chatgpt-gemini-cloud-pool-pass.md).
+- Cloud Pool remains default branch `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Issue #94 OPEN. Supervisor has no `issue_comment` trigger and remains fail-closed unless `POOL_DISPATCH_ENABLED=true`; Worker only offers `dsh-headless-probe`. No Cloud Pool-native Gemini dispatch or provider execution was performed.
+- Existing A0/D1 and Qualified Route Evidence work remains isolated proof; trust-root/registry lifecycle and atomic revocation-watermark integration are the next technical blockers. No runtime code, workflow, secrets, variables, dispatch authority, deployment or merge changed.
+- Current statuses: MediaHub event SUCCEEDED; controller RUNNING; Gemini 1/2/3 RUNNING; Cloud Pool-native Gemini NOT IMPLEMENTED / NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
