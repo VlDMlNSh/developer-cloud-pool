@@ -2399,3 +2399,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Confirmed controller main workflow generates a UUID `dispatch_id` per child and passes it to workflow_dispatch; Agent 2 declares this required input. The repair instruction's unique branch expression therefore has an upstream producer.
 - PR #649 exact-head check-runs: 11 total; all 9 completed checks SUCCESS, with 2 dispatch-related jobs SKIPPED in pull_request context. No failed/pending checks at recheck. Reviews: zero. PR remains OPEN/DRAFT and unmerged. CI is green for the available PR-context suite, but no independent review and no actual dispatch execution of the modified child workflow yet.
 - No controller dispatch was triggered: main still serves the unrepaired child workflow until PR #649 is accepted/merged, and the repository governance review gate is not satisfied. This is an explicit stop, not an automatic per-chat /next dispatch.
+
+
+## Follow-up — widen per-dispatch branch isolation to all three Gemini roles — 2026-11-15
+
+- Static comparison found the generic, non-unique branch instruction was not limited to Agent 2; the same pattern existed in Agent 1 (`gemini-autonomous-engineering.yml`) and Agent 3 (`gemini-agent-3.yml`). This created potential cross-wave collisions for all child PRs.
+- Expanded MediaHub PR #649 to cover all three child workflow prompt contracts. Each now requires a fresh branch keyed by the controller-generated UUID `inputs.dispatch_id`, forbids reuse of earlier-wave branches/PRs, and fails closed on branch-create collision:
+  - Agent 1 blob `fb6e6eaf59f08ffa321f68194ba97e2b1a232dfc`: `agent-1-contour-a-${{ inputs.dispatch_id }}`.
+  - Agent 2 blob `51f998951a54ee78a61e5c908a9017a3475e7c0c`: `agent-2-contract-verification-${{ inputs.dispatch_id }}`.
+  - Agent 3 blob `bdc8ca6d4d85f27cc0228cd792ce270783672f6b`: `agent-3-security-audit-${{ inputs.dispatch_id }}`.
+- Expanded PR head: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; base remains immutable `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; 3 files changed, read-back confirmed all branch expressions.
+- At latest check: 11 exact-head check-runs; 9 completed SUCCESS, 2 dispatch/admission jobs SKIPPED in PR context, and Astra Verify still IN_PROGRESS. No reviews. PR #649 remains OPEN/DRAFT. Exact-head CI is therefore NOT YET VERIFIED, and actual dispatch behavior remains NOT VERIFIED.
+- No new controller dispatch, no secret/provider access, no merge/deployment/qualification. Next gate: wait for all exact-head checks to complete and obtain independent review; only then run one controlled three-agent wave and verify 3/3 child success with unique branches.
