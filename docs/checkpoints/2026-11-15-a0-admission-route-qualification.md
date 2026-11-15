@@ -135,3 +135,20 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: implement migration 0011 additively on the new stacked branch, preserve schema-0010 frozen fixture, then add composite batch adapter and adversarial local Workers-runtime tests. Exact-head CI required before considering proof verified. Keep dispatch false; no hosted D1, provider calls, secrets, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Atomic A0 -> D1 implementation proof — 2026-11-15
+
+- Implementation branch: `proof/atomic-a0-d1-admission-2026-11-15`.
+- Stacked Draft PR #72: https://github.com/VlDMlNSh/developer-cloud-pool/pull/72. Base is PR #67 head branch `impl/receipt-bound-projection-2026-11-11` at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; PR #67 remains OPEN/DRAFT. PR #72 remains OPEN/DRAFT and is not targeted to default.
+- Implementation HEAD: `ff8ced3309f69f45762a097d576c208d7ec2d617` (6 commits ahead of PR #67 head, 0 behind). Branch ref and PR #72 head match.
+- Added isolated D1 migration 0011, `src/admit-qualified-task.mjs`, atomic-admission tests and push workflow branch filter. Reuses migration 0003 task/task-approval/task-outbox trigger and migration 0004 immutable-attempt trigger.
+- Adapter performs approval consumption, existing task/outbox trigger path, immutable admission insert, immutable attempt insert and CHECK-backed commit receipt in one D1 batch. Task key uses the same canonical algorithm as existing `claimLogicalTask`. Exact retry reads durable state; conflicting replay denies.
+- Adversarial tests cover rollback on forced attempt insertion failure, route revocation, account binding substitution, exact retry, 12-way contention and dispatch=false.
+- Exact-head workflow run `43688037189`: COMPLETED / SUCCESS at `ff8ced3309f69f45762a097d576c208d7ec2d617`. Workers-runtime: 7 files / 90 tests passed, including 6 atomic tests. Upgrade binding: 1 passed. Frozen schema-0010 fixture: 2 passed; historical golden digest unchanged.
+- Artifact ID `14151670181`; SHA-256 `6f2688e6232c9ca8210e6c4e6388c56d083295b1d3fb9cb8a57c86d3b75cf4f7`.
+- Combined commit-status contexts are empty. Active ruleset exists, but required ruleset checks are NOT VERIFIED.
+- Material limitation: route rows are treated as pre-qualified input from a trusted authority. Current migration stores issuer/account/credential-handle-reference/model/quota-domain/capability/evidence digest/issued/expiry/revocation status/registry version; it does NOT authenticate issuer/evidence cryptographically, prove live provider/account state, or consult an independent monotonic revocation authority. It also lacks all normative evidence metadata (schema version, evidence reference, observed-at timestamp and revocation watermark). Thus this is a local atomic transaction proof, not a complete Qualified Route Evidence verifier or production route qualification.
+- No hosted D1, production migration, secrets, provider calls, external login, deployment, executor dispatch or merge.
+- PR #72 remains Draft and stacked. PR #67 ancestry reconciliation, independent review and required ruleset check verification remain outstanding.
+- Next: complete schema-versioned immutable evidence metadata and freshness/revocation binding on the proof branch, add adversarial tests, rerun exact-head CI, then reconcile the PR stack. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
