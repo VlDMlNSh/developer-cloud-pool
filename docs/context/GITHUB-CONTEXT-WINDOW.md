@@ -2124,3 +2124,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement the migration/adapter on a clean branch based on a reconciled PR #76 stack; do not cherry-pick replay branches blindly. Start with migration 0012 and migration-upgrade tests, then wire root-verified result to the persistence adapter and admission CAS.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #77 — Durable D1 Route Registry Snapshot Ledger — 2026-11-15
+
+- New implementation branch `impl/durable-route-registry-d1-2026-11-15`, PR #77 OPEN/DRAFT/UNMERGED, head `e63f1dda4c046d485ae9c2f08392a1943a06553d`, parent stack PR #76 exact base `096737ec5e1a335b367fc7af67c29f7b71541e66`. Compare reports 1 ahead / 0 behind; merge base equals PR #76 HEAD.
+- Migration `0012_durable_route_registry_snapshots.sql` adds append-only snapshot storage and a singleton watermark with composite FK, monotonicity/immutability/reset guards. Test `durable-route-registry-ledger.test.ts` exercises initial binding, append-only behavior, epoch regression, forward movement, rollback and digest mismatch. CI workflow filters include this branch and PR #76 as PR target.
+- Exact-head workflow run `43707407472` COMPLETED/SUCCESS at the PR #77 HEAD; job `132791362558` SUCCESS. `npm run check`, Workers-runtime D1 tests, isolated upgrade-binding smoke and frozen schema-0010 fixture smoke all completed successfully. Artifact `14158932085`, SHA-256 `2b8220e83c453ec62bf8ec0fa0547101b5f7ebb8d0bab213ede2e81d66f5923f` (18,253 bytes).
+- PR #77 formal reviews 0; combined status contexts 0. Default `Основной` HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Active ruleset `26550182` applies to default, requires PR/thread resolution, zero approvals and no required status checks; branch API reports protected=false. CI success is not governance acceptance.
+- Scope is persistence primitives only. No typed verifier persistence adapter, issuer-key snapshot rows, qualification/admission/receipt epoch+digest+key binding, atomic registry acceptance batch or admission watermark check yet. Durable registry remains NOT QUALIFIED. No hosted D1, deployment, dispatch, provider calls, secret reads, or independent audit. Contour B remains DEFERRED.
+- Next: implement typed registry persistence adapter with atomic snapshot + watermark CAS and rollback/concurrent-writer tests, then add issuer-key snapshot and admission/receipt binding. Keep dispatch false.
+
+Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/impl/durable-route-registry-d1-2026-11-15/docs/reports/2026-11-15-pr77-durable-route-registry-snapshot-ledger.md
+PR #77: https://github.com/VlDMlNSh/developer-cloud-pool/pull/77
+Exact-head CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43707407472
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

@@ -274,3 +274,21 @@ Next bounded implementation sequence:
 PR #76 remains OPEN/DRAFT/UNMERGED, exact-head CI SUCCESS (114 tests), formal reviews 0. No hosted D1, deployment, dispatch, provider calls, secret reads, or independent audit. Contour B remains DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## PR #77 durable registry snapshot ledger — 2026-11-15
+
+**Status: IMPLEMENTED / EXACT-HEAD CI VERIFIED / NOT QUALIFIED / NOT MERGED.**
+
+PR #77: https://github.com/VlDMlNSh/developer-cloud-pool/pull/77
+Branch `impl/durable-route-registry-d1-2026-11-15`; head `e63f1dda4c046d485ae9c2f08392a1943a06553d`; base PR #76 head `096737ec5e1a335b367fc7af67c29f7b71541e66`. One commit ahead / zero behind; exact merge base is PR #76 HEAD. PR #77 remains draft/open/unmerged, reviews 0.
+
+Migration 0012 adds append-only registry snapshots and singleton monotonic watermark with composite snapshot FK and trigger guards. A Workers-runtime adversarial test validates immutability, stale epoch rejection, forward pointer movement, reset/rollback rejection and snapshot digest binding. Workflow triggers were extended for this implementation branch and PR #76 as base.
+
+Exact-head CI run `43707407472` / job `132791362558`: COMPLETED / SUCCESS. Syntax check, full D1 test suite, isolated upgrade-binding smoke and frozen schema-0010 fixture smoke all passed. Artifact `14158932085`, SHA-256 `2b8220e83c453ec62bf8ec0fa0547101b5f7ebb8d0bab213ede2e81d66f5923f`.
+
+Important limitation: this is storage primitives only. Typed root-verifier adapter, issuer-key snapshot persistence, route qualification columns, same-batch registry acceptance CAS, and epoch/digest/key-ID admission/receipt binding remain unimplemented. Thus registry acceptance is NOT QUALIFIED. PR #77 has no formal reviews and no combined required status contexts. Default ruleset ID 26550182 does not configure required CI status checks. No hosted D1/deployment/dispatch/provider calls/secrets. Contour B deferred.
+
+Next: implement typed persistence adapter and atomic snapshot+watermark batch, test rollback and competing writers, then bind issuer keys and registry identity into qualification/admission/receipt.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
