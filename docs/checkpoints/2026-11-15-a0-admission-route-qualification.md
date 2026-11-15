@@ -88,3 +88,9 @@ Issue #70: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
 
 Next: reconcile PR #71's two-commit base drift, then implement typed route evidence with freshness/revocation and integrate A0 with D1 atomically while keeping dispatch disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### PR #71 drift after documentation commits — 2026-11-15
+
+Current default HEAD after this pass's report/context/checkpoint commits: `1ce2af5fddb67bbaf63c9b580dc796c91b95e9b7`.
+PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to current default is DIVERGED, 3 ahead / 5 behind; merge base remains `670ed18460506c5cba6757baf15954215a74cb0a`. The additional behind commits are documentation-only commits from this pass. PR remains Draft; no merge or rebase performed. Exact-head CI success remains evidence for the immutable PR head only, not for a rebased head.
