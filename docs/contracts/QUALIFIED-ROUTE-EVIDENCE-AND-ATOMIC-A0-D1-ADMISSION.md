@@ -1,6 +1,6 @@
 # Qualified Route Evidence and Atomic A0/D1 Admission Contract
 
-**Status:** DESIGN / NOT IMPLEMENTED / NOT QUALIFIED  
+**Status:** IMPLEMENTED IN ISOLATED PROOF / NOT QUALIFIED  
 **Date:** 2026-11-15  
 **Contour:** A only  
 **Dispatch:** MUST remain disabled
@@ -134,3 +134,23 @@ This contract does not create or reveal provider credentials, verify that any cu
 - Quota Ledger fail-closed PR #71: https://github.com/VlDMlNSh/developer-cloud-pool/pull/71
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 11. Implementation evidence — 2026-11-15
+
+An isolated local D1 proof has been implemented on stacked PR #72:
+https://github.com/VlDMlNSh/developer-cloud-pool/pull/72
+
+- Exact implementation HEAD: `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`.
+- Additive migration 0011 introduces schema-versioned route qualification rows, immutable admission records, commit receipts and one-way task-outbox binding to admission ID, attempt ID and evidence digest.
+- The composite adapter performs approval consumption, existing task/outbox trigger, admission insertion, existing immutable attempt trigger, outbox binding and a CHECK-backed commit receipt in one D1 batch. The final receipt assertion aborts the batch if any required row/binding is missing. Durable read-back follows commit.
+- The persisted route row includes schemaVersion, qualificationId, routeId, providerId, modelId, issuerId, accountRef, credentialHandleRef, quotaDomainId, costClass, capabilityId, capabilityProfile, evidenceRef, evidenceDigest, observedAt, validUntil, revocationVersion, registryVersion and qualification status. Freshness is capped at 300 seconds. Revocation is monotonic.
+- One admission per logical task is enforced in this proof to preserve the existing task-level outbox's one-to-one admission binding.
+- Exact-head workflow run 43689591339: SUCCESS at the exact HEAD above. Workers-runtime: 7 files / 91 tests passed, including rollback, replay, revocation, stale-evidence, binding-substitution and concurrency cases. Upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed.
+- Dispatch remains false. No provider call, secret access, hosted D1, deployment or executor qualification.
+
+### Remaining acceptance blockers
+
+This is not a qualified route or production admission. The proof assumes route qualification rows were inserted by a trusted authority. It does not implement or qualify that writer, cryptographically authenticate issuer provenance, prove canonical evidence-byte serialization/digest generation, verify current provider-account identity or establish live quota availability. Synthetic evidence fixtures are not provider evidence. Combined commit status has zero contexts and required status checks remain NOT VERIFIED. No independent technical/security/governance review has been performed; per project decision, independent review remains deferred until the pool is operational.
+
+Therefore Sections 3–9 remain normative acceptance requirements. Status remains NOT QUALIFIED; dispatch must remain disabled; Contour A is not accepted.
