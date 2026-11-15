@@ -1963,3 +1963,11 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Status: local atomic proof IMPLEMENTED / exact-head CI VERIFIED; route NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile PR #67 / #72 ancestry with current default without stale stack import; verify effective required checks; after pool operation, perform independent technical/security/governance review. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Post-proof contract update — 2026-11-15
+
+- Qualified Route Evidence contract status is now `IMPLEMENTED IN ISOLATED PROOF / NOT QUALIFIED`; contract commit `548a70ee5eba25e85a7532a09e1f03cc2b4235be`, blob `0c839cc31e953a7fa8f8c754a477654a00a02508`.
+- Remaining qualification blockers: trusted evidence writer, cryptographic issuer/evidence verification, canonical evidence-byte serialization/digest, live provider/account/quota proof, required CI contexts and independent review.
+- Dated route-qualification checkpoint updated at default HEAD `3db97887be1fe096aa4bb59f4e4857a50023e09f`. Active default ruleset requires PR/thread resolution but zero approvals and no required status contexts; implementation PR #72 remains stacked and unmerged.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
