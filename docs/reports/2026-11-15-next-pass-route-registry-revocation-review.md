@@ -54,3 +54,11 @@
 - Checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/gemini-three-agent-next-bridge-2026-11-15/docs/checkpoints/2026-11-15-a0-admission-route-qualification.md
 - Issue #94: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Supplemental event reconciliation — current ChatGPT turn
+
+- This ChatGPT `/next` turn created a second owner-authored source comment `6899662679`: https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899662679.
+- The Issue #301 read-back shows both `6899662679` and `6899669400` as distinct owner-authored `/next` comments. They are distinct event IDs; do not collapse them or claim they are the same controller execution.
+- The connected GitHub actions exposed no workflow-run listing operation for the MediaHub controller, so controller/child run IDs, job conclusions and artifacts for `6899662679` remain NOT VERIFIED. The same limitation applies to `6899669400` as recorded above.
+- No second controller was called, no child workflow was dispatched directly, and no Cloud Pool dispatch authority was enabled.
