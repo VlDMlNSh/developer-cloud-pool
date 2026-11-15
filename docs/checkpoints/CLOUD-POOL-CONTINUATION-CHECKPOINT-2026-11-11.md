@@ -346,3 +346,51 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+
+## 2026-11-15 continuation update — exact replay hardening
+
+- Current default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Parent PR #87 exact head: `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, local Workers/D1 119 tests PASS, Pool Contract PASS.
+- New stacked PR #92: https://github.com/VlDMlNSh/developer-cloud-pool/pull/92
+  - branch `fix/a0-admission-exact-replay-receipt-integrity-2026-11-15`
+  - exact head `7014961587759b27d2ef6e91c60ce098d077ae83`
+  - base PR #87 branch; 2 files changed, no schema/migration changes
+  - D1 run 43718679258/job 132825665733 SUCCESS: 11 files / 120 tests PASS, syntax and migration/upgrade fixtures PASS
+  - Pool Contract run 43718679251/job 132825665679 SUCCESS
+  - artifact 14163925436, SHA-256 `83961df3a8caa97c67d29f70aa34bf4584ce0a53827e802ebb2fec8d8e051475`
+  - reviews 0, threads 0, OPEN/DRAFT/UNMERGED
+- Exact replay now verifies admission + immutable receipt + consumed approval + task/current attempt + outbox + registry assertion, and returns DENY if any component is absent or inconsistent. Later valid retries are bound to original commit timestamp.
+- Cloudflare read-only inventory: one standard account, 0 D1 databases, 0 Worker scripts, existing workers.dev subdomain. No resources or secrets read/created; Workers Free account entitlement NOT VERIFIED.
+- Ruleset #26550182 is PR-only with zero required approvals and no required checks/CODEOWNERS review.
+- Gemini controller 43717570433 and Agent 1 engineering run 43717589177 remain RUNNING at last observation. Agent 2 PR #645 and Agent 3 PR #644 have zero exact-head checks and no reviews/threads. Do not wait for them or dispatch duplicate waves.
+- Production dispatch FAIL-CLOSED; hosted D1 NOT RUN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next: implement and test issuer-authenticated claim-service/trusted-time boundary in local proof only; reconcile Agent 1 output opportunistically. No hosted provisioning without verified entitlement and explicit authorization.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 controller and D1 runtime-boundary recheck
+
+- Latest observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #92 exact head `7014961587759b27d2ef6e91c60ce098d077ae83`: D1 proof run 43718679258 SUCCESS (120 tests); Pool Contract run 43718679251 SUCCESS. PR #87/#92 remain OPEN/DRAFT with zero formal reviews and zero inline threads.
+- Worker entrypoint remains inert 404; registry persistence is local-only; no HTTP ingestion/authentication or trusted platform clock exists. Hosted D1 and deployment NOT RUN.
+- MediaHub PR #649 repair head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` has seven successful exact-head PR-context workflow runs and unique dispatch-ID branch expressions for all three Gemini children. It remains OPEN/DRAFT with no formal reviews; actual repaired controller dispatch NOT RUN. Do not post another Issue #301 `/next` comment before acceptance/merge.
+- Next: settle issuer/caller authority and governance, then implement a narrow authenticated Worker boundary with platform time and adversarial tests. No dispatch, secret access, provider calls, provisioning, deployment, or merge performed.
+- Detailed report: [2026-11-15 controller-wave readiness and D1 runtime-boundary recheck](../reports/2026-11-15-controller-wave-readiness-and-d1-runtime-boundary-recheck.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Gemini /next history recovery — 2026-11-15
+
+- Corrected previous status using fresh Actions evidence: four owner-authored Issue #301 exact `/next` comments (6898434080, 6898453275, 6898479858, 6898513683) each produced one successful MediaHub controller run (43741451816, 43741600025, 43741803725, 43742063927) and three successful child Gemini runs. Latest child runs: Agent 1 43742248259, Agent 2 43742249899, Agent 3 43742251541; all signature and engineering jobs succeeded and all three non-expired artifacts have API-verified digests.
+- Shared immutable MediaHub target: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Controller blob: `7799f0fc713c5bd772ce6820df40a926a83445c8`. Full run IDs, job IDs and artifact digests: [Gemini /next run-history recovery report](../reports/2026-11-15-gemini-next-run-history-recovery.md).
+- Idempotency: controller source checks existing issue_comment workflow runs by source comment ID; four distinct comment IDs each map to one observed controller run. This is verified for these events, not an assertion that chat text itself emits an event.
+- Separate Cloud Pool evidence: default HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Supervisor schedule run 43739946406 and Issue #94 run 43738088402 succeeded. They do not represent Gemini executions. Cloud Pool Issue #94 remains open; Cloud Pool Supervisor lacks issue_comment trigger and Pool Worker only supports dsh-headless-probe. Cloud Pool-native Gemini dispatch remains NOT IMPLEMENTED / BLOCKED.
+- No secrets were read; no dispatch variable changed; no direct child dispatch, merge, deployment or acceptance.
+- Next: implement a minimal Cloud Pool-native owner-only exact-event admission and replay/idempotency contract, fail-closed with adversarial tests; leave live dispatch disabled until governance, exact-head CI, metadata checks, trusted-main no-secret probe and independent review pass.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

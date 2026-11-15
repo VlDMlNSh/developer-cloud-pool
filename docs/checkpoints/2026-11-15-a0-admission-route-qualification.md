@@ -251,3 +251,99 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+
+## 2026-11-15 continuation update — exact replay hardening
+
+- Current default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Parent PR #87 exact head: `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, local Workers/D1 119 tests PASS, Pool Contract PASS.
+- New stacked PR #92: https://github.com/VlDMlNSh/developer-cloud-pool/pull/92
+  - branch `fix/a0-admission-exact-replay-receipt-integrity-2026-11-15`
+  - exact head `7014961587759b27d2ef6e91c60ce098d077ae83`
+  - base PR #87 branch; 2 files changed, no schema/migration changes
+  - D1 run 43718679258/job 132825665733 SUCCESS: 11 files / 120 tests PASS, syntax and migration/upgrade fixtures PASS
+  - Pool Contract run 43718679251/job 132825665679 SUCCESS
+  - artifact 14163925436, SHA-256 `83961df3a8caa97c67d29f70aa34bf4584ce0a53827e802ebb2fec8d8e051475`
+  - reviews 0, threads 0, OPEN/DRAFT/UNMERGED
+- Exact replay now verifies admission + immutable receipt + consumed approval + task/current attempt + outbox + registry assertion, and returns DENY if any component is absent or inconsistent. Later valid retries are bound to original commit timestamp.
+- Cloudflare read-only inventory: one standard account, 0 D1 databases, 0 Worker scripts, existing workers.dev subdomain. No resources or secrets read/created; Workers Free account entitlement NOT VERIFIED.
+- Ruleset #26550182 is PR-only with zero required approvals and no required checks/CODEOWNERS review.
+- Gemini controller 43717570433 and Agent 1 engineering run 43717589177 remain RUNNING at last observation. Agent 2 PR #645 and Agent 3 PR #644 have zero exact-head checks and no reviews/threads. Do not wait for them or dispatch duplicate waves.
+- Production dispatch FAIL-CLOSED; hosted D1 NOT RUN; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next: implement and test issuer-authenticated claim-service/trusted-time boundary in local proof only; reconcile Agent 1 output opportunistically. No hosted provisioning without verified entitlement and explicit authorization.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Registry/admission runtime boundary review — 2026-11-15
+
+- PR #87/#92 local source review: #87 head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`; #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`; both Draft/unmerged/unreviewed.
+- PR #92 exact-head CI: D1 Proof run `43718679258` SUCCESS (120/120 tests); Pool Contract run `43718679251` SUCCESS. This is local test proof, not live service qualification.
+- Registry snapshot/key/route persistence, monotonic epoch guard, active-pointer assertion and atomic A0→D1 batch are present in local proof. Dispatch remains false.
+- Runtime blocker: Worker entrypoint blob `214622f6dc94623521070eb9e7fbc2f573fdc2c6` returns 404 by design; adapters are not exposed as an HTTP service. Registry/admission APIs accept caller-provided `now`; trusted platform time is not wired. Authenticated registry ingestion is absent.
+- Report: [D1 registry/admission runtime-boundary review](../reports/2026-11-15-d1-registry-admission-runtime-boundary-review.md), commit `5448abc1dce009a98db13631f5988d091c438cb3`.
+- Next: implement a separate fail-closed authenticated Worker boundary, inject platform time internally, bound/validate requests and verify D1 binding. No deploy/provision/secret read/dispatch until separately authorized.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-15 distributed Agent 2 dispatch blocker
+
+Wave 317's Agent 2 child failed because it attempted to reuse the already-existing branch `agent-2-contract-verification-20261115` and its existing open PR #638. The Agent2 artifact `14163604242` (SHA-256 `0ea7574053b965331a651efc926f113802f5282e561b6fb8e991c0783d8e38f5`) records branch-create 0/1, file-update 1/1, PR-create 0/1. The runner log shows PullRequests: write, so the primary diagnosis is branch/PR collision, not missing token scope.
+
+Repair proposed in [MediaHub PR #649](https://github.com/VlDMlNSh/mediahub-os/pull/649): require a unique Agent2 branch containing the controller dispatch ID and fail closed on collision. PR is OPEN/DRAFT; exact-head CI and review NOT VERIFIED. No new agent dispatch occurred. Next: complete PR #649 checks/review, then run one controlled three-agent wave and require all three children, unique branches, artifact digests and exact-head evidence to pass before considering the agent wave stable.
+
+
+## PR #649 verification update
+
+PR #649 exact head `a9b8e0a9778f19493dd90080dfcfe8749efae48f` now has 11 completed check runs. Every executed check is SUCCESS; dispatch/admission jobs are SKIPPED in pull_request context, as intended. PR remains OPEN/DRAFT with zero reviews. Repair CI-VERIFIED; approval and new Agent2 execution NOT VERIFIED. No new dispatch was run.
+
+## Follow-up verification — Agent 2 repair PR #649 — 2026-11-15
+
+- Rechecked MediaHub main HEAD: `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; repair branch head: `a9b8e0a9778f19493dd90080dfcfe8749efae48f`; Agent 2 workflow blob: `51f998951a54ee78a61e5c908a9017a3475e7c0c`.
+- Confirmed controller main workflow generates a UUID `dispatch_id` per child and passes it to workflow_dispatch; Agent 2 declares this required input. The repair instruction's unique branch expression therefore has an upstream producer.
+- PR #649 exact-head check-runs: 11 total; all 9 completed checks SUCCESS, with 2 dispatch-related jobs SKIPPED in pull_request context. No failed/pending checks at recheck. Reviews: zero. PR remains OPEN/DRAFT and unmerged. CI is green for the available PR-context suite, but no independent review and no actual dispatch execution of the modified child workflow yet.
+- No controller dispatch was triggered: main still serves the unrepaired child workflow until PR #649 is accepted/merged, and the repository governance review gate is not satisfied. This is an explicit stop, not an automatic per-chat /next dispatch.
+
+
+## Follow-up — widen per-dispatch branch isolation to all three Gemini roles — 2026-11-15
+
+- Static comparison found the generic, non-unique branch instruction was not limited to Agent 2; the same pattern existed in Agent 1 (`gemini-autonomous-engineering.yml`) and Agent 3 (`gemini-agent-3.yml`). This created potential cross-wave collisions for all child PRs.
+- Expanded MediaHub PR #649 to cover all three child workflow prompt contracts. Each now requires a fresh branch keyed by the controller-generated UUID `inputs.dispatch_id`, forbids reuse of earlier-wave branches/PRs, and fails closed on branch-create collision:
+  - Agent 1 blob `fb6e6eaf59f08ffa321f68194ba97e2b1a232dfc`: `agent-1-contour-a-${{ inputs.dispatch_id }}`.
+  - Agent 2 blob `51f998951a54ee78a61e5c908a9017a3475e7c0c`: `agent-2-contract-verification-${{ inputs.dispatch_id }}`.
+  - Agent 3 blob `bdc8ca6d4d85f27cc0228cd792ce270783672f6b`: `agent-3-security-audit-${{ inputs.dispatch_id }}`.
+- Expanded PR head: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; base remains immutable `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; 3 files changed, read-back confirmed all branch expressions.
+- At latest check: 11 exact-head check-runs; 9 completed SUCCESS, 2 dispatch/admission jobs SKIPPED in PR context, and Astra Verify still IN_PROGRESS. No reviews. PR #649 remains OPEN/DRAFT. Exact-head CI is therefore NOT YET VERIFIED, and actual dispatch behavior remains NOT VERIFIED.
+- No new controller dispatch, no secret/provider access, no merge/deployment/qualification. Next gate: wait for all exact-head checks to complete and obtain independent review; only then run one controlled three-agent wave and verify 3/3 child success with unique branches.
+
+
+## Final exact-head CI recheck for expanded PR #649 — 2026-11-15
+
+- Expanded PR head `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e` now has 11 check-runs: 9 SUCCESS, 2 SKIPPED (dispatch/admission jobs intentionally do not run for pull_request context), zero pending and zero failed at final recheck.
+- All three workflow blobs were read back and verified to contain their own dispatch-ID-derived branch expression. PR #649 remains OPEN/DRAFT, 3 files changed, zero formal reviews; no merge.
+- The available PR-context CI is green, but it does not exercise a controller-dispatched child run. Actual 3/3 execution and independent review remain NOT VERIFIED. No new dispatch was triggered in this pass.
+
+
+## Agent dispatch gate recheck — 2026-11-15
+
+- MediaHub main HEAD `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; Cloud Pool default `Основной` HEAD `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- PR #649 remains OPEN/DRAFT at `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; exact-head checks 9 SUCCESS / 2 SKIPPED; formal reviews 0. No post-fix controller dispatch. Keep dispatch NOT RUN until governance review and effective ruleset verification.
+- Cloud Pool PR #87/#92/#91 remain OPEN/DRAFT/UNMERGED with respectively 3/2/0 observed exact-head check-runs and zero formal reviews each. PR #91 checks remain NOT VERIFIED.
+- Detailed report: [Agent dispatch hardening gate recheck](../reports/2026-11-15-agent-dispatch-hardening-gate-recheck.md).
+- Status: CI evidence on selected PR heads only; governance review NOT VERIFIED; runtime dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: formal review + exact governance recheck for PR #649; then a single approved controller wave if accepted. Continue D1 Worker runtime-boundary implementation only on an isolated branch and without enabling dispatch.
+
+
+
+## Single-Gemini review route for PR #649 — 2026-11-15
+
+- Existing controller has one-agent `review` mode pinned to FCC target SHA `074f20eb495666946a14410ab88d566aaa754f24`; `agents` launches three roles. Neither is suitable for a one-agent review of PR #649. No bypass used.
+- Candidate controller extension: MediaHub OS PR #650, head `eca542d7ecc9dba548e66860dc19ddbc51ff4077`, base `41c13e1c2b17ac48dc51c9963a9cda140f79ddb0`; OPEN/DRAFT/UNMERGED; 0 formal reviews.
+- Exact-head CI: 9 check-runs, 7 SUCCESS, 2 expected SKIPPED, 0 pending/failed; all five required contexts SUCCESS. New review contract suite 5/5; Astra Verify 482 tests. No runtime Gemini invocation.
+- Target PR #649 head pinned in new mode: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`. PR #649 remains OPEN/DRAFT with 0 formal reviews.
+- Report: [Single-Gemini PR #649 review readiness](../reports/2026-11-15-single-gemini-pr649-review-readiness.md).
+- Status: candidate implementation SUCCEEDED on branch; exact-head CI VERIFIED; independent review of PR #650 NOT VERIFIED; integration NOT RUN; Gemini review of PR #649 NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review PR #650; then integrate only after required governance checks and invoke one reviewer through the trusted controller. No direct child dispatch.
+
