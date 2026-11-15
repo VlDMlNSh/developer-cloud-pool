@@ -135,3 +135,38 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 - Next: implement migration 0011 additively on the new stacked branch, preserve schema-0010 frozen fixture, then add composite batch adapter and adversarial local Workers-runtime tests. Exact-head CI required before considering proof verified. Keep dispatch false; no hosted D1, provider calls, secrets, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Atomic A0 -> D1 implementation proof — 2026-11-15
+
+- Implementation branch: `proof/atomic-a0-d1-admission-2026-11-15`.
+- Stacked Draft PR #72: https://github.com/VlDMlNSh/developer-cloud-pool/pull/72. Base is PR #67 head branch `impl/receipt-bound-projection-2026-11-11` at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; PR #67 remains OPEN/DRAFT. PR #72 remains OPEN/DRAFT and is not targeted to default.
+- Implementation HEAD: `ff8ced3309f69f45762a097d576c208d7ec2d617` (6 commits ahead of PR #67 head, 0 behind). Branch ref and PR #72 head match.
+- Added isolated D1 migration 0011, `src/admit-qualified-task.mjs`, atomic-admission tests and push workflow branch filter. Reuses migration 0003 task/task-approval/task-outbox trigger and migration 0004 immutable-attempt trigger.
+- Adapter performs approval consumption, existing task/outbox trigger path, immutable admission insert, immutable attempt insert and CHECK-backed commit receipt in one D1 batch. Task key uses the same canonical algorithm as existing `claimLogicalTask`. Exact retry reads durable state; conflicting replay denies.
+- Adversarial tests cover rollback on forced attempt insertion failure, route revocation, account binding substitution, exact retry, 12-way contention and dispatch=false.
+- Exact-head workflow run `43688037189`: COMPLETED / SUCCESS at `ff8ced3309f69f45762a097d576c208d7ec2d617`. Workers-runtime: 7 files / 90 tests passed, including 6 atomic tests. Upgrade binding: 1 passed. Frozen schema-0010 fixture: 2 passed; historical golden digest unchanged.
+- Artifact ID `14151670181`; SHA-256 `6f2688e6232c9ca8210e6c4e6388c56d083295b1d3fb9cb8a57c86d3b75cf4f7`.
+- Combined commit-status contexts are empty. Active ruleset exists, but required ruleset checks are NOT VERIFIED.
+- Material limitation: route rows are treated as pre-qualified input from a trusted authority. Current migration stores issuer/account/credential-handle-reference/model/quota-domain/capability/evidence digest/issued/expiry/revocation status/registry version; it does NOT authenticate issuer/evidence cryptographically, prove live provider/account state, or consult an independent monotonic revocation authority. It also lacks all normative evidence metadata (schema version, evidence reference, observed-at timestamp and revocation watermark). Thus this is a local atomic transaction proof, not a complete Qualified Route Evidence verifier or production route qualification.
+- No hosted D1, production migration, secrets, provider calls, external login, deployment, executor dispatch or merge.
+- PR #72 remains Draft and stacked. PR #67 ancestry reconciliation, independent review and required ruleset check verification remain outstanding.
+- Next: complete schema-versioned immutable evidence metadata and freshness/revocation binding on the proof branch, add adversarial tests, rerun exact-head CI, then reconcile the PR stack. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Revalidation addendum — 2026-11-15
+
+- Subsequent branch activity advanced PR #72 / implementation branch from `ff8ced3309f69f45762a097d576c208d7ec2d617` to `da9a82e780c14c425f3feb4c01f10ec0daa6bc52` (10 commits ahead of PR #67 base, 0 behind). The only delta from ff8ced visible in commit da9a82 is a stale-evidence test fixture timestamp override; it does not add the missing schema-version/evidence-reference/observed-at/revocation-watermark columns. Re-read the migration and adapter at da9a82 confirms the contract-completeness limitation remains.
+- Latest exact-head workflow run `43688537854`: COMPLETED / SUCCESS at `da9a82e780c14c425f3feb4c01f10ec0daa6bc52`; Workers-runtime 7 files / 91 tests passed, atomic suite 7 passed; upgrade binding 1 passed; frozen schema-0010 fixture 2 passed. Artifact ID `14150714256`, SHA-256 `89f4fab41271ff1d8a80b729ed16b8249f387a725ff75bfc4106e81f85777422`.
+- PR #72 re-read: OPEN / DRAFT, head `da9a82e780c14c425f3feb4c01f10ec0daa6bc52`, base PR #67 branch at `a53f6232bd5b50d3e150addf528b8e722002f9dd`; unmerged.
+- Documentation PR #73: OPEN / DRAFT, base `Основной` at `3010d6c95f755bb145ee10c201d810dca21916c2`, head is the documentation-only branch. It is not merged because default branch protection requires changes through a PR.
+- Ruleset `26550182` (`Основной — verified`) is active. It requires a PR, thread resolution, and zero configured approving-review count; its required-status-check list is empty. This does not amount to an independent review or qualification.
+- No merge, production deployment, hosted D1, external login, provider call, secret read or dispatch.
+
+## Qualified evidence metadata implementation update — 2026-11-15
+
+- Implementation branch advanced to `923710ac9e67e0aca2680e020db2dc8c46d2437d` (12 commits ahead of PR #67 base `a53f6232bd5b50d3e150addf528b8e722002f9dd`, 0 behind).
+- Migration 0011 now includes `schema_version`, immutable `evidence_ref`, `observed_at`, `issued_at`, `expires_at`, and `revocation_version`; revocation is monotonic and requires a strictly increasing version. Adapter binds those fields during initial admission, commit receipt, and exact replay read-back. Seven atomic tests pass.
+- Latest exact-head workflow run `43689082459`: COMPLETED / SUCCESS at `923710ac9e67e0aca2680e020db2dc8c46d2437d`. 7 test files passed; atomic suite 7 passed; upgrade-binding smoke 1 passed; frozen schema-0010 fixture 2 passed. Artifact ID `14151432729`, SHA-256 `892844fc9fb587155a5353d8639da3218581488bd9e86737d8682a650a1bb90d`.
+- Qualification is still not complete: no cryptographic issuer/signature verification, no live provider/account truth, and no independent authority for the revocation watermark. The D1 row is assumed to be pre-populated by a trusted authority. No route/provider is production-qualified.
+- PR #72 remains OPEN/DRAFT, stacked on PR #67; PR #73 remains OPEN/DRAFT, docs-only to default. No merge. Dispatch false. Contour A remains BLOCKED / NOT ACCEPTED.
+- Next: implement/qualify the trusted evidence verifier and authority write boundary, then add tests proving only that authority can populate qualification records; retain exact-head CI and stack reconciliation gates.
