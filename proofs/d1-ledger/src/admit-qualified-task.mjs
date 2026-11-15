@@ -144,7 +144,7 @@ function statements(db, input) {
          SET admission_id = ?, attempt_id = ?, evidence_digest = ?
        WHERE task_key = ? AND status = 'pending'
          AND admission_id IS NULL AND attempt_id IS NULL AND evidence_digest IS NULL
-    `).bind(admissionId, t.attemptId, r.evidenceDigest, input.taskKey)
+    `).bind(admissionId, t.attemptId, r.evidenceDigest, input.taskKey),
     db.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, attempt_id, qualification_id,
@@ -256,6 +256,8 @@ export async function admitQualifiedTask(db, input) {
              a.attempt_number, a.qualification_id, a.evidence_digest,
              a.dispatch_enabled, r.assertion, r.committed_at,
              l.state AS approval_state, o.status AS outbox_status,
+             o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
+             o.evidence_digest AS outbox_evidence_digest,
              p.status AS attempt_status, p.input_digest, p.execution_idempotency_key
         FROM pool_admissions a
         JOIN pool_admission_commit_receipts r ON r.admission_id = a.admission_id
