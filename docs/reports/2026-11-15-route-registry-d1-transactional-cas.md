@@ -9,7 +9,7 @@ Status: PR #82 EXACT-HEAD PR-CI VERIFIED / DATABASE TRANSACTION PRIMITIVES VERIF
 - Default branch: `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
 - Documentation branch before this report: `docs/next-2026-11-15-route-registry-revalidation` @ `f8eb501c1beb4dc606d2993b0d62ab9af25900d2`.
 - PR #80 remains OPEN / DRAFT / UNMERGED at `4dc81a377004502e8cae35583a734be5cc74cce6`.
-- PR #82 is OPEN / DRAFT / UNMERGED; base PR #80 at `4dc81a377004502e8cae35583a734be5cc74cce6`; head `6a088b63a5f068665db286301bd6d360204fa288`; compare is 3 ahead / 0 behind.
+- PR #82 is OPEN / DRAFT / UNMERGED; base PR #80 at `4dc81a377004502e8cae35583a734be5cc74cce6`; head `6a088b63a5f068665db286301bd6d360204fa288`; compare is 6 ahead / 0 behind.
 - PR #82 formal reviews: 0. Inline review threads: 0.
 - PR #79 is a separate documentation PR on `docs/next-2026-11-15-registry-epoch-hardening`; it is not the active documentation continuation branch used for this report.
 
