@@ -2613,3 +2613,21 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Cloud Pool-native Gemini /next trigger gap](../reports/2026-11-15-cloud-pool-native-gemini-next-trigger-gap.md).
 - Next: implement a separate Cloud Pool-native least-privilege controller and non-launching probe on a new branch, with adversarial tests. Keep dispatch fail-closed until governance, exact-head CI, secret/variable metadata and trusted-main probe pass.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Gemini /next execution history recovered (four 3/3 waves)
+
+- Independently inspected the GitHub Actions workflow pages, controller job logs, child run jobs, and artifact metadata. This corrects the earlier stale checkpoint claim that live 3/3 execution had not yet been verified.
+- Four distinct owner-authored exact `/next` comments on MediaHub Issue #301 each produced one successful controller run and exactly three successful child runs:
+  - Comment `6898434080` → controller `43741451816` → Agent 1 `43741475380`, Agent 2 `43741477715`, Agent 3 `43741479932`.
+  - Comment `6898453275` → controller `43741600025` → Agent 1 `43741694350`, Agent 2 `43741696633`, Agent 3 `43741698600`.
+  - Comment `6898479858` → controller `43741803725` → Agent 1 `43742062642`, Agent 2 `43742064365`, Agent 3 `43742065892`.
+  - Comment `6898513683` → controller `43742063927` → Agent 1 `43742248259`, Agent 2 `43742249899`, Agent 3 `43742251541`.
+- All four controller runs report SUCCESS. Their dispatch-and-monitor jobs explicitly logged three accepted signed child dispatches, a shared target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`, unique correlation IDs, successful child jobs, and artifact digests. The latest wave's child job IDs, artifact IDs, and digests are recorded in [the recovery report](../reports/2026-11-15-gemini-next-run-history-recovery.md).
+- Controller workflow blob on MediaHub main: `7799f0fc713c5bd772ce6820df40a926a83445c8`. Its source gate requires Issue #301, non-PR issue_comment, exact body `/next`, owner association, trusted main ref, enabled batch variable, and controller secrets. The dispatch job checks prior runs by source comment ID to suppress duplicate delivery.
+- Four source comment IDs each map to one controller run in the inspected history. This verifies the MediaHub Issue #301 event-to-three-child workflow for these four waves. It does NOT prove that a chat-only `/next` message automatically creates an Issue #301 event.
+- Cloud Pool remains separate: default `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; Issue #94 records no Cloud Pool `issue_comment` trigger, no Gemini controller, and Worker limited to `dsh-headless-probe`. Supervisor runs `43739946406` (schedule) and `43738088402` (Issue #94) succeeded but are not Gemini executions.
+- Corrected status: MediaHub Gemini 3/3 = VERIFIED EXECUTED for four waves; Cloud Pool-native Gemini dispatch = NOT IMPLEMENTED / BLOCKED; chat-only auto-bridge = NOT VERIFIED. No secret values were read; no Cloud Pool dispatch setting changed; no merge/deployment/qualification/Contour A acceptance claimed.
+- Next: keep Contour A as priority and implement only the smallest Cloud Pool-native owner-only admission/idempotency contract with fail-closed tests. Do not reuse the MediaHub controller as a Cloud Pool-native controller.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
