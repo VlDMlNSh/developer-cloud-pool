@@ -251,3 +251,26 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Durable route registry design review — 2026-11-15
+
+**Current status: DESIGN COMPLETED / IMPLEMENTATION NOT STARTED / CONTOUR A BLOCKED.**
+
+Immutable source snapshot: default `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; PR #76 verifier @ `096737ec5e1a335b367fc7af67c29f7b71541e66`; PR #72 admission proof @ `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`.
+
+The source-level gap is now precise: the root-signed bundle verifier returns `registryEpoch` and `bundleDigest`, but migration 0011 and the A0/D1 admission adapter do not persist/check these values or issuer `keyId`. The replay-v2 branch binds additional evidence fields but still does not bind the root registry identity. Therefore the root verifier remains isolated proof code and cannot authorize admission.
+
+Design contract: [DURABLE-QUALIFIED-ROUTE-REGISTRY-D1-V1.md](../contracts/DURABLE-QUALIFIED-ROUTE-REGISTRY-D1-V1.md). It defines additive migration 0012, append-only snapshot storage, singleton monotonic watermark, compare-and-swap, same-batch admission checks, receipt binding and adversarial test cases. This is not implementation or qualification.
+
+Next bounded implementation sequence:
+1. Reconcile replay-v2 patch against PR #72/#76 and retain only independently justified changes.
+2. Add migration 0012 with immutable registry snapshots and monotonic state pointer.
+3. Add migration compatibility and concurrency/rollback tests.
+4. Persist only typed root-verifier output; reject caller-constructed verification claims.
+5. Bind current epoch, bundle digest and issuer key ID inside the same D1 admission batch and receipt.
+6. Run exact-head CI and reread changed blobs; keep dispatch false.
+
+PR #76 remains OPEN/DRAFT/UNMERGED, exact-head CI SUCCESS (114 tests), formal reviews 0. No hosted D1, deployment, dispatch, provider calls, secret reads, or independent audit. Contour B remains DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

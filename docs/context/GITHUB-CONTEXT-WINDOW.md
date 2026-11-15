@@ -2111,3 +2111,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+
+## Durable registry / D1 admission design review — 2026-11-15
+
+- Revalidated default branch `Основной` HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; repository reports 63 open issues. Current active ruleset ID `26550182` exists; default branch API reports `protected=false`, so effective branch enforcement is NOT VERIFIED from this pass.
+- PR #72/#75/#76 remain OPEN / DRAFT / UNMERGED and stacked. PR #76 exact HEAD `096737ec5e1a335b367fc7af67c29f7b71541e66`; exact-head workflow `43697493628` SUCCESS, job `132761164474`; 114 tests PASS. PR #76 and #75 formal review lists empty; combined required status contexts not established.
+- Source audit found the precise integration gap: root verifier returns `registryEpoch` and `bundleDigest`, but migration 0011 route qualifications/admission/receipt do not persist or compare them, nor do they bind `keyId`. The admission module checks only the current persisted qualification row's existing fields. Thus root signature verification is not yet an authoritative D1 admission gate.
+- Replay branches remain unmerged: `fix/qualified-route-replay-binding-2026-11-15` @ `da9a82e780c14c425f3feb4c01f10ec0daa6bc52`; v2 @ `923710ac9e67e0aca2680e020db2dc8c46d2437d`. V2 binds schema/evidence/observation/revocation fields but does not add root registry epoch/digest/key ID. Neither branch is accepted or CI-qualified as part of the PR #76 stack.
+- Added design contract `docs/contracts/DURABLE-QUALIFIED-ROUTE-REGISTRY-D1-V1.md`: additive migration 0012 proposal, append-only snapshots, singleton monotonic watermark, CAS registry acceptance, same-batch admission checks, receipt binding, race/replay/rollback test matrix and explicit exclusions. This is DESIGN only; no schema or runtime code changed.
+- Contour A remains BLOCKED / NOT ACCEPTED. No hosted D1, deployment, dispatch, provider calls, secret reads, or executor qualification. Contour B remains DEFERRED.
+- Next: implement the migration/adapter on a clean branch based on a reconciled PR #76 stack; do not cherry-pick replay branches blindly. Start with migration 0012 and migration-upgrade tests, then wire root-verified result to the persistence adapter and admission CAS.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
