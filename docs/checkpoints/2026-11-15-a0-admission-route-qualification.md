@@ -251,3 +251,21 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Atomic A0→D1 and durable route-registry epoch-order hardening — 2026-11-15
+
+- Current default HEAD at recheck: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- A0/D1 proof stack current refs: PR #72 `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; PR #75 `f253f68194e65912a91c91f2d158525b97927749`; PR #76 `096737ec5e1a335b367fc7af67c29f7b71541e66`; PR #77 `e63f1dda4c046d485ae9c2f08392a1943a06553d`. All OPEN / DRAFT / UNMERGED and stacked; do not treat them as integrated production code.
+- PR #77 adds migration 0012 durable append-only root-signed route-registry snapshots and singleton pointer. Exact-head run `43707424040` SUCCESS; job `132791415186`; syntax, Workers-runtime D1 tests, isolated second D1 binding/migration smoke, frozen schema-0010 fixture smoke and artifact upload succeeded. It does not yet wire root verifier output to persistence/admission.
+- Review found a monotonicity gap: the original snapshot insert trigger compared only against the active pointer, allowing a lower unseen epoch to be appended after a higher snapshot had already been stored while the pointer lagged.
+- PR #78: https://github.com/VlDMlNSh/developer-cloud-pool/pull/78; branch `fix/route-registry-epoch-order-2026-11-15`; exact HEAD `54250f9c39111dd7cfeb7928fc3fd56169353a95`; base PR #77 at `e63f1dda4c046d485ae9c2f08392a1943a06553d`; OPEN / DRAFT / UNMERGED.
+- PR #78 compares new epochs with `MAX(registry_epoch)` over the complete append-only snapshot table. Regression inserts epoch 1003 while pointer is 1001 and proves epoch 1002 is rejected. Exact-head run `43708444649` COMPLETED / SUCCESS; job `132794554442`; all steps completed. Artifact `14158817485`, SHA-256 `261a1eff4d93d58598d1b4495bf2f0e9b1632b71b4c9e03fa33b4b9b249f6e5f`.
+- PR #78 blobs: migration `485d8c2d2327a64c8d86ddc004134113d6ae3d80`; test `9bae1d2e621c9792dbdb3374459f44106b1edadd`; workflow `772702d98c665c145237a5fe2b5a57c0770a4264`. Exact-head combined status contexts 0; formal reviews 0; inline threads 0.
+- PR #72 exact-head D1 run `43690143805` SUCCESS (93 tests, nine atomic admission tests); PR #75 run `43694628561` SUCCESS (103 tests); PR #76 run `43697493628` SUCCESS (114 tests). Each remains a separate draft stack layer, not one qualified system.
+- Active ruleset #26550182 targets only `refs/heads/Основной`; PR required, review-thread resolution required, zero required approvals, no required status contexts and no bypass actors. Classic branch protection endpoint remains NOT VERIFIED. Do not infer independent review from CI.
+- No hosted D1, production trust root, provider call, secret access, dispatch, Worker/Supervisor execution, deployment or merge. Dispatch remains disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [route-registry epoch-order hardening](../reports/2026-11-15-route-registry-epoch-order-hardening.md).
+- Next: atomically compose the trusted registry/revocation watermark with A0 approval consumption, immutable task/attempt/outbox binding and receipt; adversarially test stale epoch, key substitution, revocation race, rollback and unavailable storage. Keep `dispatch:false`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
