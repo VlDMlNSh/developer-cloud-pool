@@ -460,3 +460,13 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - No code/schema/test/runtime/dispatch changes. Contour A BLOCKED / NOT ACCEPTED.
 - Next: specify revocation trust root, signer lifecycle, canonical subject/event, trusted time and restore anchor before adding migration 0015.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — Wave 328 revocation authority contract
+
+- Contract: [Authoritative Revocation Authority Contract v1](../contracts/AUTHORITATIVE-REVOCATION-AUTHORITY-CONTRACT-V1.md); commit `43da7ea0d1868aab4f6e647b34e4a61712085e27`; blob `9ee7c20ea79f532304b3ecb4cc9ddcd0d532b178`.
+- Proposed separate revocation root, root-signed role-separated event keyset, ES256 canonical events, route qualification / issuer-key subjects, strict sequence+digest CAS, D1 transaction time, same-batch admission enforcement and independent anti-rollback checkpoint.
+- Contract remains PROPOSED; authority custody, delegated signer operators, root recovery/rotation, DB clock health and external checkpoint store are open gates. No implementation, tests, secrets, dispatch, deployment or merge.
+- Next: pure canonical keyset/event verifier and deterministic vectors on clean migration ancestry after governance gates; then verifier-issued persistence, migration 0015, migration 0016 and adversarial D1 tests. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
