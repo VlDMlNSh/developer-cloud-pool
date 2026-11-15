@@ -371,3 +371,16 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Detailed report: [2026-11-16 live-state revalidation](../reports/2026-11-16-cloud-pool-live-state-revalidation.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: resolve controller transport/governance divergence, then resume gated qualification.
+
+
+## 2026-11-16 — restore, Gemini batch evidence and PR #98 security review
+
+- Cloud Pool default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main HEAD: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Last confirmed MediaHub owner batch: Issue #301 comment `6901529560`; controller run `43763042415`; Agent 1/2/3 runs `43763061253` / `43763062743` / `43763064255`, all SUCCESS. Job IDs and artifact digests: [restore/security report](../reports/2026-11-16-pr98-admission-security-review.md). This is historical evidence, not a new dispatch in this pass.
+- Agent PRs #730–#732 remain Draft; exact-head checks 0, reviews 0. Not accepted.
+- Cloud Pool PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`: three exact-head checks SUCCESS; zero formal reviews. Static review found unkeyed ledger digest/no author verification (HIGH), caller-supplied lock/sameInvocation booleans (MEDIUM), incomplete workflow-run correlation (MEDIUM), and missing adversarial coverage. PR is non-dispatching; Issue #96 remains PLANNED with no dispatch authorization.
+- MediaHub controller transport/governance drift and trusted-main probe/review gates remain NOT VERIFIED; no new /next trigger posted.
+- No secrets, provider calls, dispatch, merge, deployment, qualification or product work. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: remediate PR #98 security findings and obtain independent review; separately reconcile MediaHub controller transport governance before another batch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
