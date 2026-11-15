@@ -37,6 +37,8 @@ test("derives stable idempotency identity from source comment and target SHA", (
   const first = evaluateNextAdmission(input);
   const second = evaluateNextAdmission(input);
   assert.equal(first.dispatchId, second.dispatchId);
+  const differentTarget = evaluateNextAdmission({ ...input, sha: "3d84f04bbc28385fe4da0cbdf47535a01eb9be1b" });
+  assert.equal(first.dispatchId, differentTarget.dispatchId);
   input.event.comment.id += 1;
   assert.notEqual(first.dispatchId, evaluateNextAdmission(input).dispatchId);
 });
