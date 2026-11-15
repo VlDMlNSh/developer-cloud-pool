@@ -97,6 +97,20 @@ function statements(db, input) {
     r.keyId, r.registryEpoch, r.registryBundleDigest,
     now, now, now, now, now, now - 300, now
   ];
+  const receiptRouteMatch = `
+    q.qualification_id = ? AND q.evidence_digest = ?
+    AND q.issuer_key_id = ? AND q.registry_epoch = ?
+    AND q.registry_bundle_digest = ? AND q.registry_version = ?
+    AND q.registry_accepted_at <= ? AND q.registry_valid_until > ?
+    AND q.registry_issuer_status = 'active' AND q.registry_issuer_revoked_at IS NULL
+    AND q.registry_issuer_valid_from <= ? AND q.registry_issuer_valid_until > ?
+    AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
+  `;
+  const receiptRouteValues = [
+    r.qualificationId, r.evidenceDigest, r.keyId, r.registryEpoch,
+    r.registryBundleDigest, r.registryVersion,
+    now, now, now, now, now, now - 300, now
+  ];
   return [
     db.prepare(`
       UPDATE pool_approval_ledger
@@ -187,14 +201,14 @@ function statements(db, input) {
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
              AND q.evidence_digest = a.evidence_digest
-             AND ${routeMatch}
+             AND ${receiptRouteMatch}
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, ...routeValues
+      t.executionIdempotencyKey, ...receiptRouteValues
     ),
   ];
 }
