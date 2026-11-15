@@ -285,7 +285,8 @@ export async function admitQualifiedTask(db, input) {
       const receipt = await db.prepare(`
         SELECT a.admission_id, a.approval_id, a.task_key, a.attempt_id,
                a.attempt_number, a.qualification_id, a.evidence_digest,
-               a.dispatch_enabled AS admission_dispatch_enabled,
+               a.admitted_at, a.dispatch_enabled AS admission_dispatch_enabled,
+               r.committed_at AS receipt_committed_at,
                r.approval_id AS receipt_approval_id,
                r.task_key AS receipt_task_key,
                r.attempt_id AS receipt_attempt_id,
@@ -349,7 +350,8 @@ export async function admitQualifiedTask(db, input) {
           receipt.assertion_bundle_digest !== input.route.registryBundleDigest ||
           receipt.assertion_registry_version !== input.route.registryVersion ||
           receipt.assertion_evidence_digest !== receipt.evidence_digest ||
-          receipt.assertion_checked_at !== input.now) {
+          receipt.receipt_committed_at !== receipt.admitted_at ||
+          receipt.assertion_checked_at !== receipt.admitted_at) {
         return deny("ADMISSION_RECEIPT_INTEGRITY_MISMATCH");
       }
       return {
