@@ -364,3 +364,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: formal ordered review/reconciliation of PR #81 → #84 → #85; then integrate registry-bound admission with the actual Supervisor/Worker task-envelope/outbox/receipt vertical path, still without dispatch.
 - Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final stack reconciliation — PR #86 atomic registry assertion — 2026-11-15
+
+- Current report: [verifier capability and atomic registry-bound admission](../reports/2026-11-15-verifier-capability-and-atomic-admission-registry.md).
+- Active stack is PR #81 → PR #84 → PR #86. No merge performed.
+- PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`, based on PR #81 HEAD `68ccf7b5b11857c00c9b5c4250bf95bac361468a`; exact PR CI [43709839460](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709839460) and push CI [43709824427](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709824427): SUCCESS. Verifier result capability binds original result to deep-frozen bundle + signature; persistence accepts only this capability.
+- PR #86 HEAD `a218f92274eca5491700d8f72a21172f8ce689dc`, base PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`, 5 ahead / 0 behind. Migration 0014 creates append-only `pool_admission_registry_assertions` and a DB trigger validating the active registry snapshot and issuer-key lifecycle. Assertion insertion is the first statement in the same D1 batch as approval consume, task/outbox/attempt and receipt. Receipt binds to assertion; batch rollback removes it if later steps fail.
+- PR #86 exact PR CI [43710912595](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710912595), job `132802030185`: SUCCESS. Push CI [43710887889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710887889), job `132801952692`: SUCCESS. 11 test files / 118 tests PASS / 0 FAIL; syntax, second binding, migration and frozen schema-0010 fixture pass.
+- Artifacts: push `14159919500`, SHA-256 `fde2ce7a1c0c5b7fed55f80d74ee2e5f3b95dfabb6257c6187b3cb7204063710`; PR `14160372747`, SHA-256 `8a1d61c86ecdda5dc58ae1d45cfbc83d09fcc3d53183f2101ebdd36c243745fc`.
+- PR #86 OPEN / DRAFT / UNMERGED; 0 formal reviews / 0 inline threads. Keep Draft.
+- PR #83's updated head `a2e02471438104a5502d505995912c9eedb06480` also had exact-head CI success [43710565281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710565281) and [43710560400](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710560400); its assertion-table implementation was ported to #86 on the #84 parent. The earlier PR #83 head failed with expression-tree depth 100.
+- PR #80 closed as superseded; PR #82 closed due competing migration 0013; PR #83 closed due ancestry reconciliation; PR #85 closed because its competing migration 0014 read-view approach conflicts with #86's assertion-table migration. Do not merge competing migration 0014 branches. No merges occurred.
+- PR #81 migration 0013 remains the only canonical registry persistence migration. PR #86 migration 0014 is the canonical admission assertion migration.
+- Default HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, `protected=false`; ruleset #26550182 still has 0 approvals and no required CI checks.
+- No production root-key custody/configuration, hosted D1, provider calls, deployment, dispatch, independent audit or Contour B. Synthetic issuer fixtures only. `dispatch:false` remains. Contour A IN PROGRESS / NOT ACCEPTED.
+- Next: formal ordered review/reconciliation PR #81 → #84 → #86; then integrate registry-bound A0 transaction into actual Supervisor/Worker task-envelope/outbox/receipt vertical path, no dispatch.
+- Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
