@@ -1,4 +1,4 @@
-# Cloud Pool /next revalidation and Gemini Wave 318 evidence — 2026-11-16
+# Cloud Pool /next revalidation and Gemini batch 6901529560 evidence — 2026-11-16
 
 ## Immutable scope and repository refs
 
@@ -26,7 +26,7 @@
 - Context Window blob `3f0c33775e1f8a48bdfbb81e4d495593e5d8723c` was stale (Last refreshed 2026-11-08, default HEAD 197ba98..., continuation branch docs/cross-chat-continuation-2026-11-06). This report corrects the recorded live state; the context and checkpoint are updated in the same documentation branch.
 - Do not merge PR #99 until exact-head CI and formal review are available.
 
-## MediaHub OS Gemini Wave 318 — actual owner-triggered run
+## MediaHub OS Gemini owner-triggered batch 6901529560 — actual owner-triggered run
 
 - Owner-authenticated `/next` comment: Issue #301 comment ID `6901529560`.
 - Controller run `43763042415`: COMPLETED / SUCCESS, event `issue_comment`, target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
@@ -47,13 +47,13 @@
 1. The Cloud Pool Context Window was stale despite residing at the expected docs branch path. Its previous top-level state was materially out of date. This is now explicitly corrected by this documentation update.
 2. PR #98 has three exact-head successful checks but remains Draft and has no independent review evidence.
 3. PR #99 has zero exact-head checks and remains Draft; do not merge.
-4. Gemini Wave 318 operated successfully end-to-end through the approved controller. The three agents produced separate provenance-validated draft PRs, but none is merge-ready.
+4. Gemini owner-triggered batch 6901529560 operated successfully end-to-end through the approved controller. The three agents produced separate provenance-validated draft PRs, but none is merge-ready.
 5. Agent 1 did not deliver application implementation. Agent 2 did not execute tests. Agent 3's static audit claims require evidence-backed revalidation.
 6. No Cloud Pool hosted web interface, persistent executor runtime, production model route, quota enforcement under live provider accounts, or state recovery was proven in this pass.
 
 ## Status
 
-- Gemini Wave 318: SUCCEEDED (controller + 3 children + provenance checks + artifact digests).
+- Gemini owner-triggered batch 6901529560: SUCCEEDED (controller + 3 children + provenance checks + artifact digests).
 - Cloud Pool PR #98: exact-head CI VERIFIED; review NOT VERIFIED; OPEN / DRAFT.
 - Cloud Pool PR #99: exact-head CI NOT VERIFIED; review NOT VERIFIED; OPEN / DRAFT.
 - MediaHub PR #730/#731/#732: OPEN / DRAFT; exact-head CI NOT VERIFIED; no merge.
@@ -66,3 +66,6 @@
 Independently inspect the three Agent PRs and their artifacts; require exact-head CI for each; reject unsupported test/security claims unless backed by reproducible runs. In parallel, refresh the Cloud Pool A0→D1 source contracts against current default and determine the smallest next non-dispatching engineering change. Keep all Cloud Pool dispatch and provisioning gates closed.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+> Naming precision: GitHub's controller run display title reports `Wave 317` for this run as well as the preceding run. No monotonic wave counter was verified. This record therefore identifies the batch by owner comment ID `6901529560` and controller run ID `43763042415`, not by an inferred wave number.
