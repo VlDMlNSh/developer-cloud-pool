@@ -39,7 +39,7 @@ export function evaluateNextAdmission({ eventName, event, repository, ref, sha }
   }
 
   const dispatchId = createHash("sha256")
-    .update(OWNER_REPO + ":" + CONTROL_ISSUE + ":" + String(comment.id) + ":" + sha)
+    .update(OWNER_REPO + ":" + CONTROL_ISSUE + ":" + String(comment.id))
     .digest("hex");
 
   return Object.freeze({
