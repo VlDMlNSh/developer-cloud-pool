@@ -8,8 +8,10 @@ on:
     paths:
       - "scripts/next-admission.mjs"
       - "scripts/next-dispatch-ledger.mjs"
+      - "scripts/next-github-ledger-adapter.mjs"
       - "test/next-admission.test.mjs"
       - "test/next-dispatch-ledger.test.mjs"
+      - "test/next-github-ledger-adapter.test.mjs"
       - ".github/workflows/next-admission-contract.yml"
 
 permissions:
@@ -33,7 +35,9 @@ jobs:
         run: |
           node --check scripts/next-admission.mjs
           node --check scripts/next-dispatch-ledger.mjs
+          node --check scripts/next-github-ledger-adapter.mjs
           node --check test/next-admission.test.mjs
           node --check test/next-dispatch-ledger.test.mjs
+          node --check test/next-github-ledger-adapter.test.mjs
       - name: Adversarial admission and ledger tests
-        run: node --test test/next-admission.test.mjs test/next-dispatch-ledger.test.mjs
+        run: node --test test/next-admission.test.mjs test/next-dispatch-ledger.test.mjs test/next-github-ledger-adapter.test.mjs
