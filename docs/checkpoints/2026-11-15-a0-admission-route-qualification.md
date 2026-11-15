@@ -330,3 +330,20 @@ PR #78: https://github.com/VlDMlNSh/developer-cloud-pool/pull/78
 PR #80: https://github.com/VlDMlNSh/developer-cloud-pool/pull/80
 Exact-head CI: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Route registry D1 transaction schema proof — 2026-11-15
+
+- Report: [route registry D1 transactional CAS proof](../reports/2026-11-15-route-registry-d1-transactional-cas.md).
+- PR #82: OPEN / DRAFT / UNMERGED; stacked on PR #80 at immutable parent `4dc81a377004502e8cae35583a734be5cc74cce6`; head `6a088b63a5f068665db286301bd6d360204fa288`, 3 ahead / 0 behind.
+- Migration `0013_route_registry_rows_and_cas_guard.sql` adds immutable issuer and route tables, composite issuer/key FK, append-only controls, late child-row insert denial and CHECK-backed expected-epoch CAS gate.
+- Workers-runtime test proves initial install, epoch advance, late insert rejection, stale-writer rollback with zero orphan rows and exactly one successful contender from two competing batches.
+- Exact-head PR CI [43709327229](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709327229) / job `132797255446`: SUCCESS.
+- Exact-head push CI [43709322278](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43709322278) / job `132797240505`: SUCCESS.
+- Syntax, Workers-runtime D1 suite, second-binding migration smoke, frozen schema-0010 fixture and artifact upload all succeeded. Artifact `14160225386`, SHA-256 `7bdcb411dc43a8a39028339bf1e81f00737cbc3813aa04038098b154ec7990b9`.
+- PR #82 formal reviews 0; inline threads 0. Keep Draft and unmerged; do not merge independently of PR #80.
+- Limits: schema and batch transaction primitives only. Typed adapter consuming verifier-issued capability, production admission binding, immutable receipt binding and hosted D1 qualification remain NOT IMPLEMENTED / NOT VERIFIED. No dispatch, secrets, provider calls, deployment, independent audit or Contour B.
+- Next: implement the typed D1 adapter consuming only `getVerifiedTrustedRouteRegistryBundle(result)`, atomically persist snapshot + issuer + route rows + watermark with CAS guard, read back exact digest/counts, and test forged/copied/denied results, replay and storage failure. Then bind registry identity into A0/D1 admission and immutable receipt.
+- Current default HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`; documentation branch is separate/unmerged. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Updated Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-route-registry-revalidation/docs/context/GITHUB-CONTEXT-WINDOW.md
