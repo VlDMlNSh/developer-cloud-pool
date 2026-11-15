@@ -2,11 +2,13 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-16 — Wave 318 evidence and Cloud Pool live-state revalidation
+
+> The dated 2026-11-16 addendum at the end of this file supersedes older repository/PR/controller status snapshots below. Historical sections remain for provenance and must not be treated as current without revalidation.
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (verified 2026-11-16 via latest commit API read-back)
+Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; updated 2026-11-16)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -2140,3 +2142,45 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [2026-11-16 live-state revalidation](../reports/2026-11-16-cloud-pool-live-state-revalidation.md).
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 - Current disposition: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile controller transport governance before any Gemini launch.
+
+
+---
+
+## 2026-11-16 live-state addendum — Wave 318
+
+**This is the newest authoritative status section.** Older status paragraphs in this file are historical snapshots and are superseded where they conflict with this addendum.
+
+### Cloud Pool immutable refs
+
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`.
+- Default HEAD verified: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Documentation branch: `docs/next-2026-11-15-controller-d1-audit`; pre-update HEAD `e8861649615a397b27c71972ab32f057fa9f97d3`.
+- PR #98: OPEN / DRAFT / UNMERGED; HEAD `f23cdb5484d5923e02242b3ea142397f9e1f0270`; base default HEAD above; mergeable=true. Exact-head check-runs: 3/3 SUCCESS (two `contract` runs and `Validate workflow syntax and security invariants`). Formal independent review NOT VERIFIED.
+- PR #99: OPEN / DRAFT / UNMERGED; HEAD `e8861649615a397b27c71972ab32f057fa9f97d3` before this documentation refresh; base default HEAD above; mergeable=true. Exact-head check-runs: 0. CI NOT VERIFIED; formal review NOT VERIFIED.
+- Context Window was stale (last refreshed 2026-11-08) and is being brought current in this branch. PR #99 must not be merged until updated-head CI and review are verified.
+
+### MediaHub Gemini Wave 318 evidence
+
+- Owner-authenticated Issue #301 comment `6901529560` triggered controller run `43763042415`, COMPLETED / SUCCESS, target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Controller admission job `132961893463` and dispatch/monitor job `132961922334`: SUCCESS.
+- Agent 1 run/job `43763061253` / `132961975123`, SUCCESS; artifact `14181440011`; SHA-256 `f1eb9f7b934bac10030b7cf9ddf0617991aa700bb3463e4bc118d44a1259bd51`.
+- Agent 2 run/job `43763062743` / `132961977561`, SUCCESS; artifact `14181202709`; SHA-256 `ad3a3393cd776d7babd86a95d9dd4b970645de6a12bcf4a13e8eb64f854f75a7`.
+- Agent 3 run/job `43763064255` / `132961996069`, SUCCESS; artifact `14180987288`; SHA-256 `fdd6b71957c12a60a23fd3e22e559e12a037929c649b8b08ff6c4c08ee25e4f4`.
+- All child signature-before-provider-credentials jobs succeeded. Output JSON was nonempty; provenance validators verified the generated PR branch/PR relationship.
+- Agent PRs: #730 Agent 1 documentation checkpoint only (HEAD `b76d5c3ed88fbf16fcfa9aaaeb5142efb4d0f0de`); #731 Agent 2 traceability report (HEAD `92bd06b0fd8e5a5fc813179267cdfe9781df651d`); #732 Agent 3 static security report (HEAD `541abd8ed29f3c63ff176cd84e7aa8035aef7b9a`). All OPEN / DRAFT / UNMERGED, base MediaHub main at target SHA. Exact-head check-runs for all three: 0.
+- Agent 2 explicitly says active test execution was bypassed. Agent 3's test-verification assertions have no exact-head CI/run IDs in its report. Treat both as unverified claims. Agent 1 did not deliver application implementation.
+- Successful orchestration proves the batch execution/provenance/artifact path, not Contour A deployment, persistent runtime, live provider qualification, or acceptance.
+
+### Status and next step
+
+- Gemini Wave 318: SUCCEEDED (controller + 3 children + provenance validation + artifact SHA-256 evidence).
+- Cloud Pool PR #98: exact-head CI VERIFIED; review NOT VERIFIED; remains Draft.
+- Cloud Pool PR #99: exact-head CI NOT VERIFIED; review NOT VERIFIED; remains Draft.
+- MediaHub PR #730/#731/#732: exact-head CI NOT VERIFIED; no independent review; remain Draft.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- No Cloud Pool application code changed; no secrets read, provider calls, provisioning, deployment, merge, or dispatch gate change.
+- Next bounded action: inspect agent PRs/artifacts independently, require exact-head CI and evidence-backed claims; continue Cloud Pool A0→D1 reconciliation from immutable current default SHA.
+
+Wave 318 report: [2026-11-16-wave318-gemini-and-cloud-pool-state.md](../reports/2026-11-16-wave318-gemini-and-cloud-pool-state.md)
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
