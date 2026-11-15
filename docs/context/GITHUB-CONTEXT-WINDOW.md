@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-11 11:12 Europe/Vilnius — PR #60 issuer/trusted-time governance gate
+Last refreshed: 2026-11-15 — MediaHub PR #651 exact-head check-suite diagnosis (Wave 320)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6fdcedebeba62715122e43a75c6ad6d926321ce7` (re-read 2026-11-11 11:12 Europe/Vilnius)
@@ -3274,4 +3274,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Trusted controller's actual `/next` launch contract requires Issue #301, non-PR context, exact `/next`, OWNER association, `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, trusted main ref, and both controller secrets. Variable/secret presence was not inspected; no bypass was attempted. Three Gemini child runs, job results and artifact digests: NOT RUN / NOT QUALIFIED.
 - Updated cross-project evidence report: [Wave 319 trigger diagnosis](../reports/2026-11-15-mediahub-gemini-controller-pr651-probe-ci-wave318.md), commit `db8740447573b7b48559d7f9241b6ff79d66edaa`, report blob `d04346f33418c3e80d5a8b494ece25327de4f470`.
 - Next: owner posts exact `/next` comment on [MediaHub Issue #301](https://github.com/VlDMlNSh/mediahub-os/issues/301), then inspect the resulting controller run. Separately obtain independent PR #651 review, merge through normal governance, and repeat trusted-main `/probe` before any agent dispatch. Keep Developer Cloud Pool Contour A as primary; this MediaHub work is only a cross-project dependency, not Pool acceptance.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — MediaHub PR #651 exact-head check-suite diagnosis (Wave 320)
+
+- Diagnostic report: [PR #651 exact-head checks and merge-blocker diagnosis](../reports/2026-11-15-mediahub-pr651-checks-blocker-diagnosis.md).
+- Current PR #651 is OPEN, ready for review (not draft), unmerged; head `ec860a9b7698058d18a0b77efdce1643dd011bc8`, base main `46e7395cc7a8755a096f1a8667b750177ed42011`; API reports `mergeable=true`, `mergeable_state=clean`.
+- Exact-head check runs: 9 SUCCESS, 2 SKIPPED (expected non-launching PR-context admission/dispatch). All five required contexts in active ruleset #26108066 pass: Astra Cloud Runtime Validation, AI Factory verification, provider contract verification, Astra Verify, Gemini workflow contract validation (Wave 284).
+- Exact-head check suites: 7 GitHub Actions suites COMPLETED/SUCCESS; one Freebuff Web GitHub App suite #118402324737 remains QUEUED with zero check runs. This app is not named in the ruleset's five required contexts. Legacy Status API reports pending with zero status contexts; do not mistake it for a failed required check.
+- Active ruleset #26108066: zero required approving reviews, no CODEOWNER/last-push approval; all review threads must be resolved; zero bypass actors. PR formal reviews=0 and inline threads=0. Branch protection endpoint returned 403; only ruleset details are verified.
+- No source-code failure found; no speculative source patch made. Queued Freebuff suite is the only non-terminal suite observed; no check-suite re-request action is exposed in the current GitHub connector. Exact UI merge-block reason remains NOT VERIFIED even though PR metadata reports clean/mergeable.
+- Gemini three-agent batch remains NOT RUN / NOT QUALIFIED; no child IDs/artifact digests. No merge, bypass, ruleset mutation, secrets access, deployment or paid resource.
+- Next: resolve/re-run the Freebuff Web app check in its GitHub App controls, then reread checks and the PR merge box. Do not merge until GitHub confirms. After a governed merge, repeat owner `/probe` on trusted main and verify before any bounded three-agent dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
