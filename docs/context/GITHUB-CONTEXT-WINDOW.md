@@ -2500,3 +2500,20 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Exact PR #97 feature head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 now has verified completed CI: [run 43758033223](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033223) Cloud Pool Next Admission Contract SUCCESS, all 49 tests passed (49/49); [run 43758033182](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43758033182) Pool Contract Validation SUCCESS, 7/7 steps. This supersedes the prior NOT VERIFIED statement for exact-head CI. Intermediate run 43757790420 failed before corrections and remains recorded.
 - PR #97 formal reviews remain 0; combined status contexts empty / NOT VERIFIED. No live API calls, ledger writes, trigger, production concurrency lock or dispatch occurred.
 - Docs branch now ahead 93 / behind 2; PR #97 feature branch ahead 18 / behind 2; merge base old default 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc.
+
+ 
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 345 — 2026-11-15
+
+- Cloud Pool default branch Основной current immutable HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- Default ancestry correction: commit bbc4da7ba1c06cde6c79d9216cdbdcae771ac6db accidentally added only test/next-github-api-adapter.test.mjs to default; cleanup commit 6507823e7ec27caa9b2621daef964dba2d4cf436 deletes only that file. Both commits remain in history; no rewrite.
+- Prior PR #97 branch head f0ad25ce60e6ef052fcfeab31fb5deab06793f21 diverges from current default by 18 ahead / 2 behind. PR #97 remains OPEN/DRAFT/UNMERGED.
+- Created clean-base branch feat/cloud-pool-next-admission-clean-base-2026-11-15 from exact default HEAD. Draft PR #98 current head f23cdb5484d5923e02242b3ea142397f9e1f0270; base 6507823e7ec27caa9b2621daef964dba2d4cf436; compare 9 ahead / 0 behind; merge base equals current default exactly. PR #98 OPEN/DRAFT/UNMERGED.
+- Nine proof files ported and read-back verified. Blobs: workflow 11a7c465138b3b60e66ff8460d89a853fcc3c1ab; admission f1a0546cf9eb1285f82b5f1fddfb3e330df39dbf; ledger 7b629889b7191f21c1e0099bc65f9dca1eaee460; GitHub API adapter 9e307f2e40dfc1fa18ffd5142ec205fb6afa3c80; ledger adapter aa343e4cf10ca1d8b0608957caba5b9ea9fe9956; tests 2f0662d0997ffadb11a4826a7eb506fa60b4e18b, 23ca351d00776a5372a9d72aa0ae116e7b13134b, 9a386b8fd8d7ae2a6b87ae5cba34b3de67ae029f, 13489d07c902827d151a2c059ddc3b2432128b8b.
+- Exact PR #98 head CI: run 43758657644 Cloud Pool Next Admission Contract COMPLETED/SUCCESS; logs show 49 tests, 49 pass, 0 fail. Run 43758657648 Pool Contract Validation COMPLETED/SUCCESS, 7/7 steps. Formal reviews 0; combined status contexts empty / NOT VERIFIED.
+- Default pool-supervisor remains unchanged blob d4bd23d06c0dc98211cea165cdad30a1861eb3bd with no issue_comment /next trigger; worker remains DSH headless probe only blob fe1ee4c41a86807810a6b6bc85c677b46c3cebb.
+- Issues #94/#96 OPEN. Issue #96 explicitly retains PLANNED status and no controller implementation/dispatch authorization pending gates. No live GitHub API token/write, ledger mutation, secrets/variables inspection, dispatch, Gemini child, provider/model call, deployment or merge.
+- Supplementary MediaHub bridge event: https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900875177; Cloud Pool-native controller/child runs and Gemini artifact digests for this event NOT VERIFIED.
+- Report: ../reports/2026-11-15-wave345-clean-base-admission-reconciliation.md (blob 003a2990f6328dc6b93f8b15007258930e0613fe).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: strengthen event-to-API verifier to bind fetched comment to issue_comment.created, trusted repo identity/ref and immutable SHA; add edited/deleted/replay adversarial tests. Keep live trigger and dispatch disabled until Issue #96 authorization and governance gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
