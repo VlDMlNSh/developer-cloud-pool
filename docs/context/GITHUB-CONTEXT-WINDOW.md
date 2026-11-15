@@ -2252,3 +2252,14 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - PR #95 remains OPEN/DRAFT/UNMERGED on the documentation branch. No Cloud Pool runtime/workflow/secrets/variables/dispatch/deployment/provider call/merge changed in this pass.
 - Status: MediaHub controller/children RUNNING or QUEUED, NOT VERIFIED; A0/D1 local proof only; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent trusted-clock, issuer/key lifecycle and durable revocation review; then atomic D1 revocation-watermark admission adversarial proof. Keep dispatch fail-closed.
+
+
+### Final Wave 336 orchestration reconciliation — VERIFIED
+
+- Controller run 43748529579 COMPLETED / SUCCESS; admission job 132917094437 SUCCESS; dispatch/monitor job 132917123035 SUCCESS.
+- Controller log confirms three accepted signed dispatches, all bound to target SHA 1694cde38c7b7d69baf9676b4908c1bb6e197fbe, and reconciles the exact child run IDs, both successful jobs per child and artifact digests matching GitHub artifact metadata.
+- Agent 1 run 43748550454 COMPLETED / SUCCESS; jobs 132917159989 and 132917180150 SUCCESS; artifact 14174339687, non-expired, SHA-256 aa36f95539da214e885039754b801235ccb72c753a4ec13ddad5073394612c44.
+- Agent 2 run 43748552273 COMPLETED / SUCCESS; jobs 132917165288 and 132917193592 SUCCESS; artifact 14175177670, non-expired, SHA-256 2d8702577d2cc7ab8c29f28279a6a72c523a87de3efb4793b49a783134695b0b.
+- Agent 3 run 43748553818 COMPLETED / SUCCESS; jobs 132917172172 and 132917188961 SUCCESS; artifact 14175531437, non-expired, SHA-256 d157762d6192707f12445434e6148b995fd69fe6efabb61b5a131edfc4fad1b2.
+- Controller itself produced no artifact; child artifacts are the output evidence. All three child run conclusions and artifact digests were independently read back from GitHub and matched controller logs.
+- Wave 336 is VERIFIED at MediaHub controller/child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
