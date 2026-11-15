@@ -72,3 +72,19 @@ Recomputed comparisons against this current HEAD:
 - PR #68 `8569d0b368b353beb78e8594509d8492abaec170`: DIVERGED, 85 ahead / 5 behind; merge base `221f216c00ca7e5596bcc682ba185ad155a10603`.
 
 No rebase, cherry-pick, merge or code change was attempted. Documentation commits are on default branch; PR branches remain separate drafts.
+
+
+## Fail-closed quota correction — 2026-11-15
+
+Draft PR #71: https://github.com/VlDMlNSh/developer-cloud-pool/pull/71
+Branch `fix/quota-ledger-fail-closed-2026-11-15`; head `40a49acabd12aa178d3aa136244fb4f42231fbde`. PR base snapshot `edb3a52809c6ab937c6833c825ab538fdfa052e8`; compare DIVERGED 3 ahead / 2 behind; merge base `670ed18460506c5cba6757baf15954215a74cb0a`. Keep Draft; do not merge.
+
+Quota source blob `175876505bc3b1b240034a2d523d9ff12a6aa20e`, test blob `7e4c73ea66e08a2b3eb31f86b9ec47afe8f5329a`, workflow blob `4e47b8e8850833d930cdd457bea91c2cec507576`. Eligibility now requires both `quotaEvidence=provider_verified` and known `quotaDomainId`; billing-class allowlist cannot bypass either check. 12 regression tests added. Exact-head Pool Contract Validation run `43685547993` COMPLETED / SUCCESS. Combined status contexts empty; required branch ruleset checks NOT VERIFIED.
+
+Important limitation: this pure module does not authenticate provider/issuer/account evidence; the future qualified-evidence adapter and atomic A0/D1 approval/task/attempt/outbox integration remain necessary. No dispatch, provider calls, hosted provisioning, deployment or secret reads.
+
+Detailed report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/main/docs/reports/2026-11-15-provider-quota-ledger-fail-closed.md
+Issue #70: https://github.com/VlDMlNSh/developer-cloud-pool/issues/70
+
+Next: reconcile PR #71's two-commit base drift, then implement typed route evidence with freshness/revocation and integrate A0 with D1 atomically while keeping dispatch disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
