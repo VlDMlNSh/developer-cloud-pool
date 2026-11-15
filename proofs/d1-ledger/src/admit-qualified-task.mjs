@@ -268,6 +268,9 @@ export async function admitQualifiedTask(db, input) {
         committed.approval_state !== "consumed" || committed.outbox_status !== "pending" ||
         committed.input_digest !== input.attempt.inputDigest ||
         committed.execution_idempotency_key !== input.attempt.executionIdempotencyKey ||
+        committed.outbox_admission_id !== committed.admission_id ||
+        committed.outbox_attempt_id !== committed.attempt_id ||
+        committed.outbox_evidence_digest !== committed.evidence_digest ||
         committed.dispatch_enabled !== 0) return deny("ADMISSION_READBACK_MISMATCH");
     return {
       decision: "ADMITTED_QUEUED", admissionId: committed.admission_id,

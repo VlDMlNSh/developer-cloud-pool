@@ -37,7 +37,7 @@ CREATE TABLE pool_route_qualifications (
 CREATE TRIGGER pool_route_qualification_identity_immutable
 BEFORE UPDATE OF qualification_id, route_id, provider_id, model_id, issuer_id,
   account_ref, credential_handle_ref, quota_domain_id, cost_class, capability_id,
-  evidence_ref, evidence_digest, observed_at, valid_until, registry_version
+  capability_profile, evidence_ref, evidence_digest, observed_at, valid_until, registry_version
 ON pool_route_qualifications
 BEGIN SELECT RAISE(ABORT, 'ROUTE_QUALIFICATION_IDENTITY_IMMUTABLE'); END;
 
