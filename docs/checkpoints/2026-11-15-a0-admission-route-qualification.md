@@ -570,3 +570,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Cloud Pool-native controller NOT IMPLEMENTED/NOT QUALIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement trusted-main GitHub adapter for Issue #96 ledger read/append, concurrency lock and run-name reconciliation; fake-API tests for timeout/delayed visibility/crash-after-intent/duplicate deliveries. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Wave 343 — GitHub ledger adapter prototype — 2026-11-15
+
+- Default branch Основной HEAD: 9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc (unchanged).
+- PR #97 OPEN/DRAFT/UNMERGED, base default HEAD, feature head b98787604ae53dee5464b49400658e17915f8a9e; formal reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Added scripts/next-github-ledger-adapter.mjs blob aa343e4cf10ca1d8b0608957caba5b9ea9fe9956, fake-API tests test/next-github-ledger-adapter.test.mjs blob 13489d07c902827d151a2c059ddc3b2432128b8b, workflow blob 7e94970cb9b13312f272a898f71bdeb1dd788762.
+- Adapter uses injected API methods only; requires caller-held serialized lock; appends ADMITTED / DISPATCH_INTENT; re-reads after append timeout; reconciles one Actions run by deterministic display_title and exact head_sha; duplicates become INCIDENT; no visible run is AMBIGUOUS_NO_RETRY. It does not dispatch.
+- Exact-head CI: run 43757112894 contract suite SUCCESS; run 43757112913 Pool Contract Validation SUCCESS. First adapter CI run failed 3 tests; source/test correction was committed and final exact-head CI passed.
+- No live GitHub API binding, real Actions concurrency, issue_comment trigger, live ledger write, controller/Gemini dispatch, secret/provider call, deployment or merge. Cloud Pool-native controller NOT IMPLEMENTED / NOT QUALIFIED; Gemini NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: trusted-main wrapper + actual GitHub API adapter and Actions concurrency lock, with dispatch still disabled; test exact event and run-list pagination.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
