@@ -170,12 +170,12 @@ No change to qualification status: trusted qualification writer, cryptographic i
 - Current default at start of reconciliation: `Основной` @ `55d9af7c71b4b51c2b886176f1d65da192900423`.
 - Stale PR #71 source branch `fix/quota-ledger-fail-closed-2026-11-15` @ `40a49acabd12aa178d3aa136244fb4f42231fbde` was 3 commits ahead / 27 behind current default. It was not merged.
 - Clean reconciliation branch `reconcile/quota-ledger-fail-closed-2026-11-15`; Draft PR #74: https://github.com/VlDMlNSh/developer-cloud-pool/pull/74
-- PR #74 exact HEAD `e1b51e7165f96c8c459c672943dfa8b862879db4`; current base compare 5 ahead / 0 behind. Three paths only: pure quota ledger, its test suite, and the existing pool-contract workflow extended to run that suite.
+- PR #74 exact HEAD `e1b51e7165f96c8c459c672943dfa8b862879db4`; at the initial immutable base compare was 5 ahead / 0 behind. After canonical docs refresh, default HEAD reached `c424e62c89ce40a6fb72202e41659ce27c168f03`; compare was 5 ahead / 1 behind and PR API reported mergeable=true. Three paths only: pure quota ledger, its test suite, and the existing pool-contract workflow extended to run that suite.
 - Added safe own-property route-key construction and a `__proto__` regression. Exact-head run https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43692093254 COMPLETED / SUCCESS; job `132744702990`; contract validator PASS; YAML parse PASS; 13 quota tests passed; dispatch gate observed false.
 - Combined commit-status contexts remain empty; required contexts NOT VERIFIED. PR #74 remains OPEN / DRAFT / UNMERGED; no independent review.
 - Quota ledger remains a pure selector/state machine, not a trusted provider evidence verifier. It does not authenticate issuer, signature, provider account, evidence bytes or live quota. Qualified Route Evidence remains NOT QUALIFIED.
 - PR #72 remains OPEN / DRAFT / UNMERGED at `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, exact-head run `43690143805` SUCCESS, stacked on PR #67. Current default → #72 is DIVERGED 67 ahead / 32 behind; default → #67 is DIVERGED 47 ahead / 32 behind. Do not transplant either full stack.
-- PR #73 documentation branch remains OPEN / DRAFT and diverged from current default 4 ahead / 5 behind; its docs are being reconciled directly into canonical files, not merged wholesale.
+- PR #73 documentation branch remains OPEN / DRAFT and diverged from current default 4 ahead / 6 behind; its docs are being reconciled directly into canonical files, not merged wholesale.
 - Active ruleset `26550182` applies only to default branch, requires PR and review-thread resolution, but has 0 required approvals and no required status contexts. Branch-protection endpoint remains NOT VERIFIED (403).
 - No provider login/call, secret read, hosted D1, Worker deployment, dispatch, merge or production resource creation.
 - Report: [Quota-ledger ancestry reconciliation](../reports/2026-11-15-quota-ledger-ancestry-reconciliation.md).
