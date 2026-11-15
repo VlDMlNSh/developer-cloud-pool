@@ -3288,3 +3288,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Gemini three-agent batch remains NOT RUN / NOT QUALIFIED; no child IDs/artifact digests. No merge, bypass, ruleset mutation, secrets access, deployment or paid resource.
 - Next: resolve/re-run the Freebuff Web app check in its GitHub App controls, then reread checks and the PR merge box. Do not merge until GitHub confirms. After a governed merge, repeat owner `/probe` on trusted main and verify before any bounded three-agent dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — MediaHub PR #651 post-merge verification (Wave 321)
+
+- Report: [Wave 321 post-merge verification](../reports/2026-11-15-mediahub-pr651-post-merge-probe-verification-wave321.md).
+- PR #651 MERGED at 2026-11-15T16:25:14Z. Current MediaHub `main` and merge commit are exactly `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; GitHub reports the commit signature verified=true/reason=valid. Parent: `46e7395cc7a8755a096f1a8667b750177ed42011`.
+- Post-merge push run [#43735377046](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43735377046), job #132876692497, Astra Verify SUCCESS. The three merged source blobs: controller `7799f0fc713c5bd772ce6820df40a926a83445c8`, reusable probe `6ec388a3a2edd795ac58bb29f6f186f1613368bb`, trigger contract test `48513b078d685b74d65adfcffe8e0813e7f19716`. Read-back confirms explicit caller context inputs and no `github.event_path` dependency in reusable probe.
+- The latest owner `/probe` comment found on Issue #301 is #6897245259 at 15:58:33Z, before merge. No post-merge owner `/probe` was found. Thus trusted-main probe is NOT RUN after merge / NOT VERIFIED. PR-context probe #43733462873 passed before merge but is not equivalent.
+- Post-merge commit currently has one GitHub Actions check run (Astra Verify SUCCESS); Freebuff Web App suite #118407346000 is QUEUED with zero checks and is not a named required ruleset context. Five required PR ruleset contexts had passed on PR #651 exact head before merge.
+- Independent security review and effective variable/secret-name presence/scope remain NOT VERIFIED; no secret values read. Three Gemini child runs remain NOT RUN / NOT QUALIFIED; no dispatch/provider call/deployment/bypass/ruleset mutation.
+- Next: OWNER posts exact `/probe` on [Issue #301](https://github.com/VlDMlNSh/mediahub-os/issues/301) after merge; inspect observer/assertion SUCCESS and readiness/dispatch SKIPPED on exact main SHA. Then separately complete independent security review and metadata-only secret/variable checks before any controlled three-agent dispatch. Do not use ChatGPT `/next` as a substitute for an Issue #301 comment.
+- Developer Cloud Pool Contour A remains primary; this MediaHub controller integration is a cross-project dependency only and does not qualify or accept the pool.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
