@@ -191,7 +191,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
 
   it("rejects replay but returns the same durable receipt for an exact retry", async () => {
     const first = await admitQualifiedTask(env.POOL_DB, input);
-    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    const replay = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW + 5 });
     const changedAccountReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, accountRef: "other-account" } });
     const changedOwnerReplay = await admitQualifiedTask(env.POOL_DB, { ...input, approval: { ...input.approval, ownerNumericId: "99999" } });
     const changedValidityReplay = await admitQualifiedTask(env.POOL_DB, { ...input, route: { ...input.route, validUntil: input.route.validUntil + 1 } });
@@ -205,6 +205,30 @@ describe("atomic qualified A0 -> D1 admission", () => {
     });
     expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first())
       .toMatchObject({ n: 1 });
+  });
+
+  it("fails closed when an exact replay has lost its immutable receipt or registry assertion", async () => {
+    const first = await admitQualifiedTask(env.POOL_DB, input);
+    expect(first).toMatchObject({ decision: "ADMITTED_QUEUED", dispatch: false });
+
+    // Simulate privileged storage corruption; production append-only guards
+    // prevent these deletes. Replay must not infer success from admission alone.
+    await env.POOL_DB.prepare("DROP TRIGGER pool_admission_receipts_no_delete").run();
+    await env.POOL_DB.prepare("DROP TRIGGER pool_admission_registry_assertions_no_delete").run();
+    await env.POOL_DB.prepare(
+      "DELETE FROM pool_admission_commit_receipts WHERE admission_id = ?"
+    ).bind(input.admissionId).run();
+    await env.POOL_DB.prepare(
+      "DELETE FROM pool_admission_registry_assertions WHERE admission_id = ?"
+    ).bind(input.admissionId).run();
+
+    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    expect(replay).toMatchObject({
+      decision: "DENY",
+      reason: "ADMISSION_RECEIPT_INTEGRITY_MISMATCH",
+      dispatch: false
+    });
+    expect(replay.decision).not.toBe("ADMISSION_ALREADY_COMMITTED");
   });
 
   it("rejects revoked route evidence before consuming approval", async () => {

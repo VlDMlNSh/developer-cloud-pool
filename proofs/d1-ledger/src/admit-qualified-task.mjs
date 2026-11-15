@@ -282,6 +282,78 @@ export async function admitQualifiedTask(db, input) {
         input.now, input.now, input.now, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
+      const receipt = await db.prepare(`
+        SELECT a.admission_id, a.approval_id, a.task_key, a.attempt_id,
+               a.attempt_number, a.qualification_id, a.evidence_digest,
+               a.admitted_at, a.dispatch_enabled AS admission_dispatch_enabled,
+               r.committed_at AS receipt_committed_at,
+               r.approval_id AS receipt_approval_id,
+               r.task_key AS receipt_task_key,
+               r.attempt_id AS receipt_attempt_id,
+               r.qualification_id AS receipt_qualification_id,
+               r.evidence_digest AS receipt_evidence_digest,
+               r.assertion AS receipt_assertion,
+               r.dispatch_enabled AS receipt_dispatch_enabled,
+               l.state AS approval_state, l.admission_id AS approval_admission_id,
+               o.event_type AS outbox_event_type,
+               o.admission_id AS outbox_admission_id,
+               o.attempt_id AS outbox_attempt_id,
+               o.evidence_digest AS outbox_evidence_digest,
+               t.current_attempt_id AS task_current_attempt_id,
+               t.attempt_number AS task_attempt_number,
+               p.input_digest, p.execution_idempotency_key,
+               g.qualification_id AS assertion_qualification_id,
+               g.issuer_id AS assertion_issuer_id,
+               g.issuer_key_id AS assertion_issuer_key_id,
+               g.registry_epoch AS assertion_registry_epoch,
+               g.registry_bundle_digest AS assertion_bundle_digest,
+               g.registry_version AS assertion_registry_version,
+               g.evidence_digest AS assertion_evidence_digest,
+               g.checked_at AS assertion_checked_at
+          FROM pool_admissions a
+          JOIN pool_admission_commit_receipts r ON r.admission_id = a.admission_id
+          JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
+          JOIN pool_task_delivery_outbox o ON o.task_key = a.task_key
+          JOIN pool_tasks t ON t.task_key = a.task_key
+          JOIN pool_attempts p ON p.attempt_id = a.attempt_id AND p.task_key = a.task_key
+          JOIN pool_route_qualifications q ON q.qualification_id = a.qualification_id
+          JOIN pool_admission_registry_assertions g ON g.admission_id = a.admission_id
+         WHERE a.admission_id = ?
+      `).bind(input.admissionId).first();
+      if (!receipt ||
+          receipt.approval_id !== input.approval.approvalId ||
+          receipt.task_key !== input.taskKey ||
+          receipt.attempt_id !== input.attempt.attemptId ||
+          receipt.qualification_id !== input.route.qualificationId ||
+          receipt.evidence_digest !== input.route.evidenceDigest ||
+          receipt.admission_dispatch_enabled !== 0 ||
+          receipt.receipt_approval_id !== receipt.approval_id ||
+          receipt.receipt_task_key !== receipt.task_key ||
+          receipt.receipt_attempt_id !== receipt.attempt_id ||
+          receipt.receipt_qualification_id !== receipt.qualification_id ||
+          receipt.receipt_evidence_digest !== receipt.evidence_digest ||
+          receipt.receipt_assertion !== 1 || receipt.receipt_dispatch_enabled !== 0 ||
+          receipt.approval_state !== "consumed" ||
+          receipt.approval_admission_id !== receipt.admission_id ||
+          receipt.outbox_event_type !== "pool.task.ready" ||
+          receipt.outbox_admission_id !== receipt.admission_id ||
+          receipt.outbox_attempt_id !== receipt.attempt_id ||
+          receipt.outbox_evidence_digest !== receipt.evidence_digest ||
+          receipt.task_current_attempt_id !== receipt.attempt_id ||
+          receipt.task_attempt_number !== receipt.attempt_number ||
+          receipt.input_digest !== input.attempt.inputDigest ||
+          receipt.execution_idempotency_key !== input.attempt.executionIdempotencyKey ||
+          receipt.assertion_qualification_id !== receipt.qualification_id ||
+          receipt.assertion_issuer_id !== input.route.issuerId ||
+          receipt.assertion_issuer_key_id !== input.route.keyId ||
+          receipt.assertion_registry_epoch !== input.route.registryEpoch ||
+          receipt.assertion_bundle_digest !== input.route.registryBundleDigest ||
+          receipt.assertion_registry_version !== input.route.registryVersion ||
+          receipt.assertion_evidence_digest !== receipt.evidence_digest ||
+          receipt.receipt_committed_at !== receipt.admitted_at ||
+          receipt.assertion_checked_at !== receipt.admitted_at) {
+        return deny("ADMISSION_RECEIPT_INTEGRITY_MISMATCH");
+      }
       return {
         decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
         taskKey: input.taskKey, attemptId: prior.requested_attempt_id, dispatch: false
