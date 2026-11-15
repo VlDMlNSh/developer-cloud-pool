@@ -2303,3 +2303,17 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Report: [monotonic revocation watermark review](../reports/2026-11-15-next-pass-monotonic-revocation-watermark-review.md).
 - Next: define revocation subject, monotonic sequence/CAS, authenticated writer, trusted time, rollback/replay/recovery semantics; then implement same-batch D1 guard and adversarial rollback tests on a reconciled proof ancestry. Preserve `dispatch:false`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next pass — monotonic revocation authority contract — 2026-11-15
+
+- Cloud Pool default branch observed in current project evidence: `Основной` @ `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. PR #95 is a documentation branch and remains OPEN / DRAFT / UNMERGED; do not treat its content as default-branch content.
+- Current turn created exactly one owner-authored MediaHub Issue #301 event, comment `6899808366`, exact body `/next`; read-back confirms owner `VlDMlNSh`. Controller/child runs, jobs and artifacts are NOT VERIFIED because the available GitHub connector does not expose workflow-run listing. No direct child dispatch was attempted.
+- New design report: [Monotonic revocation authority contract](../reports/2026-11-15-next-pass-monotonic-revocation-authority-contract.md). It defines a separate authority and per-subject monotonic sequence/digest, append-only event ledger, CAS pointer, same-D1-batch route+issuer revocation assertions, trusted time, key lifecycle, rollback/restore anchoring and adversarial tests.
+- Source re-read on PR #93 stack: admission module blob `878e6ecf70355d05f9738d579b9455124b7ac3f9`; trusted registry verifier/persistence blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`; atomic-admission test blob `720a13e6ec0fd49c6d165393f4d8c12ef94dd8a9`. The admission currently matches the route's `revocationVersion` and checks registry/issuer state, but the distinct authoritative revocation watermark remains absent from the inspected path.
+- PR #86/#87/#92/#93 remain OPEN / DRAFT / UNMERGED; their historical exact-head CI evidence is not a substitute for current integrated CI or independent review. No merge or ancestry transplant.
+- Gemini bridge: event comment created and verified; controller/three agents NOT VERIFIED. MediaHub bridge remains supplementary; Cloud Pool-native Gemini remains NOT IMPLEMENTED / NOT QUALIFIED. `POOL_DISPATCH_ENABLED` remains fail-closed.
+- No Cloud Pool runtime/schema/workflow/secrets/variables/dispatch/deployment/provider/merge changes. No tests run. No secret values read.
+- Report is design only; revocation authority/watermark and same-batch check remain NOT IMPLEMENTED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: approve the revocation subject/event semantics and trusted-time contract, then implement additive D1 event ledger + monotonic CAS and same-batch admission assertion on a clean reconciled proof ancestry; run adversarial rollback/replay/race tests. Keep `dispatch:false`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
