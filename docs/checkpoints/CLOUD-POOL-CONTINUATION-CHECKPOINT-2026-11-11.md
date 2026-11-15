@@ -410,3 +410,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No Gemini children were launched; `readiness_gate` and `dispatch_and_monitor` were skipped. REST/HMAC versus approved `workflow_call` governance mismatch and missing independent governance review remain blockers. Do not launch a new batch until those are resolved.
 
 - Updated report: [2026-11-16 ledger provenance and trusted-main probe](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
+
+
+## 2026-11-16 exact-replay active registry fence
+
+- New test-only Draft PR #101: https://github.com/VlDMlNSh/developer-cloud-pool/pull/101; branch `test/exact-replay-active-registry-fence-2026-11-16`; exact HEAD `ae9cf5d4fd76134136b9af8b5498e90a65509722`; base PR #93 exact head `e200838d038b9cd48635233187819302bba6a33e`.
+- Added an adversarial replay test: admit against the active snapshot, advance the registry pointer to a newer snapshot/key, then replay old evidence. It must deny with `ROUTE_EVIDENCE_REVOKED_OR_STALE` and preserve the original consumed approval, receipt and attempt.
+- Changed blob `atomic-admission.test.ts`: `2a7129524fa2f2b00c500a4b78d90948b8352c40`.
+- Exact-head CI run `43764995448` / job `132967987468`: COMPLETED / SUCCESS. Workers-runtime D1 tests, syntax, isolated second binding/migration, frozen schema-0010 fixture and lockfile preservation all passed. Artifact `14182400848`; SHA-256 unavailable from artifact metadata / NOT VERIFIED.
+- PR #101 OPEN / DRAFT / UNMERGED; formal reviews 0. PR #93 checks PASS, formal reviews 0. No production code changed and no merge.
+- Gemini: no new owner-authored `/next` comment or batch this pass. Last three-agent wave remains controller `43763042415`, children `43763061253`, `43763062743`, `43763064255` (all SUCCEEDED). Trusted-main probe `43764634513` SUCCESS but non-launching; later report comment run `43764698156` SKIPPED. Dispatch remains blocked pending REST/HMAC versus `workflow_call` governance reconciliation and independent review.
+- No secret reads, provider calls, live D1, deployment, merge or qualification. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Exact-replay active registry fence](../reports/2026-11-16-exact-replay-active-registry-fence.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
