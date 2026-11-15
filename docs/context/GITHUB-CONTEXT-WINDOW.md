@@ -2490,3 +2490,18 @@ This overlay supersedes stale snapshot values in earlier sections; historical en
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-15 — PR #649 static review follow-up
+
+- MediaHub PR #649 target HEAD reviewed: `38aafbe40c6a6d55913f13ae9bf1691fa6b2221e`; commit diff changes Agent 3 prompt to require `agent-3-security-audit-${dispatch_id}`.
+- Read back all three child workflow files at that exact target. Agent 1 branch instruction: `agent-1-contour-a-${dispatch_id}`; Agent 2: `agent-2-contract-verification-${dispatch_id}`; Agent 3: `agent-3-security-audit-${dispatch_id}`. Child envelopes validate UUIDv4 dispatch IDs and full 40-hex target SHAs.
+- Blocking static finding: dispatch-specific branch requirements are prompt-only. Post-Gemini validators verify non-empty JSON, at least one successful tool call, and a successful `create_pull_request` tool call, but do not validate actual branch name, new-branch uniqueness, PR head branch/repository, or exact association with the current dispatch ID. A model can ignore the prompt and validator may still pass.
+- Posted technical review comment to MediaHub PR #649, comment ID `6896580340`, requesting deterministic branch enforcement or exact branch/PR result validation plus adversarial tests (reused branch, wrong dispatch ID, wrong base, existing branch).
+- PR #649 reviews and inline review threads were both empty at review time. This pass is a ChatGPT static review, NOT an independent Gemini/security review; no formal APPROVE submitted.
+- Exact-head workflow runs associated with the target included run `43722469665` (controller probe, success in PR context but dispatch/admission skipped) and run `43722469720` (caller-context denial probe, success). Neither proves trusted-main live dispatch readiness.
+- No Gemini child was dispatched; no secrets read; no merge/deploy. Secret/variable metadata and effective governance remain NOT VERIFIED. PR #649 remains OPEN/DRAFT/UNMERGED.
+- State: BLOCKED / NOT RUN for live 3-agent wave; PR #649 has a concrete CHANGES REQUIRED finding. Next: repair machine-enforced branch/PR provenance, add adversarial tests, exact-head CI, then independent review/governance and trusted-main non-launching readiness probe.
+- PR #649: https://github.com/VlDMlNSh/mediahub-os/pull/649
+- Comment: https://github.com/VlDMlNSh/mediahub-os/pull/649#issuecomment-6896580340
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
