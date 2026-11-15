@@ -2396,3 +2396,15 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Wave 337 report: [dispatch and Contour A reconciliation](../reports/2026-11-15-wave337-next-dispatch-and-contour-a-reconciliation.md).
 - Next: pure canonical revocation keyset/event verifier + deterministic adversarial vectors on the clean integration candidate, without schema/live keys/hosted D1 until governance semantics are approved; continue Issue #94 separately.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## CURRENT AUTHORITATIVE SNAPSHOT — /next Wave 338 — 2026-11-15
+
+- Default branch `Основной` latest observed HEAD remains `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- Supplementary MediaHub Issue #301 exact `/next` comment created: [6900299252](https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6900299252). Controller/child runs NOT VERIFIED via available run-list surface; do not claim 3/3.
+- Clean D1 proof branch `integration/d1-ledger-clean-main-2026-11-15` ahead 6 / behind 0; PR #87 OPEN/DRAFT/UNMERGED. PR #87 body records exact head `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, D1 run 43712647597 SUCCESS (119 tests), Pool Contract Validation 43712647615 SUCCESS, push run 43712643907 SUCCESS. Reviews 0; aggregate status contexts empty / NOT VERIFIED.
+- Source audit confirmed the A0 adapter still accepts caller-supplied `input.now`, uses it for admission and exact-replay freshness checks, and binds it to migration 0014 `checked_at`. The SQL trigger compares rows against `NEW.checked_at` but does not derive time itself.
+- Registry bundle verifier also accepts caller-supplied `now`; PR #93's WeakMap capability protects object provenance but its `verifiedAt` still derives from that input and is persisted as `accepted_at`/`updated_at`. This does not meet Contract v1's database-clock requirement.
+- Contract v1 requires one DB-derived timestamp materialized inside the D1 consistency boundary for event acceptance/admission. Trusted time NOT IMPLEMENTED / NOT QUALIFIED. This is a proof qualification gap, not evidence of a deployed exploit; dispatch remains false.
+- Wave 338 report: [Trusted-time source audit](../reports/2026-11-15-wave338-trusted-time-source-audit.md).
+- Next: database-derived timestamp row/value shared by admission statements and exact replay; then registry persistence acceptance time and adversarial backdated/future/unavailable-clock rollback tests. Revocation ledger, external anti-rollback and Cloud Pool-native controller remain separate open gates.
+- Docs branch is ahead 72 / behind 0 from default and is not production state. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
