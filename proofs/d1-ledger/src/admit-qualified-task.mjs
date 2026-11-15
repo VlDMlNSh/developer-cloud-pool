@@ -30,6 +30,8 @@ function valid(input) {
     Number.isSafeInteger(r.observedAt) && r.observedAt > 0 &&
     Number.isSafeInteger(r.revocationVersion) && r.revocationVersion >= 0 &&
     SAFE_ID.test(r.capabilityId || "") && SAFE_ID.test(r.registryVersion || "") &&
+    SAFE_ID.test(r.keyId || "") && Number.isSafeInteger(r.registryEpoch) && r.registryEpoch > 0 &&
+    SHA256.test(r.registryBundleDigest || "") &&
     SHA256.test(r.evidenceDigest || "") && COST_CLASSES.has(r.costClass) &&
     (r.costClass !== "free_quota" || SAFE_ID.test(r.quotaDomainId || "")) &&
     (r.quotaDomainId == null || SAFE_ID.test(r.quotaDomainId)) &&
@@ -64,6 +66,8 @@ function same(row, input) {
     row.quota_domain_id === (r.quotaDomainId ?? null) &&
     row.cost_class === r.costClass &&
     row.capability_id === r.capabilityId && row.registry_version === r.registryVersion &&
+    row.issuer_key_id === r.keyId && row.registry_epoch === r.registryEpoch &&
+    row.registry_bundle_digest === r.registryBundleDigest &&
     row.schema_version === r.schemaVersion && row.evidence_ref === r.evidenceRef &&
     row.observed_at === r.observedAt && row.valid_until === r.validUntil &&
     row.capability_profile === r.capabilityProfile && row.revocation_version === r.revocationVersion;
@@ -79,15 +83,35 @@ function statements(db, input) {
     AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
     AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
     AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+    AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
     AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
+  `;
+  const trustedRegistryMatch = `
+    AND EXISTS (
+      SELECT 1 FROM pool_route_registry_state s
+      JOIN pool_route_registry_snapshots rs
+        ON rs.registry_epoch = s.current_epoch
+       AND rs.bundle_digest = s.current_bundle_digest
+       AND rs.registry_version = s.current_registry_version
+      JOIN pool_route_registry_issuer_keys k
+        ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
+       WHERE s.state_id = 1 AND s.current_epoch = q.registry_epoch
+         AND s.current_bundle_digest = q.registry_bundle_digest
+         AND rs.accepted_at <= ? AND rs.valid_until > ?
+         AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
+         AND k.registry_version = q.registry_version
+         AND k.status = 'active' AND k.revoked_at IS NULL
+         AND k.valid_from <= ? AND k.valid_until > ?
+    )
   `;
   const routeValues = [
     r.qualificationId, r.routeId, r.providerId, r.modelId, r.issuerId,
     r.accountRef, r.credentialHandleRef, r.quotaDomainId ?? null,
     r.costClass, r.capabilityId, r.capabilityProfile, r.evidenceDigest, r.registryVersion,
     r.schemaVersion, r.evidenceRef, r.observedAt, r.validUntil, r.revocationVersion,
-    now, now - 300, now
+    r.keyId, r.registryEpoch, r.registryBundleDigest, now, now - 300, now
   ];
+  const registryValues = [now, now, now, now];
   return [
     db.prepare(`
       UPDATE pool_approval_ledger
@@ -96,11 +120,11 @@ function statements(db, input) {
          AND issue_number = ? AND target_sha = ? AND profile = ?
          AND envelope_digest = ? AND state = 'ready' AND consumed_at IS NULL
          AND expires_at > ?
-         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch})
+         AND EXISTS (SELECT 1 FROM pool_route_qualifications q WHERE ${routeMatch} ${trustedRegistryMatch})
     `).bind(
       now, input.taskKey, admissionId, a.approvalId, a.ownerNumericId,
       a.repositoryId, a.issueNumber, a.targetSha, a.profile, a.envelopeDigest,
-      now, ...routeValues
+      now, ...routeValues, ...registryValues
     ),
     db.prepare(`
       INSERT INTO pool_admissions (
@@ -120,10 +144,10 @@ function statements(db, input) {
       FROM pool_approval_ledger l
       JOIN pool_tasks t ON t.task_key = l.task_key
       JOIN pool_task_approvals ta ON ta.approval_id = l.approval_id AND ta.task_key = t.task_key
-      JOIN pool_route_qualifications q ON ${routeMatch}
+      JOIN pool_route_qualifications q ON ${routeMatch} ${trustedRegistryMatch}
       WHERE l.approval_id = ? AND l.admission_id = ? AND l.state = 'consumed'
         AND l.consumed_at = ? AND t.state = 'pending'
-    `).bind(admissionId, t.attemptId, now, ...routeValues, a.approvalId, admissionId, now),
+    `).bind(admissionId, t.attemptId, now, ...routeValues, ...registryValues, a.approvalId, admissionId, now),
     db.prepare(`
       INSERT INTO pool_attempts (
         attempt_id, task_key, attempt_number, status, input_digest,
@@ -177,20 +201,15 @@ function statements(db, input) {
              AND EXISTS (SELECT 1 FROM pool_attempt_events e WHERE e.attempt_id = a.attempt_id AND e.event_type = 'attempt.created')
              AND p.attempt_number = a.attempt_number
              AND p.input_digest = ? AND p.execution_idempotency_key = ?
-             AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
              AND q.evidence_digest = a.evidence_digest
-             AND q.schema_version = ? AND q.evidence_ref = ? AND q.observed_at = ?
-             AND q.capability_profile = ? AND q.valid_until = ?
-             AND q.revocation_version = ? AND q.observed_at <= ? AND q.observed_at >= ?
-             AND q.valid_until > ?
+             AND ${routeMatch}
         ) THEN 1 ELSE 0 END, 0)
     `).bind(
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now,
       admissionId, a.approvalId, input.taskKey, t.attemptId,
       r.qualificationId, r.evidenceDigest, now, t.inputDigest,
-      t.executionIdempotencyKey, r.schemaVersion, r.evidenceRef,
-      r.observedAt, r.capabilityProfile, r.validUntil, r.revocationVersion, now, now - 300, now
+      t.executionIdempotencyKey, ...routeValues
     ),
   ];
 }
@@ -222,6 +241,7 @@ export async function admitQualifiedTask(db, input) {
              q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
              q.credential_handle_ref, q.quota_domain_id, q.cost_class,
              q.capability_id, q.capability_profile, q.registry_version, q.schema_version,
+             q.issuer_key_id, q.registry_epoch, q.registry_bundle_digest,
              q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version
         FROM pool_admissions a
         JOIN pool_attempts p ON p.attempt_id = a.attempt_id
@@ -232,23 +252,39 @@ export async function admitQualifiedTask(db, input) {
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       const active = await db.prepare(`
-        SELECT 1 AS ok FROM pool_route_qualifications
-         WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
-           AND model_id = ? AND issuer_id = ? AND account_ref = ?
-           AND credential_handle_ref = ? AND quota_domain_id IS ?
-           AND cost_class = ? AND capability_id = ? AND capability_profile = ? AND evidence_digest = ?
-           AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
-           AND observed_at = ? AND valid_until = ? AND revocation_version = ?
-           AND qualification_status = 'qualified' AND revoked_at IS NULL
-           AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
+        SELECT 1 AS ok FROM pool_route_qualifications q
+         WHERE q.qualification_id = ? AND q.route_id = ? AND q.provider_id = ?
+           AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
+           AND q.credential_handle_ref = ? AND q.quota_domain_id IS ?
+           AND q.cost_class = ? AND q.capability_id = ? AND q.capability_profile = ? AND q.evidence_digest = ?
+           AND q.registry_version = ? AND q.schema_version = ? AND q.evidence_ref = ?
+           AND q.observed_at = ? AND q.valid_until = ? AND q.revocation_version = ?
+           AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+           AND q.issuer_key_id = ? AND q.registry_epoch = ? AND q.registry_bundle_digest = ?
+           AND EXISTS (
+             SELECT 1 FROM pool_route_registry_state s
+             JOIN pool_route_registry_snapshots rs
+               ON rs.registry_epoch = s.current_epoch AND rs.bundle_digest = s.current_bundle_digest
+              AND rs.registry_version = s.current_registry_version
+             JOIN pool_route_registry_issuer_keys k
+               ON k.registry_epoch = rs.registry_epoch AND k.bundle_digest = rs.bundle_digest
+              WHERE s.state_id = 1 AND s.current_epoch = q.registry_epoch
+                AND s.current_bundle_digest = q.registry_bundle_digest
+                AND rs.accepted_at <= ? AND rs.valid_until > ?
+                AND k.issuer_id = q.issuer_id AND k.key_id = q.issuer_key_id
+                AND k.registry_version = q.registry_version AND k.status = 'active'
+                AND k.revoked_at IS NULL AND k.valid_from <= ? AND k.valid_until > ?
+           )
+           AND q.observed_at <= ? AND q.observed_at >= ? AND q.valid_until > ?
       `).bind(
         input.route.qualificationId, input.route.routeId, input.route.providerId,
         input.route.modelId, input.route.issuerId, input.route.accountRef,
         input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
         input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
         input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
-        input.route.observedAt, input.route.validUntil, input.route.revocationVersion, input.now,
-        input.now - 300, input.now
+        input.route.observedAt, input.route.validUntil, input.route.revocationVersion,
+        input.route.keyId, input.route.registryEpoch, input.route.registryBundleDigest,
+        input.now, input.now, input.now, input.now, input.now, input.now - 300, input.now
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
@@ -292,7 +328,8 @@ export async function admitQualifiedTask(db, input) {
       attemptNumber: committed.attempt_number, dispatch: false,
       reason: "ATOMIC_A0_D1_COMMIT_CONFIRMED"
     };
-  } catch {
-    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS");
+  } catch (error) {
+    const diagnostic = String(error?.message || "UNKNOWN").replace(/[^A-Z0-9_]/gi, "_").slice(0, 80);
+    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS_" + diagnostic);
   }
 }
