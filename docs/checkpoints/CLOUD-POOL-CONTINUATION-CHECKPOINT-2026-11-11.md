@@ -346,3 +346,15 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Live audit checkpoint — 2026-11-15
+
+- Default baseline: `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Audit report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-controller-d1-audit/docs/reports/2026-11-15-cloud-pool-controller-d1-audit.md
+- PR #98: exact-head CI success on `f23cdb5484d5923e02242b3ea142397f9e1f0270`; 9 ahead / 0 behind current default; no formal reviews; non-dispatching proof only.
+- PR #92/#93 D1 chain: exact-head checks success; PR #93 API HEAD `e200838d038b9cd48635233187819302bba6a33e` differs from stale HEAD recorded in its body. Formal reviews zero; durable revocation watermark and hosted qualification remain open.
+- Gemini: previous Wave 317 controller and three child runs all SUCCESS with artifact digests recorded in report. Current MediaHub main controller still REST-dispatches three children whose workflows expose `workflow_dispatch`; merged PR #421 Option B no longer matches current source after later PR #432 transport reversion. Controller-only exclusivity NOT VERIFIED.
+- No Gemini launch from this ChatGPT turn, no direct child dispatch, no secret access, no provider call, no deployment, no merge or qualification.
+- Next: investigate and correct controller transport drift under explicit governance; then independently verify caller guards, least privilege, secret boundaries and exact-head checks. Continue D1 revocation watermark work. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
