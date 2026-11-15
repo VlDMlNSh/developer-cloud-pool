@@ -2263,3 +2263,17 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Agent 3 run 43748553818 COMPLETED / SUCCESS; jobs 132917172172 and 132917188961 SUCCESS; artifact 14175531437, non-expired, SHA-256 d157762d6192707f12445434e6148b995fd69fe6efabb61b5a131edfc4fad1b2.
 - Controller itself produced no artifact; child artifacts are the output evidence. All three child run conclusions and artifact digests were independently read back from GitHub and matched controller logs.
 - Wave 336 is VERIFIED at MediaHub controller/child orchestration level. This does not qualify Cloud Pool-native Gemini, production routing, or Contour A.
+
+
+## Latest /next pass — route-registry revocation review — 2026-11-15
+
+- Cloud Pool default branch `Основной` verified at `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`.
+- One exact owner-authored MediaHub Issue #301 `/next` comment created: `6899669400` (https://github.com/VlDMlNSh/mediahub-os/issues/301#issuecomment-6899669400). The available GitHub connector did not expose MediaHub workflow-run listing; controller/child runs and artifact digests for this event are NOT VERIFIED. Do not infer completion from comment creation.
+- Inspected A0/D1 proof files: migration 0014 blob `cb8a47d83faba62981daa8f7320da87baa2c55e2`; `admit-qualified-task.mjs` blob `00e9042ccdbf04cd4ecaf6fbda3c982cf72136ed`; registry writer `trusted-route-registry.mjs` blob `916581ca07cf94edb21c8c2daa77a4c45db3d666`.
+- The proof path inserts a registry assertion inside the same D1 batch as approval consume, admission, attempt, outbox and receipt. Migration guard checks active registry epoch/digest/version, snapshot validity, qualification freshness and active/non-revoked issuer key.
+- **Open qualification gap:** inspected admission assertion compares signed route `revocation_version` to the qualification row but does not consult a distinct durable monotonic revocation authority/watermark in that same transaction. This is a source-level gap to resolve, not a demonstrated exploit or failing test. Need a single authenticated revocation authority, monotonic state, rollback/replay semantics and adversarial D1 tests before qualification.
+- No code/schema/workflow/secret/variable/dispatch/deployment change; no tests executed. No safe patch was made because migration/test ancestry across stacked PRs #86/#92/#93 was not fully reconciled.
+- PRs #86/#87/#92/#93 remain OPEN / DRAFT / UNMERGED. PR #95 remains OPEN / DRAFT / UNMERGED at head `4d4a417df94eee1cab7cd1ce746be0fc97e6482c`, base default `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Exact-head workflow runs returned none; combined status contexts empty; CI NOT VERIFIED.
+- Report: [route-registry revocation review](../reports/2026-11-15-next-pass-route-registry-revocation-review.md), commit `fcdcea5df21c99eaab2b72af7ee649429a1127e0`.
+- Cloud Pool-native Gemini dispatch remains NOT IMPLEMENTED / NOT QUALIFIED. `POOL_DISPATCH_ENABLED` remains fail-closed. A0/D1 production admission NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile full migration/test ancestry and define the authoritative monotonic revocation record; add same-transaction watermark checks and adversarial rollback/replay tests without enabling dispatch.
