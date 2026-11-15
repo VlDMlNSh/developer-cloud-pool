@@ -2339,3 +2339,18 @@ This section supersedes the earlier in-progress observation for the 13:35 wave. 
 - Contour A remains IN PROGRESS / NOT ACCEPTED. Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## GODMOD3 component due diligence — 2026-11-15
+
+- Evaluated public source `MSL135/GODMOD3` at immutable main ref `4d4b3e06066a6de9eed92d3ad5c3bb26b232915e`; README blob `62c0430899b232a3c9244d24b1782046d6282c67`; declared license AGPL-3.0. README separately points to `elder-plinius/G0DM0D3`; do not conflate repositories or revisions.
+- Preliminary decision: EVALUATED / NOT APPROVED FOR TRUSTED POOL INTEGRATION.
+- Potential fit is limited to an isolated multi-model research/comparison UI and prompt robustness sandbox. It is not a Pool executor, dispatcher, task queue, quota authority, durable state layer, or worker runtime.
+- Blocking findings from source inspection: OpenRouter/caller-supplied provider key flow; API auth explicitly fails open when no GODMODE_API_KEY(S) is configured; in-memory rate limiter explicitly not production-grade; browser localStorage chat history; opt-in public Hugging Face dataset publication; jailbreak-oriented prompt combinations/input perturbation; AGPL-3.0 obligations; README's single-file architecture description conflicts with the inspected Next.js/Express TypeScript tree.
+- No execution, deployment, credential access, provider call, code import, permission grant, or dataset opt-in occurred. No independent security audit was performed.
+- Full assessment: [GODMOD3 component evaluation](../reports/2026-11-15-godmod3-component-evaluation.md); report creation commit `bb6df177b0378e85b9fe912d9fe87aa323056637`.
+- Cloud Pool default snapshot at review: `Основной@9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. Documentation branch remains `docs/next-wave-agent-launch-readiness-2026-11-15`; PR #91 remains OPEN/DRAFT/UNMERGED and this work is not on default.
+- No dispatch, credentials, provider routes, production state, or Contour A acceptance changed. Contour A IN PROGRESS / NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue the Pool's trusted issuer/claim-service and durable admission boundary; keep GODMOD3 outside the trusted control plane. Revisit only as an isolated research UI after Pool routing, quota, authentication, and persistence are operational and AGPL/security review is complete.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
