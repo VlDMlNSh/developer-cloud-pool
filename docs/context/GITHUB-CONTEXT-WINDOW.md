@@ -2241,3 +2241,9 @@ Evidence links:
 - PR #106: https://github.com/VlDMlNSh/developer-cloud-pool/pull/106
 - Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
+
+
+## Publication tracking — 2026-11-16
+- Current-state refresh and report are published on documentation continuation branch `docs/next-2026-11-16-current-state-refresh`.
+- Draft documentation PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/113 (base `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`). This branch is not merged and is not production/default state.
+- Context blob at initial publication: `73db4dcfb64d494aaca96fab8884656bdbf7a6ee`; dated report blob read-back: `823bded1ff04000462eb0d3c1de8a0a4eb6975a5`. Recheck PR head and CI before any merge.
