@@ -2374,3 +2374,18 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 - Atomic-admission audit report blob SHA: `72bf1408affd33af3e18340cdd8051591e5a341f`. Documentation remains confined to the unmerged PR #113 branch; no workflow runs were returned for the documentation-only commits.
+
+
+## 2026-11-16 /next — clean-base atomic D1 admission implementation
+
+- Default branch `Основной` remains at immutable target `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no default-branch write or merge.
+- New implementation branch `feat/atomic-next-admission-d1-2026-11-16`; PR #114 OPEN/DRAFT/UNMERGED; base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; exact head `24ada07a4ae832078faf7473b5b646f34a84e64a`.
+- Added isolated `proofs/d1-admission/` package: trusted Issue #96 owner event predicate, unique durable source-comment receipt, deterministic wave/task identity, atomic D1 trigger transaction for approval consume + logical task + approval attachment + task-level outbox, append-only receipt and immutable task/approval bindings, read-after-ambiguous-outcome, exact replay to original admission, dispatch:false.
+- Exact-head D1 proof run 43933503897/job 133531866050 SUCCESS: syntax passed, 9/9 local Workers-runtime D1 tests. Pool Contract Validation run 43933504073/job 133531891725 SUCCESS.
+- Artifact 14260211684 (18,253 bytes) independently downloaded and SHA-256 verified: `a000c440b969214f9ec7812bd40b1b2ec3c53ece64157aa35e67ea5fc4320dd9`.
+- Earlier failed CI runs on superseded commits were corrected; only final exact-head run is qualification evidence.
+- Boundaries: local D1 emulation only; no hosted D1, no trusted default-branch webhook workflow wired to a live binding, no authenticated worker workload identity, no immutable attempt execution, no outbox delivery, no production Supervisor integration, no provider calls or dispatch. PR #111/#112 audit findings remain open; do not merge or compose them as-is.
+- Report: [atomic D1 admission slice](../reports/2026-11-16-next-d1-atomic-admission-slice.md).
+- Checkpoint: [atomic D1 admission checkpoint](../checkpoints/2026-11-16-next-d1-atomic-admission-slice.md).
+- Next: implement authenticated workload identity for immutable-attempt claim/renew/finalize, bound to audience/repository/task/attempt/target, no automatic reclaim.
+- Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
