@@ -55,3 +55,14 @@
 - Contour B: DEFERRED.
 
 Canonical MediaHub map (reference only; not Cloud Pool implementation authority): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Follow-up engineering correction — immutable checkout binding — 2026-11-16
+
+- Revalidated default branch Основной HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436. Issue #94/#96 remain OPEN; Issue #96 still says PLANNED and dispatch-disabled.
+- PR #102 head before this correction was a19aca5c31bf6a39104f4eb10296a94eab404fda; exact-head prior CI run 43815104716 / contract job 133125329861 SUCCESS (17 tests), event job 133125331599 SKIPPED; Pool Contract Validation 43815104739 / job 133125261247 SUCCESS.
+- Source review found the event-admission job checked out the mutable default_branch name while separately passing github.sha as the event target. This left a time-of-check/time-of-use mismatch: the checked-out controller script could resolve from a later default-branch commit than the immutable event SHA being recorded.
+- Corrected PR #102 workflow checkout to github.sha. Change commit: 38844dfb4a881ec858742e5bf9e35724f6b8a95d; workflow blob read-back: 1a0db4fd84f02e7e0a16951282525dc224c3ae1f. Commit diff confirms the single-line immutable-ref correction. Branch read-back confirms no mutable default-branch checkout remains in this job.
+- Exact-head CI for the new commit: NOT VERIFIED at this report read-back. The PR-specific run lookup returned no runs for the push commit; combined status contexts were empty. Do not infer CI from the previous head's successful run.
+- PR #102 remains OPEN / DRAFT / UNMERGED; formal review count remains zero. No merge, dispatch, secret/variable access, provider call, deployment or default-branch modification.
+- This is bounded source hardening only. Durable idempotency, enforced repository-wide serialization, authoritative API reconciliation and child dispatch remain unimplemented. Gemini Agent 1/2/3 remain NOT RUN for Cloud Pool scope because Issue #96 gates are not passed and the MediaHub controller cannot assign Cloud Pool tasks.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
