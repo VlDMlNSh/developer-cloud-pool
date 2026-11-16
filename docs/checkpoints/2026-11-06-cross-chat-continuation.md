@@ -535,3 +535,24 @@ See [Wave 322 report](../reports/2026-11-15-pr93-verified-registry-atomic-rollba
 - No new /next comment was created for this restore prompt. No merge, deployment, production dispatch, provider call or secret read.
 - Contour A NOT ACCEPTED; Contour B DEFERRED. Next: remediate Worker report TOCTOU and single-writer lifecycle, retain browser evidence artifacts, rerun exact-head CI and obtain independent review.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Wave 328 Worker report fencing and supplementary Gemini bridge
+
+- Report: [Wave 328](../reports/2026-11-16-wave328-worker-report-fencing-and-gemini-bridge.md); report commit `68dba090f80eb36416d8b80affb8fb26ddcec17b`.
+- Cloud Pool default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. PR #106 final head `afd3dba8bc9db37c8e07b8becf128233f46e4533`, OPEN/DRAFT/UNMERGED; PR base API SHA `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92` requires refresh against current default before merge.
+- PR #106 changes serialize Worker report mutations with the Supervisor concurrency group and revalidate issue open state, active `pool:claimed`, exact target SHA and allowlisted profile before mutation; verify terminal label and re-read before audit comment.
+- Worker blob `c4a11a809f49f7692ab5acb70a32b44401b721b3`; validator blob `e1adfde9c9dcb9ab70e96dc9c6de67bd71b8b542`.
+- Exact-head run #43861948322 SUCCESS at `afd3dba8bc9db37c8e07b8becf128233f46e4533`: contract job #133280713133 SUCCESS, skills job #133280713473 SUCCESS, browser smoke job #133280713541 SUCCESS. Initial intermediate run #43861798138 failed new regex assertions; corrected and re-run successfully.
+- No Actions artifacts retained by the final Pool run. Browser screenshot hash remains summary-only. PR #106 reviews 0; independent review NOT RUN.
+- This is partial fencing, not a strict single-writer fix: Worker and Supervisor still both hold issue-write authority; GitHub concurrency serializes the automated paths, but external/manual writers and non-CAS label updates remain. Next: Supervisor becomes sole task-state writer; Worker emits immutable evidence only.
+- Cloud Pool Issue #94 and #96 remain OPEN; PR #102 remains OPEN/DRAFT and read-only. No qualified Cloud Pool-native dispatch controller on default branch. Exact-head CI observed `POOL_DISPATCH_ENABLED=false`; no Cloud Pool task dispatch.
+- Current branch-protection API returned 403; historical Issue #1 Ruleset ID 26550182 is dated 2026-11-04, so current effective governance NOT VERIFIED.
+- Supplementary MediaHub /next comment #6915656230 correlated with controller run #43861616289 SUCCESS, target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Readiness #133279587453 and dispatch/monitor #133279623858 SUCCESS.
+- Agent 1 run #43861646865 / jobs #133279698080 and #133279735598 SUCCESS; artifact #14222874986 SHA-256 `86a02bd511f8d9c5032cb0f42b9a6ff6b905ccc9e9281bf476dd3c55bf9c684a`; PR #758.
+- Agent 2 run #43861650674 / jobs #133279711167 and #133279751411 SUCCESS; artifact #14223790713 SHA-256 `de57cccf61b3c9c01879e9c5cee755f534d65891918ffe3566c7f38d7f13f196`; PR #759.
+- Agent 3 run #43861654600 / jobs #133279725458 and #133279770854 SUCCESS; artifact #14224480387 SHA-256 `0921ca17692eb9c44d201e70e5d1066d4a17bb1600246d0c64940c716fc23214`; PR #757.
+- PRs #757–#759 remain OPEN/DRAFT with zero reviews; their PR validation runs are `action_required`. These agents worked on MediaHub, not Cloud Pool; this bridge is not a substitute for Cloud Pool Issues #94/#96.
+- No secret values read, provider/model calls, Cloud Pool Worker dispatch, production dispatch, merge or deployment.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next: Supervisor-only task-state writer, immutable Worker evidence, adversarial lifecycle tests, PR base refresh and independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
