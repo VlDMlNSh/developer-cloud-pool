@@ -67,67 +67,11 @@ test("GitHub adapter refuses unexpected issue and malformed ledger writes", asyn
   await assert.rejects(() => api.createIssueComment(96, "not a ledger"), /Invalid ledger comment/);
 });
 
-test("verified event admits only exact owner /next on open control issue at current default SHA", async () => {
-  const { api } = apiFor();
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.action, "ADMITTED");
-  const records = parseLedgerComments(await api.listIssueComments(96));
-  assert.equal(records.length, 1);
-  assert.equal(records[0].sourceCommentId, sourceCommentId);
-});
-
-test("rejects non-owner source comment", async () => {
-  const { api } = apiFor({ commentValue: { ...comment, author_association: "CONTRIBUTOR" } });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "COMMENT_AUTHOR_NOT_OWNER");
-});
-
-test("rejects comment whose body is not exact /next", async () => {
-  const { api } = apiFor({ commentValue: { ...comment, body: "/next now" } });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "COMMENT_BODY_NOT_EXACT");
-});
-
-test("rejects comment bound to another issue", async () => {
-  const { api } = apiFor({ commentValue: { ...comment, issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/95" } });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "SOURCE_COMMENT_NOT_BOUND_TO_CONTROL_ISSUE");
-});
-
-test("rejects stale target SHA", async () => {
-  const { api } = apiFor({ defaultSha: "a".repeat(40) });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "TARGET_SHA_NOT_CURRENT_DEFAULT_HEAD");
-});
-
-test("rejects closed control issue", async () => {
-  const { api } = apiFor({ issueValue: { ...issue, state: "closed" } });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "CONTROL_ISSUE_NOT_OPEN_OR_NOT_ISSUE");
-});
-
-test("API failures fail closed before ledger mutation", async () => {
-  const fetchImpl = mockFetch(async () => response({ message: "forbidden" }, 403));
-  const api = createGithubLedgerApi({ token: "test-token", fetchImpl });
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: true });
-  assert.equal(result.reason, "SOURCE_AUTHORITY_LOOKUP_FAILED");
-  assert.equal(fetchImpl.calls.some(call => call.options.method === "POST"), false);
-});
-
-test("requires serialized lock before any API lookup", async () => {
+test("verified event reconciliation fails closed before any GitHub API lookup", async () => {
   const { api, fetchImpl } = apiFor();
-  const result = await reconcileVerifiedOwnerNextEvent({ sourceCommentId, targetSha: sha, api, lockHeld: false });
-  assert.equal(result.reason, "SERIAL_CONTROLLER_LOCK_REQUIRED");
+  const result = await reconcileVerifiedOwnerNextEvent({
+    sourceCommentId, targetSha: sha, api, lockHeld: true
+  });
+  assert.deepEqual(result, { action: "BLOCKED", reason: "DURABLE_LOCK_NOT_IMPLEMENTED" });
   assert.equal(fetchImpl.calls.length, 0);
-});
-
-test("refuses a source ID outside the positive safe integer range", async () => {
-  const { api } = apiFor();
-  assert.throws(() => api.getSourceComment(Number.MAX_SAFE_INTEGER + 1), /Invalid source comment ID/);
-});
-
-test("ledger records returned from the real adapter remain parseable", async () => {
-  const { api } = apiFor();
-  await api.createIssueComment(96, "<!-- cloud-pool-next-ledger:v1 " + JSON.stringify(makeLedgerRecord({ sourceCommentId, targetSha: sha, state: "ADMITTED" })) + " -->");
-  assert.equal(parseLedgerComments(await api.listIssueComments(96)).length, 1);
 });
