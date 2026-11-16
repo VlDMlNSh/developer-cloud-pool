@@ -455,3 +455,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secrets/variable values read, no provider calls, no live dispatch, no deployment, no merge, no infrastructure changes. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review PR #102; implement canonical API revalidation and enforced serialization/durable idempotency; reconcile MediaHub controller transport/governance before another Gemini wave.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 checkpoint — PR #102 event-controller trust audit
+
+- Report: [PR #102 event-controller trust audit](../reports/2026-11-16-next-pr102-event-controller-audit.md).
+- Cloud Pool default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #102 exact head `a19aca5c31bf6a39104f4eb10296a94eab404fda`, OPEN/DRAFT/UNMERGED, reviews 0.
+- Exact-head CI: push run `43815087262` SUCCESS; PR controller run `43815104716` SUCCESS (contract job `133125329861` SUCCESS, event-admission `133125331599` SKIPPED as expected); workflow/security run `43815104739` / job `133125261247` SUCCESS.
+- Read-only source audit found no critical unsafe side effect in this slice. It is not independent review.
+- Still missing: durable source-comment idempotency, authoritative serialization, canonical API revalidation and full workflow-run identity correlation.
+- Issue #96 remains fail-closed; Cloud Pool dispatch NOT RUN; Gemini new wave NOT RUN. MediaHub controller REST/HMAC + workflow_dispatch vs approved workflow_call mismatch remains unresolved.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security/governance review of PR #102, then a separate bounded implementation of API revalidation and durable admission. Do not enable dispatch before all gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
