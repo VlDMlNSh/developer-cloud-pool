@@ -88,3 +88,27 @@ Final PR #114 exact head: `051f972a44bdfb610b17554dd51340c34700e6f6`.
 - PR #114 remains OPEN/DRAFT/UNMERGED with zero formal reviews. No default branch mutation.
 
 The trusted event adapter is still absent: event, controller run/code SHA and trusted default head are supplied to the pure adapter in tests. No live webhook signature, trusted-main controller execution, hosted D1 or worker identity is proven. Dispatch remains disabled.
+
+
+## 2026-11-16 approval replay hardening — latest exact head
+
+A second independent read-through of the atomic D1 admission trigger found a replay edge case: the trigger accepted an already-consumed approval when its `consumed_at` and `task_key` happened to match the new receipt. The previous post-UPDATE existence check did not prove that the current UPDATE had consumed a fresh `ready` row.
+
+Fix on PR #114:
+- Migration trigger now checks SQLite `changes() = 1` immediately after the conditional `ready -> consumed` UPDATE. A previously consumed row cannot satisfy the admission, even with matching timestamp/task binding.
+- Added an adversarial test that pre-consumes an approval with the exact expected task key and timestamp, then attempts admission. The receipt/task creation is rejected and rolled back.
+- Approval monotonicity and append-only protections remain in place.
+
+Latest immutable PR head: `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`.
+- D1 PR run [43935042451](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935042451), job `133537271429`: SUCCESS; 1 file, 12/12 local Workers-runtime D1 tests.
+- D1 push run [43935030103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935030103): SUCCESS on the same SHA.
+- Pool Contract Validation [43935042490](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935042490), job `133537341737`: SUCCESS.
+- Artifact [14258854086](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935030103/artifacts/14258854086), 18,253 bytes, independently downloaded; SHA-256 `796945aa2562e9d61ef8add4031e64c694ef624d3ab890a09cbd3b352e506f44`.
+- Current SQL blob SHA: `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`.
+- Current test blob SHA: `208119e50985bca41161327afd6ebe717ef85b1d`.
+
+PR #114 remains OPEN / DRAFT / UNMERGED, zero formal reviews. Default `Основной` HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Active ruleset #26550182 applies to the default branch, but branch-protection REST read returned 403; do not infer additional protection settings. The native Gemini controller workflow is NOT FOUND on default branch; Gemini NOT RUN.
+
+The pure adapter still receives event, controller run/code metadata and trusted default HEAD as supplied test inputs. This is not a live authenticated webhook. Hosted D1, worker workload identity, immutable-attempt claim/renew/finalize, outbox delivery, production integration, independent formal review and full Contour A qualification remain NOT VERIFIED. Dispatch remains disabled.
+
+Next bounded step: implement and test an authenticated workload-identity verifier and binding for the immutable-attempt lifecycle. It must validate a trusted issuer/signature, canonical audience, repository identity, task/attempt identity, target SHA, expiry and replay/fencing state. Do not choose an issuer or deploy identity infrastructure without confirming the trusted runtime issuer. No automatic reclaim; no provider dispatch.
