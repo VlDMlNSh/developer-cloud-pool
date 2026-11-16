@@ -34,3 +34,11 @@ Reconcile live refs and verify the latest four-agent Gemini candidate without ex
 Reconstruct/rebase the bounded Gemini candidate on current default HEAD, obtain exact-head CI for that exact SHA, and verify pinned SDK dependency installation without provider calls. Keep dispatch disabled until durable owner admission, lease/fencing/recovery, provenance and independent review pass.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Cross-repository controller recheck — MediaHub Issue #301
+- MediaHub OS Issue #301 remains OPEN and was updated 2026-11-16T11:52:57Z. Its fetched latest comments include multiple owner-authored comments with exact body /next; the latest visible comment ID is 6915656230.
+- Current default-branch controller workflow blob on MediaHub main: 7799f0fc713c5bd772ce6820df40a926a83445c8.
+- The workflow admits owner-associated exact /next comments on Issue #301, but actual child dispatch additionally requires repository variable MEDIAHUB_GEMINI_BATCH_ENABLED=true, execution on refs/heads/main, and the controller's required secrets. Secret values were not read; variable/secret effective state was not verified.
+- The available GitHub workflow-run lookup does not enumerate issue_comment-triggered runs. Search for the latest visible comment ID did not return a controller run. Therefore the latest /next child dispatch status is NOT VERIFIED; do not claim a controller run or successful child agents.
+- MediaHub PR #437 is CLOSED (historical test repair); this does not qualify the current controller. Issue #301 itself remains a tracker, not proof of acceptance.
