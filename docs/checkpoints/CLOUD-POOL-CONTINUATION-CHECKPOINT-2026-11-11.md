@@ -368,3 +368,13 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Issue template and validator updated; ADR and dated report added. No physical device or SentinelX required for this mode.
 - Runtime installation/test NOT RUN; workflow CI NOT VERIFIED until exact-head results; dispatch remains fail-closed. Persistent interactive sessions/dashboard NOT IMPLEMENTED; no unlimited-free claim. GitHub Actions limits remain.
 - Next: PR exact-head CI and security review, then one approved bounded smoke task after default-branch governance permits it.
+
+
+## /next — ephemeral agent-browser worker proposal — 2026-11-16
+
+- PR #106: https://github.com/VlDMlNSh/developer-cloud-pool/pull/106; branch `feat/agent-browser-ephemeral-worker-2026-11-16`; base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact CI head `60ac5400fd0e73846f8ff72bb910800dcc73b442`.
+- Pool Contract Validation run `43836984368`, job `133195965481`: COMPLETED / SUCCESS. YAML, dispatch-disabled guard and contract validation passed.
+- Profile uses GitHub-hosted ephemeral runner only; no physical device or SentinelX host. Browser job has no token permissions, no checkout, no secrets, pinned CLI/Node, Chrome install, core + dogfood skill loading, fixed public smoke target, screenshot hash and explicit close.
+- Browser workflow_dispatch runtime NOT RUN. PR is draft/unmerged; formal reviews 0. No browser execution evidence or qualification.
+- Persistent interactive sessions/dashboard NOT IMPLEMENTED. No unlimited-free claim; GitHub Actions limits apply. Existing supervisor dispatch remains fail-closed.
+- Next: independent review, then owner-approved bounded smoke dispatch after governance checks.
