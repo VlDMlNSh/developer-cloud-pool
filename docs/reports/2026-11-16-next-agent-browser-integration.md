@@ -38,3 +38,11 @@
 ## Next bounded step
 
 When an approved host is online, validate its exact host ID/capabilities/allowlist and install the pinned agent-browser CLI + Chromium + official skill there. In parallel, implement a separate allowlisted ephemeral browser-worker profile only after the Cloud Pool admission and governance gates are satisfied. Do not expose dashboard port 4848 publicly; remote access requires authenticated TLS ingress, per-session isolation, expiry/revocation, audit, and resource quotas.
+
+
+## Pull request and exact-head CI follow-up
+
+- Draft PR #104 opened: https://github.com/VlDMlNSh/developer-cloud-pool/pull/104
+- PR base SHA: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; initial head SHA: `135e312365610c9974a4c0ee6769b9b574e91dd8`.
+- Exact-head workflow query returned an empty workflow-run collection. CI is therefore NOT VERIFIED (not PASS).
+- PR is OPEN/DRAFT, mergeable=false at creation, formal reviews not yet checked; no merge.
