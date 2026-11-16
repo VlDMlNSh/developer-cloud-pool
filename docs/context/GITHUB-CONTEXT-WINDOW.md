@@ -2176,3 +2176,6 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - CLI install, skill install and browser worker are NOT RUN / NOT IMPLEMENTED. Persistent remote sessions are BLOCKED by absence of an online host/approved persistent hosting target. "Unlimited free sessions" is NOT VERIFIED and must not be promised; GitHub Actions and all compute/storage/network have limits.
 - This is documentation-only, no dispatch, no secrets, no paid resources, no merge, no Contour B. Contour A remains BLOCKED / NOT ACCEPTED.
 - Report: ../reports/2026-11-16-next-agent-browser-integration.md. ADR: ../architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md.
+
+
+- Follow-up: Draft PR #104 opened for the browser integration ADR/report/context/checkpoint. Initial PR head `135e312365610c9974a4c0ee6769b9b574e91dd8`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact-head workflow query returned no runs, so CI NOT VERIFIED. PR OPEN/DRAFT, mergeable=false at creation; no merge.
