@@ -2235,3 +2235,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Formal independent security review: NOT RUN. Production caller integration and hosted persistence: NOT VERIFIED. Four live agents: NOT RUN. Contour A: NOT ACCEPTED.
 - Next: audit PR #111 migration and transaction semantics; then build a narrowly scoped trusted Issue #96 adapter that atomically binds owner actor, source comment ID, immutable SHA, wave/task IDs, lease generation and one-shot dispatch intent. Keep ambiguous outcomes in NEEDS_REVIEW and dispatch disabled until review/governance pass.
 - Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## SQL attempt-state integrity pass — 2026-11-16
+
+- D1 proof PR #111: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111 (OPEN / DRAFT / UNMERGED).
+- Immutable target base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; latest PR head: `687196738782432797bf394f1342cb9df19f478f`; compare: 4 commits ahead / 0 behind.
+- Added migration `0006_guard_running_attempt_requires_lease.sql`: SQL rejects prepared -> running unless the task already has the matching current attempt pointer, lease attempt pointer, non-empty owner, positive fencing generation and unexpired lease.
+- Added adversarial regression in `test/claim-outbox.test.ts`: direct unleased transition is rejected and leaves attempt prepared; normal `acquireAttemptLease` path transitions to running with generation 1.
+- Exact-head D1 workflow [43881396386](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396386): COMPLETED / SUCCESS; Node 24.9.0; syntax check passed; 37/37 Workers-runtime tests passed (13 consume + 24 claim/outbox). Job `133347908331`.
+- Exact-head Pool Contract Validation [43881396272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396272): COMPLETED / SUCCESS.
+- Lockfile artifact `14232471651`; SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- Read-back: PR #111 latest head equals `687196738782432797bf394f1342cb9df19f478f`; base remains exact default SHA; PR remains Draft and mergeable. Default branch unchanged.
+- No secrets read, provider/model calls, Gemini dispatch, hosted D1 provisioning, merge or deployment.
+- Scope remains local Workers-runtime proof. Independent security review, hosted persistence, trusted Issue #96 controller integration, and four-agent live dispatch remain NOT VERIFIED / NOT RUN. Contour A NOT ACCEPTED.
+- Next bounded step: implement a narrow trusted Issue #96 admission adapter that binds owner actor + source comment ID + repository/issue + immutable target SHA + wave/task IDs to a single-use approval/outbox, then prove replay, cross-owner, cross-comment, stale-SHA and ambiguous-commit cases. Do not enable dispatch before security/governance review.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
