@@ -2179,3 +2179,5 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 
 - Follow-up: Draft PR #104 opened for the browser integration ADR/report/context/checkpoint. Initial PR head `135e312365610c9974a4c0ee6769b9b574e91dd8`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact-head workflow query returned no runs, so CI NOT VERIFIED. PR OPEN/DRAFT, mergeable=false at creation; no merge.
+
+- Final PR #104 verification: current branch tip `18400edb605ea979e2a129092372dcdcd4fdc129`; PR OPEN/DRAFT, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`, formal reviews 0, exact-head workflow runs empty (CI NOT VERIFIED). No merge.
