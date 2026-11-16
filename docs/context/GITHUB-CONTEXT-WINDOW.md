@@ -2186,3 +2186,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No arbitrary URLs/scripts, no credentials/cookies, no paid provider. Existing supervisor dispatch gate remains fail-closed.
 - GitHub-hosted job is ephemeral and subject to Actions minutes, concurrency, timeout and storage limits. Unlimited free capacity is NOT VERIFIED. Persistent interactive sessions/dashboard and cross-job state NOT IMPLEMENTED.
 - Report: `docs/reports/2026-11-16-next-ephemeral-agent-browser-worker.md`; ADR: `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md`.
+
+
+## Agent-browser worker — exact-head validation update — 2026-11-16
+
+- PR #106 latest code head validated: `b5e4c63effa5c285447fbb73412b28d8d910af7c`.
+- Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS. YAML, dispatch-disabled guard, profile intake, no-token/no-secret browser job, pinned CLI, skills loading, fixed public smoke target, cleanup and report reconciliation passed.
+- This is static/workflow CI only. Browser runtime installation and actual `workflow_dispatch` smoke remain NOT RUN. PR #106 OPEN/DRAFT, reviews 0, not merged.
