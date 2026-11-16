@@ -3904,3 +3904,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - This is a design proposal only. No worker deployed, route activated, provider called, test run or Gemini dispatch occurred. FCC key inheritance finding remains a blocker for secret-bearing execution. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile provider inventory with credential references and account/quota evidence (metadata only), produce disabled-by-default route inventory, and continue FCC bind/auth/config lifecycle and secret isolation review.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Dual Claude Code profile reference architecture (owner clarification)
+
+- Binding decision: **both Cloud Code profiles use Claude Code + ECC (Everything Claude Code)**. ECC is the shared Claude Code harness/plugin capability layer (agents, skills, hooks, rules), not a model provider or router.
+- Profile A: Claude Code + ECC → FCC → one admitted/qualified cloud API route. Primary coding, tests, integration and DevOps.
+- Profile B: Claude Code + ECC → OmniRouter → qualified local coding/planning LLM; video generation runs through a separate task-scoped local media worker/runtime. Profile B also supports coding and DevOps.
+- ECC is installed independently in both profiles with pinned source version and separate config/plugin state. Workspaces, queues, policies and audit are separate.
+- Official ECC upstream verified: affaan-m/ECC, repo ID 1136590548, observed HEAD d2ef2680594f9a17526a6e1a2e18b3d242c5d17b, README blob d8017086ca85d2e851ef2e0c88470b0b09dc3d4d; upstream declares MIT and official Claude Code plugin slug ecc@ecc. No installation or runtime test performed.
+- Protocol boundary: OmniRouter must prove Claude Code Anthropic-compatible streaming/tool-use semantics; OpenAI-compatible endpoint alone is not enough. Actual video generation requires a separate media runtime; do not assume OmniRouter is a video generator.
+- FCC remains blocked for secret-bearing runtime by the previously verified _claude_child_env() provider-key inheritance finding and unresolved source provenance. Profile A NOT QUALIFIED. Profile B host/GPU/model/OmniRouter/media-runtime inventory NOT VERIFIED; NOT QUALIFIED.
+- Repository state rechecked: default branch Основной, HEAD 35208f0ef28f0ac031a7acdf35fc90ccc9b16845; active ruleset 26550182 targets refs/heads/Основной, PR required, deletion/non-fast-forward prohibited, review-thread resolution required, 0 required approvals, no bypass actors. PR #112 remains OPEN/DRAFT and read-only event validation only; no durable admission/dispatch authority.
+- New reference: [CLOUD-CODE-DUAL-PROFILE-REFERENCE-ARCHITECTURE-2026-11-16.md](../architecture/CLOUD-CODE-DUAL-PROFILE-REFERENCE-ARCHITECTURE-2026-11-16.md).
+- Updated topology: [ON-DEMAND-WORKER-POOL-TOPOLOGY-2026-11-16.md](../architecture/ON-DEMAND-WORKER-POOL-TOPOLOGY-2026-11-16.md).
+- No secrets read, no install, no model/provider calls, no agent dispatch, no deployment, no CI run. Documentation-only pass. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create profile manifests and no-secret synthetic acceptance tests; then resolve FCC secret isolation/provenance and verify Profile B host/model/OmniRouter/media-runtime prerequisites before any live qualification.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
