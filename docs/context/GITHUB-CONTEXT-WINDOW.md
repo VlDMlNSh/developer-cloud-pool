@@ -3755,3 +3755,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next bounded step: pin official Google Gen AI SDK in manifest + lockfile and add no-secret install/import smoke CI; then implement Issue #96 trusted admission/durable lease/reconciliation. Keep dispatch disabled until all Issue #94 qualification gates are independently evidenced.
 - Contour A remains NOT ACCEPTED. Contour B remains deferred.
 - Canonical MediaHub map (separate repository/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 39. 2026-11-16 — Dual Cloud Code execution-plane architecture (documented proposal)
+
+- Architecture ADR: [Cloud Code Dual Execution Plane](../architecture/2026-11-16-cloud-code-dual-execution-plane-adr.md).
+- Dated report: [architecture synchronization](../reports/2026-11-16-cloud-code-dual-execution-plane-sync.md).
+- Checkpoint: [dual Cloud Code architecture](../checkpoints/2026-11-16-cloud-code-dual-execution-plane.md).
+- Decision: one Jarvis control/experience plane with two logically and operationally isolated future execution profiles: Development Cloud Code (software engineering/GitHub) and Media Cloud Code (media workflows/GPU jobs). They are not two independent Jarvis systems.
+- Claude Code-compatible runtime is an orchestration/execution environment, not a video-generation model, renderer, GPU scheduler or provider router. Actual generation/rendering is delegated to separately qualified model/workflow/GPU workers.
+- FCC/Free Claude Code is an unqualified candidate gateway/compatibility path; ECC is an extension/skills/rules bundle, not a provider or standalone router. Neither is approved or integrated by this decision.
+- Model/provider account slots, secret references, quotas, workspaces, runtime identities, queues and budgets must remain isolated. A distinct API key does not prove a distinct account or independent quota. No secret values in docs, prompts, logs or artifacts; no paid fallback or quota-evasion rotation.
+- Media candidates (ComfyUI, Blender, FFmpeg and hosted/self-hosted models) are reference options only, not installed/qualified dependencies. Feature-length video is a resumable scene/shot pipeline with asset continuity, audio, timeline, rendering, QC and provenance; not one monolithic generation call.
+- Strict phase gate: finish and independently ACCEPT Contour A first. Only then qualify Development Cloud Code; Media Cloud Code and remote GPU execution require separate security and explicit budget approval. No Contour B implementation now.
+- This pass is documentation-only: no code, secrets, provider calls, dispatch, GPU provisioning, paid resources, tests, merge or deployment. Contour A remains BLOCKED / NOT ACCEPTED.
+- Canonical MediaHub map (separate project/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
