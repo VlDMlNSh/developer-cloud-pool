@@ -3513,3 +3513,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Current user turn was a request to restore the procedure, not exact /next; no new issue comment/dispatch was created. Latest Issue #301 comments fetched included owner-authored /next through ID 6914365822. Do not reuse a historical event for a future turn.
 - Report: docs/reports/2026-11-16-restore-gemini-three-agent-next-bridge.md, commit 7ea37b2300e2bcafeead9251430713934bf68d66.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — /next Wave 317 and Cloud Pool base reconciliation
+- Report: [Wave 317 Cloud Pool reconciliation](../reports/2026-11-16-next-wave317-cloud-pool-reconciliation.md), commit `978d633822f64d5f7fa31db8dbcc1f37e48311a7`.
+- Cloud Pool default HEAD reconfirmed: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. MediaHub main: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #106 is OPEN/DRAFT/UNMERGED, head `15de4aa015493aec7ee5137f1e4dae9591c4ab4f`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92` (stale relative to current default). No exact-head combined status records were returned; do not infer CI success. Do not merge as-is; perform full diff/provenance review and selective rebase/transplant on current default.
+- Active ruleset #26550182 requires PR and thread resolution, blocks deletion/non-fast-forward, but requires 0 approving reviews. Independent review is therefore not enforced by this ruleset.
+- This exact /next created owner comment #301/#6914858101. Controller run #43856030589 (Wave 317) passed admission job #133260399666; monitor job #133260449731 was IN_PROGRESS at last check. Three child runs observed IN_PROGRESS: Agent 1 #43856062054 (dispatch d50fe0fd-61fe-46f5-aaa9-e99aea42afb7), Agent 2 #43856065717 (dispatch 6f5d5799-e78a-4f46-b928-1e96f8d0efdc), Agent 3 #43856070228 (dispatch 135701b6-b760-4aea-8a34-69ee1f429804). Child jobs, PR provenance and artifacts/digests NOT VERIFIED at checkpoint.
+- Gemini controller tasks remain MediaHub OS Contour A-focused; no evidence they write Cloud Pool code. This bridge is supplementary and does not replace Cloud Pool-native dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile all three child run/job/artifact outcomes; then prepare safe selective integration plan for #106 against exact current default without merging or enabling dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
