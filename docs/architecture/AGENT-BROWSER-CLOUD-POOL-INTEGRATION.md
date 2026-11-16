@@ -1,7 +1,7 @@
 # Agent-browser in the Cloud Pool — ephemeral GitHub-hosted worker
 
 **Date:** 2026-11-16  
-**Status:** IMPLEMENTATION PROPOSAL / NOT DEPLOYED  
+**Status:** EPHEMERAL PUBLIC-WEB SMOKE VERIFIED / WORKER DISPATCH NOT QUALIFIED  
 **Base SHA:** `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`
 
 ## Decision
@@ -55,14 +55,24 @@ The browser job does not check out or execute task-repository code, does not acc
 - Exact package and action versions are pinned; smoke evidence is hashed.
 - Do not use concurrent job capacity as a claim of unlimited parallel browser sessions.
 
-## Acceptance
+## Runtime verification — 2026-11-16
 
-- [ ] PR exact-head workflow syntax and pool security contract validation pass.
-- [ ] An owner-approved task is dispatched only after default-branch governance and dispatch gate are verified.
-- [ ] Browser worker runs on GitHub-hosted infrastructure without physical/self-hosted nodes.
-- [ ] CLI and Chrome install, core/dogfood skill loading, public-page smoke, screenshot hashing and cleanup succeed.
-- [ ] Job permissions prove the browser job has no token scopes and no secrets.
-- [ ] Independent review verifies isolation, profile validation and result reporting.
-- [ ] Persistent/interactive remote session requirements are evaluated separately and are not represented as delivered by this ephemeral worker.
+- Implementation PR #106 branch `feat/agent-browser-ephemeral-worker-2026-11-16`.
+- Browser smoke implementation SHA: `90b88dd94d595dda65365a09396693804671cab3`.
+- Exact-head Pool Contract Validation run `43841574699`: COMPLETED / SUCCESS.
+- Browser job `133211350185`: SUCCESS. It installed exact `agent-browser@0.43.0` and Chromium on GitHub-hosted `ubuntu-24.04`, loaded core/dogfood instructions, opened `https://example.com`, verified `Example Domain`, captured a screenshot and closed the browser.
+- Job used `permissions: {}`, no checkout, no repository/provider secrets, no cookies or authenticated profile. Temporary HOME and runner are destroyed after job completion.
+- Separate skills job `133211350252`: SUCCESS; all 11 pinned skills installed and content/frontmatter validated.
+- Contract/security job `133211349732`: SUCCESS.
 
-**Current state:** workflow and contract changes proposed in PR; no dispatch or browser installation has been executed. Runtime success remains NOT VERIFIED.
+## Acceptance status
+
+- [x] Exact-head workflow syntax and pool security contract validation pass.
+- [x] Browser runtime installed and public unauthenticated smoke succeeded on GitHub-hosted infrastructure.
+- [x] Browser job has no GitHub token permissions and no repository/provider secrets.
+- [ ] Owner-approved browser task dispatched through a qualified Pool controller — NOT RUN; dispatch remains disabled.
+- [ ] Browser Worker profile integrated with durable queue/lease/heartbeat/recovery — NOT QUALIFIED.
+- [ ] Independent security review — deferred by owner until Cloud Pool is running and can perform its own independent checks.
+- [ ] Persistent/interactive browser service or authenticated session — NOT PROVISIONED and not part of this profile.
+
+**Current state:** public Web automation capability is VERIFIED for one ephemeral smoke job only. General browser task dispatch, persistent sessions, authenticated account automation and Contour A acceptance remain NOT VERIFIED / BLOCKED.
