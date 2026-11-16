@@ -2335,3 +2335,24 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Detailed evidence and integration decision: [D1 lease and admission audit](../reports/2026-11-16-next-d1-lease-admission-audit.md).
 - Next: design one canonical state machine and transaction boundary joining trusted owner event -> durable one-shot admission -> approval consume/task/outbox -> immutable attempt/lease, with an explicit authorized reconciliation path. Keep dispatch disabled until independent review and hosted persistence/recovery qualification.
 - Contour A NOT ACCEPTED; Contour B DEFERRED; Gemini dispatch NOT RUN.
+
+
+---
+
+## 2026-11-16 /next continuation — canonical admission-to-attempt integration contract
+
+- Live repository revalidation observed default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; Issues #94/#96 open; PRs #111/#112/#113 OPEN/DRAFT/UNMERGED.
+- PR #111 head `687196738782432797bf394f1342cb9df19f478f`: prior exact-head local Workers-runtime D1 tests 37/37 and contract validation SUCCESS. This is not hosted D1 qualification or production integration.
+- PR #112 head `c9a4c0ab2001f01a09632795283071c521e1c99d`: prior read-only event unit tests 21/21 and contract validation SUCCESS; actual event-admission job skipped in PR CI. Real trusted webhook remains NOT VERIFIED.
+- Neither candidate has formal independent review. No live controller/dispatch is qualified.
+- Canonical integration contract: trusted owner Issue #96 event -> durable idempotent admission -> one-shot approval consume + logical task + outbox in one D1 transaction -> immutable attempt -> authenticated fenced worker -> evidence -> terminal projection or separately authorized reconciliation.
+- Explicitly separate `controller_code_sha` from immutable `target_sha`; source comment ID is the event idempotency key.
+- Use immutable attempt lifecycle as the sole canonical attempt model. Do not combine with legacy expiry-reclaim lease API. Lease expiry alone never authorizes takeover/retry; indeterminate work stays blocked until authorized reconciliation.
+- Outbox delivery must reconcile ambiguous external responses before retry. Do not claim exactly-once external side effects.
+- Dispatch remains disabled. No secrets, provider calls, hosted D1, workflow mutation, deployment, merge, or runtime integration occurred.
+- Report: [canonical admission/attempt integration contract](../reports/2026-11-16-next-canonical-admission-attempt-contract.md).
+- Checkpoint: [canonical admission/attempt checkpoint](../checkpoints/2026-11-16-next-canonical-admission-attempt-contract.md).
+- New-chat master prompt: [CLOUD-POOL-MASTER-CONTINUATION-PROMPT.md](../prompts/CLOUD-POOL-MASTER-CONTINUATION-PROMPT.md).
+- Documentation branch remains `docs/next-2026-11-16-current-state-refresh`, unmerged; these docs are not yet on default branch.
+- Next: implement the smallest clean-base no-secret D1 event receipt + atomic admission/approval/task/outbox slice with `dispatch: false`, adversarial tests, exact-head CI and independent review.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; Gemini dispatch NOT RUN.
