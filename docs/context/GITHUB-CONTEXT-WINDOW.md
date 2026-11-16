@@ -2152,3 +2152,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool task router. Cloud Pool dispatch remains fail-closed.
 - Remaining blockers: durable owner-authenticated idempotency ledger, enforced repository-wide serialization, canonical API reconciliation and exact controller/child run correlation, formal governance/review, trusted-main no-secret probe.
 - Report/checkpoint are on docs/next-2026-11-16-cloudpool-gemini-scope-audit, not default/canonical code.
+
+## 2026-11-16 — exact controller run correlation hardening follow-up
+
+- Cloud Pool default branch HEAD revalidated: `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issue #94/#96 still OPEN; Issue #96 remains PLANNED and dispatch disabled.
+- PR #100 is OPEN/DRAFT/UNMERGED, head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`.
+- New exact workflow-run correlation matcher requires workflow ID, path, event, repository/head repository, branch, immutable SHA, deterministic display title and run ID. Missing/invalid identity blocks recovery; no title+SHA-only fallback.
+- Exact-head PR CI run `43824019902` / job `133153438933` SUCCESS; 53/53 tests PASS, 0 failures, syntax checks PASS. Earlier run `43823912569` failed one stale fixture, corrected and rerun.
+- The approved production controller workflow identity is still not established/bound, so actual run reconciliation remains NOT IMPLEMENTED / NOT QUALIFIED.
+- Caller-asserted `lockHeld: true` remains a critical unresolved defect. There is no durable distributed lock or runtime proof of repository-wide serialization.
+- PR #100 formal reviews 0; PR #98 Draft/unmerged. Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool router. Dispatch remains fail-closed.
+- Detailed report/checkpoint: `docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md` and `docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md` on branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit`.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
