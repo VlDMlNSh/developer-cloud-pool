@@ -66,7 +66,7 @@ test("append timeout without visible commit is ambiguous and never retried", asy
 test("intent with delayed run visibility returns no-retry ambiguity", async () => {
   const api = fakeApi([record("DISPATCH_INTENT")]);
   api.setRuns([]);
-  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
+  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true, expectedController: expectedController(record("DISPATCH_INTENT").dispatchId) });
   assert.equal(result.action, "AMBIGUOUS_NO_RETRY");
 });
 
