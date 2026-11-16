@@ -37,3 +37,14 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Pool Contract Validation run 43821733548: job 133146122452 SUCCESS; YAML syntax and security-contract checks passed; dispatch gate false.
 - Exact-head PR validation: VERIFIED. Live Issue #96 event probe: NOT RUN. Combined status contexts empty; formal reviews 0. PR remains Draft/unmerged.
 - Dispatch/Gemini for Cloud Pool: NOT RUN; Issue #96 remains PLANNED. Contour A BLOCKED / NOT ACCEPTED.
+
+## Follow-up checkpoint — exact run identity — 2026-11-16
+
+- PR #100 head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; OPEN/DRAFT/UNMERGED.
+- Replaced title+SHA-only run correlation with exact identity matching: workflow ID, path, event, repository, head repository, branch, target SHA, deterministic title and run ID.
+- Missing/invalid approved workflow identity now fails closed.
+- Exact-head CI run `43824019902` / job `133153438933` SUCCESS; 53/53 tests PASS, syntax checks PASS.
+- Initial run `43823912569` failed one stale fixture; fixture corrected and rerun passed.
+- Remaining critical blocker: `lockHeld: true` is still caller-supplied, not a real lock proof. No approved production controller workflow identity exists; no runtime reconciliation/dispatch.
+- PR #100 formal reviews 0. PR #98 remains Draft. Gemini 1/2/3 NOT RUN for Cloud Pool scope. Issue #96 dispatch remains disabled.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
