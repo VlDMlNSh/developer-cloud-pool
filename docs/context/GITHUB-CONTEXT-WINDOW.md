@@ -2242,3 +2242,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Owner policy retained: independent external review and acceptance are deferred until Cloud Pool is running and can execute its own independent checks. Internal CI, security gates and deterministic tests remain required.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - Next step: implement the Cloud Pool-native Gemini controller and durable worker/session infrastructure; keep browser sessions ephemeral and public-only until a separate approved authentication/persistence design exists.
+
+
+### SHA clarification after documentation updates
+The implementation and workflow files validated by CI run `43841574699` are pinned to source commit `90b88dd94d595dda65365a09396693804671cab3`. After that run, only the report, Context Window and checkpoint documentation were updated; no workflow, installer, validator, or runtime code changed. Therefore the CI evidence applies to the tested implementation SHA, while the branch tip advances with documentation-only commits.
