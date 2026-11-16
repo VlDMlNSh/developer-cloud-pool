@@ -15,6 +15,7 @@ on:
       - feat/cloud-pool-next-controller-readonly-2026-11-16
     paths:
       - "scripts/next-event-controller.mjs"
+      - "scripts/validate-pool-contract.mjs"
       - "test/next-event-controller.test.mjs"
       - ".github/workflows/next-event-controller-readonly.yml"
 
