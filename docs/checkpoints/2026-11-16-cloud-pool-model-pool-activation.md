@@ -25,7 +25,7 @@ Contour: A — Developer Cloud Pool
 
 - PR #29 head `e4c8d642bbc054e7c52b391356965b492dad32b4`; exact-head CI `43031920223` SUCCESS. Old active-slot eligibility finding is corrected in current head, but formal CHANGES_REQUESTED review is against older head `34fc78921b16359d136db553d8a51b4a4716995d`. PR remains Draft/unmerged. `listEligibleRoutes()` still returns routes with unknown quota/account evidence; its test explicitly expects this and must not be used as production authorization.
 - PR #74 head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144` adds fail-closed unknown quota/account filtering. Exact-head Pool Contract Validation `43692828719` SUCCESS; formal reviews 0; PR Draft/unmerged.
-- PR #107 head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf` implements four isolated Gemini clients with `GEMINI_API_KEY_1`..`_4` and four roles. Candidate model is `gemini-2.5-flash`; unit tests authored but NOT RUN, formal reviews 0, production integration absent.
+- PR #107 head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf` implements four isolated Gemini clients with `GEMINI_API_KEY_1`..`_4` and four roles. Candidate model is `gemini-2.5-flash`; PR-linked run `43864376148` SUCCESS on exact head, but its reported job covered workflow syntax/security invariants; isolated Gemini unit suite NOT VERIFIED. Formal reviews 0, production integration absent.
 - Owner states each GitHub Gemini key represents a separate Google account. Matrix now contains four separate account/quota ledgers and records `OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED`; numeric quotas and non-secret project/account metadata remain NOT VERIFIED. No aggregation of quotas.
 - Updated matrix commit `eb2064b76d070bb99d9ecf062b20c2765feecdf3`, blob `4e2090874a07b7f05ea011f471caf0f018278466`.
 - No provider calls, secret reads, model execution, dispatch, merge or deployment.
@@ -48,3 +48,6 @@ Contour: A — Developer Cloud Pool
 Reconcile PR #29's active-slot eligibility finding at exact current head; verify exact-head CI. Keep all model routes inactive until Issue #26 acceptance. Then qualify one model at a time, starting with Gemini `gemini-3.8-flash` if account/project and free quota evidence pass.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+- Additional exact-head evidence: PR #107 run `43864376148` SUCCESS; job `Validate workflow syntax and security invariants` completed successfully. It did not provide evidence that `gemini-four-agent-controller.test.mjs` executed; unit tests remain NOT VERIFIED. No artifacts were produced.
