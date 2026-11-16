@@ -2272,3 +2272,15 @@ The implementation and workflow files validated by CI run `43841574699` are pinn
 - Latest observed PR #106 head before final documentation-only sync: `d5bb4755bae6ad4322e36d1ca38d685509f08eb9`; exact-head run `43843007992` was QUEUED and its three jobs IN_PROGRESS at last observation. Do not call this run SUCCESS until rechecked.
 - Last CI-completed implementation evidence remains run `43841574699` at implementation SHA `90b88dd94d595dda65365a09396693804671cab3`, all three jobs SUCCESS.
 - PR #106 remains OPEN/DRAFT/UNMERGED. Re-read live PR head and exact-head CI before merge or qualification.
+
+
+## /next update — 2026-11-16 durable claim reconciliation
+
+- PR #106 head observed before this documentation-only update: `a75fee9f65ad7700493a885144ffc36063c4c62a`, OPEN/DRAFT/UNMERGED. Exact-head run `43843201516` COMPLETED/SUCCESS: contract `133216820176`, browser `133216820519`, skills `133216820703` — all SUCCESS.
+- Cloud Pool-native Gemini controller still absent on default branch; Issues #94/#96 OPEN. Gemini three-agent wave NOT RUN / BLOCKED; do not substitute MediaHub controller.
+- Issue #38 remains OPEN. Decision record now has a live reconciliation addendum. PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, OPEN/DRAFT/UNMERGED; runs `42484039940` and `42484039932` SUCCESS, but review history contains CHANGES_REQUESTED and no APPROVED review.
+- PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: local Workers/D1 run `42329993548`, 19/19 tests SUCCESS. PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`: local Workers/D1 run `43010770730`, 40/40 tests SUCCESS. Both are OPEN/DRAFT/UNMERGED and are not hosted D1 qualification.
+- PR #57 head `2c263e8a9915f0bc8e0698cde816e87cb2376538`; fixture runs `42838193384` and `42838193405` SUCCESS, synthetic evidence only.
+- Decision remains: Issue-label PATCH is not CAS; Git-ref reservation is not selected; separate authenticated claim service + transactional conditional-write store is a target only. Hosted D1, issuer authentication, trusted time, revocation, fencing and recovery NOT VERIFIED. No provisioning performed.
+- Next bounded work: define issuer-authenticated capability envelope, key custody/rotation/revocation, trusted-time source, and adversarial verification. Keep dispatch disabled.
+- Report: [2026-11-16-next-durable-claim-reconciliation.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-durable-claim-reconciliation.md).
