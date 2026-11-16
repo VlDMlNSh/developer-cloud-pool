@@ -2205,3 +2205,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Skills are installed afresh in each ephemeral runner; no persistent VM or unlimited capacity. Installer is ready for future Gemini child jobs, but Cloud Pool-native Gemini controller remains blocked by Issue #94. No dispatch enabled.
 - Browser runtime smoke remains NOT RUN; PR #106 OPEN/DRAFT, no independent review and no merge.
 - Catalog/report: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`, `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
+
+
+## Agent skills bootstrap — exact-head verification — 2026-11-16
+
+- PR #106 code head validated: `5e9093bbcb344fa055408e18f0f9ee3eb95f7d2d`; PR OPEN/DRAFT, mergeable true, formal reviews 0, unmerged.
+- Pool Contract Validation run `43838104995`: COMPLETED / SUCCESS at exact head. Static contract job `133199689204` SUCCESS; real hosted-runner install job `133199689730` SUCCESS.
+- Installer installed and verified all 11 allowlisted Gemini CLI skills into ephemeral runner project path `.agents/skills/`. 48 files hashed; inventory SHA-256 `5cb73f77a808259ca0b9d0f862dfa54bdb848e93c1c5fed4a240c5f429d7a97c`.
+- Skills CLI `1.8.1`, Node `24.9.0`, source repositories pinned to immutable full commit SHAs, copy mode, telemetry disabled. No secrets/provider credentials or skill-script execution.
+- This verifies fresh-runner install, not persistent storage. Future Cloud Pool Gemini child executor must invoke the installer; Issue #94 controller remains a separate blocker. Dispatch remains disabled.
+- Browser actual smoke runtime NOT RUN. Independent review 0. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Catalog: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`; report: `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
