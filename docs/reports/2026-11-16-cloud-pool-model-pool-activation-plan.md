@@ -43,7 +43,7 @@ The registry's `cost_class` and `persistence_class` are inventory metadata, not 
 
 ## Gemini finding
 
-Official Gemini documentation states that rate limits are applied per project, not per API key. Four keys within one Google project therefore do not create four independent quota allocations. The four-client candidate in PR #107 remains isolated and unmerged. Only `gemini-1` is present in the 24-slot source registry; the other three credential identities must be reconciled from approved secret-name metadata and project ownership without exposing values.
+Official Gemini documentation states that rate limits are applied per project, not per API key. Four keys within one Google project therefore do not create four independent quota allocations. The four-client candidate in PR #107 remains isolated and unmerged. The owner has explicitly stated that each of the four GitHub Gemini API keys represents a separate Google account. The activation matrix now records four separate credential/account/quota ledgers (`gemini-1` through `gemini-4`, `GEMINI_API_KEY_1` through `_4`) with `OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED`; numeric quotas and non-secret project/account evidence remain NOT VERIFIED. The controller candidate uses `gemini-2.5-flash`. No quotas are aggregated or multiplied until evidence is recorded per account.
 
 The registry model IDs include `gemini-3.8-flash` and `gemini-3.5-flash-lite`. Current official pricing material lists `gemini-3.8-flash` as a Free-tier model and `gemini-3.1-flash-lite`; do not activate the unverified `gemini-3.5-flash-lite` string. Correct the candidate model identifier only through a reviewed registry change.
 
@@ -103,3 +103,15 @@ A model may move from PLANNED to QUALIFIED only when the evidence record binds p
 Reconcile PR #29 at its current immutable head, run exact-head tests, and close the active-slot eligibility finding. In parallel, prepare a no-secret Gemini credential metadata/account-domain reconciliation contract; do not read secret values or make provider calls. Only after Issue #26 acceptance can one model be activated under the pilot caps.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next revalidation — 2026-11-16
+
+- PR #29 current head remains `e4c8d642bbc054e7c52b391356965b492dad32b4`; exact-head Pool Contract Validation run `43031920223` SUCCESS. The active-slot eligibility finding is corrected in that head, but the formal CHANGES_REQUESTED review is attached to older head `34fc78921b16359d136db553d8a51b4a4716995d`; PR #29 remains DRAFT / OPEN / UNMERGED.
+- PR #29's quota ledger still admits unknown-quota/unknown-account entries in `listEligibleRoutes()`; its test explicitly expects the unknown route in the eligible list. This is not acceptable as a live route admission decision.
+- A newer focused correction exists in PR #74 at head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`. It filters out routes unless `quotaEvidence=provider_verified` and `quotaDomainId` is known, and adds regression tests for unknown account/quota evidence. Exact-head Pool Contract Validation run `43692828719` SUCCESS. PR #74 remains DRAFT / OPEN / UNMERGED with zero formal reviews; it is not accepted for production.
+- Gemini candidate PR #107 at head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf` maps `GEMINI_API_KEY_1`.. `_4` to four isolated clients, rejects missing/duplicate credentials, uses four fixed roles, and has no automatic retries or cross-account fallback. It explicitly says it does not verify account separation, does not inspect GitHub secrets, and has no production integration. Its candidate source uses `gemini-2.5-flash`; unit tests are authored but NOT RUN; formal review 0.
+- Owner statement received in ChatGPT on 2026-11-16: each Gemini key added to GitHub represents a separate Google account. The matrix records four distinct account/quota ledger identities as OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED; actual non-secret project/account metadata and numeric independent limits remain NOT VERIFIED. The four quota ledgers remain separate; no aggregation or quota multiplication is assumed.
+- Updated matrix blob: `4e2090874a07b7f05ea011f471caf0f018278466`, commit `eb2064b76d070bb99d9ecf062b20c2765feecdf3`.
+- No provider calls, secret reads, Gemini dispatch, model execution, merge, or deployment occurred.
+- Next bounded step: independently review PR #74 and #107, run exact-head CI for the four-account candidate, and reconcile quota admission with the trusted route-registry/A0-D1 boundary before enabling any provider call.
