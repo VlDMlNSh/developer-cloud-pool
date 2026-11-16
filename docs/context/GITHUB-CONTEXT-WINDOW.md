@@ -3459,3 +3459,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next step: reconcile existing contract/qualification documents and D1 proof stack to current default and identify minimal transplant/dependency order; no parallel contract and no hosted provisioning without verified account eligibility and explicit authorization.
 - Gemini Agent 1/2/3 NOT RUN; `POOL_DISPATCH_ENABLED=false`. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — D1-to-Supervisor integration crosswalk
+
+- Report: [D1/Supervisor integration crosswalk](../reports/2026-11-16-d1-supervisor-integration-crosswalk.md), commit `29f05e8fc0594bae4a2c9fa0d8b5244bee0b25a8`.
+- Refreshed exact default HEAD: `Основной` @ `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- Default Supervisor workflow/script blobs: `.github/workflows/pool-supervisor.yml` `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; `scripts/pool-supervisor.mjs` `52bf03ca889edd92fd10c71ae96a2e35e106d43f`. Worker workflow blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`.
+- Supervisor only enters dispatch path when `POOL_DISPATCH_ENABLED` is exactly `true`; actual variable value was NOT read. If enabled, legacy issue-label PATCH claim, direct workflow dispatch, timeout-to-ready and bounded 100-run absence recovery remain unsafe. Workflow-level permissions include issues:write/actions:write.
+- PR #67 local D1 proof worker is deliberately inert HTTP 404 (blob `214622f6dc94623521070eb9e7fbc2f573fdc2c6`), and wrangler D1 ID is all-zero placeholder (blob `eb683b6bb838cb7a48741f900de6c17be7fdc0fe`). Package README states no production Supervisor/Worker/Hono/deployed integration. PR #67 local exact-head CI is green but does not prove a hosted service.
+- PR #87/#92/#93 are a stacked Draft chain for admission/registry hardening, not merged. Existing hosted D1 plan in PR #65 explicitly requires verified Free entitlement/quota, source reconciliation, exact-head CI and explicit owner authorization for named test resources. Status PLANNED / NOT AUTHORIZED / NOT RUN.
+- Decision: next prepare a clean current-default source manifest and migration/test ordering; do not blindly merge stacked PRs or provision hosted D1. Issuer-bound claim API must precede wiring; separate task claim, Worker, resolver and projection-recovery authorities.
+- Gemini 1/2/3 NOT RUN; no provider calls, secret reads, hosted resources, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
