@@ -56,3 +56,12 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - [Cross-chat continuation report — 2026-11-06](docs/reports/2026-11-06-cross-chat-continuation-report.md)
 - [DeepSeek Harness evaluation and cloud-first bootstrap — 2026-11-04](docs/reports/2026-11-04-deepseek-harness-cloud-first-bootstrap.md)
 - [Pool Supervisor implementation — 2026-11-04](docs/reports/2026-11-04-pool-supervisor-implementation.md)
+
+
+## Cloud Code execution-plane architecture (proposal, 2026-11-16)
+
+- [Dual Cloud Code execution-plane ADR](docs/architecture/2026-11-16-cloud-code-dual-execution-plane-adr.md)
+- [Architecture synchronization report](docs/reports/2026-11-16-cloud-code-dual-execution-plane-sync.md)
+- [Continuation checkpoint](docs/checkpoints/2026-11-16-cloud-code-dual-execution-plane.md)
+
+Status: documented proposal only. One Jarvis control plane with isolated Development and Media execution profiles. Contour A remains the active priority; no media/GPU deployment before Contour A is formally ACCEPTED.
