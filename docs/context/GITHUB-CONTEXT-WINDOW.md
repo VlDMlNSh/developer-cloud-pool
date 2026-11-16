@@ -3583,3 +3583,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issues #94/#96 OPEN. No Cloud Pool-native production controller, no provider calls, no Gemini production dispatch, no merge/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: harden PR #107 with duplicate-key rejection, distinct role/task envelopes, pinned SDK fake-transport runtime verification and independent security review. Maintain fail-closed production dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 30. Wave 329 — four-account Gemini role hardening (2026-11-16)
+
+- Report: [Wave 329 Gemini role hardening](../reports/2026-11-16-wave329-gemini-four-role-hardening.md), commit `f6b68ae43010d3d3e647ebcfa6ec887d05933160`.
+- Cloud Pool default `Основной`: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- PR #107 OPEN/DRAFT/UNMERGED, head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`, base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`; 8 commits ahead / 0 behind; 5 changed files.
+- Controller blob `ffe874a2f1286476cbbc109816afd736de3cfb57`; test blob `436fb1fd0b2f988b843d843f39cc4c5851029154`; architecture blob `acb71548caa2d2f4aa76bf5c1cf8f2886f7e040e`.
+- Added four fixed role prompts (researcher, implementer, tester, security auditor), role provenance in results, and fail-closed duplicate credential detection (in-memory comparison only; no logging/hashing/return of values).
+- Exact-head CI run #43864376148 / job #133289028904 COMPLETED/SUCCESS; logs show `POOL_DISPATCH_ENABLED=false`, `POOL_CONTRACT_VALIDATION=PASS`, 6 tests passed / 0 failed.
+- Secret existence and distinct Google account/quota ownership NOT VERIFIED. SDK dependency/runtime NOT VERIFIED. No provider calls, secret reads or agent dispatch.
+- No Cloud Pool-native owner-event controller; Issues #94/#96 OPEN. MediaHub Issue #301 three-agent bridge is not used as a substitute.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: pin SDK and add fake-transport runtime verification, inspect workflow permissions/artifacts, independent review, then continue Cloud Pool-native controller gates. Keep production dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
