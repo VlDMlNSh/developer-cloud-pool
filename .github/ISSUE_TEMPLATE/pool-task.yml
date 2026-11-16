@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        This intake currently supports only the DSH headless probe profile.
+        This intake supports only the allowlisted DSH, agent-browser headless smoke, and agent-skills bootstrap profiles.
         Do not put credentials, private keys, tokens, personal data, or arbitrary shell commands in this issue.
         An owner must review the request and apply the `pool:ready` label before dispatch.
   - type: input
@@ -22,14 +22,16 @@ body:
       label: Worker profile
       options:
         - DSH headless probe
+        - Agent-browser headless
+        - Agent skills bootstrap
     validations:
       required: true
   - type: textarea
     id: objective
     attributes:
       label: Objective
-      description: Explain what should be inspected by the current read-only DSH smoke profile.
-      placeholder: "Run the pinned DSH headless composition probe at the specified target SHA."
+      description: Explain the bounded read-only smoke task. Browser profile may visit only its hard-coded public smoke target.
+      placeholder: "Run the approved agent-skills bootstrap at the specified target SHA; do not execute skill-provided scripts."
     validations:
       required: true
   - type: textarea
@@ -39,8 +41,11 @@ body:
       description: List the evidence that should be present in the worker summary.
       placeholder: |
         - Exact target SHA checked out
-        - Pinned DSH package installed
-        - Headless composition dump completed
+        - Pinned browser CLI and Chromium installed
+        - Core skill and optional dogfood skill loaded
+        - Harmless public smoke page opened and screenshot hashed
+        - Browser session closed
         - No model call and no provider credentials
+        - For skills profile: all pinned Gemini CLI skills installed and SHA-256 inventory recorded
     validations:
       required: true

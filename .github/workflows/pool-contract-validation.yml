@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "config/**"
+      - "docs/architecture/**"
   push:
     branches:
       - "Основной"
@@ -22,6 +24,114 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  install-agent-skills:
+    name: Install and verify pinned Gemini CLI skills
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install and verify the curated skill pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/install-agent-skills.mjs
+          node scripts/install-agent-skills.mjs "$GITHUB_WORKSPACE"
+          test -s agent-skills-inventory.sha256
+          expected="$(node -e 'const m=require("./config/agent-skills.lock.json"); console.log(m.sources.reduce((n,s)=>n+s.skills.length,0))')"
+          actual="$(find .agents/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')"
+          test "$actual" = "$expected"
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const manifest = JSON.parse(fs.readFileSync("config/agent-skills.lock.json", "utf8"));
+          const expectedNames = manifest.sources.flatMap(source => source.skills.map(skill => skill.name));
+          for (const name of expectedNames) {
+            const file = `.agents/skills/${name}/SKILL.md`;
+            const content = fs.readFileSync(file, "utf8");
+            const lines = content.split("\n").map(line => line.endsWith("\r") ? line.slice(0, -1) : line);
+            if (lines[0] !== "---") throw new Error(name + ": missing YAML frontmatter start");
+            const end = lines.indexOf("---", 1);
+            if (end < 0) throw new Error(name + ": missing YAML frontmatter end");
+            const frontmatter = lines.slice(1, end);
+            const rawName = frontmatter.find(line => line.startsWith("name:"))?.slice(5).trim() || "";
+            const declaredName = rawName.startsWith('"') || rawName.startsWith("'") ? rawName.slice(1, -1) : rawName;
+            const description = frontmatter.find(line => line.startsWith("description:"))?.slice(12).trim();
+            if (declaredName !== name) throw new Error(name + ": frontmatter name mismatch (" + declaredName + ")");
+            if (!description) throw new Error(name + ": frontmatter description is empty");
+            if (content.trim().length < 200) throw new Error(name + ": skill content unexpectedly short");
+            console.log("SKILL_CONTENT_PASS " + name + " bytes=" + Buffer.byteLength(content));
+          }
+          console.log("ALL_11_SKILLS_CONTENT_VALIDATED");
+          NODE
+          {
+            echo "## Agent skills installation validation"
+            echo "- Expected skills: $expected"
+            echo "- Installed skills: $actual"
+            echo "- Content validation: all names, descriptions and non-empty bodies checked"
+            echo "- Inventory SHA-256: $(sha256sum agent-skills-inventory.sha256 | awk '{print $1}')"
+            echo "- No credentials, model calls, or skill script execution."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  browser-smoke:
+    name: Install agent-browser and verify public Web access
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions: {}
+    steps:
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install pinned browser runtime and smoke-test public Web
+        shell: bash
+        run: |
+          set -euo pipefail
+          prefix="$RUNNER_TEMP/agent-browser"
+          home="$RUNNER_TEMP/agent-browser-home"
+          mkdir -p "$prefix" "$home"
+          free_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$free_kib" -lt $((4 * 1024 * 1024)) ]; then
+            echo "::error::Less than 4 GiB free; refusing browser installation."
+            exit 2
+          fi
+          npm install --prefix "$prefix" --no-audit --no-fund "agent-browser@0.43.0"
+          export PATH="$prefix/node_modules/.bin:$PATH"
+          export HOME="$home"
+          installed_version="$(node -p "require('$prefix/node_modules/agent-browser/package.json').version")"
+          test "$installed_version" = "0.43.0"
+          agent-browser install --with-deps
+          agent-browser skills list > "$RUNNER_TEMP/agent-browser-skills-list.txt"
+          agent-browser skills get core > "$RUNNER_TEMP/agent-browser-core-skill.md"
+          agent-browser skills get dogfood > "$RUNNER_TEMP/agent-browser-dogfood-skill.md"
+          cleanup() { agent-browser close >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          agent-browser open https://example.com
+          agent-browser get title > "$RUNNER_TEMP/agent-browser-title.txt"
+          grep -F "Example Domain" "$RUNNER_TEMP/agent-browser-title.txt"
+          agent-browser screenshot "$RUNNER_TEMP/agent-browser-smoke.png"
+          {
+            echo "## Agent-browser Web connectivity smoke test"
+            echo "- CLI version: $installed_version"
+            echo "- Browser runtime: installed"
+            echo "- Core and dogfood skills: loaded"
+            echo "- Public target: https://example.com"
+            echo "- Screenshot SHA-256: $(sha256sum "$RUNNER_TEMP/agent-browser-smoke.png" | awk '{print $1}')"
+            echo "- No credentials, cookies, authenticated sessions, or GitHub token."
+            echo "- Session is ephemeral to this job; no persistent Web session is provisioned."
+          } >> "$GITHUB_STEP_SUMMARY"
   validate:
     name: Validate workflow syntax and security invariants
     runs-on: ubuntu-24.04

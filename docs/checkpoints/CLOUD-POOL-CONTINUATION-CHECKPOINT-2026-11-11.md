@@ -360,3 +360,139 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next step: genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery for Issue #96 under Issue #94; dispatch remains disabled until exact-head CI, governance, trusted-main no-secret probe and independent review pass.
 - Detailed report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — ephemeral agent-browser worker proposal — 2026-11-16
+
+- Work branch `feat/agent-browser-ephemeral-worker-2026-11-16`, based on default HEAD `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`. Not merged.
+- New `agent-browser-headless` allowlisted profile in Pool Worker, GitHub-hosted `ubuntu-24.04` ephemeral job, no token permissions, no secrets, no checkout; pinned Node 24.9.0 and agent-browser 0.43.0; installs Chrome for Testing, loads core and dogfood skills, fixed public smoke target, screenshot hash and close.
+- Issue template and validator updated; ADR and dated report added. No physical device or SentinelX required for this mode.
+- Runtime installation/test NOT RUN; workflow CI NOT VERIFIED until exact-head results; dispatch remains fail-closed. Persistent interactive sessions/dashboard NOT IMPLEMENTED; no unlimited-free claim. GitHub Actions limits remain.
+- Next: PR exact-head CI and security review, then one approved bounded smoke task after default-branch governance permits it.
+
+
+## /next — ephemeral agent-browser worker proposal — 2026-11-16
+
+- PR #106: https://github.com/VlDMlNSh/developer-cloud-pool/pull/106; branch `feat/agent-browser-ephemeral-worker-2026-11-16`; base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact CI head `60ac5400fd0e73846f8ff72bb910800dcc73b442`.
+- Pool Contract Validation run `43836984368`, job `133195965481`: COMPLETED / SUCCESS. YAML, dispatch-disabled guard and contract validation passed.
+- Profile uses GitHub-hosted ephemeral runner only; no physical device or SentinelX host. Browser job has no token permissions, no checkout, no secrets, pinned CLI/Node, Chrome install, core + dogfood skill loading, fixed public smoke target, screenshot hash and explicit close.
+- Browser workflow_dispatch runtime NOT RUN. PR is draft/unmerged; formal reviews 0. No browser execution evidence or qualification.
+- Persistent interactive sessions/dashboard NOT IMPLEMENTED. No unlimited-free claim; GitHub Actions limits apply. Existing supervisor dispatch remains fail-closed.
+- Next: independent review, then owner-approved bounded smoke dispatch after governance checks.
+
+
+## Agent-browser worker — exact-head CI — 2026-11-16
+
+- Latest code head `b5e4c63effa5c285447fbb73412b28d8d910af7c`; PR #106 OPEN/DRAFT, not merged, formal reviews 0.
+- Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS at exact code head. YAML parse, dispatch-disabled guard and browser worker security/contract assertions passed.
+- Browser runtime installation and workflow_dispatch smoke remain NOT RUN. No actual browser session evidence; no qualification. Persistent interactive sessions/dashboard not implemented; unlimited free capacity not claimed.
+
+
+## /next — Cloud Pool agent skills bootstrap — 2026-11-16
+
+- PR #106 branch `feat/agent-browser-ephemeral-worker-2026-11-16`, exact CI head `b6adae6cc8a9650749e301c1dd7306c766b0b420`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; OPEN/DRAFT, not merged.
+- Added curated 11-skill Gemini CLI pack, immutable source pins, installer, inventory hashing, docs and bootstrap worker profile. CLI `skills@1.8.1`, Node 24.9.0, copied project-local install under `.agents/skills/`.
+- Hosted-runner install validation run `43837927634` pending; do not claim installed/verified until complete. Previous run `43837909224` cancelled by superseding commit.
+- No secrets, provider credentials, write permissions, or skill-script execution in bootstrap job. Dispatch gate remains fail-closed.
+- Future Gemini worker integration is pending Issue #94; this PR does not create/enable Gemini dispatch. Browser smoke runtime remains NOT RUN. Independent review pending.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify exact-head install CI, inspect inventory, request independent review, then resume durable lease/admission work.
+
+
+## Agent skills bootstrap — exact-head CI — 2026-11-16
+
+- PR #106 code head `5e9093bbcb344fa055408e18f0f9ee3eb95f7d2d`; OPEN/DRAFT, mergeable true, reviews 0, unmerged.
+- Run `43838104995`: COMPLETED / SUCCESS. Static contract job `133199689204` SUCCESS; hosted-runner installation job `133199689730` SUCCESS.
+- 11/11 pinned Gemini CLI skills installed and verified under `.agents/skills/` on ephemeral GitHub-hosted runner; 48 files hashed; inventory digest `5cb73f77a808259ca0b9d0f862dfa54bdb848e93c1c5fed4a240c5f429d7a97c`.
+- Install is reproducible, not persistent across jobs. Future Gemini child executor must call `scripts/install-agent-skills.mjs`; native Gemini controller remains blocked by Issue #94. Dispatch disabled.
+- Browser runtime smoke NOT RUN; independent review 0. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Skill catalog: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`; report: `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
+
+
+## Operational update — 2026-11-16 /next: Gemini cadence and deferred independent acceptance
+
+- Owner instruction reaffirmed: every ChatGPT /next must attempt the supplementary three-Gemini wave, in addition to the primary ChatGPT engineering pass.
+- The required Cloud Pool-native admission contract is Issue #96; implementation requirement is Issue #94. Both remain OPEN. Issue #96 explicitly states that MediaHub Issue #301 is a separate project and must not substitute for the Cloud Pool control issue.
+- Verified that .github/workflows/gemini-batch-dispatch-controller.yml is absent from Cloud Pool default branch Основной (GitHub Contents API 404). Therefore no authorized Cloud Pool-native controller entry point currently exists. This turn's Gemini dispatch status: NOT RUN / BLOCKED, exact blocker: native controller not implemented. No Gemini child run IDs or artifacts exist for this pass. Do not dispatch via MediaHub controller as a cross-repository substitute.
+- Independent external review / independent acceptance are deferred by owner until the deployed Cloud Pool can execute its own independent checks. This deferral does not waive pre-dispatch security/governance gates, deterministic contract tests, exact-head CI, least privilege, secret isolation, or fail-closed behavior. No independent review is claimed.
+- PR #106 current branch head: 2a8f2f306fdb097b6bda2d951f2c9a716e0c3ffd; base Основной at 0635ed2fe8de2340c685d49d20acc5b8bf7a3d92; PR OPEN/DRAFT, not merged; formal reviews: 0.
+- Exact-head Pool Contract Validation run 43838253557: COMPLETED / SUCCESS. Jobs: 133200188826 workflow/security contract validation SUCCESS; 133200189115 pinned Gemini CLI skills installation SUCCESS. This verifies the PR's two CI jobs only; it does not prove persistent skill installation, Gemini dispatch, browser runtime, web UI deployment, or pool acceptance.
+- Issue #94 remains the next implementation track: build the Cloud Pool-native, trusted, idempotent controller, three bounded signed child workflows, reconciliation and adversarial tests. Issue #96 is the dedicated exact owner-only control issue.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED. Next bounded step: implement the native Cloud Pool controller contract on trusted default-branch lineage, retaining dispatch disabled until all required gates pass.
+
+
+## Operational update — 2026-11-16 /next: agent-browser and skill validation
+
+- PR #106 current head: `90b88dd94d595dda65365a09396693804671cab3`; base: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; OPEN/DRAFT, not merged.
+- Exact-head Pool Contract Validation run `43841574699`: COMPLETED / SUCCESS. Contract/security job `133211349732` SUCCESS; agent-browser Web smoke job `133211350185` SUCCESS; pinned Gemini skills installation/content job `133211350252` SUCCESS.
+- Browser evidence: pinned `agent-browser@0.43.0` installed on an isolated GitHub-hosted Ubuntu 24.04 runner; Chromium installed; CLI core and dogfood guidance loaded; opened `https://example.com`, verified title `Example Domain`, captured screenshot, and closed session. Job had `permissions: {}`, no repository checkout, no GitHub token, no credentials/cookies. This proves public Internet egress and browser operation from an ephemeral Cloud Pool worker job, not a persistent browser service or authenticated Web session.
+- Skill evidence: Skills CLI `1.8.1` installed all 11 pinned skills; CI verified each `SKILL.md` frontmatter name equals the allowlist, description is non-empty, body is non-trivial, and generated the SHA-256 inventory. Skill source scripts were not executed. This is install/content integrity validation, not behavioral validation of all nine non-browser skills by a Gemini model.
+- Runtime/host availability: SentinelX currently reports zero online hosts; the enrolled Voktors-Mini host is offline and mh-dev-01/mh-dev-02 are disabled. Desktop Commander reports all three devices offline. No persistent self-hosted browser host is available.
+- Authenticated/persistent browser sessions: NOT PROVISIONED. Browser worker uses a fresh temporary HOME and does not load cookies, profiles, vault credentials, or saved sessions. Public unauthenticated websites only.
+- Gemini supplementary wave: NOT RUN / BLOCKED. Cloud Pool-native controller still absent; Issues #94 and #96 remain OPEN. No Gemini run IDs or child artifacts. Do not substitute MediaHub controller.
+- Owner policy retained: independent external review and acceptance are deferred until Cloud Pool is running and can execute its own independent checks. Internal CI, security gates and deterministic tests remain required.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next step: implement the Cloud Pool-native Gemini controller and durable worker/session infrastructure; keep browser sessions ephemeral and public-only until a separate approved authentication/persistence design exists.
+
+
+### SHA clarification after documentation updates
+The implementation and workflow files validated by CI run `43841574699` are pinned to source commit `90b88dd94d595dda65365a09396693804671cab3`. After that run, only the report, Context Window and checkpoint documentation were updated; no workflow, installer, validator, or runtime code changed. Therefore the CI evidence applies to the tested implementation SHA, while the branch tip advances with documentation-only commits.
+
+
+## Continuity handoff update — 2026-11-16
+
+- Added canonical new-chat recovery document: [CLOUD-POOL-CHAT-RESTORE-2026-11-16.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md).
+- The handoff captures current branch/PR boundaries, exact browser and skills CI evidence, all 11 pinned skills, Gemini controller blocker, host availability, owner acceptance policy, next issues and a deterministic new-chat restore procedure.
+- Updated browser integration architecture to distinguish VERIFIED ephemeral public-Web smoke from NOT PROVISIONED authenticated/persistent sessions and NOT QUALIFIED queue/lease integration.
+- PR #106 remains OPEN/DRAFT and unmerged; all work remains on feature branch, not default branch.
+- Gemini three-agent wave remains NOT RUN / BLOCKED: Cloud Pool-native controller absent on default branch; Issues #94/#96 open. No MediaHub controller substitution.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: continue Cloud Pool-native exact owner admission/controller and durable single-use task claim work. Keep dispatch disabled until every security/governance and exact-head gate passes.
+
+
+### Latest /next handoff report
+
+- Report: [2026-11-16-next-chat-restore-handoff.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-chat-restore-handoff.md).
+- Canonical new-chat restore guide: [CLOUD-POOL-CHAT-RESTORE-2026-11-16.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md).
+- Both docs are on PR #106 feature branch, not default branch; PR remains OPEN/DRAFT/UNMERGED.
+
+
+### Final read-back / CI observation — 2026-11-16
+
+- Restore guide: `docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md`; latest content blob after SHA reconciliation: `55fd9ff9007df5a184180ab03002596756ee39d5`.
+- Latest observed PR #106 head before final documentation-only sync: `d5bb4755bae6ad4322e36d1ca38d685509f08eb9`; exact-head run `43843007992` was QUEUED and its three jobs IN_PROGRESS at last observation. Do not call this run SUCCESS until rechecked.
+- Last CI-completed implementation evidence remains run `43841574699` at implementation SHA `90b88dd94d595dda65365a09396693804671cab3`, all three jobs SUCCESS.
+- PR #106 remains OPEN/DRAFT/UNMERGED. Re-read live PR head and exact-head CI before merge or qualification.
+
+
+## /next update — 2026-11-16 durable claim reconciliation
+
+- PR #106 head observed before this documentation-only update: `a75fee9f65ad7700493a885144ffc36063c4c62a`, OPEN/DRAFT/UNMERGED. Exact-head run `43843201516` COMPLETED/SUCCESS: contract `133216820176`, browser `133216820519`, skills `133216820703` — all SUCCESS.
+- Cloud Pool-native Gemini controller still absent on default branch; Issues #94/#96 OPEN. Gemini three-agent wave NOT RUN / BLOCKED; do not substitute MediaHub controller.
+- Issue #38 remains OPEN. Decision record now has a live reconciliation addendum. PR #37 current head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, OPEN/DRAFT/UNMERGED; runs `42484039940` and `42484039932` SUCCESS, but review history contains CHANGES_REQUESTED and no APPROVED review.
+- PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`: local Workers/D1 run `42329993548`, 19/19 tests SUCCESS. PR #54 head `15a09c910f52553c59796260131a6b5a4a39c15f`: local Workers/D1 run `43010770730`, 40/40 tests SUCCESS. Both are OPEN/DRAFT/UNMERGED and are not hosted D1 qualification.
+- PR #57 head `2c263e8a9915f0bc8e0698cde816e87cb2376538`; fixture runs `42838193384` and `42838193405` SUCCESS, synthetic evidence only.
+- Decision remains: Issue-label PATCH is not CAS; Git-ref reservation is not selected; separate authenticated claim service + transactional conditional-write store is a target only. Hosted D1, issuer authentication, trusted time, revocation, fencing and recovery NOT VERIFIED. No provisioning performed.
+- Next bounded work: define issuer-authenticated capability envelope, key custody/rotation/revocation, trusted-time source, and adversarial verification. Keep dispatch disabled.
+- Report: [2026-11-16-next-durable-claim-reconciliation.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-durable-claim-reconciliation.md).
+
+
+## /next update — issuer capability contract (2026-11-16)
+
+- Exact-head PR #106 run `43844179125` completed SUCCESS: browser job `133220077946`, pinned Skills job `133220078188`, workflow/security job `133220078388` all SUCCESS. PR remains OPEN/DRAFT/UNMERGED.
+- Cloud Pool-native Gemini controller remains absent on `Основной` (404); Issues #94/#96 OPEN; Gemini three-agent wave NOT RUN / BLOCKED.
+- Created design-only [issuer-authenticated capability contract](../contracts/ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md) covering EdDSA/Ed25519 JWS, canonical task digest, immutable repository/task/SHA/profile binding, owner event provenance, key custody/rotation/revocation, service-owned trusted time, replay protection, atomic claim/outbox, denial taxonomy and adversarial tests.
+- No signing key or custody backend selected; no secrets read/created; no D1/Worker provisioned; no dispatch or merge. Hosted claim service, trusted time and issuer remain NOT IMPLEMENTED / NOT QUALIFIED.
+- Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md).
+- Next: pure verifier and fixed public-key test vectors with adversarial fail-closed tests; dispatch remains disabled.
+
+
+## /next checkpoint — agent-browser runtime smoke — 2026-11-16
+
+- PR #106 implementation SHA 0449186154b8b5010a9196e04aa7d2beb471e66d; run [43845072976](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43845072976) COMPLETED / SUCCESS.
+- Jobs: contract/security 133223079689 SUCCESS; browser runtime 133223080133 SUCCESS; skills bootstrap 133223080197 SUCCESS.
+- Runtime evidence: agent-browser 0.43.0 and Chrome 157.0.8103.78 installed; public https://example.com/ opened; title verified; screenshot saved; session cleanup completed. Isolated GitHub-hosted ephemeral Ubuntu 24.04; browser job permissions empty, no checkout, no credentials/cookies.
+- Scope limit: public unauthenticated browser smoke only. No persistent/authenticated session, cross-job state, interactive dashboard, or mobile UI. Screenshot is not a durable artifact.
+- PR #106 OPEN/DRAFT/UNMERGED, 69 ahead / 0 behind, formal reviews 0; combined status contexts empty. No merge/deploy/dispatch.
+- Cloud Pool-native Gemini controller absent on default branch; Issues #94/#96 OPEN; Gemini wave NOT RUN / BLOCKED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-16-next-agent-browser-runtime-smoke.md](../reports/2026-11-16-next-agent-browser-runtime-smoke.md).
+- Next: implement native exact-owner admission and durable idempotent claim/fencing under Issues #94/#96; dispatch stays disabled until all security/governance gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

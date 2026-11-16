@@ -102,3 +102,49 @@ Until all boxes are evidenced, status remains NOT QUALIFIED and dispatch remains
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Live reconciliation addendum — 2026-11-16
+
+This addendum preserves the original decision and updates its stale PR/CI references from live GitHub reads. It does not authorize hosted provisioning, dispatch, merge, or acceptance.
+
+### Current PR and test evidence
+
+- **PR #37 authorization boundary:** head `1be8672c1be1a720b6c813dcafff5c020b6456ae`, base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`, OPEN/DRAFT/UNMERGED. Exact-head runs `42484039940` (Reusable Pool Worker Boundary Validation) and `42484039932` (Pool Contract Validation) are SUCCESS. The recorded review history contains CHANGES_REQUESTED submissions; there is no APPROVED review. This PR changes the authorization boundary but still uses Issue-label claim/read-back, not a transactional claim primitive.
+- **PR #39 local D1 claim/outbox proof:** head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, OPEN/DRAFT/UNMERGED. Run `42329993548`, job `128274072508`, SUCCESS; log reports 2 test files / 19 tests passed. Local Workers-runtime/Miniflare proof only.
+- **PR #54 logical-task contention proof:** current head `15a09c910f52553c59796260131a6b5a4a39c15f`, OPEN/DRAFT/UNMERGED. Run `43010770730`, job `130489510967`, SUCCESS; log reports 2 test files / 40 tests passed. This is a local Workers-runtime D1 test, not hosted D1. Do not reuse the earlier stale PR #54 SHA `ec3f3266ca28c4fb5633a9475cc6f396a4677974`.
+- **PR #57 run-evidence verifier:** head `2c263e8a9915f0bc8e0698cde816e87cb2376538`, OPEN/DRAFT/UNMERGED. Runs `42838193384` (fixture tests) and `42838193405` (Pool Contract Validation) SUCCESS. This remains fixture/synthetic evidence, not production State Authority.
+- **PR #106 browser/skills:** head `a75fee9f65ad7700493a885144ffc36063c4c62a`, OPEN/DRAFT/UNMERGED. Exact-head run `43843201516` SUCCESS: contract/security job `133216820176`, agent-browser public-Web job `133216820519`, pinned Gemini skills job `133216820703`, all SUCCESS.
+
+### Current default-branch boundary
+
+- Default Supervisor workflow remains blob `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`, with workflow-level `issues: write` and `actions: write`, and issue-label claim mutation.
+- Default Worker remains blob `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`, only the `dsh-headless-probe` profile, with issue-label claim validation.
+- Cloud Pool-native `.github/workflows/gemini-batch-dispatch-controller.yml` is still absent on `Основной` (404). Gemini wave remains NOT RUN / BLOCKED. Do not substitute the MediaHub controller.
+- PR #106 is not merged; browser/skills improvements remain feature-branch work and are not yet part of default-branch worker runtime.
+
+### Decision and next bounded work
+
+The prior design comparison is complete: Issue-label PATCH is not an atomic lock; Git-ref reservation is rejected as currently over-privileged; a separately authenticated claim service backed by transactional conditional-write storage remains the preferred target, not a selected hosted service.
+
+The next implementation prerequisite is **issuer/authentication and trusted-time qualification**, before any hosted D1 resource or runtime is provisioned:
+1. Define a signed capability/envelope format binding issuer, subject, audience, repository ID, task/issue identity, target SHA, worker profile, canonical digest, nonce, not-before, expiry and policy version.
+2. Define key custody, rotation and revocation without exposing key material to Supervisor/Worker/browser.
+3. Define production trusted-time source and reject caller-supplied timestamps as authority.
+4. Define idempotent consume + claim/outbox API and reconciliation behavior for lost responses.
+5. Keep all dispatch gates disabled; no hosted D1 creation, Worker deployment, secrets, provider/model calls or paid fallback.
+
+### Acceptance policy clarification
+
+The owner has directed that independent external review/acceptance be deferred until Cloud Pool is running and can perform its own independent checks. Existing review records are preserved as provenance, not treated as new acceptance. Internal CI, security invariants, adversarial tests and governance gates remain mandatory. No self-review or CI result can assign ACCEPTED.
+
+
+## Issuer capability contract — 2026-11-16
+
+A versioned design contract now specifies EdDSA/Ed25519 signed capability envelopes, RFC 8785 canonical task digests, exact owner-event provenance, issuer/key trust and revocation, trusted-time rules, single-use nonce consumption, atomic claim/outbox semantics, denial taxonomy and adversarial test requirements. This is DESIGN ONLY / NOT IMPLEMENTED / NOT QUALIFIED; no key custody service was selected, no secret values were read, and no hosted resources were provisioned.
+
+- Contract: [ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md](../contracts/ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md)
+- Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md)
+- Next: implement a pure verifier with fixed public test vectors and adversarial tests; do not integrate live signing or enable dispatch before key custody/trusted-time qualification.

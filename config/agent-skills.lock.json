@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "purpose": "Curated, reproducible Cloud Pool agent skills for Gemini CLI workers.",
+  "cli": {
+    "package": "skills",
+    "version": "1.8.1",
+    "node_minimum": "22.20.0",
+    "telemetry_disabled": true
+  },
+  "target_agent": "gemini-cli",
+  "install_mode": "project-copy",
+  "policy": {
+    "install_only_pinned_public_sources": true,
+    "execute_installed_skill_code": false,
+    "no_provider_credentials": true,
+    "no_paid_fallback": true,
+    "update_requires_review": true,
+    "use_in_contour_a_only": true,
+    "product_design_skills_deferred_until_contour_a_acceptance": true
+  },
+  "sources": [
+    {
+      "repository": "mattpocock/skills",
+      "ref": "d1478fcb140db0b93c0c8df17bcfd311844749d0",
+      "release": "v1.3.2",
+      "skills": [
+        {
+          "name": "tdd",
+          "purpose": "Red-green-refactor discipline and durable tests",
+          "installs_approx": "1.2M"
+        },
+        {
+          "name": "code-review",
+          "purpose": "Evidence-based review of correctness, security and regressions",
+          "installs_approx": "846K"
+        },
+        {
+          "name": "diagnosing-bugs",
+          "purpose": "Structured reproduction and root-cause analysis",
+          "installs_approx": "888K"
+        },
+        {
+          "name": "improve-codebase-architecture",
+          "purpose": "Architecture friction and testability analysis",
+          "installs_approx": "1.2M"
+        },
+        {
+          "name": "domain-modeling",
+          "purpose": "Maintain domain vocabulary and architecture records",
+          "installs_approx": "932K"
+        },
+        {
+          "name": "codebase-design",
+          "purpose": "Shared vocabulary for module/interface/seam design",
+          "installs_approx": "908K"
+        },
+        {
+          "name": "grill-with-docs",
+          "purpose": "Clarify design decisions and maintain durable docs",
+          "installs_approx": "1.3M"
+        },
+        {
+          "name": "handoff",
+          "purpose": "Create compact, safe continuation handoffs",
+          "installs_approx": "1.1M"
+        },
+        {
+          "name": "writing-for-agents",
+          "purpose": "Maintain agent-facing instructions and repository guidance"
+        }
+      ]
+    },
+    {
+      "repository": "cloudflare/security-audit-skill",
+      "ref": "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8",
+      "skills": [
+        {
+          "name": "security-audit",
+          "purpose": "Source-first defensive security review of trust boundaries",
+          "installs_approx": "109K"
+        }
+      ]
+    },
+    {
+      "repository": "vercel-labs/agent-browser",
+      "ref": "1cc19526f3641c8543d55aa6700e7c55b37ac356",
+      "release": "v0.43.0",
+      "skills": [
+        {
+          "name": "agent-browser",
+          "purpose": "Agent-facing discovery stub; runtime-specific core/dogfood guidance still loaded from pinned CLI",
+          "installs_approx": "1.4M"
+        }
+      ]
+    }
+  ]
+}
