@@ -78,13 +78,11 @@ BEGIN
      AND consumed_at IS NULL
      AND expires_at > NEW.admitted_at;
 
-  SELECT CASE WHEN NOT EXISTS (
-    SELECT 1 FROM pool_approval_ledger
-     WHERE approval_id = NEW.approval_id
-       AND state = 'consumed'
-       AND consumed_at = NEW.admitted_at
-       AND task_key = NEW.task_key
-  ) THEN RAISE(ABORT, 'APPROVAL_CONSUME_NOT_ATOMIC') END;
+  -- Verify the UPDATE itself consumed exactly one ready approval. A prior
+  -- consumed row with matching timestamps/task binding must never authorize
+  -- a new receipt (same-second pre-consumption/replay attack).
+  SELECT CASE WHEN changes() <> 1
+    THEN RAISE(ABORT, 'APPROVAL_CONSUME_NOT_ATOMIC') END;
 
   INSERT INTO pool_tasks (
     task_key, repository_id, issue_number, target_sha, profile, wave_id, state, created_at
