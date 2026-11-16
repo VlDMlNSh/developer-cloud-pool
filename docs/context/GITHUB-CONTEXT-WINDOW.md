@@ -3832,3 +3832,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [Cloudflare hosted-state inventory](../reports/2026-11-16-cloudflare-hosted-state-inventory.md).
 - Next bounded step: code-side integration audit of D1 ledger + owner event envelope for repository-wide monotonic fencing, immutable source-comment binding, duplicate admission and recovery tests. No hosted provisioning until entitlement/authority verified.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — D1 + owner-event integration audit (2026-11-16)
+
+- Revalidated default `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, docs branch parent `735d0d60daf839d5df6f4aa9b0213112cb94cef4`, PR #111/#112/#109 exact heads and active ruleset #26550182.
+- PR #111 exact-head D1 run `43881396386` / job `133347908331` SUCCESS; pinned install, syntax check, Workers-runtime tests and lockfile artifact upload succeeded; recorded result 37/37. Contract validation `43881396272` SUCCESS.
+- PR #112 exact-head run `43882090833`: contract job `133350342861` SUCCESS, 21/21 event tests; event-admission job `133350345738` SKIPPED for non-qualifying event. Contract validation `43882090867` SUCCESS.
+- PR #109 exact-head contract validation `43872185972` SUCCESS. Formal reviews for #111/#112: 0; all remain OPEN/DRAFT/UNMERGED.
+- Source inspection confirms D1 lease generation is task_key-scoped, not repository-wide; no repository singleton fencing epoch. Migration 0005 is only a pending reconciliation queue; no trusted resolver. D1 admission schema lacks source comment ID/event digest/controller run identity as a unified durable admission. PR #112 remains read-only, explicitly `executionAuthorized:false`; Actions concurrency is not a durable lock.
+- Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` is absent from current default branch. Gemini NOT RUN. Prior Cloudflare read-only inventory: 0 D1 / 0 Worker scripts; free entitlement and provisioning authorization NOT VERIFIED.
+- No code/tests/dispatch/provider calls/secrets/resource changes/deployment/merge in this audit. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [D1 and owner-event integration audit](../reports/2026-11-16-d1-owner-event-integration-audit.md).
+- Next: implement repository-wide lease generation + durable source-comment admission + atomic outbox and adversarial multi-task/replay/recovery tests on clean default base; keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
