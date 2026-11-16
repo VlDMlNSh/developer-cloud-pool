@@ -27,3 +27,8 @@ Admission receipts are append-only. Approval identity/binding and logical task i
 ## Explicit exclusions
 
 This is not a production webhook workflow or controller. It does not authenticate worker workload identity, implement claim/renew/finalize, deliver the outbox, reconcile child runs, integrate with Supervisor/Worker, invoke Gemini/providers, read secrets, deploy, or dispatch. Those remain separate gates. Local D1 success is not hosted persistence qualification.
+
+
+## Trusted target SHA boundary
+
+The adapter requires `trustedDefaultHeadSha` and rejects admission unless it is a valid SHA exactly equal to `targetSha`. The caller must obtain this value from trusted GitHub workflow/event metadata or an independently authenticated default-branch ref read. The pure admission function does not fetch GitHub refs, verify webhook signatures, or prove that the supplied value is authentic. The equality check is a contract guard, not standalone event provenance. Stale/mismatched target and pre-consumed approval rejection are covered by the Workers-runtime test suite.
