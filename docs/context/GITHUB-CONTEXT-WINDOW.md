@@ -2199,3 +2199,19 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Status: shared scheduler group contract IMPLEMENTED in PR #102 and exact-head CI VERIFIED; production integration NOT ACCEPTED; durable lock/fencing NOT IMPLEMENTED; live dispatch NOT AUTHORIZED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — concurrency validator hardening — 2026-11-16
+
+- Revalidated Cloud Pool default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`. Issue #94 OPEN (Cloud Pool-native Gemini dispatch requirement); Issue #96 OPEN and explicitly PLANNED / dispatch disabled.
+- PR #102 remains OPEN / DRAFT / UNMERGED, base SHA `6507823e7ec27caa9b2621daef964dba2d4cf436`. New head SHA: `e6613c152c5334db04f520cfe069f3bbd1c57772`.
+- Bounded change: strengthened `scripts/validate-pool-contract.mjs` to extract the YAML `concurrency` block rather than search arbitrary workflow text; assert the Pool Supervisor and read-only admission controller both use the exact shared group `developer-cloud-pool-supervisor` and `queue: max`; reject `cancel-in-progress: true`; and require explicit `cancel-in-progress: false` on the admission controller. This reduces risk of an unrelated comment/string satisfying the contract and makes non-cancellation explicit for the new workflow.
+- Validator blob SHA: `f7c1419651ac0f2f55c3428f62adcd6bf14be0eb`. Commit: `e6613c152c5334db04f520cfe069f3bbd1c57772`.
+- Exact-head CI: [Pool Contract Validation run 43825389908](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825389908), job `133157911445`, SUCCESS; [controller push run 43825383266](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825383266), job `133157926411`, SUCCESS; event-admission job `133157928477` SKIPPED as expected on push. PR-triggered controller run [43825390133](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825390133) was PENDING at last read-back; no job evidence yet, so that run remains NOT VERIFIED.
+- PR #100 remains OPEN / DRAFT / UNMERGED. Its ledger adapter still accepts caller-supplied `lockHeld: true`; the Boolean is not proof of runtime lock ownership. Exact workflow identity matcher remains a prototype and approved production controller identity is not bound. Durable lease/fencing/crash recovery are NOT IMPLEMENTED.
+- The shared GitHub Actions concurrency group is scheduler-level mutual exclusion only for workflows that actually use the same group. It is not a durable lease, fencing token, or proof that all mutation paths are serialized. PR #102 is not merged, so production integration is NOT ACCEPTED.
+- Formal reviews for PR #102 have not been established in this pass. Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope; no approved Cloud Pool-native dispatcher. No dispatch, secrets read, provider/model call, deployment, merge, or default-branch modification.
+- Status: concurrency validator hardening IMPLEMENTED in PR #102; named exact-head push and contract CI VERIFIED; PR-triggered controller run NOT VERIFIED while pending; durable lock NOT IMPLEMENTED; live dispatch NOT AUTHORIZED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design a real durable, owner-authenticated lease/claim with monotonic fencing and crash recovery, then integrate only behind trusted default-branch controller after governance approval. Do not treat `lockHeld` or the scheduler group alone as full distributed-lock acceptance.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
