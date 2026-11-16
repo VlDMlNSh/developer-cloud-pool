@@ -66,7 +66,7 @@ if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
 const concurrencyBlock = (source) =>
-  source.match(/^concurrency:\\s*\\n((?:[ \\t].*(?:\\n|$))*)/m)?.[1] || "";
+  source.match(/^concurrency:\s*\n((?:[ \t].*(?:\n|$))*)/m)?.[1] || "";
 const supervisorConcurrency = concurrencyBlock(supervisor);
 const admissionConcurrency = concurrencyBlock(nextController);
 const sharedConcurrency = (block) =>
