@@ -3415,3 +3415,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Final read-back after cleanup: default branch file absent; report and Context Window both present on `docs/cross-chat-continuation-2026-11-06`; Context Window read-back verified; report blob `193194006ae7458180cd35a554e2f4553dc41618`.
+
+
+## 2026-11-16 — Gemini dispatch route reconciliation
+
+- Report: [Gemini dispatch route reconciliation](../reports/2026-11-16-gemini-dispatch-route-reconciliation.md); report commit `e8e25c38a0b0754da6eb74ea40affeae4b1f6c62`.
+- Re-read current MediaHub main controller and all three Gemini child workflow sources plus `tests/test_gemini_transport_controller_contract.py`. Current MediaHub controller uses REST API `workflow_dispatch` with HMAC-signed payloads; all three children expose matching `workflow_dispatch` inputs and verify HMAC. The earlier statement that this transport mismatches the children is incorrect and is superseded by this source-level reconciliation.
+- This correction does not authorize MediaHub as Cloud Pool's controller. Cloud Pool Issue #94 explicitly prohibits using MediaHub Issue #301 as a substitute; the MediaHub controller is fixed to its own repository, Issue #301, secrets/variables and workflows.
+- MediaHub run `43764634513` is a trusted-main no-secret `/probe` success only (main SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`). It is not a Gemini batch. Effective secrets/variable metadata remains NOT VERIFIED; no current three-child dispatch was performed in this pass.
+- Cloud Pool current default HEAD re-read: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. PR #98/#100/#102/#106 remain Draft/unmerged with zero formal reviews observed; #102 is read-only and mergeable=false at read time; #100 fails closed with `DURABLE_LOCK_NOT_IMPLEMENTED`.
+- Cloud Pool Issue #94 remains OPEN and is the governing requirement; Issue #96 remains OPEN. Cloud Pool Gemini Agent 1/2/3: NOT IMPLEMENTED / NOT RUN. Keep `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: complete authenticated durable idempotency with enforced lease/fencing and crash recovery, then integrate trusted-main Cloud Pool-native controller/children and verify exact-head CI/governance before dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
