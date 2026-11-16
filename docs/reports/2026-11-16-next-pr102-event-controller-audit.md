@@ -77,3 +77,10 @@ CI validates source/test and workflow invariants. It does not test a live Issue 
 Next bounded step: obtain independent security/governance review of PR #102 before adding API read permissions or write-capable admission. After review, implement canonical comment/default-branch SHA revalidation and durable idempotency/serialization in a separate bounded change, retaining Issue #96 fail-closed.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## F. Additional exact-head and governance recheck
+
+- PR #100 exact head `f9711f67d9b683e687c7ec5481c10b9e5626c61e`: run `43764511321` SUCCESS; formal reviews 0.
+- PR #101 exact head `ae9cf5d4fd76134136b9af8b5498e90a65509722`: run `43764995448` SUCCESS; formal reviews 0.
+- Active Cloud Pool ruleset `26550182` (`Основной — verified`) targets `refs/heads/Основной`, requires PR and review-thread resolution, prohibits deletion/non-fast-forward, and has no bypass actors. Critically, `required_approving_review_count=0`, no required reviewers and no CODEOWNERS approval requirement. Therefore the ruleset does not enforce independent review; independent review remains a separate project acceptance gate.
