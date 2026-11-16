@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { admitOwnerNextEvent, deriveAdmissionEnvelope } from "../src/admission.mjs";
 
@@ -50,28 +50,22 @@ async function seedApproval(input, { expiresAt = NOW + 300, envelopeDigest } = {
 }
 
 async function counts(sourceCommentId) {
+  const receipt = await env.POOL_DB.prepare(
+    "SELECT task_key FROM pool_admission_receipts WHERE source_comment_id = ?"
+  ).bind(sourceCommentId).first();
+  if (!receipt) return { receipts: 0, tasks: 0, approvals: 0, outbox: 0 };
   const [receipts, tasks, approvals, outbox] = await Promise.all([
     env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admission_receipts WHERE source_comment_id = ?").bind(sourceCommentId).first(),
-    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_tasks").first(),
-    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_approvals").first(),
-    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox").first()
+    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_tasks WHERE task_key = ?").bind(receipt.task_key).first(),
+    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_approvals WHERE task_key = ?").bind(receipt.task_key).first(),
+    env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox WHERE task_key = ?").bind(receipt.task_key).first()
   ]);
   return { receipts: receipts.n, tasks: tasks.n, approvals: approvals.n, outbox: outbox.n };
 }
 
 describe("atomic owner /next D1 admission", () => {
-  beforeEach(async () => {
-    await env.POOL_DB.exec(`
-      DELETE FROM pool_task_outbox;
-      DELETE FROM pool_task_approvals;
-      DELETE FROM pool_tasks;
-      DELETE FROM pool_admission_receipts;
-      DELETE FROM pool_approval_ledger;
-    `);
-  });
-
   it("atomically persists the owner receipt, consumes approval and creates task/outbox", async () => {
-    const input = valid();
+    const input = valid(6912000001);
     const binding = await seedApproval(input);
     const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     expect(result).toMatchObject({ decision: "ADMITTED", dispatch: false, executionAuthorized: false });
@@ -82,7 +76,7 @@ describe("atomic owner /next D1 admission", () => {
   });
 
   it("replays the same source comment idempotently without duplicating task/outbox", async () => {
-    const input = valid();
+    const input = valid(6912000002);
     await seedApproval(input);
     const first = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     const replay = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
@@ -92,7 +86,7 @@ describe("atomic owner /next D1 admission", () => {
   });
 
   it("rejects a changed target on the same source comment ID", async () => {
-    const input = valid();
+    const input = valid(6912000003);
     await seedApproval(input);
     expect((await admitOwnerNextEvent(env.POOL_DB, input, NOW)).decision).toBe("ADMITTED");
     const changed = valid();
@@ -111,7 +105,7 @@ describe("atomic owner /next D1 admission", () => {
       x => { x.ref = "refs/pull/96/merge"; }
     ];
     for (const mutate of mutations) {
-      const input = valid();
+      const input = valid(6912000004);
       mutate(input);
       const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
       expect(result.decision).toBe("DENY");
@@ -120,13 +114,13 @@ describe("atomic owner /next D1 admission", () => {
   });
 
   it("rolls back the receipt when approval is absent, expired or envelope-mismatched", async () => {
-    const input = valid();
+    const input = valid(6912000005);
     await seedApproval(input, { expiresAt: NOW - 1 });
     const expired = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     expect(expired.decision).toBe("DENY");
     expect(await counts("6912000001")).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
 
-    const mismatch = valid(6912000002);
+    const mismatch = valid(6912000006);
     await seedApproval(mismatch, { envelopeDigest: "d".repeat(64) });
     const rejected = await admitOwnerNextEvent(env.POOL_DB, mismatch, NOW);
     expect(rejected.decision).toBe("DENY");
@@ -134,8 +128,8 @@ describe("atomic owner /next D1 admission", () => {
   });
 
   it("admits two distinct source comments as two waves, not one shared task", async () => {
-    const one = valid(6912000003);
-    const two = valid(6912000004);
+    const one = valid(6912000007);
+    const two = valid(6912000008);
     await seedApproval(one);
     await seedApproval(two);
     const a = await admitOwnerNextEvent(env.POOL_DB, one, NOW);
@@ -147,8 +141,35 @@ describe("atomic owner /next D1 admission", () => {
     expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox").first()).toMatchObject({ n: 2 });
   });
 
+  it("serializes concurrent delivery of one source comment into one durable admission", async () => {
+    const input = valid(6912000010);
+    await seedApproval(input);
+    const [first, second] = await Promise.all([
+      admitOwnerNextEvent(env.POOL_DB, input, NOW),
+      admitOwnerNextEvent(env.POOL_DB, input, NOW)
+    ]);
+    expect([first.decision, second.decision].sort()).toEqual(["ADMISSION_REPLAY", "ADMITTED"]);
+    expect(first.admissionId).toBe(second.admissionId);
+    expect(await counts(String(input.event.comment.id))).toEqual({ receipts: 1, tasks: 1, approvals: 1, outbox: 1 });
+  });
+
+  it("keeps admission receipts and logical task identity immutable", async () => {
+    const input = valid(6912000011);
+    await seedApproval(input);
+    const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_tasks SET target_sha = ? WHERE task_key = ?"
+    ).bind("e".repeat(40), result.taskKey).run()).rejects.toThrow("LOGICAL_TASK_BINDING_IMMUTABLE");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_admission_receipts SET actor_id = ? WHERE source_comment_id = ?"
+    ).bind("1", String(input.event.comment.id)).run()).rejects.toThrow("ADMISSION_RECEIPT_IMMUTABLE");
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_admission_receipts WHERE source_comment_id = ?"
+    ).bind(String(input.event.comment.id)).run()).rejects.toThrow("ADMISSION_RECEIPT_APPEND_ONLY");
+  });
+
   it("keeps dispatch disabled on every result", async () => {
-    const input = valid();
+    const input = valid(6912000009);
     const rejected = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     expect(rejected.dispatch).toBe(false);
     expect(rejected.executionAuthorized).toBe(false);
