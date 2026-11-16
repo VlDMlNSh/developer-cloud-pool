@@ -146,3 +146,25 @@ PR #107 exact-head run `43864376148` completed SUCCESS. Its job was `Validate wo
 - All inspected PRs #74, #102, #103, #106 and #107 remain open Draft/unmerged with zero formal reviews.
 - No secret values read, no provider calls, no Gemini dispatch, no owner /next event probe, no child agents, no merge or deployment.
 - Contour A remains BLOCKED / NOT ACCEPTED. Immediate next step: complete owner-event admission and durable replay/ledger qualification for Issue #96, obtain independent review, then dispatch exactly the authorized child count through the Cloud Pool controller. Separately keep four Gemini clients isolated and unactivated until secret metadata and quota evidence are verified.
+
+
+## /next pass — PR #100 provenance and runtime fail-closed audit — 2026-11-16
+
+### Exact-head evidence
+- PR #100 current head: `cb952a915093a4aaafb8f878954503d2460c4008`; base: PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; PR remains Draft/open/unmerged, formal reviews 0.
+- Exact-head Cloud Pool Next Admission Contract run `43826793313`, job `133162447332`: SUCCESS. Retrieved raw job log confirms 38 tests, 38 pass, 0 fail, 0 skipped.
+- Tests cover exact owner admission, negative event cases, trusted owner provenance for ledger records, tamper detection, API adapter pagination, and exact controller-run identity matching.
+- This is mocked API/unit-test evidence only; Issue #96 was not mutated and no real controller run or child dispatch occurred.
+
+### Security posture change
+- PR #100 now ignores ledger-marker comments unless GitHub server metadata reports owner login `VlDMlNSh`, association `OWNER`, and exact Issue #96 API URL.
+- Crucially, the PR removes the unsafe caller-asserted `lockHeld` authorization path. `planNextDispatch()`, `authorizeSingleDispatch()`, `reconcileVerifiedOwnerNextEvent()`, and `reconcileNextLedgerEvent()` now fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED` before any GitHub API access. Pure state planning remains available for tests, but grants no runtime permission.
+- This is a deliberate safe regression in capability: the controller cannot dispatch or mutate the ledger through these runtime entry points until a real durable lease/lock with fencing and crash recovery is implemented and independently qualified.
+- Design item to resolve before enabling writes: define a trusted ledger-writer identity/provenance contract compatible with GitHub automation. Current parser trusts only owner-authored comments; bot-authored write records would not be accepted. Do not weaken the check to solve this—design and test an explicit, verifiable bot identity or use a separately authenticated durable store.
+
+### Issue #96 live-state check
+- Issue #96 remains OPEN. It contains six owner-authored progress comments, all historical wave notes; none is a fresh exact `/next` trigger. A live owner-trigger probe was therefore NOT RUN.
+- No secrets read, provider calls, workflow dispatch, child agents, deployment or merge.
+
+### Next bounded step
+Implement and adversarially test a real durable serialization primitive (monotonic fencing, lease expiry/recovery, and single-writer provenance) on a branch based on the current default HEAD. Keep runtime authorization hard-disabled until that primitive is verified; then add a trusted-default-branch no-secret integration probe and independent security review.
