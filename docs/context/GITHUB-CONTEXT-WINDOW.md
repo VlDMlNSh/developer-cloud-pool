@@ -3662,3 +3662,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issues #94/#96 OPEN. No new Issue #96 owner comment, no Cloud Pool dispatch, no MediaHub bridge dispatch, no secrets/provider calls, merge or deployment.
 - Four-agent Gemini runtime NOT QUALIFIED; Cloud Pool-native dispatch NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: rebase/rebuild PR #102 against current default; add durable idempotency and authoritative reconciliation proof without dispatch; address missing independent-review governance; qualify SDK in network-enabled Node 22 environment.
+
+## 36. Wave 334 — four-account Gemini candidate review (2026-11-16)
+
+- Report: [Wave 334 review](../reports/2026-11-16-wave334-four-account-gemini-candidate-review.md), commit `ba8eff57db06e5695e1846e01bcbf945e59bfa05`.
+- Checkpoint: [Wave 334 checkpoint](../checkpoints/2026-11-16-wave334-four-account-gemini-candidate-review.md), commit `8644b3790a31e90f0c95b02515c258c284ccc3be`.
+- Pre-update Context Window blob: `8a935efd4ff5022d01f762ccce76906875ec04a4`; updated on continuation branch `docs/cross-chat-continuation-2026-11-06` only. This documentation branch is not the default production branch.
+- Cloud Pool PR #107 candidate SHA `027492668e7721a5371b38997bc76a6cd6a50cd4`, base SHA `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`; compare reports 12 commits ahead, 0 behind base, five changed files.
+- Exact-head Pool Contract Validation run `43868830501`, job `133304274884`: COMPLETED / SUCCESS. Workflow includes the new fake-client Node test suite. This verifies the contract tests only; it is not live provider evidence.
+- PR #107 remains OPEN/DRAFT/UNMERGED; formal reviews: 0. Review comment #6917019970 records code findings.
+- Findings: `GEMINI_MODEL` is environment-overridable without an allowlist (paid/unapproved route risk); no request timeout/cancellation; model output is unbounded in reports/stdout; distinct key strings do not prove distinct account/quota domains; no Issue #96 admission, durable lease/fencing/recovery or child-run reconciliation integration.
+- Prior Wave 333 SDK runtime failure remains open: `@google/genai` is dynamically imported but this candidate still adds no package manifest/lockfile. Actual SDK installation/runtime is NOT QUALIFIED.
+- Issues #94/#96 remain the Cloud Pool-native authority path. Issue #96 is the dedicated owner-only exact-comment `/next` control issue; its four-agent amendment supersedes the earlier three-child count for this qualification wave. MediaHub Issue #301/controller is a separate control plane and MUST NOT substitute for Cloud Pool dispatch.
+- Four secret names/scopes metadata and four distinct Google account/quota ownership: NOT VERIFIED. No secret values read.
+- Live Gemini provider calls/dispatch: NOT RUN. No merge or deployment. Dispatch remains disabled.
+- Current pass performed an exact-head diff review, verified CI run/job metadata, posted actionable findings to PR #107, and persisted this report/checkpoint. No independent security approval was claimed.
+- Next: fix free-model allowlist, request timeout/cancellation, bounded output, official SDK pin/lockfile and no-network SDK tests; then integrate owner-only Issue #96 admission, durable idempotency/lease/fencing/recovery and child reconciliation. Only after all gates and independent review may a bounded live four-child qualification wave be considered.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
