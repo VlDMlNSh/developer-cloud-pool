@@ -2138,3 +2138,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next step: implement a real storage-backed repository-wide lease with fencing and crash recovery; no caller-supplied lock boolean may grant authority. Keep dispatch disabled until independent qualification.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Gemini wave follow-up and review — 2026-11-16
+
+- Report: ../reports/2026-11-16-next-gemini-wave-review.md.
+- New MediaHub Issue #301 owner `/next` comment `6911835632`; target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; controller workflow blob `7799f0fc713c5bd772ce6820df40a926a83445c8`.
+- Three role outputs found: Agent 1 PR #745 (head `f097f072fbfae6b3cd074502f81cb981d7e33f2b`, evidence blob `44cd6c23e3cd0f7218a2c3c76d6003c071041cd9`, evidence/bootstrap only); Agent 3 PR #746 (head `385e99a76dce5589496476b3a92cbfa440b02138`, audit blob `13b6f4f62428fd1328aeb7b3c0a874113564401a`, static report only); Agent 2 PR #747 (head `ac87ee03511c73d3763d766051e15367b937fad3`, evidence blob `09af44f9a75cfc838d68e294d0a8a653b5f3bf11`, static mapping only; runtime tests explicitly omitted). All target the same immutable SHA.
+- Separate Agent 1 PR #744 is from a different dispatch ID; do not count it as part of the current three-role set.
+- Review comments posted: PR #745 comment `6911879125` (scope correction); PR #746 comment `6911879989` (secret-scope and negative-test claims NOT VERIFIED without evidence); PR #747 comment `6911880592` (status correction to static mapping / tests NOT RUN). All three PRs OPEN/DRAFT; formal reviews 0.
+- PR-triggered runs on #745/#746/#747 show `action_required`; exact-head CI PASS not established. Parent controller run ID and child run/job IDs/conclusions remain NOT VERIFIED through the available GitHub Actions read interface.
+- Cloud Pool PR #98 CI 49/0 PASS (runs `43758657648`, `43758657644`); PR #100 CI 38/0 PASS (run `43826793313`), but runtime lock intentionally returns `DURABLE_LOCK_NOT_IMPLEMENTED`; PR #101 D1 replay-fence CI SUCCESS (run `43764995448`, job `132967987468`, artifact digest `69212472f7a2638219c3984a634cdb82df3f38b68acaa93b146536a43ea88aea`). These remain draft/unmerged with no formal reviews.
+- Cloud Pool Issue #96 remains PLANNED; no live Cloud Pool-native dispatch. Gemini parent dispatch/child jobs NOT VERIFIED. No merge/deployment/provider calls/secret reads/qualification/acceptance.
+- Browser fallback was unavailable: TinyFish returned non-retryable wallet balance `-$0.44`; no retry was attempted.
+- Next bounded task: implement and test a real storage-backed repository-wide lease with fencing, expiry and crash recovery for Issue #96. Keep runtime fail-closed until qualified.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
