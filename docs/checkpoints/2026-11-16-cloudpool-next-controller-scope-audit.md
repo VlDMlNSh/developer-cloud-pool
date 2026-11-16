@@ -21,3 +21,11 @@ Complete a Cloud Pool-native controller governance/review decision, then impleme
 
 Full report: ../reports/2026-11-16-cloudpool-next-controller-scope-audit.md
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Follow-up correction — 2026-11-16
+
+- PR #102 workflow checkout TOCTOU gap found: mutable default_branch ref could resolve to code newer than the event SHA.
+- Fixed on PR #102 branch: commit 38844dfb4a881ec858742e5bf9e35724f6b8a95d; workflow blob 1a0db4fd84f02e7e0a16951282525dc224c3ae1f; checkout now pins github.sha.
+- New-head CI: NOT VERIFIED (no PR run returned for the commit; combined status contexts empty). Previous-head CI does not qualify the new head.
+- PR #102 remains Draft/unmerged; formal reviews 0. Issue #96 remains PLANNED / dispatch disabled. Gemini 1/2/3 NOT RUN for Cloud Pool scope.
+- Next: reconcile new exact-head Actions runs; obtain independent governance review; then add durable authenticated idempotency and enforced serialization. No dispatch until all Issue #96 gates pass.
