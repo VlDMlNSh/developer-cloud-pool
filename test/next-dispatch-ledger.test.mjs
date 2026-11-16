@@ -22,8 +22,8 @@ test("rejects tampered ledger data", () => {
   assert.throws(() => parseLedgerComments([ownerComment(body)]), /integrity|corrupted/i);
 });
 
-test("requires serialized controller lock", () => {
-  assert.deepEqual(planNextDispatchState({ sourceCommentId, targetSha, records: [] }), {
+test("runtime planner denies even a caller-asserted lockHeld boolean", () => {
+  assert.deepEqual(planNextDispatch({ sourceCommentId, targetSha, records: [], lockHeld: true }), {
     action: "DENY", reason: "DURABLE_LOCK_NOT_IMPLEMENTED"
   });
 });
