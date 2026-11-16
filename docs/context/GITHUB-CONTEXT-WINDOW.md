@@ -3724,3 +3724,8 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #109 formal reviews 0; independent security review NOT RUN. No provider calls, secret reads, dispatch, merge or deployment.
 - Issues #94/#96 OPEN. Trusted owner-only Issue #96 admission, durable lease/fencing/recovery and child reconciliation remain NOT IMPLEMENTED / NOT VERIFIED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: provider-side output bound, SDK pin/lockfile/fake transport test, then durable Issue #96 admission and independent security/governance review.
+
+## Wave 336 post-publication head movement
+- PR #109 latest head re-read as `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Latest exact-head CI #43872185972 / job #133315933882 COMPLETED/SUCCESS, seven of seven steps. Prior head `3cce7c...` / run #43871896948 superseded.
+- Source/test blobs remain `9c5377f58de9dd8dabb4f05c72479fad1f10e033` / `80f358197c2006105c902fd2d54c84f33e055d97`; provider-side maxOutputTokens is still absent; response truncation remains post-materialization.
