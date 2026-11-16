@@ -25,12 +25,22 @@ jobs:
   validate:
     name: Validate workflow syntax and security invariants
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 7
+    permissions:
+      contents: read
     steps:
       - name: Checkout source without persisting credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+
+      - name: Audit GitHub Actions workflows with zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b
+        with:
+          version: 1.31.1
+          online-audits: false
+          advanced-security: false
+          annotations: true
 
       - name: Assert worker dispatch remains disabled
         shell: bash
