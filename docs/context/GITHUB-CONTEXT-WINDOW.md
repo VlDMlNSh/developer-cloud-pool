@@ -3889,3 +3889,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: inspect FCC bind/auth/config lifecycle, then implement synthetic no-secret tests for env precedence, Admin UI disabled, no secret persistence/logging/artifacts, and child-process environment isolation before any provider qualification.
 - Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-16-fcc-github-secrets-no-admin-ui-assessment.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — On-demand worker pool topology decision proposal
+
+- Added architecture proposal: [ON-DEMAND-WORKER-POOL-TOPOLOGY-2026-11-16.md](../architecture/ON-DEMAND-WORKER-POOL-TOPOLOGY-2026-11-16.md).
+- Commit: `5f69a762deeb7ee9a5d41863241625c28b519aad`.
+- Decision proposal: configure/qualify a catalogue of approximately 30 logical provider/worker routes, but do **not** keep 30 agents permanently running. Keep the small control plane and durable store available; instantiate isolated ephemeral workers only for the roles needed by each task.
+- Clarified inventory dimensions: provider ≠ credential/account slot ≠ model route ≠ worker process ≠ agent role ≠ execution profile. A GitHub Secret name does not prove account independence or quota.
+- Two distinct Claude Code execution profiles: Profile A FCC→Claude Code→ECC; Profile B Claude Code→OmniRouter. They require separate workspaces, queues, credentials, quotas, policies and audit. They are on-demand execution profiles, not permanently running workers.
+- Role catalogue: planner/decomposer, researcher/OSS scout, implementer, test designer/runner, security/governance auditor, code/integration reviewer, documentation/provenance recorder, isolated Diogen/agent-browser worker, Ollama local worker, and provider-specialist workers. Gemini independent roles only through the approved controller after gates pass and with distinct task/run evidence.
+- Dispatch lifecycle: task scope → bounded role envelopes → durable quota reservation + fenced lease → minimal isolated workers → selected provider credential only in trusted provider runtime → execution/cancel/timeout → evidence/review → durable outcome → worker teardown.
+- No paid fallback. Unknown account identity, quota, billing class or qualification means route disabled by default. Parallelism bounded by verified quota and host capacity, not catalogue size.
+- This is a design proposal only. No worker deployed, route activated, provider called, test run or Gemini dispatch occurred. FCC key inheritance finding remains a blocker for secret-bearing execution. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile provider inventory with credential references and account/quota evidence (metadata only), produce disabled-by-default route inventory, and continue FCC bind/auth/config lifecycle and secret isolation review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
