@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-16 — Cloud Pool-native /next controller checkout pin and exact-head CI audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (re-read 2026-11-16)
+Documentation continuation branch: `docs/next-2026-11-16-cloudpool-gemini-scope-audit`
+Latest report commit: `1ffa889f9cd49543e270f87c9198a28b170a9c2f` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2111,3 +2111,131 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+## Corrective scope and dispatch boundary — 2026-11-16
+
+- This project is currently Cloud Development Pool Contour A only. MediaHub OS product development / Contour B is deferred until Contour A is ACCEPTED.
+- MediaHub Baseline 1.0/2.0 and MediaHub Agent PRs #733–#738 are not Cloud Pool acceptance work or evidence; do not prioritize them for Cloud Pool implementation.
+- Cloud Pool default target for this pass: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Cloud Pool Issue #94 explicitly requires a Cloud Pool-native /next controller and explicitly forbids substituting MediaHub Issue #301/controller.
+- Cloud Pool Issue #96 remains PLANNED; live dispatch disabled pending source, tests, exact-head CI, governance and trusted-main no-secret probe.
+- PR #102 head `a19aca5c31bf6a39104f4eb10296a94eab404fda` adds only a read-only owner-event probe. Exact-head run `43815104716`: job `133125329861` SUCCESS with 17/17 tests; event job `133125331599` SKIPPED on PR event. Contract run `43815104739` / job `133125261247` SUCCESS. No dispatch capability.
+- MediaHub controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` is bound to MediaHub Issue #301 and MediaHub main. Its fixed Agent 1/2/3 task payloads target MediaHub source/docs, not `developer-cloud-pool`. It cannot honestly be represented as assigning Cloud Pool tasks.
+- MediaHub REST/HMAC workflow-dispatch transport vs approved `workflow_call` governance mismatch remains unresolved in available evidence. Therefore no new Issue #301 /next was triggered in this pass.
+- Gemini Agent 1: NOT RUN for Cloud Pool scope. Agent 2: NOT RUN. Agent 3: NOT RUN. Exact blocker: no approved Cloud Pool task-routing contract through the current MediaHub controller, and Cloud Pool native dispatch is explicitly fail-closed until gates pass.
+- Latest report: [Cloud Pool controller scope audit](../reports/2026-11-16-cloudpool-next-controller-scope-audit.md); checkpoint: [Cloud Pool controller scope checkpoint](../checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md).
+- Documentation is on branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit`, based on immutable Cloud Pool default SHA above; not merged and not canonical default branch.
+- Status: PR #102 read-only admission IMPLEMENTED / exact-head CI VERIFIED; Cloud Pool live dispatch NOT IMPLEMENTED / NOT AUTHORIZED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: governance/review for Cloud Pool-native controller, then durable owner-authenticated ledger + enforced serialization + exact run correlation. Keep dispatch disabled.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Cloud Pool /next controller checkout pin correction — 2026-11-16
+
+- Revalidated Cloud Pool default branch Основной HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436. Context Window on default branch is stale (Last refreshed 2026-11-08; recorded HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae). Do not rely on that historical state without primary-ref refresh.
+- Issue #94 and #96 remain OPEN. Issue #96 remains PLANNED and explicitly keeps dispatch disabled pending controller source, adversarial tests, exact-head CI, governance/ruleset and trusted-main no-secret probe.
+- PR #102 remains OPEN / DRAFT / UNMERGED. Original head a19aca5c31bf6a39104f4eb10296a94eab404fda; prior exact-head CI run 43815104716 / job 133125329861 SUCCESS (17 tests), event job skipped on PR event; Pool Contract Validation 43815104739 / job 133125261247 SUCCESS.
+- Source review identified mutable checkout ref in the read-only event-admission job. Corrected it to checkout immutable github.sha in commit 38844dfb4a881ec858742e5bf9e35724f6b8a95d; workflow blob 1a0db4fd84f02e7e0a16951282525dc224c3ae1f. This binds the executed script to the event SHA.
+- New exact-head CI for 38844dfb4a881ec858742e5bf9e35724f6b8a95d: NOT VERIFIED; PR run lookup returned no run and combined status contexts were empty. The previous head's green CI does not transfer.
+- No live controller dispatch, child execution, secrets/variables access, provider call, deployment, merge or default-branch change. No independent review has been recorded.
+- Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope. The MediaHub controller is not a Cloud Pool task router; Cloud Pool dispatch remains fail-closed.
+- Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
+- Detailed report: 2026-11-16 controller scope and checkout correction, docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md. Checkpoint: docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## PR #102 immutable checkout correction — exact-head CI final read-back — 2026-11-16
+
+- PR #102 current head 38844dfb4a881ec858742e5bf9e35724f6b8a95d; base remains default SHA 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- Controller run 43821733529: contract-tests job 133146174137 SUCCESS; 17 tests PASS / 0 FAIL / 0 skipped; event-admission job 133146175570 SKIPPED on PR event.
+- Pool Contract Validation run 43821733548 / job 133146122452 SUCCESS; all workflow YAML parsed; pool contract checks PASS; dispatch gate false.
+- Exact-head PR validation VERIFIED; live trusted-main Issue #96 event probe NOT RUN. Combined status contexts remain empty; formal review count 0. PR remains OPEN / DRAFT / UNMERGED.
+- Checkout is pinned to github.sha, avoiding mutable default-branch resolution between event SHA capture and script checkout.
+- Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool task router. Cloud Pool dispatch remains fail-closed.
+- Remaining blockers: durable owner-authenticated idempotency ledger, enforced repository-wide serialization, canonical API reconciliation and exact controller/child run correlation, formal governance/review, trusted-main no-secret probe.
+- Report/checkpoint are on docs/next-2026-11-16-cloudpool-gemini-scope-audit, not default/canonical code.
+
+## 2026-11-16 — exact controller run correlation hardening follow-up
+
+- Cloud Pool default branch HEAD revalidated: `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issue #94/#96 still OPEN; Issue #96 remains PLANNED and dispatch disabled.
+- PR #100 is OPEN/DRAFT/UNMERGED, head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`.
+- New exact workflow-run correlation matcher requires workflow ID, path, event, repository/head repository, branch, immutable SHA, deterministic display title and run ID. Missing/invalid identity blocks recovery; no title+SHA-only fallback.
+- Exact-head PR CI run `43824019902` / job `133153438933` SUCCESS; 53/53 tests PASS, 0 failures, syntax checks PASS. Earlier run `43823912569` failed one stale fixture, corrected and rerun.
+- The approved production controller workflow identity is still not established/bound, so actual run reconciliation remains NOT IMPLEMENTED / NOT QUALIFIED.
+- Caller-asserted `lockHeld: true` remains a critical unresolved defect. There is no durable distributed lock or runtime proof of repository-wide serialization.
+- PR #100 formal reviews 0; PR #98 Draft/unmerged. Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool router. Dispatch remains fail-closed.
+- Detailed report/checkpoint: `docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md` and `docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md` on branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit`.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next revalidation — 2026-11-16 (latest GitHub read-back)
+
+- Cloud Pool default branch `Основной` HEAD revalidated from recent commit search: `6507823e7ec27caa9b2621daef964dba2d4cf436`. The default-branch Context Window remains historically stale; this update is on the documentation PR branch only.
+- Issues [#94](https://github.com/VlDMlNSh/developer-cloud-pool/issues/94) and [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) remain OPEN. Issue #96 explicitly remains PLANNED and dispatch-disabled; no production controller implementation or authorization is established.
+- PR #98 OPEN/DRAFT/UNMERGED, head `f23cdb5484d5923e02242b3ea142397f9e1f0270`, base default `6507823e7ec27caa9b2621daef964dba2d4cf436`. Exact-head runs `43758657648` / job `132948250752` and `43758657644` / job `132948250839` both COMPLETED/SUCCESS.
+- PR #100 OPEN/DRAFT/UNMERGED, head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`. Exact-head run `43824019902` / job `133153438933` COMPLETED/SUCCESS; 53 tests PASS, 0 FAIL, 0 skipped; syntax checks PASS. Formal reviews: 0.
+- PR #102 OPEN/DRAFT/UNMERGED, head `38844dfb4a881ec858742e5bf9e35724f6b8a95d`, base default `6507823e7ec27caa9b2621daef964dba2d4cf436`. Read-only controller run `43821733529`: contract-tests job `133146174137` SUCCESS; event-admission job `133146175570` SKIPPED on PR event. Pool Contract Validation run `43821733548` / job `133146122452` SUCCESS. Formal reviews: 0. Live trusted-main Issue #96 event probe NOT RUN.
+- PR #103 OPEN/DRAFT/UNMERGED, head `8d3de0bf03f6bf315e760de6b42b0496c3312701`; no exact-head PR workflow run returned. CI NOT VERIFIED.
+- PR #100's `matchExactControllerRuns` now requires workflow ID, path, event, repository, head repository, branch, target SHA, deterministic title and run ID; weak title+SHA matching was removed. However, the approved production workflow identity is not established.
+- Critical lock defect remains: `lockHeld: true` is caller-asserted, not a runtime proof of ownership. No durable repository-wide lock, lease/fencing implementation or verified serialization exists. Do not treat the Boolean as a lock or enable dispatch.
+- No formal PR reviews were returned for #100/#102. Empty combined status contexts are not a CI pass. Exact-head named workflow runs are the evidence above.
+- Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope. There is no approved Cloud Pool-native task dispatcher; the MediaHub controller is not a substitute and must not be used to assign Cloud Pool work.
+- No dispatch, provider/model call, secret access, deployment, merge, or default-branch modification occurred in this pass.
+- Status: PR #98/#100/#102 named exact-head CI VERIFIED for their bounded PR test paths; PR #103 CI NOT VERIFIED; live dispatch NOT IMPLEMENTED / NOT AUTHORIZED; lock and runtime reconciliation NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded engineering step: replace the caller-asserted lock Boolean with an enforceable, trusted serialization/lease design with stale-owner fencing and crash recovery, then add adversarial tests and exact-head CI. Do not dispatch until approved controller identity, governance, ruleset and trusted-main no-secret probe are independently evidenced.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — shared Actions concurrency contract — 2026-11-16
+
+- Revalidated default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`. Issues #94/#96 remain OPEN; Issue #96 remains PLANNED and dispatch-disabled.
+- Source review found the read-only admission workflow in PR #102 used concurrency group `cloud-pool-next-event-readonly`, while the existing default-branch Pool Supervisor uses `developer-cloud-pool-supervisor`. Those different group keys did not serialize the two workflows against each other.
+- Corrected PR #102 branch `feat/cloud-pool-next-controller-readonly-2026-11-16`: read-only admission now uses the same literal repository-wide group `developer-cloud-pool-supervisor`, `queue: max`, and explicit `cancel-in-progress: false`. The pool contract validator now reads the read-only workflow and asserts both Supervisor and admission workflow share the same group and queue policy. Both PR and push path filters include the validator.
+- PR #102 new immutable head: `0f4743cd675740224220a0d2e97652082bd68906`; workflow blob `6216de6690c065cb04b929b6c96713cd074df304`; validator blob `d7cf9763b0e1e3c9e13b0a608e7f557ae0adcb76`.
+- Exact-head run [43825004875](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825004875), job `133156745379`: SUCCESS; syntax checks and adversarial read-only event tests SUCCESS; event-admission job skipped as expected on push. Pool Contract Validation [43825012491](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825012491), job `133156682594`: SUCCESS. PR-triggered controller run [43825012429](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825012429): SUCCESS. All three runs are tied to the exact new head SHA.
+- PR #102 remains OPEN / DRAFT / UNMERGED; formal reviews 0. This is a verified change on a draft branch only, not a production lock deployment.
+- GitHub Actions concurrency provides at most one running workflow/job in a shared group. `queue: max` permits up to 100 pending; excess runs are cancelled/rejected. GitHub documents FIFO based on start-wait time but warns ordering is not guaranteed. This is scheduler-enforced mutual exclusion, NOT a durable lease, fencing token, crash-proof lock record or proof that every future workflow uses the same key. References: https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency and https://github.blog/changelog/2026-05-07-github-actions-concurrency-groups-now-allow-larger-queues/.
+- PR #100 still contains caller-asserted `lockHeld: true`; no durable lease/fencing or runtime lock proof exists. Do not claim the lock blocker is closed and do not enable dispatch. Next: design/implement durable authenticated lease or transactional claim with fencing/recovery, and remove caller-asserted Boolean from the mutation adapter only when the trusted controller contract is bound to the shared scheduler group.
+- Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope; no approved Cloud Pool-native dispatch authorization. No dispatch, provider/model calls, secrets reads, deployment, merge or default-branch modification.
+- Status: shared scheduler group contract IMPLEMENTED in PR #102 and exact-head CI VERIFIED; production integration NOT ACCEPTED; durable lock/fencing NOT IMPLEMENTED; live dispatch NOT AUTHORIZED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — concurrency validator hardening — 2026-11-16
+
+- Revalidated Cloud Pool default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`. Issue #94 OPEN (Cloud Pool-native Gemini dispatch requirement); Issue #96 OPEN and explicitly PLANNED / dispatch disabled.
+- PR #102 remains OPEN / DRAFT / UNMERGED, base SHA `6507823e7ec27caa9b2621daef964dba2d4cf436`. New head SHA: `e6613c152c5334db04f520cfe069f3bbd1c57772`.
+- Bounded change: strengthened `scripts/validate-pool-contract.mjs` to extract the YAML `concurrency` block rather than search arbitrary workflow text; assert the Pool Supervisor and read-only admission controller both use the exact shared group `developer-cloud-pool-supervisor` and `queue: max`; reject `cancel-in-progress: true`; and require explicit `cancel-in-progress: false` on the admission controller. This reduces risk of an unrelated comment/string satisfying the contract and makes non-cancellation explicit for the new workflow.
+- Validator blob SHA: `f7c1419651ac0f2f55c3428f62adcd6bf14be0eb`. Commit: `e6613c152c5334db04f520cfe069f3bbd1c57772`.
+- Exact-head CI: [Pool Contract Validation run 43825389908](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825389908), job `133157911445`, SUCCESS; [controller push run 43825383266](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825383266), job `133157926411`, SUCCESS; event-admission job `133157928477` SKIPPED as expected on push. PR-triggered controller run [43825390133](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825390133), job `133158008841`, SUCCESS; event-admission job `133158010422` SKIPPED as expected on PR event.
+- PR #100 remains OPEN / DRAFT / UNMERGED. Its ledger adapter still accepts caller-supplied `lockHeld: true`; the Boolean is not proof of runtime lock ownership. Exact workflow identity matcher remains a prototype and approved production controller identity is not bound. Durable lease/fencing/crash recovery are NOT IMPLEMENTED.
+- The shared GitHub Actions concurrency group is scheduler-level mutual exclusion only for workflows that actually use the same group. It is not a durable lease, fencing token, or proof that all mutation paths are serialized. PR #102 is not merged, so production integration is NOT ACCEPTED.
+- Formal reviews for PR #102 have not been established in this pass. Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope; no approved Cloud Pool-native dispatcher. No dispatch, secrets read, provider/model call, deployment, merge, or default-branch modification.
+- Status: concurrency validator hardening IMPLEMENTED in PR #102; named exact-head push, contract, and PR controller CI VERIFIED; durable lock NOT IMPLEMENTED; live dispatch NOT AUTHORIZED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design a real durable, owner-authenticated lease/claim with monotonic fencing and crash recovery, then integrate only behind trusted default-branch controller after governance approval. Do not treat `lockHeld` or the scheduler group alone as full distributed-lock acceptance.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — adversarial ledger parser regression — 2026-11-16
+
+- Default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN; #96 PLANNED / dispatch disabled.
+- PR #100 OPEN/DRAFT/UNMERGED, head `37c9ec9b16ab540cd2fe84db4cf1b7913675a7d0`, base `f23cdb5484d5923e02242b3ea142397f9e1f0270`. Added adversarial parser regression: unauthenticated malformed ledger markers (wrong author, association, or issue URL) are ignored before parsing; malformed marker from authenticated owner/control issue remains a hard failure. Test blob `013e9c16d8d701b5cb16b2680083c2a336184bb6`.
+- Exact-head initial run `43825810530` / job `133159287292` FAILED because fixture used a malformed prefix; recorded, corrected in next commit. Final run `43825907244` / job `133159595993` SUCCESS: syntax checks PASS; 54 tests PASS / 0 FAIL / 0 skipped.
+- `lockHeld: true` remains caller-asserted, not authenticated lock ownership. Durable lease/fencing/crash recovery NOT IMPLEMENTED. No dispatch, deployment, secrets/provider calls, or merge.
+- Gemini Agent 1/2/3 NOT RUN; approved Cloud Pool-native dispatcher not available. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable authenticated lease/claim and monotonic fencing; keep dispatch fail-closed until verified.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — remove caller-asserted lock authority — 2026-11-16
+
+- Default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN.
+- PR #100 OPEN/DRAFT/UNMERGED, base `f23cdb5484d5923e02242b3ea142397f9e1f0270`, new head `cb952a915093a4aaafb8f878954503d2460c4008`, reviews 0.
+- Runtime `planNextDispatch`, `authorizeSingleDispatch`, `reconcileNextLedgerEvent`, and `reconcileVerifiedOwnerNextEvent` now fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED`; caller Boolean and intent flags cannot grant authority. Pure `planNextDispatchState` remains for state-machine tests.
+- Exact-head CI [43826793313](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43826793313), job `133162447332`: SUCCESS; syntax PASS; 38 PASS / 0 FAIL / 0 skipped.
+- Durable lease/fencing/crash recovery NOT IMPLEMENTED. Gemini 1/2/3 NOT RUN. No dispatch, deployment, secret/provider calls, merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable owner-authenticated lease with fencing, stale-owner rejection, expiry/renewal, crash recovery, and concurrent integration tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
