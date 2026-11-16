@@ -74,9 +74,8 @@ export function parseLedgerComments(comments) {
 }
 
 /**
- * Plans one serialized write-ahead step. Caller must hold the repository-wide
- * controller concurrency lock while reading comments and applying the plan.
- * This module never dispatches a workflow or performs network I/O.
+ * Pure state-machine planner for the write-ahead ledger. It has no lock
+ * semantics and grants no runtime mutation or dispatch authority.
  */
 export function planNextDispatchState({ sourceCommentId, targetSha, records, observedRuns = [] }) {
   if (!Number.isSafeInteger(sourceCommentId) || sourceCommentId <= 0 ||
