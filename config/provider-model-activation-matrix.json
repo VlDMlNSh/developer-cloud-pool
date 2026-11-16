@@ -653,5 +653,23 @@
     "https://ai.google.dev/gemini-api/docs/rate-limits",
     "https://ai.google.dev/gemini-api/docs/pricing",
     "https://console.groq.com/docs/rate-limits"
+  ],
+  "local_routes": [
+    {
+      "route_id": "ollama-local-1",
+      "provider": "Ollama Local",
+      "models": [
+        "qwen2.5-coder:3b"
+      ],
+      "credential_mode": "local_no_cloud_api_key",
+      "activation_status": "NOT_VERIFIED",
+      "runtime_status": "NOT_RUN",
+      "quota_domain_id": "local_host_resources",
+      "limits": {
+        "cpu_memory_disk": "must be measured on approved host",
+        "concurrency": null
+      },
+      "active": false
+    }
   ]
 }
