@@ -346,3 +346,177 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Live audit checkpoint — 2026-11-15
+
+- Default baseline: `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Audit report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/next-2026-11-15-controller-d1-audit/docs/reports/2026-11-15-cloud-pool-controller-d1-audit.md
+- PR #98: exact-head CI success on `f23cdb5484d5923e02242b3ea142397f9e1f0270`; 9 ahead / 0 behind current default; no formal reviews; non-dispatching proof only.
+- PR #92/#93 D1 chain: exact-head checks success; PR #93 API HEAD `e200838d038b9cd48635233187819302bba6a33e` differs from stale HEAD recorded in its body. Formal reviews zero; durable revocation watermark and hosted qualification remain open.
+- Gemini: previous Wave 317 controller and three child runs all SUCCESS with artifact digests recorded in report. Current MediaHub main controller still REST-dispatches three children whose workflows expose `workflow_dispatch`; merged PR #421 Option B no longer matches current source after later PR #432 transport reversion. Controller-only exclusivity NOT VERIFIED.
+- No Gemini launch from this ChatGPT turn, no direct child dispatch, no secret access, no provider call, no deployment, no merge or qualification.
+- Next: investigate and correct controller transport drift under explicit governance; then independently verify caller guards, least privilege, secret boundaries and exact-head checks. Continue D1 revocation watermark work. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Live-state revalidation — 2026-11-16
+
+- Cloud Pool default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main HEAD: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #98 exact-head checks: 3/3 SUCCESS; still Draft, no formal reviews, non-dispatching proof.
+- PR #99 exact-head checks: 0; CI NOT VERIFIED; still Draft, no formal reviews.
+- Current Gemini controller source remains REST dispatch + `workflow_dispatch` children, contrary to merged Option B PR #421; PR #432 reintroduced REST/HMAC. Secret presence/scope NOT VERIFIED; no new dispatch.
+- Detailed report: [2026-11-16 live-state revalidation](../reports/2026-11-16-cloud-pool-live-state-revalidation.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: resolve controller transport/governance divergence, then resume gated qualification.
+
+
+## 2026-11-16 — restore, Gemini batch evidence and PR #98 security review
+
+- Cloud Pool default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main HEAD: `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Last confirmed MediaHub owner batch: Issue #301 comment `6901529560`; controller run `43763042415`; Agent 1/2/3 runs `43763061253` / `43763062743` / `43763064255`, all SUCCESS. Job IDs and artifact digests: [restore/security report](../reports/2026-11-16-pr98-admission-security-review.md). This is historical evidence, not a new dispatch in this pass.
+- Agent PRs #730–#732 remain Draft; exact-head checks 0, reviews 0. Not accepted.
+- Cloud Pool PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`: three exact-head checks SUCCESS; zero formal reviews. Static review found unkeyed ledger digest/no author verification (HIGH), caller-supplied lock/sameInvocation booleans (MEDIUM), incomplete workflow-run correlation (MEDIUM), and missing adversarial coverage. PR is non-dispatching; Issue #96 remains PLANNED with no dispatch authorization.
+- MediaHub controller transport/governance drift and trusted-main probe/review gates remain NOT VERIFIED; no new /next trigger posted.
+- No secrets, provider calls, dispatch, merge, deployment, qualification or product work. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: remediate PR #98 security findings and obtain independent review; separately reconcile MediaHub controller transport governance before another batch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — PR #100 ledger provenance hardening
+
+- Cloud Pool default `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #100 https://github.com/VlDMlNSh/developer-cloud-pool/pull/100 is a dependent Draft on PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; branch HEAD `f9711f67d9b683e687c7ec5481c10b9e5626c61e`. Ledger parser now authenticates owner login, OWNER association and exact Issue #96 URL metadata; untrusted marker comments are ignored. Four source/test blobs and full report are in [dated report](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
+- Exact-head CI run `43764511321` / job `132966477817`: SUCCESS; syntax PASS; 50/50 tests pass. Formal review 0; Draft unmerged.
+- PR #98: three exact-head CI checks SUCCESS, no reviews. PR #99 exact-head CI and review NOT VERIFIED.
+- No controller, actual repository-wide lock, full workflow identity reconciliation or dispatch exists in Cloud Pool. Issue #96 remains PLANNED.
+- MediaHub new Gemini batch NOT RUN because controller transport/governance drift and trusted-main no-secret probe remain unresolved. Last confirmed owner batch `6901529560` / controller `43763042415` and three child runs remains historical evidence.
+- No secret access, provider call, deployment, merge, qualification or Contour B work. Contour A BLOCKED / NOT ACCEPTED.
+- Next: trusted-main controller after governance approval, enforced serialization, exact run identity and adversarial integration tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Post-pass trusted-main no-secret probe — 2026-11-16
+
+- Owner-authenticated Issue #301 comment `6901747908` with exact body `/probe` triggered the approved controller's non-launching probe path.
+- Controller run `43764634513`: COMPLETED / SUCCESS on MediaHub main target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Probe job `132966862378`: SUCCESS. Context assertion job `132966891092`: SUCCESS. Readiness job `132966863587`: SKIPPED. `dispatch_and_monitor` job `132966864372`: SKIPPED. No artifacts.
+- Job logs confirm `event_name=issue_comment`, workflow ref `VlDMlNSh/mediahub-os/.github/workflows/gemini-batch-dispatch-controller.yml@refs/heads/main`, trusted controller `true`, issue 301, exact `/probe`, author association OWNER. Probe summary explicitly reports no transport/HMAC/provider secrets mapped and Gemini not reachable in probe mode.
+- This upgrades the trusted-main no-secret caller-context probe to VERIFIED. It does NOT verify effective secret/variable presence, scope or permissions; no secret values were read. It does not qualify controller transport, dispatch, child execution or the three-agent batch.
+- No Gemini children were launched; `readiness_gate` and `dispatch_and_monitor` were skipped. REST/HMAC versus approved `workflow_call` governance mismatch and missing independent governance review remain blockers. Do not launch a new batch until those are resolved.
+
+- Updated report: [2026-11-16 ledger provenance and trusted-main probe](../reports/2026-11-16-next-ledger-owner-auth-hardening.md).
+
+
+## 2026-11-16 exact-replay active registry fence
+
+- New test-only Draft PR #101: https://github.com/VlDMlNSh/developer-cloud-pool/pull/101; branch `test/exact-replay-active-registry-fence-2026-11-16`; exact HEAD `ae9cf5d4fd76134136b9af8b5498e90a65509722`; base PR #93 exact head `e200838d038b9cd48635233187819302bba6a33e`.
+- Added an adversarial replay test: admit against the active snapshot, advance the registry pointer to a newer snapshot/key, then replay old evidence. It must deny with `ROUTE_EVIDENCE_REVOKED_OR_STALE` and preserve the original consumed approval, receipt and attempt.
+- Changed blob `atomic-admission.test.ts`: `2a7129524fa2f2b00c500a4b78d90948b8352c40`.
+- Exact-head CI run `43764995448` / job `132967987468`: COMPLETED / SUCCESS. Workers-runtime D1 tests, syntax, isolated second binding/migration, frozen schema-0010 fixture and lockfile preservation all passed. Artifact `14182400848`; SHA-256 unavailable from artifact metadata / NOT VERIFIED.
+- PR #101 OPEN / DRAFT / UNMERGED; formal reviews 0. PR #93 checks PASS, formal reviews 0. No production code changed and no merge.
+- Gemini: no new owner-authored `/next` comment or batch this pass. Last three-agent wave remains controller `43763042415`, children `43763061253`, `43763062743`, `43763064255` (all SUCCEEDED). Trusted-main probe `43764634513` SUCCESS but non-launching; later report comment run `43764698156` SKIPPED. Dispatch remains blocked pending REST/HMAC versus `workflow_call` governance reconciliation and independent review.
+- No secret reads, provider calls, live D1, deployment, merge or qualification. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Exact-replay active registry fence](../reports/2026-11-16-exact-replay-active-registry-fence.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 /next restore and replay-fence verification
+
+## 2026-11-16 — /next restore, replay-fence verification, Gemini gate recheck
+
+- Report: [2026-11-16 restore/replay-fence/Gemini gate report](../reports/2026-11-16-next-restore-replay-fence-and-gemini-gate.md), commit `6f11e55d8a8f9819c3f403979b834e4f4c41b20c`.
+- Immutable default refs: Cloud Pool `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Cloud Pool PR #101 exact head `ae9cf5d4fd76134136b9af8b5498e90a65509722`, stacked on PR #93 head `e200838d038b9cd48635233187819302bba6a33e`. Exact-head CI run `43764995448` / job `132967987468` SUCCESS; artifact `14182400848`, digest `sha256:69212472f7a2638219c3984a634cdb82df3f38b68acaa93b146536a43ea88aea`. PR OPEN/DRAFT; formal reviews 0. Test verifies stale-active-registry replay denial and immutable receipt/attempt preservation. Its synthetic DB fixture does not itself execute root-signature verification; do not overstate this test as end-to-end root-verification proof.
+- Cloud Pool PR #100 exact head `f9711f67d9b683e687c7ec5481c10b9e5626c61e`; exact-head CI run `43764511321` SUCCESS (50/50 tests per run report); formal reviews 0; OPEN/DRAFT. Ledger owner metadata hardening does not solve caller-asserted lock, missing trusted-main controller, or full workflow identity correlation.
+- MediaHub trusted-main no-secret probe `43764634513` SUCCESS for caller context only; readiness/dispatch skipped. Later controller run `43764698156` SKIPPED. Controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` still uses REST/HMAC + workflow_dispatch children, with unresolved mismatch against approved Option B workflow_call transport and no independent governance review. No new Issue #301 /next comment and no Gemini dispatch this pass.
+- Last confirmed Gemini wave remains controller `43763042415`, children `43763061253`, `43763062743`, `43763064255`; all SUCCEEDED with artifact digests recorded in the report. This is historical execution evidence, not a new wave.
+- No production code, secrets, variables, provider calls, live ledger writes, dispatch, deployment, merge, or resource provisioning changed in this pass.
+- Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: reconcile MediaHub controller transport/governance and independent review before another Gemini batch; continue Cloud Pool's non-dispatching trusted-main controller implementation under Issue #94; retain Issue #96 fail-closed and require exact-head CI, independent review, governance and no-secret probe before any live dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## 2026-11-16 checkpoint — Cloud Pool read-only /next owner-event controller
+
+- Report: [read-only owner-event controller pass](../reports/2026-11-16-next-readonly-owner-event-controller.md).
+- Cloud Pool default target remains Основной@6507823e7ec27caa9b2621daef964dba2d4cf436; MediaHub main remains 1694cde38c7b7d69baf9676b4908c1bb6e197fbe.
+- New Draft PR #102: https://github.com/VlDMlNSh/developer-cloud-pool/pull/102; exact head a19aca5c31bf6a39104f4eb10296a94eab404fda; base exact default HEAD 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- PR #102 adds a read-only issue_comment.created event controller restricted to open Issue #96 and exact owner /next; checks repo/owner/default branch/ref, OWNER association, issue state and event SHA; deterministic comment identity; contents:read only. It does not call API, inspect secrets/variables, persist ledger state, dispatch, launch children, or authorize execution.
+- Exact-head controller contract run 43815087262 / job 133125204490 SUCCESS; event-admission job 133125206179 SKIPPED as expected on push. Repo workflow/security validation run 43815104739 / job 133125261247 SUCCESS. 17 adversarial/positive test cases.
+- PR #102 remains OPEN / DRAFT / UNMERGED; formal independent review NOT VERIFIED. Issue #96 remains fail-closed. Durable idempotency, enforced serialization, canonical source-comment/API revalidation and run identity correlation remain unimplemented.
+- MediaHub controller main/blob remains 1694cde38c7b7d69baf9676b4908c1bb6e197fbe / 7799f0fc713c5bd772ce6820df40a926a83445c8; REST/HMAC + workflow_dispatch vs approved workflow_call mismatch remains unresolved. No new Gemini wave was dispatched; historical last confirmed wave remains controller 43763042415 with children 43763061253, 43763062743, 43763064255.
+- No secrets/variable values read, no provider calls, no live dispatch, no deployment, no merge, no infrastructure changes. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review PR #102; implement canonical API revalidation and enforced serialization/durable idempotency; reconcile MediaHub controller transport/governance before another Gemini wave.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 checkpoint — PR #102 event-controller trust audit
+
+- Report: [PR #102 event-controller trust audit](../reports/2026-11-16-next-pr102-event-controller-audit.md).
+- Cloud Pool default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub main `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #102 exact head `a19aca5c31bf6a39104f4eb10296a94eab404fda`, OPEN/DRAFT/UNMERGED, reviews 0.
+- Exact-head CI: push run `43815087262` SUCCESS; PR controller run `43815104716` SUCCESS (contract job `133125329861` SUCCESS, event-admission `133125331599` SKIPPED as expected); workflow/security run `43815104739` / job `133125261247` SUCCESS.
+- Read-only source audit found no critical unsafe side effect in this slice. It is not independent review.
+- Still missing: durable source-comment idempotency, authoritative serialization, canonical API revalidation and full workflow-run identity correlation.
+- Issue #96 remains fail-closed; Cloud Pool dispatch NOT RUN; Gemini new wave NOT RUN. MediaHub controller REST/HMAC + workflow_dispatch vs approved workflow_call mismatch remains unresolved.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security/governance review of PR #102, then a separate bounded implementation of API revalidation and durable admission. Do not enable dispatch before all gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Governance recheck: active ruleset #26550182 requires PR and thread resolution but 0 approvals, no required reviewers and no CODEOWNERS review. Independent review is not enforced by branch governance and remains a separate acceptance gate. PR #100/#101 exact-head CI runs `43764511321`/`43764995448` SUCCESS; formal reviews 0.
+
+
+## 2026-11-16 checkpoint — Wave 318 agent evidence and transport audit
+
+- Report: [Wave 318 agent evidence and transport audit](../reports/2026-11-16-next-wave318-agent-evidence-and-transport-audit.md).
+- Historical batch 6901529560 / controller 43763042415 and children 43763061253, 43763062743, 43763064255: execution/provenance VERIFIED historically with recorded artifact SHA-256.
+- Agent PRs #730–#732: OPEN/DRAFT, reviews 0; Agent 1 documentation-only; Agent 2 admits active tests bypassed; Agent 3 security claims lack reproducible run evidence. Associated exact-head runs conclude ACTION_REQUIRED and representative job lists are empty; CI NOT VERIFIED.
+- MediaHub PR #421 merged Option B workflow_call; PR #432 merged REST/HMAC + workflow_dispatch reversion. Current main controller/children confirm REST/HMAC transport; governance drift and independent review remain unresolved.
+- No new Gemini wave. No secrets/provider calls/dispatch. Cloud Pool Issue #96 fail-closed; PR #102 remains read-only Draft. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #432 with approved Option B and obtain independent review/effective secret-variable scope evidence before any dispatch. Verify Agent PR CI and formal review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — PR #432 Option B governance regression audit
+
+- Report: [PR #432 Option B governance regression audit](../reports/2026-11-16-next-pr432-option-b-governance-regression-audit.md).
+- Owner Issue #301 comment `6289586838` explicitly approved Option B: three child `workflow_call` workflows, one controller, no child `MEDIAHUB_GITHUB_TOKEN`, independent review and exact CI; it did not authorize agent execution, merge, deployment or qualification.
+- PR #421 implemented Option B and merged. PR #432 subsequently reverted all three children to `workflow_dispatch` and controller REST/HMAC. No formal PR reviews were returned for either PR.
+- PR #432 exact head `33ae44f3ca77337553b97819f5190d57d157fe5e`: Astra Verify run `39648761007` FAILURE (compile failed); Gemini workflow contract validation `39648761390` FAILURE (controller transport contracts failed). Probe/runtime runs succeeded but do not close failed CI or governance/review gates.
+- Current MediaHub main `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; children remain workflow_dispatch. Current implementation is internally REST/HMAC-consistent but conflicts with approved Option B.
+- Effective secret/variable scope NOT VERIFIED; no secret values or metadata inspected. Independent security acceptance NOT VERIFIED.
+- Gemini new wave NOT RUN; no direct child invocation or transport bypass. Cloud Pool Issue #96 remains fail-closed; PR #102 remains Draft. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile transport by restoring approved Option B on a fresh current-main branch or obtain explicit superseding owner/governance approval for REST/HMAC. Require independent review, positive/negative contract tests, actionlint and exact-head CI before any dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — MediaHub transport authority correction and gate recheck
+
+- Correction report: [MediaHub Gemini transport authority correction and gate recheck](../reports/2026-11-16-next-transport-authority-correction-and-gate-recheck.md), blob `68adb9c0baae949e89ed0e6134367cf7955f6308`.
+- Previous report's claim that PR #432 was an unauthorized reversal of still-active Option B was incorrect and is superseded. Later owner-directed Bootstrap and transport records establish REST/HMAC as the active transport; Option B is historical/intermediate.
+- MediaHub main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; children A1/A2/A3 `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`, `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`, `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`.
+- PR #437 exact-head contract validation `39757948715`, non-launching trusted-main probe `39757948751`, Astra Verify `39757948759`, Astra Cloud `39757948849` all SUCCESS. Probe skipped dispatch/admission. Current main exact CI remains NOT VERIFIED; empty commit-run/status query is not proof of success.
+- Formal review APIs for PR #432/#437/#431 returned zero submitted reviews. Effective secret/variable metadata and scope, least-privilege token permissions, effective governance, independent security review remain NOT VERIFIED. New Gemini batch NOT RUN.
+- MediaHub Bootstrap and transport policy were corrected/read back on canonical docs branch; PR #431 remains separate OPEN/unmerged candidate, not current source.
+- Cloud Pool Issue #96 remains fail-closed; PR #102 OPEN/DRAFT/UNMERGED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Gemini controller trigger and admission-gate audit
+
+- Report: [Gemini controller trigger and admission-gate audit](../reports/2026-11-16-next-controller-trigger-and-admission-gate-audit.md).
+- Re-read MediaHub main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`, controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`, children A1/A2/A3 `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`, `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`, `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`; transport/HMAC/trigger tests read back at blobs `5ae0e8db9465ce36bd4020df69b552c659cd6187`, `e92e1c3f4e52fb2005845e520d1bbe10dcdacfbe`, `48513b078d685b74d65adfcffe8e0813e7f19716`.
+- Active launch trigger is a GitHub Issue #301 `issue_comment` event, exact `/next`, OWNER association, non-PR issue and trusted `main` workflow ref. A ChatGPT chat message alone does not create that GitHub event. `/probe` intentionally skips admission and dispatch.
+- Controller additionally requires `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, resolves one immutable target SHA, uses controller-only REST/HMAC dispatch, and verifies all three child runs/jobs/artifact digests.
+- Trusted-main probe `43764634513` / jobs `132966862378`, `132966891092` SUCCESS, but readiness/dispatch SKIPPED. PR #437 exact-head checks passed, not equivalent to exact-main CI.
+- Current-main exact CI NOT VERIFIED; formal review APIs for PR #431/#432/#434/#437 empty; independent security review NOT VERIFIED; effective secret/variable scope, PAT least privilege and effective governance NOT VERIFIED. No secret values read.
+- New Gemini batch NOT RUN. This is a current admission-gate hold, not a broken/missing controller. No GitHub comment/dispatch was created.
+- Next: obtain independent security review of exact current-main controller/children; verify current-main CI and metadata-only variable/secret permission scope plus effective governance. Only then use the existing Issue #301 owner-comment route.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

@@ -251,3 +251,37 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+---
+
+## 2026-11-16 continuation update — owner-triggered batch 6901529560
+
+### Verified refs
+- Cloud Pool default `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Documentation branch: `docs/next-2026-11-15-controller-d1-audit`; prior HEAD `e8861649615a397b27c71972ab32f057fa9f97d3`.
+- Context Window refreshed in commit `7cd2eab417965fed9d1ba8289f9c92a02ac69631`, new blob `663cc82aeb66b2dabf45ac4b89246656d5a40ad9`.
+- Detailed report: [2026-11-16-wave318-gemini-and-cloud-pool-state.md](../reports/2026-11-16-wave318-gemini-and-cloud-pool-state.md).
+
+### PRs
+- PR #98 OPEN / DRAFT / UNMERGED; HEAD `f23cdb5484d5923e02242b3ea142397f9e1f0270`; exact-head checks 3/3 SUCCESS; formal review NOT VERIFIED.
+- PR #99 OPEN / DRAFT / UNMERGED; current docs branch/PR HEAD `5349ae6a07618d6be3d069ae927fc091d8ab3aba`; exact-head checks 0; CI NOT VERIFIED. Formal review NOT VERIFIED.
+- No PR merged and no default-branch code changed.
+
+### Gemini owner-triggered batch 6901529560
+- Owner Issue #301 comment `6901529560`; controller run `43763042415` COMPLETED / SUCCESS.
+- Agent 1 run/job `43763061253` / `132961975123`, SUCCESS; artifact `14181440011`, SHA-256 `f1eb9f7b934bac10030b7cf9ddf0617991aa700bb3463e4bc118d44a1259bd51`.
+- Agent 2 run/job `43763062743` / `132961977561`, SUCCESS; artifact `14181202709`, SHA-256 `ad3a3393cd776d7babd86a95d9dd4b970645de6a12bcf4a13e8eb64f854f75a7`.
+- Agent 3 run/job `43763064255` / `132961996069`, SUCCESS; artifact `14180987288`, SHA-256 `fdd6b71957c12a60a23fd3e22e559e12a037929c649b8b08ff6c4c08ee25e4f4`.
+- All three agents opened Draft PRs #730–#732. Their exact-head check-runs are 0. Agent 1 produced documentation only; Agent 2 did not execute tests; Agent 3's static security assertions lack reproducible exact-head evidence. Do not accept or merge them based on workflow success alone.
+
+### Disposition
+- Gemini dispatch/execution/provenance path: SUCCEEDED for owner-triggered batch 6901529560.
+- Cloud Pool implementation/runtime acceptance: BLOCKED / NOT ACCEPTED.
+- Contour B: DEFERRED.
+- No secrets, provider calls, hosted provisioning, deployment, merge, or dispatch-gate changes.
+
+### Next concrete action
+Independently review PR #730–#732 and their artifacts, obtain exact-head CI and reproduce test/security claims. Continue A0→D1 source reconciliation on Cloud Pool from default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
