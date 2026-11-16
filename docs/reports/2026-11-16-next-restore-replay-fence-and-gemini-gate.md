@@ -74,7 +74,7 @@ Scope: one bounded Contour A pass. No production dispatch, provider calls, secre
 ## Next bounded step
 
 1. Resolve MediaHub controller transport governance and obtain independent review before any new Issue #301 `/next` trigger.
-2. For Cloud Pool, keep Issue #96 fail-closed; obtain explicit governance authorization for the trusted-main controller, then replace caller-asserted lock state with enforced serialization and bind run reconciliation to workflow identity/path, event, repository, branch, source comment and target SHA.
+2. For Cloud Pool, keep Issue #96 fail-closed; continue the non-dispatching Cloud Pool controller implementation within owner-authored Issue #94 scope; keep Issue #96 and all live dispatch gates fail-closed until trusted-main workflow, enforced serialization, full run identity correlation, exact-head CI, independent review, governance and no-secret probe are verified.
 3. Obtain independent review and exact-head CI for PR #100/#101 and their dependency stacks; do not merge stacked Draft PRs by inference.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
