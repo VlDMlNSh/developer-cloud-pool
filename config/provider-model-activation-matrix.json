@@ -1,0 +1,657 @@
+{
+  "schema": "developer-cloud-pool.provider-model-activation-matrix.v1",
+  "generated_at": "2026-11-16",
+  "source_registry": {
+    "repository": "VlDMlNSh/mediahub-os",
+    "path": "ops/qualification/provider_model_registry.json",
+    "blob_sha": "8c0f95d33a6fc85128b3a7aa37157c2dca74bbca"
+  },
+  "policy": {
+    "paid_fallback_allowed": false,
+    "unknown_cost_allowed": false,
+    "secret_values_included": false,
+    "provider_calls_authorized": false,
+    "activation_status": "PLANNED_NOT_AUTHORIZED",
+    "direct_deepseek_api": "EXCLUDED_OWNER_CONFIRMED_PAID",
+    "quota_evasion_rotation": false
+  },
+  "pilot_internal_caps_after_all_gates": {
+    "note": "These are proposed Cloud Pool guardrails, not provider-published quotas. Lower of these and provider account limits applies.",
+    "concurrency_per_quota_domain": 1,
+    "requests_per_minute": 5,
+    "requests_per_day": 100,
+    "max_input_tokens_per_request": 16000,
+    "max_output_tokens_per_request": 4096,
+    "paid_spend_usd": 0,
+    "hard_stop_on_402": true
+  },
+  "quota_fields": [
+    "rpm",
+    "rpd",
+    "tpm",
+    "tpd",
+    "concurrency",
+    "reset_window",
+    "quota_domain_id",
+    "evidence_ref",
+    "observed_at",
+    "valid_until"
+  ],
+  "slots": [
+    {
+      "slot_id": "mimo-1",
+      "provider": "Xiaomi MiMo",
+      "models": [
+        "mimo-v2.6-flash",
+        "mimo-v2.6-pro"
+      ],
+      "billing_evidence": "paid_api",
+      "activation_status": "BLOCKED_UNKNOWN_COST",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "siliconflow-1",
+      "provider": "SiliconFlow",
+      "models": [
+        "THUDM/glm-4-9b-chat"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "siliconflow-2",
+      "provider": "SiliconFlow",
+      "models": [
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "novita-1",
+      "provider": "Novita",
+      "models": [
+        "meta-llama/Llama-3.2-1B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "novita-2",
+      "provider": "Novita",
+      "models": [
+        "meta-llama/Llama-3.2-1B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "THUDM/glm-4-9b-chat"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "zai-1",
+      "provider": "Z.ai",
+      "models": [
+        "glm-4.7-flash",
+        "glm-4.5-flash"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "zai-2",
+      "provider": "Z.ai",
+      "models": [
+        "glm-4.7-flash",
+        "glm-4.5-flash"
+      ],
+      "billing_evidence": "free_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "kimi-1",
+      "provider": "Kimi",
+      "models": [
+        "kimi-k2.5"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "llm7-1",
+      "provider": "LLM7",
+      "models": [
+        "default"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "sambanova-1",
+      "provider": "SambaNova",
+      "models": [
+        "DeepSeek-V3.1",
+        "Meta-Llama-3.3-70B-Instruct"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "aionlabs-1",
+      "provider": "Aion Labs",
+      "models": [
+        "aion-labs/aion-3.5-mini",
+        "aion-labs/aion-3.5"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "cloudflare-1",
+      "provider": "Cloudflare Workers AI",
+      "models": [
+        "@cf/meta/llama-3.1-8b-instruct"
+      ],
+      "billing_evidence": "workers_ai_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "cloudflare-2",
+      "provider": "Cloudflare Workers AI",
+      "models": [
+        "@cf/meta/llama-3.1-8b-instruct"
+      ],
+      "billing_evidence": "workers_ai_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "nararouter-1",
+      "provider": "NaraRouter",
+      "models": [
+        "default"
+      ],
+      "billing_evidence": "router_cost_unknown",
+      "activation_status": "BLOCKED_UNKNOWN_COST",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "orcarouter-1",
+      "provider": "OrcaRouter",
+      "models": [
+        "default"
+      ],
+      "billing_evidence": "router_cost_unknown",
+      "activation_status": "BLOCKED_UNKNOWN_COST",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "unorouter-1",
+      "provider": "UnoRouter",
+      "models": [
+        "gpt-oss-120b:free"
+      ],
+      "billing_evidence": "router_free_suffix_unverified",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "zerouter-1",
+      "provider": "ZeroRouter",
+      "models": [
+        "gpt-5.4"
+      ],
+      "billing_evidence": "router_cost_unknown",
+      "activation_status": "BLOCKED_UNKNOWN_COST",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "deepseek-1",
+      "provider": "DeepSeek",
+      "models": [
+        "deepseek-flash"
+      ],
+      "billing_evidence": "paid_api",
+      "activation_status": "EXCLUDED_OWNER_CONFIRMED_PAID",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "gemini-1",
+      "provider": "Google Gemini",
+      "models": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash-lite"
+      ],
+      "billing_evidence": "free_tier_candidate",
+      "activation_status": "CANDIDATE_MODEL_ID_REVIEW_REQUIRED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "groq-1",
+      "provider": "Groq",
+      "models": [
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-120b"
+      ],
+      "billing_evidence": "free_entitlement_unverified",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "mistral-1",
+      "provider": "Mistral",
+      "models": [
+        "mistral-small-latest",
+        "mistral-large-latest"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "mistral-2",
+      "provider": "Mistral",
+      "models": [
+        "mistral-small-latest",
+        "mistral-large-latest"
+      ],
+      "billing_evidence": "free_tier_inventory_label_only",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "openrouter-1",
+      "provider": "OpenRouter",
+      "models": [
+        "openai/gpt-oss-120b:free",
+        "google/gemini-2.5-flash:free"
+      ],
+      "billing_evidence": "router_free_suffix_unverified",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    },
+    {
+      "slot_id": "huggingface-1",
+      "provider": "Hugging Face",
+      "models": [
+        "openai/gpt-oss-120b:fastest",
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct:fastest"
+      ],
+      "billing_evidence": "free_entitlement_unverified",
+      "activation_status": "NOT_VERIFIED",
+      "credential_presence": "NOT_CHECKED",
+      "account_id": "UNKNOWN",
+      "quota_domain_id": "UNKNOWN",
+      "rpm": null,
+      "rpd": null,
+      "tpm": null,
+      "tpd": null,
+      "concurrency": null,
+      "reset_window": null,
+      "evidence_ref": null,
+      "active": false
+    }
+  ],
+  "gemini_four_client_candidate": {
+    "source_pr": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/107",
+    "status": "DRAFT_NOT_INTEGRATED",
+    "clients": [
+      {
+        "id": "gemini-client-1",
+        "credential_slot": "gemini-1"
+      },
+      {
+        "id": "gemini-client-2",
+        "credential_slot": "UNVERIFIED_SLOT_2"
+      },
+      {
+        "id": "gemini-client-3",
+        "credential_slot": "UNVERIFIED_SLOT_3"
+      },
+      {
+        "id": "gemini-client-4",
+        "credential_slot": "UNVERIFIED_SLOT_4"
+      }
+    ],
+    "quota_policy": "Do not multiply quota by key count. Google Gemini API rate limits are project-scoped; bind all clients to verified project quota domain."
+  },
+  "activation_sequence": [
+    {
+      "order": 1,
+      "route": "Google Gemini gemini-3.8-flash",
+      "credential_slots": [
+        "gemini-1",
+        "UNVERIFIED_SLOT_2",
+        "UNVERIFIED_SLOT_3",
+        "UNVERIFIED_SLOT_4"
+      ],
+      "reason": "Official pricing documentation lists free-tier access; per-project limits and credentials still require verification.",
+      "status": "PLANNED_NOT_AUTHORIZED"
+    },
+    {
+      "order": 2,
+      "route": "SiliconFlow model routes",
+      "credential_slots": [
+        "siliconflow-1",
+        "siliconflow-2"
+      ],
+      "reason": "Registry labels free/permanent-free; exact model availability, account identity and quota not verified.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 3,
+      "route": "Novita model routes",
+      "credential_slots": [
+        "novita-1",
+        "novita-2"
+      ],
+      "reason": "Registry labels free/permanent-free; verify current catalog and account quota.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 4,
+      "route": "Z.ai GLM Flash routes",
+      "credential_slots": [
+        "zai-1",
+        "zai-2"
+      ],
+      "reason": "Registry labels free/permanent-free; verify model IDs and account quota.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 5,
+      "route": "SambaNova models",
+      "credential_slots": [
+        "sambanova-1"
+      ],
+      "reason": "Free-tier inventory label only; entitlement and quotas unknown.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 6,
+      "route": "Groq GPT-OSS",
+      "credential_slots": [
+        "groq-1"
+      ],
+      "reason": "Official rate-limit page publishes account/org-level limits; free entitlement must be verified separately before any call.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 7,
+      "route": "Cloudflare Workers AI",
+      "credential_slots": [
+        "cloudflare-1",
+        "cloudflare-2"
+      ],
+      "reason": "Requires account IDs, account quota and plan entitlement verification.",
+      "status": "PLANNED"
+    },
+    {
+      "order": 8,
+      "route": "Remaining free-tier/router candidates",
+      "credential_slots": [
+        "kimi-1",
+        "llm7-1",
+        "aionlabs-1",
+        "unorouter-1",
+        "openrouter-1",
+        "huggingface-1",
+        "mistral-1",
+        "mistral-2"
+      ],
+      "reason": "Only after provider-specific pricing and quota evidence.",
+      "status": "PLANNED"
+    }
+  ],
+  "references": [
+    "https://github.com/VlDMlNSh/developer-cloud-pool/issues/26",
+    "https://github.com/VlDMlNSh/developer-cloud-pool/pull/107",
+    "https://ai.google.dev/gemini-api/docs/rate-limits",
+    "https://ai.google.dev/gemini-api/docs/pricing",
+    "https://console.groq.com/docs/rate-limits"
+  ]
+}
