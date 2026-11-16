@@ -2307,3 +2307,41 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: independent review PR #74 and PR #107; run exact-head no-secret tests for PR #107; reconcile provider route admission with the trusted route-registry/A0-D1 boundary. Keep all live calls disabled until Issue #26 is accepted.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-16 — /next controller, Gemini and browser runtime evidence
+
+**Status: PARTIAL COMPONENT VERIFICATION / CONTOUR A NOT ACCEPTED.**
+
+### PR #107 — four isolated Gemini clients
+- Head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; exact-head run `43864376148`; job `133289028904` SUCCESS.
+- Retrieved raw job log confirms `node --test scripts/gemini-four-agent-controller.test.mjs`: 6 tests, 6 pass, 0 fail. This corrects earlier context notes that had labelled the suite NOT VERIFIED.
+- Tests use injected fake clients only. No provider request was made. Secret-name presence, account ownership, project/quota mapping and numeric limits remain NOT VERIFIED. PR is Draft/unmerged; formal reviews 0.
+
+### PR #102 — read-only /next event controller
+- Head `e6613c152c5334db04f520cfe069f3bbd1c57772`; runs `43825389908` and `43825390133` SUCCESS.
+- Contract-test job `133158008841` confirms PR event rejected with `EVENT_NOT_ISSUE_COMMENT`; event-admission job was skipped for PR event. This is negative-path evidence only; no real owner-authenticated Issue #96 comment probe.
+- Issue #96 remains OPEN / PLANNED. No dispatch, durable idempotency/replay evidence, child run correlation or three-agent wave has been demonstrated. Dispatch remains disabled.
+
+### PR #106 — ephemeral browser and skills bootstrap
+- Head `afd3dba8bc9db37c8e07b8becf128233f46e4533`; exact-head run `43861948322` SUCCESS.
+- Browser job `133280713541` SUCCESS: pinned agent-browser 0.43.0 and Chromium installed; fixed public `https://example.com` opened; `Example Domain` title verified; screenshot created on ephemeral runner. Screenshot artifact not published; hash not retrieved from available logs; explicit close completion NOT independently verified.
+- Agent skills job `133280713473` SUCCESS; logs confirm `ALL_11_SKILLS_CONTENT_VALIDATED`. This validates bootstrap only, not live agent execution.
+- PR #106 remains Draft/unmerged, formal reviews 0. No authenticated sites, persistent browser sessions, or phone-accessible dashboard were tested.
+
+### PR #74 and governance
+- PR #74 head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`; run `43692828719` SUCCESS. It adds fail-closed unknown-quota filtering but remains Draft/unmerged, reviews 0.
+- PR #103 documentation head `d63b44f503485e5170e38d9c4b021ec7737aca4a`; no workflow runs returned.
+- PRs #74/#102/#103/#106/#107 remain OPEN/DRAFT/UNMERGED; formal reviews 0.
+- Four Gemini API clients in PR #107 are distinct from the three bounded GitHub child jobs required by Issue #96. Do not conflate the two architectures.
+- No secrets read, owner event probe, child dispatch, provider call, merge or deployment.
+
+### Next bounded step
+Qualify trusted-default-branch owner-event admission, durable idempotency/replay and owner-only provenance for Issue #96; obtain independent security review and governance/ruleset evidence. Only after those gates pass may the controller dispatch the exact authorized child count. Keep Gemini clients inactive until secret metadata and account/project/quota evidence are verified.
+
+Updated report commit: `96f5008a858afd915969477fb28f1c060c72e3a3`, blob `98dcffcca2d72c55c7222642f0d8f4358369dc0e`.  
+Updated checkpoint commit: `c89e0ea9b758eabcc67358a5e97cb5761eec7036`, blob `443c600cd873482bc9645990a53147c11c13df28`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
