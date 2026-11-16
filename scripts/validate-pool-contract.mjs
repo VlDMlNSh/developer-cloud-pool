@@ -74,7 +74,7 @@ if (/secrets\./.test(browser)) fail("Browser job must not receive repository sec
 if (!/agent-browser@0\.43\.0/.test(browser)) fail("Browser CLI must remain exact-pinned");
 if (!/timeout-minutes:\s*15/.test(browser)) fail("Browser job must have a bounded 15-minute timeout");
 if (/actions\/checkout/.test(browser)) fail("Browser job must not checkout or execute task repository code");
-if (!worker.includes("BROWSER_RESULT: ${{ needs.browser.result }}") || !/needs:\s*\[validate, probe, browser\]/.test(worker)) fail("Report job must reconcile browser and DSH job outcomes");
+if (!worker.includes("BROWSER_RESULT: ${{ needs.browser.result }}") || !/needs:\s*\[validate, probe, browser, skills\]/.test(worker)) fail("Report job must reconcile browser, DSH and skills job outcomes");
 if (!issueForm.includes("- Agent-browser headless")) fail("Task issue form must expose the browser profile");
 if (!worker.includes('"agent-browser-headless": "Agent-browser headless"')) fail("Worker must bind the browser profile to the exact issue envelope label");
 if (!/agent-browser install/.test(browser) || !/agent-browser skills get core/.test(browser) || !/agent-browser skills get dogfood/.test(browser)) fail("Browser job must install Chromium and load core/dogfood skills");
