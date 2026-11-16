@@ -2390,3 +2390,12 @@ Report commit: `553ee9193abe6992fe1c8c9270a3e201efed244a`, blob `64864b2ebe65e3d
 Checkpoint commit: `52d15fa6cbbd82e377f4d5ba61762da511a61e42`, blob `f56d0061c0e7293bbf42c2ff72a96f0a92277691`.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Git refs reconciliation after this pass
+
+- Current default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Documentation branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit` HEAD: `ff5b811ab88c3481b27c5f681d2af44ef70a3af5`.
+- Compare `Основной...docs/next-2026-11-16-cloudpool-gemini-scope-audit`: status `diverged`, 60 commits ahead / 13 behind, merge base `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- PR #103 targets `Основной` at stale base SHA `6507823e7ec27caa9b2621daef964dba2d4cf436`, head `ff5b811ab88c3481b27c5f681d2af44ef70a3af5`, Draft/open/unmerged; GitHub currently reports `mergeable=false`. Do not merge or force-update this branch without conflict/provenance review.
+- Latest report/checkpoint/context blobs on the documentation branch were read back: report `64864b2ebe65e3df31c30f4983d9897966ab78ef`, checkpoint `f56d0061c0e7293bbf42c2ff72a96f0a92277691`, context before this append `50f204a21c97a346cc1318ea708723ef4443a5f7`.
