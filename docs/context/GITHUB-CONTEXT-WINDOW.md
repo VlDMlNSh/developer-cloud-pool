@@ -2260,3 +2260,31 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 
 
 - Checkpoint added: [2026-11-16 free-provider route qualification](../checkpoints/2026-11-16-free-provider-route-qualification.md); creation commit `3b410421e9bcb87539cffb11f5b8fa5f86e136d5`. Context Window read-back remains the durable cross-chat pointer.
+
+---
+
+## 2026-11-16 — Model pool architecture and staged activation update
+
+**Status: ARCHITECTURE RECORDED / PROVIDER ACTIVATION NOT AUTHORIZED.** This update is on the documentation continuation branch, not the default branch.
+
+- Model/credential/quota architecture is recorded in `docs/reports/2026-11-16-cloud-pool-model-pool-activation-plan.md`.
+- Machine-readable inventory and activation queue: `config/provider-model-activation-matrix.json`. It preserves all 24 cloud credential slots, includes exact candidate model strings from the MediaHub registry, records billing evidence and keeps every route inactive.
+- Checkpoint: `docs/checkpoints/2026-11-16-cloud-pool-model-pool-activation.md`.
+- Source registry: MediaHub `ops/qualification/provider_model_registry.json`, blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`.
+- Owner direction: direct DeepSeek credential slot `deepseek-1` is excluded from activation because it requires payment. The inventory record is retained for audit only. DeepSeek-hosted models through another provider remain separate routes and must pass that provider's own free entitlement checks.
+- Architecture: one shared model gateway; independent credential slots; verified provider account/project and quota-domain identity; model compatibility; current free-price evidence; durable quota ledger; per-domain budget and audit provenance. Never run one long-lived process per API key and never multiply quotas by key count.
+- Gemini: official docs say limits are project-scoped, not per API key. Four Gemini clients in PR #107 cannot be treated as four independent quota allocations if they share one Google project. Only `gemini-1` exists in the current MediaHub 24-slot registry; other credential identities require approved metadata reconciliation. PR #107 remains OPEN/DRAFT/UNMERGED, formal reviews 0, secret existence/account ownership NOT VERIFIED. PR description reports exact-head CI run `43864376148` SUCCESS (6 tests); this does not qualify production integration.
+- Gemini model correction: `gemini-3.8-flash` appears in current official Free-tier pricing. Registry string `gemini-3.5-flash-lite` is not confirmed by current official pricing; current documentation lists `gemini-3.1-flash-lite`. Do not silently activate or rewrite registry model IDs; submit a reviewed correction.
+- Groq: official rate-limit documentation describes RPM/RPD/TPM/TPD and organization-level limits. It does not establish the account's Free-plan entitlement; Groq candidates remain inactive until that is verified.
+- Proposed internal pilot guardrails (not provider-published limits): concurrency 1 per verified quota domain, 5 RPM, 100 RPD, 16k input tokens/request, 4096 output tokens/request, USD 0 spend. Effective limits are the lower of internal caps and verified provider limits.
+- No provider calls, secret reads, dispatch, merge, deployment or paid operations were performed.
+- Controlling blocker remains Issue #26 OPEN: credential boundary, provider qualification, budget guard, routing tests, provenance and independent review are not accepted. PR #28/#29 remain draft/unmerged; PR #29's formal CHANGES_REQUESTED review references an older head and requires exact-head reconciliation. Cloud Pool-native Gemini dispatch issues #94/#96 remain open.
+- Next: reconcile PR #29 active-slot eligibility finding at exact current head, run exact-head CI, and prepare no-secret Gemini credential/account/quota metadata reconciliation. Only after Issue #26 acceptance may one model be qualified and activated at a time.
+
+Official references:
+- Gemini rate limits: https://ai.google.dev/gemini-api/docs/rate-limits
+- Gemini pricing: https://ai.google.dev/gemini-api/docs/pricing
+- Gemini billing: https://ai.google.dev/gemini-api/docs/billing
+- Groq rate limits: https://console.groq.com/docs/rate-limits
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
