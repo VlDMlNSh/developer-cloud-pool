@@ -112,3 +112,81 @@ Non-goals of this ADR: deploying Claude Code/FCC/ECC, selecting a paid provider,
 ## 9. Current disposition
 
 The two-profile architecture is **DOCUMENTED / PROPOSED**. No new runtime, provider, credential, GPU resource, model call, dispatch, deployment or production change was made. Contour A remains the sole active engineering priority and is **NOT ACCEPTED**.
+
+
+## 10. Development agent fleet — logical roles and execution contract
+
+The Development Cloud Code profile is a supervising coding runtime, not a single monolithic agent and not itself the whole multi-provider fleet. It owns planning, delegation, integration and final verification. Specialist agents may be Claude Code subagents, independent model-backed workers, or deterministic tools, provided each is registered and authorized through the same pool contract.
+
+### 10.1 Reference hierarchy
+
+```text
+Jarvis (global intake, policy, user-visible status)
+  └─ Development Cloud Code (development lead / task planner)
+       ├─ Repository Research Agent
+       ├─ Architecture / Design Agent
+       ├─ Implementation Agents (one bounded workstream per agent)
+       ├─ Test / CI Agent
+       ├─ Security / Dependency Audit Agent
+       └─ Documentation / Release Evidence Agent
+
+Jarvis (global intake, policy, user-visible status)
+  └─ Media Cloud Code (media production lead)
+       ├─ Script / Storyboard Agent
+       ├─ Asset / Continuity Agent
+       ├─ Image / Video / Audio model workers
+       ├─ Render / Transcode workers
+       └─ Quality / Packaging Agent
+```
+
+The roles are logical capabilities, not a promise of a fixed number of processes or separate CLI installations. Start with a small bounded set and scale concurrency only after quota, isolation and recovery evidence. A single runtime may host several subagents; multiple runtimes may host independent workers. Never infer independent quota from process count.
+
+### 10.2 Agent classes
+
+- Lead/orchestrator: decomposes a task into a dependency DAG, assigns immutable work packages, monitors deadlines and merges only verified outputs.
+- Researcher: read-only by default; returns sources, component comparison, license and compatibility findings.
+- Implementer: receives one owned worktree/branch and a narrow file/path scope; cannot approve or merge its own changes.
+- Verifier: independently checks requirements, tests and exact target SHA; should not share the implementer's hidden reasoning or unreviewed assumptions.
+- Security auditor: read-only access to diff, manifests and test evidence; no secret-value access and no privilege escalation.
+- Media worker: executes a typed media job through a narrow adapter; does not receive development repository write credentials.
+
+### 10.3 Canonical task envelope
+
+Every dispatched work package must carry: task_id, parent_task_id, profile, role, target_sha or immutable media-input digest, work_package_id, allowed repositories/paths/tools, credential_ref (reference only), provider/account/quota-domain identity, budget ceiling, concurrency slot, deadline, retry policy, expected output schema, required tests, and cancellation token. It must not carry raw credentials or unrestricted shell instructions from user/model text.
+
+Every result must return: task/work-package IDs, exact input target, executor/runtime and model identity, provider slot reference, start/end timestamps, status, changed paths, commit/patch reference where applicable, test commands and outcomes, artifact digests, bounded logs, unresolved risks and a concise handoff summary. Missing evidence is NOT VERIFIED, not success.
+
+### 10.4 Parallelism, workspace ownership and integration
+
+- Parallelize only independent DAG nodes. Serialize dependent changes and shared-resource operations.
+- Each code-writing agent gets a separate Git worktree and branch. No two agents write the same worktree concurrently. Shared-file changes require explicit ownership transfer or a serialized integration task.
+- Agents submit patches/commits; the lead integrates them into a staging branch, runs the combined test suite and checks the immutable base/target. No agent pushes directly to the protected default branch or self-approves its own result.
+- The verifier checks the integrated diff, not only individual agent summaries. Security review and CI are gates before PR readiness; repository governance remains the final merge authority.
+- Concurrency is bounded by the minimum of configured pool slots, provider rate/concurrency limits, runner capacity, per-task budget and global budget. Queue admission fails closed if any required budget/ledger is unavailable.
+- Retry only idempotent work or work with an explicit idempotency key. Cancellation and stale-worker fencing prevent late results from overwriting newer work.
+
+### 10.5 Model and runtime assignment
+
+Claude Code subagents are a natural first candidate for specialist tasks inside Development Cloud Code, using separate agent definitions, tool permissions and optionally model selection. They do not automatically provide a neutral multi-vendor API gateway. Gemini, Qwen, DeepSeek and other providers must be called through separately qualified provider adapters or worker runtimes, with distinct account/quota identities and no-paid-fallback policy. The lead may delegate to these workers only through the pool's authenticated task API; it must not pass secrets through prompts or use undocumented provider compatibility assumptions.
+
+The exact relationship between Claude Code, FCC (the user's Free Claude Code candidate), and ECC (Everything Claude Code extensions) remains UNSELECTED pending repository/source audit, license review, provider compatibility tests and security qualification. Do not install or deploy them as a side effect of this architecture decision.
+
+## 11. Mature components assessed as candidates (not adopted)
+
+- Claude Code subagents/worktrees/hooks: native pattern for isolated specialist context and parallel code work; official guidance emphasizes bounded tasks and verification. Candidate for the Development profile, subject to runtime/licensing/availability review.
+- LangGraph: durable, stateful graph orchestration and human-in-the-loop primitives. Candidate if the pool needs an explicit external DAG engine; avoid adding it if Cloud Code plus the existing Supervisor contract is sufficient.
+- OpenHands Agent Server/SDK: multi-agent server API and separated frontend/automation architecture. Candidate for comparison as an alternative execution runtime, not automatically an additional layer.
+- LiteLLM Proxy: provider normalization, routing and virtual-key/rate-limit patterns. Budget enforcement depends on persistent DB; multi-instance limits require shared coordination. It is not approved for deployment until free infrastructure and fail-closed quota behavior are proven.
+- ComfyUI: typed workflow submission and queue API suitable for Media Cloud Code adapters. Candidate only; GPU, model and storage costs/availability must be qualified separately.
+
+Selection rule: prefer the smallest mature component that closes a demonstrated gap. Do not stack multiple orchestration frameworks or gateways without a measured requirement. A candidate's popularity or API documentation is not proof of security, free-tier eligibility or suitability.
+
+## 12. Architecture decisions still open
+
+1. Whether Development Cloud Code uses one Claude Code process with subagents, several isolated Claude Code processes, or a mixed leader + external worker pool.
+2. Whether FCC is a compatible runtime/gateway, and whether ECC adds maintainable value without expanding the supply-chain attack surface.
+3. Which task queue/state backend meets Contour A's free-tier and durable-claim requirements.
+4. Whether LiteLLM is needed or a smaller custom provider adapter over the already-qualified account/quota ledger is safer.
+5. Media worker placement: GitHub-hosted runner for lightweight orchestration versus separately authorized owner-operated/remote GPU hosts for actual generation.
+
+These decisions require evidence and must not be silently resolved by installing software.
