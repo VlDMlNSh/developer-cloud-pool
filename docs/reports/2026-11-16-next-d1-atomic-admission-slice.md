@@ -69,3 +69,22 @@ Implement and test the authenticated worker-identity boundary for the immutable-
 - [PR #112 — read-only event predicate](https://github.com/VlDMlNSh/developer-cloud-pool/pull/112)
 - [PR #114 — atomic D1 admission slice](https://github.com/VlDMlNSh/developer-cloud-pool/pull/114)
 - [Default target commit](https://github.com/VlDMlNSh/developer-cloud-pool/commit/35208f0ef28f0ac031a7acdf35fc90ccc9b16845)
+
+
+## Follow-up hardening and final exact-head read-back — 2026-11-16
+
+A focused review found that the first approval-ledger version did not enforce monotonic state transitions. Corrected before any merge:
+- Added a D1 trigger allowing only `ready -> consumed` or `ready -> revoked`, while rejecting consumed/revoked rollback.
+- Made the approval ledger append-only (deletion rejected).
+- Added a Workers-runtime test proving a consumed approval cannot be reset to ready or deleted.
+- Added an explicit `trustedDefaultHeadSha` equality check so a new admission cannot bind a target different from the separately supplied default-head value. The value is still an input to this local proof, not independently authenticated here.
+- Added a test rejecting an unbound/stale target SHA.
+- Final suite: 11/11 local Workers-runtime D1 tests PASS.
+
+Final PR #114 exact head: `051f972a44bdfb610b17554dd51340c34700e6f6`.
+- D1 proof run `43934541248`, job `133535567332`: SUCCESS, 11/11 tests.
+- Pool Contract Validation run `43934541311`, job `133535568990`: SUCCESS.
+- Artifact `14259383327`, 18,253 bytes, independently downloaded and SHA-256 verified: `c1b4f8c4578a720b5d1a384b5d8ee891eead1665360ce62e21fe6ead4fdeb54d`.
+- PR #114 remains OPEN/DRAFT/UNMERGED with zero formal reviews. No default branch mutation.
+
+The trusted event adapter is still absent: event, controller run/code SHA and trusted default head are supplied to the pure adapter in tests. No live webhook signature, trusted-main controller execution, hosted D1 or worker identity is proven. Dispatch remains disabled.
