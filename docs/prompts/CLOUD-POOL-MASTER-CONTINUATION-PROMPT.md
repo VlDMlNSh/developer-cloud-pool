@@ -208,3 +208,18 @@ Next bounded step: implement authenticated workload identity for the immutable-a
 
 Report: `docs/reports/2026-11-16-next-d1-atomic-admission-slice.md`.
 Checkpoint: `docs/checkpoints/2026-11-16-next-d1-atomic-admission-slice.md`.
+
+
+## 13. Final admission proof hardening — 2026-11-16
+
+PR #114 current exact head: `051f972a44bdfb610b17554dd51340c34700e6f6`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, OPEN/DRAFT/UNMERGED.
+
+- Added monotonic one-shot approval lifecycle and append-only approval ledger.
+- Added trusted-default-head equality gate and stale/unbound target test.
+- Final exact-head D1 run `43934541248` / job `133535567332`: SUCCESS, 11/11 local Workers-runtime tests.
+- Pool Contract Validation `43934541311` / job `133535568990`: SUCCESS.
+- Artifact `14259383327`, SHA-256 `c1b4f8c4578a720b5d1a384b5d8ee891eead1665360ce62e21fe6ead4fdeb54d`.
+
+Do not overstate this proof: event/controller/default-head metadata are injected test inputs; no live webhook signature or trusted-main controller run is verified. Hosted D1, worker workload identity, immutable attempts, fencing, outbox delivery and Supervisor integration remain open.
+
+Next bounded step: authenticated workload identity for immutable-attempt claim/renew/finalize, audience-bound to repository/task/attempt/target. No automatic reclaim. Keep provider dispatch disabled.
