@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — clean D1 source transplant manifest (Wave 326)
+Last refreshed: 2026-11-16 — PR #106 browser worker audit and Gemini bridge reconciliation (Wave 327)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (re-read 2026-11-16 via paginated Branch API)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
-Latest daily report: `docs/reports/2026-11-15-pr87-pr92-pr93-integrated-admission-registry-audit-wave323.md` (Wave 323; documentation branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-16-pr106-agent-browser-exact-head-audit-wave327.md` (Wave 327; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -3534,3 +3534,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Artifacts were reported not expired. Controller run #43856030589 overall SUCCESS; its monitor job #133260449731 remained IN_PROGRESS at final read-back. Do not overstate controller monitor terminal completion.
 - This proves the approved MediaHub three-agent event bridge, not Cloud Pool-native agents. Child tasks are MediaHub OS Contour A scoped; no claim of Cloud Pool code changes.
 - Updated evidence report: ../reports/2026-11-16-next-wave317-cloud-pool-reconciliation.md, report commit `36b68cf2ddf3cb913a156d9b14ecbbff48b1dcc9`.
+
+
+## 27. PR #106 agent-browser exact-head audit and Gemini bridge reconciliation — 2026-11-16 (Wave 327)
+
+- Report: `docs/reports/2026-11-16-pr106-agent-browser-exact-head-audit-wave327.md`; report commit `5c43b935da39c15958a0518ee788380c1a1145a7`.
+- Default branch `Основной` exact HEAD `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. PR #106 OPEN/DRAFT/UNMERGED; exact head `15de4aa015493aec7ee5137f1e4dae9591c4ab4f`.
+- Exact-head Pool Contract Validation run #43848661335 SUCCESS. Skills job #133235280917, browser job #133235281414, workflow/security job #133235281584 all SUCCESS. No artifacts retained; screenshot hash only in summary. PR reviews 0, threads 0.
+- Browser smoke proves only fixed public `example.com` connectivity on an ephemeral runner. No authenticated browser sessions, persistent state, user cookies, or arbitrary website access are qualified.
+- Worker report job retains `issues:write` and does not revalidate issue open state, exact target SHA, selected profile and current claim envelope immediately before label mutation. TOCTOU and multiple-writer lifecycle are unresolved; do not qualify or dispatch this worker.
+- Latest MediaHub owner /next comment #6914858101 correlated to controller run #43856030589 SUCCESS on target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Gate job #133260399666 and dispatch/monitor job #133260449731 SUCCESS.
+- Agent 1 run #43856062054 / job #133260548869 SUCCESS; artifact #14220348279 SHA-256 `4eebac6defc9f419cd2e537d48f032192425ceaab12a0113e2251049bed2c512`; PR #756 OPEN/DRAFT at `8a5bd472db450a7d11a7e17965a63dc547ad475d`.
+- Agent 2 run #43856065717 / job #133260582460 SUCCESS; artifact #14221362859 SHA-256 `28fcad99e4241deb789a670195b12d3f3cb68e41ed2a759ff8ef8b90a8970d23`; PR #754 OPEN/DRAFT at `67671a2a1f8ff2d28277935d0500735bbdef28f7`.
+- Agent 3 run #43856070228 / job #133260595666 SUCCESS; artifact #14219444674 SHA-256 `62109f7c901c09b472b8cae25674c58bb5e71bea5bd21557498ef1a5a13e77cd`; PR #755 OPEN/DRAFT at `c58c8a3bd27b3cc39c4cf0f944f3fd57e823bbd5`.
+- All three child PRs remain OPEN/DRAFT with zero formal reviews; their subsequent PR validation runs conclude `action_required`. Child dispatch/execution VERIFIED; PR CI acceptance and independent review NOT VERIFIED.
+- This chat message was a restore prompt, not an exact `/next`; no new Issue #301 comment or duplicate dispatch was created.
+- No merge, deployment, Cloud Pool production dispatch, provider/model call, or secret read. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: remediate Worker report revalidation/single-writer boundary and retain browser evidence artifacts; rerun exact-head CI and obtain independent review before dispatch or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
