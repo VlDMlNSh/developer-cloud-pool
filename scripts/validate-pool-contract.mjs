@@ -12,6 +12,7 @@ const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
+const issueForm = read(".github/ISSUE_TEMPLATE/pool-task.yml");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
@@ -66,6 +67,11 @@ if (!/if: needs\.validate\.result == 'success' && inputs\.profile == 'agent-brow
 if (!/permissions:\s*\{\s*\}/.test(browser)) fail("Browser job must have no GitHub token permissions");
 if (/secrets\./.test(browser)) fail("Browser job must not receive repository secrets");
 if (!/agent-browser@0\.43\.0/.test(browser)) fail("Browser CLI must remain exact-pinned");
+if (!/timeout-minutes:\s*15/.test(browser)) fail("Browser job must have a bounded 15-minute timeout");
+if (/actions\/checkout/.test(browser)) fail("Browser job must not checkout or execute task repository code");
+if (!worker.includes("BROWSER_RESULT: ${{ needs.browser.result }}") || !/needs:\s*\[validate, probe, browser\]/.test(worker)) fail("Report job must reconcile browser and DSH job outcomes");
+if (!issueForm.includes("- Agent-browser headless")) fail("Task issue form must expose the browser profile");
+if (!worker.includes('"agent-browser-headless": "Agent-browser headless"')) fail("Worker must bind the browser profile to the exact issue envelope label");
 if (!/agent-browser install/.test(browser) || !/agent-browser skills get core/.test(browser) || !/agent-browser skills get dogfood/.test(browser)) fail("Browser job must install Chromium and load core/dogfood skills");
 if (!/https:\/\/example\.com/.test(browser) || !/agent-browser close/.test(browser)) fail("Browser smoke test must use a harmless public target and close its session");
 if (failures.length === 0) pass("Worker permissions, DSH/browser profile allowlists, isolated no-secret browser smoke and cleanup invariants");
