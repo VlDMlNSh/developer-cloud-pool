@@ -204,7 +204,7 @@ describe("atomic owner /next D1 admission", () => {
 
 
   it("rejects a target that is not the trusted default-branch HEAD", async () => {
-    const input = valid(6912000012);
+    const input = valid(6912000013);
     input.targetSha = "c".repeat(40);
     const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     expect(result).toMatchObject({ decision: "DENY", reason: "STALE_OR_UNBOUND_TARGET_SHA", dispatch: false });
