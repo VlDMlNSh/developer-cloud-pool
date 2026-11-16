@@ -2370,3 +2370,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Status: Gemini batch DISPATCHED and SUCCEEDED; artifacts VERIFIED; PRs unaccepted; exact-head CI NOT VERIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: correct Agent 2's Baseline reference and obtain executed non-secret test evidence; strengthen Agent 3's source/test traceability; require a real bounded implementation delta from Agent 1; then exact-head CI and independent formal review. No merge/deployment until all gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — MediaHub /next Wave 318 controller and three Gemini agents RUNNING
+
+- Report: [Wave 318 dispatch reconciliation](../reports/2026-11-16-mediahub-next-wave318-dispatch-reconciliation.md).
+- Checkpoint: [Wave 318 running checkpoint](../checkpoints/2026-11-16-mediahub-next-wave318.md).
+- MediaHub main target SHA 1694cde38c7b7d69baf9676b4908c1bb6e197fbe; controller workflow blob 7799f0fc713c5bd772ce6820df40a926a83445c8.
+- Owner Issue #301 comment 6909554925 (/next) triggered controller run 43819550177; readiness job 133139220731 SUCCESS; dispatch/monitor job 133139270015 RUNNING.
+- Agent 1 run 43819583119; correlation 20d5aa94-021c-47a9-82ea-a344485993e9; signature job 133139329631 SUCCESS; Gemini job 133139358709 RUNNING.
+- Agent 2 run 43819585657; correlation 831aafe2-d5a7-4800-b793-c68a60d9f49e; signature job 133139338842 SUCCESS; Gemini job 133139370404 RUNNING.
+- Agent 3 run 43819588325; correlation 6bedf7a2-a2c2-432c-bcd5-62da875e4a2d; signature job 133139347574 SUCCESS; Gemini job 133139374893 RUNNING.
+- Controller confirmed target SHA via run page as 1694cde prefix; all child run pages show same main target prefix. Full immutable SHA above.
+- No child artifacts or SHA-256 digests available at read-back; final conclusions NOT VERIFIED. Do not label this batch SUCCEEDED until exact jobs and artifacts are re-read.
+- ChatGPT verified current trigger/admission/dispatch implementation and independently reconciled all run/job/correlation IDs. No source, secret, variable, infrastructure, PR state or deployment changes; no secret values read; no direct child dispatch.
+- Status: controller RUNNING; three children RUNNING; signature checks SUCCEEDED; artifacts NOT VERIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: poll the exact four run IDs, verify final child job conclusions, PR heads, artifact digests, and then update this ledger. Do not post another /next while this batch is active.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
