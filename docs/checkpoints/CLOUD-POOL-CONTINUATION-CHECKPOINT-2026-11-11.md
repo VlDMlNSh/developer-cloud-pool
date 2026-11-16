@@ -346,3 +346,17 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## /next checkpoint — Gemini CI gate and dispatch correlation — 2026-11-16
+
+- Latest MediaHub Issue #301 owner `/next` comment: `6911904653`; immutable target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Controller run ID, child workflow run/job IDs and artifact digests for comment `6911904653`: NOT VERIFIED. The available GitHub Actions read wrapper lists PR-triggered runs only; no issue_comment-run claim made.
+- Prior three-agent PRs #745/#746/#747 exact-head workflows all concluded `action_required` (five runs per PR); formal reviews 0; all remain OPEN/DRAFT. Agent 1 evidence-only, Agent 2 static mapping with runtime tests omitted, Agent 3 static report without attached execution logs.
+- Separate PR #744 is not part of this three-agent wave.
+- Cloud Pool Issue #96 remains OPEN/PLANNED; Issue #94 is the governing Cloud Pool-native controller requirement. MediaHub Issue #301 is a separate project bridge and not a substitute.
+- Cloud Pool PR #98: 49/0 test pass plus static YAML/security validation; DRAFT/unmerged, mergeable false at last read. PR #100: 38/0 tests; authenticates ledger comment provenance and intentionally blocks with `DURABLE_LOCK_NOT_IMPLEMENTED`; DRAFT/unmerged. PR #101: test-only D1 registry replay-fence CI success, no production controller.
+- No merge, deployment, provider/model call, secret read, paid fallback, dispatch qualification or acceptance. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next step: genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery for Issue #96 under Issue #94; dispatch remains disabled until exact-head CI, governance, trusted-main no-secret probe and independent review pass.
+- Detailed report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
