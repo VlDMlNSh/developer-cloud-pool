@@ -2191,3 +2191,37 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+---
+
+# AUTHORITATIVE REFRESH — 2026-11-16 /next Gemini candidate bounds audit
+
+This section supersedes earlier repository-state and Gemini-candidate snapshots above where they conflict. It is maintained on `docs/next-2026-11-16-gemini-bounds-audit`, created from default branch `Основной` at immutable base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It is documentation-only and is not merged.
+
+## Live repository / governance snapshot
+- Default branch: `Основной`; observed current HEAD from GitHub compare: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- The previous continuation branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit` compares as **62 ahead / 13 behind**, status `diverged`, merge base `6507823e7ec27caa9b2621daef964dba2d4cf436`. PR #103 remains open and is not safe to merge or force-update without full conflict/provenance review.
+- Open PRs #107, #108 and #109 remain proposals; #109 has zero formal reviews in the review API.
+- Current default-branch `.github/workflows/pool-contract-validation.yml` triggers on pull requests targeting `Основной` and only when workflow/scripts paths change. Its visible contract asserts dispatch is not literal true, parses YAML, and runs `scripts/validate-pool-contract.mjs`. This is not a complete read-back of ruleset/secret/variable state.
+- Issue #96 is OPEN. Its amendment requests exactly four isolated executions for a qualification wave. Its admission requirements remain trusted owner-authored exact `/next`, immutable target SHA, durable idempotency, pre-dispatch persistence, reconciliation, least privilege and artifact provenance. No new exact trigger event was found in its fetched comments; no Cloud Pool controller dispatch is authorized by this pass.
+
+## Gemini four-agent candidate audit
+- PR #107 candidate branch `feat/four-account-gemini-controller-2026-11-16`, recorded head `027492668e7721a5371b38997bc76a6cd6a50cd4`. Exact-head Pool Contract Validation run `43868830501`, job `133304274884`: SUCCESS; job steps confirm YAML parsing and contract validator completed. This is mocked contract validation only, not live Google requests.
+- PR #108 stacks execution bounds on #107: fixed allowlist `gemini-2.5-flash`, 45-second request AbortSignal, 8,000-character output cap and fake-client tests. SDK package/lockfile and actual runtime remain unresolved; free-tier eligibility is not established.
+- PR #109 is the default-branch-targeted candidate for those bounds. Its body states it is based on `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`; compare against current default shows 2 commits ahead / 2 behind, so it is not a clean current-default-base candidate. Source files were fetched from branch `fix/gemini-bounds-mainline-2026-11-16`: controller blob `9c5377f58de9dd8dabb4f05c72479fad1f10e033`; test blob `80f358197c2006105c902fd2d54c84f33e055d97`.
+- The fetched candidate source fixes model selection to a static allowlist, uses `AbortSignal.timeout(45_000)`, caps output at 8,000 characters and avoids fallback/retry. Its tests add allowlist, timeout, truncation and isolation checks. However, no exact-head CI run for PR #109's actual head was established in this pass. Run `43868830501` belongs to PR #107's recorded SHA, not #109. Therefore #109's 11-test suite is **NOT VERIFIED** until CI is run on its exact current head.
+- Formal reviews for PR #109: zero. No SDK install/lockfile proof, live provider calls, verified credential metadata, account identity or independent quota ownership. Four secret slots do not prove four Google accounts or four independent quotas.
+- No Gemini child jobs were launched in this pass. No secret values read, provider calls, deployment, merge or dispatch performed.
+
+## Durable controller / acceptance blockers
+- Issue #96 owner-only admission and production trusted-main caller remain PLANNED / NOT QUALIFIED.
+- Durable lock/lease/fencing/recovery is not implemented in the production controller. Prior D1 proofs are isolated test evidence, not a production coordinator.
+- The previously selected Durable Object + D1 coordinator remains architecture-only; no deployment or free-entitlement qualification.
+- Remote authenticated web console, persistent state, real worker execution, end-to-end model routing and independent security acceptance remain unqualified.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+## Next bounded step
+Rebase or reconstruct the bounded Gemini execution candidate on the current immutable default HEAD, then obtain exact-head CI and inspect SDK dependency pinning. Keep all dispatch/provider execution disabled. Separately continue production Issue #96 durable admission/lease work only after the candidate is based on current default and its trust-boundary design is testable.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
