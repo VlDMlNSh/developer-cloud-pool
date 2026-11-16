@@ -2141,3 +2141,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
 - Detailed report: 2026-11-16 controller scope and checkout correction, docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md. Checkpoint: docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## PR #102 immutable checkout correction — exact-head CI final read-back — 2026-11-16
+
+- PR #102 current head 38844dfb4a881ec858742e5bf9e35724f6b8a95d; base remains default SHA 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- Controller run 43821733529: contract-tests job 133146174137 SUCCESS; 17 tests PASS / 0 FAIL / 0 skipped; event-admission job 133146175570 SKIPPED on PR event.
+- Pool Contract Validation run 43821733548 / job 133146122452 SUCCESS; all workflow YAML parsed; pool contract checks PASS; dispatch gate false.
+- Exact-head PR validation VERIFIED; live trusted-main Issue #96 event probe NOT RUN. Combined status contexts remain empty; formal review count 0. PR remains OPEN / DRAFT / UNMERGED.
+- Checkout is pinned to github.sha, avoiding mutable default-branch resolution between event SHA capture and script checkout.
+- Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool task router. Cloud Pool dispatch remains fail-closed.
+- Remaining blockers: durable owner-authenticated idempotency ledger, enforced repository-wide serialization, canonical API reconciliation and exact controller/child run correlation, formal governance/review, trusted-main no-secret probe.
+- Report/checkpoint are on docs/next-2026-11-16-cloudpool-gemini-scope-audit, not default/canonical code.
