@@ -2165,3 +2165,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery under Issue #94; keep dispatch disabled pending exact-head CI, governance, trusted-main no-secret probe and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Agent-browser integration assessment — 2026-11-16 (working branch, not merged)
+
+- Default-branch base HEAD used: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`. This browser work is on `docs/agent-browser-cloud-pool-integration-2026-11-16`, not on the default branch.
+- ADR: `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md`, blob `e591b240749b1c920808d714876e879743152ab6`; report: `docs/reports/2026-11-16-next-agent-browser-integration.md`, blob `9e14621afda1e31b9de8f9dce033a31f02f2d354`.
+- Official Vercel Labs `agent-browser` is selected as the candidate CLI. Install CLI + Chromium separately; install the official skill using Skills CLI; load `agent-browser skills get core` before first browser command. `dogfood` is a conditional QA add-on; Electron, Slack, derive-client, Vercel Sandbox, protected Vercel deployments and AWS AgentCore are not baseline skills.
+- Default-branch `pool-worker.yml` remains DSH-only; there is no browser worker, package or skill runtime installed. Supervisor is event-driven/ephemeral, not a persistent browser service.
+- SentinelX inventory 2026-11-16: zero connected hosts; `Voktors-Mini.Dlink` offline; `mh-dev-01` and `mh-dev-02` user-disabled; Free plan has one active-host slot. No host was available for installation. Do not try to execute on offline/disabled hosts.
+- CLI install, skill install and browser worker are NOT RUN / NOT IMPLEMENTED. Persistent remote sessions are BLOCKED by absence of an online host/approved persistent hosting target. "Unlimited free sessions" is NOT VERIFIED and must not be promised; GitHub Actions and all compute/storage/network have limits.
+- This is documentation-only, no dispatch, no secrets, no paid resources, no merge, no Contour B. Contour A remains BLOCKED / NOT ACCEPTED.
+- Report: ../reports/2026-11-16-next-agent-browser-integration.md. ADR: ../architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md.
