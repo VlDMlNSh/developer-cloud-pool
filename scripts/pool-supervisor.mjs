@@ -1,17 +1,17 @@
 import fs from "node:fs";
+import { planClaimRecovery, planDispatchFailure } from "./pool-claim-recovery.mjs";
 
 const ownerRepo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
 const api = "https://api.github.com";
 const defaultBranch = process.env.POOL_DEFAULT_BRANCH || process.env.GITHUB_REF_NAME;
-const eventName = process.env.GITHUB_EVENT_NAME;
 const maxDispatch = Number(process.env.POOL_MAX_DISPATCH || "20");
 const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 
 if (!ownerRepo || !token || !defaultBranch) throw new Error("Missing required GitHub runtime context.");
 if (!dispatchEnabled) {
   console.log("Pool Supervisor heartbeat only: dispatch is disabled pending default-branch governance and owner approval.");
-  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\\n");
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Pool Supervisor heartbeat only; dispatch disabled.\n");
   process.exit(0);
 }
 
@@ -91,24 +91,6 @@ async function ensureLabels() {
   for (const item of labels) await ensureLabel(item[0], item[1], item[2]);
 }
 
-async function recoverFailedWorkflowRun() {
-  const title = process.env.POOL_RUN_TITLE || "";
-  const conclusion = process.env.POOL_RUN_CONCLUSION || "";
-  const match = title.match(/Pool task #(\d+)/);
-  if (!match || conclusion === "success") return;
-  const issueNumber = Number(match[1]);
-  const issue = await request("/repos/" + ownerRepo + "/issues/" + issueNumber);
-  const labels = (issue.labels || []).map(label => typeof label === "string" ? label : label.name);
-  if (!labels.includes("pool:claimed")) return;
-  await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
-  await comment(issueNumber,
-    "**POOL_WORKER_TERMINAL_FAILURE**\n\n- Workflow run: " + (process.env.POOL_RUN_ID || "unknown") +
-    "\n- Conclusion: " + conclusion +
-    "\n- Target SHA: " + (process.env.POOL_RUN_SHA || "unknown") +
-    "\n- Automatic retry: disabled; owner review is required.");
-  log("Marked task #" + issueNumber + " as needs-review after worker conclusion " + conclusion + ".");
-}
-
 async function recoverStaleClaims() {
   const [issues, runData] = await Promise.all([
     request("/repos/" + ownerRepo + "/issues?state=open&labels=" + encodeURIComponent("pool:claimed") + "&per_page=100"),
@@ -140,11 +122,16 @@ async function recoverStaleClaims() {
     }
 
     const ageMs = Date.now() - updatedAt;
-    if (Number.isFinite(ageMs) && ageMs > 15 * 60 * 1000) {
-      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:ready"]);
+    const recovery = planClaimRecovery({
+      matchingRunStatus: matchingRun ? matchingRun.status : null,
+      ageMs
+    });
+    if (recovery.state === "needs-review") {
+      await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_CLAIM_LEASE_EXPIRED**\n\nNo matching worker workflow run appeared within 15 minutes. The task was returned to pool:ready for a later reconciliation. No automatic execution retry occurred.");
-      log("Recovered stale claim for task #" + issue.number + " after no worker run appeared.");
+        "**POOL_CLAIM_REQUIRES_REVIEW**\n\n- Reason: " + recovery.reason +
+        "\n- Automatic retry: disabled; a fresh owner approval is required.");
+      log("Task #" + issue.number + " moved to needs-review: " + recovery.reason + ".");
     }
   }
 }
@@ -193,18 +180,19 @@ async function dispatchReadyTasks() {
       log("Dispatched task #" + issue.number + " at immutable SHA " + targetSha + ".");
     } catch (error) {
       const current = await request("/repos/" + ownerRepo + "/issues/" + issue.number);
-      await replaceIssueLabels(current, ["pool:claimed"], ["pool:ready"]);
+      const failure = planDispatchFailure();
+      await replaceIssueLabels(current, ["pool:claimed"], ["pool:needs-review"]);
       await comment(issue.number,
-        "**POOL_DISPATCH_FAILED**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
+        "**POOL_DISPATCH_FAILED_REQUIRES_REVIEW**\n\n- Supervisor run: " + process.env.GITHUB_RUN_ID +
         "\n- Failure: " + String(error.message).slice(0, 300) +
-        "\n- State restored to pool:ready. No credential material is recorded.");
-      log("Dispatch failed for task #" + issue.number + "; task returned to ready queue.");
+        "\n- State: " + failure.state +
+        "\n- Automatic retry: disabled; a fresh owner approval is required.");
+      log("Dispatch failed for task #" + issue.number + "; moved to needs-review.");
     }
   }
   log("Supervisor cycle complete: " + dispatched + " worker workflow(s) dispatched.");
 }
 
 await ensureLabels();
-if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
 await dispatchReadyTasks();
