@@ -2228,3 +2228,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Exact-head Pool Contract Validation run 43838253557: COMPLETED / SUCCESS. Jobs: 133200188826 workflow/security contract validation SUCCESS; 133200189115 pinned Gemini CLI skills installation SUCCESS. This verifies the PR's two CI jobs only; it does not prove persistent skill installation, Gemini dispatch, browser runtime, web UI deployment, or pool acceptance.
 - Issue #94 remains the next implementation track: build the Cloud Pool-native, trusted, idempotent controller, three bounded signed child workflows, reconciliation and adversarial tests. Issue #96 is the dedicated exact owner-only control issue.
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED. Next bounded step: implement the native Cloud Pool controller contract on trusted default-branch lineage, retaining dispatch disabled until all required gates pass.
+
+
+## Operational update — 2026-11-16 /next: agent-browser and skill validation
+
+- PR #106 current head: `90b88dd94d595dda65365a09396693804671cab3`; base: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; OPEN/DRAFT, not merged.
+- Exact-head Pool Contract Validation run `43841574699`: COMPLETED / SUCCESS. Contract/security job `133211349732` SUCCESS; agent-browser Web smoke job `133211350185` SUCCESS; pinned Gemini skills installation/content job `133211350252` SUCCESS.
+- Browser evidence: pinned `agent-browser@0.43.0` installed on an isolated GitHub-hosted Ubuntu 24.04 runner; Chromium installed; CLI core and dogfood guidance loaded; opened `https://example.com`, verified title `Example Domain`, captured screenshot, and closed session. Job had `permissions: {}`, no repository checkout, no GitHub token, no credentials/cookies. This proves public Internet egress and browser operation from an ephemeral Cloud Pool worker job, not a persistent browser service or authenticated Web session.
+- Skill evidence: Skills CLI `1.8.1` installed all 11 pinned skills; CI verified each `SKILL.md` frontmatter name equals the allowlist, description is non-empty, body is non-trivial, and generated the SHA-256 inventory. Skill source scripts were not executed. This is install/content integrity validation, not behavioral validation of all nine non-browser skills by a Gemini model.
+- Runtime/host availability: SentinelX currently reports zero online hosts; the enrolled Voktors-Mini host is offline and mh-dev-01/mh-dev-02 are disabled. Desktop Commander reports all three devices offline. No persistent self-hosted browser host is available.
+- Authenticated/persistent browser sessions: NOT PROVISIONED. Browser worker uses a fresh temporary HOME and does not load cookies, profiles, vault credentials, or saved sessions. Public unauthenticated websites only.
+- Gemini supplementary wave: NOT RUN / BLOCKED. Cloud Pool-native controller still absent; Issues #94 and #96 remain OPEN. No Gemini run IDs or child artifacts. Do not substitute MediaHub controller.
+- Owner policy retained: independent external review and acceptance are deferred until Cloud Pool is running and can execute its own independent checks. Internal CI, security gates and deterministic tests remain required.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next step: implement the Cloud Pool-native Gemini controller and durable worker/session infrastructure; keep browser sessions ephemeral and public-only until a separate approved authentication/persistence design exists.
