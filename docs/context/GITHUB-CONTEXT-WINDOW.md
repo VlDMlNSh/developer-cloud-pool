@@ -3567,3 +3567,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PRs #757–#759 OPEN/DRAFT, zero formal reviews, validation conclusions `action_required`. These agents acted on MediaHub, not Cloud Pool; bridge is supplementary and not a substitute for Cloud Pool-native control.
 - No secret values read, provider/model calls, Cloud Pool dispatch, production dispatch, merge or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 29. Four-account Gemini candidate audit — 2026-11-16
+
+- Report: [four-account Gemini candidate audit](../reports/2026-11-16-four-account-gemini-candidate-audit.md), report commit `09745d0c1be91af021b5857f115811307981a2d5`.
+- Checkpoint: [four-account Gemini candidate](../checkpoints/2026-11-16-four-account-gemini-candidate.md), commit `b41214bb7673f281cf8a1877c49547777cf2c620`.
+- Cloud Pool default `Основной` remains `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- Candidate PR #107 OPEN/DRAFT/UNMERGED: head `ae0232c7989822269acd90e25e421579f0be79ed`, base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`; 5 commits ahead / 0 behind; 5 files.
+- Candidate source blob `ee0edc37ae59eaaea4a8489de35574c5b49dd69a`; tests blob `6ea1d5bccfff6bd5024e859c6b86622866c28a45`; architecture blob `300266c321fad4d0a26586ba29ea0d44bf00dec0`.
+- Local Node v22.16.0 fake-client suite: 5/5 PASS. Exact-head Actions run #43863071739 / job #133284564704 COMPLETED/SUCCESS; all five tests and Pool Contract Validation passed; log read-back showed `POOL_DISPATCH_ENABLED=false`.
+- Four credential environment names are mapped in candidate source, but Actions secret existence and distinct Google account/quota ownership are NOT VERIFIED. No secret values read.
+- Candidate sends the same task to all four clients, does not reject duplicate credential values, has no pinned/installed SDK runtime and is not integrated into Supervisor/Worker. Production use BLOCKED.
+- MediaHub main controller is still three-child and has no `GEMINI_API_KEY_4` reference; it is not a substitute for Cloud Pool-native execution.
+- Issues #94/#96 OPEN. No Cloud Pool-native production controller, no provider calls, no Gemini production dispatch, no merge/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: harden PR #107 with duplicate-key rejection, distinct role/task envelopes, pinned SDK fake-transport runtime verification and independent security review. Maintain fail-closed production dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
