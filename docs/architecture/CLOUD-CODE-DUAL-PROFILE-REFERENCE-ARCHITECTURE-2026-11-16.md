@@ -177,3 +177,8 @@ Not verified / not run: no ECC installation in either profile; no Claude Code ru
 - ECC upstream: https://github.com/affaan-m/ECC
 - FCC upstream candidate: https://github.com/Factix/fcc
 - Canonical MediaHub map (reference only; Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Deployable baseline linkage (2026-11-16)
+
+The deployable component contracts, control-plane authority, operator Agent Browser boundary, durable state schema, security boundaries, staged deployment and acceptance gates are defined in [CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md](CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md). Do not treat this dual-profile design as deployment authorization. Machine-readable defaults remain disabled in [cloud-pool-deployment-manifest.v1.json](../../config/deployment/cloud-pool-deployment-manifest.v1.json). Follow [the deployment and recovery runbook](../runbooks/CLOUD-POOL-DEPLOYMENT-AND-RECOVERY-2026-11-16.md).
