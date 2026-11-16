@@ -2174,3 +2174,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Updated pool task issue template and contract validator for the browser profile. Added ADR `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md` and report `docs/reports/2026-11-16-next-ephemeral-agent-browser-worker.md`.
 - No browser job dispatched, no browser runtime smoke executed yet; CI and qualification pending. No arbitrary URLs/scripts, no credentials/cookies, no paid provider. Existing supervisor dispatch gate remains unchanged and fail-closed.
 - GitHub-hosted job is ephemeral and subject to Actions minutes, concurrency, job timeout and storage limits. "Unlimited free" capacity is not promised. Persistent interactive sessions/dashboard and cross-job state are NOT IMPLEMENTED.
+
+
+## Ephemeral agent-browser worker — 2026-11-16 (feature branch, not merged)
+
+- This mode uses GitHub-hosted ephemeral runners and does NOT require SentinelX, physical devices, or self-hosted machines. Persistent interactive dashboard is a separate mode and is not implemented.
+- PR #106: https://github.com/VlDMlNSh/developer-cloud-pool/pull/106; branch `feat/agent-browser-ephemeral-worker-2026-11-16`; base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact head at CI `60ac5400fd0e73846f8ff72bb910800dcc73b442`.
+- Pool Contract Validation run `43836984368`, job `133195965481`: COMPLETED / SUCCESS at exact head. YAML syntax, dispatch-disabled guard and pool contract checks passed.
+- Browser job is isolated with `permissions: {}`, no checkout/secrets, pinned Node.js 24.9.0 and `agent-browser@0.43.0`, Chromium installation, core/dogfood skill content load, fixed public `https://example.com` smoke target, screenshot hashing and session close.
+- Browser runtime dispatch NOT RUN; no browser installation or smoke evidence exists yet. PR formal reviews 0, draft, not merged.
+- No arbitrary URLs/scripts, no credentials/cookies, no paid provider. Existing supervisor dispatch gate remains fail-closed.
+- GitHub-hosted job is ephemeral and subject to Actions minutes, concurrency, timeout and storage limits. Unlimited free capacity is NOT VERIFIED. Persistent interactive sessions/dashboard and cross-job state NOT IMPLEMENTED.
+- Report: `docs/reports/2026-11-16-next-ephemeral-agent-browser-worker.md`; ADR: `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md`.
