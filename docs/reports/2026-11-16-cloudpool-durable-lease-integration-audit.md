@@ -53,3 +53,18 @@ Create a clean-base, isolated D1 lease integration proof against `35208f0ef28f0a
 - Contour B: DEFERRED.
 
 Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean-base implementation pass — 2026-11-16
+
+A new clean-base proof was created as PR #111 from default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It ports the isolated D1 ledger package from PR #56 exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef` without importing the stale admission branch or enabling any dispatch path.
+
+- PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111
+- Head: `62e203e0c35eed1e71ab25f67ae45c3d33d7578c`; compare: 1 ahead / 0 behind.
+- Exact-head D1 CI: run `43880577392`, job `133345051895`, SUCCESS; syntax checks passed; 36/36 tests passed (13 + 23).
+- Exact-head Pool Contract Validation: run `43880577430`, SUCCESS.
+- Artifact `14232860410`; SHA-256 `81925793bc92b1f214666a61b2817eb327127bfba92168358cc32b85b2c0bd4f`.
+- No secrets, provider calls, dispatch, hosted D1, merge, deployment or paid resources.
+- PR remains Draft. The proof is local Workers-runtime D1 only; production Supervisor integration, hosted persistence, independent security review and live four-agent execution remain NOT VERIFIED / NOT RUN.
+
+Next bounded step: inspect the SQL transaction/trigger invariants and adapt the atomic claim to bind Issue #96 source event + owner + immutable target SHA + four-task wave. Dispatch must remain disabled; ambiguous results must become NEEDS_REVIEW.
