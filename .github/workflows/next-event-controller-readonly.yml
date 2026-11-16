@@ -7,6 +7,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - "scripts/next-event-controller.mjs"
+      - "scripts/validate-pool-contract.mjs"
       - "test/next-event-controller.test.mjs"
       - ".github/workflows/next-event-controller-readonly.yml"
   push:
@@ -21,8 +22,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: cloud-pool-next-event-readonly
+  # Share the Supervisor's repository-wide serialization group.
+  # queue:max preserves up to 100 pending runs; overflow is rejected by GitHub.
+  group: developer-cloud-pool-supervisor
   queue: max
+  cancel-in-progress: false
 
 jobs:
   event-admission:
