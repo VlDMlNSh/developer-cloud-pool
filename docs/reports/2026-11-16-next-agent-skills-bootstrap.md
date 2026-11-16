@@ -32,8 +32,10 @@ Sources and install references are in `config/agent-skills.lock.json`. CLI is ex
 
 ## Verification
 
-- Pool Contract Validation run `43837927634` is pending at exact head `b6adae6cc8a9650749e301c1dd7306c766b0b420`; jobs include real skill install validation and static contract validation. Final conclusion must be recorded after completion.
-- Earlier run `43837909224` was cancelled by superseding commit; not counted as validation.
+- Pool Contract Validation run `43838104995` at exact head `5e9093bbcb344fa055408e18f0f9ee3eb95f7d2d`: COMPLETED / SUCCESS.
+- Static workflow/security contract job `133199689204`: SUCCESS.
+- Real hosted-runner skill installation job `133199689730`: SUCCESS; 11/11 expected skills verified, 48 files hashed, inventory SHA-256 `5cb73f77a808259ca0b9d0f862dfa54bdb848e93c1c5fed4a240c5f429d7a97c`.
+- Earlier runs `43837927634` and `43838028128` failed only the then-stale report dependency assertion; installation job succeeded in both. The assertion was corrected and the latest exact-head run passed both jobs.
 - Browser smoke runtime remains NOT RUN.
 - Skill installation into a persistent Cloud Pool environment is not claimed: workers are ephemeral. The installer is ready to run in each future Gemini child job.
 - Cloud Pool-native Gemini controller remains a separate open requirement (Issue #94); this PR does not implement or enable Gemini dispatch.
