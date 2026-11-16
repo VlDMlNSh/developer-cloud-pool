@@ -3860,3 +3860,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Current status unchanged: PR #107/#111/#112 OPEN/DRAFT/UNMERGED; no provider calls, secret reads, dispatch, deployments, code tests, merges or acceptance. Secret existence/account/quota identity and FCC/ECC contracts remain NOT VERIFIED.
 - Next bounded step: implement durable PostgreSQL repository-wide admission/lease/fencing/outbox with adversarial tests on a clean default-based branch; separately inventory FCC/ECC upstream source and contracts. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — FCC provider compatibility matrix
+
+- Added `docs/architecture/FCC-PROVIDER-COMPATIBILITY-MATRIX-2026-11-16.md` on the documentation branch. Commit: `2acfacbd401d7e9d3a9e00098913a504bea6439e`.
+- Read-only source review identified the FCC candidate as `Factix/fcc` (Free Claude Code), repository ID `1253171427`, default branch `main`, observed source commit `8ae7795961f05f425bd3e7418f85f2ccec7f4600`; README blob `7e72ee4efcbf98155b523b2fe97b57207d746aa3`; MIT license; Python >=3.14.0.
+- FCC README documents 17 provider backends: NVIDIA NIM, OpenRouter, Google AI Studio/Gemini, DeepSeek, Mistral La Plateforme, Mistral Codestral, OpenCode Zen, OpenCode Go, Wafer, Kimi/Moonshot, Cerebras, Groq, Fireworks, Z.ai, LM Studio, llama.cpp and Ollama.
+- Existing registry slots with documented FCC adapters: DeepSeek, Gemini, Groq, Kimi, Mistral, OpenRouter, Z.ai; local Ollama is also documented. MiMo, SiliconFlow, Novita, LLM7, SambaNova, Aion Labs, Cloudflare Workers AI, NaraRouter, OrcaRouter, UnoRouter, ZeroRouter and Hugging Face do not appear as built-in providers in the inspected README; require a verified custom adapter or separate qualified gateway.
+- FCC README says OpenCode Zen and OpenCode Go share the same API key. Do not count them as independent account/quota domains. Codestral is described as a separate API key from Mistral La Plateforme.
+- FCC README identifies multiple native Anthropic Messages adapters and OpenAI-compatible adapters; protocol support is not proof of full Claude Code tool/reasoning compatibility. Per-model feature qualification is required.
+- Source provenance caution: inspected README's install links point to Alishahryar1/free-claude-code while the inspected repository is Factix/fcc. Establish canonical upstream lineage and pin an immutable source commit before deployment. Latest commit search result observed 2026-05-24; maintenance freshness requires review.
+- No FCC installation, provider credential read, provider call, or runtime qualification was performed. FCC remains NOT QUALIFIED.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- New matrix: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/architecture/FCC-PROVIDER-COMPATIBILITY-MATRIX-2026-11-16.md
