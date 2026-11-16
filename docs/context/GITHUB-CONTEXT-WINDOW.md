@@ -2356,3 +2356,19 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Documentation branch remains `docs/next-2026-11-16-current-state-refresh`, unmerged; these docs are not yet on default branch.
 - Next: implement the smallest clean-base no-secret D1 event receipt + atomic admission/approval/task/outbox slice with `dispatch: false`, adversarial tests, exact-head CI and independent review.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; Gemini dispatch NOT RUN.
+
+
+## 2026-11-16 /next — atomic admission integration audit (21:40 Europe/Vilnius)
+
+- Fresh GitHub recovery: default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; repository ID `1445644538`; owner numeric ID `157891068`.
+- Issues #94/#96 remain OPEN. PR #111/#112/#113 remain OPEN/DRAFT/UNMERGED; all are candidates, not production code.
+- Default tree at the immutable target has no `.github/workflows/gemini-batch-dispatch-controller.yml`; only DSH runtime evaluation, Pool Contract Validation, Pool Supervisor, Pool Worker and runner resource probe workflows are present.
+- Active ruleset #26550182 targets `refs/heads/Основной`: PR required; 0 required approvals; no required status checks; thread resolution required; deletion/non-fast-forward blocked; no bypass actors.
+- PR #111 exact head `687196738782432797bf394f1342cb9df19f478f`: run 43881396386/job 133347908331 SUCCESS; 37/37 local Workers-runtime tests. Pool Contract Validation 43881396272 SUCCESS. Artifact 14232471651 independently downloaded and SHA-256 verified as `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- PR #112 exact head `c9a4c0ab2001f01a09632795283071c521e1c99d`: run 43882090833/job 133350342861 SUCCESS; 21/21 predicate tests. Event-admission job 133350345738 was SKIPPED. Contract run 43882090867 SUCCESS. Actual webhook admission NOT VERIFIED.
+- Independent findings: PR #111 ships legacy expiry-reclaim and immutable-attempt APIs side by side; workerId is caller-supplied, not authenticated workload identity; D1 proof starts from pre-existing approval row and has no source-comment admission receipt. PR #112 only computes stable event identity and does not persist it. No single atomic transaction joins admission + one-shot approval consume + immutable logical task + task outbox.
+- Evidence comments posted: PR #111 comment 6925663082; PR #112 comment 6925663801. Formal REQUEST_CHANGES reviews could not be submitted because the connected account owns both PRs; GitHub rejected that operation.
+- Report: [atomic admission integration audit](../reports/2026-11-16-next-atomic-admission-integration-audit.md).
+- PR #111/#112 must not be merged as-is or directly wired together. Next: clean-base implementation from immutable default SHA with durable source-comment admission receipt, atomic D1 transaction, immutable-attempt-only lifecycle, authenticated workload identity, adversarial Workers-runtime tests and dispatch:false.
+- No code/schema/workflow changes, secret inspection, provider calls, hosted D1, live dispatch, merge or deployment occurred in this audit pass.
+- Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
