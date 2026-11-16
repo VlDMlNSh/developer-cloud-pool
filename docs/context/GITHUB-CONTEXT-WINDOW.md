@@ -2216,3 +2216,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - This verifies fresh-runner install, not persistent storage. Future Cloud Pool Gemini child executor must invoke the installer; Issue #94 controller remains a separate blocker. Dispatch remains disabled.
 - Browser actual smoke runtime NOT RUN. Independent review 0. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Catalog: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`; report: `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
+
+
+## Operational update — 2026-11-16 /next: Gemini cadence and deferred independent acceptance
+
+- Owner instruction reaffirmed: every ChatGPT /next must attempt the supplementary three-Gemini wave, in addition to the primary ChatGPT engineering pass.
+- The required Cloud Pool-native admission contract is Issue #96; implementation requirement is Issue #94. Both remain OPEN. Issue #96 explicitly states that MediaHub Issue #301 is a separate project and must not substitute for the Cloud Pool control issue.
+- Verified that .github/workflows/gemini-batch-dispatch-controller.yml is absent from Cloud Pool default branch Основной (GitHub Contents API 404). Therefore no authorized Cloud Pool-native controller entry point currently exists. This turn's Gemini dispatch status: NOT RUN / BLOCKED, exact blocker: native controller not implemented. No Gemini child run IDs or artifacts exist for this pass. Do not dispatch via MediaHub controller as a cross-repository substitute.
+- Independent external review / independent acceptance are deferred by owner until the deployed Cloud Pool can execute its own independent checks. This deferral does not waive pre-dispatch security/governance gates, deterministic contract tests, exact-head CI, least privilege, secret isolation, or fail-closed behavior. No independent review is claimed.
+- PR #106 current branch head: 2a8f2f306fdb097b6bda2d951f2c9a716e0c3ffd; base Основной at 0635ed2fe8de2340c685d49d20acc5b8bf7a3d92; PR OPEN/DRAFT, not merged; formal reviews: 0.
+- Exact-head Pool Contract Validation run 43838253557: COMPLETED / SUCCESS. Jobs: 133200188826 workflow/security contract validation SUCCESS; 133200189115 pinned Gemini CLI skills installation SUCCESS. This verifies the PR's two CI jobs only; it does not prove persistent skill installation, Gemini dispatch, browser runtime, web UI deployment, or pool acceptance.
+- Issue #94 remains the next implementation track: build the Cloud Pool-native, trusted, idempotent controller, three bounded signed child workflows, reconciliation and adversarial tests. Issue #96 is the dedicated exact owner-only control issue.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED. Next bounded step: implement the native Cloud Pool controller contract on trusted default-branch lineage, retaining dispatch disabled until all required gates pass.
