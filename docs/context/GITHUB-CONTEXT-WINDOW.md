@@ -2270,5 +2270,5 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Last confirmed Gemini wave remains controller `43763042415`, children `43763061253`, `43763062743`, `43763064255`; all SUCCEEDED with artifact digests recorded in the report. This is historical execution evidence, not a new wave.
 - No production code, secrets, variables, provider calls, live ledger writes, dispatch, deployment, merge, or resource provisioning changed in this pass.
 - Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
-- Next: reconcile MediaHub controller transport/governance and independent review before another Gemini batch; separately obtain explicit Cloud Pool governance authorization before implementing a trusted-main controller, enforced serialization and full run identity correlation.
+- Next: reconcile MediaHub controller transport/governance and independent review before another Gemini batch; continue Cloud Pool's non-dispatching trusted-main controller implementation under Issue #94; retain Issue #96 fail-closed and require exact-head CI, independent review, governance and no-secret probe before any live dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
