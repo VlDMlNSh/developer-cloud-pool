@@ -30,11 +30,11 @@ These are services, not agents. Keep the permanent footprint small.
 
 ### Execution profiles
 
-**Profile A:** FCC → Claude Code → ECC. Primary coding executor. FCC must run in a credential-isolated trusted boundary. Claude Code must never inherit provider API keys; the current inspected FCC launcher copies base environment variables to the Claude child and therefore is not approved for secret-bearing execution until fixed or isolated.
+**Profile A:** Claude Code + ECC → FCC → qualified cloud API routes. Primary coding executor. ECC is the shared Claude Code capability layer, not a gateway. FCC must run in a credential-isolated trusted boundary. Claude Code must never inherit provider API keys; the current inspected FCC launcher copies base environment variables to the Claude child and therefore is not approved for secret-bearing execution until fixed or isolated.
 
-**Profile B:** Claude Code → OmniRouter → approved cloud/local model routes. Separate workspace, queue, credentials, quota scope, policy, and audit. Do not share Profile A's provider credential environment or privileged control plane.
+**Profile B:** Claude Code + ECC → OmniRouter → qualified local coding/planning LLM; a separate task-scoped media worker invokes the local video-generation runtime. Also supports coding and DevOps. Separate workspace, queue, policy, and audit; no cloud/paid fallback. Do not share Profile A's provider credential environment or privileged control plane.
 
-The two Claude Code profiles are execution paths, not two permanently occupied compute workers. Start their sessions per task and terminate after completion/cancellation.
+ECC (Everything Claude Code, official upstream affaan-m/ECC) is installed independently in both Claude Code profiles with a pinned source version and separate config state. ECC supplies agents, skills, hooks and rules; it is not a model router. The two Claude Code profiles are execution paths, not two permanently occupied compute workers. Start their sessions per task and terminate after completion/cancellation. Profile B's OmniRouter must prove Anthropic protocol compatibility; a separate media runtime is required for actual video generation.
 
 ### On-demand role catalogue
 
@@ -95,10 +95,20 @@ Parallelism is bounded by verified provider quota, host capacity, task risk, and
 
 ## Current evidence and status
 
-- Existing architecture target already defines Jarvis, Pool Bridge, PostgreSQL, LangGraph, LiteLLM, FCC Profile A, OmniRouter Profile B, browser isolation and Ollama.
+- Existing architecture target defines Jarvis, Pool Bridge, durable state, LangGraph, LiteLLM, FCC Profile A, OmniRouter Profile B, browser isolation and local inference. The dual-profile reference architecture now explicitly requires Claude Code + ECC in both profiles and a separate local video-generation runtime.
 - FCC source review found environment-variable support but also provider-key inheritance into the Claude child process; secret-bearing launch remains blocked until isolation is fixed and tested.
 - This document is an architecture decision proposal only. No agents were deployed, no routes activated, no provider calls or tests run, and no Gemini controller dispatch performed.
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+## Owner clarification — binding ECC decision (2026-11-16)
+
+- Both Claude Code profiles use the official open-source ECC (Everything Claude Code) plugin. ECC is a Claude Code harness capability layer (agents/skills/hooks/rules), not a provider, model or router.
+- Profile A: Claude Code + ECC → FCC → qualified cloud API routes.
+- Profile B: Claude Code + ECC → OmniRouter → qualified local coding/planning LLM; video generation is executed by a separate task-scoped local media runtime/adapter.
+- Each profile has independent Claude config/plugin state, workspace, queue, policy and audit. Same ECC source pin may be used in both; install/configure separately.
+- Official ECC source: https://github.com/affaan-m/ECC; observed HEAD d2ef2680594f9a17526a6e1a2e18b3d242c5d17b; MIT declared upstream. No install/runtime test performed.
+- OmniRouter must pass Claude Code Anthropic protocol/tool-call tests; OpenAI-compatible API support alone is insufficient. Actual video generation requires a separate media runtime; do not assume OmniRouter is a video generator.
+- Reference architecture: [CLOUD-CODE-DUAL-PROFILE-REFERENCE-ARCHITECTURE-2026-11-16.md](CLOUD-CODE-DUAL-PROFILE-REFERENCE-ARCHITECTURE-2026-11-16.md).
 
 ## Next bounded pass
 
