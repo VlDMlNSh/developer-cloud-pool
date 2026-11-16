@@ -3633,3 +3633,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issues #94/#96 remain OPEN; native Cloud Pool controller BLOCKED. Four secret names/scope and independent Google account/quota ownership NOT VERIFIED. No secret values read, provider calls, Gemini dispatch, merge or deployment.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 34. Wave 332 — Cloud Pool Gemini/controller recheck (2026-11-16)
+
+- Report: [Wave 332 recheck](../reports/2026-11-16-wave332-cloudpool-gemini-controller-recheck.md), commit `d7ebfa7ecf97bb766e1d48ccd6fe6a9582feaa4a`.
+- Checkpoint: [Wave 332 checkpoint](../checkpoints/2026-11-16-wave332-cloudpool-gemini-controller-recheck.md), commit `89e0fddbcdbd70273da6ee685bd2733751557a1b`.
+- Context Window pre-update blob: `b4784e3b208cac8b42217109f99d0b0e4ead664c`.
+- PR #107 remains recorded OPEN/DRAFT/UNMERGED. Candidate branch `feat/four-account-gemini-controller-2026-11-16`; controller blob re-read `ffe874a2f1286476cbbc109816afd736de3cfb57`. Candidate exact-head run #43864376148 is COMPLETED/SUCCESS; formal PR reviews: 0.
+- Four roles and fail-closed duplicate credential detection exist in candidate source. SDK runtime remains FAILED/NOT QUALIFIED in prior synthetic default-entrypoint reproduction because `@google/genai` is dynamically imported without a package manifest/lockfile. Fake-client tests do not qualify actual SDK runtime.
+- Issues #94 and #96 remain OPEN. PR #102 is only a read-only event-admission probe; no durable idempotency/dispatch qualification is established.
+- Four secret metadata/scope and distinct Google account/quota ownership remain NOT VERIFIED. No secret values read and no provider calls or Gemini dispatch.
+- Current default HEAD and effective governance were NOT RECONFIRMED by the available branch-search/API responses in this pass; last recorded default SHA `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` is historical context only, not a fresh assertion.
+- No Cloud Pool dispatch, MediaHub bridge dispatch, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: pin official SDK in an authorized Node 22/npm environment, generate a complete lockfile, run `npm ci`, and test actual SDK using fake fetch with network denied; maintain fail-closed dispatch.
