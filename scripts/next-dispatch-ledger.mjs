@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 
 const OWNER_REPO = "VlDMlNSh/developer-cloud-pool";
 const CONTROL_ISSUE = 96;
+const OWNER_LOGIN = "VlDMlNSh";
+const CONTROL_ISSUE_URL = "https://api.github.com/repos/" + OWNER_REPO + "/issues/" + CONTROL_ISSUE;
 const PREFIX = "<!-- cloud-pool-next-ledger:v1 ";
 const SUFFIX = " -->";
 
@@ -47,6 +49,14 @@ export function parseLedgerComments(comments) {
     const body = String(comment?.body || "");
     const start = body.indexOf(PREFIX);
     if (start < 0) continue;
+
+    // A plain digest detects payload corruption; it does not authenticate
+    // who posted the GitHub comment. Trust only server-provided author,
+    // owner association and exact control-issue URL metadata.
+    // Untrusted marker comments are ignored and cannot poison ledger state.
+    if (comment?.user?.login !== OWNER_LOGIN ||
+        comment?.author_association !== "OWNER" ||
+        comment?.issue_url !== CONTROL_ISSUE_URL) continue;
     const end = body.indexOf(SUFFIX, start + PREFIX.length);
     if (end < 0 || body.slice(0, start).trim() || body.slice(end + SUFFIX.length).trim()) {
       throw new Error("Malformed Cloud Pool ledger comment.");
@@ -64,12 +74,10 @@ export function parseLedgerComments(comments) {
 }
 
 /**
- * Plans one serialized write-ahead step. Caller must hold the repository-wide
- * controller concurrency lock while reading comments and applying the plan.
- * This module never dispatches a workflow or performs network I/O.
+ * Pure state-machine planner for the write-ahead ledger. It has no lock
+ * semantics and grants no runtime mutation or dispatch authority.
  */
-export function planNextDispatch({ sourceCommentId, targetSha, records, observedRuns = [], lockHeld }) {
-  if (lockHeld !== true) return Object.freeze({ action: "DENY", reason: "SERIAL_CONTROLLER_LOCK_REQUIRED" });
+export function planNextDispatchState({ sourceCommentId, targetSha, records, observedRuns = [] }) {
   if (!Number.isSafeInteger(sourceCommentId) || sourceCommentId <= 0 ||
       !/^[0-9a-f]{40}$/.test(String(targetSha || ""))) {
     return Object.freeze({ action: "DENY", reason: "INVALID_SOURCE_OR_TARGET" });
@@ -124,15 +132,18 @@ export function planNextDispatch({ sourceCommentId, targetSha, records, observed
  * that has just persisted the intent may dispatch once. Recovery invocations
  * cannot regain this permission from the durable record.
  */
-export function authorizeSingleDispatch({ record, appendConfirmed, sameInvocation }) {
-  if (!validRecord(record) || record.state !== "DISPATCH_INTENT" ||
-      appendConfirmed !== true || sameInvocation !== true) {
-    return Object.freeze({ allowed: false, reason: "FRESH_INTENT_COMMIT_REQUIRED" });
-  }
-  return Object.freeze({
-    allowed: true,
-    dispatchId: record.dispatchId,
-    targetSha: record.targetSha,
-    maxAttempts: 1
-  });
+/**
+ * No runtime lock/lease implementation is currently qualified. A durable
+ * ledger intent alone must never be interpreted as dispatch authority.
+ */
+export function authorizeSingleDispatch() {
+  return Object.freeze({ allowed: false, reason: "DURABLE_LOCK_NOT_IMPLEMENTED" });
+}
+
+/**
+ * Runtime entry point intentionally fails closed until an authenticated
+ * durable lease with fencing and crash recovery is implemented and verified.
+ */
+export function planNextDispatch() {
+  return Object.freeze({ action: "DENY", reason: "DURABLE_LOCK_NOT_IMPLEMENTED" });
 }
