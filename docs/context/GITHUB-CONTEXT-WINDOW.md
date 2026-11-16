@@ -2387,3 +2387,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Status: controller RUNNING; three children RUNNING; signature checks SUCCEEDED; artifacts NOT VERIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: poll the exact four run IDs, verify final child job conclusions, PR heads, artifact digests, and then update this ledger. Do not post another /next while this batch is active.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Wave 318 final results supersede RUNNING snapshot
+
+- Final report: [Wave 318 final reconciliation](../reports/2026-11-16-mediahub-next-wave318-dispatch-reconciliation.md). Final checkpoint: [Wave 318 final checkpoint](../checkpoints/2026-11-16-mediahub-next-wave318.md).
+- Controller run 43819550177 and dispatch job 133139270015 SUCCEEDED on target 1694cde38c7b7d69baf9676b4908c1bb6e197fbe.
+- Agent 1 run 43819583119; jobs 133139329631 / 133139358709 SUCCESS; artifact 14203564217 digest sha256:0702f861232cad66c43a54bf41303039b5b91d7802911d8adf7782064d89c8c4; PR #736 head 05a9e7d9f5ba7b805c0580f18e4f9a215fc71043. Evidence-only Markdown, no executable implementation. Checkpoint contains stale statement that PR creation is pending.
+- Agent 2 run 43819585657; jobs 133139338842 / 133139370404 SUCCESS; artifact 14203269165 digest sha256:4fdf4b8a05d547100d0c48fd512a0991df9cf87c7f4bdd6bad2f214ac970fffb; PR #738 head c3cc0e39b83b390fdffdb3e2ee3a1f253ae51e60. Report explicitly says tests were not run; test commands are instructions only.
+- Agent 3 run 43819588325; jobs 133139347574 / 133139374893 SUCCESS; artifact 14204145902 digest sha256:b4d3bca4c65e535fd5d9f942f21a9944e2ad4ce3ac341d5ae380d6017282b676; PR #737 head 9e9bef183f0619a4ec101ec9f40eed0173d4b2b6. Static source/test inspection only; acceptance claims marked Verified are not backed by test execution.
+- All three PRs OPEN/DRAFT/UNMERGED; formal review submissions 0 each. Exact-head workflow runs for all three PR heads returned action_required; exact-head CI NOT VERIFIED.
+- Artifact API confirmed each unexpired artifact, artifact ID, SHA-256 digest and exact target head_sha. Controller log independently recorded all child run IDs, conclusions, jobs and artifact digests.
+- This addendum supersedes the preceding Wave 318 RUNNING snapshot. Controller/three agents SUCCEEDED; evidence limitations and CI/review gates remain open. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: correct Agent 1 stale statement; obtain real Agent 2 non-secret test execution outputs; narrow Agent 3 unsupported Verified claims; resolve exact-head CI and formal independent review before merge/deploy.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
