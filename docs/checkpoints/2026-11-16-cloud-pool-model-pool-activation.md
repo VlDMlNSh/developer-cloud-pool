@@ -51,3 +51,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 
 - Additional exact-head evidence: PR #107 run `43864376148` SUCCESS; job `Validate workflow syntax and security invariants` completed successfully. It did not provide evidence that `gemini-four-agent-controller.test.mjs` executed; unit tests remain NOT VERIFIED. No artifacts were produced.
+
+
+## /next controller, Gemini and browser revalidation — 2026-11-16
+
+- PR #107 exact head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; run `43864376148`, job `133289028904` SUCCESS. Retrieved job log confirms `node --test scripts/gemini-four-agent-controller.test.mjs`: 6 tests, 6 pass, 0 fail. Fake injected clients only; no provider calls. Secret existence/account/project/quota verification NOT VERIFIED. PR remains Draft, reviews 0.
+- PR #102 head `e6613c152c5334db04f520cfe069f3bbd1c57772`; run `43825390133` read-only event contract tests SUCCESS. Its PR event correctly produced `EVENT_NOT_ISSUE_COMMENT`; event-admission job skipped. Live owner-authenticated Issue #96 comment probe NOT RUN. Issue #96 OPEN / PLANNED; no dispatch or durable idempotency proof.
+- PR #106 head `afd3dba8bc9db37c8e07b8becf128233f46e4533`; run `43861948322` SUCCESS. Browser job `133280713541` installed pinned agent-browser 0.43.0/Chromium, opened fixed `https://example.com`, verified `Example Domain`, and created an ephemeral screenshot. No artifact available; hash value not retrieved; explicit close completion NOT independently verified. No authenticated Web access or persistent session.
+- Agent skills bootstrap job `133280713473` SUCCESS; logs confirm all 11 pinned skill files validated. This is bootstrap verification only, not Gemini execution.
+- PR #74 exact-head run `43692828719` SUCCESS; PR remains Draft, reviews 0. PR #103 documentation PR has no workflow runs returned. PRs #74/#102/#103/#106/#107 all remain OPEN/DRAFT/UNMERGED; formal reviews 0.
+- Four Gemini API clients (PR #107) are not equivalent to three GitHub child jobs required by Issue #96. Maintain this distinction in controller design.
+- Corrected prior evidence: Gemini unit suite is VERIFIED as 6/6 passing on PR #107 exact head. Provider calls remain NOT RUN.
+- No secrets read, owner event probe, child dispatch, provider calls, merge or deployment.
+
+## Updated next step
+
+Qualify Issue #96 owner-event admission on trusted default-branch workflow, durable idempotency/replay and owner-only provenance; obtain independent security review and ruleset evidence. Only then dispatch exactly the controller-authorized number of child jobs. Keep four Gemini clients unactivated pending secret-name presence and independent account/quota evidence. Persistent remote browser/dashboard remains a separate unqualified requirement.
