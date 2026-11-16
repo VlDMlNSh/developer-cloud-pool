@@ -592,3 +592,49 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     expect(count.n).toBe(1);
   });
 });
+
+
+describe("attempt transition integrity guard", () => {
+  it("rejects prepared-to-running without a current fenced lease, then permits the lease-mediated transition", async () => {
+    const item = { ...approval, approvalId: "approval-running-guard", envelopeDigest: "c".repeat(64) };
+    await seed(item);
+    const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
+    expect(claimed.decision).toBe("TASK_CREATED_OR_ATTACHED");
+
+    const created = await createTaskAttempt(env.POOL_DB, {
+      taskKey: claimed.taskKey,
+      attemptId: "attempt-running-guard",
+      attemptNumber: 1,
+      inputDigest: "d".repeat(64),
+      executionIdempotencyKey: "exec-running-guard",
+      now: NOW + 1
+    });
+    expect(created.decision).toBe("ATTEMPT_CREATED");
+
+    await expect(env.POOL_DB.prepare(`
+      UPDATE pool_attempts
+         SET status = 'running', started_at = ?
+       WHERE attempt_id = ?
+    `).bind(NOW + 2, "attempt-running-guard").run())
+      .rejects.toThrow("ATTEMPT_RUNNING_REQUIRES_CURRENT_LEASE");
+
+    const unchanged = await env.POOL_DB.prepare(
+      "SELECT status, lease_generation FROM pool_attempts WHERE attempt_id = ?"
+    ).bind("attempt-running-guard").first();
+    expect(unchanged).toMatchObject({ status: "prepared", lease_generation: 0 });
+
+    const lease = await acquireAttemptLease(
+      env.POOL_DB, claimed.taskKey, "worker-running-guard", NOW + 3, 30
+    );
+    expect(lease).toMatchObject({
+      decision: "ATTEMPT_LEASE_ACQUIRED",
+      attemptId: "attempt-running-guard",
+      generation: 1
+    });
+
+    const running = await env.POOL_DB.prepare(
+      "SELECT status, lease_generation FROM pool_attempts WHERE attempt_id = ?"
+    ).bind("attempt-running-guard").first();
+    expect(running).toMatchObject({ status: "running", lease_generation: 1 });
+  });
+});
