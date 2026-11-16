@@ -2128,3 +2128,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Status: PR #102 read-only admission IMPLEMENTED / exact-head CI VERIFIED; Cloud Pool live dispatch NOT IMPLEMENTED / NOT AUTHORIZED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: governance/review for Cloud Pool-native controller, then durable owner-authenticated ledger + enforced serialization + exact run correlation. Keep dispatch disabled.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Cloud Pool /next controller checkout pin correction — 2026-11-16
+
+- Revalidated Cloud Pool default branch Основной HEAD: 6507823e7ec27caa9b2621daef964dba2d4cf436. Context Window on default branch is stale (Last refreshed 2026-11-08; recorded HEAD 197ba98d0dc7d8437d759dd25bee8750d02e59ae). Do not rely on that historical state without primary-ref refresh.
+- Issue #94 and #96 remain OPEN. Issue #96 remains PLANNED and explicitly keeps dispatch disabled pending controller source, adversarial tests, exact-head CI, governance/ruleset and trusted-main no-secret probe.
+- PR #102 remains OPEN / DRAFT / UNMERGED. Original head a19aca5c31bf6a39104f4eb10296a94eab404fda; prior exact-head CI run 43815104716 / job 133125329861 SUCCESS (17 tests), event job skipped on PR event; Pool Contract Validation 43815104739 / job 133125261247 SUCCESS.
+- Source review identified mutable checkout ref in the read-only event-admission job. Corrected it to checkout immutable github.sha in commit 38844dfb4a881ec858742e5bf9e35724f6b8a95d; workflow blob 1a0db4fd84f02e7e0a16951282525dc224c3ae1f. This binds the executed script to the event SHA.
+- New exact-head CI for 38844dfb4a881ec858742e5bf9e35724f6b8a95d: NOT VERIFIED; PR run lookup returned no run and combined status contexts were empty. The previous head's green CI does not transfer.
+- No live controller dispatch, child execution, secrets/variables access, provider call, deployment, merge or default-branch change. No independent review has been recorded.
+- Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope. The MediaHub controller is not a Cloud Pool task router; Cloud Pool dispatch remains fail-closed.
+- Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
+- Detailed report: 2026-11-16 controller scope and checkout correction, docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md. Checkpoint: docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
