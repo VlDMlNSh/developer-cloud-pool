@@ -66,3 +66,12 @@ Canonical MediaHub map (reference only; not Cloud Pool implementation authority)
 - PR #102 remains OPEN / DRAFT / UNMERGED; formal review count remains zero. No merge, dispatch, secret/variable access, provider call, deployment or default-branch modification.
 - This is bounded source hardening only. Durable idempotency, enforced repository-wide serialization, authoritative API reconciliation and child dispatch remain unimplemented. Gemini Agent 1/2/3 remain NOT RUN for Cloud Pool scope because Issue #96 gates are not passed and the MediaHub controller cannot assign Cloud Pool tasks.
 - Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+## Exact-head CI reconciliation — 2026-11-16
+
+- New PR #102 head: 38844dfb4a881ec858742e5bf9e35724f6b8a95d, based on default 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- Read-only controller run 43821733529: contract-tests job 133146174137 SUCCESS; event-admission job 133146175570 SKIPPED because this was a PR event. Job log confirms Node 24.9.0 and 17 tests PASS / 0 FAIL / 0 skipped.
+- Pool Contract Validation run 43821733548: job 133146122452 SUCCESS. Log confirms YAML parse for all six workflows, contract validation PASS, pinned external Actions references and dispatch gate false.
+- Thus exact-head CI is VERIFIED for the bounded PR validation path. No live issue_comment admission was exercised; event-admission remains intentionally SKIPPED on PR event.
+- PR #102 remains OPEN / DRAFT / UNMERGED; formal reviews 0. Combined commit-status contexts remain empty, so do not claim required status contexts are green.
+- This does not close the durable ledger, enforced serialization, exact run reconciliation, governance or trusted-main no-secret gates. Gemini 1/2/3 NOT RUN for Cloud Pool scope; dispatch remains fail-closed.
