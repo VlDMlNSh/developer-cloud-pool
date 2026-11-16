@@ -446,3 +446,10 @@ The implementation and workflow files validated by CI run `43841574699` are pinn
 - Gemini three-agent wave remains NOT RUN / BLOCKED: Cloud Pool-native controller absent on default branch; Issues #94/#96 open. No MediaHub controller substitution.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - Next: continue Cloud Pool-native exact owner admission/controller and durable single-use task claim work. Keep dispatch disabled until every security/governance and exact-head gate passes.
+
+
+### Latest /next handoff report
+
+- Report: [2026-11-16-next-chat-restore-handoff.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-chat-restore-handoff.md).
+- Canonical new-chat restore guide: [CLOUD-POOL-CHAT-RESTORE-2026-11-16.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md).
+- Both docs are on PR #106 feature branch, not default branch; PR remains OPEN/DRAFT/UNMERGED.
