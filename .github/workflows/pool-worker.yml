@@ -270,12 +270,18 @@ jobs:
     needs: [validate, probe, browser, skills]
     runs-on: ubuntu-24.04
     timeout-minutes: 3
+    # Serialize Worker report mutations with Supervisor reconciliation.
+    concurrency:
+      group: developer-cloud-pool-supervisor
+      queue: max
+      cancel-in-progress: false
     permissions:
       issues: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TASK_ISSUE: ${{ inputs.task_issue }}
       TARGET_SHA: ${{ inputs.target_sha }}
+      PROFILE: ${{ inputs.profile }}
       VALIDATE_RESULT: ${{ needs.validate.result }}
       PROBE_RESULT: ${{ needs.probe.result }}
       BROWSER_RESULT: ${{ needs.browser.result }}
@@ -304,7 +310,30 @@ jobs:
           const get = await fetch(base, { headers });
           if (!get.ok) throw new Error("Cannot load issue for report: HTTP " + get.status);
           const issue = await get.json();
+          const expectedProfiles = {
+            "dsh-headless-probe": "DSH headless probe",
+            "agent-browser-headless": "Agent-browser headless",
+            "agent-skills-bootstrap": "Agent skills bootstrap"
+          };
+          if (issue.pull_request || issue.state !== "open") {
+            console.log("Task is no longer an open issue; stale Worker report was not applied.");
+            process.exit(0);
+          }
           const oldLabels = issue.labels.map(label => label.name);
+          if (!oldLabels.includes("pool:claimed")) {
+            console.log("Supervisor claim is no longer active; stale Worker report was not applied.");
+            process.exit(0);
+          }
+          const shaMatch = String(issue.body || "").match(/^### Target SHA\\s*\\r?\\n+([0-9a-f]{40})\\s*$/im);
+          const profileMatch = String(issue.body || "").match(/^### Worker profile\\s*\\r?\\n+([^\\r\\n]+)\\s*$/im);
+          if (!shaMatch || shaMatch[1] !== process.env.TARGET_SHA) {
+            console.log("Task target SHA changed; stale Worker report was not applied.");
+            process.exit(0);
+          }
+          if (!expectedProfiles[process.env.PROFILE] || !profileMatch || profileMatch[1].trim() !== expectedProfiles[process.env.PROFILE]) {
+            console.log("Task profile changed or is not allowlisted; stale Worker report was not applied.");
+            process.exit(0);
+          }
           const managed = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:skills-ready", "pool:needs-review", "pool:invalid"];
           const retained = oldLabels.filter(label => !managed.includes(label));
           const skillsSuccess = process.env.SKILLS_RESULT === "success";
@@ -316,6 +345,11 @@ jobs:
             body: JSON.stringify({ labels: [...new Set([...retained, terminal])] })
           });
           if (!patch.ok) throw new Error("Cannot update task state: HTTP " + patch.status);
+          const updatedIssue = await patch.json();
+          const updatedLabels = (updatedIssue.labels || []).map(label => label.name);
+          if (updatedIssue.state !== "open" || !updatedLabels.includes(terminal) || updatedLabels.includes("pool:claimed")) {
+            throw new Error("Task state mutation did not produce the expected terminal label transition.");
+          }
           const body = [
             skillsSuccess ? "**POOL_AGENT_SKILLS_BOOTSTRAP_COMPLETE**" : success ? "**POOL_DSH_OR_BROWSER_PROBE_COMPLETE**" : "**POOL_WORKER_NEEDS_REVIEW**",
             "",
@@ -328,6 +362,14 @@ jobs:
             "- Provider credentials: none",
             "- Production qualification: NOT CLAIMED"
           ].join("\n");
+          const finalRead = await fetch(base, { headers });
+          if (!finalRead.ok) throw new Error("Cannot re-read task before audit comment: HTTP " + finalRead.status);
+          const finalIssue = await finalRead.json();
+          const finalLabels = (finalIssue.labels || []).map(label => label.name);
+          if (finalIssue.state !== "open" || !finalLabels.includes(terminal) || finalLabels.includes("pool:claimed")) {
+            console.log("Task changed after terminal update; audit comment was not appended.");
+            process.exit(0);
+          }
           const posted = await fetch(base + "/comments", {
             method: "POST",
             headers,
