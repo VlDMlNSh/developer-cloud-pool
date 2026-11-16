@@ -11,7 +11,7 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
-const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  report:\\s*$/m)[0] || "";
+const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
