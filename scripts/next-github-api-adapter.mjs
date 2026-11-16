@@ -83,11 +83,6 @@ export function createGithubLedgerApi({ token, fetchImpl = fetch, ownerRepo = OW
 }
 
 /**
- * Verifies the source against GitHub's canonical issue/comment APIs and
- * current default-branch ref before allowing the non-dispatching ledger step.
- * This function intentionally does not grant or exercise dispatch permission.
- */
-/**
  * Source verification cannot authorize ledger mutation until the durable
  * controller lease is implemented. Fail closed before any GitHub API lookup.
  */
