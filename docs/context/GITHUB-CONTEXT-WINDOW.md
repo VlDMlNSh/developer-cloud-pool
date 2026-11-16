@@ -3524,3 +3524,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Gemini controller tasks remain MediaHub OS Contour A-focused; no evidence they write Cloud Pool code. This bridge is supplementary and does not replace Cloud Pool-native dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile all three child run/job/artifact outcomes; then prepare safe selective integration plan for #106 against exact current default without merging or enabling dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Wave 317 final child reconciliation — 2026-11-16
+- Supersedes the preliminary IN_PROGRESS status in the report above: all three Gemini child runs completed SUCCESS with authorization and execution jobs SUCCESS, provenance validation and actionable-output validation steps SUCCESS.
+- Agent 1 run #43856062054; jobs #133260515012 / #133260548869; artifact #14220348279; SHA-256 `4eebac6defc9f419cd2e537d48f032192425ceaab12a0113e2251049bed2c512`.
+- Agent 2 run #43856065717; jobs #133260527835 / #133260582460; artifact #14221362859; SHA-256 `28fcad99e4241deb789a670195b12d3f3cb68e41ed2a759ff8ef8b90a8970d23`.
+- Agent 3 run #43856070228; jobs #133260544040 / #133260595666; artifact #14219444674; SHA-256 `62109f7c901c09b472b8cae25674c58bb5e71bea5bd21557498ef1a5a13e77cd`.
+- Artifacts were reported not expired. Controller run #43856030589 overall SUCCESS; its monitor job #133260449731 remained IN_PROGRESS at final read-back. Do not overstate controller monitor terminal completion.
+- This proves the approved MediaHub three-agent event bridge, not Cloud Pool-native agents. Child tasks are MediaHub OS Contour A scoped; no claim of Cloud Pool code changes.
+- Updated evidence report: ../reports/2026-11-16-next-wave317-cloud-pool-reconciliation.md, report commit `36b68cf2ddf3cb913a156d9b14ecbbff48b1dcc9`.
