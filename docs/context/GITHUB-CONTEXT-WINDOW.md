@@ -3976,3 +3976,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Distinct key strings do not prove distinct Google accounts/quota domains. Owner-only Issue #96 admission, durable lease/fencing/outbox/recovery, hosted state and child-run reconciliation remain NOT VERIFIED. PR #109 has zero formal reviews.
 - No secrets read, provider calls, Gemini dispatch, paid resources, merge or deployment. Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: split four workers into separate least-privilege process/container boundaries, inject only one credential into each, pin SDK + lockfile, test environment isolation, then integrate with durable Issue #96 admission and fencing after independent review.
+
+
+## 2026-11-16 — rollout estimate and multi-user future baseline
+
+- Owner requested a deployment-time estimate and explicitly set priority: Cloud Development Pool first; begin with a remote responsive Jarvis web interface for phone/desktop. The estimate is planning-only, not deployment evidence.
+- Planning estimate for one experienced engineer: Jarvis web MVP 3–5 engineer-days (roughly 3–7 working days); first usable Cloud Pool 7–12 additional engineer-days (roughly 2–3 weeks cumulative); hardening 5–9 additional engineer-days; independent qualification/acceptance 3–5 additional engineer-days. Overall 18–31 engineer-days / approximately 4–6 calendar weeks, subject to host, network, account, quota, runtime and security assumptions. A 2–3 week first usable release is not equivalent to Contour A acceptance.
+- Multi-user baseline: at least two isolated tenants/principals — owner/operator development workspace and purchaser/SMM workspace. Separate identity, sessions, task histories, files/artifacts, role/capability grants, quotas and provider-account mappings; server-side tenant enforcement; explicit sharing only. The SMM tenant's eventual scope includes video/photo and social-media content workflows.
+- Future clients are recorded but deferred: mobile app with local media classification, master-prompt preparation, task decomposition/routing suggestions and local queue preparation; macOS app with local assistant and explicitly permissioned OS integration. Both consume versioned Pool APIs; neither is to be developed before Contour A acceptance.
+- Remote video-generation server is a separate 2027 planning horizon and must not block the Cloud Pool launch. No procurement/deployment decision made.
+- Detailed staged estimate and assumptions: [rollout estimate and multi-user evolution](../architecture/CLOUD-POOL-ROLLOUT-ESTIMATE-AND-MULTIUSER-EVOLUTION-2026-11-16.md).
