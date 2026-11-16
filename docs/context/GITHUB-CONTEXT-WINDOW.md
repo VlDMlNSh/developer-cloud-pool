@@ -2256,3 +2256,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Exact-replay active registry fence](../reports/2026-11-16-exact-replay-active-registry-fence.md).
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+
+## 2026-11-16 — /next restore, replay-fence verification, Gemini gate recheck
+
+- Report: [2026-11-16 restore/replay-fence/Gemini gate report](../reports/2026-11-16-next-restore-replay-fence-and-gemini-gate.md), commit `6f11e55d8a8f9819c3f403979b834e4f4c41b20c`.
+- Immutable default refs: Cloud Pool `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Cloud Pool PR #101 exact head `ae9cf5d4fd76134136b9af8b5498e90a65509722`, stacked on PR #93 head `e200838d038b9cd48635233187819302bba6a33e`. Exact-head CI run `43764995448` / job `132967987468` SUCCESS; artifact `14182400848`, digest `sha256:69212472f7a2638219c3984a634cdb82df3f38b68acaa93b146536a43ea88aea`. PR OPEN/DRAFT; formal reviews 0. Test verifies stale-active-registry replay denial and immutable receipt/attempt preservation. Its synthetic DB fixture does not itself execute root-signature verification; do not overstate this test as end-to-end root-verification proof.
+- Cloud Pool PR #100 exact head `f9711f67d9b683e687c7ec5481c10b9e5626c61e`; exact-head CI run `43764511321` SUCCESS (50/50 tests per run report); formal reviews 0; OPEN/DRAFT. Ledger owner metadata hardening does not solve caller-asserted lock, missing trusted-main controller, or full workflow identity correlation.
+- MediaHub trusted-main no-secret probe `43764634513` SUCCESS for caller context only; readiness/dispatch skipped. Later controller run `43764698156` SKIPPED. Controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` still uses REST/HMAC + workflow_dispatch children, with unresolved mismatch against approved Option B workflow_call transport and no independent governance review. No new Issue #301 /next comment and no Gemini dispatch this pass.
+- Last confirmed Gemini wave remains controller `43763042415`, children `43763061253`, `43763062743`, `43763064255`; all SUCCEEDED with artifact digests recorded in the report. This is historical execution evidence, not a new wave.
+- No production code, secrets, variables, provider calls, live ledger writes, dispatch, deployment, merge, or resource provisioning changed in this pass.
+- Contour A: BLOCKED / NOT QUALIFIED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: reconcile MediaHub controller transport/governance and independent review before another Gemini batch; separately obtain explicit Cloud Pool governance authorization before implementing a trusted-main controller, enforced serialization and full run identity correlation.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
