@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — PR #106 browser worker audit and Gemini bridge reconciliation (Wave 327)
+Last refreshed: 2026-11-16 — Worker report fencing and supplementary Gemini Wave 328
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (re-read 2026-11-16 via paginated Branch API)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
-Latest daily report: `docs/reports/2026-11-16-pr106-agent-browser-exact-head-audit-wave327.md` (Wave 327; documentation branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-16-wave328-worker-report-fencing-and-gemini-bridge.md` (Wave 328; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -237,13 +237,9 @@ At the beginning of every /next:
 
 ## 14. Current next step
 
-**Next engineering step:** implement a fixed-origin, read-only GitHub REST adapter as a bounded synthetic proof on top of the Hono web console. Cover repository allowlisting, strict API origin/redirect rules, bounded pagination and response size, ETag/cache behavior, timeout/rate-limit handling, and response minimization. Use synthetic fixtures only; no live GitHub token, no real OAuth session, no task dispatch, no provider calls. Keep adapter unmounted from protected routes until production OAuth/session and independent security review pass.
+**Next engineering step:** move task-state mutation authority out of Worker report and into Supervisor only. Worker should emit immutable execution evidence; Supervisor alone should reconcile labels and comments. Add adversarial tests for issue closure, claim revocation, stale target SHA/profile, duplicate completion, concurrent reconciliation and comment ordering. Keep pool dispatch disabled until native controller, governance and independent review gates pass.
 
-In parallel, re-read Cloudflare entitlement through available read-only integration and verify the exact free-tier hosting constraints without payment changes. Do not deploy.
-
-**Contour A status: NOT ACCEPTED.** Do not start Contour B.
-
----
+Current evidence and blockers are recorded in the latest Wave 328 report below. Contour A remains NOT ACCEPTED; Contour B remains deferred.
 
 ## Canonical navigation links
 
@@ -3551,4 +3547,23 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - This chat message was a restore prompt, not an exact `/next`; no new Issue #301 comment or duplicate dispatch was created.
 - No merge, deployment, Cloud Pool production dispatch, provider/model call, or secret read. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: remediate Worker report revalidation/single-writer boundary and retain browser evidence artifacts; rerun exact-head CI and obtain independent review before dispatch or merge.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 28. Wave 328 — Worker report fencing and supplementary Gemini bridge (2026-11-16)
+
+- Report: `docs/reports/2026-11-16-wave328-worker-report-fencing-and-gemini-bridge.md`; report commit `68dba090f80eb36416d8b80affb8fb26ddcec17b`.
+- Cloud Pool default branch `Основной` HEAD `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. PR #106 final head `afd3dba8bc9db37c8e07b8becf128233f46e4533`, OPEN/DRAFT/UNMERGED. API base SHA `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92` is behind current default; refresh before merge.
+- Worker report fencing added on PR #106: Supervisor-shared concurrency group; revalidate open issue, active claim, exact target SHA and allowlisted profile; verify terminal label and re-read before comment. Worker blob `c4a11a809f49f7692ab5acb70a32b44401b721b3`; validator blob `e1adfde9c9dcb9ab70e96dc9c6de67bd71b8b542`.
+- Exact-head Pool CI run #43861948322 SUCCESS: contract job #133280713133, skills job #133280713473, browser smoke job #133280713541 all SUCCESS. Initial intermediate-head CI #43861798138 failed due over-escaped new regex assertions; corrected in final commit and rerun.
+- No artifacts retained by final Pool CI; screenshot hash remains summary-only. PR #106 review count 0; independent review NOT RUN.
+- Partial fencing only: Worker still has `issues:write`; Supervisor also mutates task state. Shared concurrency serializes automated writers, but manual/external writers and non-CAS PATCH remain. Strict Supervisor-only writer NOT VERIFIED; next: move Worker mutations into Supervisor and have Worker emit immutable evidence only.
+- Issues #94 and #96 OPEN; PR #102 OPEN/DRAFT/read-only. Cloud Pool-native /next dispatch controller not qualified on default. Exact-head CI observed `POOL_DISPATCH_ENABLED=false`; no pool task dispatched.
+- Current branch protection API 403; historical Ruleset ID 26550182 in Issue #1 is dated 2026-11-04; current effective governance NOT VERIFIED.
+- Supplementary MediaHub owner comment #6915656230; controller #43861616289 SUCCESS on target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; gate #133279587453 and dispatch monitor #133279623858 SUCCESS.
+- Agent 1 #43861646865 / jobs #133279698080, #133279735598 SUCCESS; artifact #14222874986 SHA-256 `86a02bd511f8d9c5032cb0f42b9a6ff6b905ccc9e9281bf476dd3c55bf9c684a`; draft PR #758.
+- Agent 2 #43861650674 / jobs #133279711167, #133279751411 SUCCESS; artifact #14223790713 SHA-256 `de57cccf61b3c9c01879e9c5cee755f534d65891918ffe3566c7f38d7f13f196`; draft PR #759.
+- Agent 3 #43861654600 / jobs #133279725458, #133279770854 SUCCESS; artifact #14224480387 SHA-256 `0921ca17692eb9c44d201e70e5d1066d4a17bb1600246d0c64940c716fc23214`; draft PR #757.
+- PRs #757–#759 OPEN/DRAFT, zero formal reviews, validation conclusions `action_required`. These agents acted on MediaHub, not Cloud Pool; bridge is supplementary and not a substitute for Cloud Pool-native control.
+- No secret values read, provider/model calls, Cloud Pool dispatch, production dispatch, merge or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
