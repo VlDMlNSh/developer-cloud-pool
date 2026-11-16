@@ -385,3 +385,13 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Latest code head `b5e4c63effa5c285447fbb73412b28d8d910af7c`; PR #106 OPEN/DRAFT, not merged, formal reviews 0.
 - Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS at exact code head. YAML parse, dispatch-disabled guard and browser worker security/contract assertions passed.
 - Browser runtime installation and workflow_dispatch smoke remain NOT RUN. No actual browser session evidence; no qualification. Persistent interactive sessions/dashboard not implemented; unlimited free capacity not claimed.
+
+
+## /next — Cloud Pool agent skills bootstrap — 2026-11-16
+
+- PR #106 branch `feat/agent-browser-ephemeral-worker-2026-11-16`, exact CI head `b6adae6cc8a9650749e301c1dd7306c766b0b420`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; OPEN/DRAFT, not merged.
+- Added curated 11-skill Gemini CLI pack, immutable source pins, installer, inventory hashing, docs and bootstrap worker profile. CLI `skills@1.8.1`, Node 24.9.0, copied project-local install under `.agents/skills/`.
+- Hosted-runner install validation run `43837927634` pending; do not claim installed/verified until complete. Previous run `43837909224` cancelled by superseding commit.
+- No secrets, provider credentials, write permissions, or skill-script execution in bootstrap job. Dispatch gate remains fail-closed.
+- Future Gemini worker integration is pending Issue #94; this PR does not create/enable Gemini dispatch. Browser smoke runtime remains NOT RUN. Independent review pending.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify exact-head install CI, inspect inventory, request independent review, then resume durable lease/admission work.
