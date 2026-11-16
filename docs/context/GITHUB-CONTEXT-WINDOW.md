@@ -3952,3 +3952,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secret values were read; no provider/model calls, Gemini dispatch, hosted D1 provisioning, merge, deployment or paid resource creation occurred.
 - Status: PR #111/#112 CI VERIFIED for narrow local proofs only; production integration and independent review NOT VERIFIED; Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: integrate clean-base D1 lease proof and read-only owner-event validator under one reviewed controller design, then revalidate PR #107 exact-head CI and four credential account/quota metadata gates. Keep dispatch disabled until Issue #94 gates pass.
+
+
+## 2026-11-16 /next — Gemini exact-head CI and Issue #94/#96 contract reconciliation
+
+- PR #107 head 027492668e7721a5371b38997bc76a6cd6a50cd4 remains OPEN/DRAFT/UNMERGED. Exact-head Pool Contract Validation run #43868830501 COMPLETED/SUCCESS; it includes eight local/no-provider-call tests. This corrects the previous checkpoint's stale statement that exact-head CI was pending. SDK runtime/provider execution is not established.
+- PR #107 base e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b is older than the clean base 35208f0ef28f0ac031a7acdf35fc90ccc9b16845 corroborated by PR #111/#112. Clean-base port/revalidation is required before integration.
+- Formal PR #107 reviews: zero. Secret-name presence, four distinct Google account/quota identities, SDK runtime, production provenance, durable admission/recovery and independent security review remain NOT VERIFIED / NOT RUN.
+- Critical conflict: Issue #94 specifies exactly four Gemini child executions, whereas Issue #96 says exactly three bounded child jobs. This is a blocking contract mismatch. Preserve the four-role qualification topology unless the owner explicitly revises it; do not silently implement either count until the GitHub contracts agree.
+- PR #111/#112 remain isolated local proofs only (37/37 D1 runtime tests; 21/21 read-only event tests), not production integration or dispatch authorization. Ruleset #26550182 active, but zero required approvals and CODEOWNERS review disabled.
+- Cloud Pool-native Gemini controller workflow remains NOT FOUND. No secret values read, provider calls, dispatch, hosted D1 provisioning, merge, deployment or paid resource creation.
+- Status: PR #107 narrow exact-head CI VERIFIED; controller integration and all live qualification gates NOT VERIFIED; four-vs-three contract BLOCKED; Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile Issues #94/#96, port PR #107 to current default base, then integrate only behind independently reviewed one-shot admission + durable lease/outbox. Keep dispatch disabled.
