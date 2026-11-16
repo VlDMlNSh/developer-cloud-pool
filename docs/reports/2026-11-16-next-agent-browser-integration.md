@@ -46,3 +46,5 @@ When an approved host is online, validate its exact host ID/capabilities/allowli
 - PR base SHA: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; initial head SHA: `135e312365610c9974a4c0ee6769b9b574e91dd8`.
 - Exact-head workflow query returned an empty workflow-run collection. CI is therefore NOT VERIFIED (not PASS).
 - PR is OPEN/DRAFT, mergeable=false at creation, formal reviews not yet checked; no merge.
+
+- Final verification at current branch tip `18400edb605ea979e2a129092372dcdcd4fdc129`: PR #104 is OPEN/DRAFT, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`, formal reviews 0, exact-head workflow run list empty; CI NOT VERIFIED. No merge.
