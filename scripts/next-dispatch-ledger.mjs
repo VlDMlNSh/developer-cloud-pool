@@ -78,8 +78,7 @@ export function parseLedgerComments(comments) {
  * controller concurrency lock while reading comments and applying the plan.
  * This module never dispatches a workflow or performs network I/O.
  */
-export function planNextDispatch({ sourceCommentId, targetSha, records, observedRuns = [], lockHeld }) {
-  if (lockHeld !== true) return Object.freeze({ action: "DENY", reason: "SERIAL_CONTROLLER_LOCK_REQUIRED" });
+export function planNextDispatchState({ sourceCommentId, targetSha, records, observedRuns = [] }) {
   if (!Number.isSafeInteger(sourceCommentId) || sourceCommentId <= 0 ||
       !/^[0-9a-f]{40}$/.test(String(targetSha || ""))) {
     return Object.freeze({ action: "DENY", reason: "INVALID_SOURCE_OR_TARGET" });
@@ -134,15 +133,18 @@ export function planNextDispatch({ sourceCommentId, targetSha, records, observed
  * that has just persisted the intent may dispatch once. Recovery invocations
  * cannot regain this permission from the durable record.
  */
-export function authorizeSingleDispatch({ record, appendConfirmed, sameInvocation }) {
-  if (!validRecord(record) || record.state !== "DISPATCH_INTENT" ||
-      appendConfirmed !== true || sameInvocation !== true) {
-    return Object.freeze({ allowed: false, reason: "FRESH_INTENT_COMMIT_REQUIRED" });
-  }
-  return Object.freeze({
-    allowed: true,
-    dispatchId: record.dispatchId,
-    targetSha: record.targetSha,
-    maxAttempts: 1
-  });
+/**
+ * No runtime lock/lease implementation is currently qualified. A durable
+ * ledger intent alone must never be interpreted as dispatch authority.
+ */
+export function authorizeSingleDispatch() {
+  return Object.freeze({ allowed: false, reason: "DURABLE_LOCK_NOT_IMPLEMENTED" });
+}
+
+/**
+ * Runtime entry point intentionally fails closed until an authenticated
+ * durable lease with fencing and crash recovery is implemented and verified.
+ */
+export function planNextDispatch() {
+  return Object.freeze({ action: "DENY", reason: "DURABLE_LOCK_NOT_IMPLEMENTED" });
 }
