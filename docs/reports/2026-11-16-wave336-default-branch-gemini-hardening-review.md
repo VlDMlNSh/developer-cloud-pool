@@ -34,3 +34,9 @@ PR #109 exact-head fake-client contract CI is VERIFIED. PR remains OPEN/DRAFT/UN
 Address the output-generation bound with a documented provider-supported max output token setting and tests; then pin the official SDK and lockfile and verify actual SDK behavior using fake transport/no provider calls. In parallel, continue the Cloud Pool-native Issue #96 admission/lease/fencing proof. Do not merge or enable dispatch until independent review, governance and runtime/account qualification are complete.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Post-publication exact-head recheck
+- PR #109 head advanced after the first review read. Latest PR head is `371093fc646a22cf49e3baaa8984bc2e5d3622b7`, base remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Fresh exact-head CI for the moved head: run `43872185972`, job `133315933882`, COMPLETED / SUCCESS; all seven job steps succeeded.
+- Source/test blobs remain `9c5377f58de9dd8dabb4f05c72479fad1f10e033` and `80f358197c2006105c902fd2d54c84f33e055d97`; no provider-side `maxOutputTokens` bound is present. Output cap remains post-response only.
+- This addendum supersedes the earlier candidate SHA `3cce7c749b197a771a9d018c022954b3dadaef7e` and CI run `43871896948` as the latest exact-head evidence.
