@@ -1,0 +1,43 @@
+name: Jarvis Static UI Validation
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "web/jarvis-dashboard/**"
+      - "scripts/validate-jarvis-dashboard.mjs"
+      - ".github/workflows/jarvis-static-validation.yml"
+  push:
+    branches:
+      - "feat/jarvis-mobile-readonly-shell-2026-11-04"
+    paths:
+      - "web/jarvis-dashboard/**"
+      - "scripts/validate-jarvis-dashboard.mjs"
+      - ".github/workflows/jarvis-static-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jarvis-static-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate static Jarvis UI
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Validate JavaScript syntax
+        shell: bash
+        run: node --check web/jarvis-dashboard/app.js
+
+      - name: Validate static UI contract
+        shell: bash
+        run: node scripts/validate-jarvis-dashboard.mjs

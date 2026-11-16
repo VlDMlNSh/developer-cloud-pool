@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Jarvis — мобильная панель облачной инженерной платформы. Демонстрационный интерфейс.">
+  <title>Jarvis · Cloud Console</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Jarvis, обзор">
+      <span class="brand-mark" aria-hidden="true">J</span>
+      <span><strong>JARVIS</strong><small>Cloud console</small></span>
+    </a>
+    <div class="topbar-meta">
+      <span class="environment"><span class="dot"></span> DEMO</span>
+      <button class="avatar" type="button" aria-label="Демонстрационный профиль">ОП</button>
+    </div>
+  </header>
+
+  <div class="demo-notice" role="status">
+    <strong>Демонстрационный режим.</strong>
+    Данные ниже статические и не отражают реальное состояние пула. Управляющие действия отключены.
+  </div>
+
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Основная навигация">
+      <p class="nav-caption">РАБОЧЕЕ ПРОСТРАНСТВО</p>
+      <a class="nav-link active" href="#overview" aria-current="page"><span aria-hidden="true">◫</span> Обзор</a>
+      <a class="nav-link" href="#tasks"><span aria-hidden="true">▤</span> Задачи <span class="nav-count">3</span></a>
+      <a class="nav-link" href="#agents"><span aria-hidden="true">⌘</span> Агенты</a>
+      <a class="nav-link" href="#pool"><span aria-hidden="true">▦</span> Cloud Pool</a>
+      <div class="sidebar-divider"></div>
+      <p class="nav-caption">СИСТЕМА</p>
+      <a class="nav-link" href="#activity"><span aria-hidden="true">◷</span> Журнал</a>
+      <a class="nav-link disabled" href="#approvals" aria-disabled="true" title="Недоступно в демонстрационном прототипе"><span aria-hidden="true">◇</span> Подтверждения <span class="lock">DEMO</span></a>
+      <a class="nav-link disabled" href="#settings" aria-disabled="true" title="Недоступно в демонстрационном прототипе"><span aria-hidden="true">⚙</span> Настройки</a>
+      <div class="sidebar-foot"><span class="status-pip"></span> Интерфейс прототипа<br><small>API не подключён</small></div>
+    </aside>
+
+    <main id="main" class="main-content">
+      <section id="overview" class="page-heading">
+        <div>
+          <p class="eyebrow">ПАНЕЛЬ УПРАВЛЕНИЯ</p>
+          <h1>Обзор системы</h1>
+          <p class="subheading">Сводка облачной инфраструктуры Jarvis</p>
+        </div>
+        <span class="updated-label">Макет · тестовые данные</span>
+      </section>
+
+      <section class="metric-grid" aria-label="Демонстрационные показатели">
+        <article class="metric-card"><div class="metric-top"><span>Runner активны</span><span class="metric-icon">▦</span></div><strong class="metric-value">0 <small>/ 20</small></strong><p class="metric-foot">Нет подключённых рабочих запусков</p></article>
+        <article class="metric-card"><div class="metric-top"><span>Задачи в очереди</span><span class="metric-icon">▤</span></div><strong class="metric-value">3</strong><p class="metric-foot">Пример отображения очереди</p></article>
+        <article class="metric-card"><div class="metric-top"><span>Агенты доступны</span><span class="metric-icon">⌘</span></div><strong class="metric-value">4 <small>/ 8</small></strong><p class="metric-foot">Условные значения макета</p></article>
+        <article class="metric-card"><div class="metric-top"><span>Dispatch</span><span class="metric-icon">◉</span></div><strong class="metric-value state-muted">UNKNOWN</strong><p class="metric-foot">Реальное значение не загружается</p></article>
+      </section>
+
+      <section class="content-grid">
+        <article id="tasks" class="panel tasks-panel">
+          <div class="panel-heading"><div><p class="eyebrow">ОЧЕРЕДЬ</p><h2>Последние задачи</h2></div><span class="subtle-tag">Примеры</span></div>
+          <div class="task-list">
+            <div class="task-row"><span class="task-symbol">⌘</span><div class="task-info"><strong>Анализ структуры репозитория</strong><small>POOL-014 · target SHA: demo…</small></div><span class="pill pill-running">RUNNING*</span></div>
+            <div class="task-row"><span class="task-symbol">▤</span><div class="task-info"><strong>Проверка документации</strong><small>POOL-013 · target SHA: demo…</small></div><span class="pill pill-queued">QUEUED*</span></div>
+            <div class="task-row"><span class="task-symbol">◇</span><div class="task-info"><strong>Проверка интерфейса</strong><small>POOL-012 · target SHA: demo…</small></div><span class="pill pill-review">REVIEW*</span></div>
+          </div>
+          <p class="footnote">* Статусы вымышлены и приведены только для проверки визуального представления.</p>
+        </article>
+
+        <article id="pool" class="panel pool-panel">
+          <div class="panel-heading"><div><p class="eyebrow">ВЫЧИСЛИТЕЛЬНЫЕ РЕСУРСЫ</p><h2>Cloud Pool</h2></div><span class="subtle-tag">Не подключён</span></div>
+          <div class="pool-summary"><div><strong>0 / 20</strong><small>активных Runner</small></div><div class="pool-ring" aria-label="0 процентов демонстрационной загрузки"><span>0%</span></div></div>
+          <div class="resource-line"><span>Использование слотов</span><strong>Нет телеметрии</strong></div>
+          <div class="resource-track"><span></span></div>
+          <div class="pool-note"><span class="info-icon">i</span><span>Реальные ресурсы будут показаны после подключения авторизованного Experience API.</span></div>
+        </article>
+      </section>
+
+      <section id="agents" class="panel agents-panel">
+        <div class="panel-heading"><div><p class="eyebrow">ИСПОЛНИТЕЛИ</p><h2>Профили агентов</h2></div><span class="subtle-tag">Каталог-макет</span></div>
+        <div class="agent-grid">
+          <div class="agent-card"><span class="agent-avatar">G</span><div><strong>Gemini</strong><small>Исследование и реализация</small></div><span class="agent-state">Планируется</span></div>
+          <div class="agent-card"><span class="agent-avatar">C</span><div><strong>Claude Code</strong><small>Инженерные задачи</small></div><span class="agent-state">Планируется</span></div>
+          <div class="agent-card"><span class="agent-avatar">O</span><div><strong>Ollama</strong><small>Локальная модель</small></div><span class="agent-state">Планируется</span></div>
+          <div class="agent-card"><span class="agent-avatar">B</span><div><strong>Browser Agent</strong><small>Изолированный Chromium</small></div><span class="agent-state">Планируется</span></div>
+        </div>
+      </section>
+
+      <section id="activity" class="panel activity-panel">
+        <div class="panel-heading"><div><p class="eyebrow">СОБЫТИЯ</p><h2>Последняя активность</h2></div></div>
+        <div class="activity-item"><span class="activity-dot"></span><div><strong>Мобильная консоль создана</strong><small>Локальный статический макет · без API</small></div><time>DEMO</time></div>
+        <div class="activity-item"><span class="activity-dot muted"></span><div><strong>Интеграция Experience API ожидается</strong><small>Требуются авторизация и серверная проверка полномочий</small></div><time>TODO</time></div>
+      </section>
+      <footer class="page-footer">JARVIS CLOUD CONSOLE <span>·</span> READ-ONLY PROTOTYPE <span>·</span> NO LIVE CONNECTION</footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Мобильная навигация">
+    <a href="#overview" class="mobile-nav-link active"><span>◫</span>Обзор</a>
+    <a href="#tasks" class="mobile-nav-link"><span>▤</span>Задачи</a>
+    <a href="#agents" class="mobile-nav-link"><span>⌘</span>Агенты</a>
+    <a href="#pool" class="mobile-nav-link"><span>▦</span>Пул</a>
+    <a href="#activity" class="mobile-nav-link"><span>◷</span>Журнал</a>
+  </nav>
+</body>
+</html>
