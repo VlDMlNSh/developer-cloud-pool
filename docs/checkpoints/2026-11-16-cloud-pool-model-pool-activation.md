@@ -80,3 +80,14 @@ Qualify Issue #96 owner-event admission on trusted default-branch workflow, dura
 - No secrets read, provider calls, dispatch, child runs, deployment or merge.
 
 **Next:** design and test a real durable serialization primitive with monotonic fencing, lease expiry/recovery and single-writer provenance. Keep runtime authorization disabled until independent qualification.
+
+
+## /next durable coordinator component selection — 2026-11-16
+
+- Reuse audit: PR #36 D1 single-use approval proof (head `e11fc90e50bd20b166207af64551c49cfa80ffb4`; exact-head CI runs `42329438351` and `42329438308` SUCCESS); PR #39 D1 transactional claim/outbox proof (head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; 19/19 Workers-runtime tests, exact-head runs SUCCESS); PR #92 exact replay integrity proof (head `7014961587759b27d2ef6e91c60ce098d077ae83`; exact-head D1 + contract CI SUCCESS).
+- Source inspection of PR #39 confirms `lease_generation` and `lease_expires_at` are only schema fields. `claimAndEnqueue()` performs approval consume + atomic claim/outbox creation but does not implement lease acquisition, fencing, expiry takeover, stale-holder rejection, or crash recovery. All these proofs keep dispatch disabled.
+- Platform selection: preferred candidate is a single named Cloudflare Durable Object as serialized controller coordinator, with D1 retained for immutable audit/admission and transactional outbox. DO SQLite storage provides the durable state boundary; monotonic fencing generation is advanced atomically there. External GitHub dispatch remains outside the transaction; ambiguous outcomes require exact-run reconciliation and no blind retry.
+- Upstream reference evaluated: `losfair/dlock` demonstrates monotonically increasing lease/fencing numbers on Cloudflare Durable Objects; reference only, not adopted or independently qualified: https://github.com/losfair/dlock.
+- Official platform sources: Durable Objects Free-plan availability and strongly consistent durable storage: https://developers.cloudflare.com/durable-objects/ ; D1 single-threaded behavior and Free limits: https://developers.cloudflare.com/d1/platform/limits/ .
+- No Cloudflare resource, secrets, billing, deployment, provider calls, dispatch, child agents or merge.
+- Next: local-only DO SQLite coordinator proof with concurrency, fencing, expired lease, stale owner, crash recovery, duplicate source and ambiguous external-dispatch tests. Keep `dispatch:false` until independent review and free-tier eligibility are verified.
