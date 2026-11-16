@@ -2111,3 +2111,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+## Gemini batch evidence review — 2026-11-16
+
+- Report: ../reports/2026-11-16-next-gemini-batch-evidence-review.md.
+- MediaHub Issue #301 owner comments 6911679168 and 6911688014 contain /next.
+- Three Contour A agent outputs were published against immutable MediaHub target SHA 1694cde38c7b7d69baf9676b4908c1bb6e197fbe:
+  - Agent 1 PR #740, branch agent-1-contour-a-0480438c-9cb0-42d9-a5ad-806c6c341332, evidence blob fe804e4d80bbda6b3ceee03bbbc8f0acc7ba5441. Connectivity/checkpoint only; no implementation diff.
+  - Agent 3 PR #741, branch agent-3-security-audit-1d09a9cb-74ae-4eae-a936-6c234d95e2ec, evidence blob 4676b8425d88eee4acf3f9091e67787c9eb71fa8. Audit report created; execution logs not attached.
+  - Agent 2 PR #743, branch agent-2-contract-verification-72879ef1-1b52-4aca-b5e3-09598c16814b, evidence blob a0ecd69f2087d5cf4044e6072f0bc63010b9331d. Contract/test mapping report created; no execution result recorded.
+- All three PRs are OPEN; formal review submissions: 0 each. Exact-head CI: NOT VERIFIED. Parent controller run ID and child run/job IDs: NOT VERIFIED through available Actions read interface. Treat results as successful artifact/PR creation only, not independent verification or acceptance.
+- No merge, deployment, provider call, secret access, qualification or acceptance.
+- Cloud Pool default branch snapshot at start of review: Основной @ 6507823e7ec27caa9b2621daef964dba2d4cf436; this Context Window publication advances it.
+- Next step: resume trusted route-registry / durable admission implementation after re-reading refs, PR ancestry and exact-head CI. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
