@@ -3385,3 +3385,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: advance Issue #94 controller contract and adversarial/no-secret test design; independently review #87/#92/#93 before integration. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Agent Browser runtime evidence and Gemini dispatch gate
+
+- Dated report: [Agent Browser runtime /next report](../reports/2026-11-16-agent-browser-runtime-next.md).
+- Default branch `Основной` observed at `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
+- PR #106 `feat/agent-browser-ephemeral-worker-2026-11-16` exact head `15de4aa015493aec7ee5137f1e4dae9591c4ab4f`, base at the observed default HEAD; OPEN/DRAFT/UNMERGED, formal reviews 0.
+- Exact-head Pool Contract Validation run #43848661335 SUCCESS. Browser smoke job #133235281414 SUCCESS; it installed pinned agent-browser 0.43.0 / Chromium on an ephemeral ubuntu-24.04 runner, loaded core/dogfood skills, opened only `https://example.com`, captured a screenshot hash and closed the session. Skills bootstrap job #133235280917 SUCCESS; workflow/security validator job #133235281584 SUCCESS.
+- This verifies outbound browser access only to the single public smoke target from a GitHub-hosted ephemeral runner. It does not verify arbitrary domains, authenticated browsing, persistent/cross-job sessions, production pool dispatch or a persistent web dashboard. PR #106 explicitly records runtime dispatch NOT RUN.
+- Approved Gemini batch controller is in MediaHub OS, not Cloud Pool. Historical Wave 324 three-agent batches are not current evidence. The controller's REST/HMAC vs approved `workflow_call` transport mismatch and independent review remain unresolved; no new Issue #301 `/next` comment or controller run was created in this pass. Gemini Agent 1/2/3: NOT RUN — controller transport/governance gate not cleared.
+- Current authenticated GitHub identity is owner `VlDMlNSh`. Active Cloud Pool ruleset #26550182 was observed; detailed conditions were not re-read. Keep `POOL_DISPATCH_ENABLED=false`; do not dispatch Worker/DSH/browser tasks or merge PR #106 without independent review.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: harden URL/redirect/egress and artifact-scrubbing tests in PR #106, then obtain independent security review; separately reconcile Gemini controller transport before any new three-agent batch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
