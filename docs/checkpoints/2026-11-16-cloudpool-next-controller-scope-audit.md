@@ -64,3 +64,17 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — shared concurrency group correction — 2026-11-16
+
+- Default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN; #96 PLANNED / dispatch disabled.
+- PR #102 head updated to `0f4743cd675740224220a0d2e97652082bd68906`. The read-only admission workflow now shares the existing Supervisor concurrency group `developer-cloud-pool-supervisor`, with `queue: max` and `cancel-in-progress: false`. Pool contract validation asserts the shared group and queue contract.
+- Workflow blob `6216de6690c065cb04b929b6c96713cd074df304`; validator blob `d7cf9763b0e1e3c9e13b0a608e7f557ae0adcb76`.
+- Exact-head runs: controller push `43825004875` / job `133156745379` SUCCESS; Pool Contract Validation `43825012491` / job `133156682594` SUCCESS; controller PR run `43825012429` SUCCESS. Event admission skipped on push is expected. PR #102 still Draft/unmerged, reviews 0.
+- GitHub Actions concurrency guarantees at most one running run/job per group; `queue: max` permits up to 100 pending and overflow is rejected/cancelled. Ordering is not guaranteed. This is scheduler mutual exclusion only, not durable lease/fencing/crash recovery.
+- PR #100 still has caller-supplied `lockHeld: true`; durable lock/fencing remains NOT IMPLEMENTED. Production integration is not merged; dispatch stays disabled.
+- Gemini 1/2/3 NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable authenticated lease/claim with fencing and recovery; then remove caller-asserted lock flag once the approved trusted controller contract is bound to the shared scheduler group.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
