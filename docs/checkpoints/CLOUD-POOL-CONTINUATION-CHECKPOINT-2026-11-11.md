@@ -346,3 +346,14 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - PR #437 exact-head checks all PASS, including non-launching PR-level probe run `39757948751` / job `119754632409` SUCCESS; `dispatch_and_monitor` and explicit batch-admission jobs were SKIPPED. This is a PR-level probe, not a trusted-main probe.
 - PR #432, #433 and #437 have zero formal review submissions. PRs #434/#435/#436 are CLOSED / UNMERGED duplicates.
 - Trusted-main no-secret probe remains NOT RUN; HMAC secret/variable values were not read and their effective configuration/permissions are NOT VERIFIED. Therefore controller bridge remains NOT QUALIFIED. No owner `/next` comment was posted and no Gemini controller/child dispatch occurred.
+
+
+## Four-Gemini candidate verification — 2026-11-16
+
+- Report: `docs/reports/2026-11-16-four-gemini-candidate-bounds-and-dispatch-gate.md` (commit `d8aa13e4c2ee4093e8d031b4f1c764a2722f20fa`).
+- PR #107 exact-head fake-client suite: 8/8 PASS at head `027492668e7721a5371b38997bc76a6cd6a50cd4`; run `43868830501`.
+- PR #109 exact-head fake-client suite: 11/11 PASS at head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; run `43872185972`, job `133315933882`.
+- Both PRs remain draft/unmerged; formal reviews 0; aggregate commit status contexts empty / NOT VERIFIED. SDK installation/runtime, secret presence, account/quota separation, production event wiring, durable lease/fencing/recovery and child reconciliation remain NOT VERIFIED.
+- Gemini live dispatch NOT RUN. MediaHub's three-role controller is not a substitute for Cloud Pool Issue #96. No secrets/provider calls.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: complete trusted Issue #96 admission + durable lease/recovery, then exact-head adversarial CI and independent security review.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
