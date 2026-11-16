@@ -9,7 +9,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (verified 2026-11-16 via latest commit API read-back)
 Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; re-fetch branch HEAD on every `/next` before relying on it)
-Latest report commit: `3e9369b746e5300f155372ef944a37ab33345387`; checkpoint commit: `72dc25295194adf5388219a1711ab54e196f0eeb`; context update commit: `4cab570e761e8dd475845ad7f9a4b6ce9dacaa85` (documentation branch remains unmerged)
+Latest report commit: `3e9369b746e5300f155372ef944a37ab33345387`; checkpoint commit: `72dc25295194adf5388219a1711ab54e196f0eeb` (documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
