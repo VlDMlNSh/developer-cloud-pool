@@ -3427,3 +3427,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Cloud Pool Issue #94 remains OPEN and is the governing requirement; Issue #96 remains OPEN. Cloud Pool Gemini Agent 1/2/3: NOT IMPLEMENTED / NOT RUN. Keep `POOL_DISPATCH_ENABLED=false`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: complete authenticated durable idempotency with enforced lease/fencing and crash recovery, then integrate trusted-main Cloud Pool-native controller/children and verify exact-head CI/governance before dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Cloud Pool /next durable-lock reuse audit
+
+- Report: [durable-lock reuse audit](../reports/2026-11-16-next-durable-lock-reuse-audit.md), commit 727a12bc2aad185546a571ae3f53dd5a8c3e3b8a.
+- Refreshed PR #98/#100/#102/#106: all remain OPEN/DRAFT/UNMERGED; PR #100 exact head cb952a915093a4aaafb8f878954503d2460c4008 has contract job 133162447332 SUCCESS in run 43826793313. This is not runtime lock or dispatch evidence.
+- Audited PR #100 ledger/API adapter and durable-supervisor decision. GitHub issue-comment ledger + Actions concurrency is not an authoritative fenced lock; PR #100 runtime entrypoints correctly fail closed with DURABLE_LOCK_NOT_IMPLEMENTED.
+- Reuse candidate: existing Workers + D1 transactional conditional-claim/outbox local proof (PR #39/#54, 12-way and 50-way synthetic contention). It remains local-only and unqualified for hosted service, issuer authentication, free-tier scope, trusted time, fencing and crash recovery.
+- Decision: do not invent another lock on GitHub comments/concurrency. Next inspect exact D1 proof PR heads/migrations/tests and specify narrow authenticated hosted claim-service contract with monotonic fencing before deployment or child dispatch.
+- Cloud Pool Gemini Agent 1/2/3 NOT RUN; POOL_DISPATCH_ENABLED remains false. No secrets read, provider calls, child runs, deployment, merge or qualification.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
