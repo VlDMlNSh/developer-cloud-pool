@@ -10,6 +10,7 @@ const read = (path) => {
 
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
+const nextController = read(".github/workflows/next-event-controller-readonly.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
@@ -17,6 +18,7 @@ const resource = read(".github/workflows/runner-resource-probe.yml");
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
+  ".github/workflows/next-event-controller-readonly.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
   ".github/workflows/runner-resource-probe.yml"
@@ -63,6 +65,10 @@ if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISS
 if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
+const sharedConcurrency = /^concurrency:\\s*\\n\\s+group:\\s*developer-cloud-pool-supervisor\\s*\\n\\s+queue:\\s*max/m;
+if (!sharedConcurrency.test(supervisor)) fail("Supervisor must use the shared repository-wide concurrency group with queue: max");
+if (!sharedConcurrency.test(nextController)) fail("Next controller must share the Supervisor concurrency group with queue: max");
+if (/cancel-in-progress:\\s*true/.test(nextController)) fail("Next controller must not cancel an in-progress shared controller run");
 if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
 if (!/if\s*\(!dispatchEnabled\)[\s\S]*?process\.exit\(0\)/.test(supervisorScript)) fail("Supervisor must exit heartbeat-only when dispatch is disabled");
 if (failures.length === 0) pass("Supervisor dispatch is fail-closed and variable-controlled");
