@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { makeLedgerRecord, parseLedgerComments } from "../scripts/next-dispatch-ledger.mjs";
 import { reconcileNextLedgerEvent, deterministicControllerRunName } from "../scripts/next-github-ledger-adapter.mjs";
+import { matchExactControllerRuns } from "../scripts/next-github-api-adapter.mjs";
 
 const sourceCommentId = 123456789;
 const targetSha = "9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc";
@@ -18,6 +19,15 @@ function fakeApi(seed = []) {
   };
 }
 const record = state => makeLedgerRecord({ sourceCommentId, targetSha, state });
+const expectedController = dispatchId => ({
+  workflowId: 12345,
+  path: ".github/workflows/cloud-pool-next-controller.yml",
+  event: "issue_comment",
+  repository: "VlDMlNSh/developer-cloud-pool",
+  branch: "Основной",
+  targetSha,
+  displayTitle: deterministicControllerRunName(dispatchId)
+});
 
 test("requires repository-wide serialization lock", async () => {
   const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api: fakeApi(), lockHeld: false });
@@ -64,18 +74,18 @@ test("intent with delayed run visibility returns no-retry ambiguity", async () =
 test("reconciles one visible deterministic controller run", async () => {
   const intent = record("DISPATCH_INTENT");
   const api = fakeApi([intent]);
-  api.setRuns([{ id: 555, display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha }]);
-  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
+  api.setRuns([{ id: 555, workflow_id: 12345, path: ".github/workflows/cloud-pool-next-controller.yml", event: "issue_comment", repository: { full_name: "VlDMlNSh/developer-cloud-pool" }, head_repository: { full_name: "VlDMlNSh/developer-cloud-pool" }, head_branch: "Основной", display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha }]);
+  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true, expectedController: expectedController(intent.dispatchId) });
   assert.equal(result.action, "RECONCILED");
   assert.equal(result.controllerRunId, 555);
 });
 
 test("duplicate visible controller runs are an incident", async () => {
   const intent = record("DISPATCH_INTENT");
-  const run = { display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha };
+  const run = { workflow_id: 12345, path: ".github/workflows/cloud-pool-next-controller.yml", event: "issue_comment", repository: { full_name: "VlDMlNSh/developer-cloud-pool" }, head_repository: { full_name: "VlDMlNSh/developer-cloud-pool" }, head_branch: "Основной", display_title: deterministicControllerRunName(intent.dispatchId), head_sha: targetSha };
   const api = fakeApi([intent]);
   api.setRuns([{ ...run, id: 555 }, { ...run, id: 556 }]);
-  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
+  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true, expectedController: expectedController(intent.dispatchId) });
   assert.equal(result.action, "INCIDENT");
 });
 
@@ -84,4 +94,42 @@ test("run listing failure blocks without dispatch", async () => {
   api.listWorkflowRuns = async () => { throw new Error("API unavailable"); };
   const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
   assert.equal(result.action, "BLOCKED");
+});
+
+test("requires complete approved workflow identity before reconciling a run", async () => {
+  const intent = record("DISPATCH_INTENT");
+  const api = fakeApi([intent]);
+  api.setRuns([]);
+  const result = await reconcileNextLedgerEvent({ sourceCommentId, targetSha, api, lockHeld: true });
+  assert.equal(result.action, "BLOCKED");
+  assert.equal(result.reason, "EXACT_CONTROLLER_IDENTITY_REQUIRED");
+});
+
+test("exact run matcher rejects same-title and same-SHA runs from the wrong workflow identity", () => {
+  const expected = expectedController(record("DISPATCH_INTENT").dispatchId);
+  const valid = {
+    id: 555, workflow_id: expected.workflowId, path: expected.path, event: expected.event,
+    repository: { full_name: expected.repository }, head_repository: { full_name: expected.repository },
+    head_branch: expected.branch, head_sha: expected.targetSha, display_title: expected.displayTitle
+  };
+  assert.deepEqual(matchExactControllerRuns([valid], expected), [valid]);
+  const mutations = [
+    { workflow_id: expected.workflowId + 1 },
+    { path: ".github/workflows/other.yml" },
+    { event: "workflow_dispatch" },
+    { repository: { full_name: "attacker/repo" } },
+    { head_repository: { full_name: "attacker/repo" } },
+    { head_branch: "attacker-branch" },
+    { head_sha: "a".repeat(40) },
+    { display_title: "forged title" }
+  ];
+  for (const patch of mutations) {
+    const candidate = { ...valid, ...patch };
+    assert.deepEqual(matchExactControllerRuns([candidate], expected), []);
+  }
+});
+
+test("exact run matcher rejects incomplete or noncanonical expected identity", () => {
+  assert.throws(() => matchExactControllerRuns([], null), /identity/);
+  assert.throws(() => matchExactControllerRuns([], { workflowId: 1 }), /identity/);
 });
