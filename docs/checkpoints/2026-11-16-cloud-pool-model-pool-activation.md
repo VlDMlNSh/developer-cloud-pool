@@ -91,3 +91,10 @@ Qualify Issue #96 owner-event admission on trusted default-branch workflow, dura
 - Official platform sources: Durable Objects Free-plan availability and strongly consistent durable storage: https://developers.cloudflare.com/durable-objects/ ; D1 single-threaded behavior and Free limits: https://developers.cloudflare.com/d1/platform/limits/ .
 - No Cloudflare resource, secrets, billing, deployment, provider calls, dispatch, child agents or merge.
 - Next: local-only DO SQLite coordinator proof with concurrency, fencing, expired lease, stale owner, crash recovery, duplicate source and ambiguous external-dispatch tests. Keep `dispatch:false` until independent review and free-tier eligibility are verified.
+
+
+### Git ref status at checkpoint
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- This documentation branch HEAD after its latest context update: `4820c3700bb9b3708d01d127dad4bcae6e4d00e5`.
+- PR #103 remains Draft/open/unmerged and GitHub reports `mergeable=false`; it targets stale base `6507823e7ec27caa9b2621daef964dba2d4cf436`. Compare against default: diverged, 60 ahead / 13 behind. No merge or force update attempted.
