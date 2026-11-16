@@ -3729,3 +3729,29 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #109 latest head re-read as `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Latest exact-head CI #43872185972 / job #133315933882 COMPLETED/SUCCESS, seven of seven steps. Prior head `3cce7c...` / run #43871896948 superseded.
 - Source/test blobs remain `9c5377f58de9dd8dabb4f05c72479fad1f10e033` / `80f358197c2006105c902fd2d54c84f33e055d97`; provider-side maxOutputTokens is still absent; response truncation remains post-materialization.
+
+
+## 38. Wave 336 — exact-head Gemini fake-client CI verified (2026-11-16)
+
+- Current qualification scope remains Cloud Pool Contour A; Contour B deferred.
+- Issue #94 remains OPEN. Its four-child amendment is the current wave topology. Issue #96 remains OPEN and defines exact owner-authored top-level `/next` admission; do not confuse its older three-child paragraph with the later four-child amendment.
+- PR #107 remains OPEN / DRAFT / UNMERGED, head `027492668e7721a5371b38997bc76a6cd6a50cd4`.
+- PR #108 remains OPEN / DRAFT / UNMERGED, head `e0717d9d3daf1ef76db81f5e076728c5784b0896`, stacked on PR #107.
+- PR #109 is the default-targeted validation candidate: https://github.com/VlDMlNSh/developer-cloud-pool/pull/109; OPEN / DRAFT / UNMERGED; head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; base branch `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; GitHub mergeable=true at final read. It has 3 changed files and 4 commits. Formal reviews: 0.
+- PR #109 files/blob SHAs: controller `9c5377f58de9dd8dabb4f05c72479fad1f10e033`; tests `80f358197c2006105c902fd2d54c84f33e055d97`; validator `3759d310dfb6af21edc43f89a138232cd0e3d182`. Controller/test blobs are identical to PR #108.
+- Diagnosed stacked-PR CI filter: existing Pool Contract Validation pull_request filter targets only default branch `Основной`. PR #108's feature-branch base therefore had no exact-head workflow run. Instead of weakening governance or changing workflow triggers, created PR #109 directly against default branch.
+- Important correction: first PR #109 CI run `43871896948` passed only the existing contract validator and did NOT invoke the Gemini test suite. Do not cite this run as Gemini test evidence.
+- Added a fixed `node --test scripts/gemini-four-agent-controller.test.mjs` invocation to `scripts/validate-pool-contract.mjs`. Then corrected ordering so test failure is included in the final failure/exit gate (test invocation must precede `if (failures.length)`).
+- Final exact-head run: Pool Contract Validation run `43872185972`, job `133315933882`, head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`, COMPLETED / SUCCESS. URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43872185972
+- Decoded job log confirms `# tests 11`, `# pass 11`, `# fail 0`, `PASS Gemini four-agent fake-client tests executed by Pool Contract Validation`, then `POOL_CONTRACT_VALIDATION=PASS`.
+- Tests use injected fake clients and synthetic credentials only. They cover isolated distinct tasks, missing/duplicate slots, quota failure, API-key-shaped task rejection, report redaction, fixed model allowlist, AbortSignal/timeout classification and output truncation.
+- Workflow's dispatch assertion passed; it asserts the repository variable is not literal `true` (therefore disabled or unset). No secret values were read. No provider calls, live dispatch, merge or deployment occurred.
+- Fixed model allowlist `gemini-2.5-flash` is not proof of free-tier eligibility. Four unique key strings are not proof of four distinct Google account identities/quota domains.
+- Official `@google/genai` package manifest and reproducible lockfile remain absent; SDK installation/runtime NOT VERIFIED.
+- Issue #96 trusted owner-only admission, immutable target SHA binding, durable single-use lease/fencing/idempotency/recovery and child-run reconciliation remain NOT VERIFIED. Independent security review and formal PR review remain pending. Live Gemini qualification NOT RUN.
+- Report: [Wave 336](../reports/2026-11-16-wave336-gemini-contract-ci.md), commit `8aec28bca5cbb1e5c4f30364a5a5849580150409`.
+- Checkpoint: [Wave 336](../checkpoints/2026-11-16-wave336-gemini-contract-ci.md), commit `03efe1b3a8fd47973d93a6ffb10b9d11aab89153`.
+- Pre-update Context Window blob: `f58888328acbeea3fd25b49847dd1cf5f6167de3`. Update is only on `docs/cross-chat-continuation-2026-11-06`, not the default branch.
+- Next bounded step: pin official Google Gen AI SDK in manifest + lockfile and add no-secret install/import smoke CI; then implement Issue #96 trusted admission/durable lease/reconciliation. Keep dispatch disabled until all Issue #94 qualification gates are independently evidenced.
+- Contour A remains NOT ACCEPTED. Contour B remains deferred.
+- Canonical MediaHub map (separate repository/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
