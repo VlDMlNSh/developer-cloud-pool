@@ -9,6 +9,7 @@ const read = (path) => {
 };
 
 const worker = read(".github/workflows/pool-worker.yml");
+const contractWorkflow = read(".github/workflows/pool-contract-validation.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  skills:\s*$/m)[0] || "";
@@ -78,6 +79,14 @@ if (!worker.includes("BROWSER_RESULT: ${{ needs.browser.result }}") || !/needs:\
 if (!issueForm.includes("- Agent-browser headless")) fail("Task issue form must expose the browser profile");
 if (!worker.includes('"agent-browser-headless": "Agent-browser headless"')) fail("Worker must bind the browser profile to the exact issue envelope label");
 if (!/agent-browser install/.test(browser) || !/agent-browser skills get core/.test(browser) || !/agent-browser skills get dogfood/.test(browser)) fail("Browser job must install Chromium and load core/dogfood skills");
+const browserSmoke = contractWorkflow.split(/^  browser-smoke:\\s*$/m)[1]?.split(/^  validate:\\s*$/m)[0] || "";
+if (!browserSmoke) fail("Contract validation must include an executable browser smoke job");
+if (!/permissions:\\s*\\{\\s*\\}/.test(browserSmoke)) fail("Browser smoke job must have no GitHub token permissions");
+if (/secrets\\./.test(browserSmoke)) fail("Browser smoke job must not receive repository secrets");
+if (!/agent-browser@0\\.43\\.0/.test(browserSmoke) || !/agent-browser install --with-deps/.test(browserSmoke)) fail("Browser smoke job must install exact-pinned agent-browser and Chromium");
+if (!/agent-browser skills get core/.test(browserSmoke) || !/agent-browser skills get dogfood/.test(browserSmoke)) fail("Browser smoke job must load core and dogfood skill guides");
+if (!/https:\\/\\/example\\.com/.test(browserSmoke) || !/agent-browser open/.test(browserSmoke) || !/agent-browser screenshot/.test(browserSmoke)) fail("Browser smoke job must navigate to a harmless public site and capture evidence");
+if (!/Session is ephemeral/.test(browserSmoke)) fail("Browser smoke job must document ephemeral session scope");
 if (!/https:\/\/example\.com/.test(browser) || !/agent-browser close/.test(browser)) fail("Browser smoke test must use a harmless public target and close its session");
 if (!skillsJob) fail("Worker skills job block cannot be isolated");
 if (!/if: needs\.validate\.result == 'success' && inputs\.profile == 'agent-skills-bootstrap'/.test(skillsJob)) fail("Skills job must run only for the validated bootstrap profile");
