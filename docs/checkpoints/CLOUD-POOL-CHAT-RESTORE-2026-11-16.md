@@ -10,7 +10,7 @@
 - MediaHub OS repository (separate project): https://github.com/VlDMlNSh/mediahub-os
 - Current working PR: [PR #106](https://github.com/VlDMlNSh/developer-cloud-pool/pull/106)
 - Working branch: `feat/agent-browser-ephemeral-worker-2026-11-16`
-- Latest branch tip when this handoff was written: `8ed8b6c05f24bdfd4c106b02714c458aa7a961b9` (re-read PR metadata before relying on this SHA).
+- Latest branch tip observed during final read-back before this handoff's last documentation-only sync: `d5bb4755bae6ad4322e36d1ca38d685509f08eb9`. Exact-head run `43843007992` was QUEUED with all three jobs IN_PROGRESS at last observation. This file and Context Window/checkpoint receive further documentation-only commits after that observation; always re-read PR metadata and CI before relying on a SHA/status.
 - PR #106 base branch: `Основной`, observed base SHA `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
 - PR #106 remains OPEN / DRAFT / NOT MERGED. No formal review has been claimed.
 - All recent browser/skills implementation and evidence updates are on the feature branch. They are not yet on the default branch.
