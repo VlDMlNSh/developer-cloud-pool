@@ -27,3 +27,6 @@
 - No package.json or lockfile for @google/genai at PR head; dynamic import remains unresolved for reproducible runtime. No live provider calls, key reads, account/quota proof, or child dispatch.
 - Issue #96 remains OPEN/PLANNED; four children NOT RUN. Contour A BLOCKED / NOT ACCEPTED.
 - Next: clean-base reconstruction, pinned SDK and lockfile, exact-head install/test CI; keep dispatch disabled.
+
+
+- Issue #96 fetched all six comments; latest owner comment ID 6901743828 is not an exact `/next`. No new authorized event; Gemini children NOT RUN.
