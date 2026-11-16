@@ -18,11 +18,11 @@ The exact-head CI is green after correcting a test fixture ID collision.
 - Default HEAD / immutable target: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (rechecked; unchanged)
 - Working branch: `feat/atomic-next-admission-d1-2026-11-16`
 - PR #114: OPEN / DRAFT / UNMERGED; formal reviews: 0
-- Exact verified PR head: `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`
+- Exact verified PR head: `27dc1ecc84408bd1601d5256d36628af766003d7`
 - PR base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`
 - No default-branch change, merge, deployment, provider call, secret read/write or dispatch.
 
-## Exact-head source evidence
+Implementation changes were introduced by commits `11f3ad661c6d4ec5d461973229ed79c07ed41ea0`, `72f6cde03269fb60826d4cdc32e83faa7c4672e9`, `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5` and `051f972a44bdfb610b17554dd51340c34700e6f6`; the PR was subsequently advanced with documentation-only commits. The final PR head and exact-head CI are recorded below.\n\n## Exact-head source evidence
 
 - `proofs/d1-admission/src/admission.mjs` blob `e37eef052de0a5daff36c0ffbf873a2fd49d942b`: `trustedDefaultHeadSha` validation.
 - `proofs/d1-admission/migrations/0001_atomic_next_admission.sql` blob `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`: trigger verifies exactly one approval row was newly consumed using `changes() = 1`.
@@ -31,15 +31,15 @@ The exact-head CI is green after correcting a test fixture ID collision.
 
 ## Exact-head CI
 
-All runs below correspond to PR head `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`:
+All runs below correspond to the final PR head `27dc1ecc84408bd1601d5256d36628af766003d7` after documentation refresh:
 
-- D1 PR run [43935042451](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935042451), job `133537313544`: COMPLETED / SUCCESS.
-- D1 push run `43935030103`: COMPLETED / SUCCESS.
-- Pool contract validation [43935042490](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935042490), job `133537341737`: COMPLETED / SUCCESS.
+- D1 PR run [43935497662](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935497662), job `133538893705`: COMPLETED / SUCCESS.
+- D1 push run `43935490233`: COMPLETED / SUCCESS.
+- Pool contract validation [43935497717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935497717), job `133538928375`: COMPLETED / SUCCESS.
 - Workers-runtime: 1 file, **12 passed / 0 failed**.
 - `node --check src/admission.mjs`: PASS.
 - All six workflow YAML files parsed; pool contract/security invariants PASS; dispatch gate observed false.
-- Artifact `d1-admission-proof-package-lock.zip`, ID `14258369393`, SHA-256 `28e389bc053f7b0dfce0631197bc9ef6c920b539457c63255edb2fc0c287684a`; [artifact](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935042451/artifacts/14258369393).
+- Artifact `d1-admission-proof-package-lock.zip`, ID `14259839098`, SHA-256 `d747ae3880c6441c6ae6b0b9b466c4279db9b2975edb3c63dc82bfb5df6fe7eb`; [artifact](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935497662/artifacts/14259839098).
 
 The immediately preceding head `642ac80ecd87f49ad895154b00dbd04b5228fb30` failed 1/11 because the new stale-target test reused an approval replay fixture ID. Commit `051f972a44bdfb610b17554dd51340c34700e6f6` isolated the ID; exact-head 11/11 passed there. Subsequent commits added the pre-consumed approval replay guard and test, yielding 12/12 on the current head. Failures are retained transparently.
 
