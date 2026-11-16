@@ -3620,3 +3620,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Controller requires exact owner `/next` on Issue #301, `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, and runtime controller secrets. Variable/secret metadata and exact-main CI/security gates were NOT VERIFIED in this pass. Available commit-workflow-runs connector only returns PR-triggered runs, so exact-main CI was not established.
 - No new Issue #301 comment and no supplementary Gemini dispatch. Status: NOT RUN (gates NOT VERIFIED), not failed. MediaHub bridge is supplementary and does not satisfy Cloud Pool-native four-account execution.
 - Wave 330 report addendum: [SDK qualification and supplementary bridge gate result](../reports/2026-11-16-wave330-gemini-sdk-qualification.md).
+
+
+## 33. Wave 331 — local four-agent runtime reproduction (2026-11-16)
+
+- Report: [Wave 331 local runtime reproduction](../reports/2026-11-16-wave331-local-runtime-reproduction.md), commit `40d6d2f50eea83a96149afd8d4367147a562bf52`.
+- Checkpoint: [Wave 331 runtime checkpoint](../checkpoints/2026-11-16-wave331-local-runtime-reproduction.md), commit `e352127525186cc00f2eadd9939b823a50058547`.
+- Revalidated candidate PR #107 OPEN/DRAFT/UNMERGED; head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. Exact-head Actions run #43864376148 remains SUCCESS, six injected-client tests PASS, dispatch disabled.
+- Fetched exact controller/test blobs (`ffe874a2f1286476cbbc109816afd736de3cfb57`, `436fb1fd0b2f988b843d843f39cc4c5851029154`) and reproduced tests locally under Node v22.16.0: 6 PASS / 0 FAIL.
+- Ran default entry point with four synthetic test credentials; report returned FAILED for all four roles and exit code 1. No network/provider request. This confirms the default SDK import does not load in the tested environment; `package.json` and `package-lock.json` are absent from candidate branch. SDK runtime status: FAILED / NOT QUALIFIED.
+- Next: controlled Node 22/npm environment, exact official SDK version pin, complete lockfile, actual SDK fake-fetch test with network denied, retry-policy verification, exact-head CI, independent review.
+- Issues #94/#96 remain OPEN; native Cloud Pool controller BLOCKED. Four secret names/scope and independent Google account/quota ownership NOT VERIFIED. No secret values read, provider calls, Gemini dispatch, merge or deployment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
