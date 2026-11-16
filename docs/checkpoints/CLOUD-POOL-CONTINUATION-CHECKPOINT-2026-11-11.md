@@ -469,3 +469,5 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent security/governance review of PR #102, then a separate bounded implementation of API revalidation and durable admission. Do not enable dispatch before all gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Governance recheck: active ruleset #26550182 requires PR and thread resolution but 0 approvals, no required reviewers and no CODEOWNERS review. Independent review is not enforced by branch governance and remains a separate acceptance gate. PR #100/#101 exact-head CI runs `43764511321`/`43764995448` SUCCESS; formal reviews 0.
