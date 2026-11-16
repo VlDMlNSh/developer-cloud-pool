@@ -83,3 +83,17 @@ An adversarial test now proves the direct transition is rejected without mutatin
 - PR remains OPEN / DRAFT / UNMERGED. Default branch unchanged.
 - No secrets, provider calls, dispatch, hosted D1, merge or deployment.
 - This does not authenticate a worker or qualify a hosted lock; production Issue #96 integration and independent security review remain open.
+
+
+## Read-only Issue #96 event controller — clean-base verification — 2026-11-16
+
+Ported the existing read-only event controller candidate from PR #102 to a clean branch based on current default. Strengthened event identity checks with repository numeric ID, owner numeric ID, exact Issue #96 repository API URL, exact source comment ID, owner login and OWNER association. The controller produces a deterministic SHA-256 event identity but explicitly returns executionAuthorized=false.
+
+- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112 — OPEN / DRAFT / UNMERGED.
+- Base: 35208f0ef28f0ac031a7acdf35fc90ccc9b16845; head: c9a4c0ab2001f01a09632795283071c521e1c99d.
+- Read-only controller CI [43882090833](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090833): SUCCESS; job 133350342861; 21/21 tests passed.
+- Pool Contract Validation [43882090867](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090867): SUCCESS.
+- No API writes, secrets, provider calls, D1, or dispatch. Event admission job was skipped on PR/push CI; live issue_comment behavior NOT VERIFIED.
+- Audit finding: legacy pool-supervisor.yml triggers on schedule/workflow_dispatch/issues/workflow_run and dispatches by pool:ready label if the gate is true. It does not implement exact Issue #96 owner-comment admission. Runtime variable value not inspected. Keep dispatch disabled and do not treat this workflow as qualified owner /next control.
+- Four-child amendment in Issue #96 is recorded; no child dispatch was performed.
+- Remaining: durable single-use D1 binding to owner/repository/source-comment/target-SHA/wave/four task IDs, controller fencing, ambiguous recovery, live event test, independent review and governance.
