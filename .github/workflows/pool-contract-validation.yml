@@ -79,6 +79,55 @@ jobs:
             echo "- No credentials, model calls, or skill script execution."
           } >> "$GITHUB_STEP_SUMMARY"
 
+  browser-smoke:
+    name: Install agent-browser and verify public Web access
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions: {}
+    steps:
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install pinned browser runtime and smoke-test public Web
+        shell: bash
+        run: |
+          set -euo pipefail
+          prefix="$RUNNER_TEMP/agent-browser"
+          home="$RUNNER_TEMP/agent-browser-home"
+          mkdir -p "$prefix" "$home"
+          free_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$free_kib" -lt $((4 * 1024 * 1024)) ]; then
+            echo "::error::Less than 4 GiB free; refusing browser installation."
+            exit 2
+          fi
+          npm install --prefix "$prefix" --no-audit --no-fund "agent-browser@0.43.0"
+          export PATH="$prefix/node_modules/.bin:$PATH"
+          export HOME="$home"
+          installed_version="$(node -p "require('$prefix/node_modules/agent-browser/package.json').version")"
+          test "$installed_version" = "0.43.0"
+          agent-browser install --with-deps
+          agent-browser skills list > "$RUNNER_TEMP/agent-browser-skills-list.txt"
+          agent-browser skills get core > "$RUNNER_TEMP/agent-browser-core-skill.md"
+          agent-browser skills get dogfood > "$RUNNER_TEMP/agent-browser-dogfood-skill.md"
+          cleanup() { agent-browser close >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          agent-browser open https://example.com
+          agent-browser get title > "$RUNNER_TEMP/agent-browser-title.txt"
+          grep -F "Example Domain" "$RUNNER_TEMP/agent-browser-title.txt"
+          agent-browser screenshot "$RUNNER_TEMP/agent-browser-smoke.png"
+          {
+            echo "## Agent-browser Web connectivity smoke test"
+            echo "- CLI version: $installed_version"
+            echo "- Browser runtime: installed"
+            echo "- Core and dogfood skills: loaded"
+            echo "- Public target: https://example.com"
+            echo "- Screenshot SHA-256: $(sha256sum "$RUNNER_TEMP/agent-browser-smoke.png" | awk '{print $1}')"
+            echo "- No credentials, cookies, authenticated sessions, or GitHub token."
+            echo "- Session is ephemeral to this job; no persistent Web session is provisioned."
+          } >> "$GITHUB_STEP_SUMMARY"
   validate:
     name: Validate workflow syntax and security invariants
     runs-on: ubuntu-24.04
