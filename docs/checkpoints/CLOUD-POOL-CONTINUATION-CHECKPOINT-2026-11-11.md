@@ -495,3 +495,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Gemini new wave NOT RUN; no direct child invocation or transport bypass. Cloud Pool Issue #96 remains fail-closed; PR #102 remains Draft. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile transport by restoring approved Option B on a fresh current-main branch or obtain explicit superseding owner/governance approval for REST/HMAC. Require independent review, positive/negative contract tests, actionlint and exact-head CI before any dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — MediaHub transport authority correction and gate recheck
+
+- Correction report: [MediaHub Gemini transport authority correction and gate recheck](../reports/2026-11-16-next-transport-authority-correction-and-gate-recheck.md), blob `68adb9c0baae949e89ed0e6134367cf7955f6308`.
+- Previous report's claim that PR #432 was an unauthorized reversal of still-active Option B was incorrect and is superseded. Later owner-directed Bootstrap and transport records establish REST/HMAC as the active transport; Option B is historical/intermediate.
+- MediaHub main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; children A1/A2/A3 `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`, `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`, `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`.
+- PR #437 exact-head contract validation `39757948715`, non-launching trusted-main probe `39757948751`, Astra Verify `39757948759`, Astra Cloud `39757948849` all SUCCESS. Probe skipped dispatch/admission. Current main exact CI remains NOT VERIFIED; empty commit-run/status query is not proof of success.
+- Formal review APIs for PR #432/#437/#431 returned zero submitted reviews. Effective secret/variable metadata and scope, least-privilege token permissions, effective governance, independent security review remain NOT VERIFIED. New Gemini batch NOT RUN.
+- MediaHub Bootstrap and transport policy were corrected/read back on canonical docs branch; PR #431 remains separate OPEN/unmerged candidate, not current source.
+- Cloud Pool Issue #96 remains fail-closed; PR #102 OPEN/DRAFT/UNMERGED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
