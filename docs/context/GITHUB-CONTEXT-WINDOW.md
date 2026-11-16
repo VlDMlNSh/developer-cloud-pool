@@ -2353,3 +2353,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - New Gemini batch NOT RUN. This is a current admission-gate hold, not a broken/missing controller. No GitHub comment/dispatch was created.
 - Next: obtain independent security review of exact current-main controller/children; verify current-main CI and metadata-only variable/secret permission scope plus effective governance. Only then use the existing Issue #301 owner-comment route.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — MediaHub /next Gemini Wave 317 reconciled from live GitHub evidence
+
+- Report: [MediaHub /next Gemini Wave 317 reconciliation](../reports/2026-11-16-mediahub-next-gemini-wave317-reconciliation.md).
+- Checkpoint: [2026-11-16 Wave 317 continuation checkpoint](../checkpoints/2026-11-16-mediahub-next-gemini-wave317.md).
+- Owner Issue #301 comment `6909427026` triggered controller run [43818697086](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43818697086), title `next-comment-6909427026`, on immutable target SHA `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Controller dispatch job `133136549315` SUCCESS; admission job `133136522952` SUCCESS; probe/assertion jobs skipped as expected.
+- Agent 1: run [43818718823](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43818718823), jobs `133136596585` / `133136629301` SUCCESS, artifact `14202894626`, digest `sha256:c121f57b81becf6a5da2d6f32ce43a246a3994a50295ca6c555e7c593e04ee1f`, dispatch ID `bc5b539a-d01d-40ea-b2ec-c70e52b8b996`.
+- Agent 2: run [43818721011](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43818721011), jobs `133136603654` / `133136636065` SUCCESS, artifact `14202609737`, digest `sha256:6c3ab400d06a2fb84092a2b3a2df0730c8baf2b4bbafa346eb3d601d839d1`, dispatch ID `26a4301d-eb62-45cd-95ba-9cfd773c0d81`.
+- Agent 3: run [43818723281](https://github.com/VlDMlNSh/mediahub-os/actions/runs/43818723281), jobs `133136610551` / `133136647806` SUCCESS, artifact `14203453320`, digest `sha256:29c0098c5cca8828b281aaae105bb3da87931023c3ac709f81cf31a263a68e96`, dispatch ID `a74bc1c1-3575-4816-bd83-8b3711d4d380`.
+- Agent PRs: #735 head `46fe9a4ecdd8672bdd4471d2c2ccd4d0db0fad97` (evidence-only, no runtime code); #733 head `03c462b70622578d83b1faa3aa8efa45dd970649` (test commands listed, not run; one Baseline 1.0 traceability row conflicts with canonical Baseline 2.0); #734 head `96bfa6263bf59fdb599ba4f6c7b14aa70dce47df` (static audit only, no executed negative-test evidence). All OPEN/DRAFT/UNMERGED; zero formal reviews.
+- Exact-head PR workflow runs for the three PR heads returned `action_required`; exact-head CI is NOT VERIFIED. Successful Gemini child execution is not equivalent to source CI, independent review, qualification or acceptance.
+- This corrects the preceding addendum that said no new Gemini batch was run: the latest /next comment did dispatch and reconcile all three children successfully.
+- ChatGPT bounded pass: read-only reconciliation of controller, child jobs/artifacts and PR evidence; identified evidence-quality gaps. No MediaHub source, workflow, secret, variable, branch, PR state, runtime or infrastructure changes; no secret values read; no tests/provider calls executed by ChatGPT.
+- Status: Gemini batch DISPATCHED and SUCCEEDED; artifacts VERIFIED; PRs unaccepted; exact-head CI NOT VERIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: correct Agent 2's Baseline reference and obtain executed non-secret test evidence; strengthen Agent 3's source/test traceability; require a real bounded implementation delta from Agent 1; then exact-head CI and independent formal review. No merge/deployment until all gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
