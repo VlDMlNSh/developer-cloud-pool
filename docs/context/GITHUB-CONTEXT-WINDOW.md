@@ -2288,3 +2288,21 @@ Official references:
 - Groq rate limits: https://console.groq.com/docs/rate-limits
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
+## 2026-11-16 — /next quota-ledger and four-account Gemini revalidation
+
+**Status: FINDINGS RECORDED / PROVIDER ACTIVATION NOT AUTHORIZED.**
+
+- PR #29 current head `e4c8d642bbc054e7c52b391356965b492dad32b4`; exact-head Pool Contract Validation `43031920223` SUCCESS. The active-slot eligibility predicate is corrected in this head. Formal CHANGES_REQUESTED review is against older head `34fc78921b16359d136db553d8a51b4a4716995d`; PR remains Draft/unmerged.
+- PR #29 still has a material quota admission defect: `listEligibleRoutes()` returns unknown-account/unknown-quota routes as eligible; its current test explicitly expects this. This pure planner must not authorize live calls.
+- PR #74 head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144` adds a focused fail-closed correction: routes require provider-verified quota evidence and known quota-domain identity. Exact-head Pool Contract Validation `43692828719` SUCCESS. PR #74 remains Draft/unmerged, formal reviews 0; NOT ACCEPTED.
+- PR #107 head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf` implements four isolated Gemini clients, fixed roles, missing/duplicate-key rejection and no fallback. Candidate model is `gemini-2.5-flash`. Unit tests authored but NOT RUN; formal reviews 0; no production integration; it explicitly does not verify GitHub secret presence or account ownership.
+- Owner statement (2026-11-16): each Gemini API key added to GitHub represents a separate Google account. Machine-readable matrix now records four distinct credential/account/quota ledger identities (`GEMINI_API_KEY_1`.. `_4`) with status `OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED`. Numeric quota values and non-secret project/account metadata remain NOT VERIFIED. Do not aggregate or multiply quotas; track each account separately.
+- Updated matrix commit `eb2064b76d070bb99d9ecf062b20c2765feecdf3`, blob `4e2090874a07b7f05ea011f471caf0f018278466`.
+- Updated report commit `a1864908c07b2b80f3dff4a7b9a496cb55f2e765`; checkpoint commit `48160da65176d387075a9237819893b82936f615`.
+- No secret reads, provider calls, model execution, dispatch, merge or deployment.
+- Next: independent review PR #74 and PR #107; run exact-head no-secret tests for PR #107; reconcile provider route admission with the trusted route-registry/A0-D1 boundary. Keep all live calls disabled until Issue #26 is accepted.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
