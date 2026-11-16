@@ -360,3 +360,18 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next step: genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery for Issue #96 under Issue #94; dispatch remains disabled until exact-head CI, governance, trusted-main no-secret probe and independent review pass.
 - Detailed report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next checkpoint — agent-browser integration assessment — 2026-11-16
+
+- Working branch: `docs/agent-browser-cloud-pool-integration-2026-11-16`; base default HEAD `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`. Documentation-only; not merged.
+- Added ADR `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md` and report `docs/reports/2026-11-16-next-agent-browser-integration.md`. Official Vercel Labs agent-browser selected as candidate; required skill is `agent-browser` core; optional `dogfood` for exploratory QA. Other specialized skills are conditional only.
+- Runtime and skill are separate: CLI + Chromium install; official skill through Skills CLI; load version-matched `agent-browser skills get core` before browser commands. Do not copy vendor SKILL.md out of node_modules.
+- Repository default branch has no browser runtime/skill/package and existing worker allowlist is DSH-only. Supervisor is ephemeral/event-driven, not a persistent browser server.
+- SentinelX: 0 connected hosts; `Voktors-Mini.Dlink` offline, `mh-dev-01` and `mh-dev-02` user-disabled; Free plan active-host limit 1. Installation NOT RUN because no available host.
+- Ephemeral browser worker PLANNED / NOT IMPLEMENTED; persistent remote browser sessions BLOCKED; unlimited free sessions NOT VERIFIED and cannot be promised. No paid hosting, no dispatch, no secret access, no merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: restore/identify an authorized online host, verify its exact host ID/capabilities/allowlist, then install pinned CLI + Chromium + official skill and run a harmless headless smoke test. Separately add a browser worker profile only after Cloud Pool admission/governance gates.
+
+
+- Draft PR #104: https://github.com/VlDMlNSh/developer-cloud-pool/pull/104; initial head `135e312365610c9974a4c0ee6769b9b574e91dd8`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`; exact-head workflow list empty, CI NOT VERIFIED; OPEN/DRAFT, mergeable=false at creation.
+
+- Final PR #104 check: branch tip `18400edb605ea979e2a129092372dcdcd4fdc129`; OPEN/DRAFT, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`, formal reviews 0, exact-head workflow runs empty; CI NOT VERIFIED, no merge.
