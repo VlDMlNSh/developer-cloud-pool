@@ -3502,3 +3502,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Hosted D1 Free entitlement/quota NOT VERIFIED; named-resource authorization NOT GIVEN; hosted claim API NOT IMPLEMENTED. No secrets/variables read, no hosted resources, dispatch, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Restore per-/next Gemini three-agent bridge
+
+- Correction: Gemini dispatch was incorrectly reported unavailable because checks were limited to Cloud Pool default workflows. The approved bridge lives in MediaHub OS and is supplementary to Cloud Pool Contour A work.
+- Controller current blob on MediaHub main: 7799f0fc713c5bd772ce6820df40a926a83445c8. Agent workflow blobs: A1 ed9ae2200debe76e39e3e5dfb5816ba94db3950c; A2 fa3b4c407d3c583cbd33133aea89e4bd8a496b69; A3 bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e.
+- Persisted procedure: Cloud Pool branch docs/gemini-three-agent-next-bridge-2026-11-15, file docs/operations/CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.md (blob 0dbc603fcf06bf869a9316bebbe046e7cd2fedbb) and bridge recovery report (blob 918ce46af07b60325f7ddc09695c8cd0f46f5400).
+- Per exact /next: reconcile MediaHub Issue #301 comments/controller history; if no event for this turn exists, create exactly one owner-authored comment body /next with mcp__GitHub__add_comment_to_issue; never directly dispatch child workflows or call provider APIs. Then verify controller admission/dispatch and exactly three child run IDs, authorization/execution jobs and non-expired artifact SHA-256s. Continue Cloud Pool work independently; never block main pass on agents.
+- Controller admission variable MEDIAHUB_GEMINI_BATCH_ENABLED must be true; controller requires MEDIAHUB_GITHUB_TOKEN and MEDIAHUB_DISPATCH_HMAC_KEY at runtime. Do not read or print secret values. Controller signs three role payloads and binds shared immutable target SHA. Cloud Pool POOL_DISPATCH_ENABLED remains fail-closed; this bridge is not Cloud Pool-native worker execution or Contour A acceptance.
+- Current user turn was a request to restore the procedure, not exact /next; no new issue comment/dispatch was created. Latest Issue #301 comments fetched included owner-authored /next through ID 6914365822. Do not reuse a historical event for a future turn.
+- Report: docs/reports/2026-11-16-restore-gemini-three-agent-next-bridge.md, commit 7ea37b2300e2bcafeead9251430713934bf68d66.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
