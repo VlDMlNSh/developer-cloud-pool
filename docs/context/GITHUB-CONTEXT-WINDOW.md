@@ -2257,3 +2257,6 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: reconcile PR #29's active-slot eligibility finding and add synthetic regression tests for active/new routes under free-only billing, credential, route-state and qualification filters. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+- Checkpoint added: [2026-11-16 free-provider route qualification](../checkpoints/2026-11-16-free-provider-route-qualification.md); creation commit `3b410421e9bcb87539cffb11f5b8fa5f86e136d5`. Context Window read-back remains the durable cross-chat pointer.
