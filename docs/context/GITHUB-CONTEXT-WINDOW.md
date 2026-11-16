@@ -2191,3 +2191,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## D1 atomic owner /next admission proof — 2026-11-16
+
+- Current clean-base proof branch: `feat/atomic-next-admission-d1-2026-11-16`; PR #114 OPEN / DRAFT / UNMERGED.
+- Immutable target and current default `Основной` HEAD at recovery: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #114 base matches this SHA. No default-branch mutation.
+- Verified PR head at CI qualification: `24ada07a4ae832078faf7473b5b646f34a84e64a`.
+- Implemented local no-secret D1 transaction proof: owner Issue #96 new top-level `/next` event envelope validation; source-comment idempotency; receipt + one-shot approval consume + immutable logical task + task approval + task outbox in one D1 INSERT-trigger transaction; read-after-ambiguous-outcome; dispatch/executionAuthorized always false.
+- Exact-head CI: D1 proof run `43933503897` / job `133531866050` SUCCESS; push run `43933492178` SUCCESS; contract validation `43933504073` / job `133531891725` SUCCESS. Workers runtime: 9/9 tests PASS, syntax PASS. Artifact `14260211684`, SHA-256 `a000c440b969214f9ec7812bd40b1b2ec3c53ece64157aa35e67ea5fc4320dd9`.
+- Admission package lockfile is byte-identical to PR #111 lockfile: blob `876c5d3de53bb12efaecdec939cbe8710cbd9e3c`.
+- Report: [2026-11-16 D1 atomic owner admission proof](../reports/2026-11-16-next-d1-atomic-owner-admission-proof.md). Checkpoint: [D1 admission checkpoint](../checkpoints/2026-11-16-next-d1-atomic-owner-admission-proof.md). Continuation prompt: [Cloud Pool master continuation prompt](../prompts/CLOUD-POOL-MASTER-CONTINUATION-PROMPT.md).
+- PR #114 has zero formal reviews. Issues #94/#96 OPEN; PR #111/#112/#113 OPEN/DRAFT/UNMERGED. Active default-only ruleset #26550182; branch protection API NOT VERIFIED.
+- Cloud Pool-native `.github/workflows/gemini-batch-dispatch-controller.yml` absent from default branch at last recovery (Contents API 404). Gemini NOT RUN. No secret values read, no provider calls, hosted D1, dispatch, merge or deployment.
+- Explicit limits: local test harness input is not a live authenticated webhook; no cryptographic GitHub webhook verification or independent controller run/code SHA proof. Hosted D1, worker workload identity, immutable attempts/fencing, claim/renew/finalize, outbox delivery, Supervisor integration, model routing/quota qualification, remote Jarvis UI and independent security review remain NOT VERIFIED / NOT IMPLEMENTED.
+- Status: admission proof VERIFIED on exact CI head; PR unreviewed/unmerged; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: independent security/contract review of PR #114, especially trusted live-event provenance, approval state monotonicity, D1 concurrency and ambiguous outcomes. Keep Draft and dispatch disabled.
