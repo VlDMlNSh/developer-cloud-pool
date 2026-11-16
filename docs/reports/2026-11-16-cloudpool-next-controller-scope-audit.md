@@ -155,3 +155,19 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: replace caller-asserted lock state with an authenticated durable claim/lease and monotonic fencing, or keep controller read-only/fail-closed until such primitive is implemented and verified.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — remove caller-asserted lock authority — 2026-11-16
+
+- Revalidated default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`. Issues #94 and #96 remain OPEN. PR #100 remains OPEN / DRAFT / UNMERGED, base `f23cdb5484d5923e02242b3ea142397f9e1f0270`; formal reviews: 0.
+- New PR #100 HEAD: `cb952a915093a4aaafb8f878954503d2460c4008`.
+- Security change: `planNextDispatchState()` is now a pure state-machine planner with no lock semantics. Runtime `planNextDispatch()` always returns `DENY / DURABLE_LOCK_NOT_IMPLEMENTED`; `authorizeSingleDispatch()` always returns `allowed: false`. The caller-provided `lockHeld: true` and intent booleans cannot grant runtime authority.
+- Runtime `reconcileNextLedgerEvent()` and `reconcileVerifiedOwnerNextEvent()` now fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED`; they do not perform API lookups or ledger mutations. This deliberately disables prototype reconciliation until a real owner-authenticated durable lease with monotonic fencing and crash recovery is implemented and qualified.
+- Updated tests assert: caller Boolean cannot unlock planner; dispatch authorisation remains denied even with asserted intent flags; runtime reconciliation blocks before API calls; pure state planning and exact workflow-run identity matcher remain independently testable.
+- Code/test blob SHAs: ledger `b32df2ccc6d852ecbcb0af5f47fcb08082ca51ad`; ledger adapter `fb37cb3b862b5320f4c1f9018fb260f7a5087c7f`; GitHub API adapter `bd117d17a131d8a37463d2482d043574756287b8`; ledger tests `cb8fa0907f4d4a4d2218b88995b01006083f8e33`; ledger adapter tests `5e9b5c030bb01a4d00d719072a63f68de3ed6c5d`; API adapter tests `25096ac26b02924fa7d972c76e9d4d6dee1bef27`.
+- Exact-head CI [run 43826793313](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43826793313), job `133162447332`, SUCCESS. Syntax checks PASS; 38 tests PASS / 0 FAIL / 0 skipped. Head SHA exactly `cb952a915093a4aaafb8f878954503d2460c4008`.
+- PR #100 remains Draft/unmerged; no formal reviews. This is a fail-closed prototype change, not a production lock implementation. No dispatch, secret reads, provider/model calls, deployment, merge, or default-branch modification.
+- Gemini Agent 1/2/3: NOT RUN; approved Cloud Pool-native dispatcher and governance authorization remain absent. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: design and implement an actual durable authenticated lease/claim with monotonic fencing, expiry/renewal semantics, stale-owner rejection, crash recovery, and concurrent integration tests. Until then, keep all runtime reconciliation and dispatch disabled.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
