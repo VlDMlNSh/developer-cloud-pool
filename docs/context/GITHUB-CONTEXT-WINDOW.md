@@ -2264,3 +2264,41 @@ Evidence links:
 - Next: compose exact owner-event validation with a storage-backed repository-wide single-use lease, monotonic fencing, expiry, crash recovery and child-run reconciliation on a clean branch from `35208f0e...`; add adversarial D1 tests and independent review. Keep `dispatch:false`.
 - Report: [2026-11-16 19:34 daily audit](../reports/2026-11-16-1934-daily-audit.md); checkpoint: [2026-11-16 continuation](../checkpoints/2026-11-16-daily-continuation.md).
 - Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Owner-directed two-executor architecture clarification — 2026-11-16
+
+This is an architecture-direction crosswalk, not a runtime qualification, deployment authorization, or acceptance decision. Contour A remains the active priority.
+
+### Target execution roles
+- The intended coding executor pair is **Codex CLI + Claude Code CLI**, treated as two independent executor backends with separate identity, workspace, bounded task contract, timeout, result/evidence envelope and fail-closed availability. This interpretation is supported by MediaHub MH-25 Issues #145–#147; confirm any later owner amendment before treating it as a normative contract.
+- **Claude Code** is the coding executor/client, not the model provider itself.
+- **FCC (Free Claude Code)** is a compatible model/API gateway and configuration surface for Claude Code; it is not a second coding executor or the project control plane.
+- **ECC (Everything Claude Code)** supplies selectively adopted workflow/skill guidance. It is not a dependency or second controller. Astra remains sole coordinator/claim/promotion authority; no ECC hooks/MCP/controller authority may bypass it.
+- **Jarvis Web UI** is the human-facing Experience plane and task/status interface. It must not hold provider credentials or directly dispatch privileged workflows. All task admission/claims and execution authority remain server-side behind the accepted control plane.
+- **ASTRA** retains coordination, task/claim/evidence and promotion authority as specified by the MediaHub contracts. Executor output is untrusted until independently verified.
+
+### Route distinctions — do not collapse
+1. Codex local/cloud authentication and Claude Code/FCC model routing are separate provider routes and must retain distinct provider identity, credentials, quota, policy, and evidence.
+2. MediaHub Issue #145 describes local `CODEX_LOCAL` + `CLAUDE_LOCAL` executors; Issue #146 records the local node/runtime blocker; Issue #147 describes the transport/control plane and maximum two concurrent disjoint claims. Those historical issues do not prove current runtime availability.
+3. MediaHub Issue #496 separately tracks a GitHub-hosted ephemeral Claude Code executor with an ECC-derived profile. It is PLANNED / NOT DISPATCHED / NOT QUALIFIED and does not authorize replacing the canonical local-host constraint.
+4. MediaHub Issue #296 separately tracks FCC + FreeLLMAPI + Ollama local model routing. Ollama is a runtime, model tags are models, and a physical host is a distinct identity.
+5. The cloud route described in MediaHub Wave 422 is GitHub-hosted Claude Code → pinned FCC → OpenRouter free-only, with pinned ECC guidance; the local route is Claude Code → FCC → Ollama. Wave 422 is historical working-branch evidence and says no provider invocation or qualification. Wave 517 records a canonical conflict that must be resolved by a reviewed architecture amendment before Claude Code is run on a GitHub-hosted Ubuntu runner.
+
+### Current Cloud Pool decision boundary
+- For Cloud Pool planning, keep the desired two-executor target visible, but do not replace the current fail-closed Contour A implementation with an unqualified Claude/Codex runtime.
+- First finish and accept the Cloud Pool substrate: owner-only task admission, durable single-use claim/lease/fencing/recovery, immutable target-SHA workspaces, isolated executor credentials, bounded concurrency (maximum two disjoint coding tasks), evidence publication, independent verification, and the authenticated Jarvis read-only web console.
+- Only after these substrate and governance gates pass may Claude Code and Codex be admitted as separate executor adapters, each with explicit route and no paid fallback.
+- Four Gemini agents are not the primary coding-executor architecture. Existing Gemini candidate work is separate and remains NOT QUALIFIED / NOT RUN.
+- No CLI installation, provider/model request, secret access, workflow dispatch, host access, merge, deployment or runtime qualification occurred in this documentation pass.
+
+### Source anchors
+- MediaHub Issue #145 — dual local executor fabric: https://github.com/VlDMlNSh/mediahub-os/issues/145
+- MediaHub Issue #146 — local executor node availability: https://github.com/VlDMlNSh/mediahub-os/issues/146
+- MediaHub Issue #147 — Astra transport/control for two local executors: https://github.com/VlDMlNSh/mediahub-os/issues/147
+- MediaHub Issue #296 — FCC / FreeLLMAPI / Ollama route: https://github.com/VlDMlNSh/mediahub-os/issues/296
+- MediaHub Issue #496 — GitHub-hosted Claude Code executor: https://github.com/VlDMlNSh/mediahub-os/issues/496
+- MediaHub Issue #499 — safe remote access to FCC Admin UI: https://github.com/VlDMlNSh/mediahub-os/issues/499
+- ASTRA ECC integration decision: https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/operations/ASTRA-ECC-INTEGRATION.md
+- Two-node topology: https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/checkpoints/mh-25-two-node-autonomous-topology-1.0.md
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
