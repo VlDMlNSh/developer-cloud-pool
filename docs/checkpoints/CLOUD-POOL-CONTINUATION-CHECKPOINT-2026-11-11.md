@@ -483,3 +483,16 @@ The implementation and workflow files validated by CI run `43841574699` are pinn
 - No signing key or custody backend selected; no secrets read/created; no D1/Worker provisioned; no dispatch or merge. Hosted claim service, trusted time and issuer remain NOT IMPLEMENTED / NOT QUALIFIED.
 - Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md).
 - Next: pure verifier and fixed public-key test vectors with adversarial fail-closed tests; dispatch remains disabled.
+
+
+## /next checkpoint — agent-browser runtime smoke — 2026-11-16
+
+- PR #106 implementation SHA 0449186154b8b5010a9196e04aa7d2beb471e66d; run [43845072976](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43845072976) COMPLETED / SUCCESS.
+- Jobs: contract/security 133223079689 SUCCESS; browser runtime 133223080133 SUCCESS; skills bootstrap 133223080197 SUCCESS.
+- Runtime evidence: agent-browser 0.43.0 and Chrome 157.0.8103.78 installed; public https://example.com/ opened; title verified; screenshot saved; session cleanup completed. Isolated GitHub-hosted ephemeral Ubuntu 24.04; browser job permissions empty, no checkout, no credentials/cookies.
+- Scope limit: public unauthenticated browser smoke only. No persistent/authenticated session, cross-job state, interactive dashboard, or mobile UI. Screenshot is not a durable artifact.
+- PR #106 OPEN/DRAFT/UNMERGED, 69 ahead / 0 behind, formal reviews 0; combined status contexts empty. No merge/deploy/dispatch.
+- Cloud Pool-native Gemini controller absent on default branch; Issues #94/#96 OPEN; Gemini wave NOT RUN / BLOCKED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-16-next-agent-browser-runtime-smoke.md](../reports/2026-11-16-next-agent-browser-runtime-smoke.md).
+- Next: implement native exact-owner admission and durable idempotent claim/fencing under Issues #94/#96; dispatch stays disabled until all security/governance gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
