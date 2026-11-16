@@ -2193,3 +2193,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #106 latest code head validated: `b5e4c63effa5c285447fbb73412b28d8d910af7c`.
 - Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS. YAML, dispatch-disabled guard, profile intake, no-token/no-secret browser job, pinned CLI, skills loading, fixed public smoke target, cleanup and report reconciliation passed.
 - This is static/workflow CI only. Browser runtime installation and actual `workflow_dispatch` smoke remain NOT RUN. PR #106 OPEN/DRAFT, reviews 0, not merged.
+
+
+## Curated agent skills bootstrap — 2026-11-16 (PR #106, unmerged)
+
+- PR #106 branch `feat/agent-browser-ephemeral-worker-2026-11-16`; latest code head at dispatch `b6adae6cc8a9650749e301c1dd7306c766b0b420`; base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
+- Added 11 curated skills pinned by immutable source commit: Vercel agent-browser stub; Matt Pocock engineering set (tdd, code-review, diagnosing-bugs, improve-codebase-architecture, domain-modeling, codebase-design, grill-with-docs, handoff, writing-for-agents); Cloudflare security-audit.
+- Installer `scripts/install-agent-skills.mjs`; manifest `config/agent-skills.lock.json`; CLI `skills@1.8.1`; Node 24.9.0; Gemini CLI target; project-local copied skills under `.agents/skills/`; telemetry disabled; installer hashes inventory and verifies all expected SKILL.md files.
+- Added owner-approved `agent-skills-bootstrap` profile to Pool Worker with read-only contents permission, no secrets/provider credentials, exact SHA checkout, and no execution of skill-provided scripts. Added intake and contract assertions.
+- Added actual GitHub-hosted installation CI job. Run `43837927634` at exact head above is PENDING at the time of this note; final result NOT VERIFIED until completed. Run `43837909224` was cancelled by superseding commit.
+- Skills are installed afresh in each ephemeral runner; no persistent VM or unlimited capacity. Installer is ready for future Gemini child jobs, but Cloud Pool-native Gemini controller remains blocked by Issue #94. No dispatch enabled.
+- Browser runtime smoke remains NOT RUN; PR #106 OPEN/DRAFT, no independent review and no merge.
+- Catalog/report: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`, `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
