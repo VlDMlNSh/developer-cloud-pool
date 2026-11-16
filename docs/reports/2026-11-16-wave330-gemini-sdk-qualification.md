@@ -65,3 +65,11 @@ On the candidate branch, add an exact-version `@google/genai` dependency with a 
 - Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
 - Cloud Pool Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Supplementary MediaHub controller gate check
+
+- Re-read MediaHub Issue #301 and its latest comments. The most recent owner-authored `/next` event remains comment #6915656230; no newer owner event was found.
+- Read the controller from MediaHub `main`; controller workflow blob `7799f0fc713c5bd772ce6820df40a926a83445c8`. It admits the bridge only through owner-authored exact `/next` on Issue #301 and requires `MEDIAHUB_GEMINI_BATCH_ENABLED=true`; dispatch also requires runtime controller secrets. Those variable/secret metadata and exact-main CI/security gates were not independently verified in this pass.
+- MediaHub recent commit search reports main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. The available commit-workflow-runs connector filters to PR-triggered runs, so exact-main CI could not be established through that path.
+- Therefore no new owner comment was posted and no supplementary Gemini bridge was dispatched. Status: NOT RUN (gates NOT VERIFIED), not failed. This remains separate from Cloud Pool-native four-account execution.
