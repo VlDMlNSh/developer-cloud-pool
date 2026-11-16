@@ -2251,3 +2251,20 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Scope remains local Workers-runtime proof. Independent security review, hosted persistence, trusted Issue #96 controller integration, and four-agent live dispatch remain NOT VERIFIED / NOT RUN. Contour A NOT ACCEPTED.
 - Next bounded step: implement a narrow trusted Issue #96 admission adapter that binds owner actor + source comment ID + repository/issue + immutable target SHA + wave/task IDs to a single-use approval/outbox, then prove replay, cross-owner, cross-comment, stale-SHA and ambiguous-commit cases. Do not enable dispatch before security/governance review.
 - Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Read-only Issue #96 event controller clean-base pass — 2026-11-16
+
+- Default branch HEAD remains 35208f0ef28f0ac031a7acdf35fc90ccc9b16845.
+- Found prior reusable read-only event controller in PR #102 exact head e6613c152c5334db04f520cfe069f3bbd1c57772; ported to clean-base branch proof/next-event-controller-clean-base-2026-11-16.
+- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112 — OPEN / DRAFT / UNMERGED; head c9a4c0ab2001f01a09632795283071c521e1c99d; base exact default SHA.
+- Controller validates only new exact /next issue_comment on open Issue #96; repository ID 1445644538, owner ID 157891068, owner login, issue repository API URL, OWNER association, trusted default ref and immutable 40-hex event SHA. Event identity is SHA-256(repository + issue + source comment ID).
+- Exact-head read-only controller run [43882090833](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090833), job 133350342861: COMPLETED / SUCCESS; 21/21 adversarial tests passed. Push run [43882041071](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882041071) also SUCCESS.
+- Exact-head Pool Contract Validation [43882090867](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090867): COMPLETED / SUCCESS; workflow YAML and security contracts passed.
+- Workflow permissions are contents: read; no secrets, API writes, D1, provider calls, child dispatch or side effects. The issue_comment admission job was NOT RUN in CI (expected for push/PR event); no live owner-comment event was synthesized.
+- Important existing-path finding: default pool-supervisor.yml listens to schedule, workflow_dispatch, issues opened/reopened/labeled, and workflow_run, not Issue #96 issue_comment. If POOL_DISPATCH_ENABLED=true, it consumes pool:ready labels and dispatches the legacy DSH probe. Current contract validation refuses when the variable is true, but effective runtime variable value was not inspected. Keep dispatch disabled; this legacy supervisor is not the Issue #96 owner /next controller.
+- Issue #96 explicitly amends the desired child count to exactly four isolated task executions (researcher, implementation designer, tester, security auditor). This pass does not dispatch any of them.
+- No secret values read, provider/model calls, Gemini dispatch, hosted D1, merge or deployment.
+- Status: event envelope validator VERIFIED in local CI only; durable admission, D1 binding, controller lease/fencing, live issue_comment run and dispatch NOT VERIFIED / NOT RUN. PR #112 remains Draft. PR #111 D1 proof remains separate Draft. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the durable admission binding of repository/owner numeric IDs + Issue #96 + source comment ID + target SHA + four fixed task IDs/wave ID into the D1 single-use approval/outbox, with cross-event replay, stale-SHA and ambiguous-write reconciliation tests. Do not connect to dispatch before independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
