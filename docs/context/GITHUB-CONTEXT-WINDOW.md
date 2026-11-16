@@ -8,7 +8,7 @@ Last refreshed: 2026-11-16 — Wave 318 agent evidence and controller transport 
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (verified 2026-11-16 via latest commit API read-back)
-Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; latest head `e8072d4a37409296c3780b9254e84c67ed36c866` before this metadata refresh)
+Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; re-fetch branch HEAD on every `/next` before relying on it)
 Latest daily report commit: `f6ce9d47a817bd837e4f5c37548440e3aaf1362f` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
