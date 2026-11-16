@@ -81,6 +81,18 @@ test("source comment cannot be rebound to another target SHA", () => {
   assert.equal(result.reason, "SOURCE_COMMENT_BINDING_CONFLICT");
 });
 
+
+test("unauthorized malformed ledger markers cannot poison trusted ledger parsing", () => {
+  const trusted = ownerComment(encodeLedgerComment(admitted));
+  const untrustedMalformed = [
+    { body: "<!-- cloud-pool-next-ledger:v1 {not-json} -->", user: { login: "attacker" }, author_association: "CONTRIBUTOR", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
+    { body: "<!-- cloud-pool-next-ledger:v1", user: { login: "VlDMlNSh" }, author_association: "COLLABORATOR", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
+    { body: "<!-- cloud-pool-next-ledger:v1 {not-json} -->", user: { login: "VlDMlNSh" }, author_association: "OWNER", issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/95" }
+  ];
+  assert.deepEqual(parseLedgerComments([...untrustedMalformed, trusted]), [admitted]);
+  assert.throws(() => parseLedgerComments([ownerComment("<-- cloud-pool-next-ledger:v1 {not-json} -->")]), /Malformed Cloud Pool ledger JSON/);
+});
+
 test("ignores ledger-looking comments not authored by the repository owner on the control issue", () => {
   const body = encodeLedgerComment(admitted);
   const untrusted = [
