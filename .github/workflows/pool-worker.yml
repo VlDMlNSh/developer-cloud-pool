@@ -186,7 +186,7 @@ jobs:
           export HOME="$home"
           installed_version="$(node -p "require('$prefix/node_modules/agent-browser/package.json').version")"
           test "$installed_version" = "0.43.0"
-          agent-browser install
+          agent-browser install --with-deps
           agent-browser skills list > "$RUNNER_TEMP/agent-browser-skills-list.txt"
           agent-browser skills get core > "$RUNNER_TEMP/agent-browser-core-skill.md"
           agent-browser skills get dogfood > "$RUNNER_TEMP/agent-browser-dogfood-skill.md"
