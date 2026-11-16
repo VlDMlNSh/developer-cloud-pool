@@ -61,8 +61,8 @@ The browser smoke job remains separate and least-privilege. It does not need the
 
 ## Acceptance checklist
 
-- [ ] Installer CI installs all expected skills on GitHub-hosted runner.
-- [ ] Inventory SHA-256 and installed skill count are recorded.
-- [ ] Exact-head CI passes.
+- [x] Installer CI installs all expected skills on GitHub-hosted runner: run 43838104995, job 133199689730.
+- [x] Inventory SHA-256 and installed skill count are recorded: 11/11 skills, 48 files, SHA-256 5cb73f77a808259ca0b9d0f862dfa54bdb848e93c1c5fed4a240c5f429d7a97c.
+- [x] Exact-head CI passes: run 43838104995, job 133199689204.
 - [ ] Independent security review confirms source pins, least privilege and no skill script execution.
 - [ ] Future Cloud Pool Gemini child workflows invoke this installer before agent start.
