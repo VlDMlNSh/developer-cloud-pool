@@ -2517,3 +2517,16 @@ The operating point is preserved in [CHATGPT-GEMINI-NEXT-WORKING-CONFIGURATION.m
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: strengthen event-to-API verifier to bind fetched comment to issue_comment.created, trusted repo identity/ref and immutable SHA; add edited/deleted/replay adversarial tests. Keep live trigger and dispatch disabled until Issue #96 authorization and governance gates.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Four-Gemini candidate bounds and Cloud Pool dispatch gate — 2026-11-16
+
+- Report: [four Gemini candidate bounds and dispatch gate](../reports/2026-11-16-four-gemini-candidate-bounds-and-dispatch-gate.md); report commit `d8aa13e4c2ee4093e8d031b4f1c764a2722f20fa`.
+- Default branch observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #107 four-task candidate head `027492668e7721a5371b38997bc76a6cd6a50cd4`; exact-head run `43868830501`, job `133304274884`, 8/8 fake-client tests PASS.
+- PR #109 bounded execution hardening head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; exact-head Pool Contract Validation run `43872185972`, job `133315933882`, 11/11 fake-client tests PASS. Both PRs remain OPEN/DRAFT/UNMERGED; aggregate status contexts empty / NOT VERIFIED; formal reviews 0.
+- Issue #94 and dedicated Cloud Pool control issue #96 remain OPEN. Candidate lacks production event-to-controller wiring, durable lease/fencing/recovery, child-run reconciliation and verified SDK runtime. Credential presence/account separation/free-tier model eligibility remain NOT VERIFIED.
+- MediaHub controller is a separate repository/control plane, currently a three-role workflow bound to MediaHub Issue #301; it is not used as a substitute for Cloud Pool-native Issue #96.
+- Gemini Agent 1–4 live dispatch: NOT RUN. No provider calls or secret reads. Contract tests VERIFIED; live agents NOT QUALIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement trusted Cloud Pool Issue #96 event-to-API admission and durable single-use lease/fencing/recovery; exact-head adversarial CI; independent security review. Keep dispatch disabled until all gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
