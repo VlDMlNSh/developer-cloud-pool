@@ -2302,3 +2302,19 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - ASTRA ECC integration decision: https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/operations/ASTRA-ECC-INTEGRATION.md
 - Two-node topology: https://github.com/VlDMlNSh/mediahub-os/blob/main/docs/checkpoints/mh-25-two-node-autonomous-topology-1.0.md
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-16 /next continuation — four-agent contract reconciliation
+
+- Latest bounded pass corrected an internal contradiction in Cloud Pool Issue #96.
+- Issue #94 requires exactly four isolated task executions for the current qualification wave: researcher, implementation designer, tester, security auditor.
+- Issue #96's owner-directed four-agent amendment already named those roles, but a stale qualification bullet still said exactly three. That bullet was replaced with exactly four bounded, least-privilege child jobs and read back successfully; the old exact-three clause is absent.
+- Evidence report: [2026-11-16 four-agent contract reconciliation](../reports/2026-11-16-next-four-agent-contract-reconciliation.md).
+- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
+- PR #107 remains a four-agent candidate, not production-integrated or qualified.
+- PR #111 remains an isolated D1 durable-lease proof candidate; inspect its exact head, CI, lease/fencing/expiry/recovery semantics before integration.
+- PR #112 remains a read-only owner-event admission probe; it is not dispatch authorization.
+- No Gemini dispatch, provider call, secret-value read, merge, deployment, or paid resource occurred. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect PR #111 exact-head evidence and durable lease semantics, then define the smallest safe integration seam with PR #112. Keep dispatch fail-closed.
