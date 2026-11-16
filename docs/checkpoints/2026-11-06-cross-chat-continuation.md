@@ -518,3 +518,20 @@ See [Wave 322 report](../reports/2026-11-15-pr93-verified-registry-atomic-rollba
 - Cloud Pool-native Gemini controller absent; Issue #94 prohibits MediaHub Issue #301 as substitute. Gemini children NOT RUN. No dispatch, provider calls, secret reads, deployment or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: Issue #94 controller contract + adversarial/no-secret test design and independent stack review.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Wave 327 PR #106 agent-browser audit and Gemini bridge reconciliation
+
+- Report: [PR #106 exact-head agent-browser audit](../reports/2026-11-16-pr106-agent-browser-exact-head-audit-wave327.md).
+- Cloud Pool default branch `Основной` observed at `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`; PR #106 exact head `15de4aa015493aec7ee5137f1e4dae9591c4ab4f`, OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation run #43848661335 SUCCESS: skills job #133235280917, browser smoke job #133235281414, workflow/security validation job #133235281584 all SUCCESS. Artifact list empty; screenshot hash was not retained as a downloadable artifact.
+- Browser profile proved only a fixed public `https://example.com` smoke on an ephemeral runner; no authenticated/persistent browser session or general arbitrary-site coverage. Browser job uses no repository checkout, credentials, or user cookies.
+- PR #106 review submissions 0; review threads 0. Worker report job still has issues:write and does not revalidate open state, exact SHA, profile and claim envelope immediately before mutation; TOCTOU / multiple-writer lifecycle remains a blocker.
+- Latest owner /next comment #6914858101 on MediaHub Issue #301 correlated with controller run #43856030589 (SUCCESS; target `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`). Readiness job #133260399666 and dispatch/monitor #133260449731 SUCCESS.
+- Agent 1 run #43856062054 / job #133260548869 SUCCESS; artifact #14220348279 SHA-256 `4eebac6defc9f419cd2e537d48f032192425ceaab12a0113e2251049bed2c512`; draft PR #756 head `8a5bd472db450a7d11a7e17965a63dc547ad475d`.
+- Agent 2 run #43856065717 / job #133260582460 SUCCESS; artifact #14221362859 SHA-256 `28fcad99e4241deb789a670195b12d3f3cb68e41ed2a759ff8ef8b90a8970d23`; draft PR #754 head `67671a2a1f8ff2d28277935d0500735bbdef28f7`.
+- Agent 3 run #43856070228 / job #133260595666 SUCCESS; artifact #14219444674 SHA-256 `62109f7c901c09b472b8cae25674c58bb5e71bea5bd21557498ef1a5a13e77cd`; draft PR #755 head `c58c8a3bd27b3cc39c4cf0f944f3fd57e823bbd5`.
+- All child PRs remain OPEN/DRAFT with zero formal reviews; subsequent PR validation runs show `action_required`, not SUCCESS. Agent execution is VERIFIED; PR acceptance is NOT VERIFIED.
+- No new /next comment was created for this restore prompt. No merge, deployment, production dispatch, provider call or secret read.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next: remediate Worker report TOCTOU and single-writer lifecycle, retain browser evidence artifacts, rerun exact-head CI and obtain independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
