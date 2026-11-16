@@ -68,3 +68,18 @@ A new clean-base proof was created as PR #111 from default HEAD `35208f0ef28f0ac
 - PR remains Draft. The proof is local Workers-runtime D1 only; production Supervisor integration, hosted persistence, independent security review and live four-agent execution remain NOT VERIFIED / NOT RUN.
 
 Next bounded step: inspect the SQL transaction/trigger invariants and adapt the atomic claim to bind Issue #96 source event + owner + immutable target SHA + four-task wave. Dispatch must remain disabled; ambiguous results must become NEEDS_REVIEW.
+
+
+## SQL attempt-state integrity pass — 2026-11-16
+
+A direct SQL status update could otherwise move a prepared attempt to `running` without passing through the lease-acquisition projection. Added migration 0006 to make this transition conditional on a matching current attempt, matching lease attempt, non-empty lease owner, positive fencing generation, and unexpired lease.
+
+An adversarial test now proves the direct transition is rejected without mutating the attempt, while the supported `acquireAttemptLease` path succeeds and projects generation 1.
+
+- PR #111 latest head: `687196738782432797bf394f1342cb9df19f478f`; clean-base compare: 4 ahead / 0 behind.
+- D1 exact-head run [43881396386](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396386): SUCCESS; syntax passed; 37/37 tests passed.
+- Pool Contract Validation [43881396272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396272): SUCCESS.
+- Artifact `14232471651`; SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- PR remains OPEN / DRAFT / UNMERGED. Default branch unchanged.
+- No secrets, provider calls, dispatch, hosted D1, merge or deployment.
+- This does not authenticate a worker or qualify a hosted lock; production Issue #96 integration and independent security review remain open.
