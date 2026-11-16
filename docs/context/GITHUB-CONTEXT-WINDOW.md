@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — default-branch, owner-only /next controller and four-agent candidate revalidation (see current addendum below)
+Last refreshed: 2026-11-16 19:34 Europe/Vilnius — current default, /next controller, D1 lease and runtime revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (direct branch ref read-back, 2026-11-16)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh`
+Latest daily report commit: `f6074d2ebeee922cf05a1b3ac236f1aa276d4893` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2247,3 +2247,20 @@ Evidence links:
 - Current-state refresh and report are published on documentation continuation branch `docs/next-2026-11-16-current-state-refresh`.
 - Draft documentation PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/113 (base `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`). This branch is not merged and is not production/default state.
 - Context blob at initial publication: `73db4dcfb64d494aaca96fab8884656bdbf7a6ee`; dated report blob read-back: `823bded1ff04000462eb0d3c1de8a0a4eb6975a5`. Recheck PR head and CI before any merge.
+
+
+## Daily revalidation — 2026-11-16 19:34 Europe/Vilnius
+
+- Current default is `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, 15 commits beyond the previous `9dbb7a37...` snapshot. Repository has 9 open Issues and 85 open PRs. Priority Issues #1/#22/#26 remain OPEN; new control Issues #94/#96 remain OPEN, with #96 PLANNED.
+- Active ruleset #26550182 is confirmed for `refs/heads/Основной`: PR required, zero approvals, no required status checks, thread resolution required, deletion/non-fast-forward blocked, no bypass actors. Current `POOL_DISPATCH_ENABLED` is NOT VERIFIED; the Actions variables endpoint is unsupported by the read-only GitHub connector. Historical Issue #1 value is not current proof.
+- PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 143 commits behind current default, formal reviews 0; exact-head Actions runs remain SUCCESS (24: 42982847600/42982847694; 25: 42228269689/42228269676/42228263346; 30: 42216422883; 31: 42229917555). Path-segment branch remains `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 143 behind, no PR and no exact-head CI.
+- Older D1 stack #87/#92/#93 is now 15 commits behind current default. Exact-head workflows remain SUCCESS, but all are draft/unmerged with no formal reviews; do not promote the stale stack wholesale.
+- PR #111 is clean-base (4 ahead / 0 behind) with D1 and contract runs 43881396386/43881396272 SUCCESS. Its task/attempt lease is per-task and local-only, not the repository-wide controller lease required by Issue #96.
+- PR #112 is clean-base (3 ahead / 0 behind) with runs 43882090833/43882090867/43882041071 SUCCESS. It validates the exact owner event as READ_ONLY_NO_DISPATCH, but the actual `event-admission` job was skipped in PR CI; no real Issue #96 webhook was exercised. No durable lease or dispatch exists.
+- PR #109 exact-head contract run 43872185972 SUCCESS using fake clients. Four distinct key strings do not prove distinct upstream Google account/quota identities; `@google/genai` dependency/runtime is not pinned in the diff. No live agents/provider calls were run. PR #108 has no exact-head runs.
+- Latest visible Supervisor schedule run is 43829708112 at 2026-11-16T08:14:58Z on older SHA `6507823e...`; no later Supervisor or Pool Worker run appeared in the branch run listing. Current heartbeat is NOT VERIFIED; current default HEAD has zero Actions runs. Supervisor still has `issues: write`/`actions: write`, `workflow_run`, Worker `workflow_dispatch`, and absence-based 15-minute stale-claim recovery.
+- SentinelX: zero connected hosts; Voktors-Mini offline; mh-dev-01/02 disabled. Cloudflare connected account inventory: zero Worker scripts and zero D1 databases. Free entitlement/quotas NOT VERIFIED.
+- Bounded source review of PR #111/#112/#109 only; no runtime/security-boundary changes. No secret reads, dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge or production mutation.
+- Next: compose exact owner-event validation with a storage-backed repository-wide single-use lease, monotonic fencing, expiry, crash recovery and child-run reconciliation on a clean branch from `35208f0e...`; add adversarial D1 tests and independent review. Keep `dispatch:false`.
+- Report: [2026-11-16 19:34 daily audit](../reports/2026-11-16-1934-daily-audit.md); checkpoint: [2026-11-16 continuation](../checkpoints/2026-11-16-daily-continuation.md).
+- Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
