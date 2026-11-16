@@ -120,3 +120,29 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 ## CI evidence correction — 2026-11-16
 
 PR #107 exact-head run `43864376148` completed SUCCESS. Its job was `Validate workflow syntax and security invariants`; the job steps did not demonstrate execution of `scripts/gemini-four-agent-controller.test.mjs`, and no artifacts were produced. Therefore the workflow run is verified, but the isolated Gemini unit-test suite remains NOT VERIFIED. PR #107 has zero formal reviews and remains Draft/unmerged.
+
+
+## /next runtime and controller evidence audit — 2026-11-16
+
+### Gemini four-client candidate
+- PR #107 head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`, exact-head run `43864376148`, job `133289028904`: SUCCESS.
+- Downloaded job log confirms `node --test scripts/gemini-four-agent-controller.test.mjs`; 6 tests, 6 pass, 0 fail. This corrects the prior report's overly cautious NOT VERIFIED label.
+- These are injected fake-client tests. No Gemini API/provider request was made. GitHub Actions secret-name presence, account ownership and quota domains remain NOT VERIFIED. PR remains Draft/unmerged with zero formal reviews.
+
+### Cloud Pool /next controller
+- PR #102 head `e6613c152c5334db04f520cfe069f3bbd1c57772`; runs `43825389908` and `43825390133` SUCCESS.
+- Read-only event test job `133158008841` completed; the PR-event run correctly returned `EVENT_NOT_ISSUE_COMMENT` and the event-admission job was skipped. This proves the negative PR-event path, not a live owner-authenticated Issue #96 comment probe.
+- Issue #96 remains OPEN / PLANNED. No child dispatch, durable idempotency ledger, controller/child run correlation, or three-agent wave has been demonstrated. Dispatch remains disabled.
+- Important scope distinction: PR #107's four API clients are not the three bounded GitHub child jobs required by Issue #96. Do not treat one as proof of the other.
+
+### Browser and agent skills
+- PR #106 head `afd3dba8bc9db37c8e07b8becf128233f46e4533`; exact-head Pool Contract Validation run `43861948322` SUCCESS.
+- Browser job `133280713541` SUCCESS: pinned agent-browser 0.43.0 and Chromium installed, fixed `https://example.com` opened, title `Example Domain` verified, screenshot created in ephemeral runner. The screenshot was not published as an artifact; its SHA-256 is only written to step summary, not available in the retrieved job log. Browser close is configured as cleanup trap but explicit close completion is NOT independently evidenced. No authenticated sites, cookies, or persistent browser session were tested.
+- Agent skills job `133280713473` SUCCESS and logs confirm `ALL_11_SKILLS_CONTENT_VALIDATED`. This verifies pinned skill bootstrap/content checks on an ephemeral runner, not live Gemini agent execution.
+- PR #106 remains Draft/unmerged, zero formal reviews. Its worker dispatch was not run; it does not create persistent remote browser sessions or a phone-accessible web dashboard.
+
+### Evidence and disposition
+- PR #74 head `ebcdaeb3421889be0b710a4b6b6e83deeafa0144`, run `43692828719` SUCCESS; still Draft, no formal reviews.
+- All inspected PRs #74, #102, #103, #106 and #107 remain open Draft/unmerged with zero formal reviews.
+- No secret values read, no provider calls, no Gemini dispatch, no owner /next event probe, no child agents, no merge or deployment.
+- Contour A remains BLOCKED / NOT ACCEPTED. Immediate next step: complete owner-event admission and durable replay/ledger qualification for Issue #96, obtain independent review, then dispatch exactly the authorized child count through the Cloud Pool controller. Separately keep four Gemini clients isolated and unactivated until secret metadata and quota evidence are verified.
