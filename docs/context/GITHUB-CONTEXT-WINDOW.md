@@ -2,14 +2,14 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — owner-triggered batch 6901529560 evidence and Cloud Pool live-state revalidation
+Last refreshed: 2026-11-16 — Wave 318 agent evidence and controller transport governance audit
 
 > The dated 2026-11-16 addendum at the end of this file supersedes older repository/PR/controller status snapshots below. Historical sections remain for provenance and must not be treated as current without revalidation.
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (verified 2026-11-16 via latest commit API read-back)
-Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; updated 2026-11-16)
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Documentation continuation branch: `docs/next-2026-11-15-controller-d1-audit` (PR #99; latest head `e8072d4a37409296c3780b9254e84c67ed36c866` before this metadata refresh)
+Latest daily report commit: `f6ce9d47a817bd837e4f5c37548440e3aaf1362f` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
