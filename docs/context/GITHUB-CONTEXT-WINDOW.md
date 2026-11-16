@@ -2389,3 +2389,15 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Checkpoint: [atomic D1 admission checkpoint](../checkpoints/2026-11-16-next-d1-atomic-admission-slice.md).
 - Next: implement authenticated workload identity for immutable-attempt claim/renew/finalize, bound to audience/repository/task/attempt/target, no automatic reclaim.
 - Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-16 /next — atomic admission follow-up hardening (final head)
+
+- PR #114 branch head revalidated: `051f972a44bdfb610b17554dd51340c34700e6f6`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, OPEN/DRAFT/UNMERGED, 0 formal reviews.
+- Focused review added approval-state monotonicity (ready -> consumed/revoked only), append-only approval ledger, and explicit trusted-default-head equality gate. Added tests for consumed-approval rollback/deletion and unbound target SHA.
+- Final exact-head D1 run 43934541248/job 133535567332 SUCCESS: 11/11 Workers-runtime tests. Pool Contract Validation 43934541311/job 133535568990 SUCCESS.
+- Artifact 14259383327 independently downloaded and SHA-256 verified: `c1b4f8c4578a720b5d1a384b5d8ee891eead1665360ce62e21fe6ead4fdeb54d`.
+- Important limitation: trustedDefaultHeadSha, event payload and controller run/code metadata are supplied inputs in the local proof. No live GitHub webhook signature verification or trusted-main event workflow is implemented. Hosted D1, authenticated worker identity, immutable attempt execution, outbox delivery and production integration remain NOT VERIFIED.
+- Updated report: [atomic D1 admission slice](../reports/2026-11-16-next-d1-atomic-admission-slice.md).
+- Next: implement authenticated workload identity for immutable-attempt claim/renew/finalize, bound to audience/repository/task/attempt/target, with no automatic reclaim. Keep dispatch disabled.
+- Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
