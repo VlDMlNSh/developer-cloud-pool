@@ -2164,3 +2164,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #100 formal reviews 0; PR #98 Draft/unmerged. Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope; MediaHub controller is not an approved Cloud Pool router. Dispatch remains fail-closed.
 - Detailed report/checkpoint: `docs/reports/2026-11-16-cloudpool-next-controller-scope-audit.md` and `docs/checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md` on branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit`.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next revalidation — 2026-11-16 (latest GitHub read-back)
+
+- Cloud Pool default branch `Основной` HEAD revalidated from recent commit search: `6507823e7ec27caa9b2621daef964dba2d4cf436`. The default-branch Context Window remains historically stale; this update is on the documentation PR branch only.
+- Issues [#94](https://github.com/VlDMlNSh/developer-cloud-pool/issues/94) and [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) remain OPEN. Issue #96 explicitly remains PLANNED and dispatch-disabled; no production controller implementation or authorization is established.
+- PR #98 OPEN/DRAFT/UNMERGED, head `f23cdb5484d5923e02242b3ea142397f9e1f0270`, base default `6507823e7ec27caa9b2621daef964dba2d4cf436`. Exact-head runs `43758657648` / job `132948250752` and `43758657644` / job `132948250839` both COMPLETED/SUCCESS.
+- PR #100 OPEN/DRAFT/UNMERGED, head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`. Exact-head run `43824019902` / job `133153438933` COMPLETED/SUCCESS; 53 tests PASS, 0 FAIL, 0 skipped; syntax checks PASS. Formal reviews: 0.
+- PR #102 OPEN/DRAFT/UNMERGED, head `38844dfb4a881ec858742e5bf9e35724f6b8a95d`, base default `6507823e7ec27caa9b2621daef964dba2d4cf436`. Read-only controller run `43821733529`: contract-tests job `133146174137` SUCCESS; event-admission job `133146175570` SKIPPED on PR event. Pool Contract Validation run `43821733548` / job `133146122452` SUCCESS. Formal reviews: 0. Live trusted-main Issue #96 event probe NOT RUN.
+- PR #103 OPEN/DRAFT/UNMERGED, head `8d3de0bf03f6bf315e760de6b42b0496c3312701`; no exact-head PR workflow run returned. CI NOT VERIFIED.
+- PR #100's `matchExactControllerRuns` now requires workflow ID, path, event, repository, head repository, branch, target SHA, deterministic title and run ID; weak title+SHA matching was removed. However, the approved production workflow identity is not established.
+- Critical lock defect remains: `lockHeld: true` is caller-asserted, not a runtime proof of ownership. No durable repository-wide lock, lease/fencing implementation or verified serialization exists. Do not treat the Boolean as a lock or enable dispatch.
+- No formal PR reviews were returned for #100/#102. Empty combined status contexts are not a CI pass. Exact-head named workflow runs are the evidence above.
+- Gemini Agent 1/2/3: NOT RUN for Cloud Pool scope. There is no approved Cloud Pool-native task dispatcher; the MediaHub controller is not a substitute and must not be used to assign Cloud Pool work.
+- No dispatch, provider/model call, secret access, deployment, merge, or default-branch modification occurred in this pass.
+- Status: PR #98/#100/#102 named exact-head CI VERIFIED for their bounded PR test paths; PR #103 CI NOT VERIFIED; live dispatch NOT IMPLEMENTED / NOT AUTHORIZED; lock and runtime reconciliation NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded engineering step: replace the caller-asserted lock Boolean with an enforceable, trusted serialization/lease design with stale-owner fencing and crash recovery, then add adversarial tests and exact-head CI. Do not dispatch until approved controller identity, governance, ruleset and trusted-main no-secret probe are independently evidenced.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
