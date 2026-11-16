@@ -27,3 +27,12 @@ Status: VERIFIED (GitHub metadata and selected exact-head CI read-back); runtime
 Implement and test durable single-use admission/lease, monotonic fencing, expiry, crash recovery and child-run reconciliation on a clean branch based on the immutable default SHA above. Preserve no-secret/no-provider-call posture and request independent review before any merge or dispatch.
 
 Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Owner-directed two-executor architecture crosswalk — 2026-11-16
+- The target coding pair is recorded as Codex CLI + Claude Code CLI, each an independent executor. Source anchors: MediaHub Issues #145–#147. This is a target direction, not proof of runtime availability.
+- FCC is a Claude Code-compatible gateway/configuration surface; ECC is selectively adopted engineering workflow guidance, not a second executor/controller. ASTRA remains the sole authority plane; Jarvis is the Experience/UI plane.
+- Distinguish local Codex+Claude execution (Issues #145–#147), GitHub-hosted Claude Code candidate (Issue #496), FCC/Ollama routing (Issue #296), and safe FCC UI access (Issue #499). These are separate route/deployment tracks.
+- MediaHub Wave 517 records that hosted Claude Code on Ubuntu conflicts with the then-current canonical Alamo-only constraint and requires a reviewed architecture amendment before execution.
+- No executor runtime, provider request, secret, host, dispatch, installation, merge or deployment was used in this documentation pass.
+- Cloud Pool remains Contour A first. Build/accept durable admission, leases/fencing/recovery, isolated workspaces, evidence and Jarvis read-only console before admitting Codex and Claude Code adapters.
