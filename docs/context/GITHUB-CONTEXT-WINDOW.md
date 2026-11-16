@@ -3964,3 +3964,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Cloud Pool-native Gemini controller workflow remains NOT FOUND. No secret values read, provider calls, dispatch, hosted D1 provisioning, merge, deployment or paid resource creation.
 - Status: PR #107 narrow exact-head CI VERIFIED; controller integration and all live qualification gates NOT VERIFIED; four-vs-three contract BLOCKED; Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile Issues #94/#96, port PR #107 to current default base, then integrate only behind independently reviewed one-shot admission + durable lease/outbox. Keep dispatch disabled.
+
+
+## 2026-11-16 /next — Gemini execution-boundary audit; Issue #96 four-role amendment verified
+
+- Direct default-branch ref read: `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Documentation branch prior HEAD: `256de914840f61b90312295428091dfa12eff6fa`.
+- Issue #94 requires four isolated Gemini task executions. Issue #96 now includes owner-directed 2026-11-16 amendment explicitly setting exactly four roles for the current wave (researcher, implementation designer, tester, security auditor). Prior 4-vs-3 mismatch is RESOLVED; four-agent contract is consistent.
+- PR #109 OPEN/DRAFT/UNMERGED, head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`, base current default HEAD. Exact-head run #43872185972 / job #133315933882 COMPLETED/SUCCESS; 11 fake-client tests passed. Formal reviews: 0.
+- PR #109 source audit: all four API keys are read into one Node process environment/in-memory array and four SDK calls run concurrently in the same process. This is not four isolated child environments and does not satisfy the per-child credential boundary. SDK package/lockfile is absent; runtime NOT VERIFIED.
+- Google official SDK docs confirm `abortSignal` is client-side cancellation; server-side work and applicable charges may continue. A 45-second abort is not a billing ceiling. Official docs: https://googleapis.github.io/js-genai/release_docs/interfaces/types.GenerateContentConfig.html ; upstream: https://github.com/googleapis/js-genai.
+- Distinct key strings do not prove distinct Google accounts/quota domains. Owner-only Issue #96 admission, durable lease/fencing/outbox/recovery, hosted state and child-run reconciliation remain NOT VERIFIED. PR #109 has zero formal reviews.
+- No secrets read, provider calls, Gemini dispatch, paid resources, merge or deployment. Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: split four workers into separate least-privilege process/container boundaries, inject only one credential into each, pin SDK + lockfile, test environment isolation, then integrate with durable Issue #96 admission and fencing after independent review.
