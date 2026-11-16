@@ -44,3 +44,7 @@ Implement the Cloud Pool-native Gemini controller, then establish persistent wor
 - Context Window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/context/GITHUB-CONTEXT-WINDOW.md
 - Checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CONTINUATION-CHECKPOINT-2026-11-11.md
 - Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## SHA clarification
+CI run `43841574699` validates implementation/workflow source SHA `90b88dd94d595dda65365a09396693804671cab3`. Subsequent commits in this pass updated only this report, Context Window and checkpoint; no implementation or workflow code changed after the tested SHA.
