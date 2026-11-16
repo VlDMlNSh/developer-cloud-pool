@@ -2299,3 +2299,5 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secrets/variables read, provider calls, deployment, merge or infrastructure mutation. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent security/governance review of PR #102; only then implement canonical API revalidation and durable idempotency/serialization as a separate bounded change.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Governance recheck: active ruleset #26550182 targets `Основной`, requires PR/thread resolution and has no bypass actors, but requires **0 approvals** and no CODEOWNERS review. Independent review is not enforced by the ruleset and remains a separate acceptance gate. PR #100/#101 exact-head runs `43764511321`/`43764995448` SUCCESS; formal reviews remain 0 on both.
