@@ -3874,3 +3874,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No FCC installation, provider credential read, provider call, or runtime qualification was performed. FCC remains NOT QUALIFIED.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - New matrix: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/architecture/FCC-PROVIDER-COMPATIBILITY-MATRIX-2026-11-16.md
+
+
+## 2026-11-16 — FCC GitHub Secrets / Admin UI bypass assessment
+
+- Added source-level report: [FCC GitHub Secrets without Admin UI assessment](../reports/2026-11-16-fcc-github-secrets-no-admin-ui-assessment.md).
+- Report commit: `6bfef60049096ea096ac9bf97d73b97eb770ca4b`.
+- Inspected immutable FCC source `Factix/fcc@8ae7795961f05f425bd3e7418f85f2ccec7f4600`: `config/settings.py` blob `f11555790aa6c859333949f511d04fd5052b4a92`; `cli/entrypoints.py` blob `2da2ed31f4bef7756036faee10324724eb4e576f`; `.env.example` blob `8f830f1fea3f74de81976dcd555741fd73e63bba`; `pyproject.toml` blob `0e823c5ebec237644cfcd7ea9cc29a5e909e4443`.
+- Decision: **YES, source supports running FCC without its Admin UI and supplying provider keys as process environment variables**. Pydantic Settings declares provider key fields/environment aliases; `FCC_ENV_FILE` is an optional dotenv path; `fcc-server` reads `get_settings()`; `FCC_OPEN_BROWSER=false` disables auto-opening the Admin UI. `fcc-init` and persistent `~/.fcc/.env` are not required when process environment is used.
+- Critical isolation finding: FCC `_claude_child_env()` copies the base environment, strips only `ANTHROPIC_*`, then starts Claude Code. If `fcc-claude` is launched from a process environment containing provider API keys, those provider key variables are inherited by Claude Code. Do not use this launcher in that environment until an allowlisted child environment is implemented and tested.
+- A same-job GitHub Actions runner is not a sufficient isolation boundary against arbitrary untrusted agent shell execution: same-user processes/job state may be inspectable. Prefer a separate trusted FCC service/process identity or hardened boundary; Claude Code should receive only private FCC endpoint + a separate proxy auth token. No Docker socket/process-control access for agents.
+- Recommended runtime controls: inject only selected provider key(s), no `secrets: inherit`, no secret-bearing task envelopes/prompts/artifacts/cache/logs, disable raw API/SSE/CLI diagnostics, disable Admin UI auto-open, private/loopback bind, pinned Actions and protected environments, no secrets for untrusted fork PRs. Keep quota/billing policy in Pool Bridge.
+- Source inspection is VERIFIED; runtime behavior, process/container isolation, no-persistence/logging and child-env scrubbing are NOT VERIFIED. No FCC install, provider call, dispatch, deployment or tests were run. FCC NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect FCC bind/auth/config lifecycle, then implement synthetic no-secret tests for env precedence, Admin UI disabled, no secret persistence/logging/artifacts, and child-process environment isolation before any provider qualification.
+- Report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-16-fcc-github-secrets-no-admin-ui-assessment.md
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
