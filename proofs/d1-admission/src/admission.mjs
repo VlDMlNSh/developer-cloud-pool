@@ -79,29 +79,66 @@ export async function admitOwnerNextEvent(db, input, now) {
       RETURNING admission_id
     `).bind(...values).first();
   } catch {
-    // A failed response can be ambiguous. Read the stable source ID before
-    // considering any retry; never repeat a side effect blindly.
+    // The write may have committed before the response was lost. Read by the
+    // stable source-comment key; never repeat the admission side effect blindly.
     try {
-      const prior = await db.prepare(
-        "SELECT admission_id, envelope_digest, task_key, approval_id FROM pool_admission_receipts WHERE source_comment_id = ?"
-      ).bind(sourceCommentId).first();
+      const prior = await db.prepare(`
+        SELECT admission_id, repository_id, issue_number, actor_id,
+               owner_association, wave_id, task_key
+          FROM pool_admission_receipts WHERE source_comment_id = ?
+      `).bind(sourceCommentId).first();
       if (!prior) return deny("ADMISSION_OUTCOME_AMBIGUOUS_NO_RECEIPT");
-      if (prior.admission_id !== admissionId || prior.envelope_digest !== envelopeDigest ||
-          prior.task_key !== taskKey || prior.approval_id !== approvalId) return deny("SOURCE_COMMENT_IDENTITY_CONFLICT");
-      return { decision: "ADMISSION_REPLAY", admissionId, sourceCommentId, waveId, taskKey, dispatch: false, executionAuthorized: false };
+      if (prior.admission_id !== admissionId || prior.repository_id !== REPOSITORY_ID ||
+          prior.issue_number !== ISSUE_NUMBER || prior.actor_id !== actorId ||
+          prior.owner_association !== "OWNER") return deny("SOURCE_COMMENT_IDENTITY_CONFLICT");
+      const outbox = await db.prepare(
+        "SELECT outbox_id, task_key FROM pool_task_outbox WHERE task_key = ?"
+      ).bind(prior.task_key).first();
+      if (!outbox || outbox.task_key !== prior.task_key) return deny("ADMISSION_REPLAY_OUTBOX_MISSING");
+      return {
+        decision: "ADMISSION_REPLAY", admissionId: prior.admission_id,
+        sourceCommentId, waveId: prior.wave_id, taskKey: prior.task_key,
+        outboxId: outbox.outbox_id, dispatch: false, executionAuthorized: false
+      };
     } catch {
       return deny("ADMISSION_OUTCOME_AMBIGUOUS_STORAGE_UNAVAILABLE");
     }
   }
 
   try {
-    const prior = await db.prepare(
-      "SELECT admission_id, envelope_digest, task_key, approval_id FROM pool_admission_receipts WHERE source_comment_id = ?"
-    ).bind(sourceCommentId).first();
-    if (!prior || prior.admission_id !== admissionId || prior.envelope_digest !== envelopeDigest ||
-        prior.task_key !== taskKey || prior.approval_id !== approvalId) {
+    const prior = await db.prepare(`
+      SELECT admission_id, repository_id, issue_number, actor_id, owner_association,
+             controller_run_id, controller_code_sha, target_sha, profile, wave_id,
+             envelope_digest, task_key, approval_id
+        FROM pool_admission_receipts WHERE source_comment_id = ?
+    `).bind(sourceCommentId).first();
+    if (!prior || prior.admission_id !== admissionId || prior.repository_id !== REPOSITORY_ID ||
+        prior.issue_number !== ISSUE_NUMBER || prior.actor_id !== actorId ||
+        prior.owner_association !== "OWNER") {
       return deny("SOURCE_COMMENT_IDENTITY_CONFLICT_OR_INCOMPLETE_TRANSACTION");
     }
+
+    // Duplicate webhook deliveries may execute under a different controller
+    // run/code SHA or after default HEAD advances. Source-comment identity wins:
+    // return the original immutable admission, never bind a second target.
+    if (insertResult?.admission_id !== admissionId) {
+      const outbox = await db.prepare(
+        "SELECT outbox_id, task_key FROM pool_task_outbox WHERE task_key = ?"
+      ).bind(prior.task_key).first();
+      if (!outbox || outbox.task_key !== prior.task_key) return deny("ADMISSION_REPLAY_OUTBOX_MISSING");
+      return {
+        decision: "ADMISSION_REPLAY", admissionId: prior.admission_id,
+        sourceCommentId, waveId: prior.wave_id, taskKey: prior.task_key,
+        outboxId: outbox.outbox_id, dispatch: false, executionAuthorized: false
+      };
+    }
+
+    if (prior.controller_run_id !== String(controllerRunId) ||
+        prior.controller_code_sha !== controllerCodeSha ||
+        prior.target_sha !== targetSha || prior.profile !== profile ||
+        prior.envelope_digest !== envelopeDigest || prior.task_key !== taskKey ||
+        prior.approval_id !== approvalId) return deny("NEW_ADMISSION_BINDING_READBACK_MISMATCH");
+
     const [task, outbox, approval] = await Promise.all([
       db.prepare("SELECT task_key, repository_id, issue_number, target_sha, profile, wave_id FROM pool_tasks WHERE task_key = ?").bind(taskKey).first(),
       db.prepare("SELECT outbox_id, task_key, status FROM pool_task_outbox WHERE task_key = ?").bind(taskKey).first(),
@@ -113,10 +150,8 @@ export async function admitOwnerNextEvent(db, input, now) {
         approval?.task_key !== taskKey || approval?.consumed_at !== now) {
       return deny("ATOMIC_ADMISSION_READBACK_MISMATCH");
     }
-    const created = insertResult?.admission_id === admissionId;
     return {
-      decision: created ? "ADMITTED" : "ADMISSION_REPLAY",
-      admissionId, sourceCommentId, waveId, taskKey,
+      decision: "ADMITTED", admissionId, sourceCommentId, waveId, taskKey,
       outboxId: outbox.outbox_id, dispatch: false, executionAuthorized: false
     };
   } catch {
