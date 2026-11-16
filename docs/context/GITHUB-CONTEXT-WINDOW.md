@@ -3787,3 +3787,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Live repository inventory at this pass: open Issues #94, #96, #70, #38, #22, #26, #1, #5; open PRs include #110–#112 and prior #107–#109 work. Exact PR heads/CI/governance still require per-item revalidation before action. Documentation branch is not merged into default branch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next revalidation — read-only owner event controller (2026-11-16)
+
+- Live default-branch base observed in PR #112: `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #112 head: `c9a4c0ab2001f01a09632795283071c521e1c99d`.
+- PR #112 is OPEN / DRAFT / UNMERGED; formal reviews 0; inline review comments 0.
+- PR #112 adds `.github/workflows/next-event-controller-readonly.yml` (blob `772a6e78423f60dab862c5e237532a2da8654334`), not the Gemini batch dispatch controller. Default branch workflow inventory did not include this read-only event workflow.
+- Exact-head read-only controller run [43882090833](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090833): SUCCESS at `c9a4c0ab2001f01a09632795283071c521e1c99d`; contract-test job `133350342861` SUCCESS; event-admission job `133350345738` SKIPPED because this was a PR event. Pool Contract Validation [43882090867](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090867): SUCCESS on same SHA.
+- Active ruleset ID `26550182`: selector `refs/heads/Основной`, enforcement active, PR required, 0 required approvals, thread resolution required, deletion/non-fast-forward prohibited, no bypass actors; no required status checks listed. Branch API `protected=false` is not equivalent to ruleset disabled.
+- Critical boundary: PR #112 validates a read-only event envelope only. It does not provide durable one-shot admission, quota reservation, lease/fencing/recovery, child dispatch, Gemini execution, or provider credential qualification. Do not merge/describe as production pool activation.
+- Gemini agents: NOT RUN. Secrets: not read. Provider calls, deployment, hosted D1, merge: NOT RUN. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [2026-11-16 read-only event controller review](../reports/2026-11-16-next-event-controller-readonly-review.md).
+- Next bounded step: audit durable admission and repository-wide lease/fencing integration with immutable event identity; retain dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
