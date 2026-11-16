@@ -2340,3 +2340,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - MediaHub Bootstrap and transport policy were corrected/read back on canonical docs branch; PR #431 remains separate OPEN/unmerged candidate, not current source.
 - Cloud Pool Issue #96 remains fail-closed; PR #102 OPEN/DRAFT/UNMERGED. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Gemini controller trigger and admission-gate audit
+
+- Report: [Gemini controller trigger and admission-gate audit](../reports/2026-11-16-next-controller-trigger-and-admission-gate-audit.md).
+- Re-read MediaHub main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`, controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`, children A1/A2/A3 `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`, `fa3b4c407d3c583cbd33133aea89e4bd8a496b69`, `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e`; transport/HMAC/trigger tests read back at blobs `5ae0e8db9465ce36bd4020df69b552c659cd6187`, `e92e1c3f4e52fb2005845e520d1bbe10dcdacfbe`, `48513b078d685b74d65adfcffe8e0813e7f19716`.
+- Active launch trigger is a GitHub Issue #301 `issue_comment` event, exact `/next`, OWNER association, non-PR issue and trusted `main` workflow ref. A ChatGPT chat message alone does not create that GitHub event. `/probe` intentionally skips admission and dispatch.
+- Controller additionally requires `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, resolves one immutable target SHA, uses controller-only REST/HMAC dispatch, and verifies all three child runs/jobs/artifact digests.
+- Trusted-main probe `43764634513` / jobs `132966862378`, `132966891092` SUCCESS, but readiness/dispatch SKIPPED. PR #437 exact-head checks passed, not equivalent to exact-main CI.
+- Current-main exact CI NOT VERIFIED; formal review APIs for PR #431/#432/#434/#437 empty; independent security review NOT VERIFIED; effective secret/variable scope, PAT least privilege and effective governance NOT VERIFIED. No secret values read.
+- New Gemini batch NOT RUN. This is a current admission-gate hold, not a broken/missing controller. No GitHub comment/dispatch was created.
+- Next: obtain independent security review of exact current-main controller/children; verify current-main CI and metadata-only variable/secret permission scope plus effective governance. Only then use the existing Issue #301 owner-comment route.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
