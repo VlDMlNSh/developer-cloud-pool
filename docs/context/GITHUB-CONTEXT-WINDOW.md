@@ -2318,3 +2318,20 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - PR #112 remains a read-only owner-event admission probe; it is not dispatch authorization.
 - No Gemini dispatch, provider call, secret-value read, merge, deployment, or paid resource occurred. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect PR #111 exact-head evidence and durable lease semantics, then define the smallest safe integration seam with PR #112. Keep dispatch fail-closed.
+
+
+---
+
+## 2026-11-16 /next continuation — D1 lease and read-only admission audit
+
+- Immutable base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #111 head `687196738782432797bf394f1342cb9df19f478f`: exact-head D1 proof run 43881396386 SUCCESS, 37/37 Workers-runtime tests; contract run 43881396272 SUCCESS. Artifact 14232471651 SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- PR #112 head `c9a4c0ab2001f01a09632795283071c521e1c99d`: run 43882090833 SUCCESS, 21/21 adversarial unit tests; contract run 43882090867 SUCCESS. Its event-admission job was SKIPPED in the PR test run, so actual webhook execution remains NOT VERIFIED.
+- No formal reviews or inline review threads on PR #111 or #112.
+- D1 migrations 0002–0006 prove local transactional approval consume/outbox, logical task identity, immutable attempts, fencing, append-only events, indeterminate reconciliation queue and a running-requires-current-lease guard.
+- Critical design boundary: `task-lease.mjs` is a separate legacy reclaim API; `task-attempts.mjs` deliberately refuses reclaim of expired running/indeterminate attempts. Do not combine these APIs. Expired attempts remain blocked pending a separately authorized reconciliation resolver.
+- Local Workers-runtime proof is not hosted D1 persistence, worker authentication, production Supervisor integration, or exactly-once external side-effect guarantee.
+- PR #112 is read-only event-envelope validation with contents:read and no persistence/dispatch. It is not durable admission.
+- Detailed evidence and integration decision: [D1 lease and admission audit](../reports/2026-11-16-next-d1-lease-admission-audit.md).
+- Next: design one canonical state machine and transaction boundary joining trusted owner event -> durable one-shot admission -> approval consume/task/outbox -> immutable attempt/lease, with an explicit authorized reconciliation path. Keep dispatch disabled until independent review and hosted persistence/recovery qualification.
+- Contour A NOT ACCEPTED; Contour B DEFERRED; Gemini dispatch NOT RUN.
