@@ -12,7 +12,7 @@ CREATE TABLE pool_approval_ledger (
   state TEXT NOT NULL DEFAULT 'ready' CHECK (state IN ('ready', 'consumed', 'revoked')),
   CHECK ((state = 'ready' AND consumed_at IS NULL AND task_key IS NULL)
       OR (state = 'consumed' AND consumed_at IS NOT NULL AND task_key IS NOT NULL)
-      OR state = 'revoked')
+      OR (state = 'revoked' AND consumed_at IS NULL AND task_key IS NULL))
 );
 
 CREATE TABLE pool_admission_receipts (
@@ -130,4 +130,31 @@ BEFORE UPDATE OF approval_id, owner_numeric_id, repository_id, issue_number, tar
                  profile, envelope_digest, expires_at ON pool_approval_ledger
 BEGIN
   SELECT RAISE(ABORT, 'APPROVAL_BINDING_IMMUTABLE');
+END;
+
+-- Approval consumption is one-way. A consumed approval can never be reset
+-- to ready/revoked, and the append-only ledger cannot be deleted.
+CREATE TRIGGER pool_approval_state_monotonic
+BEFORE UPDATE OF state, consumed_at, task_key ON pool_approval_ledger
+WHEN NOT (
+  (OLD.state = 'ready' AND NEW.state = 'consumed'
+    AND OLD.consumed_at IS NULL AND OLD.task_key IS NULL
+    AND NEW.consumed_at IS NOT NULL AND NEW.task_key IS NOT NULL)
+  OR
+  (OLD.state = 'ready' AND NEW.state = 'revoked'
+    AND OLD.consumed_at IS NULL AND OLD.task_key IS NULL
+    AND NEW.consumed_at IS NULL AND NEW.task_key IS NULL)
+  OR
+  (OLD.state = NEW.state
+    AND OLD.consumed_at IS NEW.consumed_at
+    AND OLD.task_key IS NEW.task_key)
+)
+BEGIN
+  SELECT RAISE(ABORT, 'APPROVAL_STATE_NOT_MONOTONIC');
+END;
+
+CREATE TRIGGER pool_approval_ledger_no_delete
+BEFORE DELETE ON pool_approval_ledger
+BEGIN
+  SELECT RAISE(ABORT, 'APPROVAL_LEDGER_APPEND_ONLY');
 END;
