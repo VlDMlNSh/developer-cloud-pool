@@ -76,3 +76,8 @@ This update supersedes earlier statements in this Context Window/report/checkpoi
 Reconstruct PR #109 on the current default branch with a clean merge base (preserving its three-file change), add an explicit reproducible `@google/genai` dependency pin and lockfile using the official supported package workflow, then obtain exact-head CI that verifies SDK installation without making provider calls. Keep dispatch disabled. Separately finish Issue #96 durable owner admission/lease/fencing/reconciliation before any Gemini child launch.
 
 Canonical MediaHub map (separate project reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Issue #96 event admission recheck — 2026-11-16
+- Fetched all six current Issue #96 comments. Latest owner-authored comment is ID 6901743828 and is a progress report, not an exact `/next` event. No fresh exact top-level `/next` trigger is present in Issue #96 comments.
+- Therefore the Cloud Pool native controller has no new authorized event from this pass. Four Gemini child jobs: NOT RUN. The chat `/next` request does not substitute for the separate GitHub Issue #96 owner-event admission contract.
