@@ -223,3 +223,24 @@ PR #114 current exact head: `051f972a44bdfb610b17554dd51340c34700e6f6`, base `35
 Do not overstate this proof: event/controller/default-head metadata are injected test inputs; no live webhook signature or trusted-main controller run is verified. Hosted D1, worker workload identity, immutable attempts, fencing, outbox delivery and Supervisor integration remain open.
 
 Next bounded step: authenticated workload identity for immutable-attempt claim/renew/finalize, audience-bound to repository/task/attempt/target. No automatic reclaim. Keep provider dispatch disabled.
+
+
+## 14. Latest /next — D1 approval replay regression fix (2026-11-16)
+
+PR #114 latest head: `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`.
+
+A trigger audit found a replay gap: checking for a consumed approval with matching timestamp/task key did not prove that this transaction had consumed a fresh `ready` approval. The D1 trigger now requires SQLite `changes() = 1` immediately after the conditional update. A new adversarial test pre-consumes the exact matching approval and confirms admission aborts/rolls back.
+
+Exact-head evidence:
+- D1 PR run 43935042451 / job 133537271429: SUCCESS, 12/12 local Workers-runtime tests.
+- D1 push run 43935030103: SUCCESS.
+- Pool Contract Validation 43935042490 / job 133537341737: SUCCESS.
+- Artifact 14258854086, SHA-256 `796945aa2562e9d61ef8add4031e64c694ef624d3ab890a09cbd3b352e506f44`.
+- SQL blob `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`; tests blob `208119e50985bca41161327afd6ebe717ef85b1d`.
+
+PR #114 remains Draft/unmerged with zero formal reviews. Default HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Branch-protection REST read returned 403; active ruleset #26550182 was confirmed. Native Gemini controller is absent from default branch; no Gemini dispatch. No secrets read, hosted D1, deployment or dispatch.
+
+Next: implement authenticated workload identity for immutable attempts, but first identify and verify the trusted issuer/runtime. Bind verified identity to canonical audience, repository ID, task key, attempt ID, target SHA, expiry and replay/fencing state. Do not treat caller-provided worker IDs or caller-selected audience as authority. No automatic reclaim; keep dispatch false.
+
+Latest report: `docs/reports/2026-11-16-next-d1-atomic-admission-slice.md`.
+Latest checkpoint: `docs/checkpoints/2026-11-16-next-d1-atomic-admission-slice.md`.
