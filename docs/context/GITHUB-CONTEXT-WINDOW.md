@@ -2294,3 +2294,17 @@ The implementation and workflow files validated by CI run `43841574699` are pinn
 - No signing key or custody backend selected; no secrets read/created; no D1/Worker provisioned; no dispatch or merge. Hosted claim service, trusted time and issuer remain NOT IMPLEMENTED / NOT QUALIFIED.
 - Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md).
 - Next: pure verifier and fixed public-key test vectors with adversarial fail-closed tests; dispatch remains disabled.
+
+
+## /next update — agent-browser runtime smoke VERIFIED (2026-11-16)
+
+- PR #106 exact implementation SHA tested: 0449186154b8b5010a9196e04aa7d2beb471e66d; branch feat/agent-browser-ephemeral-worker-2026-11-16; base/default HEAD 0635ed2fe8de2340c685d49d20acc5b8bf7a3d92.
+- Pool Contract Validation run [43845072976](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43845072976): COMPLETED / SUCCESS. Exact-head jobs: contract/security 133223079689 SUCCESS; browser runtime 133223080133 SUCCESS; Gemini skills bootstrap 133223080197 SUCCESS.
+- Browser job log proves agent-browser 0.43.0 + Chrome 157.0.8103.78 installed on Ubuntu 24.04 ephemeral GitHub-hosted runner; core/dogfood guidance loaded; https://example.com/ opened; title Example Domain verified; screenshot saved; browser cleaned up. Browser job used permissions {}, no checkout and no credentials/cookies. This verifies public unauthenticated Web access from an ephemeral worker only.
+- No persistent browser/session, authenticated site, cross-job state, interactive dashboard, or phone-accessible UI is implemented or qualified. Screenshot remained temporary; no durable screenshot artifact is claimed.
+- PR #106 remains OPEN/DRAFT/UNMERGED, 69 ahead / 0 behind default, formal reviews 0. Combined status contexts empty (required contexts NOT VERIFIED). Do not merge based solely on this smoke test.
+- Cloud Pool-native Gemini controller absent from default branch; Issues #94/#96 OPEN; three-agent Gemini wave NOT RUN / BLOCKED. Do not use MediaHub Issue #301/controller as a substitute.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. No dispatch, provider call, secret read, merge, or deployment.
+- Report: [2026-11-16-next-agent-browser-runtime-smoke.md](../reports/2026-11-16-next-agent-browser-runtime-smoke.md).
+- Next: implement and qualify the Cloud Pool-native exact-owner controller and durable idempotent claim path under Issues #94/#96; keep dispatch disabled until all gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
