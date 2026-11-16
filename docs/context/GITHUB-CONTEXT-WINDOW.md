@@ -2202,3 +2202,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Report: [Issue #96 controller bridge audit](../reports/2026-11-16-cloudpool-issue96-controller-bridge-audit.md). Checkpoint: [2026-11-16 Issue #96 controller bridge](../checkpoints/2026-11-16-issue96-controller-bridge.md).
 - Next: implement and adversarially test the durable single-use admission/lease/fencing layer in Cloud Pool, then integrate the four-agent candidate behind the trusted controller. Require exact-head CI, independent security review and governance read-back before dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Durable lease integration audit — 2026-11-16
+
+- Immutable current default target rechecked: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (`Основной`). Documentation work remains on `docs/next-2026-11-16-issue96-controller-bridge`, PR #110, unmerged.
+- PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270` compares 9 ahead / 13 behind current default; do not integrate from this stale branch.
+- PR #100 head `cb952a915093a4aaafb8f878954503d2460c4008`, based on PR #98, exact-head run `43826793313` / job `133162447332` SUCCESS. It correctly removes caller-asserted `lockHeld` and keeps runtime blocked with `DURABLE_LOCK_NOT_IMPLEMENTED`; this is not a live controller.
+- PR #56 exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, run `42825872826` / job `129862892371` SUCCESS. D1 local proof denies expired-running takeover absent trusted reconciliation. Production binding/integration NOT VERIFIED.
+- PR #107 exact head `027492668e7721a5371b38997bc76a6cd6a50cd4`, run `43868830501` / job `133304274884` SUCCESS for fake-client contract tests only. Live Gemini calls, four account identities/quota ownership, production caller and independent review NOT VERIFIED.
+- PR #110 exact head `119f201ce2d3861667e025e28ab05a8db23e1c12`: no PR-triggered runs returned; CI NOT VERIFIED. Formal reviews not observed on #56/#98/#100/#107.
+- Integration decision: reuse the isolated D1 single-use/immutable-attempt model as the candidate, but first port a minimal atomic repository-wide lease/claim to a clean base from current default, with owner/source-comment/SHA/wave binding, monotonic fencing and fail-closed indeterminate recovery. Do not dispatch from GitHub comment ledger or caller Boolean. Verify free-tier binding/hosting constraints before any hosted D1 action.
+- Report: [durable lease integration audit](../reports/2026-11-16-cloudpool-durable-lease-integration-audit.md). Checkpoint: [Issue #96 bridge checkpoint](../checkpoints/2026-11-16-issue96-controller-bridge.md).
+- No secrets read, provider/model calls, dispatch, merge, deployment, hosted database provisioning or paid resources. No tests run in this documentation/audit pass.
+- Status: isolated D1 lease proof VERIFIED only within its local test scope; production lease/controller NOT VERIFIED; four live Gemini agents NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean-base implementation proof of durable admission/lease/fencing with adversarial no-secret tests; then exact-head CI and independent review before connecting PR #107 candidate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
