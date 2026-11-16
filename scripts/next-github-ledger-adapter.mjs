@@ -26,7 +26,8 @@ export async function reconcileNextLedgerEvent({
   sourceCommentId,
   targetSha,
   api,
-  lockHeld
+  lockHeld,
+  expectedController
 }) {
   if (lockHeld !== true) {
     return Object.freeze({ action: "DENY", reason: "SERIAL_CONTROLLER_LOCK_REQUIRED" });
@@ -109,9 +110,17 @@ export async function reconcileNextLedgerEvent({
     return Object.freeze({ action: "BLOCKED", reason: "WORKFLOW_RUN_LIST_FAILED" });
   }
   const expectedName = deterministicControllerRunName(current.dispatchId);
-  const matches = (visibleRuns || []).filter(run =>
-    run?.display_title === expectedName && run?.head_sha === current.targetSha
-  );
+  if (!expectedController || expectedController.displayTitle !== expectedName ||
+      expectedController.targetSha !== current.targetSha) {
+    return Object.freeze({ action: "BLOCKED", reason: "EXACT_CONTROLLER_IDENTITY_REQUIRED" });
+  }
+  let matches;
+  try {
+    const { matchExactControllerRuns } = await import("./next-github-api-adapter.mjs");
+    matches = matchExactControllerRuns(visibleRuns, expectedController);
+  } catch {
+    return Object.freeze({ action: "BLOCKED", reason: "EXACT_CONTROLLER_IDENTITY_INVALID" });
+  }
   const plan = planNextDispatch({
     sourceCommentId, targetSha, records,
     observedRuns: matches.map(run => ({
