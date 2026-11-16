@@ -3920,3 +3920,21 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secrets read, no install, no model/provider calls, no agent dispatch, no deployment, no CI run. Documentation-only pass. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: create profile manifests and no-secret synthetic acceptance tests; then resolve FCC secret isolation/provenance and verify Profile B host/model/OmniRouter/media-runtime prerequisites before any live qualification.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — Deployable Cloud Pool architecture baseline
+- New deployment-oriented reference architecture: [CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md](../architecture/CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md), blob SHA `58ecea462538b02f4c7445cd994018332fa225af`.
+- New disabled-by-default machine-readable manifest: [cloud-pool-deployment-manifest.v1.json](../../config/deployment/cloud-pool-deployment-manifest.v1.json), blob SHA `10a7e22d09430aeda4f276b7d57261babf088e42`. JSON parse succeeded in this pass. All profiles/routes/workers remain disabled.
+- New deployment and recovery runbook: [CLOUD-POOL-DEPLOYMENT-AND-RECOVERY-2026-11-16.md](../runbooks/CLOUD-POOL-DEPLOYMENT-AND-RECOVERY-2026-11-16.md), blob SHA `393bc704ad3435440ddf700b9a59edf366225e47`.
+- Dual-profile architecture cross-linked to deployable baseline, blob SHA `59f6ec2d79be4aafd62fa6ae11cc5b0304898040`.
+- Worker topology updated with explicit ChatGPT Agent Browser/TinyFish operator-plane boundary, blob SHA `33f267b70f405d09779753dd12065ce5014e65da`.
+- Dated checkpoint: [2026-11-16-deployable-architecture-baseline.md](../checkpoints/2026-11-16-deployable-architecture-baseline.md), commit `8213676ff6e1463837cd93c42d2406f59ff66d80`.
+- Architecture: Jarvis UI is a client; Pool Bridge is sole admission/lease authority. Profile A is Claude Code + separately pinned ECC → trusted Anthropic Messages gateway → qualified cloud API route. Profile B is Claude Code + separately pinned ECC → OmniRouter-compatible Anthropic Messages endpoint → local model, with no cloud fallback. Media generation is a separate task-scoped media worker. Agent Browser/TinyFish is an operator browser channel, not an in-pool runtime, provider API or credential source.
+- LiteLLM is documented as a mature OSS gateway alternative/candidate; no adoption/install decision made. Official docs show Claude Code uses Anthropic Messages at `/v1/messages`; provider key custody, billing and compatibility still require local qualification. Sources: https://docs.litellm.ai/docs/proxy/client_setup/claude_code and https://code.claude.com/docs/en/llm-gateway
+- Verification: all new/updated docs read back; manifest JSON parse succeeded. No CI or runtime tests, no provider calls, no browser sign-in, no worker dispatch, no deployment, no secret reads.
+- Current status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Blockers: Agent Browser profiles lack recorded sign-in; pool host/browser runtime NOT VERIFIED; FCC provider-key inheritance/provenance; OmniRouter protocol and local hardware/model/media runtime; durable Pool Bridge production admission and independent acceptance.
+- Next: create machine-readable profile/route contracts and no-secret synthetic negative tests for cross-profile access, credential inheritance, browser-session/API confusion, cloud fallback, lease fencing, duplicate admission and disabled route selection.
+- Deployable architecture: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/architecture/CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md
+- Manifest: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/config/deployment/cloud-pool-deployment-manifest.v1.json
+- Runbook: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/runbooks/CLOUD-POOL-DEPLOYMENT-AND-RECOVERY-2026-11-16.md
+- Canonical MediaHub map (reference only; Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
