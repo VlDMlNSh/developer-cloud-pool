@@ -1,0 +1,79 @@
+name: Cloud Pool Next Event Controller (Read-only)
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "scripts/next-event-controller.mjs"
+      - "test/next-event-controller.test.mjs"
+      - ".github/workflows/next-event-controller-readonly.yml"
+  push:
+    branches:
+      - proof/next-event-controller-clean-base-2026-11-16
+    paths:
+      - "scripts/next-event-controller.mjs"
+      - "test/next-event-controller.test.mjs"
+      - ".github/workflows/next-event-controller-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: developer-cloud-pool-supervisor
+  queue: max
+  cancel-in-progress: false
+
+jobs:
+  event-admission:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      github.event.action == 'created' &&
+      github.event.issue.number == 96 &&
+      github.event.issue.pull_request == null
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout trusted event workflow commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+      - name: Validate owner event without side effects
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node scripts/next-event-controller.mjs
+
+  contract-tests:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+      - name: Syntax check
+        run: |
+          node --check scripts/next-event-controller.mjs
+          node --check test/next-event-controller.test.mjs
+      - name: Adversarial read-only event tests
+        run: node --test test/next-event-controller.test.mjs
