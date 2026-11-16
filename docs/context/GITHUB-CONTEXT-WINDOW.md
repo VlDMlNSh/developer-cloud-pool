@@ -3818,3 +3818,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Checkpoint: [D1 lease/fencing audit](../checkpoints/2026-11-16-d1-lease-fencing-audit.md).
 - Next bounded step: implement repository-scoped lease/fencing plus source-comment event binding and adversarial multi-task/replay/recovery tests. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — Cloudflare hosted-state inventory (2026-11-16)
+
+- Revalidated repository metadata: Cloud Pool default `Основной`; immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; documentation branch head before this update `19718d22313cb6a4bfba87110f196b561b03980c`; repository ID `1445644538`; active ruleset `26550182`.
+- Revalidated PR #111 OPEN/DRAFT/UNMERGED at `687196738782432797bf394f1342cb9df19f478f`; PR #112 OPEN/DRAFT/UNMERGED at `c9a4c0ab2001f01a09632795283071c521e1c99d`. PRs #106–#110 also OPEN/DRAFT/UNMERGED on observed current heads.
+- Issue #96 remains OPEN and defines exact owner top-level `/next`, immutable target SHA, source-comment idempotency, durable admission and reconciliation before dispatch. Current amendment calls for exactly four isolated roles.
+- Connected Cloudflare identity profile verified; read-only API returned **0 D1 databases and 0 Worker scripts**. This is a verified resource inventory only; account Workers Free entitlement, remaining quotas and provisioning authorization remain NOT VERIFIED.
+- Issue #38 existing architecture assessment continues to prefer D1 for hosted proof, but actual account entitlement is explicitly unverified. No Cloudflare resources were created or modified.
+- Approved Gemini dispatch controller `.github/workflows/gemini-batch-dispatch-controller.yml` is not present on the current default branch. Four-agent dispatch NOT RUN; no secrets read, provider calls, deployments or merges.
+- Hosted D1 qualification BLOCKED by absent resources and unverified entitlement/provisioning authority. Keep dispatch disabled.
+- Detailed report: [Cloudflare hosted-state inventory](../reports/2026-11-16-cloudflare-hosted-state-inventory.md).
+- Next bounded step: code-side integration audit of D1 ledger + owner event envelope for repository-wide monotonic fencing, immutable source-comment binding, duplicate admission and recovery tests. No hosted provisioning until entitlement/authority verified.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
