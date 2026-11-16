@@ -378,3 +378,10 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Browser workflow_dispatch runtime NOT RUN. PR is draft/unmerged; formal reviews 0. No browser execution evidence or qualification.
 - Persistent interactive sessions/dashboard NOT IMPLEMENTED. No unlimited-free claim; GitHub Actions limits apply. Existing supervisor dispatch remains fail-closed.
 - Next: independent review, then owner-approved bounded smoke dispatch after governance checks.
+
+
+## Agent-browser worker — exact-head CI — 2026-11-16
+
+- Latest code head `b5e4c63effa5c285447fbb73412b28d8d910af7c`; PR #106 OPEN/DRAFT, not merged, formal reviews 0.
+- Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS at exact code head. YAML parse, dispatch-disabled guard and browser worker security/contract assertions passed.
+- Browser runtime installation and workflow_dispatch smoke remain NOT RUN. No actual browser session evidence; no qualification. Persistent interactive sessions/dashboard not implemented; unlimited free capacity not claimed.
