@@ -7,6 +7,13 @@ export const AGENT_KEY_ENV = Object.freeze([
   "GEMINI_API_KEY_4"
 ]);
 
+export const AGENT_ROLES = Object.freeze([
+  Object.freeze({ id: "researcher", instruction: "Research the task. Identify relevant facts, assumptions, dependencies, and unresolved questions. Do not implement changes." }),
+  Object.freeze({ id: "implementer", instruction: "Propose a minimal implementation plan. Identify exact files, interfaces, and acceptance criteria. Do not claim changes were made." }),
+  Object.freeze({ id: "tester", instruction: "Design adversarial tests and verification steps. Focus on edge cases, regressions, and measurable acceptance evidence." }),
+  Object.freeze({ id: "security_auditor", instruction: "Audit security, permissions, secrets, provenance, and failure modes. Recommend fail-closed controls." })
+]);
+
 const DEFAULT_MODEL = "gemini-2.5-flash";
 
 function classifyError(error) {
@@ -45,28 +52,47 @@ export async function runFourAgents({
       model,
       results: AGENT_KEY_ENV.map((keyEnv, index) => ({
         agent: index + 1,
+        role: AGENT_ROLES[index].id,
         keyEnv,
-        status: env[keyEnv] ? "NOT_RUN" : "MISSING_CREDENTIAL",
+        status: typeof env[keyEnv] === "string" && env[keyEnv].trim() ? "NOT_RUN" : "MISSING_CREDENTIAL",
         output: null
       }))
     };
   }
 
-  // Each agent receives only its own account credential. No retries or cross-account
-  // fallback: quota and authentication failures remain attributable to that account.
+  // Detect repeated credential values without logging, hashing, or returning them.
+  const normalizedKeys = keys.map((key) => key.trim());
+  if (new Set(normalizedKeys).size !== normalizedKeys.length) {
+    return {
+      status: "CONFIG_BLOCKED",
+      model,
+      results: AGENT_KEY_ENV.map((keyEnv, index) => ({
+        agent: index + 1,
+        role: AGENT_ROLES[index].id,
+        keyEnv,
+        status: "DUPLICATE_CREDENTIAL",
+        output: null
+      }))
+    };
+  }
+
+  // Each account receives one distinct role. No retries or cross-account fallback.
   const results = await Promise.all(AGENT_KEY_ENV.map(async (keyEnv, index) => {
     const apiKey = keys[index];
+    const role = AGENT_ROLES[index];
     try {
       const client = await createClient(apiKey, index + 1);
-      const response = await client.models.generateContent({ model, contents: task });
+      const contents = role.instruction + "\n\nProject task:\n" + task;
+      const response = await client.models.generateContent({ model, contents });
       const output = typeof response?.text === "string" ? response.text : "";
       if (!output.trim()) {
-        return { agent: index + 1, keyEnv, status: "EMPTY_RESPONSE", output: null };
+        return { agent: index + 1, role: role.id, keyEnv, status: "EMPTY_RESPONSE", output: null };
       }
-      return { agent: index + 1, keyEnv, status: "SUCCESS", output };
+      return { agent: index + 1, role: role.id, keyEnv, status: "SUCCESS", output };
     } catch (error) {
       return {
         agent: index + 1,
+        role: role.id,
         keyEnv,
         status: classifyError(error),
         output: null
@@ -91,7 +117,6 @@ async function main() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch(() => {
-    // Deliberately avoid printing exception messages that could contain request data.
     process.stderr.write("Gemini controller failed before completing the request.\n");
     process.exitCode = 1;
   });
