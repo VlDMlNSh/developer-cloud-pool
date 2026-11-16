@@ -395,3 +395,13 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - No secrets, provider credentials, write permissions, or skill-script execution in bootstrap job. Dispatch gate remains fail-closed.
 - Future Gemini worker integration is pending Issue #94; this PR does not create/enable Gemini dispatch. Browser smoke runtime remains NOT RUN. Independent review pending.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify exact-head install CI, inspect inventory, request independent review, then resume durable lease/admission work.
+
+
+## Agent skills bootstrap — exact-head CI — 2026-11-16
+
+- PR #106 code head `5e9093bbcb344fa055408e18f0f9ee3eb95f7d2d`; OPEN/DRAFT, mergeable true, reviews 0, unmerged.
+- Run `43838104995`: COMPLETED / SUCCESS. Static contract job `133199689204` SUCCESS; hosted-runner installation job `133199689730` SUCCESS.
+- 11/11 pinned Gemini CLI skills installed and verified under `.agents/skills/` on ephemeral GitHub-hosted runner; 48 files hashed; inventory digest `5cb73f77a808259ca0b9d0f862dfa54bdb848e93c1c5fed4a240c5f429d7a97c`.
+- Install is reproducible, not persistent across jobs. Future Gemini child executor must call `scripts/install-agent-skills.mjs`; native Gemini controller remains blocked by Issue #94. Dispatch disabled.
+- Browser runtime smoke NOT RUN; independent review 0. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Skill catalog: `docs/architecture/AGENT-SKILLS-CLOUD-POOL.md`; report: `docs/reports/2026-11-16-next-agent-skills-bootstrap.md`.
