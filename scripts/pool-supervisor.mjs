@@ -4,7 +4,6 @@ const ownerRepo = process.env.GITHUB_REPOSITORY;
 const token = process.env.GITHUB_TOKEN;
 const api = "https://api.github.com";
 const defaultBranch = process.env.POOL_DEFAULT_BRANCH || process.env.GITHUB_REF_NAME;
-const eventName = process.env.GITHUB_EVENT_NAME;
 const maxDispatch = Number(process.env.POOL_MAX_DISPATCH || "20");
 const dispatchEnabled = process.env.POOL_DISPATCH_ENABLED === "true";
 
@@ -89,24 +88,6 @@ async function ensureLabels() {
     ["pool:invalid", "b60205", "Task intake failed schema validation"]
   ];
   for (const item of labels) await ensureLabel(item[0], item[1], item[2]);
-}
-
-async function recoverFailedWorkflowRun() {
-  const title = process.env.POOL_RUN_TITLE || "";
-  const conclusion = process.env.POOL_RUN_CONCLUSION || "";
-  const match = title.match(/Pool task #(\d+)/);
-  if (!match || conclusion === "success") return;
-  const issueNumber = Number(match[1]);
-  const issue = await request("/repos/" + ownerRepo + "/issues/" + issueNumber);
-  const labels = (issue.labels || []).map(label => typeof label === "string" ? label : label.name);
-  if (!labels.includes("pool:claimed")) return;
-  await replaceIssueLabels(issue, ["pool:claimed"], ["pool:needs-review"]);
-  await comment(issueNumber,
-    "**POOL_WORKER_TERMINAL_FAILURE**\n\n- Workflow run: " + (process.env.POOL_RUN_ID || "unknown") +
-    "\n- Conclusion: " + conclusion +
-    "\n- Target SHA: " + (process.env.POOL_RUN_SHA || "unknown") +
-    "\n- Automatic retry: disabled; owner review is required.");
-  log("Marked task #" + issueNumber + " as needs-review after worker conclusion " + conclusion + ".");
 }
 
 async function recoverStaleClaims() {
@@ -205,6 +186,5 @@ async function dispatchReadyTasks() {
 }
 
 await ensureLabels();
-if (eventName === "workflow_run") await recoverFailedWorkflowRun();
 await recoverStaleClaims();
 await dispatchReadyTasks();
