@@ -2239,3 +2239,21 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: durable owner-authenticated lease with fencing, stale-owner rejection, expiry/renewal, crash recovery, and concurrent integration tests.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — free-only provider qualification policy — 2026-11-16
+
+- Revalidated default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`. Cloud Pool repository is public; default branch is `Основной`. Current branch inventory includes active browser, Gemini, quota-ledger and admission candidates.
+- Issue #26 remains OPEN / DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED. It explicitly blocks provider calls until credential boundary, qualification, budget guard, routing tests, provenance and independent review are accepted.
+- User direction recorded: attempt every registered API slot to discover free model access; do not remove slots solely because of preliminary `paid_api`/router labels. This does NOT authorize paid calls, billing activation, paid fallback, quota-evasion rotation or secret disclosure.
+- Registry source remains MediaHub blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`: 24 cloud credential slots plus local Ollama. Inventory does not prove secret presence, authentication, free entitlement or independent quota.
+- PR #28 account-isolated routing design remains OPEN/DRAFT/UNMERGED; no exact-head CI or independent review established in this pass.
+- PR #29 quota ledger remains OPEN/DRAFT/UNMERGED. Exact recorded head `e4c8d642bbc054e7c52b391356965b492dad32b4` has Pool Contract Validation run `43031920223` SUCCESS. Formal CHANGES_REQUESTED review is anchored to prior head `34fc78921b16359d136db553d8a51b4a4716995d`, identifying active-slot eligibility bypass; reconcile and test against current head before qualification.
+- PR #107 four-account Gemini candidate remains OPEN/DRAFT/UNMERGED, head `ae0232c7989822269acd90e25e421579f0be79ed`, exact-head CI run `43863071739` SUCCESS, formal reviews 0. Secret existence, account separation and production integration NOT VERIFIED / NOT RUN.
+- Issues #94/#96 remain OPEN; #96 PLANNED and dispatch-disabled. Cloud Pool-native Gemini controller is not accepted. MediaHub controller is a separate repository integration and is not Cloud Pool dispatch authority. Gemini Agent 1/2/3 NOT RUN for this Cloud Pool pass.
+- Added report [Free-provider route qualification policy](../reports/2026-11-16-free-provider-route-policy-and-gates.md). Report commit: `35bcc90c8d84d0ce13fc30ea6787e0fefcad1269`.
+- Policy: preserve route inventory; classify authentication, free model availability, quota evidence and qualification separately; block unknown cost; hard-stop on 402/billing; enforce `paid_fallback_allowed=false`; no card/billing/upgrade; no secret reads; no quota-evasion key rotation; no inferred independent quotas.
+- This pass performed no provider calls, secret reads, model requests, paid operations, dispatch, merge or deployment. Live authentication/free-quota qualification remains NOT RUN / NOT VERIFIED.
+- Next: reconcile PR #29's active-slot eligibility finding and add synthetic regression tests for active/new routes under free-only billing, credential, route-state and qualification filters. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
