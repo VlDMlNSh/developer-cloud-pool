@@ -18,6 +18,7 @@ on:
         options:
           - dsh-headless-probe
           - agent-browser-headless
+          - agent-skills-bootstrap
 
 run-name: "Pool task #${{ inputs.task_issue }} (${{ inputs.profile }})"
 
@@ -47,7 +48,7 @@ jobs:
           const profile = process.env.PROFILE;
           if (!/^\d+$/.test(issueNumber || "")) throw new Error("Invalid task issue number.");
           if (!/^[0-9a-f]{40}$/.test(sha || "")) throw new Error("Invalid target SHA.");
-          const expectedProfiles = { "dsh-headless-probe": "DSH headless probe", "agent-browser-headless": "Agent-browser headless" };
+          const expectedProfiles = { "dsh-headless-probe": "DSH headless probe", "agent-browser-headless": "Agent-browser headless", "agent-skills-bootstrap": "Agent skills bootstrap" };
           if (!Object.hasOwn(expectedProfiles, profile)) throw new Error("Profile is not allowlisted.");
           const response = await fetch("https://api.github.com/repos/" + repo + "/issues/" + issueNumber, {
             headers: {
@@ -212,10 +213,61 @@ jobs:
             echo "- Persistent dashboard: not provided by this profile"
           } >> "$GITHUB_STEP_SUMMARY"
 
+  skills:
+    name: Install pinned engineering skills for Gemini CLI
+    needs: validate
+    if: needs.validate.result == 'success' && inputs.profile == 'agent-skills-bootstrap'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact immutable target without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.target_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Install and verify curated agent skills
+        shell: bash
+        env:
+          TASK_ISSUE: ${{ inputs.task_issue }}
+          TARGET_SHA: ${{ inputs.target_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          free_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$free_kib" -lt $((2 * 1024 * 1024)) ]; then
+            echo "::error::Less than 2 GiB free; refusing skill installation."
+            exit 2
+          fi
+          node --check scripts/install-agent-skills.mjs
+          node scripts/install-agent-skills.mjs "$GITHUB_WORKSPACE"
+          test -s agent-skills-inventory.sha256
+          {
+            echo
+            echo "### Agent skills bootstrap evidence"
+            echo "- Task issue: #$TASK_ISSUE"
+            echo "- Target SHA: $TARGET_SHA"
+            echo "- Skill manifest SHA-256: $(sha256sum config/agent-skills.lock.json | awk '{print $1}')"
+            echo "- Installer SHA-256: $(sha256sum scripts/install-agent-skills.mjs | awk '{print $1}')"
+            echo "- Installed skill count: $(find .agents/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')"
+            echo "- Inventory SHA-256: $(sha256sum agent-skills-inventory.sha256 | awk '{print $1}')"
+            echo "- Credentials: none"
+            echo "- Installed skill scripts executed: no"
+          } >> "$GITHUB_STEP_SUMMARY"
+
   report:
     name: Record worker result without exposing runtime to write credentials
     if: always()
-    needs: [validate, probe, browser]
+    needs: [validate, probe, browser, skills]
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
@@ -227,6 +279,7 @@ jobs:
       VALIDATE_RESULT: ${{ needs.validate.result }}
       PROBE_RESULT: ${{ needs.probe.result }}
       BROWSER_RESULT: ${{ needs.browser.result }}
+      SKILLS_RESULT: ${{ needs.skills.result }}
       WORKFLOW_RUN_ID: ${{ github.run_id }}
     steps:
       - name: Update task state and append audit comment
@@ -252,10 +305,11 @@ jobs:
           if (!get.ok) throw new Error("Cannot load issue for report: HTTP " + get.status);
           const issue = await get.json();
           const oldLabels = issue.labels.map(label => label.name);
-          const managed = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:needs-review", "pool:invalid"];
+          const managed = ["pool:ready", "pool:claimed", "pool:probe-complete", "pool:skills-ready", "pool:needs-review", "pool:invalid"];
           const retained = oldLabels.filter(label => !managed.includes(label));
-          const success = process.env.PROBE_RESULT === "success" || process.env.BROWSER_RESULT === "success";
-          const terminal = success ? "pool:probe-complete" : "pool:needs-review";
+          const skillsSuccess = process.env.SKILLS_RESULT === "success";
+          const success = process.env.PROBE_RESULT === "success" || process.env.BROWSER_RESULT === "success" || skillsSuccess;
+          const terminal = skillsSuccess ? "pool:skills-ready" : success ? "pool:probe-complete" : "pool:needs-review";
           const patch = await fetch(base, {
             method: "PATCH",
             headers,
@@ -263,13 +317,14 @@ jobs:
           });
           if (!patch.ok) throw new Error("Cannot update task state: HTTP " + patch.status);
           const body = [
-            success ? "**POOL_DSH_PROBE_COMPLETE**" : "**POOL_DSH_PROBE_NEEDS_REVIEW**",
+            skillsSuccess ? "**POOL_AGENT_SKILLS_BOOTSTRAP_COMPLETE**" : success ? "**POOL_DSH_OR_BROWSER_PROBE_COMPLETE**" : "**POOL_WORKER_NEEDS_REVIEW**",
             "",
             "- Worker run: " + process.env.WORKFLOW_RUN_ID,
             "- Target SHA: " + process.env.TARGET_SHA,
             "- Validation: " + process.env.VALIDATE_RESULT,
             "- Probe job: " + process.env.PROBE_RESULT,
             "- Browser job: " + process.env.BROWSER_RESULT,
+            "- Skills job: " + process.env.SKILLS_RESULT,
             "- Provider credentials: none",
             "- Production qualification: NOT CLAIMED"
           ].join("\n");
