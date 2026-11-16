@@ -2165,3 +2165,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery under Issue #94; keep dispatch disabled pending exact-head CI, governance, trusted-main no-secret probe and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Agent-browser free-runtime assessment — 2026-11-16
+
+- Assessment report: [Agent Browser free-runtime assessment](../reports/2026-11-16-agent-browser-free-runtime-assessment.md).
+- Immutable baseline/default HEAD observed: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
+- Upstream `agent-browser` skill and `skills/find-skills` skill were read. Upstream install is `npm i -g agent-browser && agent-browser install`; version-matched guidance must be loaded using `agent-browser skills get core`, and the installed skill inventory via `agent-browser skills list`.
+- No agent-browser runtime, browser-session service or skill bundle exists in the inspected Cloud Pool tree at baseline.
+- GitHub Actions runners are ephemeral: suitable for bounded CI browser tests, not persistent remote sessions.
+- SentinelX Free: 1 host slot, 0 connected; `host_5f7264034bdf0b51` (Voktors-Mini.Dlink) offline; `mh-dev-01` and `mh-dev-02` user-disabled. Desktop Commander reports all 3 devices offline. No online authorized host available; no host commands/install were run.
+- No third-party skills installed. Recommended minimal future set: mandatory `core`; optional `dogfood` for QA and `derive-client` only for approved API derivation. Other specialized skills are task-specific, not blanket installs.
+- Persistent remote sessions require an online owner-controlled host, authenticated dashboard origin, protected session proxy, TTL/cleanup, resource quotas and audit. Never expose raw CDP/session ports.
+- “Unlimited free sessions” is not a valid guarantee; use published free quotas and report resource ceilings. No paid fallback.
+- Status: skill guidance READ; CLI/Chromium install NOT RUN; specialized skills NOT INSTALLED; persistent browser sessions NOT DEPLOYED; Contour A BLOCKED / NOT ACCEPTED.
