@@ -2179,3 +2179,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next bounded step: implement the real durable repository-wide lease with monotonic fencing, expiry and crash recovery; add adversarial no-secret tests; verify exact-head CI and independent review. Keep live dispatch disabled.
 
 Canonical MediaHub map (separate project/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Four Gemini candidate contract-test result — 2026-11-16
+
+- Rechecked PR #107 candidate head: `027492668e7721a5371b38997bc76a6cd6a50cd4`; branch `feat/four-account-gemini-controller-2026-11-16`; PR OPEN / DRAFT / UNMERGED.
+- Exact-head GitHub Actions run `43868830501` (Pool Contract Validation) COMPLETED / SUCCESS on that SHA. Job `133304274884` completed SUCCESS.
+- Retrieved job log confirms all five workflow YAML files parsed successfully, pool contract validation ran, and all eight controller tests passed (8 passed, 0 failed). Tests use injected fake clients and cover four-way task isolation, exact-four validation, duplicate-task rejection, missing/duplicate credential fail-closed behavior, per-slot quota error isolation, API-key-shaped task rejection, and omission of credential values from result reports.
+- Qualification boundary: these are mocked contract tests only. They did NOT contact Google Gemini and did NOT prove the four credentials are present, valid, distinct accounts, or independently quota-backed. No API key values were read. No live agent run was performed.
+- Candidate has no production Supervisor/Worker caller, trusted owner-event provenance, durable repository-wide lease/fencing/recovery, provider SDK dependency pin/install in a validated runtime, or independent security review. These remain NOT VERIFIED / NOT IMPLEMENTED.
+- Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
+- Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
+- Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
