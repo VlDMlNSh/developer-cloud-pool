@@ -2165,3 +2165,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery under Issue #94; keep dispatch disabled pending exact-head CI, governance, trusted-main no-secret probe and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Four-agent Cloud Pool Issue #94 execution update — 2026-11-16
+
+- Owner-directed current qualification wave is exactly four isolated Gemini task executions: researcher, implementation designer, tester, security auditor. This supersedes earlier three-child wording for this wave only; it does not assert four proven Google account identities or independent quotas.
+- Issue #94 was rewritten and re-read successfully: https://github.com/VlDMlNSh/developer-cloud-pool/issues/94. Its acceptance criteria now consistently require four unique task envelopes, designated credential slots, one immutable target SHA, owner-only Issue #96 /next, source-comment idempotency, durable lease/fencing/recovery, artifact provenance, exact-head CI and independent review.
+- Issue #96 carries the four-child amendment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96. Its prior status remains PLANNED; the amendment does not enable dispatch.
+- PR #107 remains OPEN/DRAFT and isolated. Candidate branch: feat/four-account-gemini-controller-2026-11-16. Candidate code implements four task envelopes through injected Gemini clients but is not production-integrated. Exact head must be re-read before treating CI as qualifying.
+- Workflow run 43868830501 on candidate commit 027492668e7721a5371b38997bc76a6cd6a50cd4 reports COMPLETED/SUCCESS; job log evidence must be inspected before assigning test-level acceptance. This run alone does not qualify live dispatch or production controller.
+- Four secret names/values, four distinct Google account identities and quota ownership: NOT VERIFIED. Secret values were not read. Provider calls and live dispatch: NOT RUN.
+- Durable repository-wide lease/fencing/crash recovery, trusted owner-event production provenance, Supervisor integration, independent security review and formal PR review: NOT VERIFIED / NOT RUN.
+- No merge, deployment or Contour A acceptance. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next bounded step: implement the real durable repository-wide lease with monotonic fencing, expiry and crash recovery; add adversarial no-secret tests; verify exact-head CI and independent review. Keep live dispatch disabled.
+
+Canonical MediaHub map (separate project/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
