@@ -6,6 +6,34 @@ import {
 
 const OWNER_REPO = "VlDMlNSh/developer-cloud-pool";
 const CONTROL_ISSUE = 96;
+const DEFAULT_BRANCH = "Основной";
+
+
+/**
+ * Correlates a controller run only when all workflow identity fields match.
+ * Expected identity must come from the approved workflow contract.
+ */
+export function matchExactControllerRuns(runs, expected) {
+  if (!expected || !Number.isSafeInteger(expected.workflowId) || expected.workflowId <= 0 ||
+      typeof expected.path !== "string" || !expected.path.startsWith(".github/workflows/") ||
+      typeof expected.event !== "string" || !expected.event ||
+      expected.repository !== OWNER_REPO || expected.branch !== DEFAULT_BRANCH ||
+      !/^[0-9a-f]{40}$/.test(String(expected.targetSha || "")) ||
+      typeof expected.displayTitle !== "string" || !expected.displayTitle) {
+    throw new TypeError("Complete approved controller workflow identity is required.");
+  }
+  return (runs || []).filter(run =>
+    Number.isSafeInteger(run?.id) && run.id > 0 &&
+    run.workflow_id === expected.workflowId &&
+    run.path === expected.path &&
+    run.event === expected.event &&
+    run.repository?.full_name === expected.repository &&
+    run.head_repository?.full_name === expected.repository &&
+    run.head_branch === expected.branch &&
+    run.head_sha === expected.targetSha &&
+    run.display_title === expected.displayTitle
+  );
+}
 
 export function deterministicControllerRunName(dispatchId) {
   if (!/^[0-9a-f]{64}$/.test(String(dispatchId || ""))) {
@@ -116,7 +144,6 @@ export async function reconcileNextLedgerEvent({
   }
   let matches;
   try {
-    const { matchExactControllerRuns } = await import("./next-github-api-adapter.mjs");
     matches = matchExactControllerRuns(visibleRuns, expectedController);
   } catch {
     return Object.freeze({ action: "BLOCKED", reason: "EXACT_CONTROLLER_IDENTITY_INVALID" });
