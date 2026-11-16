@@ -88,44 +88,10 @@ export function createGithubLedgerApi({ token, fetchImpl = fetch, ownerRepo = OW
  * current default-branch ref before allowing the non-dispatching ledger step.
  * This function intentionally does not grant or exercise dispatch permission.
  */
-export async function reconcileVerifiedOwnerNextEvent({
-  sourceCommentId, targetSha, api, lockHeld
-}) {
-  if (lockHeld !== true) return fail("SERIAL_CONTROLLER_LOCK_REQUIRED");
-  if (!api || typeof api.getControlIssue !== "function" ||
-      typeof api.getSourceComment !== "function" ||
-      typeof api.getDefaultBranchSha !== "function") {
-    return fail("GITHUB_EVENT_VERIFIER_INCOMPLETE");
-  }
-
-  let issue, comment, currentDefaultSha;
-  try {
-    [issue, comment, currentDefaultSha] = await Promise.all([
-      api.getControlIssue(),
-      api.getSourceComment(sourceCommentId),
-      api.getDefaultBranchSha()
-    ]);
-  } catch {
-    return fail("SOURCE_AUTHORITY_LOOKUP_FAILED");
-  }
-
-  if (!issue || issue.number !== CONTROL_ISSUE || issue.state !== "open" || issue.pull_request) {
-    return fail("CONTROL_ISSUE_NOT_OPEN_OR_NOT_ISSUE");
-  }
-  if (!comment || comment.id !== sourceCommentId ||
-      comment.issue_url !== "https://api.github.com/repos/" + OWNER_REPO + "/issues/" + CONTROL_ISSUE) {
-    return fail("SOURCE_COMMENT_NOT_BOUND_TO_CONTROL_ISSUE");
-  }
-  if (comment.body !== "/next") return fail("COMMENT_BODY_NOT_EXACT");
-  if (comment.user?.login !== OWNER_LOGIN || comment.author_association !== "OWNER") {
-    return fail("COMMENT_AUTHOR_NOT_OWNER");
-  }
-  if (!/^[0-9a-f]{40}$/.test(String(targetSha || "")) ||
-      currentDefaultSha !== targetSha) {
-    return fail("TARGET_SHA_NOT_CURRENT_DEFAULT_HEAD");
-  }
-
-  return reconcileNextLedgerEvent({
-    sourceCommentId, targetSha, api, lockHeld: true
-  });
+/**
+ * Source verification cannot authorize ledger mutation until the durable
+ * controller lease is implemented. Fail closed before any GitHub API lookup.
+ */
+export async function reconcileVerifiedOwnerNextEvent() {
+  return fail("DURABLE_LOCK_NOT_IMPLEMENTED");
 }
