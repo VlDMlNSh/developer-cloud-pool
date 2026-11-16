@@ -29,3 +29,11 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - New-head CI: NOT VERIFIED (no PR run returned for the commit; combined status contexts empty). Previous-head CI does not qualify the new head.
 - PR #102 remains Draft/unmerged; formal reviews 0. Issue #96 remains PLANNED / dispatch disabled. Gemini 1/2/3 NOT RUN for Cloud Pool scope.
 - Next: reconcile new exact-head Actions runs; obtain independent governance review; then add durable authenticated idempotency and enforced serialization. No dispatch until all Issue #96 gates pass.
+
+## Exact-head CI final read-back — 2026-11-16
+
+- PR #102 exact head 38844dfb4a881ec858742e5bf9e35724f6b8a95d.
+- Controller run 43821733529: job 133146174137 SUCCESS, 17/17 tests; event job 133146175570 SKIPPED on PR event.
+- Pool Contract Validation run 43821733548: job 133146122452 SUCCESS; YAML syntax and security-contract checks passed; dispatch gate false.
+- Exact-head PR validation: VERIFIED. Live Issue #96 event probe: NOT RUN. Combined status contexts empty; formal reviews 0. PR remains Draft/unmerged.
+- Dispatch/Gemini for Cloud Pool: NOT RUN; Issue #96 remains PLANNED. Contour A BLOCKED / NOT ACCEPTED.
