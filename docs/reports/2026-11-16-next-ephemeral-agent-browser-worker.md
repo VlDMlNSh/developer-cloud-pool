@@ -20,13 +20,13 @@ Browser job receives no GitHub token permissions and no repository/provider secr
 
 ## Verification status
 
-- Source changes committed to feature branch; exact branch HEAD and PR CI must be checked after opening PR.
+- Pool Contract Validation run `43836984368`, job `133195965481`, exact head `60ac5400fd0e73846f8ff72bb910800dcc73b442`: COMPLETED / SUCCESS. YAML parse, dispatch-disabled guard and pool security-contract validator all passed.
 - Browser installation/runtime smoke: NOT RUN (workflow_dispatch only; no owner-approved task dispatched).
-- Exact-head CI: NOT VERIFIED until workflow run result is retrieved.
+- Independent PR reviews: 0; PR remains draft and unmerged.
 - Persistent interactive dashboard / long-lived session: NOT IMPLEMENTED.
 - Unlimited free capacity: NOT VERIFIED; GitHub Actions minutes, concurrency and job-duration limits apply.
 - No physical device, self-hosted host, paid VM or provider used.
 
 ## Next step
 
-Open a draft PR, inspect exact-head workflow results and address any contract failures. After review and governance, owner may create a browser-profile task issue and approve it for one bounded ephemeral smoke run. Only after that run is verified should the profile be considered qualified for bounded headless browser QA.
+Obtain independent security review, then after governance/approval perform one bounded browser-profile smoke dispatch. Only after that run is verified should the profile be considered qualified for bounded headless browser QA.
