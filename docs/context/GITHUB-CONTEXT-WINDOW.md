@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-15 — MediaHub Gemini /next bridge reconciliation (Wave 324)
+Last refreshed: 2026-11-16 — clean D1 source transplant manifest (Wave 326)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc` (re-read 2026-11-15 via Git Database ref API)
+Observed default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (re-read 2026-11-16 via paginated Branch API)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
 Latest daily report: `docs/reports/2026-11-15-pr87-pr92-pr93-integrated-admission-registry-audit-wave323.md` (Wave 323; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -3470,4 +3470,19 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - PR #87/#92/#93 are a stacked Draft chain for admission/registry hardening, not merged. Existing hosted D1 plan in PR #65 explicitly requires verified Free entitlement/quota, source reconciliation, exact-head CI and explicit owner authorization for named test resources. Status PLANNED / NOT AUTHORIZED / NOT RUN.
 - Decision: next prepare a clean current-default source manifest and migration/test ordering; do not blindly merge stacked PRs or provision hosted D1. Issuer-bound claim API must precede wiring; separate task claim, Worker, resolver and projection-recovery authorities.
 - Gemini 1/2/3 NOT RUN; no provider calls, secret reads, hosted resources, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Clean D1 source transplant manifest (Wave 326)
+
+- Report: [clean D1 source transplant manifest](../reports/2026-11-16-clean-d1-source-transplant-manifest.md), commit `738badec82b3e7d67362e76e0d5465aa7a963eb1`.
+- Default HEAD remains `Основной` @ `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- Active ruleset `26550182` applies to `refs/heads/Основной`, blocks deletion/non-fast-forward, requires PR and thread resolution, but requires zero approvals and has no bypass actors. PR-only is enforced; independent approval is not required by this ruleset.
+- Current default workflow directory does NOT contain `.github/workflows/gemini-batch-dispatch-controller.yml` (404); no alternate controller was used. Gemini Agent 1/2/3 NOT RUN.
+- D1 source manifest: selectively transplant #87 (migrations 0001–0014 and package) → #92 (exact admission receipt replay) → #93 (verifier-issued registry persistence capability) → #101 (active-registry advancement replay fence), from current default base only. Do not merge stale branch ancestry.
+- Exact PR heads and CI runs: #87 `8cc7b12948865bb0e13ce099386c09f3ae32b4f5` runs `43712647615`, `43712647597` SUCCESS; #92 `7014961587759b27d2ef6e91c60ce098d077ae83` runs `43718679251`, `43718679258` SUCCESS; #93 `e200838d038b9cd48635233187819302bba6a33e` run `43736264768` SUCCESS; #101 `ae9cf5d4fd76134136b9af8b5498e90a65509722` run `43764995448` SUCCESS. These are local-only D1 tests, not hosted qualification.
+- Package tests: `npm run check`, `npm test`, `npm run test:upgrade-binding`, `npm run test:upgrade-fixture`; pinned Node 24.9.0, exact dependency lockfile, local Workers runtime only.
+- PR #37 least-privilege boundary, #65 hosted qualification plan, #97/#98/#102 /next controller, #104–#106 browser worker are separate/stale tracks; do not conflate or blindly transplant.
+- Hosted D1/claim API, production issuer/trusted time/revocation and Supervisor integration NOT IMPLEMENTED/NOT QUALIFIED. Free entitlement/quota NOT VERIFIED; hosted qualification NOT AUTHORIZED/NOT RUN. No secret or repository variable values read.
+- Next: create an isolated integration branch from exact current default and selectively apply #87→#92→#93→#101 file patches after diff review/checksum comparison; preserve inert `dispatch:false`, run package tests and exact-head CI. Do not mount into Supervisor or provision hosted D1.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
