@@ -3647,3 +3647,18 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Current default HEAD and effective governance were NOT RECONFIRMED by the available branch-search/API responses in this pass; last recorded default SHA `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` is historical context only, not a fresh assertion.
 - No Cloud Pool dispatch, MediaHub bridge dispatch, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: pin official SDK in an authorized Node 22/npm environment, generate a complete lockfile, run `npm ci`, and test actual SDK using fake fetch with network denied; maintain fail-closed dispatch.
+
+
+## 35. Wave 333 — Cloud Pool admission and SDK runtime gate recheck (2026-11-16)
+
+- Report: [Wave 333 audit](../reports/2026-11-16-wave333-cloudpool-admission-sdk-recheck.md), commit `2993da8a72283b76ce691f48fb519c7371bc154f`.
+- Checkpoint: [Wave 333 checkpoint](../checkpoints/2026-11-16-wave333-cloudpool-admission-sdk-recheck.md), commit `f2a1d0c707739ecb48197f231ca24b61a4bbebbf`.
+- Current default `Основной` HEAD reconfirmed by GitHub compare: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (identical to recorded SHA).
+- Active ruleset #26550182 applies to `Основной`; deletion/non-fast-forward blocked, PR required, review-thread resolution required, but required approving reviews = 0 and no code-owner approval. Independent review is not enforced.
+- PR #102 OPEN/DRAFT/UNMERGED; head `e6613c152c5334db04f520cfe069f3bbd1c57772`, base `6507823e7ec27caa9b2621daef964dba2d4cf436`, 11 commits behind current default. Exact-head CI #43825389908 / job #133157911445 SUCCESS; read-only controller CI #43825390133 / job #133158008841 SUCCESS; event-admission job #133158010422 skipped on PR event. Formal reviews and threads: 0. It is a pure event-envelope admission probe: no durable idempotency, lock, ledger, or dispatch.
+- PR #107 remains OPEN/DRAFT at head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; exact-head CI #43864376148 / job #133289028904 SUCCESS; formal reviews 0. Actual SDK runtime remains unqualified.
+- Local Node v22.16.0/npm 10.9.2. npm registry query timed out, DNS lookup for registry.npmjs.org failed, and local npm cache had no `@google/genai`. SDK install/lockfile/npm ci/fake-fetch runtime test NOT RUN due environment network blocker.
+- PR #106 remains OPEN/DRAFT at head `afd3dba8bc9db37c8e07b8becf128233f46e4533`, base `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92` (stale). No browser runtime dispatch.
+- Issues #94/#96 OPEN. No new Issue #96 owner comment, no Cloud Pool dispatch, no MediaHub bridge dispatch, no secrets/provider calls, merge or deployment.
+- Four-agent Gemini runtime NOT QUALIFIED; Cloud Pool-native dispatch NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: rebase/rebuild PR #102 against current default; add durable idempotency and authoritative reconciliation proof without dispatch; address missing independent-review governance; qualify SDK in network-enabled Node 22 environment.
