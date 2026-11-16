@@ -2366,3 +2366,27 @@ Updated report commit: `cb7fc27670cf5a219b0403b3d9dfb9d9e090e01e`, blob `d444a91
 Updated checkpoint commit: `6680a816333f2b3020a03fb8ccd9afb705b2ffc6`, blob `aab0819660022eebc62366dadd10b0e9d4121a40`.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-16 /next — durable coordinator selection after existing-proof audit
+
+**Status: ARCHITECTURE CANDIDATE SELECTED / IMPLEMENTATION NOT STARTED / RUNTIME DISPATCH BLOCKED / CONTOUR A NOT ACCEPTED.**
+
+- Current default branch: `Основной`. Current reviewed PR #100 head remains `cb952a915093a4aaafb8f878954503d2460c4008`, Draft/open/unmerged, zero formal reviews. PR #100 exact-head run `43826793313`, job `133162447332`: 38/38 tests pass; runtime entry points intentionally deny with `DURABLE_LOCK_NOT_IMPLEMENTED`.
+- Existing reusable D1 proof audit:
+  - PR #36 head `e11fc90e50bd20b166207af64551c49cfa80ffb4`, D1 + contract runs `42329438351` / `42329438308` SUCCESS.
+  - PR #39 head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, Workers-runtime suite 19/19; exact-head runs `42329993548` / `42329991471` SUCCESS.
+  - PR #92 head `7014961587759b27d2ef6e91c60ce098d077ae83`, D1 + contract runs `43718679258` / `43718679251` SUCCESS.
+- PR #39 migration contains `lease_generation` and `lease_expires_at` columns, but source inspection confirms no lease acquire/renew/release, fencing increment, stale-owner rejection, expiry takeover or crash-recovery implementation. `claimAndEnqueue()` only implements conditional approval consume plus transactional claim/outbox creation. These proofs are local-only and keep `dispatch:false`.
+- Preferred architecture candidate: one named Cloudflare Durable Object with SQLite-backed durable state as the serialized controller coordinator; D1 retained for immutable audit/admission/outbox. Coordinator state transitions use atomic storage transactions and monotonic fencing generation. External GitHub API dispatch remains outside transactions; ambiguous outcomes must be reconciled by exact workflow identity, never blindly retried.
+- Upstream reference reviewed: `losfair/dlock` (Cloudflare Durable Objects fencing example), reference only, not adopted or independently qualified: https://github.com/losfair/dlock.
+- Official platform references: https://developers.cloudflare.com/durable-objects/ and https://developers.cloudflare.com/d1/platform/limits/ .
+- No Cloudflare resource provisioned, secrets read, billing changed, deployment, provider call, GitHub dispatch, child-agent run or merge.
+- Next bounded step: implement a local-only DO SQLite coordinator state-machine proof with concurrent admission, monotonic fencing, expired-lease takeover, stale-owner rejection, restart recovery, duplicate source events, and ambiguous external-dispatch reconciliation. Keep runtime authorization disabled pending independent review and free-tier eligibility verification.
+
+Report commit: `553ee9193abe6992fe1c8c9270a3e201efed244a`, blob `64864b2ebe65e3df31c30f4983d9897966ab78ef`.  
+Checkpoint commit: `52d15fa6cbbd82e377f4d5ba61762da511a61e42`, blob `f56d0061c0e7293bbf42c2ff72a96f0a92277691`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
