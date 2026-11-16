@@ -91,8 +91,15 @@ describe("atomic owner /next D1 admission", () => {
     expect((await admitOwnerNextEvent(env.POOL_DB, input, NOW)).decision).toBe("ADMITTED");
     const changed = valid(6912000003);
     changed.targetSha = "c".repeat(40);
-    const replay = await admitOwnerNextEvent(env.POOL_DB, changed, NOW);
-    expect(replay).toMatchObject({ decision: "DENY", reason: "SOURCE_COMMENT_IDENTITY_CONFLICT", dispatch: false });
+    changed.controllerRunId = "43890000002";
+    changed.controllerCodeSha = "d".repeat(40);
+    const replay = await admitOwnerNextEvent(env.POOL_DB, changed, NOW + 10);
+    expect(replay).toMatchObject({
+      decision: "ADMISSION_REPLAY",
+      admissionId: (await admitOwnerNextEvent(env.POOL_DB, input, NOW)).admissionId,
+      taskKey: (await admitOwnerNextEvent(env.POOL_DB, input, NOW)).taskKey,
+      dispatch: false
+    });
     expect(await counts(String(input.event.comment.id))).toEqual({ receipts: 1, tasks: 1, approvals: 1, outbox: 1 });
   });
 
