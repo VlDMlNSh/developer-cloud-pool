@@ -165,3 +165,20 @@ Contour A можно объявить ACCEPTED только после факт�
 Если действие владельца действительно необходимо, в самом конце ответа добавь отдельный блок `**ТРЕБУЕТСЯ ДЕЙСТВИЕ ВЛАДЕЛЬЦА**` с точной причиной, инструкциями и ожидаемым результатом. Если не требуется — не добавляй блок.
 
 **Начни с live GitHub recovery. Не доверяй этому prompt вместо свежих refs, SHA, Issues, PR, CI и governance. Затем выполни один конкретный инженерный проход Cloud Pool.**
+
+
+## 11. Latest recovery and next bounded task — 2026-11-16 21:40 Europe/Vilnius
+
+Revalidated default `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Issues #94/#96 remain open; PR #111/#112/#113 remain Draft/unmerged.
+
+Audit report: `docs/reports/2026-11-16-next-atomic-admission-integration-audit.md`.
+
+Findings that must be resolved in the next implementation:
+- PR #111 mixes legacy expiry-reclaim lease code with the immutable attempt lifecycle; canonical integration must use immutable attempts only.
+- Worker APIs accept caller-supplied workerId; add authenticated workload identity bound to audience/task/attempt/target.
+- PR #112 event digest is not persisted as a unique source-comment admission receipt.
+- No single D1 transaction currently joins admission receipt + one-shot approval consume + immutable logical task + task-level outbox.
+- PR #112 event-admission CI job was skipped; real webhook admission is NOT VERIFIED.
+- Default branch has no `.github/workflows/gemini-batch-dispatch-controller.yml`.
+
+Next step: create a separate branch from exactly `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; implement only the no-secret atomic admission slice with `dispatch: false`; run adversarial Workers-runtime tests and exact-head CI. Do not merge, provision hosted D1, inspect secret values, call providers or enable dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
