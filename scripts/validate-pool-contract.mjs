@@ -96,12 +96,12 @@ if (!/actions\/checkout@[0-9a-f]{40}/.test(skillsJob) || !/persist-credentials:\
 if (!/node scripts\/install-agent-skills\.mjs/.test(skillsJob)) fail("Skills job must use the reviewed installer");
 if (!/SKILLS_RESULT: \$\{\{ needs\.skills\.result \}\}/.test(worker) || !/needs:\s*\[validate, probe, browser, skills\]/.test(worker)) fail("Report job must reconcile skills bootstrap result");
 if (!/pool:skills-ready/.test(worker)) fail("Report job must use a distinct skills-ready terminal label");
-const reportJob = worker.split(/^  report:\\s*$/m)[1] || "";
-if (!/group:\\s*developer-cloud-pool-supervisor/.test(reportJob) || !/queue:\\s*max/.test(reportJob)) fail("Worker report mutations must serialize with the Supervisor concurrency group");
-if (!/PROFILE:\\s*\\$\\{\\{\\s*inputs\\.profile\\s*\\}\\}/.test(reportJob)) fail("Worker report must revalidate the selected profile envelope");
-if (!/issue\\.state !== "open"/.test(reportJob) || !/oldLabels\\.includes\\("pool:claimed"\\)/.test(reportJob)) fail("Worker report must revalidate open issue state and active Supervisor claim");
-if (!/shaMatch\\[1\\] !== process\\.env\\.TARGET_SHA/.test(reportJob) || !/profileMatch\\[1\\]\\.trim\\(\\) !== expectedProfiles\\[process\\.env\\.PROFILE\\]/.test(reportJob)) fail("Worker report must revalidate exact target SHA and profile before mutation");
-if (!/updatedLabels\\.includes\\(terminal\\)/.test(reportJob) || !/finalRead/.test(reportJob)) fail("Worker report must verify terminal state and re-read before appending its audit comment");
+const reportJob = worker.split(/^  report:\s*$/m)[1] || "";
+if (!/group:\s*developer-cloud-pool-supervisor/.test(reportJob) || !/queue:\s*max/.test(reportJob)) fail("Worker report mutations must serialize with the Supervisor concurrency group");
+if (!/PROFILE:\s*\$\{\{\s*inputs\.profile\s*\}\}/.test(reportJob)) fail("Worker report must revalidate the selected profile envelope");
+if (!/issue\.state !== "open"/.test(reportJob) || !/oldLabels\.includes\("pool:claimed"\)/.test(reportJob)) fail("Worker report must revalidate open issue state and active Supervisor claim");
+if (!/shaMatch\[1\] !== process\.env\.TARGET_SHA/.test(reportJob) || !/profileMatch\[1\]\.trim\(\) !== expectedProfiles\[process\.env\.PROFILE\]/.test(reportJob)) fail("Worker report must revalidate exact target SHA and profile before mutation");
+if (!/updatedLabels\.includes\(terminal\)/.test(reportJob) || !/finalRead/.test(reportJob)) fail("Worker report must verify terminal state and re-read before appending its audit comment");
 if (skillsManifest.cli?.version !== "1.8.1" || skillsManifest.target_agent !== "gemini-cli" || skillsManifest.install_mode !== "project-copy") fail("Skills manifest must pin CLI and Gemini project-copy install target");
 const skillNames = (skillsManifest.sources || []).flatMap(source => (source.skills || []).map(skill => skill.name));
 if (skillNames.length !== 11 || new Set(skillNames).size !== skillNames.length || skillNames.includes("*")) fail("Skills manifest must contain exactly 11 unique allowlisted skills");
