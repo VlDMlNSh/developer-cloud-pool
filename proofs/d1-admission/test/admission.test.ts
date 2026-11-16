@@ -183,6 +183,35 @@ describe("atomic owner /next D1 admission", () => {
   });
 
 
+  it("rejects a pre-consumed approval even when task and timestamp match", async () => {
+    const input = valid(6912000014);
+    const binding = await seedApproval(input);
+    await env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = ?
+    `).bind(NOW, binding.taskKey, input.approvalId).run();
+
+    const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
+    expect(result).toMatchObject({
+      decision: "DENY",
+      reason: "ADMISSION_OUTCOME_AMBIGUOUS_NO_RECEIPT",
+      dispatch: false,
+      executionAuthorized: false
+    });
+    expect(await env.POOL_DB.prepare(
+      "SELECT state, consumed_at, task_key FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approvalId).first()).toEqual({
+      state: "consumed", consumed_at: NOW, task_key: binding.taskKey
+    });
+    expect(await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_admission_receipts WHERE source_comment_id = ?"
+    ).bind(String(input.event.comment.id)).first()).toMatchObject({ n: 0 });
+    expect(await env.POOL_DB.prepare(
+      "SELECT COUNT(*) AS n FROM pool_tasks WHERE task_key = ?"
+    ).bind(binding.taskKey).first()).toMatchObject({ n: 0 });
+  });
+
   it("prevents approval replay by making consumption monotonic and append-only", async () => {
     const input = valid(6912000012);
     await seedApproval(input);
