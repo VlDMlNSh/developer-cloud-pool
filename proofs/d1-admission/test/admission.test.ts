@@ -11,6 +11,7 @@ function valid(commentId = 6912000001) {
     eventName: "issue_comment",
     ref: "refs/heads/Основной",
     targetSha: TARGET,
+    trustedDefaultHeadSha: TARGET,
     controllerCodeSha: CODE,
     controllerRunId: "43890000001",
     approvalId: "approval-" + commentId,
@@ -91,6 +92,7 @@ describe("atomic owner /next D1 admission", () => {
     expect((await admitOwnerNextEvent(env.POOL_DB, input, NOW)).decision).toBe("ADMITTED");
     const changed = valid(6912000003);
     changed.targetSha = "c".repeat(40);
+    changed.trustedDefaultHeadSha = changed.targetSha;
     changed.controllerRunId = "43890000002";
     changed.controllerCodeSha = "d".repeat(40);
     const replay = await admitOwnerNextEvent(env.POOL_DB, changed, NOW + 10);
@@ -198,6 +200,15 @@ describe("atomic owner /next D1 admission", () => {
       "SELECT state, task_key, consumed_at FROM pool_approval_ledger WHERE approval_id = ?"
     ).bind(input.approvalId).first();
     expect(row).toMatchObject({ state: "consumed", task_key: admitted.taskKey, consumed_at: NOW });
+  });
+
+
+  it("rejects a target that is not the trusted default-branch HEAD", async () => {
+    const input = valid(6912000012);
+    input.targetSha = "c".repeat(40);
+    const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
+    expect(result).toMatchObject({ decision: "DENY", reason: "STALE_OR_UNBOUND_TARGET_SHA", dispatch: false });
+    expect(await counts(String(input.event.comment.id))).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
   });
 
   it("keeps dispatch disabled on every result", async () => {
