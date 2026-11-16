@@ -67,3 +67,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 ## Updated next step
 
 Qualify Issue #96 owner-event admission on trusted default-branch workflow, durable idempotency/replay and owner-only provenance; obtain independent security review and ruleset evidence. Only then dispatch exactly the controller-authorized number of child jobs. Keep four Gemini clients unactivated pending secret-name presence and independent account/quota evidence. Persistent remote browser/dashboard remains a separate unqualified requirement.
+
+
+## /next PR #100 owner-provenance and lock audit — 2026-11-16
+
+- PR #100 current head `cb952a915093a4aaafb8f878954503d2460c4008`, base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; Draft/open/unmerged, formal reviews 0.
+- Exact-head run `43826793313`, job `133162447332`: SUCCESS; raw log confirms 38/38 tests, 0 failures, 0 skipped.
+- Ledger parser trusts only GitHub server metadata for owner login, OWNER association and exact Issue #96 URL; untrusted marker comments are ignored.
+- Runtime ledger and dispatch entry points now fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED`. No caller-supplied `lockHeld` boolean grants authorization. This is safe but not operational.
+- Open design requirement: bot-authored ledger records will not pass the owner-only parser. Define a verifiable automation identity or authenticated durable store; do not relax provenance checks.
+- Issue #96 has six owner-authored progress notes and no fresh exact `/next` trigger; live probe NOT RUN.
+- No secrets read, provider calls, dispatch, child runs, deployment or merge.
+
+**Next:** design and test a real durable serialization primitive with monotonic fencing, lease expiry/recovery and single-writer provenance. Keep runtime authorization disabled until independent qualification.
