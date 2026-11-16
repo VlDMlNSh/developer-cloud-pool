@@ -139,3 +139,12 @@ The next implementation prerequisite is **issuer/authentication and trusted-time
 ### Acceptance policy clarification
 
 The owner has directed that independent external review/acceptance be deferred until Cloud Pool is running and can perform its own independent checks. Existing review records are preserved as provenance, not treated as new acceptance. Internal CI, security invariants, adversarial tests and governance gates remain mandatory. No self-review or CI result can assign ACCEPTED.
+
+
+## Issuer capability contract — 2026-11-16
+
+A versioned design contract now specifies EdDSA/Ed25519 signed capability envelopes, RFC 8785 canonical task digests, exact owner-event provenance, issuer/key trust and revocation, trusted-time rules, single-use nonce consumption, atomic claim/outbox semantics, denial taxonomy and adversarial test requirements. This is DESIGN ONLY / NOT IMPLEMENTED / NOT QUALIFIED; no key custody service was selected, no secret values were read, and no hosted resources were provisioned.
+
+- Contract: [ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md](../contracts/ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md)
+- Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md)
+- Next: implement a pure verifier with fixed public test vectors and adversarial tests; do not integrate live signing or enable dispatch before key custody/trusted-time qualification.
