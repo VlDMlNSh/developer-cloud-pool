@@ -2401,3 +2401,18 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Updated report: [atomic D1 admission slice](../reports/2026-11-16-next-d1-atomic-admission-slice.md).
 - Next: implement authenticated workload identity for immutable-attempt claim/renew/finalize, bound to audience/repository/task/attempt/target, with no automatic reclaim. Keep dispatch disabled.
 - Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-16 latest pass — D1 approval replay hardening
+
+- Default `Основной` HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; implementation is only on PR #114 branch.
+- PR #114 latest head `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`, OPEN/DRAFT/UNMERGED; no formal reviews.
+- Independent trigger audit found that the previous existence check could accept an already-consumed approval if timestamp and task key matched. Fixed by requiring `changes() = 1` immediately after conditional ready->consumed UPDATE.
+- Added pre-consumed exact-match regression test; it verifies receipt/task rollback and no new admission.
+- Exact-head D1 PR run 43935042451/job 133537271429 SUCCESS: 12/12 Workers-runtime tests. Push run 43935030103 SUCCESS. Contract validation 43935042490/job 133537341737 SUCCESS.
+- Artifact 14258854086, 18,253 bytes, SHA-256 `796945aa2562e9d61ef8add4031e64c694ef624d3ab890a09cbd3b352e506f44`.
+- Current SQL blob `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`; test blob `208119e50985bca41161327afd6ebe717ef85b1d`.
+- Active default-only ruleset #26550182; branch-protection API 403 (NOT VERIFIED). Gemini controller workflow absent from default branch; Gemini NOT RUN.
+- Admission remains a local D1 proof. Live webhook provenance, hosted D1, authenticated worker identity, immutable-attempt runtime, outbox delivery and production integration NOT VERIFIED. Dispatch remains false.
+- Report/checkpoint updated. Next bounded step: authenticated workload-identity verifier bound to trusted issuer, canonical audience, repository, task, attempt, target SHA, expiry and replay/fencing. Confirm issuer before implementation/deployment; no automatic reclaim.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
