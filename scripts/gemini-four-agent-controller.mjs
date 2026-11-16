@@ -14,12 +14,18 @@ export const AGENT_ROLES = Object.freeze([
   Object.freeze({ id: "security_auditor", instruction: "Independently audit the assigned work item for authority, permissions, secret isolation, provenance, quota boundaries, and fail-closed behavior." })
 ]);
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+// Explicitly pinned route. No environment override and no automatic model fallback.
+// This allowlist is a routing constraint, not proof of free-tier eligibility.
+export const ALLOWED_MODELS = Object.freeze(["gemini-2.5-flash"]);
+export const DEFAULT_MODEL = "gemini-2.5-flash";
+export const REQUEST_TIMEOUT_MS = 45_000;
+export const MAX_OUTPUT_CHARS = 8_000;
 
 function classifyError(error) {
   const status = Number(error?.status ?? error?.statusCode ?? error?.response?.status);
   if (status === 429) return "QUOTA_EXHAUSTED";
   if (status === 401 || status === 403) return "AUTH_FAILED";
+  if (error?.name === "AbortError" || error?.name === "TimeoutError") return "TIMEOUT";
   return "FAILED";
 }
 
@@ -49,9 +55,12 @@ export async function runFourAgents({
   tasks,
   env = process.env,
   createClient = createGoogleClient,
-  model = env.GEMINI_MODEL || DEFAULT_MODEL
+  model = DEFAULT_MODEL
 } = {}) {
   validateTasks(tasks);
+  if (!ALLOWED_MODELS.includes(model)) {
+    throw new Error("Requested Gemini model is not in the fixed allowlist.");
+  }
 
   const keys = AGENT_KEY_ENV.map((name) => env[name]);
   if (keys.some((key) => typeof key !== "string" || key.trim() === "")) {
@@ -92,15 +101,28 @@ export async function runFourAgents({
       const contents = [
         "Role: " + role.id,
         "Role constraints: " + role.instruction,
-        "独立 work item (do not assume other agents' task payloads or results):",
+        "Independent work item (do not assume other agents' task payloads or results):",
         tasks[index]
       ].join("\n\n");
-      const response = await client.models.generateContent({ model, contents });
+      const response = await client.models.generateContent({
+        model,
+        contents,
+        config: { abortSignal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) }
+      });
       const output = typeof response?.text === "string" ? response.text : "";
       if (!output.trim()) {
         return { agent: index + 1, role: role.id, keyEnv, taskIndex: index, status: "EMPTY_RESPONSE", output: null };
       }
-      return { agent: index + 1, role: role.id, keyEnv, taskIndex: index, status: "SUCCESS", output };
+      const outputTruncated = output.length > MAX_OUTPUT_CHARS;
+      return {
+        agent: index + 1,
+        role: role.id,
+        keyEnv,
+        taskIndex: index,
+        status: "SUCCESS",
+        output: outputTruncated ? output.slice(0, MAX_OUTPUT_CHARS) : output,
+        outputTruncated
+      };
     } catch (error) {
       return {
         agent: index + 1,
