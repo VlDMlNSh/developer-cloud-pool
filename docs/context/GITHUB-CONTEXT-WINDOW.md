@@ -2400,3 +2400,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - This addendum supersedes the preceding Wave 318 RUNNING snapshot. Controller/three agents SUCCEEDED; evidence limitations and CI/review gates remain open. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: correct Agent 1 stale statement; obtain real Agent 2 non-secret test execution outputs; narrow Agent 3 unsupported Verified claims; resolve exact-head CI and formal independent review before merge/deploy.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-16 — Cloud Pool scope correction and PR #102 independent audit
+
+- This is the active Contour A workstream: Cloud Development Pool infrastructure, controller, worker execution, routing, quota, state, isolation, security and operational acceptance. MediaHub OS product development is a separate Contour B and remains deferred. MediaHub Baseline 1.0/2.0 is not a Cloud Pool acceptance criterion.
+- Latest bounded report: [Cloud Pool /next read-only controller audit](../reports/2026-11-16-cloud-pool-next-readonly-controller-audit.md); checkpoint: [Cloud Pool read-only controller checkpoint](../checkpoints/2026-11-16-cloud-pool-next-readonly-controller.md).
+- Cloud Pool default `Основной` HEAD observed: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- PR #102 [Cloud Pool read-only /next event controller](https://github.com/VlDMlNSh/developer-cloud-pool/pull/102) head `a19aca5c31bf6a39104f4eb10296a94eab404fda`, base exact default, 3 ahead / 0 behind. OPEN / DRAFT / UNMERGED; formal reviews 0.
+- PR #102 blobs: workflow `a2ccd41fc4f7c079808d3b462da500ebec7d17c6`; controller `50c483b22435205a1b8fab3b48a7b36949255861`; tests `867a501ec803ffa152d5235cea259fb02879d803`.
+- Exact-head CI run `43815104716`, job `133125329861`: SUCCESS, 17 tests PASS / 0 FAIL; event-admission job `133125331599` SKIPPED because this was a PR event. Pool Contract Validation run `43815104739`, job `133125261247`: SUCCESS. Combined commit status contexts empty / NOT VERIFIED.
+- PR #102 is a read-only event predicate. It does not persist idempotency, enforce a distributed lock, reconcile live GitHub state, dispatch child jobs or execute a live no-secret event probe. Issue #96 remains PLANNED and explicitly disables dispatch until all source/test/CI/governance/no-secret-probe gates pass.
+- Gemini 1/2/3 NOT RUN for this Cloud Pool pass. The only existing three-agent controller is in `VlDMlNSh/mediahub-os`, triggered by Issue #301, with fixed task text directing Agent 1 to MediaHub canonical docs/Master Roadmap/Baseline 2.0. That controller cannot be used to assign Cloud Pool work without changing its scope/governance. No Issue #301 comment or direct child dispatch was made.
+- No secrets read, provider calls, live issue writes, merge, deployment or qualification.
+- Status: PR #102 read-only predicate IMPLEMENTED / exact-head CI VERIFIED; trusted-main event probe NOT RUN; durable idempotency/serialization/dispatch NOT IMPLEMENTED or NOT AUTHORIZED; formal review NOT VERIFIED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent formal review and ruleset/governance resolution for PR #102; then trusted-default-branch non-secret Issue #96 event probe; only after those gates implement durable idempotency and enforced repository-wide serialization. Keep dispatch disabled.
+- Canonical MediaHub map (separate project reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
