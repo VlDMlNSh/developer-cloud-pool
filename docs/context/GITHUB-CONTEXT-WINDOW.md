@@ -2111,3 +2111,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #70 remains OPEN; latest root-signed registry bundle evidence comment ID `6892152389`.
 - Current root-signed registry PR #76 remains OPEN / DRAFT / UNMERGED at `096737ec5e1a335b367fc7af67c29f7b71541e66`, exact-head run `43697493628` SUCCESS (114 tests PASS / 0 FAIL). Durable D1 registry epoch/CAS and atomic admission watermark check remain NOT IMPLEMENTED.
 - No provider calls, secret reads, hosted D1, Worker deployment, dispatch, executor qualification, merge or independent audit occurred. SentinelX still has zero connected hosts; required Alamo/server 3 is not positively identified/online.
+
+## Corrective scope and dispatch boundary — 2026-11-16
+
+- This project is currently Cloud Development Pool Contour A only. MediaHub OS product development / Contour B is deferred until Contour A is ACCEPTED.
+- MediaHub Baseline 1.0/2.0 and MediaHub Agent PRs #733–#738 are not Cloud Pool acceptance work or evidence; do not prioritize them for Cloud Pool implementation.
+- Cloud Pool default target for this pass: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Cloud Pool Issue #94 explicitly requires a Cloud Pool-native /next controller and explicitly forbids substituting MediaHub Issue #301/controller.
+- Cloud Pool Issue #96 remains PLANNED; live dispatch disabled pending source, tests, exact-head CI, governance and trusted-main no-secret probe.
+- PR #102 head `a19aca5c31bf6a39104f4eb10296a94eab404fda` adds only a read-only owner-event probe. Exact-head run `43815104716`: job `133125329861` SUCCESS with 17/17 tests; event job `133125331599` SKIPPED on PR event. Contract run `43815104739` / job `133125261247` SUCCESS. No dispatch capability.
+- MediaHub controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` is bound to MediaHub Issue #301 and MediaHub main. Its fixed Agent 1/2/3 task payloads target MediaHub source/docs, not `developer-cloud-pool`. It cannot honestly be represented as assigning Cloud Pool tasks.
+- MediaHub REST/HMAC workflow-dispatch transport vs approved `workflow_call` governance mismatch remains unresolved in available evidence. Therefore no new Issue #301 /next was triggered in this pass.
+- Gemini Agent 1: NOT RUN for Cloud Pool scope. Agent 2: NOT RUN. Agent 3: NOT RUN. Exact blocker: no approved Cloud Pool task-routing contract through the current MediaHub controller, and Cloud Pool native dispatch is explicitly fail-closed until gates pass.
+- Latest report: [Cloud Pool controller scope audit](../reports/2026-11-16-cloudpool-next-controller-scope-audit.md); checkpoint: [Cloud Pool controller scope checkpoint](../checkpoints/2026-11-16-cloudpool-next-controller-scope-audit.md).
+- Documentation is on branch `docs/next-2026-11-16-cloudpool-gemini-scope-audit`, based on immutable Cloud Pool default SHA above; not merged and not canonical default branch.
+- Status: PR #102 read-only admission IMPLEMENTED / exact-head CI VERIFIED; Cloud Pool live dispatch NOT IMPLEMENTED / NOT AUTHORIZED; Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: governance/review for Cloud Pool-native controller, then durable owner-authenticated ledger + enforced serialization + exact run correlation. Keep dispatch disabled.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
