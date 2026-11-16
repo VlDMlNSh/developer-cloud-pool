@@ -75,3 +75,17 @@ Canonical MediaHub map (reference only; not Cloud Pool implementation authority)
 - Thus exact-head CI is VERIFIED for the bounded PR validation path. No live issue_comment admission was exercised; event-admission remains intentionally SKIPPED on PR event.
 - PR #102 remains OPEN / DRAFT / UNMERGED; formal reviews 0. Combined commit-status contexts remain empty, so do not claim required status contexts are green.
 - This does not close the durable ledger, enforced serialization, exact run reconciliation, governance or trusted-main no-secret gates. Gemini 1/2/3 NOT RUN for Cloud Pool scope; dispatch remains fail-closed.
+
+## Follow-up: exact controller-run correlation hardening — 2026-11-16
+
+- Revalidated PR #100 current head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`, based on PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`. PR #100 remains OPEN / DRAFT / UNMERGED.
+- Source review found recovery correlation previously accepted any Actions run matching only `display_title` and `head_sha`. That is insufficient to distinguish another workflow, event, repository, branch or fork.
+- Added `matchExactControllerRuns` in `scripts/next-github-ledger-adapter.mjs`. It requires exact positive workflow ID, workflow path, event name, repository and head repository, default branch, immutable target SHA, deterministic display title and positive run ID. Recovery now BLOCKS when approved workflow identity is absent or incomplete; no weak title+SHA fallback remains.
+- Added adversarial tests mutating each identity field independently and checking that false matches are rejected. Added a test that missing approved identity blocks reconciliation.
+- First CI attempt run `43823912569` / job `133153113526` failed one test because the existing delayed-visibility fixture had not yet been updated to provide the newly mandatory identity. This was a test-fixture mismatch, not a syntax failure. Corrected the fixture in commit `61a31a9ca2fbdf785c617be669cf639b0c030ac7`.
+- Latest exact-head PR run `43824019902` / job `133153438933` SUCCESS. Log confirms 53 tests PASS / 0 FAIL / 0 skipped; syntax checks PASS. Exact-head contract CI: VERIFIED.
+- This remains a non-dispatching contract/test prototype. The repository has not yet supplied an approved production controller workflow identity/path/ID, so runtime run reconciliation remains NOT IMPLEMENTED / NOT QUALIFIED until that contract is approved and bound.
+- Critical remaining flaw: `lockHeld: true` is still caller-asserted in the prototype. No durable distributed lock or runtime proof of repository-wide serialization exists. This pass does NOT resolve that issue.
+- PR #100 formal review count remains 0; PR #98 remains Draft/unmerged. No production workflow, secrets, provider calls, live ledger writes, dispatch, deployment or merge occurred.
+- Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope: no approved Cloud Pool-native task dispatcher exists; do not use the MediaHub controller as a substitute.
+- Contour A remains BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
