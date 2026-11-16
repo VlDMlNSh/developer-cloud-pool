@@ -89,7 +89,7 @@ describe("atomic owner /next D1 admission", () => {
     const input = valid(6912000003);
     await seedApproval(input);
     expect((await admitOwnerNextEvent(env.POOL_DB, input, NOW)).decision).toBe("ADMITTED");
-    const changed = valid();
+    const changed = valid(6912000003);
     changed.targetSha = "c".repeat(40);
     const replay = await admitOwnerNextEvent(env.POOL_DB, changed, NOW);
     expect(replay).toMatchObject({ decision: "DENY", reason: "SOURCE_COMMENT_IDENTITY_CONFLICT", dispatch: false });
@@ -110,7 +110,7 @@ describe("atomic owner /next D1 admission", () => {
       const result = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
       expect(result.decision).toBe("DENY");
     }
-    expect(await counts("6912000001")).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
+    expect(await counts("6912000004")).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
   });
 
   it("rolls back the receipt when approval is absent, expired or envelope-mismatched", async () => {
@@ -118,13 +118,13 @@ describe("atomic owner /next D1 admission", () => {
     await seedApproval(input, { expiresAt: NOW - 1 });
     const expired = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
     expect(expired.decision).toBe("DENY");
-    expect(await counts("6912000001")).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
+    expect(await counts(String(input.event.comment.id))).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
 
     const mismatch = valid(6912000006);
     await seedApproval(mismatch, { envelopeDigest: "d".repeat(64) });
     const rejected = await admitOwnerNextEvent(env.POOL_DB, mismatch, NOW);
     expect(rejected.decision).toBe("DENY");
-    expect(await counts("6912000002")).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
+    expect(await counts(String(mismatch.event.comment.id))).toEqual({ receipts: 0, tasks: 0, approvals: 0, outbox: 0 });
   });
 
   it("admits two distinct source comments as two waves, not one shared task", async () => {
@@ -138,7 +138,12 @@ describe("atomic owner /next D1 admission", () => {
     expect(b.decision).toBe("ADMITTED");
     expect(a.waveId).not.toBe(b.waveId);
     expect(a.taskKey).not.toBe(b.taskKey);
-    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox").first()).toMatchObject({ n: 2 });
+    const [outboxOne, outboxTwo] = await Promise.all([
+      env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox WHERE task_key = ?").bind(a.taskKey).first(),
+      env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox WHERE task_key = ?").bind(b.taskKey).first()
+    ]);
+    expect(outboxOne.n).toBe(1);
+    expect(outboxTwo.n).toBe(1);
   });
 
   it("serializes concurrent delivery of one source comment into one durable admission", async () => {
