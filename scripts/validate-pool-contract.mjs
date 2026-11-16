@@ -11,7 +11,12 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
-const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
+const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  skills:\s*$/m)[0] || "";
+const skillsJob = worker.split(/^  skills:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
+const skillsInstaller = read("scripts/install-agent-skills.mjs");
+const skillsManifestText = read("config/agent-skills.lock.json");
+let skillsManifest = {};
+try { skillsManifest = JSON.parse(skillsManifestText); } catch { fail("Agent skills lock manifest must be valid JSON"); }
 const issueForm = read(".github/ISSUE_TEMPLATE/pool-task.yml");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
@@ -59,7 +64,7 @@ const probeJob = worker.split(/^  probe:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] 
 if (!probeJob) fail("Worker probe job block cannot be isolated");
 if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive repository secrets");
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
-if (!/options:\s*\n\s+- dsh-headless-probe\s*\n\s+- agent-browser-headless/.test(worker)) fail("Worker profile allowlist must include DSH and agent-browser headless profiles");
+if (!/options:\s*\n\s+- dsh-headless-probe\s*\n\s+- agent-browser-headless\s*\n\s+- agent-skills-bootstrap/.test(worker)) fail("Worker profile allowlist must include DSH, browser and agent-skills profiles");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
 if (!browser) fail("Worker browser job block cannot be isolated");
@@ -74,7 +79,21 @@ if (!issueForm.includes("- Agent-browser headless")) fail("Task issue form must 
 if (!worker.includes('"agent-browser-headless": "Agent-browser headless"')) fail("Worker must bind the browser profile to the exact issue envelope label");
 if (!/agent-browser install/.test(browser) || !/agent-browser skills get core/.test(browser) || !/agent-browser skills get dogfood/.test(browser)) fail("Browser job must install Chromium and load core/dogfood skills");
 if (!/https:\/\/example\.com/.test(browser) || !/agent-browser close/.test(browser)) fail("Browser smoke test must use a harmless public target and close its session");
-if (failures.length === 0) pass("Worker permissions, DSH/browser profile allowlists, isolated no-secret browser smoke and cleanup invariants");
+if (!skillsJob) fail("Worker skills job block cannot be isolated");
+if (!/if: needs\.validate\.result == 'success' && inputs\.profile == 'agent-skills-bootstrap'/.test(skillsJob)) fail("Skills job must run only for the validated bootstrap profile");
+if (!/permissions:\s*\n\s+contents:\s*read/.test(skillsJob)) fail("Skills job must have contents: read only");
+if (/secrets\./.test(skillsJob)) fail("Skills job must not receive repository secrets");
+if (!/actions\/checkout@[0-9a-f]{40}/.test(skillsJob) || !/persist-credentials:\s*false/.test(skillsJob)) fail("Skills job must checkout the exact target without persisted credentials");
+if (!/node scripts\/install-agent-skills\.mjs/.test(skillsJob)) fail("Skills job must use the reviewed installer");
+if (!/SKILLS_RESULT: \$\{\{ needs\.skills\.result \}\}/.test(worker) || !/needs:\s*\[validate, probe, browser, skills\]/.test(worker)) fail("Report job must reconcile skills bootstrap result");
+if (!/pool:skills-ready/.test(worker)) fail("Report job must use a distinct skills-ready terminal label");
+if (skillsManifest.cli?.version !== "1.8.1" || skillsManifest.target_agent !== "gemini-cli" || skillsManifest.install_mode !== "project-copy") fail("Skills manifest must pin CLI and Gemini project-copy install target");
+const skillNames = (skillsManifest.sources || []).flatMap(source => (source.skills || []).map(skill => skill.name));
+if (skillNames.length !== 11 || new Set(skillNames).size !== skillNames.length || skillNames.includes("*")) fail("Skills manifest must contain exactly 11 unique allowlisted skills");
+if (!(skillsManifest.sources || []).every(source => /^[0-9a-f]{40}$/.test(source.ref || ""))) fail("Every skill source must be pinned to a full commit SHA");
+if (!skillsInstaller.includes('skills@" + cliVersion') || !skillsInstaller.includes('"--agent", manifest.target_agent, "--copy", "--yes"')) fail("Skills installer must use exact CLI pin and copy into Gemini project skills");
+if (!skillsInstaller.includes("DISABLE_TELEMETRY") || !skillsInstaller.includes("SKILL.md") || !skillsInstaller.includes("agent-skills-inventory.sha256")) fail("Skills installer must disable telemetry and verify/hash installed skill content");
+if (failures.length === 0) pass("Worker permissions, DSH/browser/skills profile allowlists, isolated no-secret browser and skills bootstrap contracts");
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
 if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
