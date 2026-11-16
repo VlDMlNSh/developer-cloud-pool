@@ -99,3 +99,35 @@ BEGIN
   INSERT INTO pool_task_outbox (outbox_id, task_key, event_type, status, created_at)
   VALUES ('pool-task-ready:' || NEW.task_key, NEW.task_key, 'pool.task.ready', 'pending', NEW.admitted_at);
 END;
+
+-- Admission receipts and logical task identity are append-only/immutable.
+CREATE TRIGGER pool_admission_receipts_immutable_update
+BEFORE UPDATE ON pool_admission_receipts
+BEGIN
+  SELECT RAISE(ABORT, 'ADMISSION_RECEIPT_IMMUTABLE');
+END;
+
+CREATE TRIGGER pool_admission_receipts_immutable_delete
+BEFORE DELETE ON pool_admission_receipts
+BEGIN
+  SELECT RAISE(ABORT, 'ADMISSION_RECEIPT_APPEND_ONLY');
+END;
+
+CREATE TRIGGER pool_tasks_immutable_binding
+BEFORE UPDATE OF task_key, repository_id, issue_number, target_sha, profile, wave_id ON pool_tasks
+BEGIN
+  SELECT RAISE(ABORT, 'LOGICAL_TASK_BINDING_IMMUTABLE');
+END;
+
+CREATE TRIGGER pool_tasks_no_delete
+BEFORE DELETE ON pool_tasks
+BEGIN
+  SELECT RAISE(ABORT, 'LOGICAL_TASK_APPEND_ONLY');
+END;
+
+CREATE TRIGGER pool_approval_binding_immutable
+BEFORE UPDATE OF approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+                 profile, envelope_digest, expires_at ON pool_approval_ledger
+BEGIN
+  SELECT RAISE(ABORT, 'APPROVAL_BINDING_IMMUTABLE');
+END;
