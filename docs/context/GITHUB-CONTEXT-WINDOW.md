@@ -7,7 +7,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436` (re-read 2026-11-16)
 Documentation continuation branch: `docs/next-2026-11-16-cloudpool-gemini-scope-audit`
-Latest report commit: `1ffa889f9cd49543e270f87c9198a28b170a9c2f` (this branch remains unmerged)
+Latest model-pool report commit: `cedb3518ac2ebdbdb0c0833b3fdae4f35f3f73cf`; latest Context Window commit before this refresh: `df48ed9dc987869c70411bfb486f0726333a6a8e` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2268,7 +2268,7 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 **Status: ARCHITECTURE RECORDED / PROVIDER ACTIVATION NOT AUTHORIZED.** This update is on the documentation continuation branch, not the default branch.
 
 - Model/credential/quota architecture is recorded in `docs/reports/2026-11-16-cloud-pool-model-pool-activation-plan.md`.
-- Machine-readable inventory and activation queue: `config/provider-model-activation-matrix.json`. It preserves all 24 cloud credential slots, includes exact candidate model strings from the MediaHub registry, records billing evidence and keeps every route inactive.
+- Machine-readable inventory and activation queue: `config/provider-model-activation-matrix.json`. It preserves all 24 cloud credential slots plus the local Ollama route, includes exact candidate model strings from the MediaHub registry, records billing evidence and keeps every route inactive.
 - Checkpoint: `docs/checkpoints/2026-11-16-cloud-pool-model-pool-activation.md`.
 - Source registry: MediaHub `ops/qualification/provider_model_registry.json`, blob `8c0f95d33a6fc85128b3a7aa37157c2dca74bbca`.
 - Owner direction: direct DeepSeek credential slot `deepseek-1` is excluded from activation because it requires payment. The inventory record is retained for audit only. DeepSeek-hosted models through another provider remain separate routes and must pass that provider's own free entitlement checks.
@@ -2277,7 +2277,7 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Gemini model correction: `gemini-3.8-flash` appears in current official Free-tier pricing. Registry string `gemini-3.5-flash-lite` is not confirmed by current official pricing; current documentation lists `gemini-3.1-flash-lite`. Do not silently activate or rewrite registry model IDs; submit a reviewed correction.
 - Groq: official rate-limit documentation describes RPM/RPD/TPM/TPD and organization-level limits. It does not establish the account's Free-plan entitlement; Groq candidates remain inactive until that is verified.
 - Proposed internal pilot guardrails (not provider-published limits): concurrency 1 per verified quota domain, 5 RPM, 100 RPD, 16k input tokens/request, 4096 output tokens/request, USD 0 spend. Effective limits are the lower of internal caps and verified provider limits.
-- No provider calls, secret reads, dispatch, merge, deployment or paid operations were performed.
+- No provider calls, secret reads, dispatch, merge, deployment or paid operations were performed. Documentation-only workflow lookup for Context Window commit `df48ed9dc987869c70411bfb486f0726333a6a8e` returned no associated workflow runs; docs CI therefore NOT RUN / NOT VERIFIED.
 - Controlling blocker remains Issue #26 OPEN: credential boundary, provider qualification, budget guard, routing tests, provenance and independent review are not accepted. PR #28/#29 remain draft/unmerged; PR #29's formal CHANGES_REQUESTED review references an older head and requires exact-head reconciliation. Cloud Pool-native Gemini dispatch issues #94/#96 remain open.
 - Next: reconcile PR #29 active-slot eligibility finding at exact current head, run exact-head CI, and prepare no-secret Gemini credential/account/quota metadata reconciliation. Only after Issue #26 acceptance may one model be qualified and activated at a time.
 
