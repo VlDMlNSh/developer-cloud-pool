@@ -3611,3 +3611,12 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issues #94/#96 remain OPEN; native Cloud Pool owner-only controller remains BLOCKED. Four secret names existence/scope and distinct account/quota ownership NOT VERIFIED. No secret reads, provider calls, Gemini dispatch, merge or deployment.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 32. Supplementary Gemini bridge gate recheck — Wave 330 (2026-11-16)
+
+- Re-read MediaHub Issue #301 and all comments; latest owner-authored `/next` event remains comment #6915656230; no newer owner event found.
+- MediaHub controller on `main` blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; latest commit search reports main HEAD `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- Controller requires exact owner `/next` on Issue #301, `MEDIAHUB_GEMINI_BATCH_ENABLED=true`, and runtime controller secrets. Variable/secret metadata and exact-main CI/security gates were NOT VERIFIED in this pass. Available commit-workflow-runs connector only returns PR-triggered runs, so exact-main CI was not established.
+- No new Issue #301 comment and no supplementary Gemini dispatch. Status: NOT RUN (gates NOT VERIFIED), not failed. MediaHub bridge is supplementary and does not satisfy Cloud Pool-native four-account execution.
+- Wave 330 report addendum: [SDK qualification and supplementary bridge gate result](../reports/2026-11-16-wave330-gemini-sdk-qualification.md).
