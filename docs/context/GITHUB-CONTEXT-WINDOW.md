@@ -2246,3 +2246,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ### SHA clarification after documentation updates
 The implementation and workflow files validated by CI run `43841574699` are pinned to source commit `90b88dd94d595dda65365a09396693804671cab3`. After that run, only the report, Context Window and checkpoint documentation were updated; no workflow, installer, validator, or runtime code changed. Therefore the CI evidence applies to the tested implementation SHA, while the branch tip advances with documentation-only commits.
+
+
+## Continuity handoff update — 2026-11-16
+
+- Added canonical new-chat recovery document: [CLOUD-POOL-CHAT-RESTORE-2026-11-16.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md).
+- The handoff captures current branch/PR boundaries, exact browser and skills CI evidence, all 11 pinned skills, Gemini controller blocker, host availability, owner acceptance policy, next issues and a deterministic new-chat restore procedure.
+- Updated browser integration architecture to distinguish VERIFIED ephemeral public-Web smoke from NOT PROVISIONED authenticated/persistent sessions and NOT QUALIFIED queue/lease integration.
+- PR #106 remains OPEN/DRAFT and unmerged; all work remains on feature branch, not default branch.
+- Gemini three-agent wave remains NOT RUN / BLOCKED: Cloud Pool-native controller absent on default branch; Issues #94/#96 open. No MediaHub controller substitution.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: continue Cloud Pool-native exact owner admission/controller and durable single-use task claim work. Keep dispatch disabled until every security/governance and exact-head gate passes.
