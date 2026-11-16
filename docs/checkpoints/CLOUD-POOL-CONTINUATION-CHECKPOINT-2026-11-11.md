@@ -441,3 +441,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: reconcile MediaHub controller transport/governance and independent review before another Gemini batch; continue Cloud Pool's non-dispatching trusted-main controller implementation under Issue #94; retain Issue #96 fail-closed and require exact-head CI, independent review, governance and no-secret probe before any live dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
+
+
+## 2026-11-16 checkpoint — Cloud Pool read-only /next owner-event controller
+
+- Report: [read-only owner-event controller pass](../reports/2026-11-16-next-readonly-owner-event-controller.md).
+- Cloud Pool default target remains Основной@6507823e7ec27caa9b2621daef964dba2d4cf436; MediaHub main remains 1694cde38c7b7d69baf9676b4908c1bb6e197fbe.
+- New Draft PR #102: https://github.com/VlDMlNSh/developer-cloud-pool/pull/102; exact head a19aca5c31bf6a39104f4eb10296a94eab404fda; base exact default HEAD 6507823e7ec27caa9b2621daef964dba2d4cf436.
+- PR #102 adds a read-only issue_comment.created event controller restricted to open Issue #96 and exact owner /next; checks repo/owner/default branch/ref, OWNER association, issue state and event SHA; deterministic comment identity; contents:read only. It does not call API, inspect secrets/variables, persist ledger state, dispatch, launch children, or authorize execution.
+- Exact-head controller contract run 43815087262 / job 133125204490 SUCCESS; event-admission job 133125206179 SKIPPED as expected on push. Repo workflow/security validation run 43815104739 / job 133125261247 SUCCESS. 17 adversarial/positive test cases.
+- PR #102 remains OPEN / DRAFT / UNMERGED; formal independent review NOT VERIFIED. Issue #96 remains fail-closed. Durable idempotency, enforced serialization, canonical source-comment/API revalidation and run identity correlation remain unimplemented.
+- MediaHub controller main/blob remains 1694cde38c7b7d69baf9676b4908c1bb6e197fbe / 7799f0fc713c5bd772ce6820df40a926a83445c8; REST/HMAC + workflow_dispatch vs approved workflow_call mismatch remains unresolved. No new Gemini wave was dispatched; historical last confirmed wave remains controller 43763042415 with children 43763061253, 43763062743, 43763064255.
+- No secrets/variable values read, no provider calls, no live dispatch, no deployment, no merge, no infrastructure changes. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review PR #102; implement canonical API revalidation and enforced serialization/durable idempotency; reconcile MediaHub controller transport/governance before another Gemini wave.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
