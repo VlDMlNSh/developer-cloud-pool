@@ -3438,3 +3438,13 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Cloud Pool Gemini Agent 1/2/3 NOT RUN; POOL_DISPATCH_ENABLED remains false. No secrets read, provider calls, child runs, deployment, merge or qualification.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## 2026-11-16 — D1 claim/attempt lifecycle qualification boundary
+
+- Report: [D1 claim/attempt qualification boundary](../reports/2026-11-16-d1-claim-attempt-qualification-boundary.md), commit 45cddcee2a7ad5b22d5d60bcac4784518732cbb0.
+- Refreshed current D1 stack: PR #87 @ 8cc7b12948865bb0e13ce099386c09f3ae32b4f5 -> PR #92 @ 7014961587759b27d2ef6e91c60ce098d077ae83 -> PR #93 @ e200838d038b9cd48635233187819302bba6a33e; all OPEN/DRAFT/UNMERGED. Combined status API returned no status contexts (not evidence of CI success); previous recorded exact D1 CI runs remain historical evidence; latest check-run inventory NOT VERIFIED in this pass.
+- Source audit confirms local-only D1 proof already includes transactionally coupled approval/task/outbox, immutable attempts, monotonic lease-generation fencing, indeterminate-attempt reconciliation queue, separate projection outbox and active root-signed route-registry assertion at admission. Source blobs and limitations are in the report.
+- The package README explicitly states it is not mounted in Hono console, production Supervisor/Worker workflows or deployed Worker. No hosted D1, authenticated network claim-service, production issuer/root-key custody, trusted production time, remote revocation, resolver actor, or hosted contention/recovery is verified.
+- Decision: reuse PR #87/#92/#93 implementation as local reference; do not rewrite. Next define separately authenticated hosted claim-service composition root and separate resolver/projection actors with narrowly scoped audiences/capabilities. Keep database credentials server-side and dispatch disabled.
+- Gemini Agent 1/2/3 NOT RUN; POOL_DISPATCH_ENABLED remains false. No secret reads, hosted provisioning, deployment, provider calls, child dispatch, merge or qualification.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
