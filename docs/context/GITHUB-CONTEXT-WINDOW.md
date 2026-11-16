@@ -2165,3 +2165,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery under Issue #94; keep dispatch disabled pending exact-head CI, governance, trusted-main no-secret probe and independent review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Ephemeral agent-browser worker — 2026-11-16 (feature branch, not merged)
+
+- Clarification: this deployment mode uses GitHub-hosted ephemeral runners and does NOT require SentinelX, a physical device, or a self-hosted machine. A persistent interactive browser/dashboard is a separate product mode and is not delivered by this worker.
+- Feature branch: `feat/agent-browser-ephemeral-worker-2026-11-16`; base SHA `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
+- Added allowlisted `agent-browser-headless` workflow profile. Browser job is isolated with `permissions: {}`, no checkout, no repository/provider secrets, pinned Node.js 24.9.0 and CLI `agent-browser@0.43.0`, Chromium install, core and dogfood skill loading, fixed `https://example.com` smoke target, screenshot hashing and explicit session close.
+- Updated pool task issue template and contract validator for the browser profile. Added ADR `docs/architecture/AGENT-BROWSER-CLOUD-POOL-INTEGRATION.md` and report `docs/reports/2026-11-16-next-ephemeral-agent-browser-worker.md`.
+- No browser job dispatched, no browser runtime smoke executed yet; CI and qualification pending. No arbitrary URLs/scripts, no credentials/cookies, no paid provider. Existing supervisor dispatch gate remains unchanged and fail-closed.
+- GitHub-hosted job is ephemeral and subject to Actions minutes, concurrency, job timeout and storage limits. "Unlimited free" capacity is not promised. Persistent interactive sessions/dashboard and cross-job state are NOT IMPLEMENTED.
