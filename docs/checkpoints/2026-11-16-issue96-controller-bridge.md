@@ -57,3 +57,15 @@ No secrets read, provider calls, dispatch, merge, deployment or paid resources i
 - No dispatch, provider calls, hosted D1, secrets, merge or deployment.
 - Remaining: trusted Issue #96 source-event/owner/SHA/wave binding; independent review; hosted persistence qualification. Four agents NOT RUN; Contour A NOT ACCEPTED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Read-only /next event controller — 2026-11-16
+
+- PR #112 OPEN / DRAFT / UNMERGED; clean base 35208f0ef28f0ac031a7acdf35fc90ccc9b16845; head c9a4c0ab2001f01a09632795283071c521e1c99d.
+- Reused PR #102 read-only controller; added immutable repository ID 1445644538, owner ID 157891068, exact Issue #96 API URL, owner login/association, exact body and source-comment ID checks.
+- Exact-head CI: controller run 43882090833 SUCCESS, 21/21 tests; contract validation 43882090867 SUCCESS.
+- Permissions contents:read; no secrets, API mutation, storage or dispatch. Live issue_comment job NOT RUN.
+- Legacy Supervisor trigger mismatch identified: it is issue/schedule/workflow_run driven and dispatches on pool:ready labels if enabled; not qualified for Issue #96 exact owner /next. Keep disabled.
+- Four-agent requirement is exactly four roles per Issue #96 amendment. No Gemini dispatch.
+- Durable D1 admission, event-to-wave/task binding, controller fencing and ambiguous recovery remain NOT VERIFIED. Contour A NOT ACCEPTED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
