@@ -538,38 +538,93 @@
   ],
   "gemini_four_client_candidate": {
     "source_pr": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/107",
+    "candidate_head": "fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf",
     "status": "DRAFT_NOT_INTEGRATED",
+    "owner_assertion": {
+      "statement": "Each of the four Gemini API keys added to GitHub represents a separate Google account.",
+      "recorded_from": "owner statement in ChatGPT /next conversation on 2026-11-16",
+      "status": "OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED"
+    },
     "clients": [
       {
         "id": "gemini-client-1",
-        "credential_slot": "gemini-1"
+        "credential_slot": "gemini-1",
+        "secret_name": "GEMINI_API_KEY_1",
+        "account_id": "google-account-1",
+        "quota_domain_id": "google-account-1-quota",
+        "account_separation_status": "OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED",
+        "quota_status": "NOT_VERIFIED",
+        "rpm": null,
+        "rpd": null,
+        "tpm": null,
+        "tpd": null,
+        "active": false
       },
       {
         "id": "gemini-client-2",
-        "credential_slot": "UNVERIFIED_SLOT_2"
+        "credential_slot": "gemini-2",
+        "secret_name": "GEMINI_API_KEY_2",
+        "account_id": "google-account-2",
+        "quota_domain_id": "google-account-2-quota",
+        "account_separation_status": "OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED",
+        "quota_status": "NOT_VERIFIED",
+        "rpm": null,
+        "rpd": null,
+        "tpm": null,
+        "tpd": null,
+        "active": false
       },
       {
         "id": "gemini-client-3",
-        "credential_slot": "UNVERIFIED_SLOT_3"
+        "credential_slot": "gemini-3",
+        "secret_name": "GEMINI_API_KEY_3",
+        "account_id": "google-account-3",
+        "quota_domain_id": "google-account-3-quota",
+        "account_separation_status": "OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED",
+        "quota_status": "NOT_VERIFIED",
+        "rpm": null,
+        "rpd": null,
+        "tpm": null,
+        "tpd": null,
+        "active": false
       },
       {
         "id": "gemini-client-4",
-        "credential_slot": "UNVERIFIED_SLOT_4"
+        "credential_slot": "gemini-4",
+        "secret_name": "GEMINI_API_KEY_4",
+        "account_id": "google-account-4",
+        "quota_domain_id": "google-account-4-quota",
+        "account_separation_status": "OWNER_ASSERTED_NOT_INDEPENDENTLY_VERIFIED",
+        "quota_status": "NOT_VERIFIED",
+        "rpm": null,
+        "rpd": null,
+        "tpm": null,
+        "tpd": null,
+        "active": false
       }
     ],
-    "quota_policy": "Do not multiply quota by key count. Google Gemini API rate limits are project-scoped; bind all clients to verified project quota domain."
+    "model_candidate": "gemini-2.5-flash",
+    "quota_policy": "Maintain four separate credential, account and quota ledgers per owner assertion. Do not aggregate their quota. Numeric independent limits and project/account ownership remain NOT VERIFIED until non-secret account/project metadata and provider quota evidence are available.",
+    "gates": [
+      "verify four GitHub Actions secret names exist without reading values",
+      "verify project/account metadata without disclosing secrets",
+      "record independent quota evidence per account",
+      "run no-secret controller tests and exact-head CI",
+      "independent security review",
+      "production caller boundary and dispatch governance accepted"
+    ]
   },
   "activation_sequence": [
     {
       "order": 1,
-      "route": "Google Gemini gemini-3.8-flash",
+      "route": "Google Gemini gemini-2.5-flash",
       "credential_slots": [
         "gemini-1",
-        "UNVERIFIED_SLOT_2",
-        "UNVERIFIED_SLOT_3",
-        "UNVERIFIED_SLOT_4"
+        "gemini-2",
+        "gemini-3",
+        "gemini-4"
       ],
-      "reason": "Official pricing documentation lists free-tier access; per-project limits and credentials still require verification.",
+      "reason": "Four account/credential/quota ledgers are kept separate per owner assertion; candidate controller PR #107 uses gemini-2.5-flash. Account/project identity, current free entitlement, numeric quotas, CI and security review still require verification.",
       "status": "PLANNED_NOT_AUTHORIZED"
     },
     {
