@@ -43,3 +43,17 @@ No secrets read, provider calls, dispatch, merge, deployment or paid resources i
 - Isolated local D1 proof only. No production caller, hosted D1, dispatch, secrets, provider calls, deployment or merge.
 - Next: review SQL atomicity and port owner/source-comment/SHA/wave binding into the trusted Issue #96 path. Four live agents NOT RUN; Contour A NOT ACCEPTED.
 - Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## SQL attempt-state integrity — 2026-11-16
+
+- PR #111 latest head `687196738782432797bf394f1342cb9df19f478f`, OPEN / DRAFT / UNMERGED.
+- Added migration 0006 to reject prepared -> running unless the current attempt has its matching unexpired task lease and positive fencing generation.
+- Added adversarial test: unleased direct update denied without mutation; supported lease acquisition succeeds.
+- Exact-head D1 CI run `43881396386`: SUCCESS; 37/37 tests; syntax passed.
+- Exact-head Pool Contract Validation `43881396272`: SUCCESS.
+- Artifact `14232471651`; SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- Base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; four commits ahead, zero behind.
+- No dispatch, provider calls, hosted D1, secrets, merge or deployment.
+- Remaining: trusted Issue #96 source-event/owner/SHA/wave binding; independent review; hosted persistence qualification. Four agents NOT RUN; Contour A NOT ACCEPTED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
