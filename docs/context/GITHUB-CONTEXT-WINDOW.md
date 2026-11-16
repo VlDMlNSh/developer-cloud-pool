@@ -3801,3 +3801,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [2026-11-16 read-only event controller review](../reports/2026-11-16-next-event-controller-readonly-review.md).
 - Next bounded step: audit durable admission and repository-wide lease/fencing integration with immutable event identity; retain dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next audit — durable admission + repository-wide lease/fencing (2026-11-16)
+
+- Default branch `Основной` re-read at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; documentation branch parent re-read at `a18ecec97202ed626e9b86a2b3bcf55059422bac`.
+- PR #111 D1 proof head `687196738782432797bf394f1342cb9df19f478f`: exact-head D1 Ledger Proof run `43881396386` SUCCESS (job `133347908331`, 37/37 local Workers-runtime tests); Pool Contract Validation `43881396272` SUCCESS. Artifact SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`. Formal reviews/threads: 0/0.
+- Audit found the current lease is keyed by `task_key` in `pool_tasks`; different tasks in one repository can hold leases concurrently. Thus this is task-scoped fencing, NOT repository-wide lease/fencing.
+- Migration 0001 binds owner/repository/issue/target SHA/profile/envelope digest, but does not persist explicit source comment ID, source-event digest or controller run ID. Approval ID alone does not prove GitHub source-event identity.
+- Migration 0005 creates pending reconciliation records for indeterminate attempts; no trusted resolver or completed recovery lifecycle is integrated. Blind lease takeover is correctly denied.
+- PR #112 read-only event envelope remains separate, OPEN/DRAFT/UNMERGED; exact-head runs `43882090833` and `43882090867` SUCCESS. It does not persist admission or dispatch.
+- Active ruleset `26550182` is enforced for `refs/heads/Основной`; PR required, 0 required approvals, thread resolution required, deletion/non-fast-forward prohibited, no bypass actors. Independent approval is not enforced by this ruleset.
+- Gemini dispatch controller path was not found on default branch; no Gemini agent dispatch, secret read, provider call, hosted D1 provisioning, deployment or merge was attempted.
+- D1 local proof: VERIFIED at PR #111 exact head. Repository-wide lease, source-event durable admission, trusted recovery resolver, hosted persistence and production integration: NOT VERIFIED / NOT IMPLEMENTED. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-16 D1 admission and lease audit](../reports/2026-11-16-durable-admission-lease-audit.md).
+- Checkpoint: [D1 lease/fencing audit](../checkpoints/2026-11-16-d1-lease-fencing-audit.md).
+- Next bounded step: implement repository-scoped lease/fencing plus source-comment event binding and adversarial multi-task/replay/recovery tests. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
