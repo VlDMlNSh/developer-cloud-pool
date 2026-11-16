@@ -78,3 +78,15 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: durable authenticated lease/claim with fencing and recovery; then remove caller-asserted lock flag once the approved trusted controller contract is bound to the shared scheduler group.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — concurrency validator hardening — 2026-11-16
+
+- Default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN; #96 PLANNED / dispatch disabled.
+- PR #102 new head `e6613c152c5334db04f520cfe069f3bbd1c57772`; validator blob `f7c1419651ac0f2f55c3428f62adcd6bf14be0eb`. Validator extracts the YAML concurrency block and asserts shared group `developer-cloud-pool-supervisor`, `queue: max`, rejects cancellation=true, and requires explicit cancellation=false on the read-only controller.
+- Exact-head Pool Contract Validation run `43825389908` / job `133157911445` SUCCESS. Controller push run `43825383266` / job `133157926411` SUCCESS; event admission skipped on push. Controller PR run `43825390133` remained PENDING at last check; NOT VERIFIED.
+- PR #102 OPEN/DRAFT/UNMERGED. PR #100 remains OPEN/DRAFT/UNMERGED; caller-asserted `lockHeld: true` remains; durable lease/fencing/crash recovery NOT IMPLEMENTED.
+- Gemini Agent 1/2/3 NOT RUN. No dispatch/deployment/provider calls/secrets read/merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement a durable owner-authenticated lease/claim with fencing and crash recovery; do not treat the shared scheduler group or caller Boolean as sufficient lock proof.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
