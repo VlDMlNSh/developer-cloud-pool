@@ -19,12 +19,13 @@ async function digest(value) {
 }
 
 function validate(input, now) {
-  const { event, repository, ref, targetSha, controllerRunId, controllerCodeSha, approvalId, profile } = input ?? {};
+  const { event, repository, ref, targetSha, trustedDefaultHeadSha, controllerRunId, controllerCodeSha, approvalId, profile } = input ?? {};
   if (input?.eventName !== "issue_comment" || event?.action !== "created") return "EVENT_NOT_NEW_ISSUE_COMMENT";
   if (repository?.full_name !== OWNER_REPO || String(repository?.id) !== REPOSITORY_ID) return "WRONG_REPOSITORY";
   if (repository?.owner?.login !== OWNER_LOGIN || String(repository?.owner?.id) !== OWNER_ID) return "WRONG_REPOSITORY_OWNER";
   if (repository?.default_branch !== "Основной" || ref !== DEFAULT_REF) return "UNTRUSTED_WORKFLOW_REF";
   if (!SHA40.test(targetSha ?? "") || !SHA40.test(controllerCodeSha ?? "")) return "INVALID_CONTROLLER_OR_TARGET_SHA";
+  if (!SHA40.test(trustedDefaultHeadSha ?? "") || targetSha !== trustedDefaultHeadSha) return "STALE_OR_UNBOUND_TARGET_SHA";
   if (!NUMERIC.test(String(controllerRunId ?? "")) || !approvalId || approvalId.length > 128) return "INVALID_CONTROLLER_OR_APPROVAL_ID";
   if (!PROFILES.has(profile)) return "PROFILE_NOT_ALLOWED";
   if (!Number.isSafeInteger(now) || now <= 0) return "INVALID_CLOCK";
