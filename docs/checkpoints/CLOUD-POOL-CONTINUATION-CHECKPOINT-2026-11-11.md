@@ -453,3 +453,11 @@ The implementation and workflow files validated by CI run `43841574699` are pinn
 - Report: [2026-11-16-next-chat-restore-handoff.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-chat-restore-handoff.md).
 - Canonical new-chat restore guide: [CLOUD-POOL-CHAT-RESTORE-2026-11-16.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md).
 - Both docs are on PR #106 feature branch, not default branch; PR remains OPEN/DRAFT/UNMERGED.
+
+
+### Final read-back / CI observation — 2026-11-16
+
+- Restore guide: `docs/checkpoints/CLOUD-POOL-CHAT-RESTORE-2026-11-16.md`; latest content blob after SHA reconciliation: `55fd9ff9007df5a184180ab03002596756ee39d5`.
+- Latest observed PR #106 head before final documentation-only sync: `d5bb4755bae6ad4322e36d1ca38d685509f08eb9`; exact-head run `43843007992` was QUEUED and its three jobs IN_PROGRESS at last observation. Do not call this run SUCCESS until rechecked.
+- Last CI-completed implementation evidence remains run `43841574699` at implementation SHA `90b88dd94d595dda65365a09396693804671cab3`, all three jobs SUCCESS.
+- PR #106 remains OPEN/DRAFT/UNMERGED. Re-read live PR head and exact-head CI before merge or qualification.
