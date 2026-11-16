@@ -360,3 +360,13 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next step: genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery for Issue #96 under Issue #94; dispatch remains disabled until exact-head CI, governance, trusted-main no-secret probe and independent review pass.
 - Detailed report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Agent-browser runtime assessment — 2026-11-16
+
+- Report: [Agent Browser free-runtime assessment](../reports/2026-11-16-agent-browser-free-runtime-assessment.md).
+- Baseline target SHA: `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`.
+- Upstream agent-browser and skills discovery instructions read. Install/skill bootstrap contract captured: `npm i -g agent-browser && agent-browser install`; `agent-browser skills get core`; `agent-browser skills list`.
+- SentinelX Free slot: 1; connected hosts: 0; Voktors-Mini offline; mh-dev-01/mh-dev-02 disabled. No authorized online host for install.
+- GitHub-hosted runners are ephemeral and cannot host persistent browser sessions. No browser runtime, Chromium, specialized skill bundle or remote dashboard deployed.
+- Recommended first phase is bounded GitHub Actions browser QA; persistent sessions require an authorized always-on host and authenticated dashboard proxy. “Unlimited free” is impossible to guarantee; enforce published quotas.
+- Status: READ / ASSESSED; installation NOT RUN; deployment NOT RUN; Contour A BLOCKED / NOT ACCEPTED.
