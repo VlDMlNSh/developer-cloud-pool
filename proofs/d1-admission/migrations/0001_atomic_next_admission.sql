@@ -60,24 +60,6 @@ CREATE TABLE pool_task_outbox (
   created_at INTEGER NOT NULL
 );
 
-CREATE TRIGGER pool_admission_requires_matching_approval
-BEFORE INSERT ON pool_admission_receipts
-BEGIN
-  SELECT CASE WHEN NOT EXISTS (
-    SELECT 1 FROM pool_approval_ledger a
-     WHERE a.approval_id = NEW.approval_id
-       AND a.owner_numeric_id = NEW.actor_id
-       AND a.repository_id = NEW.repository_id
-       AND a.issue_number = NEW.issue_number
-       AND a.target_sha = NEW.target_sha
-       AND a.profile = NEW.profile
-       AND a.envelope_digest = NEW.envelope_digest
-       AND a.state = 'ready'
-       AND a.consumed_at IS NULL
-       AND a.expires_at > NEW.admitted_at
-  ) THEN RAISE(ABORT, 'APPROVAL_NOT_AVAILABLE_OR_BINDING_MISMATCH') END;
-END;
-
 -- This trigger is the transaction boundary: the receipt insert and all
 -- approval/task/outbox writes commit or roll back as one D1 statement.
 CREATE TRIGGER pool_admission_consumes_approval_and_creates_task
