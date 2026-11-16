@@ -2126,3 +2126,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next step: resume trusted route-registry / durable admission implementation after re-reading refs, PR ancestry and exact-head CI. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Admission ledger verification — 2026-11-16 (follow-up)
+
+- Report: ../reports/2026-11-16-next-admission-ledger-verification.md.
+- Cloud Pool default `Основной` HEAD before this write: `44e66543f0ec58c04aa47b1187d7a9d5e8b32860`. This branch is 2 commits ahead / 0 behind prior code baseline `6507823e7ec27caa9b2621daef964dba2d4cf436`; both commits are documentation-only.
+- PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`: runs `43758657648` and `43758657644` SUCCESS; 49/0 Node admission/ledger tests; YAML/security contract PASS; OPEN/DRAFT, formal reviews 0.
+- PR #100 head `cb952a915093a4aaafb8f878954503d2460c4008`: run `43826793313`, job `133162447332` SUCCESS; 38/0 tests. Server-returned owner/association/exact issue URL metadata required for ledger markers; runtime lock/reconciliation fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED`. OPEN/DRAFT, formal reviews 0.
+- PR #101 head `ae9cf5d4fd76134136b9af8b5498e90a65509722`: run `43764995448`, job `132967987468` SUCCESS; D1 runtime and migration checks pass. Artifact `14182400848`, SHA-256 `69212472f7a2638219c3984a634cdb82df3f38b68acaa93b146536a43ea88aea`. OPEN/DRAFT, formal reviews 0; test-only.
+- New MediaHub Issue #301 owner `/next` comment `6911835632` posted. Controller source blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; dispatch gates include `MEDIAHUB_GEMINI_BATCH_ENABLED`, trusted `main` and runtime credentials. Secret values not inspected. Issue-comment controller/child run IDs remain NOT VERIFIED: GitHub read connector available here only exposes PR-triggered runs by commit; browser fallback unavailable because TinyFish wallet is -$0.44.
+- No merges, deployments, provider calls, secret reads, qualification or acceptance. Cloud Pool Issue #96 remains PLANNED; Cloud Pool-native dispatch remains NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next step: implement a real storage-backed repository-wide lease with fencing and crash recovery; no caller-supplied lock boolean may grant authority. Keep dispatch disabled until independent qualification.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
