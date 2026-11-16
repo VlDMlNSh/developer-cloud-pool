@@ -12,3 +12,9 @@
 - Next: clean-base candidate reconstruction + exact-head CI + SDK dependency pin/runtime proof, no provider calls or dispatch.
 - Report: ../reports/2026-11-16-gemini-candidate-bounds-audit.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## MediaHub trigger status
+- Issue #301 latest visible owner /next comment: 6915656230.
+- Controller workflow blob on main: 7799f0fc713c5bd772ce6820df40a926a83445c8.
+- Child dispatch requires MEDIAHUB_GEMINI_BATCH_ENABLED=true plus trusted main and configured secrets. Effective state and issue_comment workflow run not verified; agents NOT VERIFIED / NOT CLAIMED.
