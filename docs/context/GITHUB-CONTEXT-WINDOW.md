@@ -3598,3 +3598,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: pin SDK and add fake-transport runtime verification, inspect workflow permissions/artifacts, independent review, then continue Cloud Pool-native controller gates. Keep production dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 31. Wave 330 — Gemini SDK runtime qualification boundary (2026-11-16)
+
+- Report: [Wave 330 SDK qualification boundary](../reports/2026-11-16-wave330-gemini-sdk-qualification.md), commit `266f25a2fbd6d04a7fa85b7230d37d2a8bc71839`.
+- Checkpoint: [Wave 330 SDK qualification checkpoint](../checkpoints/2026-11-16-wave330-gemini-sdk-qualification.md), commit `5579d115ef4d679c17cf6535303edc3e5bb59785`.
+- Revalidated PR #107 remains OPEN/DRAFT/UNMERGED at head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- Exact-head Actions run #43864376148 / job #133289028904 SUCCESS; dispatch flag false; Pool Contract Validation PASS; YAML syntax PASS; six tests PASS / zero FAIL.
+- Source audit confirmed `package.json` and `package-lock.json` absent on candidate branch while controller dynamically imports `@google/genai`. Tests inject fake clients and do not exercise the SDK import. SDK runtime therefore NOT VERIFIED.
+- Official SDK release evidence observed: `@google/genai@3.3.0`; Node.js >=22 required in the 3.x line; SDK supports `httpOptions.fetch` for deterministic fake-transport testing. Next: exact version pin, reproducible lockfile, `npm ci`, actual-SDK fake-fetch test with zero network egress, and pinned-version retry-policy review.
+- Issues #94/#96 remain OPEN; native Cloud Pool owner-only controller remains BLOCKED. Four secret names existence/scope and distinct account/quota ownership NOT VERIFIED. No secret reads, provider calls, Gemini dispatch, merge or deployment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
