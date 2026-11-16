@@ -3489,3 +3489,16 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 - Refreshed open Issues on 2026-11-16: #96 Cloud Pool-native /next admission; #94 Gemini dispatch; #70 provider quota fail-closed; #38 durable Supervisor claims; #22 secure web console; #26 account-isolated routing/quota; #1 dispatch governance; #5 agent-browser runner. #21 native iOS remains Contour B and is deferred.
 - Refreshed open PR inventory includes #37, #39, #54, #60, #63–#68, #87, #92, #93, #95, #97–#106; all PRs cited in this pass were checked OPEN/DRAFT/UNMERGED unless otherwise stated in the report. Several are stacked or based on stale SHAs; use exact PR head/base refs, not branch names alone.
+
+## 2026-11-16 — D1 source manifest / clean-base lineage correction
+
+- Report: [D1 source manifest and clean-base decision](../reports/2026-11-16-d1-source-manifest-clean-base-decision.md), commit `41c9a44cb81e8c0a4af3ae94c4051e70aacc999d`.
+- Current default HEAD reconfirmed: `Основной` @ `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`.
+- Active ruleset #26550182 reconfirmed: PR required, thread resolution required, deletion/non-fast-forward blocked, but approving review count is **0**. No bypass actors.
+- Default workflow inventory: dsh-runtime-evaluation, pool-contract-validation, pool-supervisor, pool-worker, runner-resource-probe. No approved `gemini-batch-dispatch-controller.yml` exists on default (404); Gemini agents NOT RUN.
+- Important correction to prior context: PR #87 is based on `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`, not current default `e38f...`; #92→#93→#101 are stacked on one another. All remain Draft/unmerged. Historical exact-head local proof CI was green (#87 runs 43712647615/43712647597; #92 runs 43718679251/43718679258; #93 run 43736264768; #101 run 43764995448). This does not qualify hosted D1 and is not current-default integration.
+- Source manifest and exact path layers are in the report. No blind PR merge. Next code step, if authorized by review, is file-level selective transplant onto a fresh branch at exact current default, keep worker inert and no D1 binding, run pinned package checks and exact-head CI.
+- PR #97/#98 /next admission controller and #102–#106 browser work are separate tracks and excluded from D1 manifest.
+- Hosted D1 Free entitlement/quota NOT VERIFIED; named-resource authorization NOT GIVEN; hosted claim API NOT IMPLEMENTED. No secrets/variables read, no hosted resources, dispatch, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
