@@ -1,7 +1,6 @@
 import { reconcileNextLedgerEvent } from "./next-github-ledger-adapter.mjs";
 
 const OWNER_REPO = "VlDMlNSh/developer-cloud-pool";
-const OWNER_LOGIN = "VlDMlNSh";
 const CONTROL_ISSUE = 96;
 const DEFAULT_BRANCH = "Основной";
 const API = "https://api.github.com";
