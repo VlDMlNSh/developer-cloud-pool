@@ -11,7 +11,7 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
-const browser = worker.split(/^  browser:\\s*$/m)[1]?.split(/^  report:\\s*$/m)[0] || "";
+const browser = worker.split(/^  browser:\s*$/m)[1]?.split(/^  report:\\s*$/m)[0] || "";
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
@@ -58,9 +58,16 @@ const probeJob = worker.split(/^  probe:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] 
 if (!probeJob) fail("Worker probe job block cannot be isolated");
 if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive repository secrets");
 if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
-if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
+if (!/options:\s*\n\s+- dsh-headless-probe\s*\n\s+- agent-browser-headless/.test(worker)) fail("Worker profile allowlist must include DSH and agent-browser headless profiles");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
+if (!browser) fail("Worker browser job block cannot be isolated");
+if (!/if: needs\.validate\.result == 'success' && inputs\.profile == 'agent-browser-headless'/.test(browser)) fail("Browser job must run only for the validated browser profile");
+if (!/permissions:\s*\{\s*\}/.test(browser)) fail("Browser job must have no GitHub token permissions");
+if (/secrets\./.test(browser)) fail("Browser job must not receive repository secrets");
+if (!/agent-browser@0\.43\.0/.test(browser)) fail("Browser CLI must remain exact-pinned");
+if (!/agent-browser install/.test(browser) || !/agent-browser skills get core/.test(browser) || !/agent-browser skills get dogfood/.test(browser)) fail("Browser job must install Chromium and load core/dogfood skills");
+if (!/https:\/\/example\.com/.test(browser) || !/agent-browser close/.test(browser)) fail("Browser smoke test must use a harmless public target and close its session");
 if (failures.length === 0) pass("Worker permissions, DSH/browser profile allowlists, isolated no-secret browser smoke and cleanup invariants");
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
