@@ -168,3 +168,44 @@ PR #107 exact-head run `43864376148` completed SUCCESS. Its job was `Validate wo
 
 ### Next bounded step
 Implement and adversarially test a real durable serialization primitive (monotonic fencing, lease expiry/recovery, and single-writer provenance) on a branch based on the current default HEAD. Keep runtime authorization hard-disabled until that primitive is verified; then add a trusted-default-branch no-secret integration probe and independent security review.
+
+
+## /next pass — durable coordinator component selection — 2026-11-16
+
+### Existing implementation reuse audit
+
+Reviewed the existing local Workers-runtime D1 proofs before designing a new lock:
+
+- PR #36 (head `e11fc90e50bd20b166207af64551c49cfa80ffb4`) provides a D1 single-use approval ledger proof. Exact-head D1 and Pool Contract Validation runs `42329438351` and `42329438308` were SUCCESS; formal reviews exist, but this is still an isolated Draft proof, not deployed infrastructure.
+- PR #39 (head `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`) adds atomic approval consumption and a transactional outbox. Exact-head runs `42329993548` and `42329991471` were recorded SUCCESS; Workers-runtime suite was 19/19. Its migration already defines `lease_generation`, `lease_expires_at`, and claim status fields.
+- Critical gap confirmed from source: `claimAndEnqueue()` only performs conditional approval transition `ready -> consumed`, then verifies the trigger-created claim/outbox pair. It does not acquire/renew/release a lease, increment a fencing generation, reject stale generations, or recover an expired claim. The schema fields are placeholders, not a qualified lock implementation. Both PRs explicitly retain `dispatch:false`.
+- PR #92 (head `7014961587759b27d2ef6e91c60ce098d077ae83`) strengthens exact replay integrity in a separate local D1 proof; exact-head D1 and contract runs `43718679258` and `43718679251` were SUCCESS, but PR remains Draft with zero formal reviews.
+
+### Reusable upstream / platform evaluation
+
+- Cloudflare Durable Objects are documented as available on Workers Free; a named object has strongly consistent durable storage and provides a platform primitive for coordinating multiple clients. SQLite-backed DO storage is generally available. Source: https://developers.cloudflare.com/durable-objects/ (retrieved 2026-11-16).
+- Cloudflare documents D1 as single-threaded per database, processing queries one at a time; Free plan limits include 10 databases and 500 MB per database. This makes a single D1 database a plausible transactional ledger, but does not itself provide a tested lease/fencing protocol. Source: https://developers.cloudflare.com/d1/platform/limits/ (updated 2026-10-30).
+- Existing upstream reference: `losfair/dlock` demonstrates monotonic lease numbers/fencing on Cloudflare Durable Objects (Apache-2.0; repository result showed 67 stars). Reference only: https://github.com/losfair/dlock. It is not adopted as a dependency and its operational maturity/maintenance/security have not been independently qualified.
+
+### Architecture decision for the next proof
+
+**Preferred candidate: one named Cloudflare Durable Object as the serialized controller coordinator; D1 remains the append-only/auditable admission and transactional outbox ledger.**
+
+Rationale:
+1. A single named DO is the natural per-controller serialization boundary; do not simulate a distributed mutex with caller-supplied booleans or GitHub comments.
+2. Keep durable coordinator state and monotonically increasing fencing generation inside DO SQLite storage, changed only by atomic storage transactions.
+3. Persist an immutable admission/dispatch-intent record before any external GitHub API side effect.
+4. External dispatch is not part of the DO/D1 transaction. If the network result is ambiguous, reconcile exact workflow identity and never blindly retry. Fencing protects state transitions; it cannot retroactively cancel an already-sent GitHub request.
+5. D1 continues to hold immutable audit/claim/outbox records and verifies idempotent replay. It is not treated as the lock service.
+6. Coordinator must bind every mutation to source comment ID, immutable target SHA, owner identity, controller workflow identity, and fencing generation. Stale generations are denied. Lease expiry alone never authorizes a second dispatch without reconciliation.
+
+### Qualification boundary
+
+- This is an architecture selection and source audit, not implementation or deployment.
+- Cloudflare account entitlement, actual free-tier resource availability, Worker/DO binding, webhook authentication, trusted writer identity, and remote concurrency behavior remain NOT VERIFIED.
+- No Cloudflare resource created, no secrets read, no billing change, no deployment, no provider call, no GitHub dispatch, no agent run, and no merge.
+- Runtime dispatch remains disabled. PR #100 remains Draft/unmerged with zero formal reviews.
+
+### Next bounded engineering step
+
+Create a clean-base, local-only Workers-runtime proof for the coordinator state machine using SQLite-backed Durable Object storage (or the supported Miniflare test runtime), covering concurrent requests, monotonically increasing fencing generations, expired-lease takeover, stale-owner rejection, crash/restart recovery, duplicate source events, and ambiguous external dispatch reconciliation. Preserve `dispatch:false`; no live Cloudflare deployment until independent review and free-tier eligibility are verified.
