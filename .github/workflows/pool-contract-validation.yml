@@ -50,6 +50,10 @@ jobs:
           set -euo pipefail
           ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.yml").sort.each { |path| YAML.parse_file(path); puts "YAML syntax OK: #{path}" }'
 
+      - name: Test owner-bound approval contract
+        shell: bash
+        run: node --test scripts/pool-approval.test.mjs
+
       - name: Validate pool security contracts
         shell: bash
         run: |
