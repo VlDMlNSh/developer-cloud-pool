@@ -2301,3 +2301,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Governance recheck: active ruleset #26550182 targets `Основной`, requires PR/thread resolution and has no bypass actors, but requires **0 approvals** and no CODEOWNERS review. Independent review is not enforced by the ruleset and remains a separate acceptance gate. PR #100/#101 exact-head runs `43764511321`/`43764995448` SUCCESS; formal reviews remain 0 on both.
+
+
+## 2026-11-16 — independent read-back of Wave 318 agent evidence and transport governance
+
+- Report: [Wave 318 agent evidence and transport audit](../reports/2026-11-16-next-wave318-agent-evidence-and-transport-audit.md).
+- Historical owner comment `6901529560` -> controller run `43763042415` SUCCESS; child runs `43763061253`, `43763062743`, `43763064255` and artifact SHA-256 digests remain valid historical execution/provenance evidence.
+- Re-read Agent PRs #730–#732. All OPEN/DRAFT/UNMERGED, formal reviews 0. Agent 1 delivered one documentation checkpoint only. Agent 2 report explicitly says active test execution was bypassed; its VERIFIED/PASS label is not evidence of executed tests. Agent 3 report lacks run IDs/digests/line-level proof for its broad security assertions and is not an independent current-controller audit.
+- Exact-head runs for all three PRs conclude `action_required`; representative job-list API responses are empty. CI NOT VERIFIED, not SUCCESS.
+- MediaHub PR #421 merged Option B `workflow_call` controller architecture; PR #432 later reverted the child workflows to `workflow_dispatch` and REST/HMAC transport. Current controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` and child blobs `ed9ae2200debe76e39e3e5dfb5816ba94db3950c`, `fa3b4c407d3c583cbd86` (verify exact full SHA in report), `bad0d5baf9b9cf1e8e5d7cdd2ab80f12052b047e` confirm current REST/HMAC + workflow_dispatch. This is governance drift from the merged Option B decision.
+- Trusted-main no-secret probe `43764634513` verifies caller context only; it does not verify effective secrets/variable scope. Independent review and transport governance remain unresolved. No new Gemini wave dispatched.
+- Cloud Pool Issue #96 remains fail-closed. PR #102 exact-head CI is SUCCESS but PR is Draft, unmerged and has zero formal reviews; no write-capable admission or API permission added.
+- No secrets read, provider calls, dispatch, merge, deployment or infrastructure mutation. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independently reconcile PR #432's transport regression against merged PR #421 Option B, then verify effective secret/variable metadata and independent review before any new Gemini batch. In parallel, require real exact-head CI and review for Agent PRs #730–#732.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
