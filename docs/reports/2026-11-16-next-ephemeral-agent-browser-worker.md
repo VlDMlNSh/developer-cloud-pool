@@ -30,3 +30,11 @@ Browser job receives no GitHub token permissions and no repository/provider secr
 ## Next step
 
 Obtain independent security review, then after governance/approval perform one bounded browser-profile smoke dispatch. Only after that run is verified should the profile be considered qualified for bounded headless browser QA.
+
+
+## Final exact-head validation
+
+- Latest code head validated: `b5e4c63effa5c285447fbb73412b28d8d910af7c`.
+- Pool Contract Validation run `43837111208`, job `133196383398`: COMPLETED / SUCCESS. YAML parsing, dispatch-disabled guard, browser profile intake, permissions, exact CLI pin, skill-loading, fixed smoke URL, cleanup and report-reconciliation assertions passed.
+- Browser runtime itself remains NOT RUN: this CI validates workflow/contract only. No `workflow_dispatch`, browser install, or session smoke was executed.
+- PR #106 remains OPEN/DRAFT, formal reviews 0, unmerged. Independent review and owner-approved runtime smoke remain outstanding.
