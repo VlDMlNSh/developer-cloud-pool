@@ -3692,3 +3692,21 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Issues #94/#96 OPEN. PR #102 remains a read-only event admission probe; no durable idempotency/lock/dispatch qualification.
 - No secret values read, no provider calls, no Cloud Pool or MediaHub dispatch, no merge/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement and test model allowlist, bounded request lifecycle/output and SDK pin/lockfile; then independently qualify Issue #96 durable admission and governance before any live four-child run.
+
+## 37. Wave 335 — Gemini candidate execution bounds (2026-11-16)
+
+- Hardening PR #108: https://github.com/VlDMlNSh/developer-cloud-pool/pull/108, OPEN / DRAFT / UNMERGED; branch `fix/gemini-candidate-bounds-2026-11-16`; base is PR #107 candidate branch (stacked), not default.
+- Parent PR #107 immutable SHA: `027492668e7721a5371b38997bc76a6cd6a50cd4`.
+- PR #108 head SHA: `e0717d9d3daf1ef76db81f5e076728c5784b0896`; compare parent to head: 2 commits ahead, 0 behind, exactly two source files changed.
+- Controller blob `9c5377f58de9dd8dabb4f05c72479fad1f10e033`; test blob `80f358197c2006105c902fd2d54c84f33e055d97`.
+- Changes: fixed allowlist only `gemini-2.5-flash` (no env override; this does not prove free-tier eligibility); 45-second SDK per-request `AbortSignal.timeout`; max output 8,000 characters with truncation flag; fake-client tests expanded from 8 to 11 cases.
+- Google official SDK docs confirm `GenerateContentConfig.abortSignal`: https://googleapis.github.io/js-genai/release_docs/interfaces/types.GenerateContentConfig.html. Important caveat: abort is client-side and does not guarantee server-side processing/billing stops. No claim of no-charge cancellation.
+- Exact-head CI runs and combined status for PR #108 head are empty: CI NOT RUN / NOT VERIFIED; no local test run. Reason: PR #108 is stacked onto feature branch #107, while `.github/workflows/pool-contract-validation.yml` pull_request filter only targets default branch `Основной`. Do not treat PR #107's earlier CI as evidence for PR #108.
+- Official `@google/genai` package manifest/lockfile still absent; SDK installation/runtime NOT VERIFIED.
+- No provider calls, secret reads, dispatch, merge or deployment. Live Gemini and account/quota qualification NOT RUN / NOT VERIFIED.
+- Report: [Wave 335 report](../reports/2026-11-16-wave335-gemini-candidate-bounds.md), commit `6404f9807ddae67c7a71aa194a9eac297eafb21c`.
+- Checkpoint: [Wave 335 checkpoint](../checkpoints/2026-11-16-wave335-gemini-candidate-bounds.md), commit `6b834b96d42a76cf2c5d8ca8e8878382f7503430`.
+- Pre-update Context Window blob: `88ab40b141063afe8da722c17be821fda5d54dcb`; update is on continuation branch `docs/cross-chat-continuation-2026-11-06` only, not default branch.
+- Next: fix validation trigger topology without weakening governance, obtain exact-head CI; add pinned official SDK manifest/lockfile and verify no-secret installation; keep dispatch disabled pending Issue #94/#96 caller provenance, durable lease/fencing/recovery, account separation and independent security review.
+- Contour A remains NOT ACCEPTED; Contour B remains deferred.
+- Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
