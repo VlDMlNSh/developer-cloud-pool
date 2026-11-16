@@ -180,6 +180,26 @@ describe("atomic owner /next D1 admission", () => {
     ).bind(String(input.event.comment.id)).run()).rejects.toThrow("ADMISSION_RECEIPT_APPEND_ONLY");
   });
 
+
+  it("prevents approval replay by making consumption monotonic and append-only", async () => {
+    const input = valid(6912000012);
+    await seedApproval(input);
+    const admitted = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
+    expect(admitted.decision).toBe("ADMITTED");
+    await expect(env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'ready', consumed_at = NULL, task_key = NULL
+       WHERE approval_id = ?
+    `).bind(input.approvalId).run()).rejects.toThrow("APPROVAL_STATE_NOT_MONOTONIC");
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approvalId).run()).rejects.toThrow("APPROVAL_LEDGER_APPEND_ONLY");
+    const row = await env.POOL_DB.prepare(
+      "SELECT state, task_key, consumed_at FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approvalId).first();
+    expect(row).toMatchObject({ state: "consumed", task_key: admitted.taskKey, consumed_at: NOW });
+  });
+
   it("keeps dispatch disabled on every result", async () => {
     const input = valid(6912000009);
     const rejected = await admitOwnerNextEvent(env.POOL_DB, input, NOW);
