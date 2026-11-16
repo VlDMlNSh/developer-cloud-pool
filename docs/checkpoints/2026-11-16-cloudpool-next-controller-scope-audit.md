@@ -90,3 +90,15 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: implement a durable owner-authenticated lease/claim with fencing and crash recovery; do not treat the shared scheduler group or caller Boolean as sufficient lock proof.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — adversarial ledger parser regression — 2026-11-16
+
+- Default branch HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN; #96 PLANNED / dispatch disabled.
+- PR #100 OPEN/DRAFT/UNMERGED, new head `37c9ec9b16ab540cd2fe84db4cf1b7913675a7d0`. Added test proving malformed unauthenticated ledger markers cannot poison parsing, while malformed owner-authenticated marker remains a hard failure. Test blob `013e9c16d8d701b5cb16b2680083c2a336184bb6`.
+- Initial CI run `43825810530` / job `133159287292` FAILED due to malformed fixture typo (53 pass / 1 fail); corrected fixture. Exact-head run `43825907244` / job `133159595993` SUCCESS (54 pass / 0 fail / 0 skipped; syntax PASS).
+- `lockHeld: true` remains caller-asserted, not authenticated lock ownership. Durable lease/fencing/crash recovery NOT IMPLEMENTED. No dispatch/deploy/secrets/provider calls/merge.
+- Gemini 1/2/3 NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable authenticated lease/claim and monotonic fencing; retain fail-closed behavior until verified.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
