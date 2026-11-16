@@ -2372,3 +2372,5 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - PR #111/#112 must not be merged as-is or directly wired together. Next: clean-base implementation from immutable default SHA with durable source-comment admission receipt, atomic D1 transaction, immutable-attempt-only lifecycle, authenticated workload identity, adversarial Workers-runtime tests and dispatch:false.
 - No code/schema/workflow changes, secret inspection, provider calls, hosted D1, live dispatch, merge or deployment occurred in this audit pass.
 - Gemini dispatch NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Publication read-back: report blob `72bf1408affd33af3e18340cdd8051591e5a341f`; Context Window blob `e0bed94d86cf5cb02ec6359376e342880b46c69e`; checkpoint blob `c1c2c30e1f9ea1175e45e568bf5aeb63e593e72f`; master prompt blob `6bba8d18c7747f10fab5f929d9a7bcf5974d5e58`. Documentation branch head `618d130e969ce6e039a587933bc84caf96def2c8`, PR #113 OPEN/DRAFT/UNMERGED; no workflow runs were returned for this documentation-only head.
