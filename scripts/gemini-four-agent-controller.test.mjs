@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { AGENT_KEY_ENV, AGENT_ROLES, runFourAgents } from "./gemini-four-agent-controller.mjs";
+import {
+  AGENT_KEY_ENV, AGENT_ROLES, ALLOWED_MODELS, MAX_OUTPUT_CHARS,
+  REQUEST_TIMEOUT_MS, runFourAgents
+} from "./gemini-four-agent-controller.mjs";
 
 const envWithKeys = Object.fromEntries(AGENT_KEY_ENV.map((name, index) => [name, "test-key-" + (index + 1)]));
 const tasks = [
@@ -10,14 +13,18 @@ const tasks = [
   "Audit dispatch authority, workflow permissions, secret isolation, account separation, and quota handling."
 ];
 
-test("dispatches four distinct task envelopes through four isolated clients", async () => {
+test("dispatches four distinct task envelopes through four isolated clients with bounded abort signals", async () => {
   const calls = [];
   const report = await runFourAgents({
     tasks,
     env: envWithKeys,
     createClient: async (key, agent) => {
       calls.push({ key, agent });
-      return { models: { generateContent: async ({ model, contents }) => ({ text: model + ":" + contents }) } };
+      return { models: { generateContent: async ({ model, contents, config }) => {
+        assert.ok(config.abortSignal instanceof AbortSignal);
+        assert.equal(config.abortSignal.aborted, false);
+        return { text: model + ":" + contents };
+      } } };
     }
   });
   assert.equal(report.status, "SUCCESS");
@@ -32,6 +39,7 @@ test("dispatches four distinct task envelopes through four isolated clients", as
       if (j !== i) assert.equal(report.results[i].output.includes(tasks[j]), false);
     }
     assert.equal(report.results[i].taskIndex, i);
+    assert.equal(report.results[i].outputTruncated, false);
   }
 });
 
@@ -49,8 +57,7 @@ test("fails closed before creating any client when one key is missing", async ()
   const env = { ...envWithKeys };
   delete env.GEMINI_API_KEY_4;
   const report = await runFourAgents({
-    tasks,
-    env,
+    tasks, env,
     createClient: async () => { created += 1; throw new Error("must not run"); }
   });
   assert.equal(report.status, "CONFIG_BLOCKED");
@@ -62,8 +69,7 @@ test("fails closed when two credential slots contain the same value", async () =
   let created = 0;
   const env = { ...envWithKeys, GEMINI_API_KEY_4: envWithKeys.GEMINI_API_KEY_1 };
   const report = await runFourAgents({
-    tasks,
-    env,
+    tasks, env,
     createClient: async () => { created += 1; throw new Error("must not run"); }
   });
   assert.equal(report.status, "CONFIG_BLOCKED");
@@ -75,8 +81,7 @@ test("fails closed when two credential slots contain the same value", async () =
 
 test("keeps per-account quota failures isolated without fallback", async () => {
   const report = await runFourAgents({
-    tasks,
-    env: envWithKeys,
+    tasks, env: envWithKeys,
     createClient: async (key, agent) => ({
       models: { generateContent: async () => {
         if (agent === 4) throw Object.assign(new Error("quota"), { status: 429 });
@@ -96,10 +101,43 @@ test("rejects task payloads containing a Google API key-shaped value", async () 
 
 test("does not include credential values in the returned report", async () => {
   const report = await runFourAgents({
-    tasks,
-    env: envWithKeys,
+    tasks, env: envWithKeys,
     createClient: async () => ({ models: { generateContent: async () => ({ text: "ok" }) } })
   });
   const serialized = JSON.stringify(report);
   for (const key of Object.values(envWithKeys)) assert.equal(serialized.includes(key), false);
+});
+
+test("rejects unapproved model overrides before client creation", async () => {
+  let created = 0;
+  await assert.rejects(runFourAgents({
+    tasks, env: { ...envWithKeys, GEMINI_MODEL: "gemini-pro-paid" },
+    model: "gemini-pro-paid",
+    createClient: async () => { created += 1; throw new Error("must not run"); }
+  }), /not in the fixed allowlist/);
+  assert.equal(created, 0);
+  assert.deepEqual(ALLOWED_MODELS, ["gemini-2.5-flash"]);
+});
+
+test("bounds returned output and marks truncation", async () => {
+  const report = await runFourAgents({
+    tasks, env: envWithKeys,
+    createClient: async () => ({ models: { generateContent: async () => ({ text: "x".repeat(MAX_OUTPUT_CHARS + 100) }) } })
+  });
+  assert.equal(report.status, "SUCCESS");
+  assert.equal(report.results[0].output.length, MAX_OUTPUT_CHARS);
+  assert.equal(report.results[0].outputTruncated, true);
+});
+
+test("classifies SDK abort errors as TIMEOUT", async () => {
+  const report = await runFourAgents({
+    tasks, env: envWithKeys,
+    createClient: async () => ({ models: { generateContent: async ({ config }) => {
+      assert.ok(config.abortSignal instanceof AbortSignal);
+      throw Object.assign(new Error("aborted"), { name: "AbortError" });
+    } } })
+  });
+  assert.equal(report.status, "FAILED");
+  assert.ok(report.results.every((item) => item.status === "TIMEOUT"));
+  assert.equal(REQUEST_TIMEOUT_MS, 45_000);
 });
