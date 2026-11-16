@@ -3846,3 +3846,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Detailed report: [D1 and owner-event integration audit](../reports/2026-11-16-d1-owner-event-integration-audit.md).
 - Next: implement repository-wide lease generation + durable source-comment admission + atomic outbox and adversarial multi-task/replay/recovery tests on clean default base; keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Cloud Pool Target Architecture 2.0 — 2026-11-16
+
+- Target architecture: [CLOUD-POOL-TARGET-ARCHITECTURE-2.0.md](../architecture/CLOUD-POOL-TARGET-ARCHITECTURE-2.0.md).
+- Checkpoint: [2026-11-16-cloud-pool-target-architecture-2.0.md](../checkpoints/2026-11-16-cloud-pool-target-architecture-2.0.md).
+- Architecture documentation commit: 3c50a1c87ebbbe1f4b94fe1d21eeb296a3fc5cab; architecture blob: 64c44709c937c2db57cc9f698378784a13d2d85b.
+- Checkpoint documentation commit: b8a0061491eba0f20bb1dd3694ca7d77eda543d3; checkpoint blob: 71e7460424a2e7aa6430541dbfcf9566c1cee7f6.
+- Design decision: Jarvis + Pool Bridge is the sole privileged control plane; PostgreSQL owns durable admission, repository-wide lease, monotonic fencing, transactional outbox, quota reservation and audit metadata; LangGraph orchestrates bounded graphs; LiteLLM is the model gateway but not the sole quota authority.
+- FCC -> Claude Code -> ECC is a distinct joint-qualified execution profile; FCC and ECC require separate provenance/version/license/API/security inventories. OmniRouter is a separate Claude Code profile with isolated workspace, queue, credentials, quotas and audit.
+- Existing 24 cloud slots are inventory only. No new account signup is mandatory before reconciling existing slots. Optional additional evaluation registrations: NVIDIA NIM (developer/prototype scope) and Cerebras (promotional credit requiring valid payment method; not permanent free production capacity). Do not treat Anthropic/OpenAI API as free routes without an explicit active grant. GitHub Models retired July 30, 2026.
+- Current status unchanged: PR #107/#111/#112 OPEN/DRAFT/UNMERGED; no provider calls, secret reads, dispatch, deployments, code tests, merges or acceptance. Secret existence/account/quota identity and FCC/ECC contracts remain NOT VERIFIED.
+- Next bounded step: implement durable PostgreSQL repository-wide admission/lease/fencing/outbox with adversarial tests on a clean default-based branch; separately inventory FCC/ECC upstream source and contracts. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
