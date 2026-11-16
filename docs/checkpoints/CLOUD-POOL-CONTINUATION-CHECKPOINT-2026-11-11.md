@@ -471,3 +471,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Governance recheck: active ruleset #26550182 requires PR and thread resolution but 0 approvals, no required reviewers and no CODEOWNERS review. Independent review is not enforced by branch governance and remains a separate acceptance gate. PR #100/#101 exact-head CI runs `43764511321`/`43764995448` SUCCESS; formal reviews 0.
+
+
+## 2026-11-16 checkpoint — Wave 318 agent evidence and transport audit
+
+- Report: [Wave 318 agent evidence and transport audit](../reports/2026-11-16-next-wave318-agent-evidence-and-transport-audit.md).
+- Historical batch 6901529560 / controller 43763042415 and children 43763061253, 43763062743, 43763064255: execution/provenance VERIFIED historically with recorded artifact SHA-256.
+- Agent PRs #730–#732: OPEN/DRAFT, reviews 0; Agent 1 documentation-only; Agent 2 admits active tests bypassed; Agent 3 security claims lack reproducible run evidence. Associated exact-head runs conclude ACTION_REQUIRED and representative job lists are empty; CI NOT VERIFIED.
+- MediaHub PR #421 merged Option B workflow_call; PR #432 merged REST/HMAC + workflow_dispatch reversion. Current main controller/children confirm REST/HMAC transport; governance drift and independent review remain unresolved.
+- No new Gemini wave. No secrets/provider calls/dispatch. Cloud Pool Issue #96 fail-closed; PR #102 remains read-only Draft. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile PR #432 with approved Option B and obtain independent review/effective secret-variable scope evidence before any dispatch. Verify Agent PR CI and formal review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
