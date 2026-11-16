@@ -48,3 +48,19 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Remaining critical blocker: `lockHeld: true` is still caller-supplied, not a real lock proof. No approved production controller workflow identity exists; no runtime reconciliation/dispatch.
 - PR #100 formal reviews 0. PR #98 remains Draft. Gemini 1/2/3 NOT RUN for Cloud Pool scope. Issue #96 dispatch remains disabled.
 - Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next revalidation — 2026-11-16
+
+- Default HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`.
+- Issues #94/#96 OPEN; #96 remains PLANNED and dispatch-disabled.
+- PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`: runs 43758657648 / 43758657644 SUCCESS.
+- PR #100 head `61a31a9ca2fbdf785c617be669cf639b0c030ac7`: run 43824019902 / job 133153438933 SUCCESS; 53 tests pass. Exact run matcher improved, but production workflow identity remains unapproved/unbound.
+- PR #102 head `38844dfb4a881ec858742e5bf9e35724f6b8a95d`: run 43821733529 / job 133146174137 SUCCESS; 17 tests pass; event-admission job 133146175570 SKIPPED on PR event; Pool Contract Validation 43821733548 / job 133146122452 SUCCESS. Live Issue #96 event probe NOT RUN.
+- PR #103 head `8d3de0bf03f6bf315e760de6b42b0496c3312701`: no exact-head run returned; CI NOT VERIFIED.
+- PR #100 still accepts caller-asserted `lockHeld: true`; no durable lock/lease/fencing or verified repository-wide serialization. This is a critical blocker.
+- Formal reviews #100/#102: 0. Gemini Agent 1/2/3 NOT RUN for Cloud Pool scope. No dispatch/deployment/provider calls/secret reads/merge.
+- Next: implement and test enforceable serialization with fencing and recovery; keep dispatch disabled pending all gates.
+- Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
