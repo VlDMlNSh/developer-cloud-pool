@@ -3448,3 +3448,14 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Gemini Agent 1/2/3 NOT RUN; POOL_DISPATCH_ENABLED remains false. No secret reads, hosted provisioning, deployment, provider calls, child dispatch, merge or qualification.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## 2026-11-16 — Existing hosted D1 and authority contract reconciliation
+
+- Report: [existing hosted D1 contract reconciliation](../reports/2026-11-16-existing-hosted-d1-contract-reconciliation.md), commit `943448e81096b44293788325d396b8d045bced1a`.
+- Important correction: the hosted Supervisor claim-service contract and 50-request D1 qualification plan already exist; do not author duplicate contracts. Reuse the existing default decision `docs/decisions/2026-11-11-durable-supervisor-claim-protocol.md` (blob `830a549809d10015d5662da562cff82710c3aa11`) and the design-only plan in PR #65 (blob `48cc92df59155881f50d81ff7c6ba1f2375d5d97`).
+- Existing projection Recovery Actor issuer/time contract and narrow capability contract are separate authority domain in PR #60; neither is an implementation or a substitute for Supervisor claim authentication. Exact refs and constraints are in the report.
+- PR #67 current exact head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: PR runs `43600901063` / job `132465223656` (security/workflow contract) and `43600901068` / job `132465223497` (local Workers-runtime D1 tests) SUCCESS. This is local CI only, not hosted D1 qualification.
+- PR #93 exact-head run `43736264768` SUCCESS; PR #100 exact-head run `43826793313` SUCCESS. PR #100 still deliberately fails closed with runtime lock NOT IMPLEMENTED. All remain OPEN/DRAFT/UNMERGED.
+- Historical Cloudflare account inventory from 2026-11-11 reported zero D1 databases and Worker scripts and did not verify Free entitlement; do not treat as current inventory. Hosted D1 remains NOT RUN.
+- Next step: reconcile existing contract/qualification documents and D1 proof stack to current default and identify minimal transplant/dependency order; no parallel contract and no hosted provisioning without verified account eligibility and explicit authorization.
+- Gemini Agent 1/2/3 NOT RUN; `POOL_DISPATCH_ENABLED=false`. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
