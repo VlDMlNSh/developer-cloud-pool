@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-16 — default-branch, owner-only /next controller and four-agent candidate revalidation (see current addendum below)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
+Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (direct branch ref read-back, 2026-11-16)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -2191,3 +2191,53 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## 2026-11-16 — Current-state refresh: default HEAD, controller boundary, Gemini and browser candidates
+
+### Immutable repository state
+- Cloud Pool default branch: `Основной`; direct GitHub branch-ref read-back at 2026-11-16: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (commit message: `docs: record four-agent contract test evidence`; parent `ace7e2745b06aa6586229654098c456c050f1df6`).
+- Active ruleset `26550182`, `Основной — verified`, targets exactly `refs/heads/Основной`, enforcement active. Rules: PR required, 0 required approvals, stale reviews dismissed, review-thread resolution required, deletion/non-fast-forward denied, no bypass actors; current user cannot bypass. Branch API reports `protected=false`, so rely on the explicit active ruleset read-back, not branch.protected.
+- Pool repository is public, default branch `Основной`; linked GitHub identity has admin/push permission. No secrets or secret values were inspected.
+- The old context was stale (last refresh 2026-11-08); this dated addendum supersedes older default-HEAD claims.
+
+### Owner-only Cloud Pool /next admission (Issue #96)
+- Issue #96 remains OPEN and PLANNED. Its current contract requires exact owner-authored top-level `/next`, exact issue/repository identity, trusted default-branch code, immutable target SHA, source-comment idempotency, durable admission before dispatch, reconciliation, and adversarial coverage.
+- Owner amendment on 2026-11-16 specifies exactly four isolated candidate tasks for the qualification wave (researcher, implementation designer, tester, security auditor), each unique and mapped to one credential slot. Four configured key slots do not prove four distinct Google accounts or independent quota ownership.
+- Dispatch remains disabled until all admission, governance, security, provenance and durable-state gates pass. Do not infer authorization from this amendment.
+
+### Read-only event controller candidate — PR #112
+- PR #112 OPEN / DRAFT / UNMERGED; branch `proof/next-event-controller-clean-base-2026-11-16`; head `c9a4c0ab2001f01a09632795283071c521e1c99d`; base `Основной` at the exact current default SHA above; mergeable=true at read-back.
+- Candidate validates newly created `issue_comment` events for Issue #96, exact owner/repository numeric identities, exact body and trusted ref/SHA, and computes a stable event identity. It is explicitly `READ_ONLY_NO_DISPATCH`: no secrets, durable storage, API mutation or child dispatch.
+- Exact-head run `43882090833`, job `133350342861`: COMPLETED / SUCCESS; adversarial read-only event tests passed (PR reports 21/21). Its `event-admission` job was SKIPPED because the run was a PR event; no real /next webhook admission was exercised.
+- Exact-head Pool Contract Validation run `43882090867`, job `133350342586`: COMPLETED / SUCCESS; workflow syntax and pool security contract steps succeeded.
+- PR #112 formal reviews: 0; inline review comments: 0; issue comments: 0. No independent review.
+- The PR is a useful event-envelope proof only. It does not implement the durable one-shot lease, D1 transaction, crash recovery, child-run reconciliation, or execution authorization. It must not be merged/promoted as a production controller yet.
+
+### Four-account Gemini candidate — PRs #107–#109
+- PR #107 OPEN / DRAFT / UNMERGED; head `027492668e7721a5371b38997bc76a6cd6a50cd4`; candidate maps four distinct bounded tasks to four credential slots and fixed `gemini-2.5-flash` route. It uses fake clients for no-provider-call tests.
+- PR #108 is a hardening successor; PR #109 ports execution-bound checks onto current default base. PR #109 head `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; exact-head Pool Contract Validation run `43872185972`, job `133315933882`: COMPLETED / SUCCESS; 11/11 fake-client tests and validator passed.
+- Candidate hardening includes fixed model allowlist, 45-second request timeout, 8,000-character output cap, exactly four distinct bounded task strings, key-shaped task rejection and per-slot error classification.
+- The official `@google/genai` dependency/lockfile is absent; SDK installation/runtime is NOT VERIFIED. Four secret names' existence, credential validity, distinct upstream account identities and independent quota ownership are NOT VERIFIED. No provider calls/live agents were run. No production Supervisor/Worker caller, trusted admission binding, durable queue/lease/recovery or independent security review has been qualified.
+- Do not execute these candidates outside the approved controller. Do not read secret values, enable dispatch, rotate keys or use paid fallback.
+
+### Agent-browser candidate — PR #106
+- PR #106 OPEN / DRAFT / UNMERGED; head `afd3dba8bc9db37c8e07b8becf128233f46e4533`; mergeable=false at read-back.
+- Scope is a GitHub-hosted ephemeral headless browser worker using pinned agent-browser/Chrome, a fixed harmless public smoke target, no secrets and no repository checkout in the browser job. This is not a persistent browser session, interactive remote desktop, web console or cross-job session service.
+- Runtime dispatch was explicitly NOT RUN; exact-head CI and independent review are required before qualification. No claim of a live browser session or real-website access is made.
+
+### Current blockers and next step
+- No production-qualified owner-only /next controller; PR #112 is read-only and has no independent review.
+- No durable atomic single-use admission/lease, fencing, expiry, crash recovery and child-run reconciliation accepted on default.
+- Four Gemini live executions remain NOT RUN / NOT VERIFIED; credential metadata/account separation and official SDK reproducibility are unproven.
+- Agent-browser is a draft ephemeral smoke candidate, not a persistent interface. The authenticated mobile/desktop web console and durable state service remain unqualified.
+- Next bounded pass: complete a no-secret durable lease/fencing design and adversarial tests on a clean branch based on `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; independently review PR #112 and verify exact-head CI. Keep dispatch disabled and Contour B deferred.
+
+Evidence links:
+- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
+- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112
+- PR #109: https://github.com/VlDMlNSh/developer-cloud-pool/pull/109
+- PR #107: https://github.com/VlDMlNSh/developer-cloud-pool/pull/107
+- PR #106: https://github.com/VlDMlNSh/developer-cloud-pool/pull/106
+- Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
