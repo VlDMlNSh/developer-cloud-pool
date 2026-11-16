@@ -59,10 +59,13 @@ jobs:
           for (const name of expectedNames) {
             const file = `.agents/skills/${name}/SKILL.md`;
             const content = fs.readFileSync(file, "utf8");
-            const frontmatter = content.match(/^---\\s*\\r?\\n([\\s\\S]*?)\\r?\\n---/);
-            if (!frontmatter) throw new Error(name + ": missing YAML frontmatter");
-            const declaredName = frontmatter[1].match(/^name:\\s*["']?([^"'\\r\\n]+)["']?\\s*$/m)?.[1]?.trim();
-            const description = frontmatter[1].match(/^description:\\s*(.+)$/m)?.[1]?.trim();
+            const lines = content.split("\n").map(line => line.replace(/\\r$/, ""));
+            if (lines[0] !== "---") throw new Error(name + ": missing YAML frontmatter start");
+            const end = lines.indexOf("---", 1);
+            if (end < 0) throw new Error(name + ": missing YAML frontmatter end");
+            const frontmatter = lines.slice(1, end);
+            const declaredName = frontmatter.find(line => line.startsWith("name:"))?.slice(5).trim().replace(/^["']|["']$/g, "");
+            const description = frontmatter.find(line => line.startsWith("description:"))?.slice(12).trim();
             if (declaredName !== name) throw new Error(name + ": frontmatter name mismatch (" + declaredName + ")");
             if (!description) throw new Error(name + ": frontmatter description is empty");
             if (content.trim().length < 200) throw new Error(name + ": skill content unexpectedly short");
