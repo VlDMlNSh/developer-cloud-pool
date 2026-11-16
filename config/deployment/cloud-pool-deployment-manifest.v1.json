@@ -1,0 +1,124 @@
+{
+  "schema": "cloud-pool-deployment-manifest.v1",
+  "status": "DESIGN_ONLY_DISABLED",
+  "default_policy": {
+    "allow_provider_routes": false,
+    "allow_worker_dispatch": false,
+    "allow_paid_fallback": false,
+    "allow_browser_cookie_export": false,
+    "allow_cross_profile_access": false
+  },
+  "control_plane": {
+    "id": "pool-bridge",
+    "authority": "SOLE_ADMISSION_AND_LEASE_AUTHORITY",
+    "state_backend": "UNSELECTED_NOT_PROVISIONED",
+    "audit_mode": "APPEND_ONLY",
+    "public_exposure": "AUTHENTICATED_UI_ONLY"
+  },
+  "browser_plane": {
+    "id": "operator-agent-browser",
+    "provider": "ChatGPT Agent Browser / TinyFish",
+    "mode": "OPERATOR_REQUESTED_BROWSER_TASKS",
+    "in_pool_runtime": false,
+    "cookie_export": false,
+    "session_as_api_credential": false,
+    "profile_creation": "REQUIRES_EXPLICIT_OWNER_APPROVAL"
+  },
+  "profiles": [
+    {
+      "id": "profile-a-cloud-api",
+      "enabled": false,
+      "harness": "Claude Code",
+      "ecc": {
+        "enabled": true,
+        "source": "https://github.com/affaan-m/ECC",
+        "pin": "REQUIRES_REVIEWED_IMMUTABLE_COMMIT",
+        "install_scope": "PROFILE_LOCAL"
+      },
+      "gateway": {
+        "candidate": "FCC",
+        "status": "BLOCKED_SECRET_INHERITANCE_AND_PROVENANCE",
+        "endpoint_scope": "LOOPBACK_OR_PRIVATE_ONLY",
+        "provider_credentials_visible_to_agent": false
+      },
+      "workspace": "profiles/profile-a/workspaces",
+      "queue": "profile-a",
+      "network_policy": "DENY_BY_DEFAULT_ALLOW_GATEWAY_AND_EXPLICIT_DEPENDENCIES"
+    },
+    {
+      "id": "profile-b-local",
+      "enabled": false,
+      "harness": "Claude Code",
+      "ecc": {
+        "enabled": true,
+        "source": "https://github.com/affaan-m/ECC",
+        "pin": "REQUIRES_REVIEWED_IMMUTABLE_COMMIT",
+        "install_scope": "PROFILE_LOCAL"
+      },
+      "gateway": {
+        "candidate": "OmniRouter",
+        "status": "NOT_QUALIFIED_ANTHROPIC_MESSAGES_COMPATIBILITY",
+        "endpoint_scope": "LOOPBACK_OR_PRIVATE_ONLY",
+        "provider_credentials_visible_to_agent": false
+      },
+      "local_model": {
+        "status": "HOST_MODEL_AND_DIGEST_NOT_VERIFIED",
+        "cloud_fallback": false
+      },
+      "workspace": "profiles/profile-b/workspaces",
+      "queue": "profile-b",
+      "network_policy": "DENY_CLOUD_PROVIDER_EGRESS"
+    }
+  ],
+  "media_worker": {
+    "enabled": false,
+    "separate_from_omnirouter": true,
+    "runtime": "NOT_SELECTED",
+    "model_digest": "NOT_VERIFIED",
+    "resource_limits": "REQUIRED_BEFORE_ENABLEMENT",
+    "task_scoped_output": true
+  },
+  "routes": [
+    {
+      "id": "deepseek-api",
+      "product": "DeepSeek API",
+      "protocol": "ANTHROPIC_OR_OPENAI_COMPATIBLE_CANDIDATE",
+      "adapter": "FCC_BUILT_IN_CANDIDATE",
+      "account_alias": "UNVERIFIED",
+      "quota_domain": "UNVERIFIED",
+      "billing_class": "UNKNOWN",
+      "enabled": false
+    },
+    {
+      "id": "gemini-api",
+      "product": "Google Gemini API",
+      "protocol": "OPENAI_COMPATIBLE_OFFICIAL; ANTHROPIC_TRANSLATION_UNVERIFIED",
+      "adapter": "FCC_BUILT_IN_CANDIDATE",
+      "account_alias": "UNVERIFIED",
+      "quota_domain": "UNVERIFIED",
+      "billing_class": "UNKNOWN",
+      "enabled": false
+    },
+    {
+      "id": "yandexgpt-api",
+      "product": "Yandex Cloud Foundation Models / YandexGPT",
+      "protocol": "OPENAI_COMPATIBLE_CANDIDATE",
+      "adapter": "CUSTOM_ADAPTER_OR_SEPARATE_GATEWAY_REQUIRED",
+      "account_alias": "UNVERIFIED",
+      "quota_domain": "UNVERIFIED",
+      "billing_class": "UNKNOWN",
+      "enabled": false
+    },
+    {
+      "id": "alice-web",
+      "product": "Yandex Alice consumer web",
+      "protocol": "BROWSER_UI_ONLY",
+      "adapter": "NONE",
+      "account_alias": "BROWSER_PROFILE_METADATA_ONLY",
+      "quota_domain": "NOT_APPLICABLE_AS_API_ROUTE",
+      "billing_class": "UNKNOWN",
+      "enabled": false,
+      "qualification": "WEB_SESSION_ONLY_NOT_A_MODEL_API_ROUTE"
+    }
+  ]
+}
