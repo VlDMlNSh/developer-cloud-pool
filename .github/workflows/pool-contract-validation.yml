@@ -50,6 +50,13 @@ jobs:
           set -euo pipefail
           ruby -e 'require "yaml"; Dir.glob(".github/workflows/*.yml").sort.each { |path| YAML.parse_file(path); puts "YAML syntax OK: #{path}" }'
 
+      - name: Validate GitHub Free-only runner policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/validate-free-tier-policy.mjs
+          node --test scripts/validate-free-tier-policy.test.mjs
+
       - name: Validate pool security contracts
         shell: bash
         run: |
