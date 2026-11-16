@@ -2286,3 +2286,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secrets/variable values read, no provider calls, no live dispatch, no deployment, no merge, no infrastructure changes. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review PR #102; implement canonical API revalidation and enforced serialization/durable idempotency; reconcile MediaHub controller transport/governance before another Gemini wave.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — PR #102 event-controller trust and gate audit
+
+- Report: [PR #102 event-controller trust audit](../reports/2026-11-16-next-pr102-event-controller-audit.md).
+- Rechecked immutable refs: Cloud Pool `Основной@6507823e7ec27caa9b2621daef964dba2d4cf436`; MediaHub `main@1694cde38c7b7d69baf9676b4908c1bb6e197fbe`.
+- PR #102 remains OPEN/DRAFT/UNMERGED at `a19aca5c31bf6a39104f4eb10296a94eab404fda`; reviews 0; exact-head runs `43815087262`, `43815104716`, `43815104739` all SUCCESS. PR run job `133125329861` SUCCESS, event-admission `133125331599` SKIPPED as expected, workflow/security job `133125261247` SUCCESS.
+- Source audit confirms the read-only event checks and least-privilege boundary. No critical unsafe side effect found in this slice. Audit is not an independent review.
+- Gaps remain: deterministic source-comment ID is not persisted; workflow concurrency is not an authoritative durable lock; no canonical GitHub API revalidation of source comment/default-branch SHA; no durable controller-run or child-run correlation.
+- Issue #96 remains fail-closed. Cloud Pool dispatch NOT RUN. Gemini Agent 1/2/3 new wave NOT RUN. MediaHub REST/HMAC + workflow_dispatch versus approved workflow_call mismatch and independent governance review remain unresolved.
+- No secrets/variables read, provider calls, deployment, merge or infrastructure mutation. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security/governance review of PR #102; only then implement canonical API revalidation and durable idempotency/serialization as a separate bounded change.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
