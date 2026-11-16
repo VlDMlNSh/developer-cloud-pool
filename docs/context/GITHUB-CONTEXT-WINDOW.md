@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — Wave 334b exact-head Gemini candidate recheck
+Last refreshed: 2026-11-16 — Wave 336 default-branch Gemini hardening review
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (re-read 2026-11-16 via paginated Branch API)
+Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (observed as PR #109 base SHA; compare from previous recorded SHA shows 2 commits ahead / 0 behind)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
 Latest daily report: `docs/reports/2026-11-16-wave334-gemini-candidate-security-recheck.md` (Wave 334b; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -3710,3 +3710,17 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: fix validation trigger topology without weakening governance, obtain exact-head CI; add pinned official SDK manifest/lockfile and verify no-secret installation; keep dispatch disabled pending Issue #94/#96 caller provenance, durable lease/fencing/recovery, account separation and independent security review.
 - Contour A remains NOT ACCEPTED; Contour B remains deferred.
 - Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 38. Wave 336 — default-branch Gemini hardening candidate review (2026-11-16)
+
+- Report: [Wave 336 review](../reports/2026-11-16-wave336-default-branch-gemini-hardening-review.md), commit `09df9c79b95e7c15b79ab327b7028f804e500665`.
+- Checkpoint: [Wave 336 checkpoint](../checkpoints/2026-11-16-wave336-default-branch-gemini-hardening-review.md), commit `72a742de5194a43c4e5991c496d70a5edf93b586`.
+- PR #109 OPEN/DRAFT/UNMERGED, head `3cce7c749b197a771a9d018c022954b3dadaef7e`, base `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Compared prior recorded default SHA `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` to PR #109 base: 2 ahead / 0 behind; compare listed only Context Window documentation changes.
+- Exact-head CI #43871896948 / job #133314929863 COMPLETED/SUCCESS; all seven job steps successful. This is fake-client/contract validation, not provider runtime.
+- Source blob `9c5377f58de9dd8dabb4f05c72479fad1f10e033`; test blob `80f358197c2006105c902fd2d54c84f33e055d97`. Model allowlist is fixed to `gemini-2.5-flash`; 45-second AbortSignal; output truncation to 8,000 chars.
+- Residual: output truncation happens after full response materialization; provider-side output-token cap still needed. AbortSignal is client-side only and does not prove server-side processing/billing stops.
+- `@google/genai` still has no pinned package manifest/lockfile; actual SDK runtime NOT VERIFIED. Free-tier eligibility, four account identities/quota domains NOT VERIFIED.
+- PR #109 formal reviews 0; independent security review NOT RUN. No provider calls, secret reads, dispatch, merge or deployment.
+- Issues #94/#96 OPEN. Trusted owner-only Issue #96 admission, durable lease/fencing/recovery and child reconciliation remain NOT IMPLEMENTED / NOT VERIFIED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: provider-side output bound, SDK pin/lockfile/fake transport test, then durable Issue #96 admission and independent security/governance review.
