@@ -2315,3 +2315,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - No secrets read, provider calls, dispatch, merge, deployment or infrastructure mutation. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independently reconcile PR #432's transport regression against merged PR #421 Option B, then verify effective secret/variable metadata and independent review before any new Gemini batch. In parallel, require real exact-head CI and review for Agent PRs #730–#732.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-16 — PR #432 Option B governance regression audit
+
+- Report: [PR #432 Option B governance regression audit](../reports/2026-11-16-next-pr432-option-b-governance-regression-audit.md).
+- Owner Issue #301 comment `6289586838` explicitly approved Option B: three child `workflow_call` workflows, one controller, no child `MEDIAHUB_GITHUB_TOKEN`, independent review and exact CI; it did not authorize agent execution, merge, deployment or qualification.
+- PR #421 implemented Option B and merged. PR #432 subsequently reverted all three children to `workflow_dispatch` and controller REST/HMAC. No formal PR reviews were returned for either PR.
+- PR #432 exact head `33ae44f3ca77337553b97819f5190d57d157fe5e`: Astra Verify run `39648761007` FAILURE (compile failed); Gemini workflow contract validation `39648761390` FAILURE (controller transport contracts failed). Probe/runtime runs succeeded but do not close failed CI or governance/review gates.
+- Current MediaHub main `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`; controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8`; children remain workflow_dispatch. Current implementation is internally REST/HMAC-consistent but conflicts with approved Option B.
+- Effective secret/variable scope NOT VERIFIED; no secret values or metadata inspected. Independent security acceptance NOT VERIFIED.
+- Gemini new wave NOT RUN; no direct child invocation or transport bypass. Cloud Pool Issue #96 remains fail-closed; PR #102 remains Draft. Contour A BLOCKED / NOT QUALIFIED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile transport by restoring approved Option B on a fresh current-main branch or obtain explicit superseding owner/governance approval for REST/HMAC. Require independent review, positive/negative contract tests, actionlint and exact-head CI before any dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
