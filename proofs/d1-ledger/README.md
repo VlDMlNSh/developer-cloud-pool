@@ -56,3 +56,12 @@ Migration `0004_create_immutable_task_attempts.sql` and `src/task-attempts.mjs` 
 - All adapter responses retain `dispatch: false`. No provider, model, GitHub dispatch, secret, remote D1, or deployed Worker integration is present.
 
 This is a proof extension only. The previous `attempt_count` field remains a legacy lease-acquisition counter for the older adapter; it is not backfilled into fabricated attempt history. The new adapter uses `attempt_number` and `pool_attempts`. Do not mix the old `task-lease.mjs` API with the new attempt lifecycle when assessing retry semantics.
+
+
+## Migration 0006 — running-state lease guard
+
+Migration `0006_guard_running_attempt_requires_lease.sql` adds a database-level invariant: a prepared attempt cannot transition to `running` unless its task already has the matching current attempt pointer, lease attempt pointer, non-empty lease owner, positive fencing generation, and unexpired lease. The existing task-lease-acquired trigger satisfies this condition when it projects a legitimate lease into the attempt row.
+
+The adversarial regression test in `test/claim-outbox.test.ts` verifies both sides: direct `prepared -> running` without a lease is rejected and leaves the attempt unchanged; the normal `acquireAttemptLease` path transitions it to `running` with generation 1.
+
+This is a local SQLite/D1 integrity guard, not worker authentication or production dispatch authorization. It does not replace trusted identity binding at the Issue #96 controller boundary.
