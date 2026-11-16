@@ -11,6 +11,7 @@ const read = (path) => {
 const worker = read(".github/workflows/pool-worker.yml");
 const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
+const browser = worker.split(/^  browser:\\s*$/m)[1]?.split(/^  report:\\s*$/m)[0] || "";
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 
@@ -60,7 +61,7 @@ if (!worker.includes("persist-credentials: false")) fail("Worker checkout must n
 if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
 if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
 if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
-if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
+if (failures.length === 0) pass("Worker permissions, DSH/browser profile allowlists, isolated no-secret browser smoke and cleanup invariants");
 
 if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
 if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
