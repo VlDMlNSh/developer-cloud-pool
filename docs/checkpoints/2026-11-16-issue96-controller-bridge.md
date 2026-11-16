@@ -31,3 +31,15 @@ No secrets read, provider calls, dispatch, merge, deployment or paid resources i
 - No formal reviews observed on #56/#98/#100/#107. No hosted D1 binding, production Supervisor integration or qualified Cloud Pool controller verified.
 - Decision: reuse the D1 proof as a candidate; port its lease model on a clean branch from current default with adversarial tests. Keep dispatch disabled. No secrets/provider calls/deployment/merge/paid resources in this pass.
 - Status: lease proof VERIFIED locally only; production integration NOT VERIFIED; four live agents NOT RUN; Contour A NOT ACCEPTED.
+
+
+## Clean-base D1 proof — 2026-11-16
+
+- PR #111 OPEN/DRAFT/UNMERGED: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111
+- Base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; head `62e203e0c35eed1e71ab25f67ae45c3d33d7578c`; 1 ahead / 0 behind.
+- D1 workflow `43880577392` / job `133345051895`: SUCCESS; syntax passed; 36/36 tests passed.
+- Pool Contract Validation `43880577430`: SUCCESS.
+- Artifact `14232860410`; SHA-256 `81925793bc92b1f214666a61b2817eb327127bfba92168358cc32b85b2c0bd4f`.
+- Isolated local D1 proof only. No production caller, hosted D1, dispatch, secrets, provider calls, deployment or merge.
+- Next: review SQL atomicity and port owner/source-comment/SHA/wave binding into the trusted Issue #96 path. Four live agents NOT RUN; Contour A NOT ACCEPTED.
+- Canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
