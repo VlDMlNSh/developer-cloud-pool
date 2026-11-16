@@ -2345,3 +2345,24 @@ Updated report commit: `96f5008a858afd915969477fb28f1c060c72e3a3`, blob `98dcffc
 Updated checkpoint commit: `c89e0ea9b758eabcc67358a5e97cb5761eec7036`, blob `443c600cd873482bc9645990a53147c11c13df28`.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-16 — /next PR #100 provenance and durable-lock fail-closed audit
+
+**Status: UNIT TESTS VERIFIED / RUNTIME DISPATCH BLOCKED BY DESIGN / CONTOUR A NOT ACCEPTED.**
+
+- PR #100 current head `cb952a915093a4aaafb8f878954503d2460c4008`; base PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270`; remains Draft/open/unmerged, formal reviews 0.
+- Exact-head Cloud Pool Next Admission Contract run `43826793313`, job `133162447332`: SUCCESS; raw log confirms 38 tests, 38 pass, 0 fail, 0 skipped.
+- Ledger parsing now trusts only server-returned GitHub metadata matching owner login `VlDMlNSh`, `author_association=OWNER`, and exact Issue #96 URL. Untrusted marker comments cannot poison ledger state.
+- Runtime authorization paths were deliberately disabled: `planNextDispatch()`, `authorizeSingleDispatch()`, `reconcileVerifiedOwnerNextEvent()`, and `reconcileNextLedgerEvent()` return fail-closed `DURABLE_LOCK_NOT_IMPLEMENTED`. Caller-provided `lockHeld` no longer grants permission. This proves denial behavior, not a working controller.
+- Design gap: bot-authored ledger comments do not satisfy the current owner-only parser. Before any writes, define and test a trusted automation identity or use an authenticated durable store. Do not weaken provenance checks.
+- Issue #96 is OPEN with six owner-authored progress comments; none is a fresh exact `/next` trigger. Live owner-event probe NOT RUN.
+- No secrets read, provider calls, dispatch, child agents, deployment or merge.
+- Next bounded step: implement a durable serialization primitive with monotonic fencing, lease expiry/recovery and explicit single-writer provenance; retain hard-disabled runtime authorization until independent qualification.
+
+Updated report commit: `cb7fc27670cf5a219b0403b3d9dfb9d9e090e01e`, blob `d444a911b663098e90edf6c3d064e8fc7d76b163`.  
+Updated checkpoint commit: `6680a816333f2b3020a03fb8ccd9afb705b2ffc6`, blob `aab0819660022eebc62366dadd10b0e9d4121a40`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
