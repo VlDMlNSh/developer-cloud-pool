@@ -120,3 +120,10 @@ Reconcile the current provider registry against actual credential references and
 - FCC provider compatibility matrix: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/architecture/FCC-PROVIDER-COMPATIBILITY-MATRIX-2026-11-16.md
 - FCC GitHub Secrets / no Admin UI assessment: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/reports/2026-11-16-fcc-github-secrets-no-admin-ui-assessment.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Browser-plane boundary and deployment linkage (2026-11-16)
+
+ChatGPT Agent Browser/TinyFish is the operator's browser channel for user-requested web research and authorized site navigation. It is not an in-pool worker, provider API, credential vault export path, or proof that a model has API access. Browser profiles are isolated; session cookies/storage must never be exported to Pool Bridge, FCC, OmniRouter or task workers. A future browser worker inside the pool is a separate runtime and requires independent host, sandbox, egress and acceptance qualification.
+
+The deployable control-plane, profile, gateway, media-worker and acceptance contracts are consolidated in [CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md](CLOUD-POOL-DEPLOYABLE-REFERENCE-ARCHITECTURE-2026-11-16.md). Deployment remains disabled by default; see [deployment manifest](../../config/deployment/cloud-pool-deployment-manifest.v1.json) and [runbook](../runbooks/CLOUD-POOL-DEPLOYMENT-AND-RECOVERY-2026-11-16.md).
