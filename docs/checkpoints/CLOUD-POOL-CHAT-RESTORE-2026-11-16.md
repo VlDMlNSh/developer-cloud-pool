@@ -139,3 +139,13 @@ At the beginning of a new chat:
 - Decision remains: Issue-label PATCH is not CAS; Git-ref reservation is not selected; separate authenticated claim service + transactional conditional-write store is a target only. Hosted D1, issuer authentication, trusted time, revocation, fencing and recovery NOT VERIFIED. No provisioning performed.
 - Next bounded work: define issuer-authenticated capability envelope, key custody/rotation/revocation, trusted-time source, and adversarial verification. Keep dispatch disabled.
 - Report: [2026-11-16-next-durable-claim-reconciliation.md](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/agent-browser-ephemeral-worker-2026-11-16/docs/reports/2026-11-16-next-durable-claim-reconciliation.md).
+
+
+## /next update — issuer capability contract (2026-11-16)
+
+- Exact-head PR #106 run `43844179125` completed SUCCESS: browser job `133220077946`, pinned Skills job `133220078188`, workflow/security job `133220078388` all SUCCESS. PR remains OPEN/DRAFT/UNMERGED.
+- Cloud Pool-native Gemini controller remains absent on `Основной` (404); Issues #94/#96 OPEN; Gemini three-agent wave NOT RUN / BLOCKED.
+- Created design-only [issuer-authenticated capability contract](../contracts/ISSUER-AUTHENTICATED-CLAIM-CAPABILITY-CONTRACT.md) covering EdDSA/Ed25519 JWS, canonical task digest, immutable repository/task/SHA/profile binding, owner event provenance, key custody/rotation/revocation, service-owned trusted time, replay protection, atomic claim/outbox, denial taxonomy and adversarial tests.
+- No signing key or custody backend selected; no secrets read/created; no D1/Worker provisioned; no dispatch or merge. Hosted claim service, trusted time and issuer remain NOT IMPLEMENTED / NOT QUALIFIED.
+- Report: [2026-11-16-next-issuer-capability-contract.md](../reports/2026-11-16-next-issuer-capability-contract.md).
+- Next: pure verifier and fixed public-key test vectors with adversarial fail-closed tests; dispatch remains disabled.
