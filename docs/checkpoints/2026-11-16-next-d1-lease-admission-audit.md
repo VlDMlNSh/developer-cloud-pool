@@ -34,3 +34,5 @@ Contour A NOT ACCEPTED. Contour B DEFERRED. Gemini dispatch NOT RUN.
 - New audit findings and evidence comments: #111 comment 6925663082; #112 comment 6925663801. Legacy expiry-reclaim API and immutable attempt API coexist; worker identity remains caller-supplied; no source-comment durable admission receipt or atomic admission+approval+task+outbox boundary exists.
 - Detailed report: [atomic admission integration audit](../reports/2026-11-16-next-atomic-admission-integration-audit.md).
 - Decision: do not merge or compose #111/#112 directly. Next is a separate clean-base no-secret integration implementation from the immutable default SHA. Dispatch remains disabled.
+
+- Publication read-back: report blob `72bf1408affd33af3e18340cdd8051591e5a341f`; Context Window blob `e0bed94d86cf5cb02ec6359376e342880b46c69e`; checkpoint blob `c1c2c30e1f9ea1175e45e568bf5aeb63e593e72f`; master prompt blob `6bba8d18c7747f10fab5f929d9a7bcf5974d5e58`. Documentation branch head `618d130e969ce6e039a587933bc84caf96def2c8`, PR #113 OPEN/DRAFT/UNMERGED; no workflow runs were returned for this documentation-only head.
