@@ -182,3 +182,11 @@ Findings that must be resolved in the next implementation:
 - Default branch has no `.github/workflows/gemini-batch-dispatch-controller.yml`.
 
 Next step: create a separate branch from exactly `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; implement only the no-secret atomic admission slice with `dispatch: false`; run adversarial Workers-runtime tests and exact-head CI. Do not merge, provision hosted D1, inspect secret values, call providers or enable dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
+
+
+## Final audit publication read-back — 2026-11-16
+- Documentation branch: `docs/next-2026-11-16-current-state-refresh`, PR #113 remains OPEN/DRAFT/UNMERGED.
+- Context Window blob SHA: `871bce3b793ddd9b76459ee7fe4c6df5c9ed5710`.
+- Audit checkpoint blob SHA: `3029c7b30f54d74770a2b624dbba4e87c24cd4f6`.
+- Audit report blob SHA: `72bf1408affd33af3e18340cdd8051591e5a341f`.
+- This prompt is updated on the same documentation-only branch; no production code or default branch changed.
