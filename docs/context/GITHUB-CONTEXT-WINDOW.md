@@ -3770,3 +3770,20 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Strict phase gate: finish and independently ACCEPT Contour A first. Only then qualify Development Cloud Code; Media Cloud Code and remote GPU execution require separate security and explicit budget approval. No Contour B implementation now.
 - This pass is documentation-only: no code, secrets, provider calls, dispatch, GPU provisioning, paid resources, tests, merge or deployment. Contour A remains BLOCKED / NOT ACCEPTED.
 - Canonical MediaHub map (separate project/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Architecture continuation — Cloud Code agent fleet (2026-11-16)
+
+- Decision record: [Dual Cloud Code execution-plane ADR](../architecture/2026-11-16-cloud-code-dual-execution-plane-adr.md), sections 10–12.
+- Target topology: one Jarvis control plane; two isolated lead profiles (Development Cloud Code and Media Cloud Code); specialist agent/worker fleets under each profile.
+- Development logical roles: lead/orchestrator, repository researcher, architecture agent, bounded implementers, test/CI verifier, security auditor, documentation/evidence agent. Roles are capabilities, not a fixed process count.
+- Media logical roles: production lead, script/storyboard, asset/continuity, generation workers, render/transcode, quality/packaging.
+- Parallel code agents require independent worktrees/branches and explicit file ownership. Integration is serialized; independent verification checks the combined diff. No self-approval or direct default-branch writes.
+- Every work package binds immutable target/input digest, role/profile, allowed tools/paths, credential reference (never value), provider account/quota identity, concurrency/budget/deadline, idempotency/cancellation and output schema. Missing evidence is NOT VERIFIED.
+- External model providers (Gemini/Qwen/DeepSeek/etc.) are separate adapter-backed workers, not automatically native Claude Code subagents. Account/quota identity remains distinct; no paid fallback.
+- FCC and ECC remain unselected pending source/license/security/compatibility audit.
+- Mature candidates reviewed from current official/project documentation: Claude Code subagents/worktrees/hooks; LangGraph; OpenHands Agent Server/SDK; LiteLLM Proxy; ComfyUI. None adopted or deployed in this pass. LiteLLM budget controls require persistent DB and coordinated rate limits require shared Redis; do not deploy without a qualified free backend.
+- Architecture remains proposal only. Contour A remains the sole active build/acceptance priority; no Cloud Code installation, model dispatch, GPU provisioning, paid resource or MediaHub product work authorized.
+- Live repository inventory at this pass: open Issues #94, #96, #70, #38, #22, #26, #1, #5; open PRs include #110–#112 and prior #107–#109 work. Exact PR heads/CI/governance still require per-item revalidation before action. Documentation branch is not merged into default branch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
