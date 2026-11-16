@@ -2218,3 +2218,20 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Status: isolated D1 lease proof VERIFIED only within its local test scope; production lease/controller NOT VERIFIED; four live Gemini agents NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: clean-base implementation proof of durable admission/lease/fencing with adversarial no-secret tests; then exact-head CI and independent review before connecting PR #107 candidate.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean-base D1 lease proof port — 2026-11-16
+
+- Default immutable base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (`Основной`).
+- New isolated branch: `proof/d1-lease-clean-base-2026-11-16`.
+- PR #111: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111 — OPEN / DRAFT / UNMERGED.
+- Exact head: `62e203e0c35eed1e71ab25f67ae45c3d33d7578c`; tree `6590d5be958540e919c6ff4099ac42e5000d159c`.
+- Clean-base compare: 1 commit ahead / 0 behind; merge base exactly equals the default target.
+- Ported the isolated D1 ledger package from PR #56 exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`: migrations 0001–0005, claim/outbox and attempt adapters, hardened lease denial, pinned package/lockfile, local Workers-runtime tests, and a PR validation workflow. No production Supervisor/Worker integration.
+- Exact-head D1 workflow run `43880577392`, job `133345051895`: COMPLETED / SUCCESS. Node 24.9.0; `npm ci --ignore-scripts --no-audit --no-fund`; syntax check passed; 36/36 Workers-runtime D1 tests passed (13 consume + 23 claim/outbox). Lockfile artifact `14232860410`, SHA-256 `81925793bc92b1f214666a61b2817eb327127bfba92168358cc32b85b2c0bd4f`.
+- Exact-head Pool Contract Validation run `43880577430`: COMPLETED / SUCCESS.
+- Read-back confirmed the hardening: lease acquisition accepts only a prepared attempt on a pending task; expired/running/indeterminate attempts are not reclaimed by caller metadata. This is still a local test proof, not a qualified hosted durable lock.
+- No secrets read, provider/model calls, Gemini dispatch, hosted D1 provisioning, merge, deployment or paid resources.
+- Formal independent security review: NOT RUN. Production caller integration and hosted persistence: NOT VERIFIED. Four live agents: NOT RUN. Contour A: NOT ACCEPTED.
+- Next: audit PR #111 migration and transaction semantics; then build a narrowly scoped trusted Issue #96 adapter that atomically binds owner actor, source comment ID, immutable SHA, wave/task IDs, lease generation and one-shot dispatch intent. Keep ambiguous outcomes in NEEDS_REVIEW and dispatch disabled until review/governance pass.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
