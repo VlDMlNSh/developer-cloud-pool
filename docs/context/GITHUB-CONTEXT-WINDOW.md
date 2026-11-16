@@ -3486,3 +3486,6 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: create an isolated integration branch from exact current default and selectively apply #87→#92→#93→#101 file patches after diff review/checksum comparison; preserve inert `dispatch:false`, run package tests and exact-head CI. Do not mount into Supervisor or provision hosted D1.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Refreshed open Issues on 2026-11-16: #96 Cloud Pool-native /next admission; #94 Gemini dispatch; #70 provider quota fail-closed; #38 durable Supervisor claims; #22 secure web console; #26 account-isolated routing/quota; #1 dispatch governance; #5 agent-browser runner. #21 native iOS remains Contour B and is deferred.
+- Refreshed open PR inventory includes #37, #39, #54, #60, #63–#68, #87, #92, #93, #95, #97–#106; all PRs cited in this pass were checked OPEN/DRAFT/UNMERGED unless otherwise stated in the report. Several are stacked or based on stale SHAs; use exact PR head/base refs, not branch names alone.
