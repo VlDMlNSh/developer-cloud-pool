@@ -360,3 +360,11 @@ The earlier note that PR #434 was the pending HMAC syntax fix is superseded by c
 - Next step: genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery for Issue #96 under Issue #94; dispatch remains disabled until exact-head CI, governance, trusted-main no-secret probe and independent review pass.
 - Detailed report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — ephemeral agent-browser worker proposal — 2026-11-16
+
+- Work branch `feat/agent-browser-ephemeral-worker-2026-11-16`, based on default HEAD `0635ed2fe8de2340c685d49d20acc5b8bf7a3d92`. Not merged.
+- New `agent-browser-headless` allowlisted profile in Pool Worker, GitHub-hosted `ubuntu-24.04` ephemeral job, no token permissions, no secrets, no checkout; pinned Node 24.9.0 and agent-browser 0.43.0; installs Chrome for Testing, loads core and dogfood skills, fixed public smoke target, screenshot hash and close.
+- Issue template and validator updated; ADR and dated report added. No physical device or SentinelX required for this mode.
+- Runtime installation/test NOT RUN; workflow CI NOT VERIFIED until exact-head results; dispatch remains fail-closed. Persistent interactive sessions/dashboard NOT IMPLEMENTED; no unlimited-free claim. GitHub Actions limits remain.
+- Next: PR exact-head CI and security review, then one approved bounded smoke task after default-branch governance permits it.
