@@ -76,7 +76,8 @@ export async function admitOwnerNextEvent(db, input, now) {
         profile, wave_id, envelope_digest, task_key, approval_id, admitted_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(source_comment_id) DO NOTHING
-    `).bind(...values).run();
+      RETURNING admission_id
+    `).bind(...values).first();
   } catch {
     // A failed response can be ambiguous. Read the stable source ID before
     // considering any retry; never repeat a side effect blindly.
@@ -112,7 +113,7 @@ export async function admitOwnerNextEvent(db, input, now) {
         approval?.task_key !== taskKey || approval?.consumed_at !== now) {
       return deny("ATOMIC_ADMISSION_READBACK_MISMATCH");
     }
-    const created = insertResult?.success === true && insertResult?.meta?.changes === 1;
+    const created = insertResult?.admission_id === admissionId;
     return {
       decision: created ? "ADMITTED" : "ADMISSION_REPLAY",
       admissionId, sourceCommentId, waveId, taskKey,
