@@ -2207,3 +2207,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Explicit limits: local test harness input is not a live authenticated webhook; no cryptographic GitHub webhook verification or independent controller run/code SHA proof. Hosted D1, worker workload identity, immutable attempts/fencing, claim/renew/finalize, outbox delivery, Supervisor integration, model routing/quota qualification, remote Jarvis UI and independent security review remain NOT VERIFIED / NOT IMPLEMENTED.
 - Status: admission proof VERIFIED on exact CI head; PR unreviewed/unmerged; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: independent security/contract review of PR #114, especially trusted live-event provenance, approval state monotonicity, D1 concurrency and ambiguous outcomes. Keep Draft and dispatch disabled.
+
+
+## Trusted target and approval replay hardening — 2026-11-16
+
+- Default `Основной` HEAD / immutable target remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #114 branch `feat/atomic-next-admission-d1-2026-11-16`, exact verified code head `8e9e2e602ea6f3b069222b6e3c2c2d0b88cd76b5`, OPEN/DRAFT/UNMERGED, base immutable target, 0 formal reviews.
+- Admission requires `trustedDefaultHeadSha === targetSha`; D1 trigger checks `changes() = 1` so only a newly updated ready approval can authorize receipt/task/outbox. New adversarial tests reject stale target and matching pre-consumed approval replay.
+- Exact-head D1 PR run `43935042451` / job `133537313544` SUCCESS; push run `43935030103` SUCCESS; contract validation `43935042490` / job `133537341737` SUCCESS. 12/12 Workers-runtime tests, Node syntax PASS, six workflow YAMLs parsed, dispatch gate false.
+- Artifact `14258369393`, SHA-256 `28e389bc053f7b0dfce0631197bc9ef6c920b539457c63255edb2fc0c287684a`.
+- Adapter blob `e37eef052de0a5daff36c0ffbf873a2fd49d942b`; migration blob `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`; tests blob `208119e50985bca41161327afd6ebe717ef85b1d`.
+- Pure function cannot authenticate caller-supplied `trustedDefaultHeadSha`; trusted live GitHub webhook/controller adapter remains NOT VERIFIED.
+- Report: [trusted target and approval replay hardening](../reports/2026-11-16-next-d1-trusted-target-head-hardening.md); checkpoint: [checkpoint](../checkpoints/2026-11-16-next-d1-trusted-target-head-hardening.md).
+- Issues #94/#96 OPEN; PRs #111/#112/#113/#114 OPEN/DRAFT/UNMERGED; #114 reviews 0. Active ruleset #26550182 on default; branch protection API NOT VERIFIED. Native Gemini controller on default NOT VERIFIED; Gemini NOT RUN.
+- Hosted D1, webhook signature/provenance, approval issuance authority, worker identity, immutable attempts/fencing, outbox delivery, Supervisor integration, routing/quota and remote Jarvis UI NOT VERIFIED / NOT IMPLEMENTED.
+- No secrets read, provider calls, dispatch, merge or deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement/test trusted production adapter and authenticated default HEAD acquisition; keep dispatch false.
