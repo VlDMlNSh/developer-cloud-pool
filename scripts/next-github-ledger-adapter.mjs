@@ -37,14 +37,6 @@ export function deterministicControllerRunName(dispatchId) {
 }
 
 /**
- * Executes only durable ledger operations under a caller-provided,
- * repository-wide Actions concurrency lock. It never dispatches workflows.
- *
- * api.listIssueComments(issueNumber)
- * api.createIssueComment(issueNumber, body)
- * api.listWorkflowRuns()
- */
-/**
  * Runtime reconciliation remains disabled until a durable, owner-authenticated
  * lease with monotonic fencing and crash recovery exists. A caller-provided
  * Boolean or Actions concurrency group is not sufficient lock evidence.
