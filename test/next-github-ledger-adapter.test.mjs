@@ -1,8 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { makeLedgerRecord, parseLedgerComments } from "../scripts/next-dispatch-ledger.mjs";
-import { reconcileNextLedgerEvent, deterministicControllerRunName } from "../scripts/next-github-ledger-adapter.mjs";
-import { matchExactControllerRuns } from "../scripts/next-github-api-adapter.mjs";
+import { reconcileNextLedgerEvent, deterministicControllerRunName, matchExactControllerRuns } from "../scripts/next-github-ledger-adapter.mjs";
 
 const sourceCommentId = 123456789;
 const targetSha = "9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc";
