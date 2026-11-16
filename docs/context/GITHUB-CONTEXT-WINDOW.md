@@ -2152,3 +2152,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next bounded task: implement and test a real storage-backed repository-wide lease with fencing, expiry and crash recovery for Issue #96. Keep runtime fail-closed until qualified.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+## Gemini CI gate and dispatch correlation — 2026-11-16
+
+- Report: ../reports/2026-11-16-next-gemini-ci-gate-and-dispatch-correlation.md.
+- New MediaHub Issue #301 owner `/next` comment posted: `6911904653`; target SHA remains `1694cde38c7b7d69baf9676b4908c1bb6e197fbe`. Parent controller run, three child run/job IDs and digests for this comment remain NOT VERIFIED. GitHub Actions wrapper available to this session only returns PR-triggered runs, so it cannot be used to prove issue_comment run outcome.
+- Exact-head PR runs for prior three-agent set: PR #745 (head `f097f072fbfae6b3cd074502f81cb981d7e33f2b`) five runs `43835143327`, `43835143456`, `43835143467`, `43835143520`, `43835143759` all `action_required`; PR #746 (head `385e99a76dce5589496476b3a92cbfa440b02138`) five runs `43835158454`, `43835158488`, `43835158528`, `43835158636`, `43835158520` all `action_required`; PR #747 (head `ac87ee03511c73d3763d766051e15367b937fad3`) five runs `43835185055`, `43835185405`, `43835185260`, `43835185088`, `43835185214` all `action_required`.
+- PRs #745/#746/#747 remain OPEN/DRAFT with 0 formal reviews each. Agent 1 evidence/checkpoint only; Agent 2 static contract mapping, runtime tests omitted; Agent 3 static audit report without attached test execution evidence. No exact-head CI PASS or qualification claim.
+- PR #744 is a separate Agent 1 dispatch and excluded from the three-role set.
+- Cloud Pool Issue #96 remains OPEN/PLANNED; parent Issue #94 requires a Cloud Pool-native controller and says MediaHub #301 is a separate project bridge, not a substitute. Dispatch remains prohibited until qualification gates pass.
+- PR #98 49/0 tests + static security/YAML PASS, but draft/unmerged and mergeable=false at last check. PR #100 38/0 tests; trusted author metadata hardening and fail-closed `DURABLE_LOCK_NOT_IMPLEMENTED`; draft/unmerged, no formal reviews. PR #101 is test-only D1 replay fence, no production dispatch.
+- No merge, deployment, provider/model call, secret read, paid fallback, qualification or acceptance. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement genuine storage-backed repository-wide lease with monotonic fencing, expiry and crash recovery under Issue #94; keep dispatch disabled pending exact-head CI, governance, trusted-main no-secret probe and independent review.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
