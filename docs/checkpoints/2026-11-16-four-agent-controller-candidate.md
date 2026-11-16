@@ -1,63 +1,49 @@
-# Checkpoint — four-account Gemini controller candidate
+# Checkpoint — four isolated Gemini task controller candidate
 
 Date: 2026-11-16  
 Contour: A — Developer Cloud Pool  
-Status: CANDIDATE IMPLEMENTED / NOT QUALIFIED
+Status: IMPLEMENTED IN ISOLATED PR / NOT QUALIFIED / LIVE DISPATCH NOT RUN
 
-## Repository state
+## Immutable target and repository state
 
 - Repository: `VlDMlNSh/developer-cloud-pool`
 - Default branch: `Основной`
-- Base HEAD at start of this pass: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`
+- Base SHA: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`
 - Candidate branch: `feat/four-account-gemini-controller-2026-11-16`
-- Candidate branch HEAD: `ca5822cc77cdfa5e67fc7e9291ffc5caf0e53840`
-- Branch comparison: 4 commits ahead, 0 behind; base is unchanged.
-- No PR opened; no merge or default-branch mutation.
+- PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/107 (OPEN / DRAFT / UNMERGED)
+- Candidate controller/test changes in this pass: `c46354ac90402456d08033c9c87575403cb1c368`, `fa3761c33514264eb23a27557d735e504a8ffd85`
+- The branch is isolated from the default branch. No merge or deployment was performed.
 
-## Work completed
+## Four separate work items
 
-Added:
-- `scripts/gemini-four-agent-controller.mjs`
-- `scripts/gemini-four-agent-controller.test.mjs`
-- `docs/architecture/2026-11-16-four-account-gemini-controller-candidate.md`
+1. Researcher / key slot 1: inspect Cloud Pool architecture and mature reusable upstream components; report facts, assumptions, dependencies and gaps; no code changes.
+2. Implementer / key slot 2: define the smallest bounded native-controller implementation proposal, interfaces and acceptance criteria; no claims of changes.
+3. Tester / key slot 3: produce adversarial test matrix for four-way dispatch, isolation, failures, and provenance.
+4. Security auditor / key slot 4: independently audit authority, workflow permissions, secret isolation, account separation, quota boundaries and fail-closed behavior.
 
-Updated on the candidate branch:
-- `.github/workflows/pool-contract-validation.yml` to run the isolated Node test suite.
+The controller accepts exactly four non-empty, unique bounded task strings. Agent i receives only task i and its fixed role constraints. It rejects missing/extra/duplicate task payloads before creating clients.
 
-The candidate uses Google's official `googleapis/js-genai` / `@google/genai` SDK (upstream package metadata observed at version 3.3.0). The SDK has not been installed in the pool and no provider request was made.
+## Verification evidence
 
-## Candidate safety behavior
+- Existing exact-head PR run before this change: run `43864376148` COMPLETED / SUCCESS on previous head `fb3b01d4759b6903f9d846460bc2d64b1ab2cbbf`; it is not evidence for the updated head.
+- Candidate test suite expanded to eight no-provider-call tests.
+- Updated exact-head CI for the new candidate SHA: PENDING / NOT VERIFIED at checkpoint authoring.
+- Provider API calls: NOT RUN.
+- Actions secret existence: NOT VERIFIED; no secret values were read.
+- Proof of four distinct Google account identities / independent quota ownership: NOT VERIFIED.
+- Production Supervisor/Worker integration and trusted caller provenance: NOT IMPLEMENTED / NOT VERIFIED.
+- Independent security review: NOT RUN; formal PR reviews: 0.
+- Durable queue, lock/fencing, recovery and single-use authorization: NOT IMPLEMENTED.
+- Dispatch remains disabled; no merge or deployment.
 
-- Four separate environment variables are mapped one-to-one to four clients: `GEMINI_API_KEY_1` through `GEMINI_API_KEY_4`.
-- All four keys are mandatory; missing any key blocks all client creation.
-- Same task is fanned out concurrently to four independent clients.
-- No retries, cross-account fallback, automatic key rotation, tool execution, shell execution, or repository writes.
-- HTTP 429 maps to `QUOTA_EXHAUSTED`; 401/403 maps to `AUTH_FAILED`.
-- Empty and partial results are not reported as full success.
-- API-key-shaped task input is rejected.
-- Credentials are not included in result objects or explicit logs.
+## Next gates
 
-## Verification
+1. Verify exact-head Actions CI for the updated PR head and inspect test results.
+2. Complete independent review of code and workflow permissions.
+3. Verify four secret names exist without reading values and have the intended account/quota ownership.
+4. Fix production caller provenance and durable dispatch/recovery before any provider call.
+5. Only then conduct one explicitly authorized low-cost qualification request.
 
-- GitHub read-back of branch refs and all four changed files: VERIFIED.
-- Changed-file comparison against base: 4 commits, 4 files (one workflow modification, two source/test files, one architecture document): VERIFIED.
-- Unit test cases authored: 5.
-- Unit tests executed: NOT RUN.
-- Workflow runs on candidate SHA: none returned.
-- Gemini provider calls: NOT RUN.
-- Secret existence/value verification: NOT VERIFIED; connector does not expose Actions secrets.
-- Proof that four keys belong to four distinct Google accounts: NOT VERIFIED.
-- Independent security review: NOT RUN.
-- Production Worker/Supervisor integration: NOT RUN.
-- Existing Worker still exposes direct `workflow_dispatch`; Supervisor script still contains REST dispatch: VERIFIED on base branch. Production caller boundary remains BLOCKED.
+Do not represent this candidate as four live agents. It currently implements and tests the four-way isolated dispatch contract using fake clients only.
 
-## Next safe steps
-
-1. Review the candidate code and workflow diff independently.
-2. Run the no-secret unit suite and static checks on this branch.
-3. Verify the four repository secret names exist without reading values; owner verifies account separation in Google account consoles.
-4. Obtain independent security review.
-5. Separately remediate production Worker/Supervisor caller provenance and dispatch boundary before any live Gemini calls.
-6. Only after all gates pass, add the pinned SDK runtime and a separately permissioned controller workflow, then execute one explicitly authorized low-cost qualification request.
-
-Do not enable dispatch, merge this branch, or claim four-agent operation until the gates above have evidence.
+Canonical MediaHub map (separate project, not Cloud Pool control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
