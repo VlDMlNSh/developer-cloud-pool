@@ -45,3 +45,13 @@ Implement authenticated workload identity for the immutable-attempt lifecycle, b
 - [PR #111](https://github.com/VlDMlNSh/developer-cloud-pool/pull/111)
 - [PR #112](https://github.com/VlDMlNSh/developer-cloud-pool/pull/112)
 - [PR #114](https://github.com/VlDMlNSh/developer-cloud-pool/pull/114)
+
+
+## Follow-up hardening — final exact head
+
+- Final PR #114 head: `051f972a44bdfb610b17554dd51340c34700e6f6`; still OPEN/DRAFT/UNMERGED; no formal reviews.
+- Added monotonic one-shot approval transition and append-only approval ledger; added trustedDefaultHeadSha equality gate.
+- Final D1 run 43934541248/job 133535567332: SUCCESS, 11/11 tests.
+- Contract run 43934541311/job 133535568990: SUCCESS.
+- Artifact 14259383327 SHA-256: `c1b4f8c4578a720b5d1a384b5d8ee891eead1665360ce62e21fe6ead4fdeb54d`, independently verified.
+- Live webhook signature, trusted-main event provenance, hosted D1, worker identity, attempt lifecycle and outbox delivery remain NOT VERIFIED.
