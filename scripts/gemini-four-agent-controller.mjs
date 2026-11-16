@@ -8,10 +8,10 @@ export const AGENT_KEY_ENV = Object.freeze([
 ]);
 
 export const AGENT_ROLES = Object.freeze([
-  Object.freeze({ id: "researcher", instruction: "Research the task. Identify relevant facts, assumptions, dependencies, and unresolved questions. Do not implement changes." }),
-  Object.freeze({ id: "implementer", instruction: "Propose a minimal implementation plan. Identify exact files, interfaces, and acceptance criteria. Do not claim changes were made." }),
-  Object.freeze({ id: "tester", instruction: "Design adversarial tests and verification steps. Focus on edge cases, regressions, and measurable acceptance evidence." }),
-  Object.freeze({ id: "security_auditor", instruction: "Audit security, permissions, secrets, provenance, and failure modes. Recommend fail-closed controls." })
+  Object.freeze({ id: "researcher", instruction: "Research the assigned work item. Identify facts, assumptions, dependencies, upstream components, and unresolved questions. Do not implement changes." }),
+  Object.freeze({ id: "implementer", instruction: "Produce a minimal, bounded implementation proposal for the assigned work item. Identify exact interfaces, files, acceptance criteria, and risks. Do not claim changes were made." }),
+  Object.freeze({ id: "tester", instruction: "Create an adversarial verification plan for the assigned work item. Specify tests, edge cases, expected results, and evidence required." }),
+  Object.freeze({ id: "security_auditor", instruction: "Independently audit the assigned work item for authority, permissions, secret isolation, provenance, quota boundaries, and fail-closed behavior." })
 ]);
 
 const DEFAULT_MODEL = "gemini-2.5-flash";
@@ -28,22 +28,30 @@ async function createGoogleClient(apiKey) {
   return new GoogleGenAI({ apiKey });
 }
 
-function validateTask(task) {
-  if (typeof task !== "string" || task.trim().length < 1 || task.length > 20000) {
-    throw new TypeError("Task must be a non-empty string of at most 20000 characters.");
+function validateTasks(tasks) {
+  if (!Array.isArray(tasks) || tasks.length !== 4) {
+    throw new TypeError("Exactly four isolated task strings are required.");
   }
-  if (/AIza[0-9A-Za-z_-]{30,}/.test(task)) {
-    throw new Error("Task rejected: it appears to contain a Google API key.");
+  for (const [index, task] of tasks.entries()) {
+    if (typeof task !== "string" || task.trim().length < 1 || task.length > 12000) {
+      throw new TypeError(`Task ${index + 1} must be a non-empty string of at most 12000 characters.`);
+    }
+    if (/AIza[0-9A-Za-z_-]{30,}/.test(task)) {
+      throw new Error(`Task ${index + 1} rejected: it appears to contain a Google API key.`);
+    }
+  }
+  if (new Set(tasks.map((task) => task.trim())).size !== 4) {
+    throw new Error("Each agent must receive a distinct task; duplicate task payloads are rejected.");
   }
 }
 
 export async function runFourAgents({
-  task,
+  tasks,
   env = process.env,
   createClient = createGoogleClient,
   model = env.GEMINI_MODEL || DEFAULT_MODEL
 } = {}) {
-  validateTask(task);
+  validateTasks(tasks);
 
   const keys = AGENT_KEY_ENV.map((name) => env[name]);
   if (keys.some((key) => typeof key !== "string" || key.trim() === "")) {
@@ -60,7 +68,7 @@ export async function runFourAgents({
     };
   }
 
-  // Detect repeated credential values without logging, hashing, or returning them.
+  // Compare credentials in memory only; never log, hash, return, or persist them.
   const normalizedKeys = keys.map((key) => key.trim());
   if (new Set(normalizedKeys).size !== normalizedKeys.length) {
     return {
@@ -76,24 +84,29 @@ export async function runFourAgents({
     };
   }
 
-  // Each account receives one distinct role. No retries or cross-account fallback.
+  // One credential, one role, one unique task envelope. No fallback or retries.
   const results = await Promise.all(AGENT_KEY_ENV.map(async (keyEnv, index) => {
-    const apiKey = keys[index];
     const role = AGENT_ROLES[index];
     try {
-      const client = await createClient(apiKey, index + 1);
-      const contents = role.instruction + "\n\nProject task:\n" + task;
+      const client = await createClient(keys[index], index + 1);
+      const contents = [
+        "Role: " + role.id,
+        "Role constraints: " + role.instruction,
+        "独立 work item (do not assume other agents' task payloads or results):",
+        tasks[index]
+      ].join("\n\n");
       const response = await client.models.generateContent({ model, contents });
       const output = typeof response?.text === "string" ? response.text : "";
       if (!output.trim()) {
-        return { agent: index + 1, role: role.id, keyEnv, status: "EMPTY_RESPONSE", output: null };
+        return { agent: index + 1, role: role.id, keyEnv, taskIndex: index, status: "EMPTY_RESPONSE", output: null };
       }
-      return { agent: index + 1, role: role.id, keyEnv, status: "SUCCESS", output };
+      return { agent: index + 1, role: role.id, keyEnv, taskIndex: index, status: "SUCCESS", output };
     } catch (error) {
       return {
         agent: index + 1,
         role: role.id,
         keyEnv,
+        taskIndex: index,
         status: classifyError(error),
         output: null
       };
@@ -109,8 +122,10 @@ export async function runFourAgents({
 }
 
 async function main() {
-  const task = process.argv.slice(2).join(" ").trim();
-  const report = await runFourAgents({ task });
+  let input = "";
+  for await (const chunk of process.stdin) input += chunk;
+  const payload = JSON.parse(input);
+  const report = await runFourAgents({ tasks: payload.tasks });
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
   if (report.status !== "SUCCESS") process.exitCode = 1;
 }
