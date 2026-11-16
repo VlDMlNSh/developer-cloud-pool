@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 — Worker report fencing and supplementary Gemini Wave 328
+Last refreshed: 2026-11-16 — Wave 334b exact-head Gemini candidate recheck
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` (re-read 2026-11-16 via paginated Branch API)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`\nLatest authority inventory report commit: `0df58f639d02aa386e86ced0b7d4bff571d51732`
-Latest daily report: `docs/reports/2026-11-16-wave328-worker-report-fencing-and-gemini-bridge.md` (Wave 328; documentation branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-16-wave334-gemini-candidate-security-recheck.md` (Wave 334b; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -3680,3 +3680,15 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Next: fix free-model allowlist, request timeout/cancellation, bounded output, official SDK pin/lockfile and no-network SDK tests; then integrate owner-only Issue #96 admission, durable idempotency/lease/fencing/recovery and child reconciliation. Only after all gates and independent review may a bounded live four-child qualification wave be considered.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 37. Wave 334b — fresh exact-head Gemini candidate recheck (2026-11-16)
+
+- Report: [Wave 334b security recheck](../reports/2026-11-16-wave334-gemini-candidate-security-recheck.md), commit `a939233e91495c0175daa7e86356ce9410235406`, blob `3a14e07a5192c96cc0921fb83e7f2ca910b04a08`.
+- Checkpoint: [Wave 334b checkpoint](../checkpoints/2026-11-16-wave334-gemini-candidate-security-recheck.md), commit `cb3f7855481d853fe73e7b7c432e3e36e1de2eaf`, blob `67a79b95cf00e164c7999f5069a884ba45fd7f25`.
+- Re-read PR #107 exact candidate HEAD `027492668e7721a5371b38997bc76a6cd6a50cd4` and CI run #43868830501 / job #133304274884: COMPLETED / SUCCESS. The workflow runs the eight fake-client contract tests; no provider calls.
+- Re-read controller source blob `f1e531d7226ec8244ee7391569a5f290226f43b1`, test blob `245a1b6f5363215937896b9eb4028ba43b72d8f5`, and workflow blob `69da86b2813040dc43d8017fa7dd09d674f200d4`.
+- Exact candidate branch reads returned 404 for `package.json` and `package-lock.json`; SDK runtime remains NOT VERIFIED.
+- Reconfirmed review findings: model override lacks allowlist; no per-agent timeout/cancellation; output unbounded; unique key strings do not establish distinct account/quota domains; no Issue #96 admission/lease/fencing/reconciliation integration. PR #107 formal reviews remain 0.
+- Issues #94/#96 OPEN. PR #102 remains a read-only event admission probe; no durable idempotency/lock/dispatch qualification.
+- No secret values read, no provider calls, no Cloud Pool or MediaHub dispatch, no merge/deployment. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement and test model allowlist, bounded request lifecycle/output and SDK pin/lockfile; then independently qualify Issue #96 durable admission and governance before any live four-child run.
