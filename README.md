@@ -65,3 +65,9 @@ The baseline probes require no provider secrets and make no model calls. A passi
 - [Continuation checkpoint](docs/checkpoints/2026-11-16-cloud-code-dual-execution-plane.md)
 
 Status: documented proposal only. One Jarvis control plane with isolated Development and Media execution profiles. Contour A remains the active priority; no media/GPU deployment before Contour A is formally ACCEPTED.
+
+
+- [Cloud Code agent fleet architecture pass](docs/reports/2026-11-16-cloud-code-agent-fleet-architecture-pass.md)
+- [Cloud Code agent fleet checkpoint](docs/checkpoints/2026-11-16-cloud-code-agent-fleet.md)
+
+The ADR now defines the lead/specialist hierarchy, task/result envelope, isolated worktree ownership, bounded concurrency, external provider adapters and unresolved FCC/ECC selection. Proposal only; Contour A remains the active priority.
