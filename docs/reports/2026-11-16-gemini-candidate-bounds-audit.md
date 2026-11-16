@@ -42,3 +42,37 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - The workflow admits owner-associated exact /next comments on Issue #301, but actual child dispatch additionally requires repository variable MEDIAHUB_GEMINI_BATCH_ENABLED=true, execution on refs/heads/main, and the controller's required secrets. Secret values were not read; variable/secret effective state was not verified.
 - The available GitHub workflow-run lookup does not enumerate issue_comment-triggered runs. Search for the latest visible comment ID did not return a controller run. Therefore the latest /next child dispatch status is NOT VERIFIED; do not claim a controller run or successful child agents.
 - MediaHub PR #437 is CLOSED (historical test repair); this does not qualify the current controller. Issue #301 itself remains a tracker, not proof of acceptance.
+
+
+---
+
+# AUTHORITATIVE UPDATE — 2026-11-16 /next exact-head Gemini CI verification
+
+This update supersedes earlier statements in this Context Window/report/checkpoint that PR #109 exact-head CI was NOT VERIFIED. It does not supersede any outstanding runtime, SDK, credential, dispatch, or Contour A acceptance blockers.
+
+## Immutable refs and CI evidence
+- Cloud Pool default branch `Основной` observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #109 head: `371093fc646a22cf49e3baaa8984bc2e5d3622b7`; its declared base is the observed default SHA above.
+- GitHub compare for exact base/head reports `diverged`, 4 ahead / 2 behind, merge base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b`. Do not merge until this base divergence is reconciled.
+- PR #109 exact PR workflow run: `43872185972`, Pool Contract Validation, completed SUCCESS; job `133315933882` completed SUCCESS.
+- Job log explicitly checks out PR merge ref commit `02033cab60cadbb18b6530cb200cb6f95b0d2f55`, whose message merges PR head `371093fc646a22cf49e3baaa8984bc2e5d3622b7` into base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Log verifies `POOL_DISPATCH_ENABLED: false`, YAML syntax checks for five workflows, security contract checks, and TAP results `# tests 11 / # pass 11 / # fail 0 / # skipped 0`, ending `POOL_CONTRACT_VALIDATION=PASS`.
+- PR #109 formal reviews: zero. Combined status endpoint returned an empty statuses array; workflow run/job logs above are the direct CI evidence.
+
+## Candidate code/runtime boundary
+- Controller blob: `9c5377f58de9dd8dabb4f05c72479fad1f10e033`; test blob: `80f358197c2006105c902fd2d54c84f33e055d97`; validator blob on PR head: `3759d310dfb6af21edc43f89a138232cd0e3d182`.
+- Controller defines four isolated roles and four environment credential slots, static `gemini-2.5-flash` allowlist, 45-second AbortSignal, 8,000-character response cap, duplicate credential check in memory, no fallback/retries, and four fake-client task-isolation tests plus failure/bounds tests.
+- The validator runs Node's built-in test runner against the fake-client suite. It does not install or import the Google SDK during validation.
+- No `package.json`, `package-lock.json`, or `pnpm-lock.yaml` exists at PR #109 head (GitHub contents API returned 404 for each). The controller dynamically imports `@google/genai`, so production SDK installation/reproducibility remains NOT VERIFIED and the candidate is not yet a runnable qualified provider integration.
+- The successful CI is a PR merge-ref fake-client contract test, not a live Gemini invocation. No Google API request, key-value read, credential validity test, Google-account identity check, independent quota-domain proof, or model free-tier eligibility proof occurred.
+
+## Admission and acceptance
+- Cloud Pool Issue #96 remains OPEN / PLANNED. It requires exact owner-authored top-level `/next`, trusted default-branch controller, immutable target SHA, source-comment idempotency, durable admission before dispatch, reconciliation, least privilege, and provenance. Owner amendment requests exactly four isolated executions for this qualification wave; this does not waive other admission gates.
+- Four Gemini child executions were NOT RUN in this pass. No child run IDs/artifacts exist from this pass. No secrets read, provider calls, dispatch, deployment, merge or production code changes.
+- Production durable lease/fencing/recovery and controller reconciliation remain NOT IMPLEMENTED / NOT QUALIFIED. Four slots are not proof of four independent accounts or quotas.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+## Next bounded step
+Reconstruct PR #109 on the current default branch with a clean merge base (preserving its three-file change), add an explicit reproducible `@google/genai` dependency pin and lockfile using the official supported package workflow, then obtain exact-head CI that verifies SDK installation without making provider calls. Keep dispatch disabled. Separately finish Issue #96 durable owner admission/lease/fencing/reconciliation before any Gemini child launch.
+
+Canonical MediaHub map (separate project reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
