@@ -190,3 +190,21 @@ Next step: create a separate branch from exactly `35208f0ef28f0ac031a7acdf35fc90
 - Audit checkpoint blob SHA: `3029c7b30f54d74770a2b624dbba4e87c24cd4f6`.
 - Audit report blob SHA: `72bf1408affd33af3e18340cdd8051591e5a341f`.
 - This prompt is updated on the same documentation-only branch; no production code or default branch changed.
+
+
+## 12. Latest engineering checkpoint — 2026-11-16
+
+The clean-base atomic admission proof is available in PR #114:
+https://github.com/VlDMlNSh/developer-cloud-pool/pull/114
+
+- Base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Head: `24ada07a4ae832078faf7473b5b646f34a84e64a`.
+- Exact-head D1 run `43933503897` / job `133531866050`: SUCCESS, 9/9 local Workers-runtime tests.
+- Exact-head Pool Contract Validation `43933504073` / job `133531891725`: SUCCESS.
+- Artifact `14260211684`, SHA-256 `a000c440b969214f9ec7812bd40b1b2ec3c53ece64157aa35e67ea5fc4320dd9`.
+- This is a local D1 proof only; PR #114 remains Draft/unmerged. It does not provide hosted D1, production webhook integration, authenticated worker identity, immutable-attempt execution, outbox delivery or dispatch.
+
+Next bounded step: implement authenticated workload identity for the immutable-attempt lifecycle, bound to audience/repository/task/attempt/target SHA. Claim, renew and finalize must enforce identity, current generation and expiry; no automatic reclaim of running/indeterminate attempts. Keep provider dispatch disabled.
+
+Report: `docs/reports/2026-11-16-next-d1-atomic-admission-slice.md`.
+Checkpoint: `docs/checkpoints/2026-11-16-next-d1-atomic-admission-slice.md`.
