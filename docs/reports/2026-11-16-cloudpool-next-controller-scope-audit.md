@@ -140,3 +140,18 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: design a real durable, owner-authenticated lease/claim with monotonic fencing and crash recovery, then integrate only behind trusted default-branch controller after governance approval. Do not treat `lockHeld` or the scheduler group alone as full distributed-lock acceptance.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — adversarial ledger parser regression — 2026-11-16
+
+- Revalidated default branch `Основной` HEAD: `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94 and #96 remain OPEN; Issue #96 still states PLANNED and dispatch disabled.
+- PR #100 remains OPEN / DRAFT / UNMERGED, base `f23cdb5484d5923e02242b3ea142397f9e1f0270`; new head `37c9ec9b16ab540cd2fe84db4cf1b7913675a7d0`.
+- Added adversarial regression in `test/next-dispatch-ledger.test.mjs`: malformed ledger-marker comments from non-owner, wrong owner association, and wrong control issue are ignored before parsing; malformed marker from authenticated owner/control issue remains a hard parse failure. This ensures untrusted marker comments cannot poison parsing while preserving strict validation for trusted ledger writes.
+- Test blob SHA `013e9c16d8d701b5cb16b2680083c2a336184bb6`; commit `37c9ec9b16ab540cd2fe84db4cf1b7913675a7d0`.
+- CI exact-head: run [43825810530](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825810530), job `133159287292`, FAILED on an initial test-fixture typo (the malformed trusted marker did not contain the parser's exact prefix); 53 passed / 1 failed. Corrected fixture in the next commit. Run [43825907244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43825907244), job `133159595993`, SUCCESS; syntax checks passed and 54 tests passed / 0 failed / 0 skipped at exact HEAD `37c9ec9b16ab540cd2fe84db4cf1b7913675a7d0`.
+- No production code changed in this pass; no dispatch, secrets access, provider calls, deployment, merge, or default-branch changes.
+- Critical lock limitation remains: adapter and planner still accept caller-supplied `lockHeld: true`. This is not proof of lock ownership. Durable authenticated lease, fencing token, and crash recovery remain NOT IMPLEMENTED. Do not treat PR #100 as qualified for dispatch.
+- Gemini Agent 1/2/3: NOT RUN; approved Cloud Pool-native dispatcher and governance gates remain absent. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: replace caller-asserted lock state with an authenticated durable claim/lease and monotonic fencing, or keep controller read-only/fail-closed until such primitive is implemented and verified.
+
+Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
