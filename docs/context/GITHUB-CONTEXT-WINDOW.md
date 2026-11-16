@@ -3414,4 +3414,4 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile PR #102's event gate with the approved durable admission/ledger design, then add fenced idempotency and trusted-main no-secret event verification before any child dispatch.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
-- Final read-back after cleanup: default branch file absent; report and Context Window both present on `docs/cross-chat-continuation-2026-11-06`; Context Window blob `1f0afb5be4152a473c52e71939e16515808eeca1`; report blob `193194006ae7458180cd35a554e2f4553dc41618`.
+- Final read-back after cleanup: default branch file absent; report and Context Window both present on `docs/cross-chat-continuation-2026-11-06`; Context Window read-back verified; report blob `193194006ae7458180cd35a554e2f4553dc41618`.
