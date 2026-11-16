@@ -2227,3 +2227,15 @@ Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os
 - Next: durable authenticated lease/claim and monotonic fencing; keep dispatch fail-closed until verified.
 
 Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — remove caller-asserted lock authority — 2026-11-16
+
+- Default HEAD `6507823e7ec27caa9b2621daef964dba2d4cf436`; Issues #94/#96 OPEN.
+- PR #100 OPEN/DRAFT/UNMERGED, base `f23cdb5484d5923e02242b3ea142397f9e1f0270`, new head `cb952a915093a4aaafb8f878954503d2460c4008`, reviews 0.
+- Runtime `planNextDispatch`, `authorizeSingleDispatch`, `reconcileNextLedgerEvent`, and `reconcileVerifiedOwnerNextEvent` now fail closed with `DURABLE_LOCK_NOT_IMPLEMENTED`; caller Boolean and intent flags cannot grant authority. Pure `planNextDispatchState` remains for state-machine tests.
+- Exact-head CI [43826793313](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43826793313), job `133162447332`: SUCCESS; syntax PASS; 38 PASS / 0 FAIL / 0 skipped.
+- Durable lease/fencing/crash recovery NOT IMPLEMENTED. Gemini 1/2/3 NOT RUN. No dispatch, deployment, secret/provider calls, merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: durable owner-authenticated lease with fencing, stale-owner rejection, expiry/renewal, crash recovery, and concurrent integration tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
