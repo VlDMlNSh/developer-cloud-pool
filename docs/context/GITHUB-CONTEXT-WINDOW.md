@@ -25,6 +25,13 @@
 - Issue #117 CLOSED (FCC loopback lifecycle); Issue #119 CLOSED (synthetic CLI bridge); Issue #118 OPEN / BLOCKED (persistent Workspace).
 - Ruleset #26550182 was last recorded active but weak: 0 required approvals and no required status checks. Re-read exact rules before merge or dispatch.
 
+## PR #123 read-back — 2026-11-17
+
+- PR #123: OPEN / DRAFT / UNMERGED; URL https://github.com/VlDMlNSh/developer-cloud-pool/pull/123.
+- Exact head `d0757ec995a57ce30d68960650ced2826d7b46ab`; base branch is PR #120's branch at `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=true at read.
+- Compare confirms 8 commits ahead / 0 behind and 8 changed files.
+- Exact-head combined status has 0 contexts; PR workflow-run lookup returned 0 runs. CI is NOT VERIFIED.
+
 ## Status boundaries
 
 - Runtime deployment: NOT RUN.
@@ -37,7 +44,7 @@
 
 ## Next concrete step
 
-Create a dependent Draft PR against the current PR #120 branch, verify the architecture documentation workflow on the exact head, obtain independent review, and reconcile PR #122's non-mergeable dependency. Then stop adding architecture layers and implement the first authenticated Jarvis read path (S1), or record the precise hosting/auth blocker. Keep production dispatch disabled.
+Verify exact-head CI for PR #123, obtain independent review, and reconcile PR #122's non-mergeable dependency. Then stop adding architecture layers and implement the first authenticated Jarvis read path (S1), or record the precise hosting/auth blocker. Keep production dispatch disabled.
 
 ---
 
