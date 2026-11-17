@@ -4,6 +4,8 @@
 **Date:** 2026-11-17  
 **Scope:** Contour A only  
 **Parent:** [Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md)  
+**Delivery controls:** [Architecture Assurance Addendum](CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md)  
+**Evaluation standard:** [Independent 10/10 Scorecard](CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md)  
 **Immutable integration parent:** `b3b5cb3724139939342335ea95c46cc717485f16` (PR #120 head at pass start)
 
 ## 1. Architectural decision
