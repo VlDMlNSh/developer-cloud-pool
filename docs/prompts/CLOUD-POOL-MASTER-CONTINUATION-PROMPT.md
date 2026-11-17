@@ -244,3 +244,23 @@ Next: implement authenticated workload identity for immutable attempts, but firs
 
 Latest report: `docs/reports/2026-11-16-next-d1-atomic-admission-slice.md`.
 Latest checkpoint: `docs/checkpoints/2026-11-16-next-d1-atomic-admission-slice.md`.
+
+
+## 15. Owner implementation baseline — 2026-11-17 (supersedes conflicting earlier planning)
+
+The fixed owner decisions and ordered implementation sequence are:
+- [Owner Architecture Freeze](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md)
+- [Implementation Roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md)
+- [Latest checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md)
+
+First priority is exactly one initial CODE executor profile: Claude Code CLI + selectively installed Everything Claude Code toolkit + FCC + one positively qualified free API route. Claude Code must not authenticate through Anthropic API. Never read GitHub Secret values. Do not expose secrets to pull_request jobs, untrusted code, prompts, browser, logs or artifacts. No provider call until route/account/quota identity and FCC policy are qualified.
+
+Second CODE profile is deferred until actual daily free-quota usage and headroom are measured. MEDIA is deferred until a remote video server/local model exists; it is local-model-only via OmniRoute and must receive no API credentials or API/paid fallback. Mac mini 2018 is a future optional local route to CODE. Codex is optional and resource-gated. Gemini agents are supplementary and not a mandatory four-agent launch dependency. YouTube is a later connector. Contour B remains prohibited until Contour A is ACCEPTED.
+
+Initial deployment must use GitHub-hosted ephemeral runners and no physical hardware. The account's 20-job concurrency ceiling is not 20 persistent servers. Jarvis starts as static GitHub-hosted PWA plus GitHub-native task/status primitives; never embed privileged credentials in browser assets. A persistent authenticated API cannot be hosted by a short-lived Actions runner. If a feature cannot be securely provided with GitHub-native primitives, mark it BLOCKED rather than silently introducing external hosting.
+
+FCC source inspection at pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` found `MODEL_FALLBACKS` defaults to `None`, but `PROVIDER_MAX_ATTEMPTS` defaults to 5. Explicitly bound retries and prohibit fallback/key cycling before live calls. FCC Admin UI remains loopback-only.
+
+Every /next must follow the implementation roadmap and complete one bounded verifiable engineering pass. Do not repeat architecture design unless concrete test/security/acceptance evidence requires a narrowly documented correction. Keep production dispatch fail-closed until trusted owner admission, durable leases/fencing/recovery, worker identity, secret isolation, quota controls, exact-head CI and independent review all pass.
+
+Latest runner proof at this checkpoint: PR #116 head `c5c14f6a11782e5787a38b1edd5e7983f15bf2e2`, run `44066723324`; Claude Code CLI and uv install succeeded; FCC install was still running; ECC and final checks pending. Do not claim installation success until the run completes and logs/artifacts are verified.
