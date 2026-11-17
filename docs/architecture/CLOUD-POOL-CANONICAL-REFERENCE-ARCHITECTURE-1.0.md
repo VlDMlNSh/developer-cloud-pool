@@ -265,3 +265,68 @@ Routine /next passes execute this order. Architecture selection is closed unless
 ## 14. Acceptance statement
 
 This is a normative architecture baseline, not a deployment certificate. Architecture review, security review, exact-head CI, owner acceptance and Contour A end-to-end acceptance are separate. Until the document is reviewed and merged to default and all release gates pass, status remains NOT ACCEPTED.
+
+## 15. Normative amendment — integrated Engineering Workspace target (2026-11-17)
+
+**Authority:** This section incorporates the owner-requested Engineering Workspace design in `CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md`. It supersedes conflicting earlier wording in Sections 5, 10 and 12 that classified the workspace as merely optional or outside final Contour A. It does not claim infrastructure exists, authorize premature installation, or weaken A0/D1, quota, runner or security gates.
+
+### 15.1 Three-plane target
+
+Contour A has one product/control surface and three cooperating planes, not multiple competing interfaces:
+1. **Jarvis Control Plane:** sole responsive phone/desktop web UI for projects, task intake, approvals, agents, status, logs/evidence, workspace links, quotas, audit and recovery. Browser UI is a projection, never an authorization boundary.
+2. **Engineering Workspace Plane:** one persistent authoritative filesystem. Official VS Code Desktop connects through Remote SSH. Browser IDE uses code-server/Open VSX behind Cloudflare Access/Tunnel, after qualification. Both attach to the same host/filesystem; no divergent sync copies.
+3. **Agent Execution Plane:** isolated task attempts pinned to exact target SHA, separate branches/worktrees, least-privilege credentials, policy-bound executors and independent verification. Initial GitHub-hosted ephemeral Claude Code + ECC + FCC remains the first execution slice; an Actions runner is not a persistent server.
+
+### 15.2 Canonical access paths and component decisions
+
+- Mobile/desktop browser: authenticated Cloudflare Access → Tunnel → Jarvis and, when qualified, browser IDE. No public origin ports.
+- Desktop engineering: official VS Code Desktop → SSH using client-side cloudflared/Access where supported → verified remote SSH host → same persistent workspace. Verify SSH host keys; never expose public SSH.
+- VS Code Remote Tunnels is a separately reviewed alternative transport, not a synonym for Cloudflare Tunnel and introduces Microsoft dev-tunnels as another trust dependency.
+- code-server binds loopback behind the tunnel and retains built-in authentication unless a reviewed origin-auth/JWT design demonstrably replaces it. Use Open VSX. Do not substitute Microsoft Marketplace or bypass its terms.
+- Coder Workspace Platform is deferred unless measured workspace lifecycle/multi-user needs justify its added provisioner/control plane. Do not deploy competing workspace managers.
+- Jarvis links to the existing workspace and tasks; it must not create a second Jarvis or bypass A0.
+
+### 15.3 Filesystem consistency, worktrees and concurrency
+
+- One authoritative filesystem per qualified workspace identity; browser and desktop are clients of the same workspace, not separate copies.
+- Every task/agent receives a distinct branch and Git worktree/attempt directory pinned to immutable repository SHA.
+- Every mutable worktree requires a single-writer lease with owner, task/attempt ID, expiry, monotonic fencing generation and renewal/release semantics. Jarvis/workspace broker must reject stale fencing generations.
+- Other clients may use another worktree or read-only access; concurrent writes to the same worktree are prohibited. Advisory filesystem locks alone are insufficient unless crash recovery and fencing are proven.
+- Disconnect, crash, expiry and stale-writer recovery must be tested. Git remains source of truth for committed code; workspace files are mutable until committed and reviewed.
+
+### 15.4 Executor placement and identity
+
+- Initial CODE qualification remains Claude Code CLI → pinned ECC → loopback FCC → one independently qualified free route, first on GitHub-hosted ephemeral runners. Do not move this executor to server #3 without separate ADR and host/route/security qualification.
+- Server #3 is a future interactive/optional executor host only after exact SentinelX host ID, authorization, capabilities, OS, CPU/RAM/disk, persistent storage, network, allowlist and cost ceiling are verified. Current inventory does not prove it exists or is available.
+- Claude Code on server #3 is NOT RUN until host identity and a permitted free route are independently verified. GitHub-hosted installation smoke is not evidence of server #3 installation.
+- Gemini remains exclusively behind the approved Cloud Pool controller `.github/workflows/gemini-batch-dispatch-controller.yml`, with all input/security/governance gates. No direct IDE/terminal dispatch, no Gemini on server #3, no cross-account quota mixing. If controller is absent/unqualified on trusted default, dispatch remains NOT RUN and `POOL_DISPATCH_ENABLED=false`.
+- Copilot is optional only after actual entitlement, free allowance, extension compatibility and spend controls are verified. No paid fallback or automatic metered upgrade.
+- Claude CLI, Claude VS Code Agent Harness and Copilot cloud partner-agent sessions are distinct execution/authentication routes; do not infer shared sessions, identities or quotas.
+
+### 15.5 Security, persistence and operations
+
+- Cloudflare Access is perimeter authentication, not application authorization. Validate JWT signature, issuer, audience, expiry and subject at origin, then enforce Jarvis/A0 capabilities.
+- Preserve code-server authentication and loopback binding until a reviewed replacement is proven. Qualify WebSocket upgrades, CSRF/session boundaries, origin routing and rate limits.
+- SSH private keys remain client-side; verify host keys. Do not expose raw SSH, FCC admin, Ollama or model endpoints publicly.
+- Workspace files, task state, audit records, credentials and backups are separate security domains. Backups must be encrypted, independent and restore-tested.
+- GitHub is authoritative for code, architecture, ADRs and accepted runbooks; qualified transactional D1 is authoritative for approvals, tasks, attempts, leases, quotas and outbox. Labels/Actions concurrency are not transactional locks.
+- Monitor host health, disk, memory, CPU, sessions, leases, quota, backup, tunnel and audit. Provide restart, cleanup, rollback and recovery runbooks.
+
+### 15.6 Staged delivery and Contour A acceptance
+
+Engineering Workspace is part of the final Contour A target, but must not destabilize or bypass first secure CODE/A0/D1 qualification:
+A. Complete first CODE path and integrated A0/D1 security/authority gates.  
+B. Qualify persistent host identity and free resource envelope; otherwise workspace deployment is BLOCKED, not simulated.  
+C. Qualify domain, Cloudflare Tunnel, Access IdP/policies, origin JWT validation, WebSockets and no-cost limits.  
+D. Approve persistence, backup/restore, workspace lease/fencing and threat model before installation.  
+E. Install/qualify code-server and official VS Code Remote SSH on the same authoritative workspace; verify mobile/desktop, Git, single-writer leases, isolation, restart and restore.  
+F. Qualify Claude Code on server #3 only if separately approved; Gemini only via approved controller; Copilot remains optional.  
+G. Integrate workspace links/status into Jarvis and complete independent A3 review.
+
+Final Contour A acceptance covers secure core execution/control plane and owner-approved workspace experience: authenticated Jarvis on phone/desktop, verified workspace access, executor routing/identity, durable state, quota isolation, audit, recovery, secret non-disclosure and independent security review. Missing server, tunnel, route or restore proof blocks its gate; it is never represented as complete.
+
+### 15.7 Known blockers and evidence boundary
+
+Detailed comparison and inventory remain in the [Engineering Workspace Integration Record](CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md) and [Issue #118](https://github.com/VlDMlNSh/developer-cloud-pool/issues/118). The recorded inventory is zero active SentinelX hosts, no confirmed/authorized server #3, zero Cloudflare zones/tunnels, Access unavailable in inspected account context, and no verified persistent workspace/backup/restore. These are BLOCKED/NOT VERIFIED prerequisites.
+
+This amendment is documentation-only: no installation, deployment, secret read, provider call, Gemini dispatch or merge. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
