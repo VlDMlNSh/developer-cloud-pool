@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-17 — canonical architecture consolidation pass
+Last refreshed: 2026-11-17 — architecture consolidation and Contour A Workspace acceptance reconciliation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from commits API at start of this pass)
@@ -22,7 +22,7 @@ This snapshot supersedes older maturity/status statements in the historical sect
 
 ### Current phase and boundaries
 - Priority: Contour A only. Contour B / MediaHub OS product development remains DEFERRED until Contour A is ACCEPTED.
-- Cloud Pool is a governed control plane plus ephemeral execution workers and a separately qualified persistent Engineering Workspace.
+- Cloud Pool is a governed control plane plus ephemeral execution workers and a separately qualified persistent Engineering Workspace. The first static GitHub-only Jarvis PWA may ship before Workspace, but Workspace qualification is mandatory before Contour A ACCEPTED.
 - Jarvis is the single user-facing console; it is not an authorization authority.
 - GitHub-hosted runners are ephemeral workers, not a persistent web host, filesystem or transactional state store.
 - One transactional authority must own mutable admissions, task/attempt state, leases, outbox and quota reservations. D1 is the preferred candidate due to isolated proofs, but is NOT selected/deployed/qualified as a hosted production service.
@@ -2302,3 +2302,14 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Exact-head runs: runner [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) SUCCESS; security/workflow validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) SUCCESS; artifact [14329776221](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/artifacts/14329776221) available.
 - These reviews are COMMENT, not APPROVE; they do not qualify a real provider route, free entitlement, quota, real Claude session or task execution. Keep Issue #115 OPEN and production dispatch disabled.
 - PR #120 head before this snapshot update: `f016247a9886df904042000a26f17beabfbb8727`.
+
+
+## CURRENT CHAT ARCHITECTURE COMPLETENESS RECONCILIATION — 2026-11-17
+
+- The chat-derived target is captured in the canonical reference architecture: Jarvis single phone/desktop UI; initial GitHub-hosted static/read-only PWA; later authenticated API; persistent shared Engineering Workspace; VS Code Desktop Remote SSH; browser code-server/Open VSX; same filesystem; task-specific branches/worktrees; single-writer lease with expiry/heartbeat/monotonic fencing; Cloudflare Access/Tunnel only after qualification; Claude Code + ECC + FCC; Gemini controller-only and optional; Copilot optional; account/quota isolation; secrets isolation; audit, backup/restore and independent acceptance.
+- **Important correction:** the first GitHub-only Jarvis PWA does not require a persistent host, but the persistent Engineering Workspace is mandatory before Contour A ACCEPTED. Older phrases calling Workspace “optional” are superseded by the latest canonical architecture and ADR-0015 amendment. Issue #118 remains BLOCKED; no host/access/storage deployment evidence exists.
+- PR #120 is the active consolidated architecture candidate; current branch head must be re-read. PR #120 remains OPEN/DRAFT/UNMERGED and therefore not yet default-branch accepted.
+- Exact-head documentation CI at the last inspected PR #120 head `f016247a9886df904042000a26f17beabfbb8727`: Architecture Documentation Validation run `44087131961` SUCCESS; Pool Contract Validation run `44087131986` SUCCESS; workflow syntax/security check SUCCESS. Formal independent PR #120 review absent.
+- PR #116 latest head at last inspection `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner job `134049913469` and security job `134049913632` SUCCESS in runs `44086419084` / `44086419002`. This is no-secret install, loopback runtime and synthetic CLI handoff only, not real Claude task/provider route.
+- Issue #117 CLOSED; Issue #115 remains OPEN for provider/source/license qualification; Issue #118 OPEN/BLOCKED; Issue #22 keeps initial GitHub-only/read-only PWA boundary; Issue #26 keeps account-isolated first CODE route boundary.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. No secrets read, no live provider calls, no Gemini dispatch, no host deployment or merge in this pass.
