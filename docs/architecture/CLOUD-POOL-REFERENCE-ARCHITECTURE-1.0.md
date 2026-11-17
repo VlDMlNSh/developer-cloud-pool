@@ -601,3 +601,8 @@ Pinned FCC source review found support for ordered provider-key lists, numbered 
 - Never treat multiple key slots as proof of distinct upstream accounts or independent quotas.
 - This is a required production configuration invariant; the current mock-only runner proof does not test a live provider configuration.
 - Exact-head independent source review COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) records this finding. Keep Issue #115 open until the configuration and free route/account/quota evidence are qualified.
+
+
+## 22. Architecture assurance and delivery discipline
+
+The binding delivery sequence, anti-overengineering rules, component selection requirements, capacity semantics, status/evidence thresholds, conjunctive Contour A acceptance gates and unresolved-decision register are specified in the [Architecture Assurance Addendum — 2026-11-17](CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md). Read it together with this reference architecture. This reference remains the sole system-level architecture; the addendum governs implementation sequencing and change control. Neither document asserts deployment or qualification.
