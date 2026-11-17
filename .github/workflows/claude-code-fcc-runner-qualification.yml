@@ -120,6 +120,9 @@ jobs:
       - name: Verify profile footprint and write provenance manifest
         if: always()
         shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+          UV_CACHE_DIR: ${{ runner.temp }}/uv-cache
         run: |
           set -euo pipefail
           {
@@ -157,7 +160,7 @@ jobs:
             echo "agent_task_executed=false"
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
-          find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
+          find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
 
       - name: Publish bounded no-secret qualification evidence
         if: always()
