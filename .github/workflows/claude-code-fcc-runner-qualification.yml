@@ -487,7 +487,7 @@ jobs:
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
           if [ -f "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" ]; then
-            sed -E 's/^([^=]+)=/fcc_runtime_\\1=/' "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+            awk -F= '{ print "fcc_runtime_" $1 "=" substr($0, index($0, "=") + 1) }' "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
           fi
           duplicate_keys="$(cut -d= -f1 "$RUNNER_TEMP/qualification/provenance-manifest.txt" | sort | uniq -d)"
           if [ -n "$duplicate_keys" ]; then
