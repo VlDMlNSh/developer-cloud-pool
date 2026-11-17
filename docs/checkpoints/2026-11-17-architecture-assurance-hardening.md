@@ -14,6 +14,15 @@
 4. Read [Architecture Assurance Addendum](../architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md).
 5. Read ADR-0015, Issues #115/#118, PR #116, exact-head CI and ruleset.
 
+## Additional 10/10 quality pass
+
+- Scorecard blob content SHA: `aa369bca72af1adf57163dd71aa319e6ec0c97b2` (file creation commit).
+- Addendum link commit: `928e9424aec21a8f1847e422a6fe3aee3ad03fef`.
+- README link commit: `41cd459ea94c0969dc87a29f1482884c11c64272`.
+- Context Window refresh commit: `7dabdab2a2cc81489ac65f4274b4bf42ed3a1c8b`.
+- Exact-head CI after these commits: PENDING READ-BACK.
+- No 10/10 score claimed; no runtime qualification inferred.
+
 ## Work completed
 
 - Added normative architecture assurance addendum: vertical-slice sequence, first end-to-end no-secret proof, component adoption and anti-proliferation rules, capacity semantics, state ownership, security evidence, status thresholds, conjunctive acceptance and architecture change control.
