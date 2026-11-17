@@ -95,3 +95,12 @@ Required before live dispatch: trusted owner-event provenance, durable single-us
 - Contour B: **DEFERRED**.
 
 Next bounded implementation step: a synthetic FCC-to-Claude CLI bridge test with a mock provider and no credentials/provider calls, followed by the independent review of PR #116. Keep the four-Gemini controller qualification tracked under Issues #94/#96 and dispatch fail-closed.
+
+
+## LIVE HOST / CLOUDFLARE RECHECK AND FOUR TASK ENVELOPES — 2026-11-17
+
+- SentinelX re-read: 0 active hosts; Free plan limit 1. Mac mini host `host_5f7264034bdf0b51` offline; `mh-dev-01` and `mh-dev-02` user-disabled; no active/authorized server #3; saved SentinelX integrations count 0.
+- Cloudflare authenticated profile is connected with one account. Read-only Cloudflare API checks: zones 0, Tunnels 0, Access applications GET returned HTTP 403 (Access not enabled/available in this account context). No resources or policies were created or changed.
+- Four distinct task envelopes for this /next are documented in Issue #94 comment `6947189850` (researcher, implementation designer, adversarial tester, security auditor). **NOT DISPATCHED**: no qualified Cloud Pool four-child controller, durable admission/lease/fencing/recovery or independent security review; `POOL_DISPATCH_ENABLED=false`.
+- Workspace tracking Issue #118 received live infrastructure recheck comment `6947191906`.
+- No separate canonical documentation-map file was found in the current documentation tree; this Context Window remains the primary recovery/navigation document. The dated report is the detailed evidence record.
