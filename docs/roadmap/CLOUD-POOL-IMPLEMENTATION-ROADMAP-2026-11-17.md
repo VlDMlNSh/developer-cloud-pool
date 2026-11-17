@@ -318,3 +318,8 @@ Ordered delivery: (1) synthetic no-secret Claude/FCC bridge and independent runn
 - No secrets read, real provider calls, Gemini dispatch, persistent deployment or merge occurred. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
 Next: qualify one real free provider route and account/quota identity under A0/D1, while preserving fail-closed dispatch. Then return to Workspace host/access/storage gates.
+
+
+## 10. Third-party license qualification
+
+The pinned FCC revision is `AGPL-3.0-only`; selected ECC revision is MIT; Claude Code CLI is vendor-distributed proprietary software. The runner workflow must capture the exact FCC/ECC LICENSE texts and SHA-256 digests. Before FCC is made network-accessible to remote users, resolve AGPL network-use/source-offer and notice obligations with appropriate review. Keep FCC loopback-only and deployment BLOCKED until the license gate is satisfied.
