@@ -336,3 +336,8 @@ Pinned FCC source `config/api_keys.py`, `providers/runtime/config.py`, and upstr
 6. Fail closed if account ownership, provider entitlement, free quota or effective configuration is ambiguous.
 
 The current no-secret installation/mock qualification does not satisfy this gate. Issue #115 remains OPEN.
+
+
+## Supersession notice — 2026-11-17
+
+This dated roadmap is retained as a detailed execution sequence and historical record. The single normative system-level architecture is [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md), with current status in [GitHub Context Window](../context/GITHUB-CONTEXT-WINDOW.md). If wording differs, the canonical architecture and later dated amendments control. Persistent Engineering Workspace is a staged capability after the first static GitHub-only Jarvis PWA, but it is mandatory before Contour A acceptance. PR #120 remains OPEN/DRAFT/UNMERGED; this document is not mainline acceptance.
