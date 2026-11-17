@@ -626,3 +626,12 @@ PR #113 was CLOSED UNMERGED as superseded after all 30 changed paths were migrat
 PR #114 provides a useful local Workers-runtime D1 transaction proof at head `ab9461eb84b14fe230918391d5212f19ca25592c`: run [43935827714](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827714) and Pool Contract Validation [43935827741](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827741) both succeeded; the local D1 suite reports 12/12 PASS. It proves the atomic receipt + one-shot approval + immutable task + outbox transaction and replay/pre-consumed-approval behavior.
 
 It does **not** authenticate the GitHub `issue_comment` webhook or the supplied `trustedDefaultHeadSha`; these are injected test inputs. It does not prove hosted D1, live owner-event provenance, Supervisor claim/renew/finalize, durable lease/fencing/recovery, outbox delivery, worker identity, route/quota or dispatch. Keep this as LOCAL PROOF ONLY until a trusted event adapter and subsequent state/lease gates pass.
+
+
+## 23. Unified realization map and delivery sequence
+
+The single implementation sequence, simplified integration route, dynamic capability scheduler, Jarvis surfaces, explicit state split, mature-component disposition and security remediation gates are consolidated in the [Cloud Pool Unified Realization Map](CLOUD-POOL-UNIFIED-REALIZATION-MAP-2026-11-17.md).
+
+This map is subordinate to Reference Architecture 1.0 and does not create a second system architecture. It translates the architecture into one executable delivery sequence and reconciles the independent audit dated 2026-11-17. Detailed protocol contracts remain authoritative for exact state and API invariants. Where documents conflict, implementation is BLOCKED until a dated ADR resolves the conflict.
+
+The map preserves the Control Plane / Execution Plane split, one user-facing Jarvis, ephemeral GitHub workers, separately qualified persistent Workspace, one transactional state authority, immutable evidence, per-account quota isolation and Gemini's approved-controller-only boundary. It explicitly prevents architecture expansion from outrunning end-to-end implementation.
