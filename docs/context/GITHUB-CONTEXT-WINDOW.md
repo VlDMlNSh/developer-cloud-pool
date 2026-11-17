@@ -12,6 +12,22 @@ Latest PR #116 exact-head checks observed: No-secret install/resource proof SUCC
 Active default-branch ruleset: ID `26550182`, enforcement active on `refs/heads/Основной`; PR required, review-thread resolution required, required approving review count 0, no required status-check contexts. Treat governance as insufficient for production acceptance.
 This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`. PR #120: https://github.com/VlDMlNSh/developer-cloud-pool/pull/120. The PR head advances with each documentation update; always re-read PR #120 head before validation. Exact-head check-runs at last inspection: 0; combined status contexts: 0; CI NOT VERIFIED / NOT RUN.
 
+## CURRENT AUTHORITATIVE SNAPSHOT — ARCHITECTURE ASSURANCE FOLLOW-UP — 2026-11-17
+
+**Follow-up branch:** `docs/architecture-assurance-hardening-v2-2026-11-17` (not merged).  
+**Parent architecture PR:** [PR #120](https://github.com/VlDMlNSh/developer-cloud-pool/pull/120), OPEN / DRAFT / UNMERGED; immutable parent head used for this branch: `9ebb56edd55f5015b66f7b3f17d1114d1884a492`.  
+**Assurance addendum:** [Architecture Assurance Addendum](../architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md).  
+**Dated report:** [Architecture assurance hardening](../reports/2026-11-17-architecture-assurance-hardening.md).  
+**Checkpoint:** [Architecture assurance checkpoint](../checkpoints/2026-11-17-architecture-assurance-hardening.md).
+
+This dependent follow-up does not create a second system architecture. Reference Architecture 1.0 remains the sole system-level source; the addendum governs implementation sequencing, component selection, capacity semantics, evidence thresholds and change control.
+
+GitHub writes observed: addendum `c89943bce0f4373b77fe8c38b528f95031474181`; architecture link `18ecadb2bad555e49c7dda825ffbb941ec5ed128`; report `0938829660d359a939dfde20ef066b85a6867bc2`; checkpoint `44419baad71e43bf97d472cec5430067190ea793`. README and Context Window refresh are being completed on this branch.
+
+Validation: documentation-only. Runtime tests NOT RUN. Local validator NOT RUN. Exact-head CI NOT VERIFIED until GitHub checks are read. Independent review NOT RUN.
+
+Current blockers: PR #120 and this dependent amendment unmerged; default governance lacks required approving reviews/status checks in last observed read-back; hosted transactional state, durable Supervisor, real free provider route, authenticated Jarvis and persistent Workspace remain unqualified/blocked. Contour A NOT ACCEPTED; Contour B DEFERRED; dispatch remains disabled.
+
 ## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-17
 
 **Canonical system architecture proposal:** [Cloud Development Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).  
