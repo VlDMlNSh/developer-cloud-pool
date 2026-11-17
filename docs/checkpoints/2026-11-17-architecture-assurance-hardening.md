@@ -1,6 +1,6 @@
 # Cloud Pool checkpoint — architecture assurance hardening — 2026-11-17
 
-**Status:** Dependent documentation PR in review; not merged  
+**Status:** PR #122 OPEN / DRAFT / BLOCKED pending rebase and exact-head validation; not merged  
 **Contour:** A only  
 **Default HEAD:** `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`  
 **Parent PR #120 head used as immutable base:** `9ebb56edd55f5015b66f7b3f17d1114d1884a492`  
@@ -32,12 +32,12 @@
 - Final read-back: PENDING.
 - Local Markdown validator: NOT RUN.
 - Runtime tests: NOT RUN (documentation-only).
-- Exact-head CI: NOT VERIFIED until checks are read.
+- Exact-head CI: NOT VERIFIED; check-runs returned zero at inspection. Current doc-validation workflow only targets PRs to `Основной`, so this dependent PR does not trigger it.
 - Independent review: NOT RUN.
 
 ## Blockers and boundaries
 
-- PR #120 remains OPEN / DRAFT / UNMERGED.
+- PR #120 remains OPEN / DRAFT / UNMERGED and its head advanced after this branch was created. PR #122 is 6 commits ahead / 11 behind at last compare and GitHub reports mergeable=false. PR #121 is closed unmerged.
 - Default ruleset does not require independent approvals or status checks in the last observed read-back.
 - Hosted transactional state, durable Supervisor, real free provider route and authenticated Jarvis remain unqualified.
 - Persistent Workspace remains BLOCKED by Issue #118.
@@ -45,6 +45,6 @@
 
 ## Next step
 
-Read back all changed files and verify exact PR head. Run architecture documentation and pool contract checks. Obtain independent review. Keep the amendment dependent on PR #120; do not merge directly to default.
+Rebase PR #122 onto the latest PR #120 head, extend the documentation-validation workflow to run on the dependent PR base or run the validator through a separately approved route, then verify exact-head CI and obtain independent review. Do not merge while mergeable=false.
 
 Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
