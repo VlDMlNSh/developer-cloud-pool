@@ -2253,3 +2253,42 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## Current authoritative snapshot — full chat architecture reconciliation — 2026-11-17
+
+**Canonical architecture candidate:** [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md), PR #120, branch `docs/cloud-pool-reference-architecture-2026-11-17`, latest observed head before this update `6379fb7f1201752d2406c89a081baa87823825c0`. This is OPEN/DRAFT/UNMERGED and is not default-branch policy yet.
+
+### Session decisions preserved
+- Jarvis remains the sole phone/desktop console; control, workspace and execution are separate logical planes.
+- Initial hosting is GitHub-only: static responsive PWA and read-only redacted GitHub status. No physical/self-hosted host, external always-on service, Cloudflare Access, paid host or secrets in browser assets as a first-release dependency. Authenticated write APIs remain BLOCKED unless a qualified GitHub-native server-side path exists.
+- Persistent Engineering Workspace is a separately authorized optional stage, not an ephemeral Actions runner. If approved, browser code-server/Open VSX and official VS Code Desktop Remote SSH must share the same persistent filesystem; code-server remains authenticated and loopback-only behind qualified ingress. Cloudflare Access/Tunnel and VS Code Remote Tunnels are distinct transport choices with separate trust/cost qualification.
+- Each task/agent has its own branch/worktree/container. Shared mutable workspace writes require a single-writer lease, monotonic fencing, expiry, heartbeat, stale-writer rejection and reconciliation. Backup/restore is mandatory for workspace qualification.
+- First CODE profile is Claude Code native CLI + selected ECC skills + pinned FCC, no Anthropic API/paid fallback. FCC is loopback-only and the synthetic bridge is mock-only.
+- PR #116 latest head `6d4a4c518d44aa4a79d8396390623f424499011a`: runner proof [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) SUCCESS; security/workflow validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) SUCCESS. All 14 runner job steps succeeded. This does not prove a real Claude session, free route, account entitlement, quota or task execution. PR #116 remains OPEN/DRAFT and requires current-head independent review.
+- Gemini is optional supplementary capability, not mandatory per-/next or a first-release/Contour A gate. Controller-only after all admission, governance, lease, identity and quota gates. No dispatch in this pass; keep production dispatch disabled.
+- Preserve separate provider account and quota-domain identities. Four keys do not establish four independent accounts/quotas.
+- MediaHub OS / Contour B remains DEFERRED.
+
+### Current PR/issue state
+- Default branch `Основной` baseline remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` at the last confirmed PR bases.
+- PR #120 canonical architecture consolidation: OPEN/DRAFT/UNMERGED, head `6379fb7f1201752d2406c89a081baa87823825c0`.
+- PR #113 earlier documentation/context candidate: OPEN/DRAFT/UNMERGED, head `84065c34d729b69e93ddb42c837f52bda362a20f`; contains the earlier expanded Workspace/owner-freeze documentation and historical reports. Do not assume its content is merged or automatically included in PR #120.
+- PR #116 runner/runtime candidate: OPEN/DRAFT/UNMERGED, head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runs above passed, but independent current-head review is outstanding.
+- PR #114 D1 atomic admission proof: OPEN/DRAFT/UNMERGED, head `ab9461eb84b14fe230918391d5212f19ca25592c`.
+- Issue #117 FCC loopback runtime lifecycle: CLOSED; issue #115 install/source/runtime qualification remains OPEN pending its exact acceptance/review boundary.
+- Issue #118 Workspace host/access/storage: OPEN/BLOCKED; no authorized host, no qualified Access/Tunnel, no persistent storage or restore evidence.
+- Issues #94/#96: latest owner correction makes Gemini optional; all production dispatch remains NOT RUN.
+
+### Governance and blockers
+- Default branch is protected by active ruleset ID `26550182`, but ruleset currently has zero required approving reviews and no required status-check contexts. Direct branch-protection read was unavailable (403); do not overstate governance qualification.
+- PR #120 exact-head checks and independent review were not present at the last read; documentation CI NOT VERIFIED.
+- No hosted transactional state authority, production A0/D1 admission, durable lease/recovery, real free provider route, authenticated Jarvis API, or end-to-end task execution is qualified.
+- No secrets read, provider calls, real Claude session, Gemini dispatch, host deployment, merge or Contour A acceptance.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+### Next
+1. Independently audit PR #116 at its latest exact head and record residual findings; do not approve production use based on mock evidence.
+2. Validate PR #120 architecture links/contracts and obtain independent architecture/security review.
+3. Continue A0/D1 durable admission and one real free-route/account/quota qualification only after all authority and security gates.
+4. Keep Workspace Issue #118 blocked until explicit host/access/storage/restore evidence and owner approval.
