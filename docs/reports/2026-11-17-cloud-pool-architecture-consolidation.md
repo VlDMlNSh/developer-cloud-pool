@@ -80,3 +80,9 @@ Canonical context: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.m
 ## Follow-up: Contour A Workspace acceptance clarification
 
 The initial static/read-only GitHub-hosted Jarvis PWA remains an earlier delivery milestone and must not depend on an external persistent host. The full Contour A acceptance package, however, must include a qualified persistent Engineering Workspace: one durable filesystem shared by browser code-server/Open VSX and desktop VS Code Remote SSH, isolated per-task worktrees, single-writer fencing, qualified ingress/identity, encrypted backup and independently tested restore. This capability is mandatory before Contour A ACCEPTED. Issue #118 remains BLOCKED and this documentation change does not authorize deployment.
+
+## Follow-up — Jarvis operating-system architecture amendment — 2026-11-17
+
+The supplied audit was reconciled against Reference Architecture 1.0. Its three-plane split, task lifecycle, account-isolated routing, workspace separation, observability, quality gates and mature-component reuse were already substantially represented. Remaining conceptual gaps are formalized in [Jarvis Operating Model 1.0](../architecture/CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md): Task Orchestrator, Agent Registry, Resource Manager, dynamic four-role model, common executor adapter contract, four memory domains, six Jarvis work areas and bounded autonomy matrix.
+
+Documentation-only design amendment. It does not implement or qualify these services, dispatch Gemini, call providers, read secrets, deploy a host, enable dispatch or accept Contour A. Existing authority boundaries remain unchanged.

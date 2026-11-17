@@ -2386,3 +2386,13 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - Exact-head Pool Contract Validation [44088901275](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088901275): SUCCESS.
 - PR #120 remains OPEN/DRAFT/UNMERGED and requires independent architecture/security approval before merge. PR #113 remains CLOSED/UNMERGED as superseded.
 - No secrets, provider calls, real Claude session/task, Gemini dispatch, host deployment or production dispatch occurred. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## CURRENT AUTHORITATIVE SNAPSHOT — Jarvis operating-system model — 2026-11-17
+
+- PR #120 remains the sole intended architecture consolidation candidate; branch `docs/cloud-pool-reference-architecture-2026-11-17`. Added normative [Jarvis Operating Model 1.0](../architecture/CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md) and linked it from Reference Architecture 1.0.
+- Philosophy: Jarvis is the single governed operating system and workflow orchestrator, not an unrestricted root authority. Models are replaceable bounded executors; tools are adapters; GitHub and one transactional authority preserve verifiable state.
+- Explicit Control Plane, Execution Plane and Data Plane; Task Orchestrator; versioned Agent Registry; Resource Manager; independent Quality Gate; dynamic logical roles Agent 1 research/implementation, Agent 2 contract/test, Agent 3 security/authority, optional Agent 4 alternative implementation; common executor adapter contract; Project/Task/Agent/Operational Memory; Agent Observability; six UI areas; autonomy/approval matrix.
+- Roles are logical and dynamically selected. Four roles do not imply four API keys, independent upstream quotas, separate machines or mandatory per-request dispatch. Gemini remains optional and controller-only after gates.
+- No new service is implemented or qualified by this document. A0 admission, one transactional state authority, fenced leases, account-isolated quota, approved controller, worker isolation and independent acceptance remain binding.
+- Documentation-only: no secrets read, provider calls, Gemini dispatch, host deployment, dispatch enablement, merge or runtime change. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Exact branch head and exact-head CI must be re-read after publication; older CI evidence is superseded by the new commit.

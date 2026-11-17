@@ -132,3 +132,10 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - PR #116 latest exact head 6d4a4c518d44aa4a79d8396390623f424499011a: runs 44086419084 and 44086419002 SUCCESS; current-head review comments 5938684495 and 5938737463 are COMMENT, not approval.
 - PR #114 local D1 proof head ab9461eb84b14fe230918391d5212f19ca25592c: runs 43935827714 and 43935827741 SUCCESS; 12/12 local D1 tests. Webhook provenance not authenticated.
 - No secrets/provider calls/Gemini dispatch/host deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## /next checkpoint — Jarvis operating-system model added — 2026-11-17
+
+- Added normative [Jarvis Operating Model 1.0](../architecture/CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md) and linked it from Reference Architecture 1.0.
+- Formalized three planes, Task Orchestrator, Agent Registry, Resource Manager, Quality Gate, dynamic logical roles, executor adapter contract, four memory layers, Agent Observability, six UI areas and autonomy/approval matrix.
+- Existing A0, single transactional state authority, fenced lease, Gemini controller-only dispatch, account/quota isolation, secret boundary and independent acceptance remain unchanged.
+- Documentation-only; no runtime, provider call, secret read, Gemini dispatch, deployment, merge or Contour A acceptance. Contour A NOT ACCEPTED; Contour B DEFERRED.

@@ -626,3 +626,9 @@ PR #113 was CLOSED UNMERGED as superseded after all 30 changed paths were migrat
 PR #114 provides a useful local Workers-runtime D1 transaction proof at head `ab9461eb84b14fe230918391d5212f19ca25592c`: run [43935827714](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827714) and Pool Contract Validation [43935827741](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827741) both succeeded; the local D1 suite reports 12/12 PASS. It proves the atomic receipt + one-shot approval + immutable task + outbox transaction and replay/pre-consumed-approval behavior.
 
 It does **not** authenticate the GitHub `issue_comment` webhook or the supplied `trustedDefaultHeadSha`; these are injected test inputs. It does not prove hosted D1, live owner-event provenance, Supervisor claim/renew/finalize, durable lease/fencing/recovery, outbox delivery, worker identity, route/quota or dispatch. Keep this as LOCAL PROOF ONLY until a trusted event adapter and subsequent state/lease gates pass.
+
+## 23. Jarvis operating-system model — 2026-11-17
+
+The normative extension in [Jarvis Operating Model 1.0](CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md) formalizes Jarvis as the governed operating system for the platform. It adds Control/Execution/Data planes, Task Orchestrator, Agent Registry, Resource Manager, independent Quality Gate, dynamic logical agent roles, common executor adapter contract, four-layer memory, Agent Observability, six UI work areas and bounded autonomy/approval matrix.
+
+This does not create new authorities: A0 remains admission authority; one transactional store remains task/lease/quota authority; the approved controller remains the only Gemini dispatch path; workers remain bounded executors; independent acceptance remains separate from Jarvis and CI. All capabilities are target design until individually qualified. No runtime, provider, deployment or dispatch status is promoted by this documentation.

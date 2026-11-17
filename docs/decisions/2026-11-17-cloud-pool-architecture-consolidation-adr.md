@@ -87,3 +87,9 @@ The first static GitHub-hosted Jarvis PWA remains a read-only launch milestone a
 - PR #120 exact head `30dbde9d136286af9bbc03dc58ec42e6a4939e5a`: Architecture Documentation Validation 44088152664 SUCCESS; Pool Contract Validation 44088150366 SUCCESS.
 - PR #113 closed unmerged as superseded by PR #120 after all 30 changed paths were preserved in PR #120; earlier Context Window archived verbatim.
 - PR #120 remains OPEN/DRAFT/UNMERGED; independent architecture/security review and default-branch acceptance remain outstanding.
+
+## Jarvis operating-system model amendment — 2026-11-17
+
+Adopt [Jarvis Operating Model 1.0](../architecture/CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md) as a normative extension. Jarvis is the single governed operating system and orchestration experience, not an unrestricted root authority. The amendment formalizes Control/Execution/Data planes; Task Orchestrator; versioned Agent Registry; Resource Manager; independent Quality Gate; dynamic logical roles (research/implementation, contract/test, security/authority, optional alternative implementation); executor adapters; Project/Task/Agent/Operational Memory; Agent Observability; six UI areas; and autonomy/approval boundaries.
+
+No new service is asserted implemented. Existing A0, transactional state, fenced lease, approved Gemini controller, account-isolated quota, worker capability and acceptance contracts remain authoritative. No paid fallback, secret exposure, unqualified route substitution or Contour B work is authorized.
