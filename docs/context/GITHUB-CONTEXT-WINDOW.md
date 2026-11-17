@@ -2,13 +2,75 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-17 — canonical architecture consolidation pass
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
-This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from commits API at start of this pass)
+Current documentation working branch: `docs/cloud-pool-reference-architecture-2026-11-17` (NOT merged; do not call it default/canonical production code)
+Latest open implementation PR observed: #116, head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+Latest PR #116 exact-head checks observed: No-secret install/resource proof SUCCESS (run 44083961406); workflow syntax/security invariants SUCCESS (run 44083961455); Pool Contract Validation SUCCESS (run 44083961455). These checks do not prove provider route, agent task execution, persistent workspace, or Contour A acceptance.
+Active default-branch ruleset: ID `26550182`, enforcement active on `refs/heads/Основной`; PR required, review-thread resolution required, required approving review count 0, no required status-check contexts. Treat governance as insufficient for production acceptance.
+This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`.
+
+## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-17
+
+**Canonical system architecture proposal:** [Cloud Development Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).  
+**Architecture decision:** [ADR-0015 — Consolidate Cloud Pool around a governed control plane](../decisions/2026-11-17-cloud-pool-architecture-consolidation-adr.md).  
+**Dated evidence report:** [2026-11-17 architecture consolidation](../reports/2026-11-17-cloud-pool-architecture-consolidation.md).
+
+This snapshot supersedes older maturity/status statements in the historical sections below wherever they differ. Those sections are retained as history and must not be interpreted as a fresh read-back.
+
+### Current phase and boundaries
+- Priority: Contour A only. Contour B / MediaHub OS product development remains DEFERRED until Contour A is ACCEPTED.
+- Cloud Pool is a governed control plane plus ephemeral execution workers and a separately qualified persistent Engineering Workspace.
+- Jarvis is the single user-facing console; it is not an authorization authority.
+- GitHub-hosted runners are ephemeral workers, not a persistent web host, filesystem or transactional state store.
+- One transactional authority must own mutable admissions, task/attempt state, leases, outbox and quota reservations. D1 is the preferred candidate due to isolated proofs, but is NOT selected/deployed/qualified as a hosted production service.
+- GitHub Issues and labels are intake/projection only; Actions concurrency and label mutation are not authoritative distributed locks.
+- Gemini must use only the approved controller. No direct dispatch bypass, provider calls, paid fallback or secret exposure.
+- Provider accounts and quota domains are independent identities; no silent cross-account fallback.
+- Worker jobs receive no provider secrets by default.
+
+### Current evidence and maturity
+| Area | Current status |
+|---|---|
+| 20-slot GitHub-hosted architecture | DESIGN; not 20 persistent machines or guaranteed capacity |
+| Supervisor / Worker | Scaffold and isolated proof work; durable hosted lease and full end-to-end execution NOT QUALIFIED |
+| Atomic A0/D1 admission | Isolated local proof; hosted authority/issuer/route evidence NOT QUALIFIED |
+| Route/quota qualification | NOT QUALIFIED for a real free provider route |
+| Gemini controller | Approved path exists; each dispatch requires current gates and evidence; this docs pass did NOT RUN agents |
+| Claude Code + ECC + FCC | PR #116 OPEN/DRAFT; install/resource and FCC loopback lifecycle evidence exists at specified earlier heads; no provider route or Claude task execution qualification |
+| Jarvis Web | NOT DEPLOYED as authenticated live control plane |
+| Persistent Engineering Workspace | BLOCKED by Issue #118; no active authorized server #3, no qualified Cloudflare Access/Tunnel, no persistence/restore evidence |
+| Contour A | NOT ACCEPTED |
+| Contour B | DEFERRED |
+
+### Current governance
+- Ruleset ID 26550182 is active on the default branch.
+- It requires PRs and review-thread resolution, but has 0 required approving reviews and no required status-check contexts. This is insufficient independent governance for critical control-plane merges or dispatch.
+- Branch protection endpoint details beyond the ruleset are NOT VERIFIED in this pass.
+- Do not enable `POOL_DISPATCH_ENABLED` or trigger model/worker execution based solely on the existence of a workflow or issue label.
+
+### Current open items
+1. Strengthen default-branch governance with owner-approved required reviews and exact status checks.
+2. Qualify one hosted transactional state authority, including identity, free-tier, transaction, backup/restore and independent security evidence.
+3. Implement and qualify storage-backed fenced leases, outbox/inbox, duplicate suppression and ambiguous-dispatch recovery.
+4. Qualify one real worker profile and one genuinely free provider route with per-account quota evidence.
+5. Deploy authenticated Jarvis Web and validate phone/desktop authorization.
+6. Resolve Issue #118 persistent workspace host, Access, storage, isolation and restore gates.
+7. Complete end-to-end execution and independent Contour A acceptance.
+
+### Source hierarchy
+1. Live GitHub refs, immutable commits, PRs, exact-head checks, issues and active ruleset read-backs.
+2. This CURRENT AUTHORITATIVE SNAPSHOT.
+3. [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) for system-level target decisions.
+4. Detailed contracts for exact protocol fields and invariants.
+5. Dated reports/checkpoints for historical evidence.
+6. Older sections below are historical snapshots; revalidate before reuse.
+
+### Current work branch
+`docs/cloud-pool-reference-architecture-2026-11-17` is a documentation-only branch based on immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It adds the canonical reference architecture, ADR, report, README alignment, and this context refresh. It is not merged and does not change runtime behavior.
+
 
 ---
 
