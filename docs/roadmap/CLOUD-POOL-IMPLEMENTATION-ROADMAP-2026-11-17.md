@@ -2,8 +2,8 @@
 
 The canonical implementation target is [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md).
 
-- Latest executor candidate: PR #116 head `2b4b02b331b0dd4547baac11f7d38fe232872431`; synthetic FCC environment allowlist and bridge now pass exact-head CI (run 44083551665) and Pool Contract Validation (run 44083551660).
-- Next immediate engineering work: qualify one free FCC route/account/quota without secret-value reads; integrate production A0/D1 admission, lease/fencing and recovery.
+- Latest executor candidate: PR #116 head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; synthetic FCC environment allowlist and bridge pass exact-head CI (run 44083961406) and Pool Contract Validation (run 44083961455). One repository-owner COMMENTED review is recorded; it is not an independent external approval. PR remains OPEN / DRAFT / UNMERGED.
+- Next immediate engineering work: close production runner hardening findings (trusted pinned PATH directories, HOME/XDG credential review, integrity-pinned Claude installer and actual egress enforcement); then qualify one free FCC route/account/quota without secret-value reads and integrate production A0/D1 admission, lease/fencing and recovery.
 - Final Contour A includes the persistent Engineering Workspace: after initial CODE and A0/D1 gates, qualify server #3, Cloudflare Access/Tunnel, one shared filesystem for desktop VS Code and browser code-server/Open VSX, per-attempt worktrees/leases/fencing, backup/restore and independent A3 evidence. It is not required for the first ephemeral-runner smoke, but it is required before Contour A can be ACCEPTED.
 - Contour B remains prohibited until formal Contour A ACCEPTED.
 - Gemini/Codex/MEDIA remain supplementary and separately gated. Gemini dispatch is NOT RUN; keep `POOL_DISPATCH_ENABLED=false`.
