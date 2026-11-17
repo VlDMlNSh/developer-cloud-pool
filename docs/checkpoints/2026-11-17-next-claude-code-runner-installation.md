@@ -75,9 +75,9 @@ Separate MediaHub OS map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/medi
 
 The implementation baseline is now linked across:
 - Owner architecture blob: `d0019528b3c233e3f450909b1ab5752d041d6f79`.
-- Implementation roadmap blob: `5c2158e8189f46a9d8286a6729152718b7b3be37`.
-- Context Window blob: `a40f49e0be871d27261901926cc14c2db27ff3cd`.
-- Master continuation prompt blob: `03a7404ce403ad7d44c7d66832d9655a599d2f8c`.
+- Implementation roadmap blob: `5e1d9a84d7d1848af5e2bf130daba3eb73212c6d`.
+- Context Window blob: `71629e5c67051c9a07dd39a04b3253d200eb4a59`.
+- Master continuation prompt blob: `03a7404ce403ad7d44c7d66832d9655a599d2f8c` (unchanged in this pass).
 - All are on documentation PR #113 branch only; default branch is unchanged.
 
 Controlling issue amendments published:
@@ -139,3 +139,7 @@ No production dispatch, provider call, secret read, deployment, merge, or Contou
 **Interpretation:** the no-secret installation/resource smoke is SUCCEEDED. The operational Claude Code profile is NOT QUALIFIED until a separate FCC loopback runtime/health/start-stop test, synthetic FCC-to-Claude bridge test, verified free API route/quota, and independent review pass.
 
 **Next:** loopback-only FCC runtime smoke on a GitHub-hosted runner, with no provider credentials and no provider calls.
+
+Latest report file blob: `0fadd0354bda3c974fe77dc859fbb8377892920a`.
+Latest Context Window blob: `71629e5c67051c9a07dd39a04b3253d200eb4a59`.
+Latest roadmap blob: `5e1d9a84d7d1848af5e2bf130daba3eb73212c6d`.
