@@ -72,3 +72,24 @@ Qualify one free FCC provider route and its account/quota evidence without readi
 ## Architecture/roadmap reconciliation
 
 During final reconciliation, an ambiguity was found between an older reference-architecture sentence calling the persistent workspace a later optional extension and the roadmap's explicit Contour A target. The canonical architecture and roadmap are now aligned: the persistent Engineering Workspace is required for final Contour A acceptance, but staged after the first ephemeral CODE runner and A0/D1 gates. Server #3, Cloudflare Access/Tunnel, shared desktop/browser filesystem, worktree leases/fencing and backup/restore remain BLOCKED / NOT RUN until separately qualified. This correction does not change the current immediate next step (free route qualification and A0/D1 integration) and does not authorize Contour B.
+
+## Latest PR-head reconciliation — 2026-11-17 12:33 UTC
+
+After the initial successful exact-head run at `2b4b02b331b0dd4547baac11f7d38fe232872431`, the PR branch advanced by two owner-authored commits:
+- `e538ecdc8cc28f789a872e9751bf4c8ef3047b30`: add allowlist source/test paths to workflow trigger and correct launcher provenance.
+- Latest PR #116 head: `367c583a508061cebe41bb8d33e98c24a0dd8ba6`.
+
+Latest exact-head checks:
+- Runner qualification [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406): SUCCESS; job `134041463409`; all 14 steps succeeded.
+- Pool Contract Validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455): SUCCESS.
+- Artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788): 13,602 bytes; GitHub digest `sha256:1349930866e41e17d77df0ca0e665c8e8ab33dafb374f81bbbf9c99ff1d8c79e`. Metadata/digest available from GitHub; archive bytes not independently inspected.
+- One PR review exists from repository owner `VlDMlNSh`, state COMMENTED. It is not an independent external review and is not an approval. PR remains OPEN / DRAFT / UNMERGED.
+
+Review residuals now explicitly captured in the canonical architecture:
+1. Mock-only bridge does not prove real provider route, free entitlement, quota identity or real Claude session.
+2. No provider call in the test is not proof of a runner-level egress firewall; production egress remains NOT VERIFIED.
+3. PATH absolute/non-empty validation does not prove directory ownership/integrity; production must construct PATH from trusted pinned directories. HOME/XDG locations require review for unintended credentials.
+4. Installer script version is pinned but its downloaded bytes are not hash-pinned; production requires integrity-pinned installer/supply-chain evidence.
+5. Wrapper constrains the wrapped child only; it is not a host-wide or all-process secret scrubber.
+
+The current head and review do not authorize production dispatch. Keep `POOL_DISPATCH_ENABLED=false`. No provider credentials or GitHub Secret values were read; no provider/model API call or real Claude task was performed.
