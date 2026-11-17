@@ -17,12 +17,12 @@ This newer owner instruction requests one Jarvis Control Plane, persistent share
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-17 — owner implementation baseline and first Claude Code/FCC/ECC runner revalidation
+Last refreshed: 2026-11-17 — FCC loopback lifecycle proof and four-Gemini owner directive
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from repository commit history during /next, 2026-11-17; unchanged)
 Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh` (PR #113 OPEN/DRAFT/UNMERGED; fetch live PR head before any write)
-Latest report update commit: `36d6b65ab87e8aded1bf7063b045129e98c2be61` (2026-11-17 runner qualification report; documentation branch remains unmerged)
+Latest dated report commit: `d8e62ee93cb5861c5a37550b33cedd272004b58a` (2026-11-17 FCC loopback runtime and four-Gemini gate; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2580,3 +2580,16 @@ Current Pool Contract Validation run `44075999524` explicitly read back `POOL_DI
 **FCC runtime lifecycle pass:** pinned FCC source `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` confirms `fcc-server` entrypoint, `HOST` default `0.0.0.0`, `PORT` default `8082`, browser auto-open default true, and local-only `GET /admin/api/status` guarded by loopback client/Host/Origin. PR #116 workflow now explicitly sets HOST=127.0.0.1, FCC_OPEN_BROWSER=false, PROVIDER_MAX_ATTEMPTS=1 and uses only a read-only loopback GET. No provider credentials/calls or completion endpoint. First run #44075802559 failed due an escaped runner.temp expression; second #44075999516 reached HTTP 200 but SIGTERM exited 143. Both defects were corrected (runner path and SIGINT graceful shutdown). Latest PR #116 head `596c03e19b4662f69a9b40791299f55afb9a928e`; Pool Contract Validation run `44076256865` SUCCESS; runtime run `44076256742` RUNNING at this update. Do not mark lifecycle proof successful until its job, listener, shutdown and artifact are rechecked.
 
 Next: verify exact-head run `44076256742`; correct any remaining issue with evidence; then finish Issue #117. Four-agent live dispatch remains NOT RUN until the Cloud Pool-native controller gates are qualified. Contour A remains NOT ACCEPTED; Contour B deferred.
+
+
+## FINAL /next RECONCILIATION — 2026-11-17
+
+- Full dated report: [2026-11-17 FCC loopback runtime and four-Gemini gate](../reports/2026-11-17-next-pass-fcc-loopback-and-four-gemini-gate.md), report commit `d8e62ee93cb5861c5a37550b33cedd272004b58a`.
+- PR #116 final head `596c03e19b4662f69a9b40791299f55afb9a928e`; workflow blob `3786d3c23d434f9af39c40203b0a53f888c2b12a`.
+- Runner lifecycle run [44076256742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256742): SUCCESS; job `134014928455`. Readiness GET returned 200, exact loopback listener asserted, SIGINT shutdown exit 0 and listener removal asserted by the passing job.
+- Artifact [14325645831](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256742/artifacts/14325645831), 12,548 bytes, GitHub SHA-256 `6eced8c6b355f89a39c897a2ad5daab4e93b4055d73067ff7ceef7ac0bd1c9eb`.
+- Pool Contract Validation [44076256865](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256865): SUCCESS; job `134014929136`; log read-back `POOL_DISPATCH_ENABLED=false` and `POOL_CONTRACT_VALIDATION=PASS`.
+- Two earlier failed runtime attempts (`44075802559`, `44075999516`) are retained historically and superseded by the successful final run.
+- Current owner instruction: four Gemini assignments requested for every `/next`; comments are recorded on Issue #94 (#6947028166) and Issue #96 (#6947031522). Actual Gemini dispatch remains NOT RUN: no default-branch Cloud Pool Gemini dispatch workflow, PR #107 candidate is based two commits behind default, PR #109 is fake-client tests only, PR #112 read-only, PR #114 dispatch:false, and no independent review/account quota proof. Do not use the MediaHub three-agent bridge as a substitute. Keep `POOL_DISPATCH_ENABLED=false`.
+- PR #116 and PR #113 remain OPEN / DRAFT / UNMERGED; PR #116 formal reviews 0 / threads 0. Contour A NOT ACCEPTED; Contour B deferred.
+- Next bounded step: synthetic FCC-to-Claude CLI bridge test with mock provider/no credentials, then independent review of PR #116. Gemini controller qualification continues behind Issues #94/#96.
