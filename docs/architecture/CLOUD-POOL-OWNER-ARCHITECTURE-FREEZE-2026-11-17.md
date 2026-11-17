@@ -212,3 +212,8 @@ Contour A remains NOT ACCEPTED; Contour B remains DEFERRED. Next bounded priorit
 ## Third-party license gate — 2026-11-17
 
 Pinned source inspection: FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` is `AGPL-3.0-only`; ECC `e413166c50e85fb205b988b5e78874b5a88ea4d2` is MIT. Claude Code CLI is vendor-distributed proprietary software, not an open-source component. Do not expose FCC as a network-facing service until AGPL network-use/source-offer implications and notices are reviewed for the intended deployment. The PR #116 workflow now verifies and captures the pinned FCC/ECC LICENSE files and their SHA-256 digests. The latest exact-head CI for that change is pending at recording time; no license-compliance approval is implied.
+
+
+## FCC account/quota isolation restriction — 2026-11-17
+
+Pinned FCC source and tests show support for numbered API-key lists and `MODEL_FALLBACKS` entries that can move between keys after rate-limit/permission failures. Cloud Pool must not use this behavior across accounts. Each qualified FCC executor profile must contain exactly one provider credential/account, one selected model route, no fallback-model list and no key cycling. Distinct accounts require distinct isolated profiles and independent quota ledgers. Verify configuration metadata without reading or logging secret values. This is an unresolved gate for Issue #115; installation/mock success does not qualify it.
