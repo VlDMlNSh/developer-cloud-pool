@@ -68,3 +68,7 @@ Qualify one free FCC provider route and its account/quota evidence without readi
 - [Canonical Reference Architecture 1.0](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md)
 - [Context Window](../context/GITHUB-CONTEXT-WINDOW.md)
 - [MediaHub canonical map](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md)
+
+## Architecture/roadmap reconciliation
+
+During final reconciliation, an ambiguity was found between an older reference-architecture sentence calling the persistent workspace a later optional extension and the roadmap's explicit Contour A target. The canonical architecture and roadmap are now aligned: the persistent Engineering Workspace is required for final Contour A acceptance, but staged after the first ephemeral CODE runner and A0/D1 gates. Server #3, Cloudflare Access/Tunnel, shared desktop/browser filesystem, worktree leases/fencing and backup/restore remain BLOCKED / NOT RUN until separately qualified. This correction does not change the current immediate next step (free route qualification and A0/D1 integration) and does not authorize Contour B.
