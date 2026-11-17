@@ -47,23 +47,24 @@ The following are deferred:
 
 ### Phase 1 — first CODE runtime installation proof
 
-**Status:** PENDING / NOT VERIFIED on the latest candidate head. One superseded attempt was cancelled.
+**Status:** RUNNING / NOT VERIFIED on the latest candidate head.
 
 - PR #116: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116
 - Branch: `feat/claude-code-fcc-runner-qualification-2026-11-17`.
-- Latest exact head: `7dcd58f73a87156c614ebf543c756ece6715762a`.
-- Workflow file blob: `7c3133f7916e53c12385af13a01276a59419c581`.
-- Latest workflow run: [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932), PENDING at last read.
-- Latest Pool Contract Validation run: [44069573866](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573866), PENDING at last read.
-- Superseded run [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324) on prior head `c5c14f6a11782e5787a38b1edd5e7983f15bf2e2` was CANCELLED after the workflow branch was updated. It did not qualify installation.
-- The prior Pool Contract Validation run `44066723253` succeeded on the old head only; it is not exact-head evidence for the latest workflow revision.
-- Latest workflow uses the official Claude Code native installer pinned to `2.1.325`, pinned FCC source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`, exact FCC `pyproject.toml` Git blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`, and exact `uv.lock` Git blob `ee8490c29a36f8302f5c1f1d42b465f6271c10f2`.
-- FCC installation now uses `uv sync --frozen --no-dev --python 3.14.10` from the pinned checkout, avoiding unlocked dependency resolution. ECC remains pinned to `e413166c50e85fb205b988b5e78874b5a88ea4d2`, with only `search-first`, `tdd-workflow`, and `security-review` copied.
-- Source inspection found that FCC's `fcc-server --help` does not print help: the server entrypoint starts the server unless `--version` is supplied. The latest workflow uses `fcc-server --version` and `fcc-doctor --version` for metadata-only checks; it does not start FCC.
-- The workflow creates a bounded provenance/resource artifact and SHA-256 inventory, keeps `contents: read`, reads no GitHub Secrets, makes no provider calls, and does not dispatch an agent task.
-- A previous Pool Contract Validation run on old head `c5c14f6...` passed static YAML and security-contract checks and observed `POOL_DISPATCH_ENABLED=false` at 2026-11-17 10:38:50 UTC. This is timestamped evidence, not a permanent current-state guarantee.
+- Latest exact head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`.
+- Workflow file blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
+- Latest workflow run: [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928), RUNNING at last read.
+- Latest Pool Contract Validation run: [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918), RUNNING at last read.
+- Prior runner run [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932) on head `7dcd58f73a87156c614ebf543c756ece6715762a` FAILED at Claude Code install. Exact log cause: `DISABLE_UPDATES=1` was present during native installation; installer reported updates disabled and the `claude` command was not found. This was a workflow environment mistake, not evidence that the runner lacks disk or memory.
+- Prior Pool Contract Validation run `44069573866` completed SUCCESS on head `7dcd58f73a87156c614ebf543c756ece6715762a`; it is not exact-head evidence for the current candidate.
+- Artifact [14320969240](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932/artifacts/14320969240) was downloaded. ZIP size 3,361 bytes; SHA-256 `d8dbe5a96d3f16b5dedd639d5c0b6ddbc5579bb2f605c0074ec52304a790327c`, matching GitHub's artifact digest. It contains runner baseline/provenance only because installation failed; it does not prove component installation.
+- The failed run's actual runner baseline: Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM, root filesystem 145 GiB with 89 GiB available at baseline. These are measurements for that job only, not a guarantee for every future runner.
+- Latest workflow removes `DISABLE_UPDATES`, retains `DISABLE_AUTOUPDATER=1`, discovers the native binary path, verifies the actual installed version and records `NOT_INSTALLED` rather than assuming a version if installation fails.
+- FCC source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; `pyproject.toml` Git blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`; `uv.lock` Git blob `ee8490c29a36f8302f5c1f1d42b465f6271c10f2`; Python `3.14.10`; install command `uv sync --frozen --no-dev --python 3.14.10`.
+- FCC source inspection confirmed `fcc-server --help` starts the server; metadata-only proof uses `fcc-server --version` and `fcc-doctor --version`. ECC is pinned to `e413166c50e85fb205b988b5e78874b5a88ea4d2`, with only `search-first`, `tdd-workflow`, and `security-review` installed.
+- Workflow remains `contents: read`; no GitHub Secret values read, no provider calls, no FCC server startup, no agent task and no production dispatch.
 
-**Exit:** latest exact-head runner run succeeds; full job logs show reproducible installs and resource headroom; artifact and digests are read back; no provider calls or secret access; independent review passes. This proves installation only, not model-route health or quota.
+**Exit:** latest exact-head run succeeds; full logs show reproducible Claude Code/FCC/ECC installation and resource headroom; artifact and digests are verified; no secret/provider calls; independent review passes. This proves installation only, not model-route health or free quota.
 
 ### Phase 2 — FCC security and routing policy qualification
 
@@ -168,11 +169,13 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 
 - Default branch Основной HEAD: 35208f0ef28f0ac031a7acdf35fc90ccc9b16845.
 - Documentation PR #113: OPEN / DRAFT / UNMERGED; head ce90cf7a1394ec1bc45ac5951b4712177333fce9.
-- First executor PR #116: OPEN / DRAFT / UNMERGED; latest head 7dcd58f73a87156c614ebf543c756ece6715762a.
-- Latest runner qualification run 44069573932 and latest Pool Contract Validation run 44069573866 are PENDING at last read; exact-head results NOT VERIFIED.
-- Superseded runner run 44066723324 was CANCELLED after the workflow was corrected; it is not an install pass.
-- Previous contract run 44066723253 succeeded only on the superseded head c5c14f6a11782e5787a38b1edd5e7983f15bf2e2. Its timestamped log observed POOL_DISPATCH_ENABLED=false at 10:38:50 UTC.
-- Latest workflow now uses official pinned Claude Code native install, FCC locked dependency sync, metadata-only FCC version checks, selected ECC skills and a bounded evidence artifact. No secret values or provider calls were used.
+- First executor PR #116: OPEN / DRAFT / UNMERGED; latest head bddcdc3f27044d8a5115556d9913a6dd839ddc1a.
+- Latest runner qualification run 44069967928 and latest Pool Contract Validation run 44069967918 are RUNNING at last read; exact-head results NOT VERIFIED.
+- Prior runner run 44069573932 FAILED because DISABLE_UPDATES=1 was incorrectly applied during native installation; the failure is documented and corrected on the current head.
+- Prior contract run 44069573866 succeeded only on superseded head 7dcd58f73a87156c614ebf543c756ece6715762a.
+- Earlier run 44066723324 was CANCELLED after the first workflow correction; it is not an install pass.
+- Artifact 14320969240 from run 44069573932 was downloaded and SHA-256 verified against GitHub's digest; it records baseline/provenance only, not successful installation.
+- Current workflow uses official pinned Claude Code native install, FCC locked dependency sync, metadata-only FCC version checks, selected ECC skills and a bounded evidence artifact. No secret values or provider calls were used.
 - Active ruleset #26550182: PR required, zero approvals, no bypass actors, no required status contexts.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
