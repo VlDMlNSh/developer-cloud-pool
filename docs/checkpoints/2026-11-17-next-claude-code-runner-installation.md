@@ -256,3 +256,16 @@ Complete Issue #119 synthetic FCC-to-Claude CLI bridge with mock-only/no credent
 - No secrets/provider calls/Gemini dispatch/deployment/merge. Keep `POOL_DISPATCH_ENABLED=false`.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: qualify first real free route/account/quota only after A0/D1/authority/security gates, while preserving fail-closed dispatch; Workspace Issue #118 remains blocked on host/Cloudflare/persistence prerequisites.
+
+
+## /next checkpoint — full chat-to-architecture completeness audit — 2026-11-17
+
+- Default `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Docs candidate branch PR #113: OPEN/DRAFT/UNMERGED; compare 129 commits ahead, 0 behind; 29 documentation files in diff. Candidate branch contains the integrated canonical architecture and all session records, but default branch does not yet contain them.
+- PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`: qualification run 44083961406 SUCCESS; contract validation 44083961455 SUCCESS; artifact 14329030788 available; independent review 5938432852 COMMENTED.
+- Canonical architecture Sections 15.1–15.8 now include three-plane Workspace design, shared filesystem/worktrees, single-writer fencing leases, VS Code Remote SSH, code-server/Open VSX, Cloudflare Access/Tunnel, Claude/ECC/FCC, controller-only Gemini, optional Copilot, persistence/backup/restore and latest mock qualification evidence.
+- Latest owner scope correction: Gemini is optional supplementary execution, not mandatory for every /next or Contour A launch. Older conflicting paragraphs are explicitly superseded by dated amendments in canonical architecture, owner freeze, workspace record and roadmap.
+- Issue #119 CLOSED for synthetic mock bridge only. Issue #115 OPEN for provenance/license and real free route/account/quota gates. Issue #118 OPEN/BLOCKED for host #3, Cloudflare, persistent storage and restore.
+- Ruleset ID 26550182 active on `Основной`, blocks deletion/non-fast-forward and requires PR/thread resolution. Branch-protection endpoint was inaccessible (403); full protection settings NOT VERIFIED. PR #113 has no reviews/status/checks.
+- No secrets/provider calls/Gemini dispatch/deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue free-route/provenance qualification under Issue #115 and retain fail-closed A0/D1. Do not merge docs PR #113 without independent review.
