@@ -1,3 +1,47 @@
+# CURRENT PASS — INDEPENDENT AUDIT REALIZATION MAP — 2026-11-17
+
+**Status:** PROPOSED / OPEN DRAFT PR; NOT MERGED, NOT ACCEPTED  
+**Repository:** https://github.com/VlDMlNSh/developer-cloud-pool  
+**Default branch:** `Основной`  
+**Observed default HEAD from the canonical context baseline:** `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read of the live default ref was not exposed by the available branch-search call in this pass; treat this as the previously observed baseline, NOT a fresh SHA attestation).  
+**Immutable parent target:** PR #120 head `d717c999906341efbdcb65a25dfd73269220e691`.  
+**Current work branch:** `docs/cloud-pool-realization-map-2026-11-17`, created from that exact PR #120 head.  
+**Purpose:** translate the independent 2026-11-17 audit into one subordinate implementation map without replacing the selected architecture.
+
+## Work completed in this pass
+
+- Added [Unified Realization Map](../architecture/CLOUD-POOL-UNIFIED-REALIZATION-MAP-2026-11-17.md): six logical layers, one integration route, reduced service-hop complexity, explicit authority boundaries, separate ephemeral execution and persistent workspace, two durable state domains plus immutable evidence, dynamic capability scheduler, one Jarvis application, mature-component adoption rules, security gates, staged delivery and blocker register.
+- Added Section 23 to [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) linking the map as a subordinate implementation sequence.
+- Preserved existing core invariants: Control Plane / Execution Plane; Jarvis as UI not authority; GitHub Actions as ephemeral workers; one transactional state authority; immutable SHA and evidence; independent issuer/account/quota domains; fail-closed policy; no paid fallback; Gemini controller-only; Contour B deferred.
+- Captured security remediation gates for runner egress residual risk, PATH/executable trust and cryptographic installer provenance. No runtime code was changed in this documentation pass.
+
+## Live refs and evidence re-read
+
+- PR #120: OPEN / DRAFT / UNMERGED; head `d717c999906341efbdcb65a25dfd73269220e691`; base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; mergeable=true at read.
+- PR #122: OPEN / DRAFT / UNMERGED; head `4f5b2e9d5b7c434dcbd18d056fbaea6ee3f4b406`; base branch `docs/cloud-pool-reference-architecture-2026-11-17` at `435a1838f7e22f0f5ec08611bd24608066fd5d79`; mergeable=false at read. Do not merge independently of PR #120; dependent branch reconciliation remains necessary.
+- PR #116: OPEN / DRAFT / UNMERGED; head `6d4a4c518d44aa4a79d8396390623f424499011a`. Workflow runs `44086419084` (Claude/FCC/ECC qualification) and `44086419002` (Pool Contract Validation) both COMPLETED / SUCCESS on that head. Combined status endpoint returned zero status contexts; workflow-run evidence is the positive evidence. These runs prove bounded no-secret install/runtime/synthetic bridge checks only, not a real Claude task or provider route.
+- Issue #117 CLOSED: FCC loopback lifecycle smoke tracked as completed bounded evidence.
+- Issue #119 CLOSED: synthetic FCC-to-Claude bridge; mock executable only, not real Claude session/provider execution.
+- Issue #118 OPEN / BLOCKED: no active authorized server #3, no qualified Access/Tunnel ingress, no persistent storage/restore proof in its recorded evidence.
+- Default ruleset #26550182 was last recorded active but weak: 0 required approving reviews and no required status checks. Re-read exact rules before any merge or dispatch; governance hardening remains required.
+
+## Status boundaries
+
+- Reference architecture and this realization map: PROPOSED until independent review and merge.
+- Runtime deployment: NOT RUN in this pass.
+- Provider calls / Gemini dispatch / secret reads: NOT RUN.
+- New code or workflow tests: NOT RUN (documentation-only pass).
+- Exact-head CI for this new branch: NOT VERIFIED at checkpoint creation.
+- Independent review: NOT RUN.
+- Jarvis authenticated deployment, hosted state authority, durable Supervisor, real free provider route and persistent Workspace: NOT QUALIFIED.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+
+## Next concrete step
+
+Create a dependent Draft PR targeting the current PR #120 head branch, validate architecture documentation links and exact-head CI, obtain independent review, and reconcile PR #122's stale/non-mergeable dependency branch. Then stop adding architecture layers and execute the first small authenticated Jarvis read path (S1) or report its exact hosting/auth blocker. Keep all production dispatch disabled.
+
+---
+
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
