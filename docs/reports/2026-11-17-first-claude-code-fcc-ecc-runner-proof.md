@@ -83,3 +83,23 @@ The latest workflow revision removes `fcc-claude --help` entirely. It retains on
 5. Only after this proof is clean, begin FCC's explicit free-route configuration and compatibility qualification. Do not read secret values or make provider calls before the route-specific security/quota gate is approved.
 
 **Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.**
+
+## Subsequent clean no-server installation attempt — 2026-11-17
+
+- PR #116 head at the time: `fda850b4f77800873c93b76dcd55ec362656d844`.
+- Runner workflow [44070273026](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070273026) completed SUCCESS; job `133994419423` completed all steps successfully.
+- Pool Contract Validation [44070273019](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070273019) completed SUCCESS.
+- Log inspection confirmed FCC metadata checks completed, no `Starting Free Claude Code` line appeared, and no orphan `fcc-server` process was terminated during cleanup.
+- Artifact [14321048940](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070273026/artifacts/14321048940), 11,199 bytes, was downloaded. SHA-256 recomputed locally as `ffd2113dfb44b25b76b4be6bc4c7f2e9f51f29550be84161003f4126032aa1f9`, matching GitHub's artifact digest.
+- Artifact verifies Claude Code `2.1.325`, FCC `6.19.35`, Python `3.14.10`, ECC commit and all three selected skill digests. Manifest records `fcc_server_started=false` and `fcc_client_launcher_invoked=false`; logs agree.
+- Resource snapshot: 4 vCPU, 15 GiB RAM, 145 GiB root filesystem, 86 GiB free at baseline and 85 GiB after installation. Installed sizes: Claude 349 MB, FCC virtual environment 176 MB, uv cache 12 MB, selected ECC skills 68 KB. FCC locked sync elapsed 1.66 seconds, max RSS 111,328 KiB. These are single-job measurements only.
+- This proves the three packages can be installed on this runner without starting FCC. It does not prove FCC server runtime, provider routing, free quota, Claude Code task execution through FCC, Jarvis, or end-to-end Pool A0.
+
+## Provenance correction
+
+The fda850b... artifact recorded `target_sha` from `GITHUB_SHA`, which is the pull-request merge SHA, not the PR head SHA. The latest workflow revision now records the PR head SHA, GitHub event SHA, checked-out SHA and base SHA separately. This is a provenance-only correction; the installation procedure is unchanged.
+- Latest candidate head: `f7d490a63aefa007ff8d74e7de961349f54a27e9`.
+- Workflow blob: `4264048f004404847ccada72e03c3165abebf321`.
+- Runner run [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717) was RUNNING at last read.
+- Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842) completed SUCCESS.
+
