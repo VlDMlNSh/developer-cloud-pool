@@ -25,6 +25,13 @@ The consolidated candidate also carries the Architecture Assurance Addendum and 
 - Architecture Documentation Validation run [44093374811](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093374811) completed SUCCESS on head `d8bea16ca270194266c1ccc0a68220987146b0a3`.
 - Pool Contract Validation was not observed for this documentation-only head; exact-head result is NOT RUN / NOT VERIFIED.
 
+## Final exact-head and integration status
+
+- PR #124 is OPEN/DRAFT/UNMERGED, mergeable=true, based exactly on PR #120 head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`.
+- Exact-head Architecture Documentation Validation run [44093719797](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093719797) SUCCESS on `e306a84167508b582c1504efb1d3a5cdcf40ce4e`.
+- PR #122 and #123 were closed as superseded; their substantive content is preserved in PR #124.
+- Pool Contract Validation was not observed on the documentation-only head. Independent review remains pending.
+
 ## Evidence boundary
 
 This is a documentation/integration correction only. No runtime implementation, deployment, provider call, Gemini dispatch, secret read or production dispatch occurred. The new branch requires exact-head documentation and contract CI plus independent architecture/security review. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
