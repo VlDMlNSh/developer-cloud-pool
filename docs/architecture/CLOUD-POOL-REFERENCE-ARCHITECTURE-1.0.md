@@ -17,7 +17,7 @@ Do not build a new general-purpose agent framework, model runtime, browser engin
 The platform has two physically and logically distinct compute classes:
 
 1. **Ephemeral execution workers** — GitHub-hosted jobs or other explicitly qualified short-lived workers. A worker receives one bounded task, executes in an isolated environment, emits evidence, and is destroyed. It is not a server, durable workspace, or state database.
-2. **Persistent Engineering Workspace** — a separately authorized host/service with durable files, Git worktrees, terminal and browser IDE access. It is optional and currently BLOCKED pending host, identity, network, storage, backup/restore, and free-tier qualification.
+2. **Persistent Engineering Workspace** — a separately authorized host/service with durable files, Git worktrees, terminal and browser IDE access. It is a mandatory Contour A acceptance capability, staged after the initial GitHub-only Jarvis milestone; it is currently BLOCKED pending host, identity, network, storage, backup/restore, and free-tier qualification.
 
 Jarvis is the single user-facing experience. It is not the authorization authority and never receives unrestricted worker or provider credentials.
 
@@ -446,7 +446,7 @@ Before adoption, record: upstream commit/release, license, maintenance/security 
 | ADR-008 | Fenced lease + outbox/inbox + idempotency are mandatory | Safe concurrency and ambiguous recovery |
 | ADR-009 | Provider accounts and quota domains remain isolated | No hidden quota pooling or silent fallback |
 | ADR-010 | Gemini uses only the approved controller | Preserve reviewed governance path |
-| ADR-011 | Persistent workspace is a separate optional plane | Distinguish interactive host from short-lived runners |
+| ADR-011 | Persistent workspace is a separate, staged plane and mandatory Contour A acceptance capability | Distinguish interactive host from short-lived runners; do not make it a first static-PWA launch dependency |
 | ADR-012 | Reuse mature tools behind narrow adapters | Reduce custom code and maintenance burden |
 | ADR-013 | Independent acceptance is separate from CI | Prevent implementer self-certification |
 | ADR-014 | No paid fallback or unverified free-tier assumption | Respect project budget and user constraint |
@@ -466,7 +466,7 @@ No phase is complete because its documents exist. Each phase requires runnable e
 | A4 — Worker | One real no-secret allowlisted task | Exact-head execution, cleanup, provenance, independent review | SCAFFOLD / partial profile proof |
 | A5 — Route qualification | One genuinely free route, per-account quota | Provider evidence, live quota observation, cost cap, no fallback | NOT QUALIFIED |
 | A6 — Jarvis Web | Authenticated phone/desktop UI connected to live read API | Browser/mobile tests, auth, CSRF, authorization, evidence UX | NOT DEPLOYED |
-| A7 — Workspace | Persistent host, IDE, Git worktrees, backup/restore | Owner-authorized host + identity + isolation + restore + free cost | BLOCKED (Issue #118) |
+| A7 — Workspace | Persistent host, IDE, Git worktrees, backup/restore | Owner-authorized host + identity + isolation + restore + free cost; required before Contour A acceptance | BLOCKED (Issue #118) |
 | A8 — End-to-end | Submit → approve → admit → lease → execute → verify → accept | Repeated end-to-end run and failure/recovery evidence | NOT RUN |
 | A9 — Independent acceptance | Security/governance/operations review | All acceptance criteria passed with published evidence | NOT RUN |
 
@@ -477,6 +477,7 @@ No phase is complete because its documents exist. Each phase requires runnable e
 - At least one provider/model route is genuinely qualified under free-tier constraints, with account and quota isolation.
 - Admission and durable lease prevent replay, duplicate ownership and stale finalization.
 - State survives service restart; backup/restore is tested.
+- Persistent Engineering Workspace is qualified: desktop VS Code Remote SSH and browser code-server/Open VSX access the same authoritative filesystem; task worktrees are isolated; single-writer fencing is enforced; encrypted backup/restore is independently verified.
 - Secrets are isolated and absent from logs/artifacts.
 - Worker isolation, egress, path scope, timeout and cleanup are demonstrated.
 - Evidence is bound to immutable source and exact workflow/job identities.
@@ -532,21 +533,21 @@ The first Jarvis milestone must not depend on a physical/self-hosted machine, a 
 2. GitHub Pages/static assets and GitHub Actions runners are not an always-on API server. Do not put OAuth client secrets, installation tokens, provider credentials or privileged write tokens in browser assets.
 3. Do not simulate authenticated write/approval/dispatch APIs in a static page. If a secure server-side OAuth/session/API cannot be delivered with an explicitly qualified GitHub-native capability, mark that capability BLOCKED and retain read-only behavior.
 4. Cloudflare Workers/Pages, D1, Access, Tunnel and any external host remain candidates requiring separate current free-tier, identity, security, data-residency, backup/restore and owner-authorization qualification. No card, upgrade, paid fallback or billable provisioning.
-5. A later Workspace/hosted API stage may be added only after the owner explicitly approves the hosting boundary and its security/cost evidence. This stage separation supersedes any older text that implicitly makes Cloudflare or a self-hosted server a first-release dependency.
+5. The Persistent Engineering Workspace and authenticated hosted API are later staged capabilities, not dependencies of the first static-PWA milestone. They remain mandatory before Contour A can be ACCEPTED. Each requires explicit owner approval of the hosting boundary plus security, identity, persistence/recovery and free-cost evidence. This stage separation does not waive the final acceptance requirement.
 
 ### 21.2 Integrated Jarvis / Workspace / Execution model
 
 Keep one Jarvis user experience and three distinct logical planes:
 
 - **Jarvis Control Plane:** the sole responsive phone/desktop console; chat/task intake, status, approvals, agents, model/account/quota views (redacted), artifacts and audit. Jarvis requests work but is not A0, route authority or a worker.
-- **Engineering Workspace Plane:** an optional separately authorized long-lived user development environment, distinct from ephemeral Actions runners and the transactional state store. It is a target capability, not a first GitHub-only launch dependency.
+- **Engineering Workspace Plane:** a separately authorized long-lived user development environment, distinct from ephemeral Actions runners and the transactional state store. It is not a first GitHub-only launch dependency, but qualification is mandatory before Contour A acceptance.
 - **Agent Execution Plane:** isolated short-lived task attempts, each bound to immutable target SHA, typed profile, allowed paths/operations, account/quota identity, resource limits and evidence contract.
 
 A single Jarvis console must expose status and launch links for qualified workspace/execution components; do not create competing dashboards or let a UI surface grant authority.
 
 ### 21.3 Workspace access and shared filesystem contract
 
-If and when the optional Workspace stage is approved:
+Before Contour A acceptance, after the initial GitHub-only Jarvis milestone and all host/access/security gates are approved:
 
 - The browser IDE and desktop IDE must use the **same authoritative persistent filesystem and Git repository**, not separate copies or sync-based replicas.
 - Desktop path: official VS Code Desktop + Remote SSH through a verified SSH host key and an approved private/zero-trust transport. Never expose public SSH or disable host-key verification.
