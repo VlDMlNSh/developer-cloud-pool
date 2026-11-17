@@ -202,7 +202,7 @@ These are deliberately explicit; architecture completeness does not mean these p
 | Item | Status | Required evidence / resolution |
 |---|---|---|
 | PR #120 architecture consolidation | OPEN / DRAFT / UNMERGED; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5` | Independent review, exact-head CI, merge under governance |
-| PR #124 unified realization integration | OPEN / DRAFT / UNMERGED; head `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; Architecture Documentation Validation run `44094563351` SUCCESS | Independent review, pool contract/security check as applicable, governance-qualified merge |
+| PR #124 unified realization integration | OPEN / DRAFT / UNMERGED; head `91e579f2b945e286a47549fce4d292240e644d55`; parent PR #120 advanced to `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`, so PR #124 is behind by one commit and requires rebase before review | Independent review, pool contract/security check as applicable, governance-qualified merge |
 | Default ruleset | Live ruleset `26550182` is ACTIVE on `refs/heads/Основной`, requires PR and review-thread resolution, but has 0 required approvals and no required status checks | Effective independent approval and exact-head required checks |
 | Hosted transactional state | NOT QUALIFIED | One selected service, identity, free-tier, concurrency, restore and security evidence |
 | Durable supervisor | NOT QUALIFIED | Hosted fenced lease, outbox/inbox, recovery and adversarial evidence |
