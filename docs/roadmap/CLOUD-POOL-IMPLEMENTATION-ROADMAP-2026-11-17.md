@@ -1,3 +1,5 @@
+**Canonical reference architecture:** [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md).
+
 # Cloud Development Pool — Implementation Roadmap
 
 **Date:** 2026-11-17  
