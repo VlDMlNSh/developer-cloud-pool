@@ -2364,3 +2364,16 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - PR #114 body now has an addendum correcting its stale prior head/evidence. Issue #96 comment 6948767460 records the current result and next gate.
 - This remains local D1 transaction proof only. Event, controller metadata and trusted default SHA are injected inputs; webhook signature/live GitHub event provenance is NOT VERIFIED. No hosted D1, production Supervisor, lease/fencing, outbox delivery, worker identity or dispatch.
 - Next: trusted GitHub issue_comment provenance adapter on trusted default branch, then durable claim/lease/fencing/recovery; keep production dispatch disabled.
+
+
+## Final branch verification snapshot — 2026-11-17
+
+- PR #120 head at start of this final snapshot: `d717c999906341efbdcb65a25dfd73269220e691`; OPEN/DRAFT/UNMERGED, mergeable=true, base default `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; 45 changed files.
+- Exact-head Architecture Documentation Validation [44088776800](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088776800): SUCCESS.
+- Exact-head Pool Contract Validation [44088776888](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088776888): RUNNING at snapshot time; workflow YAML and fail-closed dispatch assertion steps passed, pool security contract step still running. Do not report final PASS until run completes.
+- PR #113: CLOSED UNMERGED as superseded; all 30 changed paths migrated into PR #120, earlier context preserved verbatim as an archive.
+- PR #116: current head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner and workflow/security runs 44086419084/44086419002 SUCCESS. Reviews 5938684495 and 5938737463 COMMENT, not APPROVE.
+- PR #114: local D1 admission proof current head `ab9461eb84b14fe230918391d5212f19ca25592c`; runs 43935827714 and 43935827741 SUCCESS; 12/12 local D1 tests. Live webhook provenance remains unverified.
+- First Jarvis milestone: GitHub-only static/read-only PWA. Persistent Workspace is a later approved stage and mandatory for final Contour A acceptance; Issue #118 remains BLOCKED.
+- Gemini optional/controller-only; no dispatch. No secret reads, provider calls, real Claude task/session, host deployment or merge.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
