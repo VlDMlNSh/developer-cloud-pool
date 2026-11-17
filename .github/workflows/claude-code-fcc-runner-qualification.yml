@@ -6,6 +6,8 @@ on:
       - "Основной"
     paths:
       - ".github/workflows/claude-code-fcc-runner-qualification.yml"
+      - "scripts/cloud_pool/exec_allowlist.py"
+      - "scripts/cloud_pool/test_exec_allowlist.py"
   workflow_dispatch:
 
 permissions:
@@ -447,7 +449,9 @@ jobs:
             echo "ecc_skills=search-first,tdd-workflow,security-review"
             echo "provider_calls=false"
             echo "github_secret_values_read=false"
-            echo "fcc_client_launcher_invoked=false"
+            echo "fcc_client_launcher_invoked=true"
+            echo "claude_executable=synthetic_mock"
+            echo "real_claude_session=false"
             echo "agent_task_executed=false"
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
