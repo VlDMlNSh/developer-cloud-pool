@@ -244,6 +244,134 @@ jobs:
             > "$state_file"
           trap - EXIT
 
+      - name: Qualify synthetic FCC-to-Claude CLI handoff without provider access
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+        run: |
+          set -euo pipefail
+          bridge_home="$RUNNER_TEMP/fcc-bridge-home"
+          mock_bin="$RUNNER_TEMP/fcc-bridge-mock-bin"
+          marker="$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+          args_file="$RUNNER_TEMP/qualification/fcc-bridge-args.txt"
+          stderr_file="$RUNNER_TEMP/qualification/fcc-bridge-stderr.txt"
+          port=18766
+          mkdir -p "$bridge_home" "$mock_bin"
+          chmod 700 "$bridge_home" "$mock_bin"
+          test ! -e "$marker"
+          test ! -e "$args_file"
+
+          cat > "$mock_bin/claude" <<'MOCK'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          test "${ANTHROPIC_BASE_URL:-}" = "http://127.0.0.1:18766"
+          test -n "${ANTHROPIC_AUTH_TOKEN:-}"
+          if env | cut -d= -f1 | grep -Eq '(^GITHUB_TOKEN$|^GH_TOKEN$|_API_KEY$|_API_TOKEN$)'; then
+            echo "credential-like environment variable reached mock" >&2
+            exit 81
+          fi
+          test -n "${MOCK_RESULT_FILE:-}"
+          test -n "${MOCK_ARGS_FILE:-}"
+          {
+            echo "proxy_base_url_match=true"
+            echo "proxy_auth_token_present=true"
+            echo "provider_credential_variables_forwarded=false"
+            echo "mock_executable=true"
+          } > "$MOCK_RESULT_FILE"
+          printf '%s\n' "$@" > "$MOCK_ARGS_FILE"
+          exit 37
+          MOCK
+          chmod 700 "$mock_bin/claude"
+
+          server_pid=""
+          cleanup() {
+            original_status=$?
+            trap - EXIT
+            if [ -n "$server_pid" ] && kill -0 "$server_pid" 2>/dev/null; then
+              kill -INT "$server_pid" 2>/dev/null || true
+              for attempt in $(seq 1 10); do
+                kill -0 "$server_pid" 2>/dev/null || break
+                sleep 1
+              done
+              if kill -0 "$server_pid" 2>/dev/null; then
+                kill -TERM "$server_pid" 2>/dev/null || true
+                wait "$server_pid" 2>/dev/null || true
+              else
+                wait "$server_pid" 2>/dev/null || true
+              fi
+            fi
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+
+          export HOME="$bridge_home"
+          export HOST=127.0.0.1
+          export PORT="$port"
+          export FCC_OPEN_BROWSER=false
+          export ANTHROPIC_AUTH_TOKEN="cloud-pool-synthetic-bridge-token"
+          export MOCK_RESULT_FILE="$marker"
+          export MOCK_ARGS_FILE="$args_file"
+          export PATH="$mock_bin:$UV_PROJECT_ENVIRONMENT/bin:$PATH"
+
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
+          server_pid=$!
+          http_status=000
+          for attempt in $(seq 1 30); do
+            kill -0 "$server_pid" 2>/dev/null || {
+              echo "::error::FCC bridge server exited before readiness."
+              exit 1
+            }
+            http_status="$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 2 "http://127.0.0.1:$port/health" || true)"
+            [ "$http_status" = 200 ] && break
+            sleep 1
+          done
+          test "$http_status" = 200
+
+          listener="$(ss -H -ltn "sport = :$port")"
+          listener_address="$(printf '%s\n' "$listener" | awk 'NF {print $4}')"
+          listener_count="$(printf '%s\n' "$listener" | awk 'NF {n++} END {print n+0}')"
+          test "$listener_address" = "127.0.0.1:$port"
+          test "$listener_count" -eq 1
+
+          set +e
+          fcc-claude --version --synthetic-bridge-probe "argument with spaces" 2> "$stderr_file"
+          cli_status=$?
+          set -e
+          test "$cli_status" -eq 37
+          test -s "$marker"
+          test -s "$args_file"
+          printf '%s\n' "--version" "--synthetic-bridge-probe" "argument with spaces" > "$RUNNER_TEMP/qualification/fcc-bridge-expected-args.txt"
+          cmp "$RUNNER_TEMP/qualification/fcc-bridge-expected-args.txt" "$args_file"
+          ! grep -Fq "cloud-pool-synthetic-bridge-token" "$stderr_file"
+          ! grep -Fq "cloud-pool-synthetic-bridge-token" "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+
+          printf '%s\n' \
+            "fcc_bridge_health_http_status=$http_status" \
+            "fcc_bridge_listener=127.0.0.1:$port" \
+            "fcc_bridge_cli_exit_status=$cli_status" \
+            "fcc_bridge_arguments_preserved=true" \
+            "fcc_bridge_provider_calls=false" \
+            "fcc_bridge_completion_endpoints_called=false" \
+            "fcc_bridge_auth_token_value_persisted=false" \
+            >> "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+
+          kill -INT "$server_pid"
+          set +e
+          wait "$server_pid"
+          shutdown_status=$?
+          set -e
+          server_pid=""
+          test "$shutdown_status" -eq 0
+          remaining_listener="$(ss -H -ltn "sport = :$port")"
+          test -z "$remaining_listener"
+          ! pgrep -af "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" | grep -v grep
+          printf '%s\n' \
+            "fcc_bridge_shutdown=clean" \
+            "fcc_bridge_process_exit_code=$shutdown_status" \
+            "fcc_bridge_listener_after_shutdown=absent" \
+            >> "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+          trap - EXIT
+
       - name: Install only selected ECC skills at immutable upstream commit
         shell: bash
         run: |
