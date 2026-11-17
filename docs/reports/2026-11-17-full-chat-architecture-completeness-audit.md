@@ -65,3 +65,12 @@ These amendments explicitly supersede stale statements requiring four Gemini age
 
 ## Next step
 Continue Issue #115: complete source/license provenance and qualify one real permitted free route/account/quota without reading or exposing secret values. Preserve A0/D1 fail-closed gates. Keep Issue #118 blocked until host, access, storage and restore evidence exists.
+
+## License provenance and latest qualification update — 2026-11-17
+
+- Pinned FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` LICENSE verified as AGPL-3.0-only; pinned ECC `e413166c50e85fb205b988b5e78874b5a88ea4d2` LICENSE verified as MIT. Claude Code CLI is vendor-distributed proprietary software.
+- PR #116 workflow now requires expected FCC/ECC license markers, copies license texts into evidence artifact and records SHA-256 digests.
+- PR #116 exact head `6d4a4c518d44aa4a79d8396390623f424499011a`: qualification run [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) SUCCESS, job 134049913469; Pool Contract Validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) SUCCESS; artifact [14329776221](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/artifacts/14329776221), 26,768 bytes.
+- Follow-up independent PR review COMMENT [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495). License capture is verified; AGPL legal compliance for network-facing FCC remains NOT VERIFIED. Keep FCC loopback-only pending review.
+- Issue #115 remains OPEN for real free provider route/account/quota qualification. Issue #119 CLOSED for mock-only bridge.
+- No secrets read, real provider calls, Gemini dispatch, public FCC deployment or production dispatch. Keep `POOL_DISPATCH_ENABLED=false`. Contour A NOT ACCEPTED.
