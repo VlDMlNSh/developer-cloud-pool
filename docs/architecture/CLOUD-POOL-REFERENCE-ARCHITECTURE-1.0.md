@@ -571,7 +571,7 @@ The first bounded CODE profile is installed and lifecycle-smoked on a standard G
 - FCC source commit: `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; Python runtime: `3.14.10`; uv: `0.13.7`.
 - ECC source commit: `e413166c50e85fb205b988b5e78874b5a88ea4d2`; only the selected `search-first`, `tdd-workflow`, and `security-review` modules are installed.
 - FCC runtime binds explicitly to `127.0.0.1`, uses source-verified read-only readiness, and must shut down cleanly with no remaining listener.
-- A synthetic `fcc-claude` bridge test proves only mock CLI handoff/provenance. It does not start a real Claude session, invoke a provider, qualify a free route, prove account entitlement/quota, or qualify task execution.
+- A synthetic `fcc-claude` bridge test proves only mock CLI handoff/provenance. It does not start a real Claude session, invoke a provider, qualify a free route, prove account entitlement/quota, or qualify task execution. FCC supports ordered/numbered provider key lists and `MODEL_FALLBACKS`; Cloud Pool must configure exactly one credential/account per FCC profile, disable key cycling and model/provider fallback, and maintain separate profiles and quota ledgers for separate accounts.
 - Latest observed PR #116 head: `6d4a4c518d44aa4a79d8396390623f424499011a`. Exact-head runner proof [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) and workflow/security validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) both report SUCCESS. Runner job [134049913469](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/job/134049913469) completed all 14 steps successfully. This is installation + local loopback + synthetic mock evidence only.
 - PR #116 remains OPEN/DRAFT/UNMERGED and still requires an independent review on the current head. A prior COMMENT review at an earlier head is not current-head approval.
 - Server #3 / external host execution is not authorized by this proof and remains blocked unless a separate Cloud Pool owner-approved host qualification exists.
@@ -589,3 +589,14 @@ The first bounded CODE profile is installed and lifecycle-smoked on a standard G
 - Jarvis, ASTRA A0, provider issuers and MediaHub Product State Authority remain distinct authorities. Technical access does not imply permission.
 - No secrets were read; no provider/model calls, real Claude session, Gemini dispatch, external host deployment or production dispatch occurred.
 - The initial static/read-only Jarvis boundary is distinct from the later authenticated Workspace/API target. Workspace qualification is separate and currently BLOCKED by Issue #118.
+
+
+### 21.8 FCC provider identity and fallback isolation
+
+Pinned FCC source review found support for ordered provider-key lists, numbered key selection and `MODEL_FALLBACKS`; upstream tests demonstrate sequential use of different keys after 403/429 responses. Therefore:
+- One FCC runtime profile may receive exactly one provider credential/account identity.
+- Disable `MODEL_FALLBACKS`, numbered-key selection, key cycling and provider/paid fallback.
+- Distinct accounts require distinct isolated profiles, opaque account references and independent quota ledgers.
+- Never treat multiple key slots as proof of distinct upstream accounts or independent quotas.
+- This is a required production configuration invariant; the current mock-only runner proof does not test a live provider configuration.
+- Exact-head independent source review COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) records this finding. Keep Issue #115 open until the configuration and free route/account/quota evidence are qualified.
