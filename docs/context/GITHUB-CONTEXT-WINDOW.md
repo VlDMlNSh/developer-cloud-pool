@@ -7,8 +7,8 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from commits API at start of this pass)
 Current documentation working branch: `docs/cloud-pool-reference-architecture-2026-11-17` (NOT merged; PR #120 OPEN / DRAFT / UNMERGED; always re-read the branch ref for current HEAD)
-Latest open implementation PR observed: #116, head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
-Latest PR #116 exact-head checks observed: No-secret install/resource proof SUCCESS (run 44083961406); workflow syntax/security invariants SUCCESS (run 44083961455); Pool Contract Validation SUCCESS (run 44083961455). These checks do not prove provider route, agent task execution, persistent workspace, or Contour A acceptance.
+Latest open implementation PR observed: #116, head `6d4a4c518d44aa4a79d8396390623f424499011a`, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+Latest PR #116 exact-head checks observed: No-secret install/runtime/mock proof SUCCESS (run 44086419084); workflow syntax/security invariants SUCCESS (run 44086419002); artifact 14329776221 available. Independent reviews 5938684495 and 5938737463 are COMMENT, not APPROVE. These checks do not prove provider route, agent task execution, persistent workspace, or Contour A acceptance.
 Active default-branch ruleset: ID `26550182`, enforcement active on `refs/heads/Основной`; PR required, review-thread resolution required, required approving review count 0, no required status-check contexts. Treat governance as insufficient for production acceptance.
 This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`. PR #120: https://github.com/VlDMlNSh/developer-cloud-pool/pull/120. The PR head advances with each documentation update; always re-read PR #120 head before validation. Exact-head check-runs at last inspection: 0; combined status contexts: 0; CI NOT VERIFIED / NOT RUN.
 
@@ -22,7 +22,7 @@ This snapshot supersedes older maturity/status statements in the historical sect
 
 ### Current phase and boundaries
 - Priority: Contour A only. Contour B / MediaHub OS product development remains DEFERRED until Contour A is ACCEPTED.
-- Cloud Pool is a governed control plane plus ephemeral execution workers and a separately qualified persistent Engineering Workspace. The first static GitHub-only Jarvis PWA may ship before Workspace, but Workspace qualification is mandatory before Contour A ACCEPTED.
+- Cloud Pool is a governed control plane plus ephemeral execution workers and a separately qualified persistent Engineering Workspace. The first static GitHub-only Jarvis PWA may ship before Workspace. Persistent Workspace is a separately authorized optional capability and is not a first-release dependency or universal Contour A acceptance gate unless the owner explicitly re-scopes that requirement. Its own component remains BLOCKED until Issue #118 gates pass.
 - Jarvis is the single user-facing console; it is not an authorization authority.
 - GitHub-hosted runners are ephemeral workers, not a persistent web host, filesystem or transactional state store.
 - One transactional authority must own mutable admissions, task/attempt state, leases, outbox and quota reservations. D1 is the preferred candidate due to isolated proofs, but is NOT selected/deployed/qualified as a hosted production service.
@@ -2329,3 +2329,14 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Independent mock bridge review report: [PR #116 review report](../reports/2026-11-17-pr116-independent-mock-bridge-review.md).
 - Detailed implementation roadmap: [Cloud Pool implementation roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md); canonical reference architecture takes precedence where wording differs.
 - Runner qualification checkpoint: [2026-11-17 runner checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
+
+
+## Traceability and preservation — 2026-11-17
+
+- Earlier chat-session candidate PR #113 contained 30 changed files including the canonical chat Workspace design, owner freeze, Workspace integration, roadmap, master continuation prompt, checkpoints and dated reports. All 30 files are now preserved in PR #120's candidate branch; the older Context Window snapshot is retained verbatim as `GITHUB-CONTEXT-WINDOW-CHAT-ARCHIVE-2026-11-17.md`.
+- The earlier `CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md` is retained as a historical/superseded proposal. The current system-level target is `CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md`, including normative Sections 21.1–21.8.
+- PR #120 latest head before this Context Window update: `435a1838f7e22f0f5ec08611bd24608066fd5d79`; OPEN/DRAFT/UNMERGED.
+- PR #113 remains OPEN/DRAFT/UNMERGED; it is an earlier parallel candidate, not a second canonical architecture.
+- PR #116 exact head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runs 44086419084 and 44086419002 SUCCESS. Independent COMMENT reviews 5938684495 (license evidence) and 5938737463 (FCC key cycling/fallback). One credential/account per FCC profile; disable all key cycling and provider/model/paid fallback. No live route or account/quota qualification.
+- Initial launch: GitHub-only static/read-only Jarvis PWA. Authenticated mutations are BLOCKED unless a secure server-side GitHub-native path is qualified. Persistent Workspace is optional and separately authorized, not a first-launch dependency; Issue #118 remains BLOCKED.
+- Gemini optional; controller-only; NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
