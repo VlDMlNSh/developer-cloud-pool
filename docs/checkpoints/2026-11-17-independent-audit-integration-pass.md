@@ -71,3 +71,17 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Architecture Documentation Validation [44094922828](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094922828) was PENDING at read-back. Await exact-head completion.
 - Governance remains insufficient: active ruleset 26550182 requires no approval and no status checks.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next — exact-head architecture CI and governance reconciliation — 2026-11-17
+
+- Immutable PR #124 target before this pass: `7b18b7c857ae7de9d7f26b8394e3a4a93e913d77`; base PR #120 exact head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`.
+- PR #124 remains OPEN/DRAFT/UNMERGED; compare 54 ahead / 0 behind; mergeable=true.
+- Exact-head Architecture Documentation Validation [44095118383](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44095118383), job [134081800394](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44095118383/job/134081800394): COMPLETED / SUCCESS on the immutable head above.
+- Pool Contract Validation was not observed for this docs-only head: NOT VERIFIED. PR #124 formal reviews: 0.
+- Active ruleset #26550182: PR + review-thread resolution, deletion/non-fast-forward restrictions; 0 required approvals and 0 required status checks; no bypass actors. Governance is not sufficient for critical acceptance.
+- Default `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #124 base is PR #120 head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`.
+- Issue #118 remains OPEN/DEFERRED; active authorized host, Cloudflare Access/Tunnel and persistent storage/restore proof are absent in its recorded evidence.
+- No runtime changes, secret reads, provider calls, Gemini/production dispatch, resource creation, deployment, merge or local tests. Gemini NOT RUN.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Report: [2026-11-17-next-exact-head-governance-reconciliation.md](../reports/2026-11-17-next-exact-head-governance-reconciliation.md).
+- Next: independent architecture/security review and meaningful governance gates, then the next eligible no-secret vertical slice without bypassing A0/FCC prerequisites.
