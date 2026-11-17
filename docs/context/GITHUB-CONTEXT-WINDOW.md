@@ -1,3 +1,42 @@
+# /next — Canonical Reference Architecture 1.0 published to docs branch — 2026-11-17
+
+**Current disposition:** architecture consolidated as candidate-canonical documentation; NOT MERGED / NOT DEPLOYED / NOT QUALIFIED / NOT ACCEPTED.
+
+- New normative architecture: [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md), document ID CDP-RA-001, version 1.0.0.
+- Owner freeze updated to link/adopt the reference: [CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md).
+- Roadmap updated to link the reference: [CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md).
+- Full pass report: [2026-11-17-next-pass-canonical-architecture-consolidation.md](../reports/2026-11-17-next-pass-canonical-architecture-consolidation.md).
+- Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no default-branch code or docs were changed.
+- PR #113 remains OPEN / DRAFT / UNMERGED and carries candidate canonical documentation. PR #116 remains OPEN / DRAFT / UNMERGED.
+
+## Consolidated normative decisions
+- First CODE profile: Claude Code CLI → pinned ECC → loopback FCC → one positively qualified free API route.
+- No Anthropic API auth, secret-value reads, paid fallback, key cycling or cross-account quota mixing.
+- Jarvis is the sole user-facing surface; model plans are advisory and cannot grant authority.
+- A0 is the only admission/policy/issuer/subject/capability/route/quota authority.
+- D1 remains the transactional task/attempt/outbox boundary; reuse existing contracts and do not create a parallel state machine.
+- Durable single-winner admission requires transactional state, idempotency, lease/fencing, expiry and crash recovery. Labels/Actions concurrency alone are not locks.
+- First release uses ephemeral GitHub-hosted runners and GitHub-native static PWA/status; no always-on host assumed.
+- FCC child process requires a minimal environment allowlist. Synthetic bridge is not generic secret-scrubbing proof.
+- A3 independent verification is mandatory.
+- Gemini, Codex, second CODE, MEDIA, server #3/persistent workspace and Contour B are supplementary/deferred behind independent gates.
+
+## Evidence and blockers
+- FCC install/runtime/synthetic mock bridge have bounded CI evidence on PR #116; no real model/provider task has run.
+- Generic child-process environment sanitization: NOT VERIFIED.
+- Free provider route/account/quota: NOT VERIFIED.
+- Integrated hosted A0/D1 and production lease/fencing/recovery: NOT VERIFIED.
+- Authenticated responsive Jarvis end-to-end: NOT VERIFIED.
+- Persistent workspace/server #3: BLOCKED / NOT RUN.
+- Gemini controller: NOT QUALIFIED / NOT RUN.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+- This pass was documentation-only; no code tests, provider calls, secret reads, dispatch, deployment or merge.
+
+## Next implementation step
+Implement the minimal FCC child environment allowlist and negative tests; then qualify one free provider route/account/quota without secret-value reads. Continue integrated A0/D1 and durable lease/fencing work. Keep production dispatch fail-closed.
+
+---
+
 # /next recovery update — synthetic FCC-to-Claude CLI bridge — 2026-11-17
 
 **Latest bounded pass:** Issue #119 synthetic FCC-to-Claude CLI bridge qualification. Full evidence: [dated report](../reports/2026-11-17-next-pass-synthetic-fcc-claude-bridge.md).
