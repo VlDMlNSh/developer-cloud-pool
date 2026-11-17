@@ -2434,3 +2434,22 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Checkpoint: [trusted event adapter audit checkpoint](../checkpoints/2026-11-17-next-trusted-event-adapter-contract-audit.md).
 - Next: implement a clean-base, no-secret adapter deriving event payload and target/controller metadata exclusively from runner context; checkout exactly `GITHUB_SHA`, record `GITHUB_WORKFLOW_SHA`, invoke only the pure D1 proof using derived values, and add adversarial fake-D1 tests. Keep `dispatch:false` and `executionAuthorized:false`; do not provision hosted D1 or inspect credentials.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Owner architecture freeze and first executor priority — 2026-11-17
+
+- Owner-directed architecture decision record: [CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md), initial commit `b50106fa12830748d7629433b9872a92b5288d90` on documentation branch `docs/next-2026-11-16-current-state-refresh`.
+- This is the current owner target architecture for Contour A. It supersedes earlier planning notes only where explicitly stated in the decision record. It is a documentation baseline, not deployed/qualified configuration.
+- First implementation priority: one GitHub-hosted ephemeral **Claude Code + ECC toolkit + FCC + approved API routes** executor profile. No Anthropic API authentication. Provider route must be explicitly allowlisted, compatible, free-tier eligible and quota-backed before use. Owner reports that API keys are already present in GitHub Secrets; values were not read, and existence/validity/account identity/quota/route compatibility remain NOT VERIFIED.
+- Second Claude Code CODE profile is DEFERRED and may be added only after measured first-profile daily quota usage proves sufficient free headroom and independent isolation is available.
+- MEDIA profile is DEFERRED until a remote video server with a local model is available. Intended route: Claude Code + ECC → OmniRoute → remote local model/Ollama. It must receive no provider API keys and have no API/paid fallback.
+- Mac mini 2018 local model is a future optional route into the first CODE profile, not an initial deployment dependency.
+- Codex CLI + OpenAI API is conditional on runner resource/install/runtime qualification. Gemini agents are optional supplementary executors, not the core architecture. YouTube is an included later connector, not a first-executor dependency.
+- Initial cloud deployment must not require physical/self-hosted hardware. GitHub-hosted Actions runners are ephemeral jobs and the 20-job concurrency ceiling is not 20 persistent servers. Jarvis must use a GitHub-native/static/event-driven pattern for the first release; no claim of a persistent backend on Actions runners. Any required capability that cannot be implemented securely with GitHub-native primitives remains BLOCKED pending an explicitly approved hosting path.
+- First execution path remains fail-closed until task admission, durable state, runner identity, secret isolation, route/quota policy, cancellation/recovery, evidence publication and independent A3 verification are qualified.
+- Current default branch remains `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` as last directly read. Documentation work is confined to PR #113 branch and is not merged/default.
+- PR #113 remains OPEN/DRAFT/UNMERGED; PR #114 remains OPEN/DRAFT/UNMERGED. PR #114 local D1 admission proof does not establish hosted D1 or production dispatch.
+- No secret values read, no provider calls, no Claude Code/FCC/ECC installation, no runner dispatch, no Jarvis deployment, no merge and no acceptance occurred in this pass.
+- Next implementation pass: perform a bounded, no-secret GitHub-hosted runner installation/resource proof for pinned Claude Code + ECC + FCC, preceded by fresh upstream/license/runtime inspection. Keep live provider calls and dispatch disabled until security/quota/admission gates pass.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
