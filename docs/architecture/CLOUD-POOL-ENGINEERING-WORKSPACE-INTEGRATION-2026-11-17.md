@@ -98,3 +98,17 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Current owner instruction: four Gemini assignments requested for every `/next`; comments are recorded on Issue #94 (#6947028166) and Issue #96 (#6947031522). Actual Gemini dispatch remains NOT RUN: no default-branch Cloud Pool Gemini dispatch workflow, PR #107 candidate is based two commits behind default, PR #109 is fake-client tests only, PR #112 read-only, PR #114 dispatch:false, and no independent review/account quota proof. Do not use the MediaHub three-agent bridge as a substitute. Keep `POOL_DISPATCH_ENABLED=false`.
 - PR #116 and PR #113 remain OPEN / DRAFT / UNMERGED; PR #116 formal reviews 0 / threads 0. Contour A NOT ACCEPTED; Contour B deferred.
 - Next bounded step: synthetic FCC-to-Claude CLI bridge test with mock provider/no credentials, then independent review of PR #116. Gemini controller qualification continues behind Issues #94/#96.
+
+
+## Latest implementation and Gemini scope reconciliation — 2026-11-17
+
+This amendment supersedes the earlier **CURRENT OWNER /next OPERATING UPDATE — FOUR GEMINI AGENTS** text where it says four Gemini assignments are mandatory for every `/next`. The later owner scope corrections in Issues #94 and #96 govern: Gemini is optional supplementary execution, not a per-/next requirement or Contour A launch gate. Any future Gemini task must use the approved controller and pass the full owner-only admission, lease/fencing/recovery, account/quota, security and governance qualification. Keep dispatch NOT RUN and `POOL_DISPATCH_ENABLED=false` until then.
+
+The synthetic Claude/FCC qualification has advanced beyond the older status recorded above:
+- PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; no-secret install and synthetic bridge qualification [run 44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406) SUCCESS.
+- Pool Contract Validation [run 44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455) SUCCESS.
+- Artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788) available.
+- Independent review [5938432852](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938432852) is COMMENTED, not production approval. It records remaining route/account/quota, network-egress, PATH/HOME isolation and installer provenance gaps.
+- Issue #119 is closed for the mock-only objective; this does not prove a real Claude session or provider route.
+
+Workspace host/access facts remain BLOCKED as recorded in Issue #118: no confirmed authorized server #3, no qualified Cloudflare zone/Tunnel/Access, and no verified persistent workspace or restore proof. No installation/deployment was performed. PR #113 remains a documentation candidate (OPEN/DRAFT/UNMERGED); this record is not yet default-branch accepted.
