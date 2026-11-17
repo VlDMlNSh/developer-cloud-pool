@@ -219,3 +219,14 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 - It starts FCC intentionally only on 127.0.0.1, uses a source-verified read-only health/readiness endpoint, checks listeners and clean shutdown, and makes no provider calls or secret reads.
 - No FCC Claude launcher, Claude session, completion endpoint, model route, external hosting or production dispatch is in scope.
 - After #117 passes, the next slice is a synthetic FCC-to-Claude CLI bridge test; real free-provider routing follows only after these no-secret runtime checks.
+
+
+## Owner-requested Engineering Workspace integration — 2026-11-17
+
+**Status: PROPOSED / BLOCKED / NOT DEPLOYED.** See [Architecture Integration Record](../architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md) and [Issue #118](https://github.com/VlDMlNSh/developer-cloud-pool/issues/118).
+
+The target adds one Jarvis Control Plane, one persistent shared workspace, official VS Code Desktop + Remote SSH, a conditional code-server/Open VSX browser IDE, independent executor identities, and Cloudflare Tunnel + Access. This proposal does not replace current A0/Gemini contracts or authorize deployment. Keep the first FCC/A0 qualification sequence ahead of workspace installation.
+
+Live gate results (2026-11-17): zero active SentinelX hosts; current Mac mini enrollment offline; other two known hosts disabled; no authorized server #3; no saved compute integration; Cloudflare returned zero zones and zero Tunnels, and Access is not enabled. Therefore host qualification, server-3 Claude Code, persistent storage, code-server, Coder, Remote SSH and Cloudflare deployment are NOT RUN/BLOCKED.
+
+Minimum candidate stack after gates: official VS Code Desktop + Remote SSH for desktop; code-server + Open VSX for browser; one shared persistent filesystem with per-task Git worktrees; Cloudflare Access/Tunnel for perimeter access with origin JWT validation. Coder Workspace Platform and Remote Tunnels remain alternatives, not simultaneous installs. Copilot is optional, subject to free entitlement and spend controls. Gemini stays only behind the approved controller.
