@@ -2868,3 +2868,13 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Follow-up independent PR review COMMENT [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495). License capture is verified; AGPL legal compliance for network-facing FCC remains NOT VERIFIED. Keep FCC loopback-only pending review.
 - Issue #115 remains OPEN for real free provider route/account/quota qualification. Issue #119 CLOSED for mock-only bridge.
 - No secrets read, real provider calls, Gemini dispatch, public FCC deployment or production dispatch. Keep `POOL_DISPATCH_ENABLED=false`. Contour A NOT ACCEPTED.
+
+## Final docs-branch audit disposition — 2026-11-17
+
+- Canonical Architecture latest blob SHA: `526656ca3aebbaae772a3fcf9221763932e6afe3`; includes Sections 15.1–15.10 and the FCC AGPL/ECC MIT license gate.
+- PR #113 full audit comment posted: [6948502565](https://github.com/VlDMlNSh/developer-cloud-pool/pull/113#issuecomment-6948502565). PR #113 remains OPEN/DRAFT/UNMERGED; no formal reviews/check runs; candidate docs are not yet default-branch accepted.
+- PR #116 exact head `6d4a4c518d44aa4a79d8396390623f424499011a`; qualification 44086419084 SUCCESS; contract validation 44086419002 SUCCESS; artifact 14329776221 available; follow-up review COMMENT 5938684495.
+- License evidence: FCC AGPL-3.0-only; ECC MIT; Claude Code CLI proprietary vendor distribution. AGPL compliance for remote/network-facing FCC NOT VERIFIED; keep loopback-only.
+- Issue #119 CLOSED for mock-only bridge. Issue #115 OPEN for actual free route/account/quota proof. Issue #118 OPEN/BLOCKED for host, Cloudflare and persistence/restore.
+- Gemini optional, controller-only; no mandatory every-/next wave. `POOL_DISPATCH_ENABLED=false`.
+- No secrets read, provider calls, Gemini dispatch, public FCC deployment, persistent workspace deployment or merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
