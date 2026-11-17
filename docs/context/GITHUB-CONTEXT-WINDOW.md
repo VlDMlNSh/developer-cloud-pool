@@ -2292,3 +2292,13 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 2. Validate PR #120 architecture links/contracts and obtain independent architecture/security review.
 3. Continue A0/D1 durable admission and one real free-route/account/quota qualification only after all authority and security gates.
 4. Keep Workspace Issue #118 blocked until explicit host/access/storage/restore evidence and owner approval.
+
+
+## Exact-head FCC account-isolation review — 2026-11-17
+
+- PR #116 exact head `6d4a4c518d44aa4a79d8396390623f424499011a`.
+- Independent review COMMENT [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495) verified pinned FCC license `AGPL-3.0-only`, ECC MIT marker, license text copies and SHA-256 manifest; legal review for network/remote deployment remains outstanding.
+- Independent source-level finding COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463): FCC supports ordered/numbered provider keys and `MODEL_FALLBACKS`, with upstream tests demonstrating key switching after 403/429. Production must use one credential/account per FCC profile, disable key cycling and all provider/model/paid fallback, and keep separate profiles and quota ledgers per account.
+- Exact-head runs: runner [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) SUCCESS; security/workflow validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) SUCCESS; artifact [14329776221](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/artifacts/14329776221) available.
+- These reviews are COMMENT, not APPROVE; they do not qualify a real provider route, free entitlement, quota, real Claude session or task execution. Keep Issue #115 OPEN and production dispatch disabled.
+- PR #120 head before this snapshot update: `f016247a9886df904042000a26f17beabfbb8727`.
