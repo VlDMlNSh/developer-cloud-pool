@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-16 19:34 Europe/Vilnius — current default, /next controller, D1 lease and runtime revalidation
+Last refreshed: 2026-11-17 — trusted GitHub Actions event adapter contract audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (direct branch ref read-back, 2026-11-16)
 Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh`
-Latest daily report commit: `f6074d2ebeee922cf05a1b3ac236f1aa276d4893` (this branch remains unmerged)
+Latest daily report commit: `10aa4ccdc5e8b5e9031ce426fd3782f356f07fb0` (2026-11-17 report; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2415,4 +2415,22 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Active default-only ruleset #26550182; branch-protection API 403 (NOT VERIFIED). Gemini controller workflow absent from default branch; Gemini NOT RUN.
 - Admission remains a local D1 proof. Live webhook provenance, hosted D1, authenticated worker identity, immutable-attempt runtime, outbox delivery and production integration NOT VERIFIED. Dispatch remains false.
 - Report/checkpoint updated. Next bounded step: authenticated workload-identity verifier bound to trusted issuer, canonical audience, repository, task, attempt, target SHA, expiry and replay/fencing. Confirm issuer before implementation/deployment; no automatic reclaim.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## 2026-11-17 /next — trusted GitHub Actions event adapter contract audit
+
+- Fresh GitHub recovery: default branch `Основной` HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; repository ID `1445644538`; owner numeric ID `157891068`.
+- PR #112 remains OPEN/DRAFT/UNMERGED at head `c9a4c0ab2001f01a09632795283071c521e1c99d`. Its read-only Issue #96 workflow uses `issue_comment: created`, checks exact repository/owner/issue/body and checks out `${{ github.sha }}` with `contents: read` and `persist-credentials: false`.
+- GitHub official event docs specify for `issue_comment`: workflow must exist on default branch; `GITHUB_SHA` is last commit on default branch; `GITHUB_REF` is default branch. Actions context/variables docs define `github.workflow_sha` / `GITHUB_WORKFLOW_SHA` as the workflow-file commit SHA. These are the documented trusted-context primitives for a production adapter.
+- PR #112 exact-head event controller run `43882090833` and contract run `43882090867` SUCCESS; however event-admission job `133350345738` was SKIPPED. No real webhook execution/admission is proven. The predicate is read-only and has no durable receipt or D1 integration.
+- PR #114 remains OPEN/DRAFT/UNMERGED at current head `ab9461eb84b14fe230918391d5212f19ca25592c`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, formal reviews 0. D1 admission module blob `e37eef052de0a5daff36c0ffbf873a2fd49d942b`; SQL migration blob `20bd330c4c6fe01752e64abb5d3f8b6112e5a66c`.
+- PR #114 exact-head D1 run `43935827714`, job `133540023253`: SUCCESS; log confirms syntax PASS and 12/12 Workers-runtime tests PASS. Pool Contract Validation run `43935827741`, job `133540025359`: SUCCESS. Artifact `14260129001`, SHA-256 `99ee88f17c8e52d77fa883cb3b89aafd26dc2e29441c44182463480e765b685a`. Combined commit status contexts were empty; do not infer required-check qualification.
+- Trust boundary remains unintegrated: PR #114 accepts `event`, `trustedDefaultHeadSha`, `controllerRunId` and `controllerCodeSha` as caller-supplied function inputs. Equality validation does not authenticate their provenance. The Worker entrypoint remains a 404 stub.
+- Default branch still lacks `.github/workflows/gemini-batch-dispatch-controller.yml`; Gemini four-agent dispatch NOT RUN. Issues #94/#96 OPEN. No secrets read, provider calls, merge, deployment or dispatch.
+- Report: [trusted GitHub Actions event adapter contract audit](../reports/2026-11-17-next-trusted-event-adapter-contract-audit.md).
+- Checkpoint: [trusted event adapter audit checkpoint](../checkpoints/2026-11-17-next-trusted-event-adapter-contract-audit.md).
+- Next: implement a clean-base, no-secret adapter deriving event payload and target/controller metadata exclusively from runner context; checkout exactly `GITHUB_SHA`, record `GITHUB_WORKFLOW_SHA`, invoke only the pure D1 proof using derived values, and add adversarial fake-D1 tests. Keep `dispatch:false` and `executionAuthorized:false`; do not provision hosted D1 or inspect credentials.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
