@@ -2715,3 +2715,16 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Next bounded step: implement and exact-head test Issue #119 synthetic FCC-to-Claude handoff. Do not begin persistent workspace deployment or live provider routing until their host, identity, quota and security gates are separately proven.
 
 - Four task envelopes for this exact /next were recorded in Issue #94 comment `6947297586`; each is scoped to Issue #119 and explicitly **NOT DISPATCHED** because the Cloud Pool-native controller/admission gates are not qualified.
+
+
+## /next — Engineering Workspace architecture consolidation — 2026-11-17
+
+- Target before pass: PR #113 head `361b7b8f66279ebf63522ecf96d008b63e06dd1c`; default `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Consolidated this chat's target into Canonical Reference Architecture: one Jarvis Control Plane, one persistent Engineering Workspace Plane, isolated Agent Execution Plane; official VS Code Desktop/Remote SSH; browser code-server/Open VSX behind Cloudflare Access/Tunnel; same authoritative filesystem; per-task worktrees and single-writer lease/fencing; server #3 qualification; Claude/Gemini/Copilot identity boundaries; persistence, backup/restore, security and staged acceptance.
+- Engineering Workspace is part of final Contour A target, not a second product or competing Jarvis. Delivery is gated behind first CODE/A0/D1 qualification and verified host/network/storage prerequisites.
+- GitHub-hosted ephemeral runner remains the first isolated executor path; it is not an always-on workspace host. Moving Claude Code to server #3 requires separate ADR and qualification.
+- Issue #118 inventory: zero active SentinelX hosts; server #3 unconfirmed/unauthorized; zero Cloudflare zones/tunnels; Access unavailable in inspected account context; no verified persistent workspace or backup/restore. No installation/deployment performed.
+- Gemini controller-only; live dispatch NOT RUN and `POOL_DISPATCH_ENABLED=false`. Copilot optional pending free entitlement proof.
+- Documentation-only on `docs/next-2026-11-16-current-state-refresh`; no secrets, provider calls, Gemini dispatch, deployment or merge. Exact-head CI and independent review of resulting docs head NOT VERIFIED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next pass: Issue #119 synthetic FCC-to-Claude CLI bridge, then independent review/exact-head CI. Workspace installation remains blocked until prerequisites pass.
+- Canonical architecture: [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md). Workspace record: [CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md](../architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md). PR #113: https://github.com/VlDMlNSh/developer-cloud-pool/pull/113.
