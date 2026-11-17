@@ -151,3 +151,15 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Next: retrieve failing step annotations/logs, correct only evidence-backed cause, rerun exact-head CI.
 - Full report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+## /next checkpoint — runner PATH correction and FCC synthetic profile proof — 2026-11-17
+
+- PR #116 exact head `e58211dfe82a885d7718ebbc89d66188087cdcc4`.
+- Failure diagnosis from run `44092881008`: `/usr/local/bin` is root-owned mode `0777`; removed from FCC and synthetic bridge PATHs. Security checks retained.
+- Provenance manifest corrected to namespace FCC runtime fields, separately identify synthetic mock invocation and reject duplicate keys.
+- Exact-head runner qualification `44093612344`: SUCCESS, all 14 steps; Pool Contract Validation `44093612348`: SUCCESS.
+- Artifact `14331114755`, SHA-256 `74d11af0039a856d4aebd72c01d0f403e05e1adaa8879b126706e41575c2f479`, 26,657 bytes. Downloaded digest matched GitHub; 22 internal checksums matched; manifest duplicate-key count 0.
+- FCC loopback HTTP 200, listener bound only to 127.0.0.1:18765, clean SIGINT exit and listener removed. Synthetic mock bridge HTTP 200, argument preservation, clean bridge shutdown. This is not a real Claude session or provider call.
+- No secret values read, no provider calls, no agent task, no Gemini dispatch, no deployment/merge. Real free route/account/quota, installer-byte integrity, egress isolation, AGPL network-use review and independent A3 review remain unresolved.
+- PR #116 remains OPEN/DRAFT/UNMERGED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; `POOL_DISPATCH_ENABLED=false`.
+- Full report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).

@@ -54,3 +54,39 @@ Retrieve the full failing runner-step diagnostics (annotations/logs) for run `44
 - [Implementation Roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md)
 - [Canonical architecture](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md)
 - [MediaHub canonical map](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md)
+
+## 7. Follow-up — root cause fixed and exact-head proof passed
+
+### Root cause evidence
+
+Retrieved complete job logs for run `44092881008`. The exact rejection was:
+
+```text
+Cloud Pool child environment rejected: PATH entry directory is group/world writable: /usr/local/bin (mode=0777, uid=0)
+```
+
+The hosted runner's `/usr/local/bin` is root-owned but world-writable. The allowlist correctly rejected it. The fix was to remove `/usr/local/bin` from both FCC runtime and synthetic bridge PATH definitions; retain the ownership and write-bit checks. No security policy was relaxed.
+
+### Provenance manifest integrity correction
+
+The first passing runtime artifact exposed duplicate/ambiguous fields because synthetic mock invocation and FCC server lifecycle both used `fcc_client_launcher_invoked`. The workflow now writes `synthetic_bridge_claude_mock_invoked`, prefixes FCC lifecycle fields with `fcc_runtime_`, and fails on duplicate manifest keys. An intermediate sed implementation failed due to an incorrectly escaped backreference; it was replaced with awk and exact-head CI rerun.
+
+### Final exact-head qualification
+
+- Candidate head: `e58211dfe82a885d7718ebbc89d66188087cdcc4`.
+- Runner qualification [44093612344](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093612344): SUCCESS; job 134074878247; all 14 steps succeeded.
+- Pool Contract Validation [44093612348](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093612348): SUCCESS.
+- Artifact [14331114755](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093612344/artifacts/14331114755), 26,657 bytes; GitHub SHA-256 `74d11af0039a856d4aebd72c01d0f403e05e1adaa8879b126706e41575c2f479`. Downloaded archive digest independently matched; all 22 internal SHA256SUMS entries matched; provenance manifest duplicate-key count was zero.
+- Versions: Claude Code 2.1.325; FCC 6.19.35 / Python 3.14.10; uv 0.13.7; ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`, skills search-first, tdd-workflow, security-review; FCC pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`.
+- Resource observation: 4 vCPU, 15 GiB RAM, 145 GiB root disk, 88 GiB free after install; Claude 349 MB, FCC 200 MB, uv cache 12 MB, ECC skills 68 KB.
+- FCC loopback: status HTTP 200, exactly 127.0.0.1:18765, clean SIGINT exit 0, no listener afterward. Synthetic bridge: health HTTP 200 at 127.0.0.1:18766, argument preservation verified, synthetic mock exit 37 propagated, bridge process exit 0 and listener absent afterward.
+
+### Qualification boundary and remaining gates
+
+This is a bounded no-secret installation, loopback lifecycle and synthetic mock bridge proof only. The Claude executable was a mock: `real_claude_session=false`, `agent_task_executed=false`. No provider calls or GitHub Secret reads occurred; production dispatch remains false. It does not prove real Claude task execution, provider route health, account identity, free quota, single-account/no-fallback effective FCC configuration, host deployment, egress isolation, or Contour A acceptance.
+
+PR #116 remains OPEN/DRAFT/UNMERGED. Existing review submissions are owner-authored COMMENTs, not independent approval. Ruleset #26550182 does not enforce an approving review or required status checks; project policy still requires independent A3 review. FCC remains loopback-only pending AGPL-3.0-only network-use review. Keep `POOL_DISPATCH_ENABLED=false`.
+
+### Next step
+
+Complete installer-byte integrity and FCC one-account/no-fallback configuration review without reading secrets. Then, only after independent A3 review and route/account/quota/egress gates, qualify one actual free provider route. Do not interpret this synthetic proof as a live agent qualification.
