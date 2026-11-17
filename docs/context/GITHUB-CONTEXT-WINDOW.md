@@ -2313,3 +2313,12 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - PR #116 latest head at last inspection `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner job `134049913469` and security job `134049913632` SUCCESS in runs `44086419084` / `44086419002`. This is no-secret install, loopback runtime and synthetic CLI handoff only, not real Claude task/provider route.
 - Issue #117 CLOSED; Issue #115 remains OPEN for provider/source/license qualification; Issue #118 OPEN/BLOCKED; Issue #22 keeps initial GitHub-only/read-only PWA boundary; Issue #26 keeps account-isolated first CODE route boundary.
 - Contour A NOT ACCEPTED; Contour B DEFERRED. No secrets read, no live provider calls, no Gemini dispatch, no host deployment or merge in this pass.
+
+
+## Chat traceability audit — 2026-11-17
+
+- Added [chat-to-architecture traceability matrix](../reports/2026-11-17-chat-to-architecture-traceability.md), mapping every major chat decision to normative architecture sections and current evidence.
+- Reconciled Workspace ambiguity: first static GitHub-only Jarvis PWA may launch without a persistent host; however, persistent Engineering Workspace is mandatory before Contour A ACCEPTED. It must provide same filesystem via browser and desktop IDE, per-task worktrees, single-writer fencing, qualified ingress/identity and independently verified backup/restore. Issue #118 remains BLOCKED.
+- PR #120 is the active consolidated architecture proposal, still OPEN/DRAFT/UNMERGED. Re-read exact branch head and exact-head CI before any acceptance/merge claim.
+- Latest traceability audit found no chat-specific target requirement missing from the normative candidate. Implementation gaps remain: real provider/account/quota route, hosted A0/D1 and lease/recovery, authenticated Jarvis API, Workspace host/access/storage/restore, independent review and effective governance.
+- No deployment, provider call, secret read, Gemini dispatch, merge or Contour A acceptance.
