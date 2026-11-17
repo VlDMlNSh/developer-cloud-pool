@@ -4,8 +4,8 @@
 **Status:** PROPOSED IMPLEMENTATION BASELINE / REVIEW REQUIRED  
 **Scope:** Contour A only  
 **Parent architecture:** [Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md)  
-**Delivery controls:** [Architecture Assurance Addendum](CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md)  
-**Evaluation standard:** [Independent 10/10 Scorecard](CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md)  
+**Delivery controls:** [Architecture Assurance Addendum proposed in PR #122](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/architecture-assurance-hardening-v2-2026-11-17/docs/architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md)  
+**Evaluation standard:** [Independent 10/10 Scorecard proposed in PR #122](https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/architecture-assurance-hardening-v2-2026-11-17/docs/architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md)  
 **Source audit:** owner-supplied independent GitHub audit, reconciled against live refs available on 2026-11-17.
 
 ## 1. Decision
