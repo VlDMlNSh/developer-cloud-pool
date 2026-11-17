@@ -2356,3 +2356,11 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - Issue #117 CLOSED. Issue #115 OPEN for live route/account/quota and remaining qualification. Issue #118 OPEN/BLOCKED for Workspace host/access/storage/restore.
 - Initial launch remains GitHub-only static/read-only PWA. Persistent Workspace is a later separately authorized stage, not first-launch dependency, but part of final Contour A acceptance unless owner re-scopes.
 - No secret reads, provider calls, real Claude task/session, Gemini dispatch, external deployment, merge or acceptance. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Next implementation state — atomic admission proof reconciled — 2026-11-17
+
+- PR #114 current head `ab9461eb84b14fe230918391d5212f19ca25592c`, OPEN/DRAFT/UNMERGED. Exact-head D1 proof run [43935827714](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827714), job 133540023253 SUCCESS; Pool Contract Validation [43935827741](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827741), job 133540025359 SUCCESS. Local Workers-runtime D1 suite 12/12 PASS.
+- PR #114 body now has an addendum correcting its stale prior head/evidence. Issue #96 comment 6948767460 records the current result and next gate.
+- This remains local D1 transaction proof only. Event, controller metadata and trusted default SHA are injected inputs; webhook signature/live GitHub event provenance is NOT VERIFIED. No hosted D1, production Supervisor, lease/fencing, outbox delivery, worker identity or dispatch.
+- Next: trusted GitHub issue_comment provenance adapter on trusted default branch, then durable claim/lease/fencing/recovery; keep production dispatch disabled.
