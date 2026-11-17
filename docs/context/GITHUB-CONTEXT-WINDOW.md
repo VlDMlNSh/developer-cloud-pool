@@ -2428,3 +2428,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next bounded step: complete source/integrity review for the official Claude installer and FCC one-account/no-fallback configuration contract without reading secrets; then qualify a real free route only after account/quota and egress gates plus independent A3 review. Keep production dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — immutable PR-head checkout provenance — 2026-11-17
+
+- PR #116 candidate `d93e75df74e7213f96dc3e2cb335a73dc6710e19` explicitly checks out `${{ github.event.pull_request.head.sha || github.sha }}` with checkout credentials persistence disabled.
+- The previous successful run `44093612344` was re-audited: its manifest had target head `e58211d...` but checkout used merge commit `ff86e2b...`; it is not treated as strict immutable-head evidence.
+- Corrected exact-head runner run `44094382662`: SUCCESS; job `134077531544`; all 14 steps succeeded. Exact-head Pool Contract Validation `44094382669`: SUCCESS.
+- Artifact `14333840752` (26,805 bytes), SHA-256 `96fb613956842b30015e659c662c799af363eb3bfbf8fa54179b5d51df3acafa`. Downloaded digest matches GitHub; all 22 internal SHA256SUMS entries match; manifest has no duplicate keys; target_sha equals checkout_sha exactly.
+- FCC loopback HTTP 200, binds only to 127.0.0.1:18765, clean shutdown; synthetic bridge passes argument-preservation/health checks. Claude executable is a synthetic mock: `real_claude_session=false`, `agent_task_executed=false`. No provider calls, GitHub secret reads or production dispatch.
+- PR #116 remains OPEN/DRAFT/UNMERGED. This qualifies the no-secret installation + loopback lifecycle + synthetic bridge profile only; it does not qualify a live provider route, free entitlement/quota, account identity, effective single-account/no-fallback FCC config, host egress isolation, or Contour A.
+- Gemini controller workflow remains absent on default branch; Gemini dispatch NOT RUN. `POOL_DISPATCH_ENABLED=false` remains mandatory.
+- Ruleset and project governance still require independent A3 review; existing review comments are owner-authored, not independent approval. No merge or deployment.
+- Report: [2026-11-17-next-exact-head-checkout-provenance.md](../reports/2026-11-17-next-exact-head-checkout-provenance.md).
+- Next: close source/integrity and legal review gates (Claude installer bytes, FCC AGPL network-use), then prove effective one-account/no-fallback configuration without reading secrets. Do not run a live provider call before independent A3 review, egress and route/quota qualification.
+
