@@ -2752,3 +2752,15 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Documentation-only on `docs/next-2026-11-16-current-state-refresh`; no secrets, provider calls, Gemini dispatch, deployment or merge. Exact-head CI and independent review of resulting docs head NOT VERIFIED.
 - Contour A NOT ACCEPTED; Contour B DEFERRED. Next pass: Issue #119 synthetic FCC-to-Claude CLI bridge, then independent review/exact-head CI. Workspace installation remains blocked until prerequisites pass.
 - Canonical architecture: [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md). Workspace record: [CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md](../architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md). PR #113: https://github.com/VlDMlNSh/developer-cloud-pool/pull/113.
+
+
+## /next — PR #116 independent security/provenance audit — 2026-11-17
+
+- Restored repository state: default branch `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 branch `feat/claude-code-fcc-runner-qualification-2026-11-17`; latest head after bounded fixes `367c583a508061cebe41bb8d33e98c24a0dd8ba6`. PR #116 remains OPEN/DRAFT.
+- Prior exact-head run on `2b4b02b331b0dd4547baac11f7d38fe232872431`: qualification SUCCESS run [44083551665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083551665); Pool Contract Validation SUCCESS run [44083551660](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083551660).
+- Independent review identified two fixable evidence/CI defects: workflow path filter omitted `scripts/cloud_pool/exec_allowlist.py` and its tests; provenance hard-coded `fcc_client_launcher_invoked=false` although the synthetic fcc-claude launcher was executed.
+- Fixed workflow path filters and made provenance derive launcher/mock identity from the synthetic mock result marker. Workflow file blob `36c1a6effbac0fe71a275a004f3b9f6a2c5c8c72`; fix commits `e538ecdc8cc28f789a872e9751bf4c8ef3047b30` and `367c583a508061cebe41bb8d33e98c24a0dd8ba6`.
+- New exact-head runs for `367c583a508061cebe41bb8d33e98c24a0dd8ba6` are pending/running at checkpoint time: qualification [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455), Pool Contract Validation [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406). They are NOT VERIFIED until completed SUCCESS.
+- Review boundary: mock-only handoff is not a real Claude session, route/account/quota qualification, or proof of generic secret scrubbing. The workflow's synthetic executable avoids actual Claude CLI/provider use. No GitHub secrets read; no provider calls intended; no Gemini dispatch; no production route.
+- PR #116 has no independent formal review yet. This pass does not approve or merge it. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Next: read exact-head run/artifact results, then submit independent review with residual findings. Preserve fail-closed production dispatch and `POOL_DISPATCH_ENABLED=false`.
