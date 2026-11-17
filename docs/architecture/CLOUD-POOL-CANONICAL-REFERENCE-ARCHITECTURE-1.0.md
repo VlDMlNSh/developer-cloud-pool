@@ -226,7 +226,7 @@ Installation smoke, mock bridge, static UI or successful CI alone never constitu
 | Claude Code + ECC + FCC install | Earlier exact-head runner installation proof | VERIFIED — install only |
 | FCC loopback runtime | Readiness, loopback listener and clean shutdown CI | VERIFIED — runtime only |
 | FCC → Claude CLI | Synthetic mock-only bridge exact-head CI | VERIFIED — synthetic only |
-| Generic child environment sanitization | FCC preserves most base environment; no production allowlist | NOT VERIFIED / BLOCKER |
+| Child environment allowlist | `scripts/cloud_pool/exec_allowlist.py` added on PR #116; unit tests and synthetic FCC server/launcher handoff pass with synthetic GitHub/provider credentials present only in parent test shell | VERIFIED — synthetic boundary only; production integration/review NOT VERIFIED |
 | Real free provider route | No provider call or quota proof | NOT VERIFIED |
 | Integrated production A0/D1 | Isolated proofs/contracts; not fully integrated/hosted | NOT VERIFIED |
 | Durable lease/fencing/recovery | Design and partial isolated proofs; backend not qualified | NOT VERIFIED |
@@ -238,7 +238,7 @@ Installation smoke, mock bridge, static UI or successful CI alone never constitu
 
 ## 12. Implementation order — do not reopen architecture routinely
 
-1. Implement and test minimal FCC child environment allowlist.
+1. Implemented and synthetic-tested `scripts/cloud_pool/exec_allowlist.py` on PR #116. Production route admission, real task use and independent review remain open; do not mark production credential isolation QUALIFIED until those gates pass.
 2. Qualify one free FCC provider route and account/quota evidence without secret reads.
 3. Complete integrated A0/D1 admission, durable lease/fencing, worker identity and recovery.
 4. Integrate first Claude Code task worker with exact SHA, minimal environment and no paid fallback.
