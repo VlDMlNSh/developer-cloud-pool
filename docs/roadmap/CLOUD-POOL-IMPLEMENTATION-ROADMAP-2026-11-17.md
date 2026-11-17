@@ -1,3 +1,18 @@
+# Current execution checkpoint — 2026-11-17 (supersedes stale next-step pointers below)
+
+The canonical implementation target is [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md).
+
+- Latest executor candidate: PR #116 head `2b4b02b331b0dd4547baac11f7d38fe232872431`; synthetic FCC environment allowlist and bridge now pass exact-head CI (run 44083551665) and Pool Contract Validation (run 44083551660).
+- Next immediate engineering work: qualify one free FCC route/account/quota without secret-value reads; integrate production A0/D1 admission, lease/fencing and recovery.
+- Final Contour A includes the persistent Engineering Workspace: after initial CODE and A0/D1 gates, qualify server #3, Cloudflare Access/Tunnel, one shared filesystem for desktop VS Code and browser code-server/Open VSX, per-attempt worktrees/leases/fencing, backup/restore and independent A3 evidence. It is not required for the first ephemeral-runner smoke, but it is required before Contour A can be ACCEPTED.
+- Contour B remains prohibited until formal Contour A ACCEPTED.
+- Gemini/Codex/MEDIA remain supplementary and separately gated. Gemini dispatch is NOT RUN; keep `POOL_DISPATCH_ENABLED=false`.
+- PR #116 and PR #113 remain OPEN / DRAFT / UNMERGED. No independent PR #116 review is recorded.
+
+Historical notes below are retained as dated evidence and are superseded where their “next step” wording conflicts with this checkpoint.
+
+---
+
 **Canonical reference architecture:** [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md).
 
 # Cloud Development Pool — Implementation Roadmap
