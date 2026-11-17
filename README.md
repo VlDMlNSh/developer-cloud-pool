@@ -27,7 +27,7 @@ Supporting normative contracts:
 - Gemini: dispatch only through the approved controller; dispatch gates remain fail-closed. This documentation change did not dispatch agents or call providers.
 - Claude Code + ECC + FCC PR #116: OPEN / DRAFT / UNMERGED. Latest observed head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner proof [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) and workflow/security validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) succeeded. Independent review comments 5938684495 and 5938737463 record license and FCC key-fallback constraints; neither is production approval. No provider route or Claude task execution qualification is implied.
 - Jarvis Web: not deployed as an authenticated live control plane.
-- Persistent Engineering Workspace: optional separately authorized stage; BLOCKED by Issue #118. It is not a first GitHub-only launch dependency.
+- Persistent Engineering Workspace: later separately authorized stage; BLOCKED by Issue #118. It is not a first GitHub-only launch dependency, but remains part of final Contour A acceptance.
 - Active default-branch ruleset ID `26550182`: PR required and review-thread resolution required, but required approving review count is zero and no required status-check contexts are configured. This is not sufficient independent governance for production acceptance.
 - No paid hosting/provider fallback is permitted. GitHub-hosted runners are ephemeral and are not persistent web hosts or durable storage.
 
