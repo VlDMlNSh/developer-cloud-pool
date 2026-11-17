@@ -154,3 +154,18 @@ This owner-approved architecture is the fixed implementation baseline. Routine /
 
 Canonical implementation roadmap: [CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md).  
 Latest checkpoint: [2026-11-17-next-claude-code-runner-installation.md](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
+
+
+## CURRENT OWNER /next OPERATING UPDATE — FOUR GEMINI AGENTS — 2026-11-17
+
+The latest owner instruction now requests **four isolated Gemini task assignments for every ChatGPT /next**, supplementary to the primary Cloud Pool engineering pass. This supersedes the earlier 2026-11-17 scope note that treated Gemini as optional per /next. It does not waive any controller, admission, quota, security or governance gate.
+
+Fixed roles: (1) researcher, (2) implementation designer, (3) adversarial tester, (4) security auditor. Each child must receive only its own unique bounded task and separately attributed account slot. No cross-account retry, key cycling, paid fallback, tool execution, repository writes or privilege escalation.
+
+**Current dispatch disposition: NOT RUN.** Default branch `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` has no `.github/workflows/gemini-batch-dispatch-controller.yml`; current default workflow inventory is only DSH evaluation, Pool Contract Validation, Pool Supervisor, Pool Worker and Resource Probe. The four-account helper candidate PR #107 is OPEN/DRAFT/UNMERGED and its base `e38f87099e0edd1bb918c9b9f2b8ad3422b9d32b` is two commits behind default; it contains an in-process four-client helper/fake-client tests, not an Actions dispatcher. PR #109 is OPEN/DRAFT/UNMERGED on current default base and its exact-head fake-client suite passed 11/11, but does not add workflow dispatch, durable leases/fencing/recovery, production caller authorization or free-route proof. PR #112 is read-only event validation; PR #114 is atomic admission proof with `dispatch:false` and `executionAuthorized:false`. PR #107/#109 have zero formal reviews. The MediaHub three-agent bridge is a separate control plane and is not a substitute for a four-child Cloud Pool controller.
+
+Current Pool Contract Validation run `44075999524` explicitly read back `POOL_DISPATCH_ENABLED=false`. Keep it false. Four secret slots do not prove four distinct Google accounts or quota domains; never read secret values. The latest owner request is recorded on Cloud Pool Issues #94 and #96 in comments `6947028166` and `6947031522`.
+
+**FCC runtime lifecycle pass:** pinned FCC source `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` confirms `fcc-server` entrypoint, `HOST` default `0.0.0.0`, `PORT` default `8082`, browser auto-open default true, and local-only `GET /admin/api/status` guarded by loopback client/Host/Origin. PR #116 workflow now explicitly sets HOST=127.0.0.1, FCC_OPEN_BROWSER=false, PROVIDER_MAX_ATTEMPTS=1 and uses only a read-only loopback GET. No provider credentials/calls or completion endpoint. First run #44075802559 failed due an escaped runner.temp expression; second #44075999516 reached HTTP 200 but SIGTERM exited 143. Both defects were corrected (runner path and SIGINT graceful shutdown). Latest PR #116 head `596c03e19b4662f69a9b40791299f55afb9a928e`; Pool Contract Validation run `44076256865` SUCCESS; runtime run `44076256742` RUNNING at this update. Do not mark lifecycle proof successful until its job, listener, shutdown and artifact are rechecked.
+
+Next: verify exact-head run `44076256742`; correct any remaining issue with evidence; then finish Issue #117. Four-agent live dispatch remains NOT RUN until the Cloud Pool-native controller gates are qualified. Contour A remains NOT ACCEPTED; Contour B deferred.
