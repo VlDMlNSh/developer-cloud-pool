@@ -5,7 +5,7 @@
 **Default branch:** Основной  
 **Default HEAD:** 35208f0ef28f0ac031a7acdf35fc90ccc9b16845  
 **Current phase:** Contour A — first CODE executor installation qualification  
-**Status:** RUNNING / NOT VERIFIED — corrected latest qualification run active
+**Status:** SUCCEEDED — no-secret installation/resource smoke; operational profile NOT QUALIFIED
 
 ## Owner baseline
 
@@ -92,10 +92,10 @@ These amendments supersede conflicting historical planning text; old candidate P
 ## Latest /next implementation correction — 2026-11-17
 
 **Current candidate**
-- PR #116 latest head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`.
-- Workflow blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
-- Current qualification run: [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928), RUNNING at last read.
-- Current Pool Contract Validation: [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918), RUNNING at last read.
+- PR #116 latest head: `f7d490a63aefa007ff8d74e7de961349f54a27e9`.
+- Workflow blob: `4264048f004404847ccada72e03c3165abebf321`.
+- Exact-head qualification run: [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717), COMPLETED / SUCCESS.
+- Exact-head Pool Contract Validation: [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842), COMPLETED / SUCCESS.
 - Old run [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324) was CANCELLED by PR concurrency after the workflow correction; no install success is claimed.
 
 **Source-backed correction**
@@ -121,3 +121,21 @@ No production dispatch, provider call, secret read, deployment, merge, or Contou
 - Latest branch head `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`; workflow blob `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`. Corrected qualification run [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928) and Pool Contract Validation [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918) were RUNNING at last read.
 - No secret values read, no provider/model requests, no FCC server startup, no agent task, no production dispatch, no deployment and no merge occurred.
 
+
+## Final exact-head success — 2026-11-17
+
+- PR #116 head `f7d490a63aefa007ff8d74e7de961349f54a27e9`; workflow blob `4264048f004404847ccada72e03c3165abebf321`.
+- Runner workflow [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717) COMPLETED / SUCCESS; job `133995194615`, all steps succeeded.
+- Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842) COMPLETED / SUCCESS; job `133995194255`.
+- Artifact [14323205257](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717/artifacts/14323205257), 11,460 bytes; SHA-256 `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121` matches GitHub's digest and was recomputed from the downloaded ZIP.
+- Provenance: PR head `f7d490a63aefa007ff8d74e7de961349f54a27e9`; event/checkout merge SHA `1bf87d450eece31cfb4591dfd8f4842e03f1610b`; base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Artifact verifies Claude Code 2.1.325, FCC 6.19.35/Python 3.14.10, uv 0.13.7, ECC commit `e413166c50e85fb205b988b5e78874b5a88ea4d2` and hashes for selected skills search-first, tdd-workflow and security-review.
+- FCC commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pyproject Git blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`; uv.lock Git blob `ee8490c29a36f8302f5c1f1d42b465f6271c10f2`; locked install `uv sync --frozen --no-dev --python 3.14.10`.
+- Logs show no FCC server startup, no `fcc-claude` invocation and no orphan server cleanup. Manifest no-server flags match the logs.
+- Runner: Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM, 145 GiB root, 89 GiB available baseline / 88 GiB after. Installed sizes: Claude 349 MB, FCC venv 176 MB, uv cache 12 MB, ECC skills 68 KB. FCC sync 1.48 seconds, max RSS 108,764 KiB. Single-job measurement.
+- No GitHub Secret values read or injected; no provider calls; no Anthropic auth; no agent task; no production dispatch; no deployment.
+- Earlier failed/side-effect attempts are retained in `docs/reports/2026-11-17-first-claude-code-fcc-ecc-runner-proof.md`; they are superseded by this clean run.
+
+**Interpretation:** the no-secret installation/resource smoke is SUCCEEDED. The operational Claude Code profile is NOT QUALIFIED until a separate FCC loopback runtime/health/start-stop test, synthetic FCC-to-Claude bridge test, verified free API route/quota, and independent review pass.
+
+**Next:** loopback-only FCC runtime smoke on a GitHub-hosted runner, with no provider credentials and no provider calls.
