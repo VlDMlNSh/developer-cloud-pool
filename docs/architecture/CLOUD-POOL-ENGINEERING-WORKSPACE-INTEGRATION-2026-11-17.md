@@ -117,3 +117,8 @@ Workspace host/access facts remain BLOCKED as recorded in Issue #118: no confirm
 ## FCC license constraint — 2026-11-17
 
 The pinned FCC source declares AGPL-3.0-only; ECC is MIT. The hosted-runner smoke does not grant permission to deploy FCC publicly. Before remote-user/network exposure, review AGPL-3.0-only obligations, corresponding-source offer and notices for the intended usage. Keep FCC loopback-only until this gate is resolved. Claude Code CLI remains vendor-distributed proprietary software subject to vendor terms.
+
+
+## FCC multi-key fallback prohibition — 2026-11-17
+
+Pinned FCC source includes numbered API-key lists and model fallback rows selecting different key numbers; upstream tests demonstrate trying successive keys after rate-limit/permission errors. This is incompatible with Cloud Pool account/quota isolation when keys belong to different accounts. Any future FCC profile must use one provider account/credential, one selected route and no `MODEL_FALLBACKS`/key cycling. Separate accounts require separate isolated profiles and quota ledgers. This has not been qualified by the no-secret mock workflow.
