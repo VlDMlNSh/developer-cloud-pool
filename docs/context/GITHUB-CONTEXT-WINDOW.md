@@ -2344,3 +2344,15 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 
 ### Workspace acceptance clarification
 The first GitHub-only static PWA milestone can precede Workspace. However, the owner's full Contour A target includes the persistent Engineering Workspace and its same-filesystem browser/desktop qualification, isolation, backup and restore evidence. Therefore Workspace is **not a first-release dependency but is a final Contour A acceptance gate**, unless the owner explicitly changes that scope. Issue #118 remains BLOCKED.
+
+
+## Final read-back — architecture consolidation pass — 2026-11-17
+
+- PR #120 current head: `30dbde9d136286af9bbc03dc58ec42e6a4939e5a`, OPEN/DRAFT/UNMERGED, mergeable=true, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Exact-head Architecture Documentation Validation [44088152664](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088152664): SUCCESS; job [134055994068](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088152664/job/134055994068), canonical Markdown links validation SUCCESS.
+- Exact-head Pool Contract Validation [44088150366](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44088150366): SUCCESS.
+- PR #120 has 44 changed files. All 30 changed paths from PR #113 are preserved in PR #120; previous context snapshot is archived verbatim. PR #113 was closed UNMERGED as superseded (comment 6948722671); PR #120 comment 6948721800 requests independent architecture/security review.
+- PR #116 latest head `6d4a4c518d44aa4a79d8396390623f424499011a`: runs 44086419084 and 44086419002 SUCCESS; current-head independent review comments 5938684495 and 5938737463 are COMMENT, not approval. FCC one-account-per-profile, no key cycling/fallback; license review outstanding for remote/network use.
+- Issue #117 CLOSED. Issue #115 OPEN for live route/account/quota and remaining qualification. Issue #118 OPEN/BLOCKED for Workspace host/access/storage/restore.
+- Initial launch remains GitHub-only static/read-only PWA. Persistent Workspace is a later separately authorized stage, not first-launch dependency, but part of final Contour A acceptance unless owner re-scopes.
+- No secret reads, provider calls, real Claude task/session, Gemini dispatch, external deployment, merge or acceptance. Contour A NOT ACCEPTED; Contour B DEFERRED.
