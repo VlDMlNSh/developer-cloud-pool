@@ -88,7 +88,7 @@ jobs:
           echo "$RUNNER_TEMP/uv-bootstrap/bin" >> "$GITHUB_PATH"
           "$RUNNER_TEMP/uv-bootstrap/bin/uv" --version | tee "$RUNNER_TEMP/qualification/uv-version.txt"
 
-      - name: Install FCC from immutable source using its committed lockfile
+      - name: Install and metadata-check FCC without starting its server
         shell: bash
         env:
           UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
@@ -109,7 +109,6 @@ jobs:
           test "$("$UV_PROJECT_ENVIRONMENT/bin/python" --version)" = "Python 3.14.10"
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" --version | tee "$RUNNER_TEMP/qualification/fcc-server-version.txt"
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-doctor" --version | tee "$RUNNER_TEMP/qualification/fcc-doctor-version.txt"
-          "$UV_PROJECT_ENVIRONMENT/bin/fcc-claude" --help > "$RUNNER_TEMP/qualification/fcc-claude-help.txt"
 
       - name: Install only selected ECC skills at immutable upstream commit
         shell: bash
@@ -171,6 +170,7 @@ jobs:
             echo "provider_calls=false"
             echo "github_secret_values_read=false"
             echo "fcc_server_started=false"
+            echo "fcc_client_launcher_invoked=false"
             echo "agent_task_executed=false"
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
