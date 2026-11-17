@@ -2,18 +2,19 @@
 
 ## CURRENT RECONCILED SNAPSHOT — 2026-11-17
 
-This block is authoritative over older dated snapshots below. It records the exact branch state immediately before this Context Window refresh commit; the refresh itself advances the integration branch. Always re-read the live branch ref first.
+This snapshot is authoritative for refs at the time of parent synchronization. Historical sections below are retained for provenance; re-read live refs before every pass.
 
-- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true.
-- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head immediately before this context refresh `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; mergeable=true; compare 38 commits ahead / 0 behind. Includes realization map, assurance addendum, scorecard, reference/README links, validator/workflow, report and checkpoint.
-- Exact-head Architecture Documentation Validation run [44094563351](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094563351) SUCCESS on `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; job `134078171916`. Pool Contract Validation was not observed for this documentation-only head.
-- PR #122 and #123 are CLOSED / UNMERGED as superseded after substantive content migration into PR #124; their branches and review histories remain available.
-- PR #116: OPEN/DRAFT; latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; earlier no-secret install/FCC loopback proof does not establish real Claude task execution or a free provider route; exact-head status NOT VERIFIED.
-- Ruleset `26550182` ACTIVE on `refs/heads/Основной`; PR and review-thread resolution required, but required approving reviews = 0 and required status checks = none; no bypass actors. This is insufficient governance for critical architecture/security acceptance.
-- Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
-- Authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
-- Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
+- Repository: `VlDMlNSh/developer-cloud-pool`; public; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; base default HEAD; mergeable=true at latest read.
+- PR #124 before synchronization: OPEN/DRAFT/UNMERGED; head `91e579f2b945e286a47549fce4d292240e644d55`; base `baa2223bd44250edf0e8469247910051f4625955`; 44 commits ahead / 1 behind; mergeable=false.
+- This commit synchronizes PR #124 to PR #120's latest parent and preserves the latest parent Context Window/checkpoint/report updates. Re-read branch and PR metadata after commit.
+- PR #124 includes Unified Realization Map, Architecture Assurance Addendum, Independent 10/10 Scorecard, README/reference links, documentation validator/workflow, report and checkpoint.
+- PR #122/#123: CLOSED/UNMERGED as superseded; PR #116 remains OPEN/DRAFT, exact current head and CI must be re-read.
+- Ruleset `26550182` active on `refs/heads/Основной`, PR and review-thread resolution required, but zero required approvals and no required status checks; governance remains insufficient.
+- Runtime: authenticated Jarvis NOT VERIFIED; hosted state authority and production admission/recovery NOT QUALIFIED; real free provider route NOT QUALIFIED; persistent Workspace BLOCKED by Issue #118.
+- No secrets, provider calls, Gemini dispatch, production dispatch, deployment or merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
@@ -2411,3 +2412,49 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - No new service is implemented or qualified by this document. A0 admission, one transactional state authority, fenced leases, account-isolated quota, approved controller, worker isolation and independent acceptance remain binding.
 - Documentation-only: no secrets read, provider calls, Gemini dispatch, host deployment, dispatch enablement, merge or runtime change. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Exact branch head and exact-head CI must be re-read after publication; older CI evidence is superseded by the new commit.
+
+## /next — runner PATH and HOME/XDG hardening — 2026-11-17
+
+- Owner baseline and roadmap were re-read. Current first priority is the first GitHub-hosted Claude Code + ECC + FCC CODE profile; stale historical pointers prioritizing Gemini lease work are superseded. Gemini is optional supplementary capability; default-branch controller `.github/workflows/gemini-batch-dispatch-controller.yml` is absent, so Gemini dispatch NOT RUN.
+- PR #116 branch `feat/claude-code-fcc-runner-qualification-2026-11-17` advanced from `6d4a4c518d44aa4a79d8396390623f424499011a` to `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`.
+- Changed `exec_allowlist.py` to validate resolved PATH directories/ownership/write permissions, reject duplicate canonical PATH entries, require private current-user HOME and private XDG directories confined within HOME. Added 8 unit tests; isolated local unittest run 8/8 PASS. Workflow uses isolated FCC runtime and bridge HOME/XDG trees and a constructed PATH.
+- Exact head `846fd556b8726cc88b4fead7f071a8a002f464e9`: Pool Contract Validation `44091723935` SUCCESS; runner qualification `44091723923` FAILED at FCC loopback startup step 8. Duplicate `/bin`/ `/usr/bin` canonical PATH alias was corrected.
+- Latest exact head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`: Pool Contract Validation `44091902882` SUCCESS; runner qualification `44091902840` FAILED again at step 8. Earlier steps (unit tests, Claude install, uv and FCC install) succeeded; bridge/ECC skipped. Failing stderr/annotations not available in current connector reads; exact cause NOT VERIFIED. Do not claim runner qualification.
+- Active ruleset #26550182 requires PR and review-thread resolution, but 0 required approvals and no required checks. PR #116 and PR #120 remain OPEN/DRAFT/UNMERGED; reviews recorded are owner-authored comments, not independent approvals.
+- No secret values read/injected, provider calls, Claude agent task, Gemini dispatch, paid fallback, deployment or merge. FCC remains loopback-only; egress firewall, installer-byte integrity, FCC single-account/no-fallback, free route/quota and AGPL network-use review remain open.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+- Next: retrieve failing step annotations/logs for run 44091902840, identify evidenced cause, make one narrow correction, rerun exact-head CI. Keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — FCC runner path correction and bounded profile qualification — 2026-11-17
+
+- PR #116 exact candidate head: `e58211dfe82a885d7718ebbc89d66188087cdcc4`.
+- Retrieved full logs for prior failure run `44092881008`: the rejected PATH entry was exactly `/usr/local/bin`, root-owned mode `0777`. This was a legitimate fail-closed rejection, not an FCC startup defect. Workflow now excludes this unsafe directory from both FCC and synthetic bridge PATHs; it does not weaken the environment policy.
+- A subsequent artifact review found duplicate/ambiguous provenance keys. The manifest now distinguishes `synthetic_bridge_claude_mock_invoked=true` from namespaced `fcc_runtime_*` lifecycle fields and fails if duplicate keys exist. A first attempted sed prefixing failed CI; replaced with awk and reran exact-head CI.
+- Exact-head run `44093612344` on `e58211dfe82a885d7718ebbc89d66188087cdcc4`: Claude Code + ECC + FCC Runner Qualification SUCCESS; all 14 job steps succeeded. Exact-head Pool Contract Validation `44093612348`: SUCCESS.
+- Artifact `14331114755`, 26,657 bytes, SHA-256 `74d11af0039a856d4aebd72c01d0f403e05e1adaa8879b126706e41575c2f479`; downloaded and digest independently matched GitHub. All 22 internal SHA256SUMS entries verified; provenance manifest contains zero duplicate keys.
+- Evidence: Claude Code `2.1.325`; FCC `6.19.35` on Python `3.14.10`; uv `0.13.7`; ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`, selected skills `search-first,tdd-workflow,security-review`. FCC pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; license AGPL-3.0-only; ECC MIT. Runner observed 4 vCPU, 15 GiB RAM, 145 GiB root disk, 88 GiB free after installation; installed footprints Claude 349 MB, FCC 200 MB, uv cache 12 MB, ECC skills 68 KB.
+- FCC loopback lifecycle: GET status HTTP 200; exactly listener `127.0.0.1:18765`; SIGINT clean exit 0; listener absent after shutdown. Synthetic FCC-to-Claude bridge: health HTTP 200 at `127.0.0.1:18766`; mock argument preservation confirmed; mock exit 37 intentionally propagated; bridge server exit 0 and listener absent after shutdown.
+- Hard qualification boundary: the Claude executable in the bridge was a synthetic mock, not real Claude. `real_claude_session=false`, `agent_task_executed=false`, `provider_calls=false`, `github_secret_values_read=false`, `production_dispatch=false`. No live provider route, account identity, free quota, key/fallback configuration, host deployment, or production executor qualification is implied.
+- PR #116 remains OPEN/DRAFT/UNMERGED. Existing PR review submissions are owner-authored COMMENTs, not independent approval. Ruleset #26550182 has PR and thread-resolution requirements but 0 required approvals and no required checks; project policy still requires independent A3 review. Keep `POOL_DISPATCH_ENABLED=false`.
+- No Gemini dispatch; Gemini is optional supplementary capability, and no controller bypass is permitted. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+- Next bounded step: complete source/integrity review for the official Claude installer and FCC one-account/no-fallback configuration contract without reading secrets; then qualify a real free route only after account/quota and egress gates plus independent A3 review. Keep production dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — immutable PR-head checkout provenance — 2026-11-17
+
+- PR #116 candidate `d93e75df74e7213f96dc3e2cb335a73dc6710e19` explicitly checks out `${{ github.event.pull_request.head.sha || github.sha }}` with checkout credentials persistence disabled.
+- The previous successful run `44093612344` was re-audited: its manifest had target head `e58211d...` but checkout used merge commit `ff86e2b...`; it is not treated as strict immutable-head evidence.
+- Corrected exact-head runner run `44094382662`: SUCCESS; job `134077531544`; all 14 steps succeeded. Exact-head Pool Contract Validation `44094382669`: SUCCESS.
+- Artifact `14333840752` (26,805 bytes), SHA-256 `96fb613956842b30015e659c662c799af363eb3bfbf8fa54179b5d51df3acafa`. Downloaded digest matches GitHub; all 22 internal SHA256SUMS entries match; manifest has no duplicate keys; target_sha equals checkout_sha exactly.
+- FCC loopback HTTP 200, binds only to 127.0.0.1:18765, clean shutdown; synthetic bridge passes argument-preservation/health checks. Claude executable is a synthetic mock: `real_claude_session=false`, `agent_task_executed=false`. No provider calls, GitHub secret reads or production dispatch.
+- PR #116 remains OPEN/DRAFT/UNMERGED. This qualifies the no-secret installation + loopback lifecycle + synthetic bridge profile only; it does not qualify a live provider route, free entitlement/quota, account identity, effective single-account/no-fallback FCC config, host egress isolation, or Contour A.
+- Gemini controller workflow remains absent on default branch; Gemini dispatch NOT RUN. `POOL_DISPATCH_ENABLED=false` remains mandatory.
+- Ruleset and project governance still require independent A3 review; existing review comments are owner-authored, not independent approval. No merge or deployment.
+- Report: [2026-11-17-next-exact-head-checkout-provenance.md](../reports/2026-11-17-next-exact-head-checkout-provenance.md).
+- Next: close source/integrity and legal review gates (Claude installer bytes, FCC AGPL network-use), then prove effective one-account/no-fallback configuration without reading secrets. Do not run a live provider call before independent A3 review, egress and route/quota qualification.
+

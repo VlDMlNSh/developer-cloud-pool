@@ -163,3 +163,15 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - No secret values read, no provider calls, no agent task, no Gemini dispatch, no deployment/merge. Real free route/account/quota, installer-byte integrity, egress isolation, AGPL network-use review and independent A3 review remain unresolved.
 - PR #116 remains OPEN/DRAFT/UNMERGED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; `POOL_DISPATCH_ENABLED=false`.
 - Full report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+
+## /next checkpoint — immutable PR-head checkout proof — 2026-11-17
+
+- PR #116 candidate: `d93e75df74e7213f96dc3e2cb335a73dc6710e19`.
+- Found and corrected provenance mismatch: previous green run used PR merge ref checkout; workflow now explicitly checks out pull_request.head.sha with persist-credentials false.
+- Exact-head runner run 44094382662: SUCCESS, all 14 steps; exact-head Pool Contract Validation 44094382669: SUCCESS.
+- Artifact 14333840752 digest `96fb613956842b30015e659c662c799af363eb3bfbf8fa54179b5d51df3acafa`; downloaded digest verified; all 22 internal checksums pass; target_sha == checkout_sha == candidate head; no duplicate manifest keys.
+- Synthetic mock only, no real Claude session, no agent task, no provider calls, no secret reads, no production dispatch. FCC remains loopback-only.
+- PR #116 remains OPEN/DRAFT/UNMERGED. Independent A3 review, installer integrity, FCC AGPL network-use review, one-account/no-fallback, free route/quota and egress gates remain open. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Keep `POOL_DISPATCH_ENABLED=false`; Gemini dispatch NOT RUN because controller is absent from default branch.
+- Full report: [2026-11-17-next-exact-head-checkout-provenance.md](../reports/2026-11-17-next-exact-head-checkout-provenance.md).
+
