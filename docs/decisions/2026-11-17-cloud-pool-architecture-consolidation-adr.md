@@ -62,7 +62,7 @@ This ADR is accepted only when merged to the protected default branch after revi
 The canonical reference architecture includes the chat-session Workspace design but stages it behind the owner's initial GitHub-only launch boundary:
 
 - First Jarvis delivery is a static responsive GitHub-hosted PWA with redacted read-only status. No external always-on host, physical server, Cloudflare Access, paid service or browser-held privileged secret is a launch dependency.
-- Persistent Engineering Workspace remains an optional, separately authorized stage. If later approved, browser code-server/Open VSX and official VS Code Desktop Remote SSH must use the same persistent filesystem, with separate per-task worktrees, single-writer fencing leases, backup/restore and qualified ingress.
+- Persistent Engineering Workspace is a separately authorized later stage, not a dependency of the first static-PWA milestone; however, it is mandatory before Contour A acceptance. Browser code-server/Open VSX and official VS Code Desktop Remote SSH must use the same persistent filesystem, with separate per-task worktrees, single-writer fencing leases, backup/restore and qualified ingress.
 - Cloudflare Access/Tunnel and VS Code Remote Tunnels are different trust/transport paths; neither is approved or deployed by this ADR.
 - Gemini is optional supplementary execution, not a mandatory per-/next or first-release gate; any use remains controller-only after qualification.
 - The first CODE profile's latest exact-head no-secret runner evidence is PR #116 head `6d4a4c518d44aa4a79d8396390623f424499011a`, runs 44086419084 and 44086419002 SUCCESS. It proves local install/runtime/mock lifecycle only, not a real Claude session or provider route.
@@ -74,3 +74,8 @@ The canonical reference architecture includes the chat-session Workspace design 
 Pinned FCC source supports ordered/numbered provider key lists and `MODEL_FALLBACKS`; upstream tests demonstrate sequential key switching after 403/429. Production policy must therefore bind exactly one credential/account per FCC profile, disable key cycling and model/provider/paid fallback, and keep independent profiles and quota ledgers per account. Multiple key names do not prove independent account/quota ownership.
 
 Independent PR #116 review comments [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495) and [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) record license and account-fallback findings. They are COMMENT, not production approval. FCC is AGPL-3.0-only and ECC is MIT at the pinned source commits; legal review for intended remote/network deployment remains outstanding.
+
+
+## Contour A Workspace acceptance clarification — 2026-11-17
+
+The first static GitHub-hosted Jarvis PWA remains a read-only launch milestone and must not depend on a physical host, paid service or unqualified Cloudflare deployment. This does **not** make persistent Engineering Workspace optional for the completed Cloud Pool. Workspace qualification (same durable filesystem from browser and desktop IDE, isolated task worktrees, single-writer fencing, identity/ingress controls, encrypted backup and independent restore) is a mandatory A7 exit gate before Contour A can be ACCEPTED. Issue #118 remains BLOCKED; no deployment is authorized by this clarification.
