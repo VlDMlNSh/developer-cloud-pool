@@ -51,6 +51,12 @@ The same candidate includes the Architecture Assurance Addendum and Independent 
 - Ruleset `26550182` has 0 required approvals and no required status checks; governance blocker.
 - PR #122/#123 CLOSED as superseded. PR #116 latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`, exact-head CI NOT VERIFIED.
 
+## Parent drift blocker
+- PR #120 latest head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`.
+- PR #124 remains based on `baa2223bd44250edf0e8469247910051f4625955`; compare 44 ahead / 1 behind; mergeable=false.
+- Wait for parent branch stabilization, then rebase child once and rerun exact-head CI.
+- Latest PR #124 CI run `44094790111` on `91e579f2b945e286a47549fce4d292240e644d55` was PENDING at last read.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
