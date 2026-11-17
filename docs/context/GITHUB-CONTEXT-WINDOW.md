@@ -1,3 +1,46 @@
+# CURRENT PASS — INDEPENDENT AUDIT REALIZATION MAP — 2026-11-17
+
+**Status:** PROPOSED / OPEN DRAFT PR; NOT MERGED, NOT ACCEPTED  
+**Repository:** https://github.com/VlDMlNSh/developer-cloud-pool  
+**Default branch:** `Основной`; previously observed baseline `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.  
+**Immutable parent target:** PR #120 latest observed head at rebase `35b47e0e0fd576dc0552934f733548a05cbcb435`.  
+**Current work branch:** `docs/cloud-pool-realization-map-v2-2026-11-17`, created from that exact parent head.  
+**Superseded work branch:** `docs/cloud-pool-realization-map-2026-11-17`, left intact after parent advanced; do not use as the active PR head.  
+**Purpose:** translate the independent 2026-11-17 audit into one subordinate implementation map without replacing the selected architecture.
+
+## Work completed
+
+- Added [Unified Realization Map](../architecture/CLOUD-POOL-UNIFIED-REALIZATION-MAP-2026-11-17.md): six logical layers, one integration route, reduced service-hop complexity, explicit authority boundaries, separate ephemeral execution and persistent workspace, two durable state domains plus immutable evidence, dynamic capability scheduler, one Jarvis application, mature-component adoption rules, security gates, staged delivery and blocker register.
+- Linked the map from Reference Architecture 1.0 Section 23 and README.
+- Extended the existing architecture documentation validator and its workflow path filter to include the new normative map.
+- Preserved Control Plane / Execution Plane, Jarvis as UI not authority, ephemeral GitHub workers, one transactional state authority, immutable SHA/evidence, independent issuer/account/quota domains, fail-closed policy, no paid fallback, Gemini controller-only and Contour B deferral.
+- Captured runner egress, PATH/executable trust and cryptographic installer provenance as pre-production qualification blockers.
+- Rebased the work onto the latest observed PR #120 head after detecting that its branch advanced; the initial work branch is retained as superseded, not used for the PR.
+
+## Live refs and evidence re-read
+
+- PR #120: OPEN / DRAFT / UNMERGED; latest observed head `35b47e0e0fd576dc0552934f733548a05cbcb435`; base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; mergeable=true at read.
+- PR #122: OPEN / DRAFT / UNMERGED; head `4f5b2e9d5b7c434dcbd18d056fbaea6ee3f4b406`; base branch SHA `435a1838f7e22f0f5ec08611bd24608066fd5d79`; mergeable=false at read. It remains a separate dependent branch requiring reconciliation.
+- PR #116: OPEN / DRAFT / UNMERGED; head `6d4a4c518d44aa4a79d8396390623f424499011a`. Runs `44086419084` (runner qualification) and `44086419002` (Pool Contract Validation) both COMPLETED / SUCCESS on that head. This is bounded no-secret install/runtime/synthetic bridge evidence only, not a real Claude task or provider route.
+- Issue #117 CLOSED (FCC loopback lifecycle); Issue #119 CLOSED (synthetic CLI bridge); Issue #118 OPEN / BLOCKED (persistent Workspace).
+- Ruleset #26550182 was last recorded active but weak: 0 required approvals and no required status checks. Re-read exact rules before merge or dispatch.
+
+## Status boundaries
+
+- Runtime deployment: NOT RUN.
+- Runtime tests: NOT RUN (documentation/CI wiring only).
+- New branch exact-head CI: NOT VERIFIED until a PR run completes.
+- Independent review: NOT RUN.
+- Provider calls / Gemini dispatch / secret reads: NOT RUN.
+- Jarvis authenticated deployment, hosted state authority, durable Supervisor, real free provider route and persistent Workspace: NOT QUALIFIED.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+
+## Next concrete step
+
+Create a dependent Draft PR against the current PR #120 branch, verify the architecture documentation workflow on the exact head, obtain independent review, and reconcile PR #122's non-mergeable dependency. Then stop adding architecture layers and implement the first authenticated Jarvis read path (S1), or record the precise hosting/auth blocker. Keep production dispatch disabled.
+
+---
+
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
