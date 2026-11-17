@@ -66,3 +66,12 @@ PR #120 is open as Draft. Next, repair or formally archive the 31 legacy Context
 
 Canonical map: [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).  
 Canonical context: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md).
+
+
+## Follow-up: normative documentation CI gate
+
+- Added `scripts/validate-architecture-docs.mjs` to check repository-relative Markdown links in README, the canonical reference architecture, ADR-0015, the dated report and this checkpoint.
+- Added `.github/workflows/architecture-documentation-validation.yml`, triggered by pull requests that modify those normative files. It uses read-only contents permission and a commit-pinned checkout action with credential persistence disabled.
+- Historical Context Window snapshots are deliberately excluded from this validator; their legacy links remain historical records and are not silently rewritten.
+- GitHub write commits: validator `447d58ec00d6858e09dee34bcf2dab25c1381a37`; workflow `cf8c72ca6e58bdef6af7d8a370525ace3b5d1c38`; Context Window update `eaffc96dd949850713b9cad1aaed88408690cb0f`.
+- Exact-head Actions result is pending re-read. No local execution of the validator is claimed in this connector-only pass. Documentation CI is not security qualification and does not qualify Contour A.
