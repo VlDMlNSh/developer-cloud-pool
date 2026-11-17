@@ -112,3 +112,8 @@ The synthetic Claude/FCC qualification has advanced beyond the older status reco
 - Issue #119 is closed for the mock-only objective; this does not prove a real Claude session or provider route.
 
 Workspace host/access facts remain BLOCKED as recorded in Issue #118: no confirmed authorized server #3, no qualified Cloudflare zone/Tunnel/Access, and no verified persistent workspace or restore proof. No installation/deployment was performed. PR #113 remains a documentation candidate (OPEN/DRAFT/UNMERGED); this record is not yet default-branch accepted.
+
+
+## FCC license constraint — 2026-11-17
+
+The pinned FCC source declares AGPL-3.0-only; ECC is MIT. The hosted-runner smoke does not grant permission to deploy FCC publicly. Before remote-user/network exposure, review AGPL-3.0-only obligations, corresponding-source offer and notices for the intended usage. Keep FCC loopback-only until this gate is resolved. Claude Code CLI remains vendor-distributed proprietary software subject to vendor terms.
