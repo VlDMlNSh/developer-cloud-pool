@@ -61,13 +61,23 @@ jobs:
           bash "$RUNNER_TEMP/claude-install.sh" 2.1.325
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           export PATH="$HOME/.local/bin:$PATH"
+          if [ ! -x "$HOME/.local/bin/claude" ]; then
+            find "$HOME/.local" "$HOME/.claude" -maxdepth 5 \( -type f -o -type l \) -name claude -print || true
+          fi
+          claude_bin="$HOME/.local/bin/claude"
+          if [ ! -x "$claude_bin" ]; then
+            claude_bin="$(find "$HOME/.local" "$HOME/.claude" -maxdepth 5 \( -type f -o -type l \) -name claude -print -quit 2>/dev/null || true)"
+          fi
+          test -n "$claude_bin"
+          test -x "$claude_bin"
+          echo "$(dirname "$claude_bin")" >> "$GITHUB_PATH"
+          export PATH="$(dirname "$claude_bin"):$PATH"
           installed_version="$(claude --version)"
           printf '%s\n' "$installed_version" | tee "$RUNNER_TEMP/qualification/claude-version.txt"
           test "$(printf '%s' "$installed_version" | awk '{print $1}')" = "2.1.325"
           claude --help > "$RUNNER_TEMP/qualification/claude-help.txt"
         env:
           DISABLE_AUTOUPDATER: "1"
-          DISABLE_UPDATES: "1"
 
       - name: Install pinned uv bootstrap
         shell: bash
@@ -138,13 +148,17 @@ jobs:
             echo "::error::Less than 2 GiB remain after installation; profile is not resource-qualified."
             exit 3
           fi
+          claude_version="NOT_INSTALLED"
+          if command -v claude >/dev/null 2>&1; then
+            claude_version="$(claude --version)"
+          fi
           {
             echo "repository=$GITHUB_REPOSITORY"
             echo "target_sha=$GITHUB_SHA"
             echo "run_id=$GITHUB_RUN_ID"
             echo "run_attempt=$GITHUB_RUN_ATTEMPT"
             echo "runner=$RUNNER_OS/$RUNNER_ARCH"
-            echo "claude_code_version=2.1.325"
+            echo "claude_code_version=$claude_version"
             echo "claude_code_install_method=official_native_installer"
             echo "fcc_repository=https://github.com/Alishahryar1/free-claude-code"
             echo "fcc_commit=eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
