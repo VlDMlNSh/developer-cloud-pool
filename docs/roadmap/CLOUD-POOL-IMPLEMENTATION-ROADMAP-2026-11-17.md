@@ -73,7 +73,7 @@ The following are deferred:
 
 ### Phase 2 — FCC security and routing policy qualification
 
-**Status:** NOT STARTED.
+**Status:** PLANNED — Issue #117 is OPEN for the first loopback runtime smoke; provider-route qualification is NOT STARTED.
 
 - Inspect the exact pinned FCC config schema and runtime behavior. Do not assume README marketing descriptions are defaults.
 - Source inspection at the pinned FCC commit shows MODEL_FALLBACKS defaults to None; fallback model/key selections are explicit configuration. Preserve an empty fallback list for the initial route.
