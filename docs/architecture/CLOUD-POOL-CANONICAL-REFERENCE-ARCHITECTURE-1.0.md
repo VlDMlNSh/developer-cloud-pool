@@ -338,3 +338,17 @@ Final Contour A acceptance covers secure core execution/control plane and owner-
 Detailed comparison and inventory remain in the [Engineering Workspace Integration Record](CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md) and [Issue #118](https://github.com/VlDMlNSh/developer-cloud-pool/issues/118). The recorded inventory is zero active SentinelX hosts, no confirmed/authorized server #3, zero Cloudflare zones/tunnels, Access unavailable in inspected account context, and no verified persistent workspace/backup/restore. These are BLOCKED/NOT VERIFIED prerequisites.
 
 This amendment is documentation-only: no installation, deployment, secret read, provider call, Gemini dispatch or merge. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
+
+
+### 15.8 Implementation reconciliation — 2026-11-17
+
+The following implementation evidence supersedes earlier status snapshots in this document and related dated proposals:
+
+- PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6` completed the no-secret Claude Code + ECC + FCC installation and synthetic FCC-to-Claude CLI bridge qualification. Exact-head qualification run [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406) and Pool Contract Validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455) both succeeded. Artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788) is available.
+- Independent review [5938432852](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938432852) is COMMENTED, not APPROVED. It explicitly limits the result to mock-only handoff, not a real Claude session, provider route, free account entitlement or quota proof.
+- Issue #119 is CLOSED as completed for its bounded synthetic/mock objective. Issue #115 remains OPEN because license/source provenance and a real free route/account/quota qualification remain outstanding.
+- Gemini is an optional supplementary capability, not a mandatory every-/next wave or Contour A launch gate. This is the latest owner scope correction recorded in Issues #94 and #96. Any Gemini execution remains exclusively through the approved controller after all gates; current production dispatch remains NOT RUN and `POOL_DISPATCH_ENABLED=false`.
+- PR #116 remains OPEN/DRAFT/UNMERGED. PR #113 remains OPEN/DRAFT/UNMERGED. These candidate docs and runner changes are not yet in default branch `Основной`; do not describe them as merged or released.
+- Contour A remains NOT ACCEPTED. No secrets were read, no real provider calls were made, no Gemini was dispatched and no persistent workspace was deployed.
+
+This status amendment supersedes earlier dated paragraphs that still describe the synthetic bridge as the next task or require four Gemini children for every `/next`. The normative target architecture in Sections 15.1–15.7 remains unchanged.
