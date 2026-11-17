@@ -619,3 +619,10 @@ The following source records were migrated from the earlier PR #113 candidate in
 All 30 changed paths from the earlier PR #113 candidate (excluding the active Context Window path, which is merged into the current context and preserved separately as an archive) are present in this PR #120 branch. The canonical architecture above contains the extracted normative decisions; source records remain for provenance and traceability.
 
 PR #113 remains OPEN/DRAFT/UNMERGED until its disposition is explicitly resolved. Do not merge both documentation candidates as independent competing canonical sources. PR #120 is the single intended system-level architecture consolidation candidate.
+
+
+### 21.9 Current A0/D1 admission proof boundary
+
+PR #114 provides a useful local Workers-runtime D1 transaction proof at head `ab9461eb84b14fe230918391d5212f19ca25592c`: run [43935827714](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827714) and Pool Contract Validation [43935827741](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43935827741) both succeeded; the local D1 suite reports 12/12 PASS. It proves the atomic receipt + one-shot approval + immutable task + outbox transaction and replay/pre-consumed-approval behavior.
+
+It does **not** authenticate the GitHub `issue_comment` webhook or the supplied `trustedDefaultHeadSha`; these are injected test inputs. It does not prove hosted D1, live owner-event provenance, Supervisor claim/renew/finalize, durable lease/fencing/recovery, outbox delivery, worker identity, route/quota or dispatch. Keep this as LOCAL PROOF ONLY until a trusted event adapter and subsequent state/lease gates pass.
