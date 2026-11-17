@@ -54,7 +54,7 @@ The following are deferred:
 - Workflow run: [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324).
 - Runner: ubuntu-24.04; permissions: contents: read; no GitHub Secret references; no provider calls.
 - Pins currently used for the feasibility proof: Claude Code CLI 2.1.325; FCC eb92e4c07af0d6ad8881dce1cd958c3d072c27c5; ECC e413166c50e85fb205b988b5e78874b5a88ea4d2.
-- FCC upstream requires Python exactly 3.14.10, uses AGPL-3.0-only and declares multiple provider adapters. ECC is MIT. License notices must be retained.
+- FCC upstream requires Python exactly 3.14.10, uses AGPL-3.0-only and declares multiple provider adapters. Its pinned uv.lock blob is ee8490c29a36f8302f5c1f1d42b465f6271c10f2 (421,543 bytes); use the lockfile with uv sync --frozen --no-dev for a reproducible runtime proof rather than an unlocked dependency resolution. ECC is MIT. License notices must be retained.
 - Selected ECC modules only: search-first, tdd-workflow, security-review. Do not install every hook/MCP/skill by default.
 - Measure baseline and post-install disk, memory where practical, installation sizes, versions, startup, and cleanup. Add a provenance manifest and bounded evidence artifact.
 - Verify the current supported Claude Code installation method before production use; the npm package path is only a pinned compatibility probe, not a final installation decision.
@@ -85,7 +85,7 @@ Required components:
 - PR #114: local Workers-runtime D1 atomic admission proof, 12/12 tests at its recorded head; caller-supplied trusted metadata remains a production provenance gap.
 - PR #111: local D1 lease/attempt ledger proof, 37/37 tests at its recorded head; not yet integrated/hosted.
 - Issue #38: durable single-use claims, monotonic fencing, expiry, crash recovery and one-winner contention proof.
-- Issue #1: governance. Current active ruleset #26550182 requires PRs but has zero required approvals and no required status contexts. Independent review remains necessary. Current POOL_DISPATCH_ENABLED value was not read in this pass and is NOT VERIFIED.
+- Issue #1: governance. Current active ruleset #26550182 requires PRs but has zero required approvals and no required status contexts. Independent review remains necessary. Pool Contract Validation run 44066723253 / job 133982176620 on PR #116 head observed POOL_DISPATCH_ENABLED=false at 2026-11-17 10:38:50 UTC; re-read before any future dispatch because this is a timestamped value, not a permanent guarantee.
 
 Implementation:
 1. Reconcile PR #112 event fields with actual trusted GitHub Actions context.
@@ -167,7 +167,7 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 - First executor PR #116: OPEN / DRAFT / UNMERGED; head c5c14f6a11782e5787a38b1edd5e7983f15bf2e2.
 - Workflow run #44066723324 was observed RUNNING. At last step read, checkout, runner baseline, Claude Code CLI install and uv install succeeded; FCC installation was in progress; ECC and final checks were pending.
 - No artifact was yet listed for run #44066723324. No provider call or secret access occurred.
-- Current combined status contexts for #116 head were empty; do not interpret empty status list as pass.
+- Pool Contract Validation run 44066723253 / job 133982176620 completed SUCCESS on #116 exact head; its log parsed all six workflow YAML files, passed the pool contract validator, and observed POOL_DISPATCH_ENABLED=false. The runner installation workflow run 44066723324 remains RUNNING.
 - Active ruleset #26550182: PR required, zero approvals, no bypass actors, no required status contexts.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
