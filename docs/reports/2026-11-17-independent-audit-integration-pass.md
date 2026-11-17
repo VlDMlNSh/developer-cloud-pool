@@ -32,6 +32,11 @@ The consolidated candidate also carries the Architecture Assurance Addendum and 
 - PR #122 and #123 were closed as superseded; their substantive content is preserved in PR #124.
 - Pool Contract Validation was not observed on the documentation-only head. Independent review remains pending.
 
+## Parent synchronization update
+
+- PR #120 advanced to `baa2223bd44250edf0e8469247910051f4625955` during integration. PR #124 was synchronized to that exact parent; compare reports 28 commits ahead / 0 behind and mergeable=true.
+- Parent-sync head `39388657bc145bf4eb21fb69dc3c781dcf7d5a02` needs its own exact-head validation; the prior docs validator success is on the previous head only.
+
 ## Evidence boundary
 
 This is a documentation/integration correction only. No runtime implementation, deployment, provider call, Gemini dispatch, secret read or production dispatch occurred. The new branch requires exact-head documentation and contract CI plus independent architecture/security review. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
