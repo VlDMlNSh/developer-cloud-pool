@@ -210,3 +210,24 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Next bounded step: implement and exact-head test Issue #119 synthetic FCC-to-Claude handoff. Do not begin persistent workspace deployment or live provider routing until their host, identity, quota and security gates are separately proven.
 
 - Four task envelopes for this exact /next were recorded in Issue #94 comment `6947297586`; each is scoped to Issue #119 and explicitly **NOT DISPATCHED** because the Cloud Pool-native controller/admission gates are not qualified.
+
+
+## /next checkpoint — Engineering Workspace target integrated — 2026-11-17
+
+**Target before pass:** PR #113 head `361b7b8f66279ebf63522ecf96d008b63e06dd1c`; default `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+
+### Work
+- Added normative Section 15 amendment to Canonical Reference Architecture 1.0.
+- Promoted Engineering Workspace from a disconnected proposal to an explicit final Contour A target while preserving staged rollout and A0/D1/security gates.
+- Reconciled GitHub-hosted ephemeral executor with persistent interactive workspace; these are distinct roles.
+- Specified sole Jarvis control plane; official VS Code Remote SSH; browser code-server/Open VSX behind Cloudflare; one authoritative filesystem; per-task worktrees; single-writer leases/fencing; server #3 and model identity boundaries; backup/restore and independent acceptance.
+- Updated roadmap and Context Window; dated report created.
+
+### Evidence and limits
+- Issue #118 remains the detailed host/network inventory. Recorded state: zero active SentinelX hosts, server #3 not confirmed, no Cloudflare zone/Tunnel, Access unavailable, no persistent workspace or restore evidence.
+- No install, deployment, provider call, secret read, Gemini dispatch or merge.
+- Exact-head CI and independent review of resulting docs head: NOT VERIFIED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+### Next
+Complete Issue #119 synthetic FCC-to-Claude CLI bridge with mock-only/no credentials, then independently review PR #116 and run exact-head checks. Do not install workspace components until host, Cloudflare, persistence and security prerequisites are verified.
