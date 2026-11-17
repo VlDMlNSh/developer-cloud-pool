@@ -187,6 +187,10 @@ Second CODE profile is quota-gated and deferred. MEDIA is deferred until remote 
 - Default-deny egress; allow only GitHub APIs and the exact qualified provider endpoint required for the task.
 - No public FCC admin, Ollama or internal service endpoint.
 - Third-party Actions pinned to full commit SHAs; permissions declared per job with least privilege.
+- The allowlist wrapper is a child-process boundary only. It does not scrub the runner host, unrelated FCC processes, files, inherited file descriptors or the whole workflow environment.
+- Production PATH must be constructed only from trusted pinned directories whose ownership and integrity are verified; absolute/non-empty path validation alone is insufficient. HOME/XDG configuration locations must be reviewed for unintended credentials and writable-path attacks.
+- The current synthetic bridge is not an egress firewall. Production execution requires an independently verified network egress policy that permits only GitHub control endpoints and the qualified provider route.
+- The official Claude installer is version-pinned but its downloaded installer-script bytes are not currently hash-pinned. Production qualification requires an integrity-pinned installer or equivalent independently verifiable supply-chain evidence.
 - Prefer GitHub App short-lived installation tokens and OIDC federation where supported; avoid broad long-lived PATs.
 - Separate credentials by provider account, task audience and execution profile. Untrusted PRs receive no provider credentials or privileged tokens.
 - GitHub hosted concurrency is a ceiling, not reserved capacity. Begin with one executor until route/quota evidence supports parallelism.
