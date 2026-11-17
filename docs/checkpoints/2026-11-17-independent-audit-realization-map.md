@@ -33,8 +33,8 @@
 
 ## Pull request
 
-- PR #123: https://github.com/VlDMlNSh/developer-cloud-pool/pull/123 — OPEN / DRAFT / UNMERGED; head `487f843133e6c3ec870c05be4fd3d41401e80037`; base PR #120 branch at `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=true at read.
-- Compare: 11 commits ahead, 0 behind; 8 changed files.
+- PR #123: https://github.com/VlDMlNSh/developer-cloud-pool/pull/123 — OPEN / DRAFT / UNMERGED; head `238c44e1f61eacfa7904035a0f6dc2c87fce4d27 (pre-final-context-refresh read; subsequent evidence commits advance the branch)`; base PR #120 branch at `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=true at read.
+- Compare: 14 commits ahead, 0 behind; 8 changed files.
 
 ## Verification status
 
