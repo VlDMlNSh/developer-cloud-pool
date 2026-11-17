@@ -84,3 +84,10 @@ Continue Issue #115: complete source/license provenance and qualify one real per
 - Issue #119 CLOSED for mock-only bridge. Issue #115 OPEN for actual free route/account/quota proof. Issue #118 OPEN/BLOCKED for host, Cloudflare and persistence/restore.
 - Gemini optional, controller-only; no mandatory every-/next wave. `POOL_DISPATCH_ENABLED=false`.
 - No secrets read, provider calls, Gemini dispatch, public FCC deployment, persistent workspace deployment or merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## FCC account/quota fallback source audit — 2026-11-17
+
+- At pinned FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`, source `config/api_keys.py` and `providers/runtime/config.py` support ordered key lists and numbered selection. Upstream tests `tests/config/test_fallback_key_settings.py` and `tests/api/test_fallback_key_requests.py` demonstrate `MODEL_FALLBACKS` can traverse distinct key numbers after 403/429. README advertises automatic multi-API-key fallback.
+- This is a cross-account quota-isolation hazard if account keys share one FCC provider list/fallback chain. Normative policy now requires exactly one credential/account per FCC profile, one model route, no `MODEL_FALLBACKS`, no numbered-key fallback/key cycling, no provider/paid fallback. Separate accounts need separate isolated profiles and quota ledgers.
+- Finding recorded on Issue #115 comment [6948555013](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6948555013) and PR #116 follow-up review COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463).
+- No credential values read. Current mock qualification does not validate a live provider route or account identity; Issue #115 remains OPEN.
