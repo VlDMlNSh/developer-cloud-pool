@@ -449,8 +449,13 @@ jobs:
             echo "ecc_skills=search-first,tdd-workflow,security-review"
             echo "provider_calls=false"
             echo "github_secret_values_read=false"
-            echo "fcc_client_launcher_invoked=true"
-            echo "claude_executable=synthetic_mock"
+            if [ -s "$RUNNER_TEMP/fcc-bridge-home/bridge-result.txt" ]; then
+              echo "fcc_client_launcher_invoked=true"
+              echo "claude_executable=synthetic_mock"
+            else
+              echo "fcc_client_launcher_invoked=false"
+              echo "claude_executable=NOT_INVOKED"
+            fi
             echo "real_claude_session=false"
             echo "agent_task_executed=false"
             echo "production_dispatch=false"
