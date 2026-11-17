@@ -22,7 +22,7 @@ This Context Window update is being prepared on a working branch and is NOT cano
 
 This dependent follow-up does not create a second system architecture. Reference Architecture 1.0 remains the sole system-level source; the addendum governs implementation sequencing, component selection, capacity semantics, evidence thresholds and change control.
 
-GitHub writes observed: addendum `c89943bce0f4373b77fe8c38b528f95031474181`; architecture link `18ecadb2bad555e49c7dda825ffbb941ec5ed128`; report `0938829660d359a939dfde20ef066b85a6867bc2`; checkpoint `44419baad71e43bf97d472cec5430067190ea793`. README and Context Window refresh are being completed on this branch.
+GitHub writes observed: addendum `c89943bce0f4373b77fe8c38b528f95031474181`; architecture link `18ecadb2bad555e49c7dda825ffbb941ec5ed128`; report `bf5c8fa5ba59da4798b12f54197250706b992ca4`; checkpoint `a2776c858c9cd5ed4f51e695ec37c598f6f1b1f5`. README refresh commit: `665d622d1cd754149336c484fc70057e30c50494`. Context Window refresh is the final documentation write on this branch.
 
 Validation: documentation-only. Runtime tests NOT RUN. Local validator NOT RUN. Exact-head CI NOT VERIFIED until GitHub checks are read. Independent review NOT RUN.
 
