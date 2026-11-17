@@ -5,7 +5,7 @@
 **Default branch:** Основной  
 **Default HEAD:** 35208f0ef28f0ac031a7acdf35fc90ccc9b16845  
 **Current phase:** Contour A — first CODE executor installation qualification  
-**Status:** RUNNING / NOT YET VERIFIED
+**Status:** PENDING / NOT VERIFIED — latest qualification run queued
 
 ## Owner baseline
 
@@ -16,9 +16,9 @@ First priority is one GitHub-hosted ephemeral Claude Code + ECC + FCC + verified
 ## GitHub state revalidated
 
 - Default branch Основной HEAD 35208f0ef28f0ac031a7acdf35fc90ccc9b16845.
-- Documentation branch docs/next-2026-11-16-current-state-refresh HEAD ce90cf7a1394ec1bc45ac5951b4712177333fce9.
+- Documentation branch docs/next-2026-11-16-current-state-refresh is active and unmerged; see latest Context Window/roadmap commit records.
 - Owner architecture decision record blob d9d95c34a73120b3ce36ec60b20f5e783889bc7e.
-- Context Window blob before this checkpoint update 50aecfa9f6946986074be99ee35903caa38e45ee.
+- Context Window latest recorded blob before this checkpoint update: a40f49e0be871d27261901926cc14c2db27ff3cd.
 - PR #113: OPEN / DRAFT / UNMERGED; documentation changes remain on its branch.
 - PR #116: OPEN / DRAFT / UNMERGED; first runner qualification branch feat/claude-code-fcc-runner-qualification-2026-11-17, head c5c14f6a11782e5787a38b1edd5e7983f15bf2e2.
 - PR #111: OPEN / DRAFT; D1 lease/attempt proof, 37/37 local Workers-runtime tests documented in PR body; not integrated/hosted.
@@ -34,8 +34,8 @@ First priority is one GitHub-hosted ephemeral Claude Code + ECC + FCC + verified
 - Run: [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324).
 - Exact head: c5c14f6a11782e5787a38b1edd5e7983f15bf2e2.
 - Runner: ubuntu-24.04; workflow permission contents: read; no Secret references in workflow; no provider calls.
-- At last job read (job 133982177116): checkout SUCCESS; runner baseline SUCCESS; Claude Code CLI install SUCCESS; uv install SUCCESS; FCC install RUNNING; ECC install and final verification PENDING.
-- No workflow artifact was listed at last read. Job logs were not yet available while the job was running.
+- Superseded job 133982177116 on old head was CANCELLED after the workflow branch update. It did not qualify installation.
+- No artifact was published by the cancelled attempt.
 - Do not mark installation qualified until exact-head run concludes successfully, full logs are inspected, evidence artifact/digests are verified, and independent review is complete.
 
 ## Upstream qualification notes
@@ -44,7 +44,7 @@ First priority is one GitHub-hosted ephemeral Claude Code + ECC + FCC + verified
 - FCC Settings.model_fallbacks maps to MODEL_FALLBACKS and defaults to None; fallback models/credential key numbers are explicitly configured.
 - FCC PROVIDER_MAX_ATTEMPTS defaults to 5. Before live provider use, configure a bounded retry policy and test quota implications; do not assume one failed request equals one provider attempt.
 - ECC pinned source commit e413166c50e85fb205b988b5e78874b5a88ea4d2; MIT. Only selected skills are copied in the proof: search-first, tdd-workflow, security-review.
-- Claude Code npm package version 2.1.325 is only the current pinned compatibility probe. Confirm the current official install method before production.
+- Claude Code 2.1.325 is now installed in the proof through the official native installer with an explicit version pin; official docs support version-specific native installs.
 - No secrets were read, no provider call was made, no FCC server was started, no agent task executed, no dispatch/deployment/merge occurred.
 
 ## Next concrete step
@@ -87,3 +87,27 @@ Controlling issue amendments published:
 - #94 and #96: Gemini four-child wave is optional, not a launch/per-/next requirement.
 
 These amendments supersede conflicting historical planning text; old candidate PRs remain historical, open and unmerged until individually reconciled. Do not bulk merge or cherry-pick them.
+
+
+## Latest /next implementation correction — 2026-11-17
+
+**Current candidate**
+- PR #116 latest head: `7dcd58f73a87156c614ebf543c756ece6715762a`.
+- Workflow blob: `7c3133f7916e53c12385af13a01276a59419c581`.
+- New qualification run: [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932), PENDING at last read.
+- New Pool Contract Validation: [44069573866](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573866), PENDING at last read.
+- Old run [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324) was CANCELLED by PR concurrency after the workflow correction; no install success is claimed.
+
+**Source-backed correction**
+- FCC pinned source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` has an entrypoint where `fcc-server --help` falls through to server startup; only `--version` exits before server composition. The old workflow could therefore hang by accidentally starting FCC. The corrected workflow uses `fcc-server --version` and `fcc-doctor --version` and never starts the server.
+- FCC dependencies are now installed from the exact source checkout using the committed lockfile: `uv sync --frozen --no-dev --python 3.14.10`. The workflow verifies Git blob identities for `pyproject.toml` (`5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`) and `uv.lock` (`ee8490c29a36f8302f5c1f1d42b465f6271c10f2`).
+- Claude Code uses the official native installer with version pin `2.1.325`; ECC remains pinned to `e413166c50e85fb205b988b5e78874b5a88ea4d2`, with only three selected skill markdown files.
+- The corrected workflow uploads a bounded no-secret provenance/resource artifact using a pinned upload-artifact action. No provider API calls or GitHub Secret reads are part of this proof.
+
+**Next**
+1. Inspect exact-head run 44069573932 and contract run 44069573866.
+2. If successful, inspect logs and download/verify the artifact digest. If failed, make one evidence-based correction only.
+3. Obtain independent review; keep PR #116 Draft and unmerged.
+4. Proceed to FCC fail-closed routing policy and one verified free-route contract only after install proof passes.
+
+No production dispatch, provider call, secret read, deployment, merge, or Contour A acceptance occurred.
