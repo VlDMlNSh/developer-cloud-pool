@@ -121,3 +121,9 @@ The fda850b... artifact recorded `target_sha` from `GITHUB_SHA`, which is the pu
 ## Next engineering slice
 
 Create a separate loopback-only FCC runtime/health/start-stop smoke on a GitHub-hosted runner with no provider credentials and no provider calls. Then add a synthetic FCC-to-Claude CLI bridge test. Only after both pass should a real free API route be qualified.
+
+## Tracked next task
+
+- Issue [#117 — Implement loopback-only FCC runtime health and lifecycle smoke](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117) is open and is the next bounded engineering slice.
+- It will intentionally start FCC only on 127.0.0.1, probe a source-verified read-only health route, verify listener scope and clean shutdown, and make no provider calls or secret reads.
+- After #117, run a synthetic FCC-to-Claude CLI bridge test before qualifying any real free provider route.
