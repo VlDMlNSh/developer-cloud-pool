@@ -162,7 +162,7 @@ There must be one accepted system architecture, one live Context Window and one 
 | PR | Observed state | Finding |
 |---|---|---|
 | #120 | OPEN/DRAFT; head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true | Parent architecture candidate |
-| #124 | OPEN/DRAFT; base `baa2223bd44250edf0e8469247910051f4625955`; head `39388657bc145bf4eb21fb69dc3c781dcf7d5a02`; mergeable=true | Consolidates realization map, assurance addendum and scorecard; 28 commits ahead / 0 behind at the latest compare |
+| #124 | OPEN/DRAFT; base `baa2223bd44250edf0e8469247910051f4625955`; head `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; mergeable=true | Consolidates realization map, assurance addendum and scorecard; 28 commits ahead / 0 behind at the latest compare |
 | #122 | OPEN/DRAFT; stale dependent base; mergeable=false | Superseded in content by PR #124; close only after preserving the integrated content |
 | #123 | OPEN/DRAFT; stale dependent base; mergeable=false | Superseded in content by PR #124; close only after preserving the integrated content |
 | #116 | OPEN/DRAFT; head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc` | Bounded toolchain evidence; real provider route NOT QUALIFIED |
