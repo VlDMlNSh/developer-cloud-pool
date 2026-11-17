@@ -67,3 +67,10 @@ The canonical reference architecture includes the chat-session Workspace design 
 - Gemini is optional supplementary execution, not a mandatory per-/next or first-release gate; any use remains controller-only after qualification.
 - The first CODE profile's latest exact-head no-secret runner evidence is PR #116 head `6d4a4c518d44aa4a79d8396390623f424499011a`, runs 44086419084 and 44086419002 SUCCESS. It proves local install/runtime/mock lifecycle only, not a real Claude session or provider route.
 - This ADR remains PROPOSED until independent review and merge; it does not accept Contour A.
+
+
+## FCC account isolation and license review amendment — 2026-11-17
+
+Pinned FCC source supports ordered/numbered provider key lists and `MODEL_FALLBACKS`; upstream tests demonstrate sequential key switching after 403/429. Production policy must therefore bind exactly one credential/account per FCC profile, disable key cycling and model/provider/paid fallback, and keep independent profiles and quota ledgers per account. Multiple key names do not prove independent account/quota ownership.
+
+Independent PR #116 review comments [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495) and [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) record license and account-fallback findings. They are COMMENT, not production approval. FCC is AGPL-3.0-only and ECC is MIT at the pinned source commits; legal review for intended remote/network deployment remains outstanding.
