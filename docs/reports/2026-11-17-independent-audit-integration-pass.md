@@ -17,6 +17,8 @@ Preserve the architecture's sound principles. Consolidate the target into one mo
 
 Add integration discipline: one accepted architecture, one Context Window, one primary integration stack; child PRs must follow the exact parent SHA. Add a Context Window freshness contract and separate design quality from implementation/operational readiness.
 
+The consolidated candidate also carries the Architecture Assurance Addendum and Independent 10/10 Scorecard; both are included in the same integration branch and covered by the documentation validator.
+
 ## Evidence boundary
 
 This is a documentation/integration correction only. No runtime implementation, deployment, provider call, Gemini dispatch, secret read or production dispatch occurred. The new branch requires exact-head documentation and contract CI plus independent architecture/security review. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
