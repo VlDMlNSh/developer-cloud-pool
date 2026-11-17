@@ -1,5 +1,20 @@
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
+## NEW OWNER-REQUESTED ENGINEERING WORKSPACE TARGET — 2026-11-17
+
+Architecture record: [CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md](../architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md) — PROPOSED / NOT DEPLOYED / NOT QUALIFIED. Tracking issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/118.
+
+This newer owner instruction requests one Jarvis Control Plane, persistent shared Engineering Workspace, official VS Code Desktop + Remote SSH, browser IDE candidate code-server, independent Claude/Gemini/Copilot identities and Cloudflare Zero Trust. It is recorded as a proposed target, not deployed infrastructure. It does not bypass Issue #117 or Pool A0 gates, nor create a second Jarvis.
+
+**Live host/access inventory (2026-11-17):** SentinelX has 0 active hosts; Free plan limit is 1. Mac mini host host_5f7264034bdf0b51 is offline; mh-dev-01 and mh-dev-02 are disabled by user. No active/authorized server #3 is present. No saved compute integrations. Desktop Commander devices are all offline. Cloudflare account connection exists, but GET returned zero zones and zero Tunnels; Access applications API returned 403 because Access is not enabled. No provisioning or configuration changes were performed. No secret values were read.
+
+**Existing code/document state:** PR #6 (static Jarvis shell), #25 (Hono prototype) and #30 (synthetic OAuth proof) are OPEN/DRAFT/UNMERGED. They do not establish deployed/authenticated Jarvis. Existing JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md remains a proposal. PR #116 exact-head no-secret install/resource smoke succeeded, but is not a persistent host deployment or qualified provider route.
+
+**Component direction, conditional:** official VS Code Desktop + Remote SSH for desktop; code-server/Open VSX is the browser IDE candidate; Coder Workspace Platform deferred because it requires a separately hosted control plane/compute; Remote Tunnels remains an alternative transport with Microsoft tunnel dependency and one-client-per-server constraint. code-server extension compatibility with Claude Code/Copilot is NOT VERIFIED; do not use Microsoft's Marketplace from code-server. Cloudflare Tunnel + Access is requested but BLOCKED by current account state. Claude Code on server #3 is NOT RUN; Gemini remains exclusive to the approved controller; Copilot remains optional and free-tier/quota-limited.
+
+**Sequencing:** finish Issue #117 FCC loopback runtime lifecycle proof and A0 admission/lease/worker/evidence gates first. Issue #118 is deferred until a real third host, resources, storage, Cloudflare Access/zone/Tunnel, free-cost boundary, backup/restore and workspace security are qualified. No install/deployment until those gates pass. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
+
+
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
 Last refreshed: 2026-11-17 — owner implementation baseline and first Claude Code/FCC/ECC runner revalidation
