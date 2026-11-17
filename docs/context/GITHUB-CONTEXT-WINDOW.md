@@ -6,8 +6,8 @@ Last refreshed: 2026-11-17 — owner implementation baseline and first Claude Co
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from repository commit history during /next, 2026-11-17; unchanged)
-Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh` (latest PR #113 head at last read: `907f87c26298a31735b9446f3fc1053d4f3a4b0a`)
-Latest report update commit: `b520e0dc19ba03f4deb4e3acc92ec2b22e8091af` (2026-11-17 runner qualification report; documentation branch remains unmerged)
+Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh` (PR #113 OPEN/DRAFT/UNMERGED; fetch live PR head before any write)
+Latest report update commit: `36d6b65ab87e8aded1bf7063b045129e98c2be61` (2026-11-17 runner qualification report; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -271,7 +271,7 @@ At the beginning of every /next:
 - No FCC server startup, no provider call, no secret-value read, no agent task and no production dispatch.
 
 **Next actions**
-1. Build a separate loopback-only FCC runtime/health/start-stop smoke with no provider credentials and no provider calls.
+1. Execute [Issue #117](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117): separate loopback-only FCC runtime/health/start-stop smoke with no provider credentials and no provider calls.
 2. Add a synthetic FCC-to-Claude CLI bridge test; verify request/response handling without real provider credentials.
 3. After those pass, qualify the first positively allowlisted free provider route, account/quota identity, rate-limit behavior, cooldown and paid-fallback denial without exposing secret values.
 4. Then integrate A0 admission/lease/worker identity and the GitHub-only Jarvis static PWA/status surface.
@@ -2541,3 +2541,12 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - The install smoke proves only that the three components install and fit on this ephemeral runner. It does not prove FCC runtime, provider route, free quota, Claude task execution, Jarvis or end-to-end A0.
 - Full evidence and historical failed attempts: [runner qualification report](../reports/2026-11-17-first-claude-code-fcc-ecc-runner-proof.md).
 - Next bounded pass: loopback-only FCC runtime/health/start-stop smoke, no provider credentials/calls.
+
+## Next implementation task created — 2026-11-17
+
+- Issue [#117 — Implement loopback-only FCC runtime health and lifecycle smoke](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117) is OPEN.
+- Target FCC commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; reuse the pinned no-secret install from PR #116.
+- Inspect the pinned source for the actual health/readiness endpoint and startup/shutdown behavior; do not guess routes.
+- Bind only to `127.0.0.1`, make a read-only local health request, inspect listener addresses, terminate cleanly, and publish a bounded artifact.
+- No API keys, secret values, provider/model calls, Claude session, completion endpoint, production dispatch or external hosting are allowed in #117.
+- After #117, next planned slice is a synthetic FCC-to-Claude CLI bridge test; real free provider routing comes later behind the route/quota gate.
