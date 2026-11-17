@@ -1,3 +1,5 @@
+> **Normative correction (2026-11-17):** This document describes the historical GitHub-issue-label Supervisor scaffold and its limitations. [Cloud Pool Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) is authoritative. GitHub labels, issue PATCH/read-back, Actions concurrency and recent-run searches are NOT an atomic durable claim or owner-approval primitive. Do not use `pool:ready` as standalone authorization and do not dispatch directly from a label transition. The target requires A0 atomic admission, a transactional outbox, a storage-backed fenced lease, a narrow approved dispatch controller, idempotency and ambiguity reconciliation. The current scaffold remains NOT QUALIFIED; this notice does not modify runtime code or enable dispatch.
+
 # GitHub Pool Supervisor and Recovery Architecture
 
 **Status:** IMPLEMENTED SCAFFOLD / NOT RUN / NOT QUALIFIED  
