@@ -377,3 +377,18 @@ Exact PR #116 head `6d4a4c518d44aa4a79d8396390623f424499011a` passed:
 - Follow-up independent review [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495): COMMENTED.
 
 This verifies that pinned license files are captured and hashed by the workflow. It does not constitute legal approval to expose FCC over a network. Keep FCC loopback-only until AGPL compliance is reviewed. Issue #115 remains OPEN for real free-route/account/quota qualification. PR #116 remains OPEN/DRAFT/UNMERGED.
+
+
+### 15.11 FCC credential and quota isolation constraint — 2026-11-17
+
+Pinned FCC source inspection at `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` found that FCC supports numbered API-key lists and explicit `MODEL_FALLBACKS` entries with `api_key_number`; its upstream tests demonstrate sequential fallback across different keys after rate-limit/permission failures. This is incompatible with Cloud Pool's account/quota isolation if several independent accounts are placed in one FCC key list or fallback chain.
+
+Therefore:
+- A qualified Cloud Pool FCC executor profile must have exactly one credential for its designated provider/account identity, one selected model route, and no `MODEL_FALLBACKS` entries.
+- Do not put multiple accounts' keys in one FCC provider list; do not use numbered-key fallback, key cycling, cross-account retry, provider fallback or paid fallback.
+- Retry attempts within a single account are bounded by explicit policy; account identity never changes during an attempt or task.
+- Multiple provider accounts, if later approved, require separate isolated executor profiles and separately attributed credentials/quota ledgers, not a shared FCC fallback chain.
+- Qualification must verify effective configuration metadata and behavior without reading or printing credential values. Missing/ambiguous account ownership fails closed.
+- FCC's support for automatic multi-key fallback is an upstream capability, not a feature Cloud Pool may enable by default.
+
+This gate is not satisfied by the current no-secret installation/mock workflow. Real route/account/quota qualification remains NOT VERIFIED and Issue #115 remains OPEN.
