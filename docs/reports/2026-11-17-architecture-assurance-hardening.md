@@ -1,6 +1,6 @@
 # Architecture assurance hardening — 2026-11-17
 
-**Status:** Proposed dependent amendment to PR #120; review and exact-head CI required  
+**Status:** PR #122 OPEN / DRAFT / BLOCKED pending rebase against advancing PR #120 head, exact-head CI and independent review  
 **Contour:** A only  
 **Immutable parent PR #120 head used as base:** `9ebb56edd55f5015b66f7b3f17d1114d1884a492`  
 **Branch:** `docs/architecture-assurance-hardening-v2-2026-11-17`  
@@ -21,7 +21,7 @@ PR #120 already consolidated the system architecture, authority boundaries, pers
 
 - Default branch: `Основной`; observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Parent PR #120: OPEN / DRAFT / UNMERGED; current head at branch creation: `9ebb56edd55f5015b66f7b3f17d1114d1884a492`.
-- Earlier attempted dependent PR #121 was based on a stale parent head and was observed 27 commits behind / diverged; it must not be merged. A replacement dependent PR is opened from the current parent head.
+- Earlier dependent PR #121 was based on a stale parent head and is CLOSED / UNMERGED. Replacement PR #122 is OPEN / DRAFT; its parent base advanced after branch creation. Last compare showed 6 commits ahead / 11 behind and GitHub mergeable=false. It must be rebased before merge.
 - Parent PR #120's current exact-head CI must be re-read; prior check-run read at earlier head returned 0. No CI result is inferred from this.
 - Default ruleset ID `26550182`; last observed governance has PR/thread-resolution requirements but zero required approvals and no required status checks.
 - Issue #118: persistent Engineering Workspace remains BLOCKED.
@@ -35,7 +35,7 @@ PR #120 already consolidated the system architecture, authority boundaries, pers
 - GitHub confirmed Reference Architecture link commit `18ecadb2bad555e49c7dda825ffbb941ec5ed128`.
 - Runtime tests: NOT RUN (documentation-only).
 - Local Markdown validator: NOT RUN.
-- Exact-head CI: NOT VERIFIED pending GitHub read-back.
+- Exact-head CI: NOT VERIFIED; check-runs endpoint returned zero checks at inspection. PR #122 targets the parent documentation branch, while the current validation workflow only triggers for PRs targeting the default branch.
 - Independent architecture/security review: NOT RUN.
 
 ## Blockers
