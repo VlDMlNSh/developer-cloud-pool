@@ -24,7 +24,7 @@ This document is maintained on the documentation branch and is NOT merged into t
 >
 > **Current implementation refs:** [Owner Architecture Freeze](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md) · [Implementation Roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md) · [Latest Checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
 >
-> **Live state:** default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 latest head `7dcd58f73a87156c614ebf543c756ece6715762a` OPEN/DRAFT/UNMERGED; qualification run `44069573932` and contract run `44069573866` PENDING at last read. Previous run `44066723324` was CANCELLED after a source-backed workflow correction. No installation qualification, provider route, dispatch, Jarvis deployment or Contour A acceptance is claimed.
+> **Live state:** default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 latest head `7dcd58f73a87156c614ebf543c756ece6715762a` OPEN/DRAFT/UNMERGED; latest qualification run `44069967928` and contract run `44069967918` RUNNING at last read. Prior run `44069573932` FAILED because `DISABLE_UPDATES=1` blocked native Claude install; its artifact was downloaded and digest-verified but contains baseline/provenance only. Earlier run `44066723324` was CANCELLED after the first source-backed correction. No installation qualification, provider route, dispatch, Jarvis deployment or Contour A acceptance is claimed.
 >
 > Older Cloudflare/Hono hosting proposals, server-3 executor directions and mandatory four-Gemini-wave instructions remain historical only where they conflict with this baseline. Historical IDs and evidence are retained; do not treat unmerged drafts as accepted implementation.
 
@@ -261,8 +261,8 @@ At the beginning of every /next:
 
 **Current exact implementation candidate**
 - Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #116 latest head: `7dcd58f73a87156c614ebf543c756ece6715762a`; OPEN / DRAFT / UNMERGED.
-- Workflow blob: `7c3133f7916e53c12385af13a01276a59419c581`.
+- PR #116 latest head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`; OPEN / DRAFT / UNMERGED.
+- Workflow blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
 - Runner qualification run `44069573932`: PENDING at last read.
 - Pool Contract Validation run `44069573866`: PENDING at last read.
 - Previous runner run `44066723324` on prior head was CANCELLED after the workflow correction; do not claim installation success.
@@ -2527,3 +2527,13 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Next bounded action: wait for run #44066723324 to complete and inspect exact-head logs/resources. If it passes, add/verify provenance artifact and cleanup evidence, then independent review. If it fails or stalls, isolate the failure and revise only the runner proof. Next after installation qualification is FCC policy + one free route contract, then A0 durable integration and first task execution.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+## Latest native-install failure and corrected retry — 2026-11-17
+
+- Latest PR #116 head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`; workflow blob `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
+- Current runner qualification `44069967928` and Pool Contract Validation `44069967918` were RUNNING at last read.
+- Prior exact-head run `44069573932` FAILED at the native Claude install. The installer log shows the environment contained `DISABLE_UPDATES=1`, printed “Updates are disabled by your administrator”, then the shell reported `claude: command not found`. The latest workflow removes `DISABLE_UPDATES`, keeps `DISABLE_AUTOUPDATER=1`, discovers the actual binary path and writes the actual detected version to the manifest.
+- The prior attempt's artifact `14320969240` was downloaded and SHA-256 verified against GitHub's artifact digest: `d8dbe5a96d3f16b5dedd639d5c0b6ddbc5579bb2f605c0074ec52304a790327c`. It records baseline/provenance only because installation stopped before FCC/ECC steps.
+- That job measured Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM and a 145 GiB root filesystem with 89 GiB available at baseline. These figures are specific to that ephemeral job.
+- No provider calls, secret-value reads, FCC server startup, agent execution, production dispatch or deployment occurred.
