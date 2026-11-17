@@ -111,3 +111,13 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Key FCC production rule: one credential/account per profile, disable numbered key selection, key cycling, MODEL_FALLBACKS and provider/paid fallback. Free route/account/quota remains NOT VERIFIED.
 - Workspace is a later stage, not first GitHub-only launch dependency, but remains required for final Contour A acceptance unless owner re-scopes it. Issue #118 BLOCKED.
 - No secrets/provider calls/real Claude session/Gemini dispatch/deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next continuation — D1 admission exact-head refresh — 2026-11-17
+
+- PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`; OPEN/DRAFT/UNMERGED.
+- D1 Atomic Admission Integration Proof run 43935827714 / job 133540023253 SUCCESS; local Workers-runtime D1 tests 12/12 PASS.
+- Pool Contract Validation run 43935827741 / job 133540025359 SUCCESS; workflow syntax/security invariants PASS.
+- Updated PR #114 description with a current-head addendum; Issue #96 comment 6948767460 records exact evidence and residuals.
+- Admission is not production-authorized: event object and trustedDefaultHeadSha are injected test inputs, no webhook signature/live ref provenance. Hosted D1, Supervisor lease/fencing, outbox delivery, worker identity and real route remain unqualified.
+- Next: implement trusted GitHub issue_comment provenance in the trusted default-branch controller, then durable lease/recovery. Keep dispatch disabled.
