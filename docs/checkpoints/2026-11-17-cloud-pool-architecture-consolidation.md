@@ -69,3 +69,15 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Historical Context Window snapshots are deliberately excluded from this validator; their legacy links remain historical records and are not silently rewritten.
 - GitHub write commits: validator `447d58ec00d6858e09dee34bcf2dab25c1381a37`; workflow `cf8c72ca6e58bdef6af7d8a370525ace3b5d1c38`; Context Window update `eaffc96dd949850713b9cad1aaed88408690cb0f`.
 - Exact-head CI on `9d0fb4cd6728a160c056aa63967568a38e2bb440` completed SUCCESS: Architecture Documentation Validation run `44086971389`; Pool Contract Validation run `44086971299`. No local execution of the validator is claimed in this connector-only pass. Documentation CI is not security qualification and does not qualify Contour A.
+
+
+## /next checkpoint — chat architecture decisions reconciled into PR #120 — 2026-11-17
+
+- Canonical candidate PR #120: branch `docs/cloud-pool-reference-architecture-2026-11-17`, head before this checkpoint `6379fb7f1201752d2406c89a081baa87823825c0`, OPEN/DRAFT/UNMERGED.
+- Added normative Section 21 to Reference Architecture 1.0 to preserve the detailed chat-session Workspace, Jarvis three-plane, shared filesystem, VS Code Remote SSH, code-server/Open VSX, Cloudflare transport distinctions, single-writer fencing, backup/restore, first Claude/FCC/ECC profile, Gemini optionality and GitHub-only first-launch boundary.
+- Refreshed Context Window and ADR with current PR #116 exact-head evidence and latest owner scope corrections.
+- PR #116 latest head `6d4a4c518d44aa4a79d8396390623f424499011a`: runner proof run 44086419084 SUCCESS; workflow/security validation run 44086419002 SUCCESS; job 134049913469 all 14 steps SUCCESS. Mock only; no real Claude/provider task.
+- Issue #117 CLOSED. Issue #118 remains BLOCKED. Issue #115 remains OPEN pending independent review/source provenance and real route scope as applicable.
+- PR #113 is an older parallel docs candidate and remains OPEN/DRAFT; its content is not merged and is not assumed automatically included in PR #120.
+- No secrets/provider calls/Gemini dispatch/host deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: read back all amended files, independently review PR #116 at exact head, validate PR #120 links/contracts and obtain architecture/security review. Keep dispatch disabled.
