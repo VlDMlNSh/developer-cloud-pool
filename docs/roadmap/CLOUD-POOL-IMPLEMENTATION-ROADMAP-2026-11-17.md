@@ -186,3 +186,24 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 - Each /next: one bounded engineering slice; update this roadmap only when evidence changes a phase status; append a dated checkpoint and update Context Window.
 - Keep historical drafts and old PRs visible as historical evidence. Do not silently cherry-pick or merge large divergent branches.
 - Never claim a test, installation, deployment, provider route, dispatch, qualification or acceptance without exact-head evidence.
+
+## 2026-11-17 /next result reconciliation — first CODE runner
+
+**Latest result:** no-secret installation/resource proof SUCCEEDED on exact head `f7d490a63aefa007ff8d74e7de961349f54a27e9`. The first executor profile is not yet fully QUALIFIED because FCC runtime/Claude bridge, free provider route, quota evidence and independent review remain outstanding.
+
+- PR #116 remains OPEN / DRAFT / UNMERGED: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116
+- Workflow blob: `4264048f004404847ccada72e03c3165abebf321`.
+- Runner run [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717): COMPLETED / SUCCESS; job `133995194615` all steps succeeded.
+- Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842): COMPLETED / SUCCESS; job `133995194255`; YAML and pool security contract passed.
+- Artifact [14323205257](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717/artifacts/14323205257), 11,460 bytes. GitHub and locally recomputed SHA-256: `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121`.
+- Artifact binds PR head `f7d490a63aefa007ff8d74e7de961349f54a27e9`, GitHub event/checkout merge SHA `1bf87d450eece31cfb4591dfd8f4842e03f1610b`, and base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` separately.
+- Verified installs: Claude Code `2.1.325`; FCC `6.19.35` on Python `3.14.10`; uv `0.13.7`; ECC commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`, with three selected skills.
+- FCC pinned source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pyproject Git blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`; uv.lock Git blob `ee8490c29a36f8302f5c1f1d42b465f6271c10f2`; installation used `uv sync --frozen --no-dev --python 3.14.10`.
+- Log inspection found no FCC server startup, no `fcc-claude` launcher invocation and no orphan FCC server cleanup. The artifact manifest's `fcc_server_started=false` and `fcc_client_launcher_invoked=false` agree with the logs.
+- Runner snapshot: Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM, 145 GiB root filesystem, 89 GiB available before and 88 GiB after. Installed sizes: Claude 349 MB, FCC venv 176 MB, uv cache 12 MB, selected ECC skills 68 KB. FCC sync 1.48 seconds, maximum RSS 108,764 KiB. Single-job measurements only.
+- No GitHub Secret values read or injected; no provider/model calls; no Anthropic authentication; no production dispatch; no deployment.
+- Earlier failed/side-effect attempts 44069573932 and 44069967928 are retained in `docs/reports/2026-11-17-first-claude-code-fcc-ecc-runner-proof.md` and superseded by the clean f7d... run.
+
+**Next implementation slice:** separate loopback-only FCC runtime/health/start-stop smoke with no provider credentials or provider calls; then a synthetic FCC-to-Claude CLI bridge test. Only after those pass should the first real free API route be qualified.
+
+**Contour A:** BLOCKED / NOT ACCEPTED. **Contour B:** DEFERRED.
