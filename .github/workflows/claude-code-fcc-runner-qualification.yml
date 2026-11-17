@@ -180,7 +180,7 @@ jobs:
           trap cleanup EXIT
 
           cd "$RUNNER_TEMP/fcc-src"
-          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
+          python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
           server_pid=$!
           printf '%s\n' \
             'fcc_server_started=true' \
@@ -272,7 +272,7 @@ jobs:
           set -euo pipefail
           test "${ANTHROPIC_BASE_URL:-}" = "http://127.0.0.1:18766"
           test -n "${ANTHROPIC_AUTH_TOKEN:-}"
-          if env | cut -d= -f1 | grep -Eq '(^GITHUB_TOKEN$|^GH_TOKEN$|_API_KEY$|_API_TOKEN$|_SECRET$|^AWS_)'; then
+          if env | cut -d= -f1 | grep -Eq '(^GITHUB_TOKEN$|^GH_TOKEN$|_API_KEY$|_API_TOKEN$|_SECRET$|^AWS_|^HTTP_PROXY$|^HTTPS_PROXY$)'; then
             echo "credential-like environment variable reached mock" >&2
             exit 81
           fi
@@ -323,7 +323,7 @@ jobs:
           export HTTPS_PROXY="http://untrusted-proxy.invalid:8080"
           export PATH="$mock_bin:$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin:/bin"
 
-          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
+          python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
           server_pid=$!
           http_status=000
           for attempt in $(seq 1 30); do
