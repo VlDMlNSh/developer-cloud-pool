@@ -100,3 +100,14 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Same browser/desktop filesystem, VS Code Remote SSH, code-server/Open VSX, per-task worktrees, single-writer fencing, qualified ingress and backup/restore remain Workspace acceptance conditions.
 - PR #120 remains OPEN/DRAFT/UNMERGED. No independent review, merge, deployment, provider call, secret read or Gemini dispatch.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Final checkpoint — 2026-11-17 architecture consolidation
+
+- PR #120 head `30dbde9d136286af9bbc03dc58ec42e6a4939e5a`, OPEN/DRAFT/UNMERGED, mergeable, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Architecture Documentation Validation run 44088152664 SUCCESS; job 134055994068 validated canonical Markdown links. Pool Contract Validation run 44088150366 SUCCESS.
+- PR #120 has 44 files. All 30 changed paths from PR #113 were migrated; prior Context Window preserved as an archive. PR #113 closed UNMERGED as superseded; comment 6948722671.
+- Current PR #116 head 6d4a4c518d44aa4a79d8396390623f424499011a: runner run 44086419084 SUCCESS, contract/security run 44086419002 SUCCESS; review comments 5938684495 and 5938737463 are COMMENT, not APPROVE.
+- Key FCC production rule: one credential/account per profile, disable numbered key selection, key cycling, MODEL_FALLBACKS and provider/paid fallback. Free route/account/quota remains NOT VERIFIED.
+- Workspace is a later stage, not first GitHub-only launch dependency, but remains required for final Contour A acceptance unless owner re-scopes it. Issue #118 BLOCKED.
+- No secrets/provider calls/real Claude session/Gemini dispatch/deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
