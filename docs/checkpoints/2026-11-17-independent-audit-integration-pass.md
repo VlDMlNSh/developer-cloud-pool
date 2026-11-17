@@ -34,6 +34,11 @@ The same candidate includes the Architecture Assurance Addendum and Independent 
 - PR #122 and #123 closed as superseded after migration.
 - Pool Contract Validation not observed; independent review pending.
 
+## Parent synchronization update
+- PR #120 current head: `baa2223bd44250edf0e8469247910051f4625955`.
+- PR #124 synchronized to that exact base; head `39388657bc145bf4eb21fb69dc3c781dcf7d5a02`; compare 28 ahead / 0 behind; mergeable=true.
+- Latest sync head exact-head CI pending; previous docs validation success is not transferable.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
