@@ -182,3 +182,10 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Current owner instruction: four Gemini assignments requested for every `/next`; comments are recorded on Issue #94 (#6947028166) and Issue #96 (#6947031522). Actual Gemini dispatch remains NOT RUN: no default-branch Cloud Pool Gemini dispatch workflow, PR #107 candidate is based two commits behind default, PR #109 is fake-client tests only, PR #112 read-only, PR #114 dispatch:false, and no independent review/account quota proof. Do not use the MediaHub three-agent bridge as a substitute. Keep `POOL_DISPATCH_ENABLED=false`.
 - PR #116 and PR #113 remain OPEN / DRAFT / UNMERGED; PR #116 formal reviews 0 / threads 0. Contour A NOT ACCEPTED; Contour B deferred.
 - Next bounded step: synthetic FCC-to-Claude CLI bridge test with mock provider/no credentials, then independent review of PR #116. Gemini controller qualification continues behind Issues #94/#96.
+
+
+## Canonical reference architecture adoption — 2026-11-17
+
+The consolidated normative implementation baseline is now [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md). It does not change the owner decisions above; it resolves component boundaries, authority, execution, route/quota, persistence, security and acceptance order. Where an older proposal conflicts, this reference and the latest owner decision supersede it; existing A0/D1 contracts remain authoritative for their domains.
+
+Routine /next passes must implement the ordered roadmap and must not repeatedly reopen architecture selection. A change requires a dated ADR and evidence. This document and the reference architecture are candidate docs-branch artifacts until PR #113 is reviewed and merged. No deployment or Contour A acceptance is implied.
