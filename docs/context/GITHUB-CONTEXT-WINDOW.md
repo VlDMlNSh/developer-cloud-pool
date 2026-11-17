@@ -2411,3 +2411,20 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - Next: retrieve failing step annotations/logs for run 44091902840, identify evidenced cause, make one narrow correction, rerun exact-head CI. Keep dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## /next — FCC runner path correction and bounded profile qualification — 2026-11-17
+
+- PR #116 exact candidate head: `e58211dfe82a885d7718ebbc89d66188087cdcc4`.
+- Retrieved full logs for prior failure run `44092881008`: the rejected PATH entry was exactly `/usr/local/bin`, root-owned mode `0777`. This was a legitimate fail-closed rejection, not an FCC startup defect. Workflow now excludes this unsafe directory from both FCC and synthetic bridge PATHs; it does not weaken the environment policy.
+- A subsequent artifact review found duplicate/ambiguous provenance keys. The manifest now distinguishes `synthetic_bridge_claude_mock_invoked=true` from namespaced `fcc_runtime_*` lifecycle fields and fails if duplicate keys exist. A first attempted sed prefixing failed CI; replaced with awk and reran exact-head CI.
+- Exact-head run `44093612344` on `e58211dfe82a885d7718ebbc89d66188087cdcc4`: Claude Code + ECC + FCC Runner Qualification SUCCESS; all 14 job steps succeeded. Exact-head Pool Contract Validation `44093612348`: SUCCESS.
+- Artifact `14331114755`, 26,657 bytes, SHA-256 `74d11af0039a856d4aebd72c01d0f403e05e1adaa8879b126706e41575c2f479`; downloaded and digest independently matched GitHub. All 22 internal SHA256SUMS entries verified; provenance manifest contains zero duplicate keys.
+- Evidence: Claude Code `2.1.325`; FCC `6.19.35` on Python `3.14.10`; uv `0.13.7`; ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`, selected skills `search-first,tdd-workflow,security-review`. FCC pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; license AGPL-3.0-only; ECC MIT. Runner observed 4 vCPU, 15 GiB RAM, 145 GiB root disk, 88 GiB free after installation; installed footprints Claude 349 MB, FCC 200 MB, uv cache 12 MB, ECC skills 68 KB.
+- FCC loopback lifecycle: GET status HTTP 200; exactly listener `127.0.0.1:18765`; SIGINT clean exit 0; listener absent after shutdown. Synthetic FCC-to-Claude bridge: health HTTP 200 at `127.0.0.1:18766`; mock argument preservation confirmed; mock exit 37 intentionally propagated; bridge server exit 0 and listener absent after shutdown.
+- Hard qualification boundary: the Claude executable in the bridge was a synthetic mock, not real Claude. `real_claude_session=false`, `agent_task_executed=false`, `provider_calls=false`, `github_secret_values_read=false`, `production_dispatch=false`. No live provider route, account identity, free quota, key/fallback configuration, host deployment, or production executor qualification is implied.
+- PR #116 remains OPEN/DRAFT/UNMERGED. Existing PR review submissions are owner-authored COMMENTs, not independent approval. Ruleset #26550182 has PR and thread-resolution requirements but 0 required approvals and no required checks; project policy still requires independent A3 review. Keep `POOL_DISPATCH_ENABLED=false`.
+- No Gemini dispatch; Gemini is optional supplementary capability, and no controller bypass is permitted. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+- Next bounded step: complete source/integrity review for the official Claude installer and FCC one-account/no-fallback configuration contract without reading secrets; then qualify a real free route only after account/quota and egress gates plus independent A3 review. Keep production dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
