@@ -69,3 +69,21 @@ First priority is one GitHub-hosted ephemeral Claude Code + ECC + FCC + verified
 Canonical Context Window: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md).  
 Canonical repository: https://github.com/VlDMlNSh/developer-cloud-pool  
 Separate MediaHub OS map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Documentation reconciliation — 2026-11-17
+
+The implementation baseline is now linked across:
+- Owner architecture blob: `d0019528b3c233e3f450909b1ab5752d041d6f79`.
+- Implementation roadmap blob: `5c2158e8189f46a9d8286a6729152718b7b3be37`.
+- Context Window blob: `a40f49e0be871d27261901926cc14c2db27ff3cd`.
+- Master continuation prompt blob: `03a7404ce403ad7d44c7d66832d9655a599d2f8c`.
+- All are on documentation PR #113 branch only; default branch is unchanged.
+
+Controlling issue amendments published:
+- #1: active ruleset revalidated; current dispatch variable NOT VERIFIED.
+- #22: GitHub-only Jarvis hosting boundary.
+- #26: first-profile-only provider qualification scope.
+- #94 and #96: Gemini four-child wave is optional, not a launch/per-/next requirement.
+
+These amendments supersede conflicting historical planning text; old candidate PRs remain historical, open and unmerged until individually reconciled. Do not bulk merge or cherry-pick them.
