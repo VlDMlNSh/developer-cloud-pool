@@ -8,6 +8,8 @@ A governed, cloud-first engineering platform with a single Jarvis experience, is
 
 **Delivery and architecture assurance:** [Architecture Assurance Addendum — 2026-11-17](docs/architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md). It defines vertical-slice delivery, component adoption gates, capacity semantics, evidence thresholds and conjunctive Contour A acceptance.
 
+**Independent quality standard:** [10/10 Architecture and Engineering Scorecard](docs/architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md). A 10/10 rating requires criterion-level evidence and independent review; planned or documentation-only work cannot satisfy runtime gates.
+
 Supporting normative contracts:
 - [20-runner architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md) — logical profiles and resource qualification; 20 is a planning ceiling, not guaranteed capacity.
 - [Jarvis hybrid platform architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md).
