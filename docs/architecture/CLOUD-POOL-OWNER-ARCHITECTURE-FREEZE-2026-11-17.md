@@ -207,3 +207,8 @@ This amendment supersedes the earlier section titled **CURRENT OWNER /next OPERA
 - Engineering Workspace remains part of Contour A target but BLOCKED on host #3 identity/authorization, Cloudflare Access/Tunnel, persistent storage, backup/restore and same-workspace desktop/browser qualification.
 
 Contour A remains NOT ACCEPTED; Contour B remains DEFERRED. Next bounded priority is qualify one actual free provider route and account/quota identity, while completing A0/D1 authority and recovery gates. Do not reopen architecture selection absent evidence-backed incompatibility or security finding.
+
+
+## Third-party license gate — 2026-11-17
+
+Pinned source inspection: FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` is `AGPL-3.0-only`; ECC `e413166c50e85fb205b988b5e78874b5a88ea4d2` is MIT. Claude Code CLI is vendor-distributed proprietary software, not an open-source component. Do not expose FCC as a network-facing service until AGPL network-use/source-offer implications and notices are reviewed for the intended deployment. The PR #116 workflow now verifies and captures the pinned FCC/ECC LICENSE files and their SHA-256 digests. The latest exact-head CI for that change is pending at recording time; no license-compliance approval is implied.
