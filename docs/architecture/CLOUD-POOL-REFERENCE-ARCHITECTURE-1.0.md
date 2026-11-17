@@ -618,7 +618,7 @@ The following source records were migrated from the earlier PR #113 candidate in
 
 All 30 changed paths from the earlier PR #113 candidate (excluding the active Context Window path, which is merged into the current context and preserved separately as an archive) are present in this PR #120 branch. The canonical architecture above contains the extracted normative decisions; source records remain for provenance and traceability.
 
-PR #113 remains OPEN/DRAFT/UNMERGED until its disposition is explicitly resolved. Do not merge both documentation candidates as independent competing canonical sources. PR #120 is the single intended system-level architecture consolidation candidate.
+PR #113 was CLOSED UNMERGED as superseded after all 30 changed paths were migrated into PR #120; the earlier Context Window is preserved as an archive. Do not reopen or merge the superseded candidate without a new explicit reason. PR #120 is the single intended system-level architecture consolidation candidate.
 
 
 ### 21.9 Current A0/D1 admission proof boundary
