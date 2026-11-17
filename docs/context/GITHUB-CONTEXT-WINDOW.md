@@ -24,7 +24,7 @@ This document is maintained on the documentation branch and is NOT merged into t
 >
 > **Current implementation refs:** [Owner Architecture Freeze](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md) · [Implementation Roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md) · [Latest Checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
 >
-> **Live state:** default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 latest head `7dcd58f73a87156c614ebf543c756ece6715762a` OPEN/DRAFT/UNMERGED; latest qualification run `44069967928` and contract run `44069967918` RUNNING at last read. Prior run `44069573932` FAILED because `DISABLE_UPDATES=1` blocked native Claude install; its artifact was downloaded and digest-verified but contains baseline/provenance only. Earlier run `44066723324` was CANCELLED after the first source-backed correction. No installation qualification, provider route, dispatch, Jarvis deployment or Contour A acceptance is claimed.
+> **Live state:** default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 latest head `f7d490a63aefa007ff8d74e7de961349f54a27e9` OPEN/DRAFT/UNMERGED; exact-head runner run `44070499717` and Pool Contract Validation `44070499842` COMPLETED/SUCCESS. Artifact `14323205257` SHA-256 `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121` was downloaded and independently verified. Claude Code 2.1.325, FCC 6.19.35/Python 3.14.10 and selected ECC skills installed; logs confirm no FCC server start. No secret values/provider calls/production dispatch occurred. Installation smoke SUCCEEDED; operational profile, provider route and Contour A acceptance remain NOT QUALIFIED / NOT ACCEPTED.
 >
 > Older Cloudflare/Hono hosting proposals, server-3 executor directions and mandatory four-Gemini-wave instructions remain historical only where they conflict with this baseline. Historical IDs and evidence are retained; do not treat unmerged drafts as accepted implementation.
 
@@ -32,21 +32,16 @@ This document is maintained on the documentation branch and is NOT merged into t
 
 Developer Cloud Pool is an independent, cloud-first, governed agent platform and remote development environment. The goal is to make a secure web console accessible from iPhone and desktop, then qualify the cloud execution pool and only afterward move to native mobile and external compute.
 
-**Mandatory order**
-1. Deploy and qualify Contour A on free GitHub infrastructure (and a hosting path proven to remain free).
-2. Deliver authenticated remote web access from mobile and desktop; verify real pool status and permitted operations.
-3. Qualify task intake, Supervisor/Worker execution, safe model/provider routing, quota accounting, secret isolation, state persistence, recovery and audit.
-4. Complete independent security/governance review and publish acceptance evidence for Contour A.
-5. Only after Contour A is ACCEPTED, begin Contour B product development: native iOS MediaHub OS / Developer Mobile AI, local media assistant, external owner-operated servers and related product capabilities.
+**Mandatory owner-approved order — frozen 2026-11-17**
+1. Qualify one initial CODE executor: Claude Code CLI + selected ECC toolkit + FCC on a GitHub-hosted ephemeral runner. No Anthropic API authentication; no provider calls until a free route is explicitly qualified.
+2. Complete Pool A0 trusted owner-only admission, durable task/attempt/lease state, worker identity, cancellation, recovery and evidence boundary. Keep production dispatch fail-closed until independently qualified.
+3. Deliver Jarvis as a GitHub-hosted static mobile/desktop PWA with GitHub-native task/status navigation. GitHub Pages is static and Actions runners are ephemeral; no external always-on backend is an initial dependency.
+4. Complete the first end-to-end CODE task path, independent A3 verification, security/governance review and Contour A acceptance evidence.
+5. Only after Contour A is ACCEPTED, begin Contour B product development.
+
+**Executor freeze:** one CODE profile first; second CODE only after measured free-quota headroom. MEDIA is deferred until remote local-model compute exists and must have no API credentials or API/paid fallback. Mac mini 2018 is a future optional local-model route. Codex and Gemini are optional supplementary executors, not launch gates. YouTube is a later connector. No physical hardware or self-hosted runner is required for the initial contour.
 
 Contour B is explicitly deferred. It must not be pulled forward because a scope document or prototype exists.
-
-**Web-first owner priority (Issue #22, 2026-11-06):** authenticated remote web access first; native iOS Developer Mobile AI second; external servers third. The web application must be usable in an iPhone browser without requiring a native app.
-
-**UI direction:** restrained graphite/gray surfaces and typography; no prominent blue or green accents. Reuse the existing graphite mobile dashboard and mature components rather than redesigning from scratch.
-
-**Free-tier constraint:** GitHub Free and genuinely free service tiers only. No paid fallback, no paid managed DB/cache, no billing workaround, no payment-card workaround, no upgrade, and no resource creation that can incur charges. GitHub-hosted runners are ephemeral and are not persistent web hosts.
-
 ## 2. Source-of-truth and cross-project boundaries
 
 - This repository is the engineering source of truth for Cloud Pool: https://github.com/VlDMlNSh/developer-cloud-pool
@@ -257,33 +252,33 @@ At the beginning of every /next:
 9. Record actual status using PLANNED, DISPATCHED, RUNNING, SUCCEEDED, VERIFIED, QUALIFIED, ACCEPTED, NOT RUN, BLOCKED, FAILED, NOT VERIFIED.
 10. End with factual status, evidence links, blockers and the next concrete step.
 
-## 14. Current next step — first Claude Code runner proof
+## 14. Current next step — FCC loopback runtime smoke
 
-**Current exact implementation candidate**
+**Latest installation candidate**
 - Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #116 latest head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`; OPEN / DRAFT / UNMERGED.
-- Workflow blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
-- Runner qualification run `44069573932`: PENDING at last read.
-- Pool Contract Validation run `44069573866`: PENDING at last read.
-- Previous runner run `44066723324` on prior head was CANCELLED after the workflow correction; do not claim installation success.
-- Previous contract run `44066723253` passed only on the prior head and observed `POOL_DISPATCH_ENABLED=false` at 10:38:50 UTC.
+- PR #116 latest head: `f7d490a63aefa007ff8d74e7de961349f54a27e9`; OPEN / DRAFT / UNMERGED.
+- Workflow blob: `4264048f004404847ccada72e03c3165abebf321`.
+- Runner qualification [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717): COMPLETED / SUCCESS.
+- Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842): COMPLETED / SUCCESS.
+- Artifact [14323205257](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717/artifacts/14323205257); SHA-256 `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121` verified against GitHub digest.
+- PR #116 has no independent reviews/review threads at last read. Keep Draft and unmerged.
 
-**Latest workflow correction**
-- Claude Code uses the official native installer pinned to version `2.1.325`.
-- FCC source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; Python `3.14.10`; exact `pyproject.toml` and `uv.lock` Git blob hashes are verified before installation.
-- FCC uses `uv sync --frozen --no-dev --python 3.14.10`.
-- Source audit found `fcc-server --help` starts the server; only `--version` is metadata-only. The corrected workflow does not start FCC.
-- ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`; only three selected skills are installed.
-- A bounded provenance/resource artifact is uploaded with a pinned action. No GitHub Secrets are read, no provider calls are made, and no production dispatch is enabled.
+**Verified installation**
+- Claude Code 2.1.325 via official native installer.
+- FCC 6.19.35 on Python 3.14.10, installed from pinned source and locked dependencies.
+- ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`; selected skills search-first, tdd-workflow and security-review installed and hashed.
+- Runner measured 4 vCPU, 15 GiB RAM, 145 GiB root filesystem; 89 GiB free at baseline and 88 GiB after install. Installed sizes: Claude 349 MB, FCC venv 176 MB, uv cache 12 MB, ECC skills 68 KB. One-job measurement only.
+- No FCC server startup, no provider call, no secret-value read, no agent task and no production dispatch.
 
 **Next actions**
-1. Read exact-head run 44069573932 and contract run 44069573866.
-2. Inspect complete job logs and download/verify the evidence artifact and SHA-256 manifest.
-3. Fix only failures evidenced by those logs; keep PR #116 Draft and obtain independent review.
-4. After installation proof passes, qualify FCC retry/fallback policy and one free provider route without exposing secret values.
-5. Then integrate A0 admission/lease/worker identity and deliver the GitHub-only Jarvis static PWA/read-only surface according to the implementation roadmap.
+1. Build a separate loopback-only FCC runtime/health/start-stop smoke with no provider credentials and no provider calls.
+2. Add a synthetic FCC-to-Claude CLI bridge test; verify request/response handling without real provider credentials.
+3. After those pass, qualify the first positively allowlisted free provider route, account/quota identity, rate-limit behavior, cooldown and paid-fallback denial without exposing secret values.
+4. Then integrate A0 admission/lease/worker identity and the GitHub-only Jarvis static PWA/status surface.
+5. Obtain independent review and complete the Contour A acceptance matrix.
 
-**Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.**
+**Installation smoke: SUCCEEDED. Operational profile: NOT QUALIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.**
+
 ## Canonical navigation links
 
 - This unified context window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
@@ -2537,3 +2532,12 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - The prior attempt's artifact `14320969240` was downloaded and SHA-256 verified against GitHub's artifact digest: `d8dbe5a96d3f16b5dedd639d5c0b6ddbc5579bb2f605c0074ec52304a790327c`. It records baseline/provenance only because installation stopped before FCC/ECC steps.
 - That job measured Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM and a 145 GiB root filesystem with 89 GiB available at baseline. These figures are specific to that ephemeral job.
 - No provider calls, secret-value reads, FCC server startup, agent execution, production dispatch or deployment occurred.
+
+## Final runner proof reconciliation — 2026-11-17
+
+- Exact head `f7d490a63aefa007ff8d74e7de961349f54a27e9`; run 44070499717 and contract run 44070499842 both SUCCESS.
+- Artifact 14323205257 downloaded and digest-verified: `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121`.
+- The artifact separately records PR head SHA, GitHub event/checkout merge SHA and base SHA. Manifest and logs agree that FCC was not started.
+- The install smoke proves only that the three components install and fit on this ephemeral runner. It does not prove FCC runtime, provider route, free quota, Claude task execution, Jarvis or end-to-end A0.
+- Full evidence and historical failed attempts: [runner qualification report](../reports/2026-11-17-first-claude-code-fcc-ecc-runner-proof.md).
+- Next bounded pass: loopback-only FCC runtime/health/start-stop smoke, no provider credentials/calls.
