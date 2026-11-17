@@ -1,3 +1,23 @@
+## /next RECORD — JARVIS INTELLIGENCE AND EXECUTION AUTHORITY — 2026-11-17
+
+Detailed report: [2026-11-17-next-pass-jarvis-intelligence-and-task-boundary.md](../reports/2026-11-17-next-pass-jarvis-intelligence-and-task-boundary.md).
+
+This is a design clarification against the existing Owner Architecture Freeze, not a replacement architecture and not a deployed implementation. Jarvis responsibilities are logically separated into Intelligence (advisory planning), Orchestration (durable deterministic task lifecycle), Governance (authoritative issuer/capability/policy admission), and Observability/Recovery (evidence-based status and safe reconciliation). These are logical responsibilities, not four required services.
+
+Control-flow invariant: user request → plan proposal → policy/admission → durable task/attempt → bounded executor → evidence collection → independent verification → result projection. Model output is untrusted and cannot authorize itself, mutate policy, control quota accounting, or self-certify acceptance. User-visible states must distinguish VERIFIED, INFERRED and UNKNOWN. Retries are allowed only when idempotent; ambiguous external side effects require reconciliation.
+
+Task Envelope remains NOT FROZEN. Next pass must inspect and reconcile existing A0/D1 event provenance, task identity, admission receipt, lease/fencing, attempt ledger and evidence contracts before proposing any new wire schema. Candidate fields are listed in the dated report; no schema or production behavior changed here.
+
+Pinned FCC source `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` declares AGPL-3.0-only in pyproject.toml. This is a source metadata observation; review license obligations before distribution/modification/network deployment. No legal conclusion is made.
+
+Start-of-pass refs: default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; docs branch pre-pass HEAD `85e285fbd2742da8d5376c6038b7962345d522ab`; PR #113 OPEN/DRAFT/UNMERGED; PR #116 head `596c03e19b4662f69a9b40791299f55afb9a928e` OPEN/DRAFT/UNMERGED. Exact-head runner run `44076256742` and Pool Contract Validation run `44076256865` succeeded, but only prove the bounded no-secret runner/FCC loopback and contract checks described in the evidence report. Default-branch Pool Supervisor run `44078065204` succeeded on default HEAD.
+
+Pass status: design note RECORDED; code changes NONE; automated tests NOT RUN; provider calls NOT RUN; Gemini dispatch NOT RUN (controller/gates unavailable); Claude Code task NOT RUN; independent PR #116 review NOT VERIFIED; Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next bounded step: build a field-by-field compatibility matrix between the existing A0/D1 contracts and the proposed Task Envelope. Keep production dispatch fail-closed.
+
+---
+
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 ## NEW OWNER-REQUESTED ENGINEERING WORKSPACE TARGET — 2026-11-17
