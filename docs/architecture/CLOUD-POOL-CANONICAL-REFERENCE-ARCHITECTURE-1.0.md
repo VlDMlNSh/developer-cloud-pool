@@ -352,3 +352,13 @@ The following implementation evidence supersedes earlier status snapshots in thi
 - Contour A remains NOT ACCEPTED. No secrets were read, no real provider calls were made, no Gemini was dispatched and no persistent workspace was deployed.
 
 This status amendment supersedes earlier dated paragraphs that still describe the synthetic bridge as the next task or require four Gemini children for every `/next`. The normative target architecture in Sections 15.1–15.7 remains unchanged.
+
+
+### 15.9 Third-party license and network-use gate — 2026-11-17
+
+Pinned upstream license inspection found:
+- FCC repository commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` declares `AGPL-3.0-only` in its LICENSE file.
+- ECC repository commit `e413166c50e85fb205b988b5e78874b5a88ea4d2` carries the MIT License.
+- Claude Code CLI is distributed by its vendor through the official installer; do not describe it as open source or assume an OSS license. Vendor terms must be reviewed for the intended deployment and account route.
+
+Before exposing FCC as a network service or integrating it into a remote-user product, perform a legal/license compliance review of AGPL-3.0-only, including whether the intended remote interaction triggers source-offer obligations for the deployed/modified program and how corresponding source and notices will be provided. Loopback-only runner qualification is not a public deployment authorization. Preserve license texts and SHA-256 digests in qualification artifacts. If compliance cannot be established, do not deploy FCC as a network-facing service; select and qualify a compatible alternative or obtain appropriate approval.
