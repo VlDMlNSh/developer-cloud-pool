@@ -40,7 +40,7 @@ Translate the supplied independent audit into an implementation-ready architectu
 ## PR and validation reconciliation
 
 - Dependent Draft PR #123 created: https://github.com/VlDMlNSh/developer-cloud-pool/pull/123
-- PR #123 head: `d0757ec995a57ce30d68960650ced2826d7b46ab`; base: `docs/cloud-pool-reference-architecture-2026-11-17` at `35b47e0e0fd576dc0552934f733548a05cbcb435`; OPEN / DRAFT / UNMERGED; mergeable=true at read.
+- PR #123 head: `487f843133e6c3ec870c05be4fd3d41401e80037`; base: `docs/cloud-pool-reference-architecture-2026-11-17` at `35b47e0e0fd576dc0552934f733548a05cbcb435`; OPEN / DRAFT / UNMERGED; mergeable=true at read.
 - GitHub compare: ahead_by=8, behind_by=0; 8 changed files.
 - Read-back blob SHAs: realization map `0d03fff3a54cdd1e0305cc4a2b196c6d3364245c`; reference architecture `c35b39a695c6d4747b74b8cf820ab599671d2d32`; Context Window `862718a4b5bffc128ca3424b121814450b8957fc`; validator `cff76f6d512686f6b77306d6fd9858ff03cf1a19`; workflow `4ae7a0a40ed0891e184a72d82acb8f2708d8e1ba`.
 - Exact-head status endpoint returned zero contexts and workflow-run lookup returned zero PR runs at the time of read. Exact-head CI is NOT VERIFIED, not assumed pending/success.
