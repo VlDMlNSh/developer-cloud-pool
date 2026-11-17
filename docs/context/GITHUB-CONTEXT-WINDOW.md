@@ -1,3 +1,16 @@
+# /next — Workspace scope reconciled with final Contour A acceptance — 2026-11-17
+
+A final cross-document consistency check found stale wording that described the persistent Engineering Workspace as an optional post-acceptance extension, while the roadmap explicitly includes it in final Contour A. Corrected the canonical architecture and roadmap:
+
+- Persistent Engineering Workspace is REQUIRED for final Contour A acceptance, staged after the first GitHub-hosted ephemeral CODE runner and A0/D1 gates.
+- Final workspace target: server #3, Cloudflare Access/Tunnel, browser code-server/Open VSX plus official desktop VS Code Remote SSH on one authoritative filesystem; separate per-attempt worktrees and single-writer lease/fencing; backup/restore and independent A3 evidence.
+- Current server #3/Cloudflare prerequisites remain BLOCKED / NOT RUN; no deployment is claimed.
+- This scope correction is recorded in the FCC env allowlist pass report. Contour B remains prohibited until formal Contour A ACCEPTED.
+
+Updated architecture and roadmap are recorded on the docs branch. Latest roadmap: [CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md).
+
+---
+
 # /next — FCC child environment allowlist implemented and synthetic-qualified — 2026-11-17
 
 **Current status:** synthetic child environment isolation VERIFIED on PR #116 exact head; production route/task and Contour A remain NOT VERIFIED / NOT ACCEPTED.
