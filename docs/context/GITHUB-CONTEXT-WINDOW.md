@@ -2,19 +2,18 @@
 
 ## CURRENT RECONCILED SNAPSHOT — 2026-11-17
 
-This snapshot is authoritative for refs at the time of parent synchronization. Historical sections below are retained for provenance; re-read live refs before every pass.
+This block is authoritative over older dated snapshots below. It records the exact branch state immediately before the Context Window refresh commit; the refresh itself advances the integration branch. Always re-read live refs first.
 
-- Repository: `VlDMlNSh/developer-cloud-pool`; public; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; base default HEAD; mergeable=true at latest read.
-- PR #124 before synchronization: OPEN/DRAFT/UNMERGED; head `91e579f2b945e286a47549fce4d292240e644d55`; base `baa2223bd44250edf0e8469247910051f4625955`; 44 commits ahead / 1 behind; mergeable=false.
-- This commit synchronizes PR #124 to PR #120's latest parent and preserves the latest parent Context Window/checkpoint/report updates. Re-read branch and PR metadata after commit.
-- PR #124 includes Unified Realization Map, Architecture Assurance Addendum, Independent 10/10 Scorecard, README/reference links, documentation validator/workflow, report and checkpoint.
-- PR #122/#123: CLOSED/UNMERGED as superseded; PR #116 remains OPEN/DRAFT, exact current head and CI must be re-read.
-- Ruleset `26550182` active on `refs/heads/Основной`, PR and review-thread resolution required, but zero required approvals and no required status checks; governance remains insufficient.
-- Runtime: authenticated Jarvis NOT VERIFIED; hosted state authority and production admission/recovery NOT QUALIFIED; real free provider route NOT QUALIFIED; persistent Workspace BLOCKED by Issue #118.
-- No secrets, provider calls, Gemini dispatch, production dispatch, deployment or merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
-
-# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; latest head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; mergeable=true.
+- PR #124: OPEN/DRAFT/UNMERGED; base SHA `baa2223bd44250edf0e8469247910051f4625955`; head before this context refresh `91e579f2b945e286a47549fce4d292240e644d55`; compare 44 commits ahead / 1 behind; mergeable=false because PR #120 advanced after child synchronization. Rebase only after parent branch is stable.
+- Exact-head Architecture Documentation Validation run [44094563351](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094563351) SUCCESS on `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`. The later context/report/checkpoint refresh at `91e579f2b945e286a47549fce4d292240e644d55` has run [44094790111](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094790111) PENDING at last read. Do not claim latest-head CI passed.
+- PR #122 and #123 are CLOSED / UNMERGED as superseded after substantive content migration into PR #124; their branch/review histories remain available.
+- PR #116: OPEN/DRAFT; latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; earlier no-secret install/FCC loopback proof does not establish real Claude task execution or a free provider route; exact-head status NOT VERIFIED.
+- Ruleset `26550182` ACTIVE on `refs/heads/Основной`; PR and review-thread resolution required, but required approving reviews = 0 and required status checks = none; no bypass actors. Governance is insufficient for critical architecture/security acceptance.
+- Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
+- Authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
+- Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
