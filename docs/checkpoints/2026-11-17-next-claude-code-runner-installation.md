@@ -231,3 +231,15 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 
 ### Next
 Complete Issue #119 synthetic FCC-to-Claude CLI bridge with mock-only/no credentials, then independently review PR #116 and run exact-head checks. Do not install workspace components until host, Cloudflare, persistence and security prerequisites are verified.
+
+
+## /next checkpoint — PR #116 independent audit — 2026-11-17
+
+- Repository default `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 branch HEAD after audit fixes: `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; OPEN/DRAFT.
+- Audited allowlist wrapper, unit tests and 466-line runner workflow. Fixed workflow path filters to rerun when either allowlist source or test changes. Fixed provenance to report synthetic fcc-claude launcher invocation truthfully and derive it from the mock result marker.
+- Prior head `2b4b02b331b0dd4547baac11f7d38fe232872431` had qualification and contract validation SUCCESS (runs 44083551665 and 44083551660).
+- Exact-head runs on `367c583a508061cebe41bb8d33e98c24a0dd8ba6`: qualification 44083961455 and contract validation 44083961406 were pending/running at checkpoint time; NOT VERIFIED.
+- No secret reads, provider calls, Gemini dispatch, deployment or merge. Mock test is not a real provider-route or account/quota proof. Independent formal review remains outstanding.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify both exact-head runs and evidence artifact, then record independent PR review and remaining blockers.
