@@ -2810,3 +2810,34 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - No secrets read, provider calls, real Claude session, Gemini dispatch, deployment or merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded task: continue A0/D1 and real free-route qualification via existing issues/contracts; do not enable live dispatch until route identity, quota isolation, least privilege, audit and governance pass.
 - Workspace target remains normative in Canonical Architecture Section 15, but Issue #118 host/Cloudflare/persistence blockers remain open.
+
+
+## /next — full chat-to-architecture completeness audit — 2026-11-17
+
+### Refs and governance
+- Default branch `Основной` HEAD at audit: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Documentation candidate branch `docs/next-2026-11-16-current-state-refresh` advanced through this audit; PR #113 is OPEN/DRAFT/UNMERGED, based on the default HEAD. Compare reports 129 commits ahead, 0 behind, 29 documentation files in the PR diff. This means content is present in the candidate branch but NOT yet merged/accepted into default.
+- PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`, OPEN/DRAFT/UNMERGED.
+- Active ruleset `Основной — verified` (ID 26550182) targets only `refs/heads/Основной`, blocks deletion/non-fast-forward and requires PR with thread resolution; branch-protection endpoint itself returned 403, so do not claim full branch-protection visibility. No bypass actors listed.
+- PR #113 has no formal reviews and no status/check runs (NOT VERIFIED, no checks reported). PR #116 has COMMENTED independent review, not APPROVED.
+
+### Completeness result
+- Canonical reference architecture Section 15.1–15.7 contains the complete integrated three-plane Engineering Workspace design: Jarvis sole UI; persistent authoritative workspace; official VS Code Desktop Remote SSH; code-server/Open VSX behind Cloudflare Access/Tunnel; same filesystem; task-specific worktrees; single-writer leases with expiry and monotonic fencing; agent execution isolation; Claude/ECC/FCC placement; controller-only Gemini; optional Copilot; JWT/origin auth; backups/restore; staged Contour A acceptance.
+- Owner freeze, Workspace integration record and roadmap contain corresponding implementation decisions and staged gates.
+- The no-secret Claude Code + ECC + FCC qualification and synthetic FCC-to-Claude CLI mock bridge are recorded, with exact-head CI and artifact references; Issue #119 is CLOSED for that bounded mock objective.
+- Reconciled stale text: four Gemini agents are OPTIONAL supplementary capability, not a mandatory per-/next or first-release/Contour A gate, consistent with the latest owner scope corrections in Issues #94 and #96. Dispatch remains NOT RUN; `POOL_DISPATCH_ENABLED=false`.
+- New dated amendments were appended to canonical architecture, owner freeze, Workspace integration record and roadmap with current evidence and supersession statements.
+
+### Explicitly not completed / not lost
+- The documentation candidate has not been merged. PR #113 remains DRAFT; canonical architecture is not yet in default branch.
+- PR #116 remains DRAFT; mock qualification does not prove a real Claude session, real free provider route, free account entitlement or quota identity.
+- Issue #115 remains OPEN: source/license provenance and actual free-route/account/quota qualification remain outstanding.
+- Issue #118 remains OPEN/BLOCKED: no authorized server #3, no qualified Cloudflare zone/Tunnel/Access, no persistent workspace and no backup/restore evidence.
+- A0/D1, owner-only admission, durable lease/fencing/recovery and real executor routing still require qualification.
+- No secret reads, provider calls, Gemini dispatch, persistent deployment, merge or Contour A acceptance occurred.
+
+### Next
+1. Continue Issue #115 with provenance/license and one explicitly permitted free-route/account/quota qualification, without reading or printing secrets.
+2. Preserve A0/D1 fail-closed gates and dispatch disabled.
+3. Keep Issue #118 blocked until exact host, Access/Tunnel and storage/restore evidence exists.
+4. Obtain independent review and resolve the documentation PR #113's scope/merge plan; do not claim default-branch acceptance before merge.
