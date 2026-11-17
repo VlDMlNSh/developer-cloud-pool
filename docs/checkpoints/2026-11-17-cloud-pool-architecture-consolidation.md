@@ -5,8 +5,7 @@
 **Default branch:** `Основной`  
 **Immutable default base at pass start:** `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`  
 **Working branch:** `docs/cloud-pool-reference-architecture-2026-11-17`  
-**PR:** https://github.com/VlDMlNSh/developer-cloud-pool/pull/120  
-**PR head:** `105d85ffde2330cb838f8819e5b2c1094d158c03`
+**PR:** https://github.com/VlDMlNSh/developer-cloud-pool/pull/120
 
 ## Restore first
 
