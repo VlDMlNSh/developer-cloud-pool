@@ -518,3 +518,74 @@ This reference architecture does not erase detailed contracts. Keep these as the
 - Update README, Context Window and component status in the same PR as material architecture changes.
 - Do not change dispatch gates, secrets, production variables, provider credentials, hosting resources or branch rules as part of a documentation-only architecture pass.
 - Do not claim deployment, qualification, acceptance, or readiness without the evidence listed above.
+
+
+## 21. Owner-approved chat decisions and implementation reconciliation — 2026-11-17
+
+This section consolidates the Engineering Workspace and executor decisions made during the 2026-11-17 architecture sessions. It is normative for the target, subject to the initial hosting boundary below. It does not claim any component is deployed.
+
+### 21.1 Initial GitHub-only delivery boundary
+
+The first Jarvis milestone must not depend on a physical/self-hosted machine, a persistent third-party service, Cloudflare Access, or paid hosting:
+
+1. Start with a static, responsive GitHub-hosted PWA suitable for phone and desktop, exposing only redacted, read-only GitHub-native status (Issues, PRs, Actions and published evidence).
+2. GitHub Pages/static assets and GitHub Actions runners are not an always-on API server. Do not put OAuth client secrets, installation tokens, provider credentials or privileged write tokens in browser assets.
+3. Do not simulate authenticated write/approval/dispatch APIs in a static page. If a secure server-side OAuth/session/API cannot be delivered with an explicitly qualified GitHub-native capability, mark that capability BLOCKED and retain read-only behavior.
+4. Cloudflare Workers/Pages, D1, Access, Tunnel and any external host remain candidates requiring separate current free-tier, identity, security, data-residency, backup/restore and owner-authorization qualification. No card, upgrade, paid fallback or billable provisioning.
+5. A later Workspace/hosted API stage may be added only after the owner explicitly approves the hosting boundary and its security/cost evidence. This stage separation supersedes any older text that implicitly makes Cloudflare or a self-hosted server a first-release dependency.
+
+### 21.2 Integrated Jarvis / Workspace / Execution model
+
+Keep one Jarvis user experience and three distinct logical planes:
+
+- **Jarvis Control Plane:** the sole responsive phone/desktop console; chat/task intake, status, approvals, agents, model/account/quota views (redacted), artifacts and audit. Jarvis requests work but is not A0, route authority or a worker.
+- **Engineering Workspace Plane:** an optional separately authorized long-lived user development environment, distinct from ephemeral Actions runners and the transactional state store. It is a target capability, not a first GitHub-only launch dependency.
+- **Agent Execution Plane:** isolated short-lived task attempts, each bound to immutable target SHA, typed profile, allowed paths/operations, account/quota identity, resource limits and evidence contract.
+
+A single Jarvis console must expose status and launch links for qualified workspace/execution components; do not create competing dashboards or let a UI surface grant authority.
+
+### 21.3 Workspace access and shared filesystem contract
+
+If and when the optional Workspace stage is approved:
+
+- The browser IDE and desktop IDE must use the **same authoritative persistent filesystem and Git repository**, not separate copies or sync-based replicas.
+- Desktop path: official VS Code Desktop + Remote SSH through a verified SSH host key and an approved private/zero-trust transport. Never expose public SSH or disable host-key verification.
+- Browser path: code-server (or a reviewed equivalent), authentication enabled, bound to loopback only behind an independently qualified identity-aware ingress. Use Open VSX where extension marketplace compatibility is required; do not bypass licensing or route code-server through Microsoft's proprietary Marketplace.
+- Cloudflare Tunnel + Access is one possible ingress only after account entitlement, zone, identity provider, policy, origin JWT validation, WebSocket, free-cost and recovery gates are proven. It is not the same transport as VS Code Remote Tunnels; the latter is a separate Microsoft relay/trust dependency and needs its own approval.
+- Do not deploy Coder or another workspace manager in parallel unless a measured requirement demonstrates code-server/Remote SSH is insufficient.
+- GitHub Actions runners remain ephemeral and never become the persistent workspace host.
+
+### 21.4 Concurrency, isolation and recovery
+
+- Each agent/task receives a separate branch and Git worktree (and container where needed). No concurrent agents share a mutable checkout.
+- Any shared mutable workspace has a single-writer lease with task/attempt identity, owner, expiry, heartbeat, monotonic fencing generation, conditional renewal/release and stale-generation rejection. A lease expiry alone does not prove the previous process stopped; reconcile before retry.
+- Read-only observers may inspect a workspace without taking its write lease. Concurrent writers use separate worktrees.
+- Backups must be encrypted, integrity-checked and independently restored. Workspace files, task state, audit records, provider credentials and backups are separate security domains.
+- GitHub remains source-of-truth for code/docs; the one qualified transactional store (D1 remains a candidate, not a production selection) owns mutable admissions, attempts, approvals, leases, outbox and quota reservations. GitHub labels, PR comments and Actions concurrency are not distributed locks.
+
+### 21.5 First executor profile — Claude Code + ECC + FCC
+
+The first bounded CODE profile is installed and lifecycle-smoked on a standard GitHub-hosted ephemeral runner only:
+
+- Claude Code native installer/version is pinned; do not use Anthropic API authentication or paid API fallback.
+- FCC source commit: `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; Python runtime: `3.14.10`; uv: `0.13.7`.
+- ECC source commit: `e413166c50e85fb205b988b5e78874b5a88ea4d2`; only the selected `search-first`, `tdd-workflow`, and `security-review` modules are installed.
+- FCC runtime binds explicitly to `127.0.0.1`, uses source-verified read-only readiness, and must shut down cleanly with no remaining listener.
+- A synthetic `fcc-claude` bridge test proves only mock CLI handoff/provenance. It does not start a real Claude session, invoke a provider, qualify a free route, prove account entitlement/quota, or qualify task execution.
+- Latest observed PR #116 head: `6d4a4c518d44aa4a79d8396390623f424499011a`. Exact-head runner proof [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) and workflow/security validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) both report SUCCESS. Runner job [134049913469](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/job/134049913469) completed all 14 steps successfully. This is installation + local loopback + synthetic mock evidence only.
+- PR #116 remains OPEN/DRAFT/UNMERGED and still requires an independent review on the current head. A prior COMMENT review at an earlier head is not current-head approval.
+- Server #3 / external host execution is not authorized by this proof and remains blocked unless a separate Cloud Pool owner-approved host qualification exists.
+
+### 21.6 Gemini and other model agents
+
+- Gemini is optional supplementary execution, not a mandatory four-agent wave for every `/next`, not a first-release dependency, and not a Contour A launch gate.
+- Any Gemini task must use only `.github/workflows/gemini-batch-dispatch-controller.yml` after exact-head controller, trusted admission, governance, durable lease/fencing/recovery, account identity, quota, artifact and independent review gates pass.
+- Four credential slots or four key names do not prove four distinct Google accounts or independent quotas. Preserve opaque account identity and quota-domain evidence per credential. Do not mix quotas or silently fail over.
+- No Gemini dispatch occurred in this pass; production dispatch remains disabled and NOT RUN. Do not run agents just to satisfy a historical four-agent wording.
+
+### 21.7 Explicit exclusions and status boundary
+
+- Cloud Pool is the only repository being developed in Contour A. MediaHub OS is a separate consumer/product repository; no Contour B implementation is authorized before Contour A acceptance.
+- Jarvis, ASTRA A0, provider issuers and MediaHub Product State Authority remain distinct authorities. Technical access does not imply permission.
+- No secrets were read; no provider/model calls, real Claude session, Gemini dispatch, external host deployment or production dispatch occurred.
+- The initial static/read-only Jarvis boundary is distinct from the later authenticated Workspace/API target. Workspace qualification is separate and currently BLOCKED by Issue #118.
