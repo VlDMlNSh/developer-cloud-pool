@@ -2322,3 +2322,10 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - PR #120 is the active consolidated architecture proposal, still OPEN/DRAFT/UNMERGED. Re-read exact branch head and exact-head CI before any acceptance/merge claim.
 - Latest traceability audit found no chat-specific target requirement missing from the normative candidate. Implementation gaps remain: real provider/account/quota route, hosted A0/D1 and lease/recovery, authenticated Jarvis API, Workspace host/access/storage/restore, independent review and effective governance.
 - No deployment, provider call, secret read, Gemini dispatch, merge or Contour A acceptance.
+
+
+### Historical chat artifacts retained on PR #120 candidate
+- Engineering Workspace architecture consolidation report: [2026-11-17 report](../reports/2026-11-17-engineering-workspace-architecture-consolidation.md).
+- Independent mock bridge review report: [PR #116 review report](../reports/2026-11-17-pr116-independent-mock-bridge-review.md).
+- Detailed implementation roadmap: [Cloud Pool implementation roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md); canonical reference architecture takes precedence where wording differs.
+- Runner qualification checkpoint: [2026-11-17 runner checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
