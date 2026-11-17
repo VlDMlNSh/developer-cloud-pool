@@ -103,3 +103,21 @@ The fda850b... artifact recorded `target_sha` from `GITHUB_SHA`, which is the pu
 - Runner run [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717) was RUNNING at last read.
 - Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842) completed SUCCESS.
 
+
+## Final clean, provenance-bound exact-head run — 2026-11-17
+
+- Latest PR head: `f7d490a63aefa007ff8d74e7de961349f54a27e9`.
+- Runner qualification [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717): COMPLETED / SUCCESS; job `133995194615`, all steps SUCCESS.
+- Pool Contract Validation [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842): COMPLETED / SUCCESS; job `133995194255`.
+- Artifact [14323205257](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717/artifacts/14323205257), 11,460 bytes. SHA-256 independently recomputed locally: `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121`, exact match with GitHub digest.
+- The corrected manifest binds `target_sha` to PR head `f7d490a63aefa007ff8d74e7de961349f54a27e9`, records GitHub event/checked-out merge SHA `1bf87d450eece31cfb4591dfd8f4842e03f1610b`, and base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` separately.
+- Logs contain no FCC startup line, no fcc-claude launcher invocation and no orphan FCC process cleanup. Manifest `fcc_server_started=false` and `fcc_client_launcher_invoked=false` matches the logs.
+- Artifact records Claude Code 2.1.325, FCC 6.19.35/Python 3.14.10, uv 0.13.7, ECC pinned commit and selected skill hashes. FCC locked dependency sync took 1.48 seconds; max RSS 108,764 KiB.
+- Runner: Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM, 145 GiB root filesystem, 89 GiB available at baseline and 88 GiB after install. Footprints: Claude 349 MB, FCC venv 176 MB, uv cache 12 MB, ECC skills 68 KB. One-job observation only.
+- No secret values or provider calls, no Anthropic authentication, no agent task, no production dispatch, no deployment.
+
+**Result:** no-secret installation/resource smoke is SUCCEEDED. This is not yet a qualified operational Claude Code profile: FCC runtime/health, the FCC-to-Claude request bridge, one verified free API route, quota behavior, task admission and independent review remain outstanding.
+
+## Next engineering slice
+
+Create a separate loopback-only FCC runtime/health/start-stop smoke on a GitHub-hosted runner with no provider credentials and no provider calls. Then add a synthetic FCC-to-Claude CLI bridge test. Only after both pass should a real free API route be qualified.
