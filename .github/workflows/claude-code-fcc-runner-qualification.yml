@@ -476,7 +476,7 @@ jobs:
             echo "provider_calls=false"
             echo "github_secret_values_read=false"
             if [ -s "$RUNNER_TEMP/fcc-bridge-home/bridge-result.txt" ]; then
-              echo "fcc_client_launcher_invoked=true"
+              echo "synthetic_bridge_claude_mock_invoked=true"
               echo "claude_executable=synthetic_mock"
             else
               echo "fcc_client_launcher_invoked=false"
@@ -487,7 +487,12 @@ jobs:
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
           if [ -f "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" ]; then
-            cat "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+            sed -E 's/^([^=]+)=/fcc_runtime_\\1=/' "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          fi
+          duplicate_keys="$(cut -d= -f1 "$RUNNER_TEMP/qualification/provenance-manifest.txt" | sort | uniq -d)"
+          if [ -n "$duplicate_keys" ]; then
+            echo "::error::Duplicate provenance manifest keys: $duplicate_keys"
+            exit 1
           fi
           find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
 
