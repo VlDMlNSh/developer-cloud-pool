@@ -55,3 +55,15 @@ Trade-offs:
 ## Acceptance
 
 This ADR is accepted only when merged to the protected default branch after review. It does not accept Contour A.
+
+
+## Owner-approved implementation boundary reconciliation — 2026-11-17
+
+The canonical reference architecture includes the chat-session Workspace design but stages it behind the owner's initial GitHub-only launch boundary:
+
+- First Jarvis delivery is a static responsive GitHub-hosted PWA with redacted read-only status. No external always-on host, physical server, Cloudflare Access, paid service or browser-held privileged secret is a launch dependency.
+- Persistent Engineering Workspace remains an optional, separately authorized stage. If later approved, browser code-server/Open VSX and official VS Code Desktop Remote SSH must use the same persistent filesystem, with separate per-task worktrees, single-writer fencing leases, backup/restore and qualified ingress.
+- Cloudflare Access/Tunnel and VS Code Remote Tunnels are different trust/transport paths; neither is approved or deployed by this ADR.
+- Gemini is optional supplementary execution, not a mandatory per-/next or first-release gate; any use remains controller-only after qualification.
+- The first CODE profile's latest exact-head no-secret runner evidence is PR #116 head `6d4a4c518d44aa4a79d8396390623f424499011a`, runs 44086419084 and 44086419002 SUCCESS. It proves local install/runtime/mock lifecycle only, not a real Claude session or provider route.
+- This ADR remains PROPOSED until independent review and merge; it does not accept Contour A.
