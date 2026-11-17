@@ -1,27 +1,20 @@
-# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
+# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL
 
-## INTEGRATION UPDATE — ASSURANCE + SCORECARD CONSOLIDATED — 2026-11-17
+## CURRENT RECONCILED SNAPSHOT — 2026-11-17
 
-- PR #124 now includes the Unified Realization Map 1.0, Architecture Assurance Addendum, Independent 10/10 Scorecard, reference architecture/README links, Context Window, report/checkpoint and validator/workflow path updates.
-- PR #124 remains OPEN/DRAFT/UNMERGED and dependent on PR #120. Exact latest head and base SHA must be re-read before any merge/rebase statement.
-- PR #122 and #123 are now superseded in content by PR #124 but remain open until the replacement branch is rebased, validated and reviewed. Do not close them before preserving and verifying all content.
-- Exact-head CI remains NOT VERIFIED until workflow runs are visible on the final PR #124 head.
-- No runtime, deployment, secrets, provider routes, dispatch or infrastructure changed.
+This block is authoritative over older dated snapshots below. Historical sections are retained for provenance; re-read live refs before every engineering pass.
 
-
-## CURRENT SNAPSHOT — UNIFIED REALIZATION INTEGRATION — 2026-11-17
-
-This snapshot supersedes earlier status entries below wherever the refs differ. Historical snapshots remain provenance records, not current truth.
-
-- Default branch: `Основной`; PR #120 base SHA observed: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; head `b3b5cb3724139939342335ea95c46cc717485f16`; mergeable=true at read.
-- PR #122: OPEN/DRAFT/UNMERGED; head `4f5b2e9d5b7c434dcbd18d056fbaea6ee3f4b406`; base SHA `435a1838f7e22f0f5ec08611bd24608066fd5d79`; mergeable=false.
-- PR #123: OPEN/DRAFT/UNMERGED; head `da9812cd670d92e014f9f7e3c087b0a253f7005f`; base SHA `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=false.
-- PR #116: OPEN/DRAFT; latest head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`. Earlier no-secret FCC loopback evidence is not a real Claude task/provider route qualification.
-- PR #120/#123 combined status reads returned zero contexts; exact-head CI is NOT VERIFIED from empty status responses.
-- New integration branch `docs/unified-realization-integration-2026-11-17` is based on exact PR #120 head above. It adds one subordinate realization map, dated report and checkpoint, and links the map from the reference architecture and README. It remains unmerged and requires exact-head CI and independent review.
-- Design decisions: modular-monolith Control Plane; one Jarvis app; one canonical task route; three persistence domains and exactly one transactional operational-state authority; ephemeral Actions workers separated from persistent Workspace; capability-based dynamic scheduling; upstream tool reuse after qualification; evidence-first vertical slices; no paid fallback; Gemini controller-only.
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; observed PR base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; mergeable=true.
+- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; head before this context refresh `d8bea16ca270194266c1ccc0a68220987146b0a3`; mergeable=true. It consolidates the realization map, assurance addendum, scorecard, README/reference links, validator/workflow, report and checkpoint.
+- Exact-head Architecture Documentation Validation run [44093374811](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093374811) SUCCESS on `d8bea16ca270194266c1ccc0a68220987146b0a3`. Pool Contract Validation was not observed on that documentation-only head; do not claim it passed.
+- PR #122 and #123 remain OPEN/DRAFT but their dependent bases are stale and mergeable=false. Their content has been migrated into PR #124; they should be closed as superseded after final content verification.
+- PR #116: OPEN/DRAFT; head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`. Earlier no-secret FCC loopback evidence is not a real Claude task or provider-route qualification.
+- Current ruleset configuration must be re-read before merge. Earlier read observed zero required approvals and no required status checks; this remains a governance warning, not a fresh current-state claim.
+- Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
+- Execution status: authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
 - Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
+
 
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
