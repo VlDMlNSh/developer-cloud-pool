@@ -1,3 +1,41 @@
+# /next recovery update — synthetic FCC-to-Claude CLI bridge — 2026-11-17
+
+**Latest bounded pass:** Issue #119 synthetic FCC-to-Claude CLI bridge qualification. Full evidence: [dated report](../reports/2026-11-17-next-pass-synthetic-fcc-claude-bridge.md).
+
+## Current exact repository state
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (unchanged).
+- Executor PR #116: OPEN / DRAFT / UNMERGED; head `4aa172a1efdc1081cf71509c9bc52fc3140e92fe`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 workflow blob: `71e7219e9406012757e25fcaf626012705de96af`.
+- Docs PR #113: OPEN / DRAFT / UNMERGED; docs branch `docs/next-2026-11-16-current-state-refresh`.
+- Active ruleset #26550182 remains enforced. It requires PR, blocks deletion/non-fast-forward, but required approving reviews = 0. Independent review remains an explicit project acceptance gate.
+
+## Completed in this pass
+- Inspected FCC pinned source `Alishahryar1/free-claude-code@eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`: Claude launcher, harness runner, environment builder, process helper, URL builder and pyproject entrypoint. Blob IDs and findings are in the dated report.
+- Added a mock-only FCC-to-Claude handoff step to PR #116 workflow. It starts FCC on `127.0.0.1:18766`, checks readiness/listener, runs actual `fcc-claude` against a synthetic `claude` executable, checks proxy URL/token presence without recording token value, rejects provider-key-like env names, checks argv and exit code 37, and verifies shutdown/listener removal.
+- Exact-head runner run [44080654490](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490): SUCCESS on `4aa172a1efdc1081cf71509c9bc52fc3140e92fe`; job `134030122492`; all steps passed including synthetic bridge.
+- Exact-head Pool Contract Validation [44080654630](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654630): SUCCESS on the same SHA.
+- Artifact [14326213275](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490/artifacts/14326213275): 13,959 bytes; GitHub-reported SHA-256 `b04d13dcbd493752e519bec627535ee1ce6f9d82c20f5b545a8d1564fbb58a6a`. Metadata verified; archive bytes not independently downloaded, so full archive inspection NOT VERIFIED.
+- Issue #119 progress/evidence comment `6947681179`; issue remains OPEN pending independent review.
+- Four isolated Gemini task envelopes for this /next recorded on Issue #94 comment `6947647001`. **All four NOT RUN / NOT DISPATCHED**; no qualified Cloud Pool-native four-child controller. Keep `POOL_DISPATCH_ENABLED=false`; no secret values read.
+
+## Security finding / unresolved requirement
+Pinned FCC `client_environment` removes inherited `ANTHROPIC_*` values and overwrites proxy settings, but otherwise preserves its base environment. The synthetic CI job has no provider credentials or GitHub token and asserts no credential-like variable names reach the mock. This is not a generic credential-scrubbing proof. Before production execution, use a trusted minimal environment allowlist or separately reviewed scrubber. No provider/model calls or real Claude session were made.
+
+## Status
+- FCC installation + loopback lifecycle: VERIFIED on earlier exact head/run.
+- Synthetic FCC-to-Claude CLI handoff: VERIFIED on PR #116 exact head/run above, mock-only.
+- Provider route/account/quota: NOT VERIFIED.
+- Real Claude task execution: NOT RUN.
+- Independent review of PR #116: NOT VERIFIED (reviews 0, review threads 0 at recheck).
+- Gemini four-child controller: NOT QUALIFIED; dispatch NOT RUN.
+- Persistent Engineering Workspace/server #3: NOT VERIFIED.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+
+## Next bounded step
+Obtain independent review of PR #116 and separately qualify a free provider route/account/quota with no paid fallback. Before any real executor task, add and test the trusted minimal environment boundary so provider credentials cannot leak to unrelated child processes. Keep production dispatch disabled. Do not start Contour B.
+
+---
+
 ## /next RECORD — JARVIS INTELLIGENCE AND EXECUTION AUTHORITY — 2026-11-17
 
 Detailed report: [2026-11-17-next-pass-jarvis-intelligence-and-task-boundary.md](../reports/2026-11-17-next-pass-jarvis-intelligence-and-task-boundary.md).
