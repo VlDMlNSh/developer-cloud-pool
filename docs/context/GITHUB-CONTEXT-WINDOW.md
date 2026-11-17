@@ -4,11 +4,11 @@
 
 This block is authoritative over older dated snapshots below. Historical sections are retained for provenance; re-read live refs before every engineering pass.
 
-- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; observed PR base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; mergeable=true.
-- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; head immediately before this context refresh `e306a84167508b582c1504efb1d3a5cdcf40ce4e`; mergeable=true. It consolidates the realization map, assurance addendum, scorecard, README/reference links, validator/workflow, report and checkpoint.
-- Exact-head Architecture Documentation Validation run [44093719797](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093719797) completed SUCCESS on `e306a84167508b582c1504efb1d3a5cdcf40ce4e`; job `134075280319`. Pool Contract Validation was not observed on this documentation-only head; do not claim it passed.
-- PR #122 and #123 were closed as superseded after their substantive content was migrated into PR #124; their branch/review histories remain available as provenance.
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; observed PR #120 base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; current head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true.
+- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head at parent-sync `39388657bc145bf4eb21fb69dc3c781dcf7d5a02`; mergeable=true; 28 commits ahead / 0 behind. It consolidates realization map, assurance addendum, scorecard, reference architecture/README links, validator/workflow, report and checkpoint.
+- Previous exact-head Architecture Documentation Validation run [44093719797](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093719797) SUCCESS on `e306a84167508b582c1504efb1d3a5cdcf40ce4e`. The latest parent-sync head requires its own validation; Pool Contract Validation was not observed on the earlier documentation-only head.
+- PR #122 and #123 are CLOSED as superseded after substantive content migration into PR #124; their branch/review histories remain available.
 - PR #116: OPEN/DRAFT; head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`. Earlier no-secret FCC loopback evidence is not a real Claude task or provider-route qualification.
 - Current ruleset configuration must be re-read before merge. Earlier read observed zero required approvals and no required status checks; this is a governance warning, not a fresh current-state claim.
 - Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
