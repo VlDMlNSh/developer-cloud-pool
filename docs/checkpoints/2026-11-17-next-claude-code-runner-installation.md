@@ -5,7 +5,7 @@
 **Default branch:** Основной  
 **Default HEAD:** 35208f0ef28f0ac031a7acdf35fc90ccc9b16845  
 **Current phase:** Contour A — first CODE executor installation qualification  
-**Status:** PENDING / NOT VERIFIED — latest qualification run queued
+**Status:** RUNNING / NOT VERIFIED — corrected latest qualification run active
 
 ## Owner baseline
 
@@ -92,10 +92,10 @@ These amendments supersede conflicting historical planning text; old candidate P
 ## Latest /next implementation correction — 2026-11-17
 
 **Current candidate**
-- PR #116 latest head: `7dcd58f73a87156c614ebf543c756ece6715762a`.
-- Workflow blob: `7c3133f7916e53c12385af13a01276a59419c581`.
-- New qualification run: [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932), PENDING at last read.
-- New Pool Contract Validation: [44069573866](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573866), PENDING at last read.
+- PR #116 latest head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`.
+- Workflow blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
+- Current qualification run: [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928), RUNNING at last read.
+- Current Pool Contract Validation: [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918), RUNNING at last read.
 - Old run [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324) was CANCELLED by PR concurrency after the workflow correction; no install success is claimed.
 
 **Source-backed correction**
@@ -111,3 +111,13 @@ These amendments supersede conflicting historical planning text; old candidate P
 4. Proceed to FCC fail-closed routing policy and one verified free-route contract only after install proof passes.
 
 No production dispatch, provider call, secret read, deployment, merge, or Contour A acceptance occurred.
+
+## Latest exact-head result — 2026-11-17
+
+- Attempt on prior head `7dcd58f73a87156c614ebf543c756ece6715762a`: run [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932) FAILED at the native Claude Code install step. The log shows `DISABLE_UPDATES=1`, installer message “Updates are disabled by your administrator”, then `claude: command not found`. The workflow environment was corrected by removing `DISABLE_UPDATES`, retaining only `DISABLE_AUTOUPDATER=1`, and adding explicit binary discovery and actual version reporting.
+- Pool Contract Validation [44069573866](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573866) on that prior head completed SUCCESS. It does not validate the current head.
+- Artifact [14320969240](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932/artifacts/14320969240) was downloaded. ZIP size 3,361 bytes. Local SHA-256 `d8dbe5a96d3f16b5dedd639d5c0b6ddbc5579bb2f605c0074ec52304a790327c` exactly matches GitHub's artifact digest. The artifact contains baseline/provenance files only; no component installation succeeded in that attempt.
+- Runner facts from that exact ephemeral job: Ubuntu 24.04.5, 4 vCPU, 15 GiB RAM, root filesystem 145 GiB total / 89 GiB available at baseline. This is a measurement of one job, not a guaranteed capacity for every future runner.
+- Latest branch head `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`; workflow blob `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`. Corrected qualification run [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928) and Pool Contract Validation [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918) were RUNNING at last read.
+- No secret values read, no provider/model requests, no FCC server startup, no agent task, no production dispatch, no deployment and no merge occurred.
+
