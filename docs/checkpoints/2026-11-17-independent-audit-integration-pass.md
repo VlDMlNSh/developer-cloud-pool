@@ -28,6 +28,12 @@ The same candidate includes the Architecture Assurance Addendum and Independent 
 - Architecture Documentation Validation run [44093374811](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093374811): SUCCESS on head `d8bea16ca270194266c1ccc0a68220987146b0a3`.
 - Pool Contract Validation not observed for this documentation-only head; do not claim it passed.
 
+## Final integration status
+- PR #124: OPEN/DRAFT/UNMERGED; exact parent base `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; mergeable=true.
+- Architecture Documentation Validation [44093719797](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093719797): SUCCESS on head `e306a84167508b582c1504efb1d3a5cdcf40ce4e`.
+- PR #122 and #123 closed as superseded after migration.
+- Pool Contract Validation not observed; independent review pending.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
