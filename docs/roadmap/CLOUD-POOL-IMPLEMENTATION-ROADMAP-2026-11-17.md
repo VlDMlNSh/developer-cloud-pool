@@ -1,3 +1,16 @@
+# Current execution checkpoint — 2026-11-17 15:45 UTC
+
+The latest state reconciliation is recorded in [2026-11-17-next-fcc-runtime-and-state-reconciliation.md](../reports/2026-11-17-next-fcc-runtime-and-state-reconciliation.md).
+
+- PR #116 remains OPEN / DRAFT / UNMERGED at head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; exact-head runner and contract checks succeeded (44083961406, 44083961455).
+- Issue #117 is CLOSED; loopback runtime lifecycle run 44076256742 succeeded on historical head `596c03e19b4662f69a9b40791299f55afb9a928e`. It is a bounded no-secret runtime proof, not a provider/production qualification.
+- PR #113 remains OPEN / DRAFT / UNMERGED; this documentation branch is not the default branch.
+- Issue #118 remains OPEN and blocked: server #3 is not active/authorized; Cloudflare Access/Tunnel prerequisites and persistent storage/restore evidence are absent.
+- Next engineering slice: close production runner hardening findings (trusted pinned PATH directories and ownership, HOME/XDG credential exposure, integrity-pinned installer bytes, fail-closed egress enforcement). Then qualify one free FCC route/account/quota under explicit approval and integrate production A0/D1 admission, lease/fencing, attempt ledger and recovery.
+- Keep `POOL_DISPATCH_ENABLED=false`; Gemini NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 # Current execution checkpoint — 2026-11-17 (supersedes stale next-step pointers below)
 
 The canonical implementation target is [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](../architecture/CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md).
