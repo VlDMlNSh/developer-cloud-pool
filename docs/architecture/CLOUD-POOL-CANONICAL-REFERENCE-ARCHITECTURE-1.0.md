@@ -362,3 +362,18 @@ Pinned upstream license inspection found:
 - Claude Code CLI is distributed by its vendor through the official installer; do not describe it as open source or assume an OSS license. Vendor terms must be reviewed for the intended deployment and account route.
 
 Before exposing FCC as a network service or integrating it into a remote-user product, perform a legal/license compliance review of AGPL-3.0-only, including whether the intended remote interaction triggers source-offer obligations for the deployed/modified program and how corresponding source and notices will be provided. Loopback-only runner qualification is not a public deployment authorization. Preserve license texts and SHA-256 digests in qualification artifacts. If compliance cannot be established, do not deploy FCC as a network-facing service; select and qualify a compatible alternative or obtain appropriate approval.
+
+
+### 15.10 Latest qualification evidence — license capture — 2026-11-17
+
+The PR #116 workflow was extended to verify and capture the pinned upstream licenses:
+- FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`: AGPL-3.0-only.
+- ECC `e413166c50e85fb205b988b5e78874b5a88ea4d2`: MIT.
+
+Exact PR #116 head `6d4a4c518d44aa4a79d8396390623f424499011a` passed:
+- Qualification run [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084), job 134049913469: SUCCESS.
+- Pool Contract Validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002): SUCCESS.
+- Artifact [14329776221](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084/artifacts/14329776221), 26,768 bytes, available.
+- Follow-up independent review [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495): COMMENTED.
+
+This verifies that pinned license files are captured and hashed by the workflow. It does not constitute legal approval to expose FCC over a network. Keep FCC loopback-only until AGPL compliance is reviewed. Issue #115 remains OPEN for real free-route/account/quota qualification. PR #116 remains OPEN/DRAFT/UNMERGED.
