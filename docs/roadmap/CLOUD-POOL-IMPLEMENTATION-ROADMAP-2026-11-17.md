@@ -260,3 +260,20 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Current owner instruction: four Gemini assignments requested for every `/next`; comments are recorded on Issue #94 (#6947028166) and Issue #96 (#6947031522). Actual Gemini dispatch remains NOT RUN: no default-branch Cloud Pool Gemini dispatch workflow, PR #107 candidate is based two commits behind default, PR #109 is fake-client tests only, PR #112 read-only, PR #114 dispatch:false, and no independent review/account quota proof. Do not use the MediaHub three-agent bridge as a substitute. Keep `POOL_DISPATCH_ENABLED=false`.
 - PR #116 and PR #113 remain OPEN / DRAFT / UNMERGED; PR #116 formal reviews 0 / threads 0. Contour A NOT ACCEPTED; Contour B deferred.
 - Next bounded step: synthetic FCC-to-Claude CLI bridge test with mock provider/no credentials, then independent review of PR #116. Gemini controller qualification continues behind Issues #94/#96.
+
+
+## 8. Normative target update — Engineering Workspace integrated into Contour A (2026-11-17)
+
+Engineering Workspace is part of the final Contour A target, not a separate MediaHub OS product and not a competing Jarvis. Delivery is staged behind first secure CODE/A0/D1 gates and explicit host/network/persistence qualification.
+
+- Jarvis remains the sole responsive mobile/desktop control plane.
+- One persistent authoritative workspace serves official VS Code Desktop via Remote SSH and browser code-server/Open VSX behind Cloudflare Access/Tunnel. code-server uses loopback binding and retains authentication; no Microsoft Marketplace workaround.
+- Desktop SSH uses verified host keys and client-side cloudflared/Access where supported. Remote Tunnels is a separately reviewed alternative transport.
+- Browser and desktop attach to the same filesystem. Each task/agent has its own branch/worktree. Every mutable worktree requires a single-writer lease with expiry and monotonic fencing; concurrent writes to one worktree are prohibited.
+- Server #3 is NOT RUN until exact SentinelX identity, authorization, capabilities, resources, persistent storage, network, allowlist and free-cost boundary are verified. Issue #118 records zero active hosts and no confirmed server #3.
+- Cloudflare is BLOCKED until zone, Tunnel, Access IdP/policy, origin JWT validation, WebSocket path and cost ceiling are qualified. Current inventory records no zones/tunnels and Access unavailable.
+- Claude Code on server #3 is separate from GitHub-hosted installation evidence and needs its own free-route/quota and host qualification.
+- Gemini remains controller-only; no direct IDE dispatch and no server #3 Gemini. Four child assignments are NOT RUN unless approved controller and admission/security/quota gates pass. Copilot is optional pending free-entitlement proof.
+- Workspace acceptance covers phone/desktop auth, shared filesystem, Git, SSH, WebSockets, lease/fencing, isolation, restart, encrypted backup/restore, audit and independent A3 evidence.
+
+Ordered delivery: (1) synthetic no-secret Claude/FCC bridge and independent runner review; (2) qualify free route/account/quota and integrated A0/D1/lease/fencing/recovery; (3) qualify host #3, Cloudflare, persistence and backup/restore; (4) install/qualify browser code-server and desktop Remote SSH on the same workspace; (5) integrate links/status into Jarvis and independently accept. This supersedes earlier wording that treated the workspace as permanently optional or outside Contour A; it does not weaken first CODE/A0/D1 gates or claim deployment.
