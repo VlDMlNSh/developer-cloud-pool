@@ -282,7 +282,7 @@ jobs:
             echo "provider_credential_variables_forwarded=false"
             echo "mock_executable=true"
           } > "$HOME/bridge-result.txt"
-          printf '%s\\n' "$@" > "$HOME/bridge-args.txt"
+          printf '%s\n' "$@" > "$HOME/bridge-args.txt"
           exit 37
           MOCK
           chmod 700 "$mock_bin/claude"
