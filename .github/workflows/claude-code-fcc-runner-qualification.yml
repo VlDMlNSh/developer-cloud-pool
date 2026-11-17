@@ -116,6 +116,120 @@ jobs:
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" --version | tee "$RUNNER_TEMP/qualification/fcc-server-version.txt"
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-doctor" --version | tee "$RUNNER_TEMP/qualification/fcc-doctor-version.txt"
 
+      - name: Start FCC on loopback and verify local readiness and shutdown
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: \${{ runner.temp }}/fcc-venv
+          HOST: "127.0.0.1"
+          PORT: "18765"
+          FCC_OPEN_BROWSER: "false"
+          PROVIDER_MAX_ATTEMPTS: "1"
+          PROVIDER_MAX_CONCURRENCY: "1"
+        run: |
+          set -euo pipefail
+          state_file="$RUNNER_TEMP/qualification/fcc-runtime-state.txt"
+          log_file="$RUNNER_TEMP/qualification/fcc-server-runtime.log"
+          listener_file="$RUNNER_TEMP/qualification/fcc-listener.txt"
+          printf '%s\n' \
+            'fcc_server_started=false' \
+            'fcc_health_endpoint=NOT_RUN' \
+            'fcc_listener=NOT_VERIFIED' \
+            'fcc_shutdown=NOT_RUN' \
+            > "$state_file"
+
+          server_pid=""
+          cleanup() {
+            original_status=$?
+            trap - EXIT
+            if [ -n "$server_pid" ] && kill -0 "$server_pid" 2>/dev/null; then
+              kill -TERM "$server_pid" 2>/dev/null || true
+              for attempt in $(seq 1 15); do
+                if ! kill -0 "$server_pid" 2>/dev/null; then
+                  break
+                fi
+                sleep 1
+              done
+              if kill -0 "$server_pid" 2>/dev/null; then
+                kill -KILL "$server_pid" 2>/dev/null || true
+              fi
+              wait "$server_pid" 2>/dev/null || true
+              server_pid=""
+            fi
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+
+          cd "$RUNNER_TEMP/fcc-src"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
+          server_pid=$!
+          printf '%s\n' \
+            'fcc_server_started=true' \
+            'fcc_health_endpoint=GET /admin/api/status (loopback-only)' \
+            'fcc_listener=127.0.0.1:18765' \
+            'fcc_shutdown=IN_PROGRESS' \
+            > "$state_file"
+
+          http_status="000"
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo "::error::FCC exited before readiness."
+              cat "$log_file"
+              exit 1
+            fi
+            http_status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-time 2 http://127.0.0.1:18765/admin/api/status || true)"
+            if [ "$http_status" = "200" ]; then
+              break
+            fi
+            sleep 1
+          done
+          if [ "$http_status" != "200" ]; then
+            echo "::error::Source-verified loopback readiness endpoint did not return HTTP 200."
+            cat "$log_file"
+            exit 1
+          fi
+
+          listener_output="$(ss -H -ltn 'sport = :18765')"
+          printf '%s\n' "$listener_output" > "$listener_file"
+          listener_address="$(printf '%s\n' "$listener_output" | awk 'NF {print $4}')"
+          if [ "$listener_address" != "127.0.0.1:18765" ] || [ "$(printf '%s\n' "$listener_output" | awk 'NF {count++} END {print count+0}')" -ne 1 ]; then
+            echo "::error::FCC listener was not exactly 127.0.0.1:18765."
+            cat "$listener_file"
+            exit 1
+          fi
+
+          kill -TERM "$server_pid"
+          set +e
+          wait "$server_pid"
+          shutdown_status=$?
+          set -e
+          server_pid=""
+          if [ "$shutdown_status" -ne 0 ]; then
+            echo "::error::FCC did not exit cleanly after SIGTERM (exit=$shutdown_status)."
+            cat "$log_file"
+            exit 1
+          fi
+
+          remaining_listener="$(ss -H -ltn 'sport = :18765')"
+          if [ -n "$remaining_listener" ]; then
+            echo "::error::FCC listener remained after shutdown."
+            printf '%s\n' "$remaining_listener"
+            exit 1
+          fi
+
+          printf '%s\n' \
+            'fcc_server_started=true' \
+            "fcc_health_http_status=$http_status" \
+            'fcc_health_endpoint=GET /admin/api/status' \
+            'fcc_listener=127.0.0.1:18765' \
+            'fcc_shutdown=clean' \
+            "fcc_process_exit_code=$shutdown_status" \
+            'fcc_listener_after_shutdown=absent' \
+            'provider_calls=false' \
+            'completion_endpoints_called=false' \
+            'fcc_client_launcher_invoked=false' \
+            > "$state_file"
+          trap - EXIT
+
       - name: Install only selected ECC skills at immutable upstream commit
         shell: bash
         run: |
@@ -178,11 +292,13 @@ jobs:
             echo "ecc_skills=search-first,tdd-workflow,security-review"
             echo "provider_calls=false"
             echo "github_secret_values_read=false"
-            echo "fcc_server_started=false"
             echo "fcc_client_launcher_invoked=false"
             echo "agent_task_executed=false"
             echo "production_dispatch=false"
           } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          if [ -f "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" ]; then
+            cat "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          fi
           find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
 
       - name: Publish bounded no-secret qualification evidence
