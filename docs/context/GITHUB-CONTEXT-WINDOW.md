@@ -69,7 +69,7 @@ This snapshot supersedes older maturity/status statements in the historical sect
 6. Older sections below are historical snapshots; revalidate before reuse.
 
 ### Current work branch
-`docs/cloud-pool-reference-architecture-2026-11-17` is a documentation-only branch based on immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It adds the canonical reference architecture, ADR, report, README alignment, and this context refresh. It is submitted as Draft PR #120 and is not merged; Always re-read PR #120 head before validation. Exact-head check-runs at last inspection: 0. New/updated authored docs passed relative-link validation (0 missing links across 9 files); historical Context Window sections retain 31 relative links to files absent from the current default-branch tree. The branch does not change runtime behavior.
+`docs/cloud-pool-reference-architecture-2026-11-17` is a documentation-only branch based on immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It adds the canonical reference architecture, ADR, report, README alignment, and this context refresh. It is submitted as Draft PR #120 and is not merged; Always re-read PR #120 head before validation. At PR #120 initial head `6379fb7f1201752d2406c89a081baa87823825c0`, exact-head check-runs were 0. A dedicated documentation validation workflow and validator were added in follow-up commits `447d58ec00d6858e09dee34bcf2dab25c1381a37` and `cf8c72ca6e58bdef6af7d8a370525ace3b5d1c38`; exact-head CI after those commits is pending re-read. The validator checks repository-relative links in the five current normative files and intentionally excludes historical Context Window sections, which retain legacy links. The branch does not change runtime behavior.
 
 
 ---
