@@ -1,5 +1,20 @@
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
+## CURRENT SNAPSHOT — UNIFIED REALIZATION INTEGRATION — 2026-11-17
+
+This snapshot supersedes earlier status entries below wherever the refs differ. Historical snapshots remain provenance records, not current truth.
+
+- Default branch: `Основной`; PR #120 base SHA observed: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; head `b3b5cb3724139939342335ea95c46cc717485f16`; mergeable=true at read.
+- PR #122: OPEN/DRAFT/UNMERGED; head `4f5b2e9d5b7c434dcbd18d056fbaea6ee3f4b406`; base SHA `435a1838f7e22f0f5ec08611bd24608066fd5d79`; mergeable=false.
+- PR #123: OPEN/DRAFT/UNMERGED; head `da9812cd670d92e014f9f7e3c087b0a253f7005f`; base SHA `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=false.
+- PR #116: OPEN/DRAFT; latest head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`. Earlier no-secret FCC loopback evidence is not a real Claude task/provider route qualification.
+- PR #120/#123 combined status reads returned zero contexts; exact-head CI is NOT VERIFIED from empty status responses.
+- New integration branch `docs/unified-realization-integration-2026-11-17` is based on exact PR #120 head above. It adds one subordinate realization map, dated report and checkpoint, and links the map from the reference architecture and README. It remains unmerged and requires exact-head CI and independent review.
+- Design decisions: modular-monolith Control Plane; one Jarvis app; one canonical task route; three persistence domains and exactly one transactional operational-state authority; ephemeral Actions workers separated from persistent Workspace; capability-based dynamic scheduling; upstream tool reuse after qualification; evidence-first vertical slices; no paid fallback; Gemini controller-only.
+- Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
+
+
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
 Last refreshed: 2026-11-17 — architecture consolidation and Contour A Workspace acceptance reconciliation
