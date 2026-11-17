@@ -103,8 +103,11 @@ class ChildEnvironmentTests(unittest.TestCase):
             parent = self.valid_parent()
             parent["PATH"] = entry
             with self.subTest(path=entry):
-                with self.assertRaises(EnvironmentPolicyError):
+                with self.assertRaises(EnvironmentPolicyError) as caught:
                     build_child_environment(parent)
+                if entry == str(writable):
+                    self.assertIn("mode=0777", str(caught.exception))
+                    self.assertIn(str(writable.resolve()), str(caught.exception))
 
     def test_home_must_be_private_current_user_directory(self) -> None:
         os.chmod(self.home, 0o755)

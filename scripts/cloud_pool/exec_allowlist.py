@@ -58,7 +58,10 @@ def _resolved_directory(value: str, *, variable: str) -> Path:
     if metadata.st_uid not in {0, os.geteuid()}:
         raise EnvironmentPolicyError(f"{variable} directory has an untrusted owner")
     if metadata.st_mode & 0o022:
-        raise EnvironmentPolicyError(f"{variable} directory is group/world writable")
+        raise EnvironmentPolicyError(
+            f"{variable} directory is group/world writable: {resolved} "
+            f"(mode={stat.S_IMODE(metadata.st_mode):04o}, uid={metadata.st_uid})"
+        )
     return resolved
 
 
