@@ -1,5 +1,14 @@
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
+## INTEGRATION UPDATE — ASSURANCE + SCORECARD CONSOLIDATED — 2026-11-17
+
+- PR #124 now includes the Unified Realization Map 1.0, Architecture Assurance Addendum, Independent 10/10 Scorecard, reference architecture/README links, Context Window, report/checkpoint and validator/workflow path updates.
+- PR #124 remains OPEN/DRAFT/UNMERGED and dependent on PR #120. Exact latest head and base SHA must be re-read before any merge/rebase statement.
+- PR #122 and #123 are now superseded in content by PR #124 but remain open until the replacement branch is rebased, validated and reviewed. Do not close them before preserving and verifying all content.
+- Exact-head CI remains NOT VERIFIED until workflow runs are visible on the final PR #124 head.
+- No runtime, deployment, secrets, provider routes, dispatch or infrastructure changed.
+
+
 ## CURRENT SNAPSHOT — UNIFIED REALIZATION INTEGRATION — 2026-11-17
 
 This snapshot supersedes earlier status entries below wherever the refs differ. Historical snapshots remain provenance records, not current truth.
