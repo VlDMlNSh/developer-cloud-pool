@@ -295,3 +295,13 @@ Complete Issue #119 synthetic FCC-to-Claude CLI bridge with mock-only/no credent
 - This is a cross-account quota-isolation hazard if account keys share one FCC provider list/fallback chain. Normative policy now requires exactly one credential/account per FCC profile, one model route, no `MODEL_FALLBACKS`, no numbered-key fallback/key cycling, no provider/paid fallback. Separate accounts need separate isolated profiles and quota ledgers.
 - Finding recorded on Issue #115 comment [6948555013](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6948555013) and PR #116 follow-up review COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463).
 - No credential values read. Current mock qualification does not validate a live provider route or account identity; Issue #115 remains OPEN.
+
+## Final restoration point — 2026-11-17
+
+- Last verified docs-branch commit before this bookkeeping: `fd0acbb631c9449f88300856babca1eead2ca358`; this pass appends the final restoration records immediately after it.
+- PR #113 latest comment: [6948566534](https://github.com/VlDMlNSh/developer-cloud-pool/pull/113#issuecomment-6948566534), recording FCC cross-account fallback hazard.
+- Issue #115 latest source audit comment: [6948555013](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6948555013).
+- PR #116 follow-up review COMMENTs: [5938684495](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938684495) for license provenance and [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) for FCC multi-key fallback risk.
+- Latest exact-head qualification remains PR #116 `6d4a4c518d44aa4a79d8396390623f424499011a`, runs 44086419084 and 44086419002 SUCCESS, artifact 14329776221.
+- Architecture candidate remains not merged: PR #113 OPEN/DRAFT, 150 commits ahead / 0 behind at last comparison, 31 docs files; status/checks absent and formal reviews absent. Main branch `Основной` remains at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` as last observed.
+- Main unresolved engineering gates: actual free route/account/quota and FCC one-key/no-fallback configuration; AGPL network-use compliance; A0/D1 durable admission/lease; server #3, Cloudflare, persistent workspace and restore.
