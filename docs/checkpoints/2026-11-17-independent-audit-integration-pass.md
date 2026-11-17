@@ -21,6 +21,8 @@
 - Context Window freshness and dependent-PR base-SHA discipline.
 - Evidence-first vertical slices; no architecture expansion without a proven need.
 
+The same candidate includes the Architecture Assurance Addendum and Independent 10/10 Scorecard, both covered by the normative-document validator.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
