@@ -6,6 +6,8 @@ A governed, cloud-first engineering platform with a single Jarvis experience, is
 
 **System-level source of truth:** [Cloud Development Pool Reference Architecture 1.0](docs/architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
 
+**Implementation sequence:** [Unified Realization Map — 2026-11-17](docs/architecture/CLOUD-POOL-UNIFIED-REALIZATION-MAP-2026-11-17.md).
+
 Supporting normative contracts:
 - [20-runner architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md) — logical profiles and resource qualification; 20 is a planning ceiling, not guaranteed capacity.
 - [Jarvis hybrid platform architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md).
