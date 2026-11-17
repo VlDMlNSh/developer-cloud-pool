@@ -23,6 +23,11 @@
 
 The same candidate includes the Architecture Assurance Addendum and Independent 10/10 Scorecard, both covered by the normative-document validator.
 
+## Exact-head evidence
+- PR #124 base SHA: `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`.
+- Architecture Documentation Validation run [44093374811](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093374811): SUCCESS on head `d8bea16ca270194266c1ccc0a68220987146b0a3`.
+- Pool Contract Validation not observed for this documentation-only head; do not claim it passed.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
