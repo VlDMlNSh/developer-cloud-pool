@@ -1,0 +1,122 @@
+name: Claude Code + ECC + FCC Runner Qualification
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/claude-code-fcc-runner-qualification.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: claude-code-fcc-runner-qualification-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install-proof:
+    name: No-secret install and resource proof
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout pool source without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Record baseline runner resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Runner baseline"
+            echo "- Repository: $GITHUB_REPOSITORY"
+            echo "- Ref: $GITHUB_REF"
+            echo "- Target SHA: $GITHUB_SHA"
+            echo "- Runner: $RUNNER_OS / $RUNNER_ARCH"
+            echo '~~~text'
+            lscpu
+            free -h
+            df -hT
+            node --version
+            npm --version
+            python3 --version
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install pinned Claude Code CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global @anthropic-ai/claude-code@2.1.325
+          command -v claude
+          claude --version
+          claude --help >/dev/null
+
+      - name: Install pinned uv in isolated virtual environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/uv-bootstrap"
+          "$RUNNER_TEMP/uv-bootstrap/bin/python" -m pip install --disable-pip-version-check "uv==0.13.7"
+          echo "$RUNNER_TEMP/uv-bootstrap/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/uv-bootstrap/bin/uv" --version
+
+      - name: Install FCC at immutable upstream commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv python install 3.14.10
+          uv tool install --python 3.14.10 --from "git+https://github.com/Alishahryar1/free-claude-code@eb92e4c07af0d6ad8881dce1cd958c3d072c27c5" free-claude-code
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/fcc-server" --help >/dev/null
+          "$HOME/.local/bin/fcc-doctor" --help >/dev/null
+          "$HOME/.local/bin/fcc-claude" --help >/dev/null
+          "$HOME/.local/bin/fcc-server" --version || true
+          "$HOME/.local/bin/fcc-doctor" --version || true
+
+      - name: Install only selected ECC skills at immutable upstream commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/affaan-m/ECC.git "$RUNNER_TEMP/ecc"
+          git -C "$RUNNER_TEMP/ecc" checkout --detach e413166c50e85fb205b988b5e78874b5a88ea4d2
+          test "$(git -C "$RUNNER_TEMP/ecc" rev-parse HEAD)" = "e413166c50e85fb205b988b5e78874b5a88ea4d2"
+          mkdir -p "$HOME/.claude/skills"
+          for skill in search-first tdd-workflow security-review; do
+            test -f "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md"
+            mkdir -p "$HOME/.claude/skills/$skill"
+            cp "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md" "$HOME/.claude/skills/$skill/SKILL.md"
+          done
+          find "$HOME/.claude/skills" -type f -print0 | sort -z | xargs -0 sha256sum
+
+      - name: Verify versions, provenance, disk and cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Installed profile inventory"
+            echo "- Claude Code: $(claude --version)"
+            echo "- FCC source commit: eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
+            echo "- ECC source commit: e413166c50e85fb205b988b5e78874b5a88ea4d2"
+            echo "- FCC Python target: 3.14.10"
+            echo "- ECC modules: search-first, tdd-workflow, security-review"
+            echo
+            echo "### Installed sizes"
+            echo '~~~text'
+            du -sh "$HOME/.local/share/uv/tools" "$HOME/.cache/uv" "$HOME/.claude/skills" 2>/dev/null || true
+            echo '~~~'
+            echo
+            echo "### Remaining disk"
+            echo '~~~text'
+            df -hT "$GITHUB_WORKSPACE"
+            echo '~~~'
+            echo
+            echo "> No provider/model request was made. No GitHub Secret was read or injected. No FCC server was started and no agent task was executed."
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "$(claude --version | head -n 1)" != ""
+          test -f "$HOME/.claude/skills/search-first/SKILL.md"
+          test -f "$HOME/.claude/skills/tdd-workflow/SKILL.md"
+          test -f "$HOME/.claude/skills/security-review/SKILL.md"
