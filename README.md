@@ -25,9 +25,9 @@ Supporting normative contracts:
 - Supervisor/Worker: implementation scaffold and isolated proofs; hosted durable lease and end-to-end execution are not qualified.
 - Atomic A0/D1: isolated local proof exists; hosted transactional authority, trusted issuer qualification and production admission are not qualified.
 - Gemini: dispatch only through the approved controller; dispatch gates remain fail-closed. This documentation change did not dispatch agents or call providers.
-- Claude Code + ECC + FCC PR #116: OPEN / DRAFT / UNMERGED. Latest observed head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; two exact-head checks succeeded (install/resource proof and workflow/security contract). Earlier FCC loopback lifecycle smoke is evidence for that earlier head only. No provider route or Claude task execution qualification is implied.
+- Claude Code + ECC + FCC PR #116: OPEN / DRAFT / UNMERGED. Latest observed head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner proof [44086419084](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419084) and workflow/security validation [44086419002](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44086419002) succeeded. Independent review comments 5938684495 and 5938737463 record license and FCC key-fallback constraints; neither is production approval. No provider route or Claude task execution qualification is implied.
 - Jarvis Web: not deployed as an authenticated live control plane.
-- Persistent Engineering Workspace: BLOCKED by Issue #118; no active authorized host, qualified Access ingress, or backup/restore evidence.
+- Persistent Engineering Workspace: optional separately authorized stage; BLOCKED by Issue #118. It is not a first GitHub-only launch dependency.
 - Active default-branch ruleset ID `26550182`: PR required and review-thread resolution required, but required approving review count is zero and no required status-check contexts are configured. This is not sufficient independent governance for production acceptance.
 - No paid hosting/provider fallback is permitted. GitHub-hosted runners are ephemeral and are not persistent web hosts or durable storage.
 
@@ -36,6 +36,12 @@ Supporting normative contracts:
 Do not enable dispatch by setting `POOL_DISPATCH_ENABLED=true` merely because the repository has a task issue or `pool:ready` label. Issue labels and Actions concurrency are not authoritative locks. Dispatch remains disabled until the governance, admission, route, durable lease, worker, and security gates in the canonical architecture are satisfied and independently reviewed.
 
 The task issue template is an intake mechanism only. A valid task must bind an exact immutable target SHA and be admitted through the approved authority. Never place shell commands, credentials, or provider secrets in issue bodies.
+
+## First launch boundary
+
+- Initial Jarvis is a GitHub-hosted static responsive PWA with redacted read-only status only.
+- No external always-on host, physical server, Cloudflare Access, paid service or browser-held privileged secret is a launch dependency.
+- Authenticated write/approval/dispatch APIs remain BLOCKED until a secure server-side GitHub-native path is qualified.
 
 ## Execution and workspace are different
 
@@ -52,6 +58,14 @@ The task issue template is an intake mechanism only. A valid task must bind an e
 - Untrusted public PR code must not run on persistent local machines.
 - Pin GitHub Actions and external tools to immutable versions/commits and verify provenance.
 - A passing smoke test or CI check is not security qualification.
+
+## Chat-session architecture records
+
+- [Owner architecture freeze](docs/architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md)
+- [Engineering Workspace integration](docs/architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md)
+- [Implementation roadmap](docs/roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md)
+- [Master continuation prompt](docs/prompts/CLOUD-POOL-MASTER-CONTINUATION-PROMPT.md)
+- [Archived prior Context Window](docs/context/GITHUB-CONTEXT-WINDOW-CHAT-ARCHIVE-2026-11-17.md)
 
 ## Evidence and history
 
