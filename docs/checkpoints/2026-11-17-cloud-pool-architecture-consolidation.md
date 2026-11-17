@@ -121,3 +121,14 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Updated PR #114 description with a current-head addendum; Issue #96 comment 6948767460 records exact evidence and residuals.
 - Admission is not production-authorized: event object and trustedDefaultHeadSha are injected test inputs, no webhook signature/live ref provenance. Hosted D1, Supervisor lease/fencing, outbox delivery, worker identity and real route remain unqualified.
 - Next: implement trusted GitHub issue_comment provenance in the trusted default-branch controller, then durable lease/recovery. Keep dispatch disabled.
+
+
+## Final verification snapshot — 2026-11-17
+
+- PR #120 head before this checkpoint write: `d717c999906341efbdcb65a25dfd73269220e691`; 45 files; OPEN/DRAFT/UNMERGED.
+- Exact-head Architecture Documentation Validation 44088776800 SUCCESS.
+- Exact-head Pool Contract Validation 44088776888 was RUNNING at checkpoint time; do not mark verified until completed.
+- PR #113 CLOSED UNMERGED as superseded; all 30 paths preserved in PR #120, prior Context Window archived.
+- PR #116 latest exact head 6d4a4c518d44aa4a79d8396390623f424499011a: runs 44086419084 and 44086419002 SUCCESS; current-head review comments 5938684495 and 5938737463 are COMMENT, not approval.
+- PR #114 local D1 proof head ab9461eb84b14fe230918391d5212f19ca25592c: runs 43935827714 and 43935827741 SUCCESS; 12/12 local D1 tests. Webhook provenance not authenticated.
+- No secrets/provider calls/Gemini dispatch/host deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
