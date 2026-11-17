@@ -243,3 +243,16 @@ Complete Issue #119 synthetic FCC-to-Claude CLI bridge with mock-only/no credent
 - No secret reads, provider calls, Gemini dispatch, deployment or merge. Mock test is not a real provider-route or account/quota proof. Independent formal review remains outstanding.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: verify both exact-head runs and evidence artifact, then record independent PR review and remaining blockers.
+
+
+## /next checkpoint — Issue #119 mock bridge qualified and closed — 2026-11-17
+
+- PR #116 exact head: `367c583a508061cebe41bb8d33e98c24a0dd8ba6`; OPEN/DRAFT.
+- Qualification run 44083961406 SUCCESS; job 134041463409 SUCCESS. Pool Contract Validation run 44083961455 SUCCESS. Both are exact-head evidence.
+- Artifact 14329030788 (13,602 bytes) available. Independent review COMMENT 5938432852 recorded.
+- Fixed workflow triggers for allowlist implementation/tests and truthful conditional provenance for mock launcher invocation.
+- Issue #119 closed as completed for mock-only CLI bridge objective. Not a real Claude session/provider route.
+- Residual production gates: real free route/account/quota not qualified; network egress not generally firewalled by this mock test; PATH directory trust and HOME/XDG credential isolation need production hardening; installer script hash not pinned.
+- No secrets/provider calls/Gemini dispatch/deployment/merge. Keep `POOL_DISPATCH_ENABLED=false`.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: qualify first real free route/account/quota only after A0/D1/authority/security gates, while preserving fail-closed dispatch; Workspace Issue #118 remains blocked on host/Cloudflare/persistence prerequisites.
