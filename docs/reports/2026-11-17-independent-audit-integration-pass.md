@@ -44,6 +44,13 @@ The consolidated candidate also carries the Architecture Assurance Addendum and 
 - Live ruleset `26550182` is active but requires zero approvals and no status checks; governance remains insufficient for acceptance.
 - PR #122/#123 closed as superseded. PR #116 latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; exact-head CI not verified.
 
+## Final exact-head state
+
+- PR #124 head `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`, base PR #120 head `baa2223bd44250edf0e8469247910051f4625955`, 38 commits ahead / 0 behind, mergeable=true.
+- Architecture Documentation Validation [44094563351](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094563351): SUCCESS on the exact head.
+- Live ruleset `26550182`: active, PR and review-thread resolution required, zero required approvals and no required status checks. This blocks governance qualification.
+- PR #122/#123 CLOSED as superseded; PR #116 remains OPEN/DRAFT at head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`, exact-head CI NOT VERIFIED.
+
 ## Evidence boundary
 
 This is a documentation/integration correction only. No runtime implementation, deployment, provider call, Gemini dispatch, secret read or production dispatch occurred. The new branch requires exact-head documentation and contract CI plus independent architecture/security review. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
