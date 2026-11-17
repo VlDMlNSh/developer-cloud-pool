@@ -51,6 +51,13 @@ The consolidated candidate also carries the Architecture Assurance Addendum and 
 - Live ruleset `26550182`: active, PR and review-thread resolution required, zero required approvals and no required status checks. This blocks governance qualification.
 - PR #122/#123 CLOSED as superseded; PR #116 remains OPEN/DRAFT at head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`, exact-head CI NOT VERIFIED.
 
+## Final parent-drift reconciliation
+
+- PR #120 advanced from `baa2223bd44250edf0e8469247910051f4625955` to `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8` during the final integration window.
+- PR #124 remains based on the former parent SHA; compare now reports 44 ahead / 1 behind and mergeable=false. This is an active integration blocker, not an architecture defect.
+- Previous exact-head documentation validation passed on `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; run `44094790111` for `91e579f2b945e286a47549fce4d292240e644d55` was PENDING at last read.
+- Do not rebase again until PR #120's parent head is stable; otherwise the same drift repeats.
+
 ## Evidence boundary
 
 This is a documentation/integration correction only. No runtime implementation, deployment, provider call, Gemini dispatch, secret read or production dispatch occurred. The new branch requires exact-head documentation and contract CI plus independent architecture/security review. Contour A remains NOT ACCEPTED; Contour B remains DEFERRED.
