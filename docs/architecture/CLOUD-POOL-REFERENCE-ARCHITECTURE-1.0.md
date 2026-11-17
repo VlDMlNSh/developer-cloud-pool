@@ -601,3 +601,19 @@ Pinned FCC source review found support for ordered provider-key lists, numbered 
 - Never treat multiple key slots as proof of distinct upstream accounts or independent quotas.
 - This is a required production configuration invariant; the current mock-only runner proof does not test a live provider configuration.
 - Exact-head independent source review COMMENT [5938737463](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938737463) records this finding. Keep Issue #115 open until the configuration and free route/account/quota evidence are qualified.
+
+
+## 22. Preserved chat-session source records and traceability
+
+The following source records were migrated from the earlier PR #113 candidate into this PR #120 branch so that consolidation does not discard prior decisions or evidence:
+
+- [Owner architecture freeze](CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md) — owner scope, no-paid constraints, optional Gemini and implementation order.
+- [Engineering Workspace integration](CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md) — shared filesystem, browser/desktop IDE, worktree and access design.
+- [Earlier canonical architecture draft](CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md) — retained as historical/superseded source; this file is not the current system-level architecture.
+- [Implementation roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md) and [master continuation prompt](../prompts/CLOUD-POOL-MASTER-CONTINUATION-PROMPT.md).
+- [Archived prior Context Window](../context/GITHUB-CONTEXT-WINDOW-CHAT-ARCHIVE-2026-11-17.md) — verbatim earlier snapshot; current live context remains `GITHUB-CONTEXT-WINDOW.md`.
+- Dated checkpoints are retained under `docs/checkpoints/`; dated implementation, runner, bridge, Workspace and security reports are retained under `docs/reports/`. Their status claims remain historical and must be reconciled with exact current refs before action.
+
+All 30 changed paths from the earlier PR #113 candidate (excluding the active Context Window path, which is merged into the current context and preserved separately as an archive) are present in this PR #120 branch. The canonical architecture above contains the extracted normative decisions; source records remain for provenance and traceability.
+
+PR #113 remains OPEN/DRAFT/UNMERGED until its disposition is explicitly resolved. Do not merge both documentation candidates as independent competing canonical sources. PR #120 is the single intended system-level architecture consolidation candidate.
