@@ -2895,3 +2895,7 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 - Latest exact-head qualification remains PR #116 `6d4a4c518d44aa4a79d8396390623f424499011a`, runs 44086419084 and 44086419002 SUCCESS, artifact 14329776221.
 - Architecture candidate remains not merged: PR #113 OPEN/DRAFT, 150 commits ahead / 0 behind at last comparison, 31 docs files; status/checks absent and formal reviews absent. Main branch `Основной` remains at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` as last observed.
 - Main unresolved engineering gates: actual free route/account/quota and FCC one-key/no-fallback configuration; AGPL network-use compliance; A0/D1 durable admission/lease; server #3, Cloudflare, persistent workspace and restore.
+
+## Corrected final PR #113 comparison — 2026-11-17
+
+Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee168f002418b6057ccf5948` is **159 commits ahead, 0 behind** default `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, with 31 files in the diff. The prior 150-commit count in the earlier restoration note is superseded. PR #113 remains OPEN/DRAFT/UNMERGED; exact-head status reports zero statuses, check-runs zero, formal reviews zero. Candidate architecture is preserved but not mainline accepted.
