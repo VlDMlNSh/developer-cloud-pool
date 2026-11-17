@@ -47,14 +47,19 @@ The following are deferred:
 
 ### Phase 1 — first CODE runtime installation proof
 
-**Status:** RUNNING / NOT VERIFIED on the latest candidate head.
+**Status:** SUCCEEDED for no-secret installation/resource smoke; operational profile remains NOT QUALIFIED.
 
 - PR #116: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116
 - Branch: `feat/claude-code-fcc-runner-qualification-2026-11-17`.
-- Latest exact head: `bddcdc3f27044d8a5115556d9913a6dd839ddc1a`.
-- Workflow file blob: `e39fb7f6c3866824dad43ae6a27804f6a7d9ac76`.
-- Latest workflow run: [44069967928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967928), RUNNING at last read.
-- Latest Pool Contract Validation run: [44069967918](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069967918), RUNNING at last read.
+- Latest exact head: `f7d490a63aefa007ff8d74e7de961349f54a27e9`.
+- Workflow file blob: `4264048f004404847ccada72e03c3165abebf321`.
+- Exact-head workflow run: [44070499717](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717), COMPLETED / SUCCESS.
+- Exact-head Pool Contract Validation: [44070499842](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499842), COMPLETED / SUCCESS.
+- Evidence artifact [14323205257](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44070499717/artifacts/14323205257), 11,460 bytes; SHA-256 `cc692d5a31360da5c0cb82dab633a5fa995aa230614df7de5b0482974c679121` independently verified against GitHub digest.
+- Artifact binds PR head `f7d490a63aefa007ff8d74e7de961349f54a27e9`, event/checkout merge SHA `1bf87d450eece31cfb4591dfd8f4842e03f1610b`, and base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` separately.
+- Verified versions: Claude Code 2.1.325, FCC 6.19.35/Python 3.14.10, uv 0.13.7, ECC pinned commit with three selected skills. No FCC server startup or launcher invocation in logs.
+- Runner snapshot: 4 vCPU, 15 GiB RAM, 145 GiB root, 89 GiB free baseline / 88 GiB after; Claude 349 MB, FCC venv 176 MB, uv cache 12 MB, ECC skills 68 KB. One-run evidence only.
+- Earlier run 44069967928 installed components but invoked `fcc-claude --help`, which auto-started FCC on loopback; cleanup terminated it and its manifest was inaccurate. This was fixed and superseded by the clean exact-head run. Full history: `docs/reports/2026-11-17-first-claude-code-fcc-ecc-runner-proof.md`.
 - Prior runner run [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932) on head `7dcd58f73a87156c614ebf543c756ece6715762a` FAILED at Claude Code install. Exact log cause: `DISABLE_UPDATES=1` was present during native installation; installer reported updates disabled and the `claude` command was not found. This was a workflow environment mistake, not evidence that the runner lacks disk or memory.
 - Prior Pool Contract Validation run `44069573866` completed SUCCESS on head `7dcd58f73a87156c614ebf543c756ece6715762a`; it is not exact-head evidence for the current candidate.
 - Artifact [14320969240](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932/artifacts/14320969240) was downloaded. ZIP size 3,361 bytes; SHA-256 `d8dbe5a96d3f16b5dedd639d5c0b6ddbc5579bb2f605c0074ec52304a790327c`, matching GitHub's artifact digest. It contains runner baseline/provenance only because installation failed; it does not prove component installation.
