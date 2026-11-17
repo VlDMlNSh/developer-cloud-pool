@@ -2453,3 +2453,19 @@ This is an architecture-direction crosswalk, not a runtime qualification, deploy
 - Next implementation pass: perform a bounded, no-secret GitHub-hosted runner installation/resource proof for pinned Claude Code + ECC + FCC, preceded by fresh upstream/license/runtime inspection. Keep live provider calls and dispatch disabled until security/quota/admission gates pass.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
+
+
+## First Claude Code + ECC + FCC runner proof opened — 2026-11-17
+
+- New implementation task: Issue #115 https://github.com/VlDMlNSh/developer-cloud-pool/issues/115.
+- Candidate PR #116 https://github.com/VlDMlNSh/developer-cloud-pool/pull/116; branch `feat/claude-code-fcc-runner-qualification-2026-11-17`; exact head `c5c14f6a11782e5787a38b1edd5e7983f15bf2e2`; base `Основной` @ `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. OPEN / DRAFT / UNMERGED; mergeable false at creation; 1 workflow file added.
+- Workflow `.github/workflows/claude-code-fcc-runner-qualification.yml` blob `e88cc9a95975f0876df6887b815636eda4988d11`. It is designed as a no-secret, contents:read GitHub-hosted Ubuntu 24.04 installation/resource proof; no provider calls, no GitHub Secret reads/injection, no FCC server startup, no agent task and no production dispatch.
+- Upstream pins inspected: official Claude Code repository `anthropics/claude-code`; CLI version pinned for this compatibility proof is 2.1.325. FCC upstream `Alishahryar1/free-claude-code` commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`, pyproject blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`, LICENSE blob `45602e38741f5a8bce26be25fb43663a8dfd25d3`; exact Python requirement `==3.14.10`, license `AGPL-3.0-only`. This is a material license/runtime constraint, not a free-of-charge guarantee.
+- ECC upstream is `affaan-m/ECC`, commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`, MIT license blob `b832b6f642312312367c07688dc7426db40a82ed`. Selected modules are search-first, tdd-workflow and security-review only; their individual SKILL.md blobs were read and hashed by GitHub content API. No broad hook/MCP install is included.
+- Official Claude Code docs state Linux/Ubuntu support and CLI setup; the upstream README now marks npm install deprecated. The candidate proof currently uses the pinned npm CLI package 2.1.325 because FCC upstream's own recent compatibility evidence names that client version. This installation path must be reviewed against current official distribution guidance before production use.
+- Exact-head workflow run lookup and combined commit statuses returned empty arrays. Therefore CI execution is **NOT VERIFIED**; no test pass is claimed. The candidate file was read back from GitHub and its blob SHA recorded.
+- No credentials, secret values, provider calls, paid routes, deployment or live executor dispatch were used.
+- Next: resolve CI visibility/approval and exact-head execution evidence for PR #116; inspect the resulting logs, correct only evidence-backed installation issues, then obtain independent review. Do not merge based solely on file creation.
+- PR #113 remains the documentation carrier for the owner architecture freeze and Context Window update; it is OPEN/DRAFT/UNMERGED. The owner architecture decision record is not yet on default branch.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
