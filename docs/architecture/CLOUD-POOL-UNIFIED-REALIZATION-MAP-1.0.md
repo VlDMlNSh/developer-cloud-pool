@@ -161,12 +161,13 @@ There must be one accepted system architecture, one live Context Window and one 
 
 | PR | Observed state | Finding |
 |---|---|---|
-| #120 | OPEN/DRAFT; head `b3b5cb3724139939342335ea95c46cc717485f16`; mergeable=true | Parent architecture candidate |
-| #122 | OPEN/DRAFT; head `4f5b2e9d5b7c434dcbd18d056fbaea6ee3f4b406`; base `435a1838f7e22f0f5ec08611bd24608066fd5d79`; mergeable=false | Stale dependent stack |
-| #123 | OPEN/DRAFT; head `da9812cd670d92e014f9f7e3c087b0a253f7005f`; base `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=false | Stale dependent stack |
+| #120 | OPEN/DRAFT; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; mergeable=true | Parent architecture candidate |
+| #124 | OPEN/DRAFT; base `6b53bbac6c566d4dfe8ddf290eee772d465e07a5`; head `d8bea16ca270194266c1ccc0a68220987146b0a3`; mergeable=true | Consolidates realization map, assurance addendum and scorecard; 18 commits ahead / 0 behind at comparison before the latest workflow-trigger commit |
+| #122 | OPEN/DRAFT; stale dependent base; mergeable=false | Superseded in content by PR #124; close only after preserving the integrated content |
+| #123 | OPEN/DRAFT; stale dependent base; mergeable=false | Superseded in content by PR #124; close only after preserving the integrated content |
 | #116 | OPEN/DRAFT; head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc` | Bounded toolchain evidence; real provider route NOT QUALIFIED |
 
-Combined status reads for PR #120 and #123 returned zero contexts; that is NOT VERIFIED, not CI success. Current ruleset details must be re-read before merge; the earlier observed ruleset had zero required approvals and no required status checks.
+Exact-head Architecture Documentation Validation run [44093374811](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093374811) completed SUCCESS on `d8bea16ca270194266c1ccc0a68220987146b0a3`. Pool Contract Validation was not observed for this documentation-only head. Empty combined-status contexts are NOT VERIFIED. The current ruleset configuration still requires a fresh read before merge; the earlier observed ruleset had zero required approvals and no required status checks.
 
 ## 12. Context Window freshness contract
 
