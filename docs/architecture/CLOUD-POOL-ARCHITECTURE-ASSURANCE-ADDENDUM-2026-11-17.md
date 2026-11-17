@@ -5,7 +5,7 @@
 **Applies to:** Reference Architecture 1.0 and Contour A only  
 **Parent architecture:** [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md)  
 **Parent proposal:** [PR #120](https://github.com/VlDMlNSh/developer-cloud-pool/pull/120)  
-**Immutable review baseline:** `b3b5cb3724139939342335ea95c46cc717485f16` (current PR #120 head used as the rebased baseline)
+**Immutable review baseline:** `6b53bbac6c566d4dfe8ddf290eee772d465e07a5` (PR #120 head used as the final integration base)
 
 ## 1. Purpose and authority
 
@@ -201,7 +201,8 @@ These are deliberately explicit; architecture completeness does not mean these p
 
 | Item | Status | Required evidence / resolution |
 |---|---|---|
-| PR #120 architecture consolidation | OPEN / DRAFT / UNMERGED; live head must be re-read | Independent review, exact-head CI, merge under governance |
+| PR #120 architecture consolidation | OPEN / DRAFT / UNMERGED; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5` | Independent review, exact-head CI, merge under governance |
+| PR #124 unified realization integration | OPEN / DRAFT / UNMERGED; head `d8bea16ca270194266c1ccc0a68220987146b0a3`; Architecture Documentation Validation SUCCESS | Independent review, pool contract/security check as applicable, governance-qualified merge |
 | Default ruleset | Earlier read observed zero required approvals and no required checks; current rules must be re-read | Effective independent approval and exact-head required checks |
 | Hosted transactional state | NOT QUALIFIED | One selected service, identity, free-tier, concurrency, restore and security evidence |
 | Durable supervisor | NOT QUALIFIED | Hosted fenced lease, outbox/inbox, recovery and adversarial evidence |
