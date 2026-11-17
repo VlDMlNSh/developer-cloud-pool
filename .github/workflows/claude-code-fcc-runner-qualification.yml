@@ -19,104 +19,151 @@ jobs:
   install-proof:
     name: No-secret install and resource proof
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - name: Checkout pool source without persisted credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
 
-      - name: Record baseline runner resources
+      - name: Create evidence directory and record runner baseline
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qualification"
           {
-            echo "## Runner baseline"
-            echo "- Repository: $GITHUB_REPOSITORY"
-            echo "- Ref: $GITHUB_REF"
-            echo "- Target SHA: $GITHUB_SHA"
-            echo "- Runner: $RUNNER_OS / $RUNNER_ARCH"
-            echo '~~~text'
+            echo "Repository: $GITHUB_REPOSITORY"
+            echo "Ref: $GITHUB_REF"
+            echo "Target SHA: $GITHUB_SHA"
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Run attempt: $GITHUB_RUN_ATTEMPT"
+            echo "Runner: $RUNNER_OS / $RUNNER_ARCH"
+            echo
             lscpu
             free -h
             df -hT
-            node --version
-            npm --version
+            cat /etc/os-release
+            node --version || true
+            npm --version || true
             python3 --version
-            echo '~~~'
-          } >> "$GITHUB_STEP_SUMMARY"
+          } > "$RUNNER_TEMP/qualification/runner-baseline.txt"
+          available_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$available_kib" -lt $((6 * 1024 * 1024)) ]; then
+            echo "::error::Less than 6 GiB free before installation; refusing the profile proof."
+            exit 2
+          fi
 
-      - name: Install pinned Claude Code CLI
+      - name: Install pinned Claude Code with official native installer
         shell: bash
         run: |
           set -euo pipefail
-          npm install --global @anthropic-ai/claude-code@2.1.325
-          command -v claude
-          claude --version
-          claude --help >/dev/null
+          curl -fsSL https://claude.ai/install.sh -o "$RUNNER_TEMP/claude-install.sh"
+          bash "$RUNNER_TEMP/claude-install.sh" 2.1.325
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
+          installed_version="$(claude --version)"
+          printf '%s\n' "$installed_version" | tee "$RUNNER_TEMP/qualification/claude-version.txt"
+          test "$(printf '%s' "$installed_version" | awk '{print $1}')" = "2.1.325"
+          claude --help > "$RUNNER_TEMP/qualification/claude-help.txt"
+        env:
+          DISABLE_AUTOUPDATER: "1"
+          DISABLE_UPDATES: "1"
 
-      - name: Install pinned uv in isolated virtual environment
+      - name: Install pinned uv bootstrap
         shell: bash
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/uv-bootstrap"
           "$RUNNER_TEMP/uv-bootstrap/bin/python" -m pip install --disable-pip-version-check "uv==0.13.7"
           echo "$RUNNER_TEMP/uv-bootstrap/bin" >> "$GITHUB_PATH"
-          "$RUNNER_TEMP/uv-bootstrap/bin/uv" --version
+          "$RUNNER_TEMP/uv-bootstrap/bin/uv" --version | tee "$RUNNER_TEMP/qualification/uv-version.txt"
 
-      - name: Install FCC at immutable upstream commit
+      - name: Install FCC from immutable source using its committed lockfile
         shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+          UV_CACHE_DIR: ${{ runner.temp }}/uv-cache
+          UV_NO_PROGRESS: "1"
         run: |
           set -euo pipefail
+          fcc_commit="eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
+          git clone --filter=blob:none https://github.com/Alishahryar1/free-claude-code.git "$RUNNER_TEMP/fcc-src"
+          git -C "$RUNNER_TEMP/fcc-src" checkout --detach "$fcc_commit"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" rev-parse HEAD)" = "$fcc_commit"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" hash-object pyproject.toml)" = "5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" hash-object uv.lock)" = "ee8490c29a36f8302f5c1f1d42b465f6271c10f2"
           uv python install 3.14.10
-          uv tool install --python 3.14.10 --from "git+https://github.com/Alishahryar1/free-claude-code@eb92e4c07af0d6ad8881dce1cd958c3d072c27c5" free-claude-code
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          "$HOME/.local/bin/fcc-server" --help >/dev/null
-          "$HOME/.local/bin/fcc-doctor" --help >/dev/null
-          "$HOME/.local/bin/fcc-claude" --help >/dev/null
-          "$HOME/.local/bin/fcc-server" --version || true
-          "$HOME/.local/bin/fcc-doctor" --version || true
+          cd "$RUNNER_TEMP/fcc-src"
+          /usr/bin/time -v -o "$RUNNER_TEMP/qualification/fcc-install-time.txt" uv sync --frozen --no-dev --python 3.14.10
+          "$UV_PROJECT_ENVIRONMENT/bin/python" --version | tee "$RUNNER_TEMP/qualification/fcc-python-version.txt"
+          test "$("$UV_PROJECT_ENVIRONMENT/bin/python" --version)" = "Python 3.14.10"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" --version | tee "$RUNNER_TEMP/qualification/fcc-server-version.txt"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-doctor" --version | tee "$RUNNER_TEMP/qualification/fcc-doctor-version.txt"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-claude" --help > "$RUNNER_TEMP/qualification/fcc-claude-help.txt"
 
       - name: Install only selected ECC skills at immutable upstream commit
         shell: bash
         run: |
           set -euo pipefail
+          ecc_commit="e413166c50e85fb205b988b5e78874b5a88ea4d2"
           git clone --filter=blob:none https://github.com/affaan-m/ECC.git "$RUNNER_TEMP/ecc"
-          git -C "$RUNNER_TEMP/ecc" checkout --detach e413166c50e85fb205b988b5e78874b5a88ea4d2
-          test "$(git -C "$RUNNER_TEMP/ecc" rev-parse HEAD)" = "e413166c50e85fb205b988b5e78874b5a88ea4d2"
+          git -C "$RUNNER_TEMP/ecc" checkout --detach "$ecc_commit"
+          test "$(git -C "$RUNNER_TEMP/ecc" rev-parse HEAD)" = "$ecc_commit"
           mkdir -p "$HOME/.claude/skills"
           for skill in search-first tdd-workflow security-review; do
             test -f "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md"
             mkdir -p "$HOME/.claude/skills/$skill"
             cp "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md" "$HOME/.claude/skills/$skill/SKILL.md"
           done
-          find "$HOME/.claude/skills" -type f -print0 | sort -z | xargs -0 sha256sum
+          find "$HOME/.claude/skills" -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/ecc-skill-sha256.txt"
 
-      - name: Verify versions, provenance, disk and cleanup
+      - name: Verify profile footprint and write provenance manifest
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           {
-            echo "## Installed profile inventory"
-            echo "- Claude Code: $(claude --version)"
-            echo "- FCC source commit: eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
-            echo "- ECC source commit: e413166c50e85fb205b988b5e78874b5a88ea4d2"
-            echo "- FCC Python target: 3.14.10"
-            echo "- ECC modules: search-first, tdd-workflow, security-review"
+            echo "## Final resource snapshot"
+            free -h
+            df -hT "$RUNNER_TEMP"
             echo
-            echo "### Installed sizes"
-            echo '~~~text'
-            du -sh "$HOME/.local/share/uv/tools" "$HOME/.cache/uv" "$HOME/.claude/skills" 2>/dev/null || true
-            echo '~~~'
-            echo
-            echo "### Remaining disk"
-            echo '~~~text'
-            df -hT "$GITHUB_WORKSPACE"
-            echo '~~~'
-            echo
-            echo "> No provider/model request was made. No GitHub Secret was read or injected. No FCC server was started and no agent task was executed."
-          } >> "$GITHUB_STEP_SUMMARY"
-          test "$(claude --version | head -n 1)" != ""
-          test -f "$HOME/.claude/skills/search-first/SKILL.md"
-          test -f "$HOME/.claude/skills/tdd-workflow/SKILL.md"
-          test -f "$HOME/.claude/skills/security-review/SKILL.md"
+            echo "## Installed sizes"
+            du -sh "$HOME/.local/share/claude" "$UV_PROJECT_ENVIRONMENT" "$UV_CACHE_DIR" "$HOME/.claude/skills" 2>/dev/null || true
+          } > "$RUNNER_TEMP/qualification/runner-final.txt"
+          available_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$available_kib" -lt $((2 * 1024 * 1024)) ]; then
+            echo "::error::Less than 2 GiB remain after installation; profile is not resource-qualified."
+            exit 3
+          fi
+          {
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "target_sha=$GITHUB_SHA"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "runner=$RUNNER_OS/$RUNNER_ARCH"
+            echo "claude_code_version=2.1.325"
+            echo "claude_code_install_method=official_native_installer"
+            echo "fcc_repository=https://github.com/Alishahryar1/free-claude-code"
+            echo "fcc_commit=eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
+            echo "fcc_pyproject_git_blob=5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b"
+            echo "fcc_uv_lock_git_blob=ee8490c29a36f8302f5c1f1d42b465f6271c10f2"
+            echo "fcc_python=3.14.10"
+            echo "ecc_repository=https://github.com/affaan-m/ECC"
+            echo "ecc_commit=e413166c50e85fb205b988b5e78874b5a88ea4d2"
+            echo "ecc_skills=search-first,tdd-workflow,security-review"
+            echo "provider_calls=false"
+            echo "github_secret_values_read=false"
+            echo "fcc_server_started=false"
+            echo "agent_task_executed=false"
+            echo "production_dispatch=false"
+          } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
+
+      - name: Publish bounded no-secret qualification evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: claude-code-fcc-ecc-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qualification/
+          if-no-files-found: warn
+          retention-days: 7
