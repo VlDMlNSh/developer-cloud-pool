@@ -323,3 +323,16 @@ Next: qualify one real free provider route and account/quota identity under A0/D
 ## 10. Third-party license qualification
 
 The pinned FCC revision is `AGPL-3.0-only`; selected ECC revision is MIT; Claude Code CLI is vendor-distributed proprietary software. The runner workflow must capture the exact FCC/ECC LICENSE texts and SHA-256 digests. Before FCC is made network-accessible to remote users, resolve AGPL network-use/source-offer and notice obligations with appropriate review. Keep FCC loopback-only and deployment BLOCKED until the license gate is satisfied.
+
+
+## 11. FCC account identity and quota isolation gate
+
+Pinned FCC source `config/api_keys.py`, `providers/runtime/config.py`, and upstream tests `tests/config/test_fallback_key_settings.py` and `tests/api/test_fallback_key_requests.py` show numbered key selection and fallback across multiple API keys. Before any live route:
+1. Configure exactly one credential for the designated account/provider in each FCC profile.
+2. Use exactly one selected model route and leave `MODEL_FALLBACKS` unset/empty.
+3. Prohibit cross-account key lists, numbered-key fallback, key cycling, provider fallback and paid fallback.
+4. Require a separate isolated executor profile and quota ledger for every independently owned account.
+5. Verify only non-secret configuration metadata and route/account ownership; never read or log secret values.
+6. Fail closed if account ownership, provider entitlement, free quota or effective configuration is ambiguous.
+
+The current no-secret installation/mock qualification does not satisfy this gate. Issue #115 remains OPEN.
