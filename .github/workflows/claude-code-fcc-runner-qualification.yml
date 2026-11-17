@@ -185,6 +185,14 @@ jobs:
           }
           trap cleanup EXIT
 
+          runtime_home="$RUNNER_TEMP/fcc-runtime-home"
+          mkdir -p "$runtime_home/.config" "$runtime_home/.local/share" "$runtime_home/.cache"
+          chmod 700 "$runtime_home" "$runtime_home/.config" "$runtime_home/.local" "$runtime_home/.local/share" "$runtime_home/.cache"
+          export HOME="$runtime_home"
+          export XDG_CONFIG_HOME="$runtime_home/.config"
+          export XDG_DATA_HOME="$runtime_home/.local/share"
+          export XDG_CACHE_HOME="$runtime_home/.cache"
+          export PATH="$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin:/bin"
           cd "$RUNNER_TEMP/fcc-src"
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
           server_pid=$!
@@ -314,7 +322,12 @@ jobs:
           }
           trap cleanup EXIT
 
+          mkdir -p "$bridge_home/.config" "$bridge_home/.local/share" "$bridge_home/.cache"
+          chmod 700 "$bridge_home/.config" "$bridge_home/.local" "$bridge_home/.local/share" "$bridge_home/.cache"
           export HOME="$bridge_home"
+          export XDG_CONFIG_HOME="$bridge_home/.config"
+          export XDG_DATA_HOME="$bridge_home/.local/share"
+          export XDG_CACHE_HOME="$bridge_home/.cache"
           export HOST=127.0.0.1
           export PORT="$port"
           export FCC_OPEN_BROWSER=false

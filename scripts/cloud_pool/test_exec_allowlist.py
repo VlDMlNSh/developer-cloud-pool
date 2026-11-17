@@ -2,7 +2,9 @@
 """Unit tests for the Cloud Pool child-process environment boundary."""
 
 import os
+import tempfile
 import unittest
+from pathlib import Path
 
 from exec_allowlist import (
     ALLOWED_ENV_KEYS,
@@ -12,10 +14,28 @@ from exec_allowlist import (
 
 
 class ChildEnvironmentTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.home = self.root / "home"
+        self.home.mkdir(mode=0o700)
+        os.chmod(self.home, 0o700)
+        self.bin_dir = self.root / "bin"
+        self.bin_dir.mkdir(mode=0o700)
+        os.chmod(self.bin_dir, 0o700)
+        self.xdg_dirs = {}
+        for key in ("XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME"):
+            directory = self.home / key.lower()
+            directory.mkdir(mode=0o700)
+            os.chmod(directory, 0o700)
+            self.xdg_dirs[key] = str(directory)
+
     def valid_parent(self) -> dict[str, str]:
         return {
-            "PATH": "/opt/fcc/bin:/usr/local/bin:/usr/bin:/bin",
-            "HOME": "/tmp/cloud-pool-home",
+            "PATH": os.pathsep.join((str(self.bin_dir), "/usr/bin")),
+            "HOME": str(self.home),
+            **self.xdg_dirs,
             "USER": "runner",
             "LANG": "C.UTF-8",
             "HOST": "127.0.0.1",
@@ -33,26 +53,20 @@ class ChildEnvironmentTests(unittest.TestCase):
             "UNRELATED_PRIVATE_VALUE": "must-not-cross-boundary",
         }
 
-    def test_only_explicit_allowlist_is_forwarded(self) -> None:
+    def test_only_explicit_allowlist_is_forwarded_and_paths_are_canonical(self) -> None:
         parent = self.valid_parent()
         child = build_child_environment(parent)
         self.assertEqual(set(child), set(parent).intersection(ALLOWED_ENV_KEYS))
-        self.assertEqual(child["PATH"], parent["PATH"])
-        self.assertEqual(child["HOME"], parent["HOME"])
+        self.assertEqual(child["PATH"], os.pathsep.join((str(self.bin_dir.resolve()), "/usr/bin")))
+        self.assertEqual(child["HOME"], str(self.home.resolve()))
+        self.assertEqual(child["XDG_CONFIG_HOME"], str((self.home / "xdg_config_home").resolve()))
         self.assertEqual(child["HOST"], "127.0.0.1")
-        self.assertEqual(child["PORT"], "18766")
 
     def test_credential_and_proxy_variables_are_dropped(self) -> None:
         child = build_child_environment(self.valid_parent())
         for name in (
-            "GITHUB_TOKEN",
-            "GH_TOKEN",
-            "ANTHROPIC_API_KEY",
-            "OPENAI_API_KEY",
-            "GOOGLE_API_KEY",
-            "AWS_SECRET_ACCESS_KEY",
-            "HTTP_PROXY",
-            "HTTPS_PROXY",
+            "GITHUB_TOKEN", "GH_TOKEN", "ANTHROPIC_API_KEY", "OPENAI_API_KEY",
+            "GOOGLE_API_KEY", "AWS_SECRET_ACCESS_KEY", "HTTP_PROXY", "HTTPS_PROXY",
             "UNRELATED_PRIVATE_VALUE",
         ):
             self.assertNotIn(name, child)
@@ -65,17 +79,51 @@ class ChildEnvironmentTests(unittest.TestCase):
                 with self.assertRaises(EnvironmentPolicyError):
                     build_child_environment(parent)
 
-    def test_relative_or_empty_path_entries_are_rejected(self) -> None:
-        for value in ("/usr/bin::/bin", "/usr/bin:relative:/bin", "/usr/bin:.:/bin"):
+    def test_relative_empty_missing_and_duplicate_path_entries_are_rejected(self) -> None:
+        for value in (
+            f"{self.bin_dir}::/usr/bin",
+            f"{self.bin_dir}:relative:/usr/bin",
+            f"{self.bin_dir}:.:/usr/bin",
+            f"{self.bin_dir}:{self.bin_dir.resolve()}",
+            f"{self.bin_dir}:/does/not/exist",
+        ):
             parent = self.valid_parent()
             parent["PATH"] = value
             with self.subTest(path=value):
                 with self.assertRaises(EnvironmentPolicyError):
                     build_child_environment(parent)
 
-    def test_non_absolute_home_is_rejected(self) -> None:
+    def test_path_file_and_group_world_writable_directory_are_rejected(self) -> None:
+        file_path = self.root / "not-a-directory"
+        file_path.write_text("x", encoding="utf-8")
+        writable = self.root / "writable"
+        writable.mkdir()
+        os.chmod(writable, 0o777)
+        for entry in (str(file_path), str(writable)):
+            parent = self.valid_parent()
+            parent["PATH"] = entry
+            with self.subTest(path=entry):
+                with self.assertRaises(EnvironmentPolicyError):
+                    build_child_environment(parent)
+
+    def test_home_must_be_private_current_user_directory(self) -> None:
+        os.chmod(self.home, 0o755)
+        with self.assertRaises(EnvironmentPolicyError):
+            build_child_environment(self.valid_parent())
+
+    def test_xdg_paths_must_be_private_and_inside_home(self) -> None:
+        outside = self.root / "outside"
+        outside.mkdir(mode=0o700)
         parent = self.valid_parent()
-        parent["HOME"] = "relative-home"
+        parent["XDG_CONFIG_HOME"] = str(outside)
+        with self.assertRaises(EnvironmentPolicyError):
+            build_child_environment(parent)
+
+        unsafe = self.home / "unsafe"
+        unsafe.mkdir(mode=0o755)
+        os.chmod(unsafe, 0o755)
+        parent = self.valid_parent()
+        parent["XDG_CACHE_HOME"] = str(unsafe)
         with self.assertRaises(EnvironmentPolicyError):
             build_child_environment(parent)
 
