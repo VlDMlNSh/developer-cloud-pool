@@ -9,6 +9,10 @@
 
 ## 1. Purpose and authority
 
+The measurable acceptance standard for claims of 10/10 architectural potential, technical elaboration and overall prospects is defined by the [Independent 10/10 Scorecard](CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md). Scores require evidence and independent review; the target is not a self-awarded rating.
+
+
+
 This addendum closes the implementation-governance gaps identified during an independent architecture review: over-design risk, unclear minimum delivery path, component proliferation, ambiguity between planning capacity and actual capacity, and the need for objective exit criteria.
 
 The parent Reference Architecture 1.0 remains the sole system-level normative architecture. This addendum is normative for delivery sequencing and architecture change control. It does not replace detailed protocol contracts, grant deployment authority, qualify a provider route, or accept Contour A.
