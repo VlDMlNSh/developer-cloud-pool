@@ -1,3 +1,21 @@
+# /next — Latest FCC allowlist PR head and review residuals — 2026-11-17
+
+Latest repository reconciliation after the synthetic environment pass:
+
+- PR #116 latest head is `367c583a508061cebe41bb8d33e98c24a0dd8ba6` (advanced after initial head `2b4b02b331b0dd4547baac11f7d38fe232872431` by owner-authored commits correcting workflow path triggers and synthetic-launcher provenance).
+- Latest runner qualification [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406): SUCCESS, exact latest head; job `134041463409`, all 14 steps passed.
+- Latest Pool Contract Validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455): SUCCESS, exact latest head.
+- Artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788): 13,602 bytes; GitHub digest `sha256:1349930866e41e17d77df0ca0e665c8e8ab33dafb374f81bbbf9c99ff1d8c79e`; archive bytes not independently inspected.
+- PR #116 has one COMMENTED review by repository owner `VlDMlNSh`; not independent external review and not approval. PR remains OPEN / DRAFT / UNMERGED.
+- Review residuals are now recorded in canonical architecture and roadmap: synthetic mock is not a real provider/quota/Claude session; no-provider-call test is not a runner egress firewall; PATH directories are not integrity/ownership-qualified; HOME/XDG credential state requires review; official installer bytes are not hash-pinned; wrapper only constrains the wrapped child, not the whole host/process tree.
+- Immediate next work: close production runner hardening findings, then qualify free FCC route/account/quota without secret reads and integrate production A0/D1 lease/fencing/recovery.
+- Persistent Engineering Workspace is required for final Contour A acceptance, staged after first CODE/A0/D1 gates. Server #3/Cloudflare/shared filesystem remain BLOCKED / NOT RUN until qualified.
+- Contour A NOT ACCEPTED; Contour B DEFERRED; `POOL_DISPATCH_ENABLED=false`.
+
+Updated report: [2026-11-17-next-pass-fcc-child-env-allowlist.md](../reports/2026-11-17-next-pass-fcc-child-env-allowlist.md).
+
+---
+
 # /next — Workspace scope reconciled with final Contour A acceptance — 2026-11-17
 
 A final cross-document consistency check found stale wording that described the persistent Engineering Workspace as an optional post-acceptance extension, while the roadmap explicitly includes it in final Contour A. Corrected the canonical architecture and roadmap:
