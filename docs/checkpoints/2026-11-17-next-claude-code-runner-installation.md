@@ -145,3 +145,15 @@ Latest Context Window blob: `71629e5c67051c9a07dd39a04b3253d200eb4a59`.
 Latest roadmap blob: `677a59ffb33a71e72e111478fbbb13c71018ba45`.
 
 Next bounded implementation task: [Issue #117 — loopback-only FCC runtime health and lifecycle smoke](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117). No provider credentials or provider calls are allowed in that slice.
+
+
+## Engineering Workspace architecture integration — 2026-11-17
+
+- Architecture record: [CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md](../architecture/CLOUD-POOL-ENGINEERING-WORKSPACE-INTEGRATION-2026-11-17.md), status PROPOSED / NOT DEPLOYED / NOT QUALIFIED.
+- Tracking issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/118 (OPEN; deferred behind Issue #117 and A0 qualification).
+- Target: one Jarvis UI/control plane; shared persistent workspace; official VS Code Desktop + Remote SSH; code-server/Open VSX candidate for browser; Cloudflare Tunnel + Access; independent Claude/Gemini/Copilot identities.
+- Host gate: SentinelX 0 active hosts; Free plan limit 1; Mac mini host_5f7264034bdf0b51 offline; mh-dev-01 and mh-dev-02 disabled; no server #3 identified/authorized; no saved compute integrations. Desktop Commander devices all offline.
+- Cloudflare gate: account connection present; no zones or Tunnels returned; Access applications endpoint reports Access is not enabled. No resources were created or changed.
+- Component direction: code-server + Remote SSH is the minimal candidate pair after host qualification; Coder deferred; Remote Tunnels alternative only. Copilot optional/free-limited. Server-3 Claude Code NOT RUN. Gemini controller remains exclusive.
+- No secret values read. No installation or deployment. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue Issue #117 source-verified FCC loopback health/lifecycle proof; only after A0 and host/access gates revisit Issue #118.
