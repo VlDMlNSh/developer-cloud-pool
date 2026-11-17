@@ -1,9 +1,11 @@
 # Cloud Pool architecture consolidation — 2026-11-17
 
-**Status:** DOCUMENTATION PASS CREATED / REVIEW REQUIRED / NOT MERGED  
+**Status:** PR #120 OPEN / DRAFT / UNMERGED; REVIEW REQUIRED  
 **Contour:** A only  
 **Immutable base:** `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`  
-**Working branch:** `docs/cloud-pool-reference-architecture-2026-11-17`
+**Working branch:** `docs/cloud-pool-reference-architecture-2026-11-17`  
+**PR:** https://github.com/VlDMlNSh/developer-cloud-pool/pull/120  
+**PR head:** `105d85ffde2330cb838f8819e5b2c1094d158c03`
 
 ## Scope
 
@@ -61,7 +63,7 @@ Consolidate prior independent architecture reviews into one normative system-lev
 
 ## Next step
 
-Open a Draft PR from this branch to `Основной`, run exact-head documentation/contract validation, request an independent architecture/security review, then reconcile the current Context Window and older architecture documents before merge. Keep dispatch disabled and Contour B deferred.
+PR #120 is open as Draft. Next, repair or formally archive the 31 legacy Context Window links, obtain independent architecture/security review, and run any available exact-head documentation/contract validation before merge. Keep dispatch disabled. Keep dispatch disabled and Contour B deferred.
 
 Canonical map: [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).  
 Canonical context: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md).
