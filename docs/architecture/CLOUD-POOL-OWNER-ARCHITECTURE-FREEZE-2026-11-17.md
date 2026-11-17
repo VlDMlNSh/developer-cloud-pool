@@ -136,3 +136,21 @@ At the time of this decision record:
 Canonical project context: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md).  
 Canonical repository: https://github.com/VlDMlNSh/developer-cloud-pool  
 Separate MediaHub OS repository: https://github.com/VlDMlNSh/mediahub-os
+
+
+## 9. Implementation lock — 2026-11-17
+
+This owner-approved architecture is the fixed implementation baseline. Routine /next passes must execute the ordered plan in [CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md), not reopen architecture selection. Revisions are permitted only for evidence-backed implementation incompatibility, security findings, or a failed acceptance gate; every such correction must be narrowly scoped and recorded with evidence.
+
+**First deliverable:** one GitHub-hosted ephemeral Claude Code + ECC toolkit + FCC + one explicitly qualified free API route. No Anthropic API authentication. No secret reads. No provider calls from pull_request workflows.
+
+**Current first-runner evidence:** PR #116 head `c5c14f6a11782e5787a38b1edd5e7983f15bf2e2`, run `44066723324`. At the last job read, Claude Code CLI and uv installation passed; FCC installation was still running; ECC and final checks were pending. This is RUNNING / NOT VERIFIED, not an installation pass.
+
+**FCC policy finding:** at pinned FCC commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`, `MODEL_FALLBACKS` defaults to `None`, while `PROVIDER_MAX_ATTEMPTS` defaults to 5. Before any provider call, explicitly set a bounded retry policy and preserve no-fallback/no-key-cycling behavior. The Admin UI must remain loopback-only; never expose FCC admin endpoints publicly.
+
+**Execution order:** first runtime proof → FCC policy and one free route qualification → durable A0 admission/lease/worker identity → first Claude Code task integration → GitHub-only Jarvis static/status experience → browser/connectors → quota-gated second CODE → deferred local-only MEDIA and physical extensions. Contour B remains prohibited until Contour A is ACCEPTED.
+
+**Hosting boundary:** GitHub Actions runners are ephemeral, not persistent web hosts. Jarvis starts as static GitHub-hosted PWA plus GitHub-native task/status primitives. No privileged tokens in browser assets. If a requested always-on authenticated API cannot be safely implemented on GitHub-native primitives, mark it BLOCKED rather than silently adding an external server or misrepresenting runner persistence.
+
+Canonical implementation roadmap: [CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md).  
+Latest checkpoint: [2026-11-17-next-claude-code-runner-installation.md](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
