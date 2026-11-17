@@ -20,7 +20,7 @@ Supporting normative contracts:
 
 - Repository default branch: `Основной`; observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Contour A: **NOT ACCEPTED**. Contour B remains DEFERRED.
-- Architecture consolidation is proposed in [Draft PR #120](https://github.com/VlDMlNSh/developer-cloud-pool/pull/120); not merged or accepted.
+- Architecture consolidation is proposed in [Draft PR #120](https://github.com/VlDMlNSh/developer-cloud-pool/pull/120); exact-head architecture documentation and Pool Contract Validation succeeded, but PR remains unmerged and not accepted. Earlier PR #113 was closed unmerged after all its changed paths were migrated into PR #120.
 - 20-slot GitHub-hosted execution architecture: DESIGN; not a running 20-worker pool.
 - Supervisor/Worker: implementation scaffold and isolated proofs; hosted durable lease and end-to-end execution are not qualified.
 - Atomic A0/D1: isolated local proof exists; hosted transactional authority, trusted issuer qualification and production admission are not qualified.
