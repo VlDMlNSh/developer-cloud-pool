@@ -6,7 +6,7 @@
 **Parent:** [Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md)  
 **Delivery controls:** [Architecture Assurance Addendum](CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md)  
 **Evaluation standard:** [Independent 10/10 Scorecard](CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md)  
-**Immutable integration parent:** `b3b5cb3724139939342335ea95c46cc717485f16` (PR #120 head at pass start)
+**Immutable integration parent:** `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8` (PR #120 head after latest parent synchronization)
 
 ## 1. Architectural decision
 
