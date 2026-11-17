@@ -2,15 +2,15 @@
 
 ## CURRENT RECONCILED SNAPSHOT — 2026-11-17
 
-This block is authoritative over older dated snapshots below. Historical sections are retained for provenance; re-read live refs before every engineering pass.
+This block is authoritative over older dated snapshots below. Historical sections are retained for provenance; re-read live refs before every engineering pass. The snapshot records the branch head immediately before the Context Window refresh commit; the refresh itself advances the branch by one commit.
 
-- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; observed PR #120 base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; current head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true.
-- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head at parent-sync `39388657bc145bf4eb21fb69dc3c781dcf7d5a02`; mergeable=true; 28 commits ahead / 0 behind. It consolidates realization map, assurance addendum, scorecard, reference architecture/README links, validator/workflow, report and checkpoint.
-- Previous exact-head Architecture Documentation Validation run [44093719797](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44093719797) SUCCESS on `e306a84167508b582c1504efb1d3a5cdcf40ce4e`. The latest parent-sync head requires its own validation; Pool Contract Validation was not observed on the earlier documentation-only head.
-- PR #122 and #123 are CLOSED as superseded after substantive content migration into PR #124; their branch/review histories remain available.
-- PR #116: OPEN/DRAFT; head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`. Earlier no-secret FCC loopback evidence is not a real Claude task or provider-route qualification.
-- Current ruleset configuration must be re-read before merge. Earlier read observed zero required approvals and no required status checks; this is a governance warning, not a fresh current-state claim.
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN/DRAFT/UNMERGED; head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true; base default HEAD above.
+- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head immediately before this context refresh `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; mergeable=true; compare 33 commits ahead / 0 behind. Includes realization map, assurance addendum, scorecard, reference/README links, validator/workflow, report and checkpoint.
+- Exact-head Architecture Documentation Validation run [44094271623](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094271623) SUCCESS on `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; job `134077142746`. Pool Contract Validation not observed for this documentation-only head.
+- PR #122 and #123 are CLOSED as superseded after their substantive content was migrated into PR #124; their branch/review histories remain available.
+- PR #116: OPEN/DRAFT; current head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; earlier no-secret install/FCC loopback proof does not establish a real Claude task or free provider route. Exact-head status at this latest SHA NOT VERIFIED.
+- Ruleset `26550182` is ACTIVE on `refs/heads/Основной`, with PR required and review-thread resolution required, but 0 required approving reviews and no required status checks; no bypass actors. Governance is insufficient for critical architecture/security acceptance.
 - Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
 - Execution status: authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
 - Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
