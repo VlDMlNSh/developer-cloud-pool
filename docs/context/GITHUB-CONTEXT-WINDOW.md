@@ -1,3 +1,27 @@
+# /next — FCC child environment allowlist implemented and synthetic-qualified — 2026-11-17
+
+**Current status:** synthetic child environment isolation VERIFIED on PR #116 exact head; production route/task and Contour A remain NOT VERIFIED / NOT ACCEPTED.
+
+- PR #116 head: `2b4b02b331b0dd4547baac11f7d38fe232872431`; base `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Added `scripts/cloud_pool/exec_allowlist.py`: explicit minimal environment allowlist, required absolute HOME/PATH, rejects relative/empty PATH segments and malformed values, fails closed, execs target with only approved variables.
+- Added `scripts/cloud_pool/test_exec_allowlist.py`: unit tests for allowlist, missing/malformed values, relative PATH and synthetic GitHub/provider/AWS/proxy variable removal.
+- Updated PR #116 runner workflow: FCC server and FCC Claude launcher both start through wrapper. Synthetic parent shell includes fake GITHUB_TOKEN, GH_TOKEN, provider API keys, AWS secret and HTTP(S)_PROXY; mock Claude confirms these do not cross the process boundary.
+- Runner qualification [44083551665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083551665): SUCCESS, exact head `2b4b02b331b0dd4547baac11f7d38fe232872431`; unit tests, FCC install, loopback runtime, synthetic launcher bridge, ECC install and artifact publication all completed successfully.
+- Pool Contract Validation [44083551660](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083551660): SUCCESS on exact head.
+- Artifact [14328955413](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083551665/artifacts/14328955413): 13,718 bytes; GitHub digest `sha256:b796274db66f1ca17000e31c37ddc0133abbeae60db7c7b562c367ae1815bb3b`. Metadata/digest verified; archive bytes not independently inspected.
+- One preceding run [44083347043](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083347043) failed on an extra printf escape in synthetic argument recording. Corrected and rerun; failure retained in history and described in report.
+- Canonical architecture evidence table updated: wrapper synthetic proof only; production qualification remains open.
+- Full report: [2026-11-17-next-pass-fcc-child-env-allowlist.md](../reports/2026-11-17-next-pass-fcc-child-env-allowlist.md).
+- PR #116 remains OPEN / DRAFT / UNMERGED; independent review still required.
+- No provider credentials or GitHub Secret values read. No provider/model call, real Claude task, production dispatch or deployment.
+- Generic production route/account/quota: NOT VERIFIED. Integrated production A0/D1 and durable lease/fencing/recovery: NOT VERIFIED. Jarvis PWA end-to-end: NOT VERIFIED. Gemini controller: NOT QUALIFIED / NOT RUN.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED. Keep `POOL_DISPATCH_ENABLED=false`.
+
+## Next implementation step
+Qualify one free FCC provider route and account/quota evidence without secret-value reads; continue integrated A0/D1 durable admission, lease/fencing and recovery. Keep production dispatch fail-closed.
+
+---
+
 # /next — Canonical Reference Architecture 1.0 published to docs branch — 2026-11-17
 
 **Current disposition:** architecture consolidated as candidate-canonical documentation; NOT MERGED / NOT DEPLOYED / NOT QUALIFIED / NOT ACCEPTED.
