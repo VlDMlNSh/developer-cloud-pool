@@ -20,6 +20,9 @@ jobs:
     name: No-secret install and resource proof
     runs-on: ubuntu-24.04
     timeout-minutes: 35
+    env:
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
     steps:
       - name: Checkout pool source without persisted credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -34,7 +37,10 @@ jobs:
           {
             echo "Repository: $GITHUB_REPOSITORY"
             echo "Ref: $GITHUB_REF"
-            echo "Target SHA: $GITHUB_SHA"
+            echo "GitHub event SHA: $GITHUB_SHA"
+            echo "PR head SHA: $PR_HEAD_SHA"
+            echo "PR base SHA: $PR_BASE_SHA"
+            echo "Checked out SHA: $(git rev-parse HEAD)"
             echo "Run ID: $GITHUB_RUN_ID"
             echo "Run attempt: $GITHUB_RUN_ATTEMPT"
             echo "Runner: $RUNNER_OS / $RUNNER_ARCH"
@@ -153,7 +159,10 @@ jobs:
           fi
           {
             echo "repository=$GITHUB_REPOSITORY"
-            echo "target_sha=$GITHUB_SHA"
+            echo "target_sha=$PR_HEAD_SHA"
+            echo "github_event_sha=$GITHUB_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            echo "base_sha=$PR_BASE_SHA"
             echo "run_id=$GITHUB_RUN_ID"
             echo "run_attempt=$GITHUB_RUN_ATTEMPT"
             echo "runner=$RUNNER_OS/$RUNNER_ARCH"
