@@ -1,3 +1,29 @@
+# CURRENT PASS — INDEPENDENT 10/10 QUALITY BAR — 2026-11-17
+
+**Scope:** Cloud Development Pool / Contour A only.  
+**Branch:** `docs/architecture-assurance-hardening-v2-2026-11-17`.  
+**PR:** [#122](https://github.com/VlDMlNSh/developer-cloud-pool/pull/122), OPEN / DRAFT, dependent on PR #120.  
+**PR #122 head at start of this pass:** `458cf2c30b04bba6af89ebb78f3049a630f82e8f`.  
+**Scorecard commit:** `aa369bca72af1adf57163dd71aa319e6ec0c97b2`.  
+**Assurance addendum link commit:** `928e9424aec21a8f1847e422a6fe3aee3ad03fef`.  
+**README link commit:** `41cd459ea94c0969dc87a29f1482884c11c64272`.
+
+## New normative quality standard
+
+Added [Independent 10/10 Architecture and Engineering Scorecard](../architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md). It defines weighted criterion-level scoring for architectural potential, technical elaboration and overall project prospects; requires immutable evidence and independent review; and prevents documentation-only changes from being mistaken for runtime qualification. Hard caps block an aggregate 10/10 where critical implementation, security, provider or governance gates are missing.
+
+The scorecard is linked from the Architecture Assurance Addendum and README. This is a target/evaluation standard, not a claim that any dimension currently scores 10/10.
+
+## Validation and current limits
+
+At the beginning of this pass PR #122 exact head `458cf2c30b04bba6af89ebb78f3049a630f82e8f` had 0 check runs and an empty pending combined status. After new commits, exact-head CI must be re-read. Runtime tests NOT RUN (documentation-only). Independent score review NOT RUN.
+
+PR #120 remains OPEN / DRAFT / UNMERGED. PR #122 remains OPEN / DRAFT / UNMERGED. Default branch remains unchanged by this pass. Contour A NOT ACCEPTED; Contour B DEFERRED. Live authenticated Jarvis, transactional admission, durable Supervisor, real qualified worker, real free provider route and persistent workspace remain unproven or blocked. No secrets read, provider calls, Gemini dispatch, deployment or infrastructure change occurred.
+
+**Next:** re-read current PR #122 head and all changed files; verify exact-head CI; obtain independent review; then implement and evidence the first no-secret end-to-end vertical slice. Do not award 10/10 or accept Contour A from documentation alone.
+
+---
+
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
