@@ -189,3 +189,21 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 The consolidated normative implementation baseline is now [CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md](CLOUD-POOL-CANONICAL-REFERENCE-ARCHITECTURE-1.0.md). It does not change the owner decisions above; it resolves component boundaries, authority, execution, route/quota, persistence, security and acceptance order. Where an older proposal conflicts, this reference and the latest owner decision supersede it; existing A0/D1 contracts remain authoritative for their domains.
 
 Routine /next passes must implement the ordered roadmap and must not repeatedly reopen architecture selection. A change requires a dated ADR and evidence. This document and the reference architecture are candidate docs-branch artifacts until PR #113 is reviewed and merged. No deployment or Contour A acceptance is implied.
+
+
+## Owner scope and implementation reconciliation — 2026-11-17 (latest)
+
+This amendment supersedes the earlier section titled **CURRENT OWNER /next OPERATING UPDATE — FOUR GEMINI AGENTS** wherever it states that four Gemini assignments are mandatory for every `/next`. The later owner scope corrections in Issues #94 and #96 govern: Gemini is an optional supplementary capability, not a mandatory per-/next wave and not a first-release or Contour A launch gate. When a specific task benefits from Gemini, use only the approved Cloud Pool controller after its authority, durable admission, lease/fencing/recovery, identity, quota, security and governance gates pass. Otherwise record NOT RUN; never bypass the controller. Keep `POOL_DISPATCH_ENABLED=false` until qualification.
+
+**Updated exact-head implementation evidence:**
+- PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`.
+- No-secret Claude Code + ECC + FCC qualification [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406): SUCCESS.
+- Pool Contract Validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455): SUCCESS.
+- Synthetic bridge artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788): available.
+- Independent review [5938432852](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938432852): COMMENTED, not an approval for production use.
+- Issue #119: CLOSED for mock-only bridge qualification. Issue #115 remains OPEN pending remaining provenance/license and real free-route/account/quota gates.
+- PR #116 and PR #113 remain OPEN/DRAFT/UNMERGED. The canonical architecture and owner freeze are on the documentation candidate branch, not yet default-branch accepted.
+- The mock bridge is not a real Claude session or provider-route proof. No secret read, provider call, Gemini dispatch, deployment or merge occurred.
+- Engineering Workspace remains part of Contour A target but BLOCKED on host #3 identity/authorization, Cloudflare Access/Tunnel, persistent storage, backup/restore and same-workspace desktop/browser qualification.
+
+Contour A remains NOT ACCEPTED; Contour B remains DEFERRED. Next bounded priority is qualify one actual free provider route and account/quota identity, while completing A0/D1 authority and recovery gates. Do not reopen architecture selection absent evidence-backed incompatibility or security finding.
