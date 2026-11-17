@@ -192,7 +192,7 @@ jobs:
           export XDG_CONFIG_HOME="$runtime_home/.config"
           export XDG_DATA_HOME="$runtime_home/.local/share"
           export XDG_CACHE_HOME="$runtime_home/.cache"
-          export PATH="$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin:/bin"
+          export PATH="$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin"
           cd "$RUNNER_TEMP/fcc-src"
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
           server_pid=$!
@@ -340,7 +340,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="synthetic-aws-secret"
           export HTTP_PROXY="http://untrusted-proxy.invalid:8080"
           export HTTPS_PROXY="http://untrusted-proxy.invalid:8080"
-          export PATH="$mock_bin:$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin:/bin"
+          export PATH="$mock_bin:$UV_PROJECT_ENVIRONMENT/bin:/usr/local/bin:/usr/bin"
 
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
           server_pid=$!
