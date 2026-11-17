@@ -33,7 +33,7 @@ Consolidate prior independent architecture reviews into one normative system-lev
 
 - Jarvis is the single user-facing console, not an authority.
 - Control plane and ephemeral execution plane are separate trust domains.
-- Persistent Engineering Workspace is separate from GitHub-hosted workers.
+- Persistent Engineering Workspace is separate from GitHub-hosted workers; it is staged after the first static PWA milestone but mandatory before Contour A acceptance.
 - One transactional authority owns mutable admission/lease/outbox/quota state; D1 is a preferred candidate, not a production selection.
 - GitHub Issues/labels and Actions concurrency are not authoritative locks.
 - Atomic admission, durable fenced leases, outbox/inbox, idempotency and ambiguity reconciliation are mandatory.
@@ -75,3 +75,8 @@ Canonical context: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.m
 - Historical Context Window snapshots are deliberately excluded from this validator; their legacy links remain historical records and are not silently rewritten.
 - GitHub write commits: validator `447d58ec00d6858e09dee34bcf2dab25c1381a37`; workflow `cf8c72ca6e58bdef6af7d8a370525ace3b5d1c38`; Context Window update `eaffc96dd949850713b9cad1aaed88408690cb0f`.
 - Exact-head CI on `9d0fb4cd6728a160c056aa63967568a38e2bb440` completed SUCCESS: Architecture Documentation Validation run `44086971389`; Pool Contract Validation run `44086971299`. No local execution of the validator is claimed in this connector-only pass. Documentation CI is not security qualification and does not qualify Contour A.
+
+
+## Follow-up: Contour A Workspace acceptance clarification
+
+The initial static/read-only GitHub-hosted Jarvis PWA remains an earlier delivery milestone and must not depend on an external persistent host. The full Contour A acceptance package, however, must include a qualified persistent Engineering Workspace: one durable filesystem shared by browser code-server/Open VSX and desktop VS Code Remote SSH, isolated per-task worktrees, single-writer fencing, qualified ingress/identity, encrypted backup and independently tested restore. This capability is mandatory before Contour A ACCEPTED. Issue #118 remains BLOCKED and this documentation change does not authorize deployment.
