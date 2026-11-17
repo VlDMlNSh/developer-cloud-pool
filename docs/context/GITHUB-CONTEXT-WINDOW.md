@@ -6,11 +6,11 @@ Last refreshed: 2026-11-17 — canonical architecture consolidation pass
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from commits API at start of this pass)
-Current documentation working branch: `docs/cloud-pool-reference-architecture-2026-11-17` (NOT merged; do not call it default/canonical production code)
+Current documentation working branch: `docs/cloud-pool-reference-architecture-2026-11-17`, current HEAD `9c0a9432c581a6bc7f5336767a7f885597d5cabb` (NOT merged; PR #120 OPEN / DRAFT / UNMERGED)
 Latest open implementation PR observed: #116, head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
 Latest PR #116 exact-head checks observed: No-secret install/resource proof SUCCESS (run 44083961406); workflow syntax/security invariants SUCCESS (run 44083961455); Pool Contract Validation SUCCESS (run 44083961455). These checks do not prove provider route, agent task execution, persistent workspace, or Contour A acceptance.
 Active default-branch ruleset: ID `26550182`, enforcement active on `refs/heads/Основной`; PR required, review-thread resolution required, required approving review count 0, no required status-check contexts. Treat governance as insufficient for production acceptance.
-This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`.
+This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`. PR #120: https://github.com/VlDMlNSh/developer-cloud-pool/pull/120. PR head at last read-back: `9c0a9432c581a6bc7f5336767a7f885597d5cabb`. Exact-head check-runs: 0; combined status contexts: 0; CI NOT VERIFIED / NOT RUN.
 
 ## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-17
 
@@ -69,7 +69,7 @@ This snapshot supersedes older maturity/status statements in the historical sect
 6. Older sections below are historical snapshots; revalidate before reuse.
 
 ### Current work branch
-`docs/cloud-pool-reference-architecture-2026-11-17` is a documentation-only branch based on immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It adds the canonical reference architecture, ADR, report, README alignment, and this context refresh. It is not merged and does not change runtime behavior.
+`docs/cloud-pool-reference-architecture-2026-11-17` is a documentation-only branch based on immutable default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It adds the canonical reference architecture, ADR, report, README alignment, and this context refresh. It is submitted as Draft PR #120 and is not merged; PR head `9c0a9432c581a6bc7f5336767a7f885597d5cabb`. Exact-head check-runs remain 0. New/updated authored docs passed relative-link validation (0 missing links across 9 files); historical Context Window sections retain 31 relative links to files absent from the current default-branch tree. The branch does not change runtime behavior.
 
 
 ---
