@@ -64,13 +64,15 @@ No GitHub Secrets are referenced by the workflow. The job retains `contents: rea
 
 ## 5. Exact-head verification
 
-- Workflow run [44080654490](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490): triggered on PR #116 head `4aa172a1efdc1081cf71509c9bc52fc3140e92fe`; **RUNNING at the time of this report**.
-- Job: [134030122492](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490/job/134030122492).
-- Pool Contract Validation [44080654630](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654630): SUCCESS on the same head.
+- Workflow run [44080654490](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490): **COMPLETED / SUCCESS** on PR #116 head `4aa172a1efdc1081cf71509c9bc52fc3140e92fe`.
+- Job [134030122492](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490/job/134030122492): SUCCESS. Every step passed, including **Qualify synthetic FCC-to-Claude CLI handoff without provider access**.
+- The successful bridge step ran FCC readiness on loopback, validated the exact listener, invoked the actual `fcc-claude` entrypoint against the synthetic `claude` executable, validated the proxy URL/token presence and absence of credential-like variable names, preserved the argument vector, propagated exit status 37, and verified clean shutdown/listener removal.
+- Pool Contract Validation [44080654630](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654630): **COMPLETED / SUCCESS** on the same exact head; YAML syntax and pool security invariants passed; dispatch remains disabled.
+- Artifact [14326213275](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080654490/artifacts/14326213275): 13,959 bytes; GitHub-reported digest `sha256:b04d13dcbd493752e519bec627535ee1ce6f9d82c20f5b545a8d1564fbb58a6a`; retained until 2026-11-24. Artifact metadata verified; archive contents were not downloaded/independently inspected in this pass, so token absence inside the complete ZIP is NOT VERIFIED beyond the workflow's explicit pre-upload token checks.
 - Earlier runner attempt [44080611186](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44080611186) was cancelled when the workflow was revised; it is not qualification evidence.
-- Previous FCC install/runtime proof [44076256742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256742) remains successful on the earlier PR #116 head `596c03e19b4662f69a9b40791299f55afb9a928e`; it proves only install and loopback lifecycle, not this synthetic bridge.
+- Previous FCC install/runtime proof [44076256742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256742) remains successful on earlier PR #116 head `596c03e19b4662f69a9b40791299f55afb9a928e`; it proves install and loopback lifecycle, not this bridge.
 
-Do not mark Issue #119 complete until run 44080654490 and its bridge step are SUCCESS and its artifact is checked for token absence.
+Issue #119 has a successful synthetic handoff qualification slice. Do not equate this with real Claude task execution, provider route qualification, or production readiness.
 
 ## 6. Four Gemini roles for this /next
 
