@@ -75,7 +75,7 @@ Separate MediaHub OS map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/medi
 
 The implementation baseline is now linked across:
 - Owner architecture blob: `d0019528b3c233e3f450909b1ab5752d041d6f79`.
-- Implementation roadmap blob: `e8e36bf3d2c2efe456a4e3cbe058e176a87bf4cc`.
+- Implementation roadmap blob: `5464f6621b58c45c864aaf33bfbd007bebb26fc2`.
 - Context Window blob is maintained on the same documentation branch; read the latest version from PR #113.
 - Master continuation prompt blob: `03a7404ce403ad7d44c7d66832d9655a599d2f8c` (unchanged in this pass).
 - All are on documentation PR #113 branch only; default branch is unchanged.
@@ -142,6 +142,6 @@ No production dispatch, provider call, secret read, deployment, merge, or Contou
 
 Latest report file blob: `6c3d332e486e975b1a09fa8bafe681eacdb49ab6`.
 Latest Context Window blob: `71629e5c67051c9a07dd39a04b3253d200eb4a59`.
-Latest roadmap blob: `e8e36bf3d2c2efe456a4e3cbe058e176a87bf4cc`.
+Latest roadmap blob: `5464f6621b58c45c864aaf33bfbd007bebb26fc2`.
 
 Next bounded implementation task: [Issue #117 — loopback-only FCC runtime health and lifecycle smoke](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117). No provider credentials or provider calls are allowed in that slice.
