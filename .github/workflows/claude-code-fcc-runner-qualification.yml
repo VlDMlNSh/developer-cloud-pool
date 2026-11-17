@@ -28,8 +28,8 @@ jobs:
     steps:
       - name: Checkout pool source without persisted credentials
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
       - name: Test Cloud Pool child environment allowlist
