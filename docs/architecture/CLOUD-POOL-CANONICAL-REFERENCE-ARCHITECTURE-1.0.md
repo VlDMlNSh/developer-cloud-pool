@@ -157,9 +157,13 @@ Second CODE profile is quota-gated and deferred. MEDIA is deferred until remote 
 
 - Initial UI: static responsive PWA with authenticated GitHub-native task/status workflow, approval prompts, run/PR/artifact links and evidence display.
 - No privileged client-side secrets. All privileged actions pass through A0.
-- Persistent engineering workspace, VS Code Remote SSH, code-server/Open VSX, Cloudflare Tunnel/Access and server #3 are later optional extensions, not initial dependencies.
-- Current inventory recorded in the workspace integration record: no qualified active server #3, no Cloudflare zone/tunnel and Access not enabled. Do not claim deployment until fresh inventory and qualification evidence exists.
-- If later authorized: one authoritative filesystem; browser IDE and desktop VS Code attach to the same host; separate branch/worktree per attempt; code-server authentication retained and loopback-bound; SSH host keys verified; Cloudflare JWT verified at origin; internal A0 capabilities still enforced; no public SSH or raw model endpoint.
+- The persistent Engineering Workspace is part of the final Contour A acceptance target, but it is staged after the first secure CODE executor and integrated A0/D1 gates. It is not a prerequisite for the first GitHub-hosted ephemeral runner smoke.
+- Target workspace: one authoritative filesystem exposed to official VS Code Desktop via Remote SSH and browser code-server/Open VSX behind Cloudflare Access/Tunnel. Jarvis remains the only user-facing control plane; workspace IDEs are execution surfaces, not alternate authorities.
+- Browser and desktop clients attach to the same filesystem. Every task/agent gets a separate branch/worktree and single-writer lease with expiry and monotonic fencing; concurrent writes to one worktree are prohibited.
+- Server #3 is NOT RUN until exact SentinelX identity, authorization, capabilities, resources, persistent storage, network, allowlist and free-cost boundary are verified. The workspace integration record currently reports no qualified active server #3.
+- Cloudflare is BLOCKED until zone, Tunnel, Access IdP/policy, origin JWT validation, WebSocket path and cost ceiling are qualified. Do not expose raw SSH, code-server or model endpoints publicly.
+- Claude Code on server #3 is distinct from GitHub-hosted installation evidence and requires its own host, free-route and quota qualification.
+- Workspace acceptance includes phone/desktop authentication, shared filesystem, Git, SSH, WebSockets, lease/fencing, isolation, restart, encrypted backup/restore, audit and independent A3 evidence.
 
 ## 6. Optional profile registry
 
@@ -244,7 +248,7 @@ Installation smoke, mock bridge, static UI or successful CI alone never constitu
 4. Integrate first Claude Code task worker with exact SHA, minimal environment and no paid fallback.
 5. Deliver static GitHub-hosted Jarvis PWA and authenticated GitHub-native task/status flow.
 6. Complete bounded end-to-end task, cancellation/recovery, A3 verification and Contour A acceptance.
-7. Only after Contour A ACCEPTED: optional workspace/server #3, Gemini, Codex, MEDIA and Contour B in separate gates.
+7. After first CODE and A0/D1 gates, qualify and deliver the persistent Engineering Workspace/server #3, Cloudflare Access/Tunnel, shared filesystem, leases/fencing and backup/restore as required final Contour A scope. Then complete end-to-end A3 review and formally ACCEPT Contour A. Only after that may Contour B begin; Gemini, Codex and MEDIA remain separately gated supplementary profiles.
 
 Routine /next passes execute this order. Architecture selection is closed unless a test, security finding or acceptance failure proves a bounded correction is required.
 
