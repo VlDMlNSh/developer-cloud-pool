@@ -81,3 +81,13 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - PR #113 is an older parallel docs candidate and remains OPEN/DRAFT; its content is not merged and is not assumed automatically included in PR #120.
 - No secrets/provider calls/Gemini dispatch/host deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: read back all amended files, independently review PR #116 at exact head, validate PR #120 links/contracts and obtain architecture/security review. Keep dispatch disabled.
+
+
+## /next checkpoint — FCC identity/fallback review — 2026-11-17
+
+- PR #116 exact head `6d4a4c518d44aa4a79d8396390623f424499011a`; exact-head runner run 44086419084 SUCCESS (14/14 steps); workflow/security run 44086419002 SUCCESS; artifact 14329776221 available.
+- Independent review comments 5938684495 (license provenance) and 5938737463 (FCC key cycling/model fallback) are COMMENT, not APPROVE.
+- New normative requirement: one credential/account per FCC profile; disable `MODEL_FALLBACKS`, numbered-key selection, key cycling and provider/paid fallback; separate profile and quota ledger for each distinct account. No real account/quota proof yet.
+- FCC pinned license AGPL-3.0-only; ECC MIT. Remote/network legal obligations require review before external deployment.
+- Issue #115 remains OPEN. No secrets/provider calls/real Claude session/Gemini dispatch/production deployment. Contour A NOT ACCEPTED.
+- PR #120 head at this checkpoint before these updates: `f016247a9886df904042000a26f17beabfbb8727`; OPEN/DRAFT/UNMERGED.
