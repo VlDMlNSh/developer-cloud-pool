@@ -79,3 +79,11 @@ Independent PR #116 review comments [5938684495](https://github.com/VlDMlNSh/dev
 ## Contour A Workspace acceptance clarification — 2026-11-17
 
 The first static GitHub-hosted Jarvis PWA remains a read-only launch milestone and must not depend on a physical host, paid service or unqualified Cloudflare deployment. This does **not** make persistent Engineering Workspace optional for the completed Cloud Pool. Workspace qualification (same durable filesystem from browser and desktop IDE, isolated task worktrees, single-writer fencing, identity/ingress controls, encrypted backup and independent restore) is a mandatory A7 exit gate before Contour A can be ACCEPTED. Issue #118 remains BLOCKED; no deployment is authorized by this clarification.
+
+
+## Exact-head review and architecture CI update — 2026-11-17
+
+- PR #116 current-head independent review comments 5938684495 and 5938737463 are COMMENT, not APPROVE. They record FCC/ECC license provenance and FCC multi-key/model fallback risk.
+- PR #120 exact head `30dbde9d136286af9bbc03dc58ec42e6a4939e5a`: Architecture Documentation Validation 44088152664 SUCCESS; Pool Contract Validation 44088150366 SUCCESS.
+- PR #113 closed unmerged as superseded by PR #120 after all 30 changed paths were preserved in PR #120; earlier Context Window archived verbatim.
+- PR #120 remains OPEN/DRAFT/UNMERGED; independent architecture/security review and default-branch acceptance remain outstanding.
