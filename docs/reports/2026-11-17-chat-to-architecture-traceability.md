@@ -10,7 +10,7 @@
 | First delivery GitHub-only, free, static/read-only PWA; no secrets in browser | §21.1; Issue #22 | PRESENT / launch boundary |
 | Later authenticated server-side API; UI never grants authority | §§3, 8, 21.1–21.2 | PRESENT / not deployed |
 | Persistent Engineering Workspace, distinct from ephemeral Actions runners | §§1, 10, 21.2 | PRESENT / BLOCKED |
-| Workspace mandatory before Contour A acceptance, but not required for first static PWA milestone | §§17, 21.1–21.4; ADR-0015 | PRESENT / corrected in this pass |
+| Workspace required for final Contour A acceptance, but not a first static PWA milestone dependency | §§17, 21.1–21.4; ADR-0015 | PRESENT |
 | Official VS Code Desktop + Remote SSH, verified host key, no public SSH | §21.3 | PRESENT / not qualified |
 | Browser code-server + Open VSX, auth on, loopback behind qualified ingress | §21.3 | PRESENT / not deployed |
 | Browser and desktop use same persistent filesystem | §21.3 | PRESENT / acceptance gate |
@@ -48,7 +48,7 @@
 
 ## Conclusion
 
-No chat-specific target requirement in the table was found missing from the consolidated architecture. One ambiguity was found and corrected: Workspace is a later staged capability but mandatory for final Contour A acceptance, not optional for the completed pool. The candidate branch is the only location containing these current amendments until PR #120 is independently reviewed and merged. No deployment, provider call, secret read, Gemini dispatch or Contour A acceptance occurred.
+No chat-specific target requirement in the table was found missing from the consolidated architecture. One ambiguity was found and corrected: Workspace is a later staged capability, not a first-launch dependency, but mandatory for final Contour A acceptance unless the owner explicitly re-scopes it. The candidate branch is the only location containing these current amendments until PR #120 is independently reviewed and merged. No deployment, provider call, secret read, Gemini dispatch or Contour A acceptance occurred.
 
 ## Historical artifact preservation check
 
