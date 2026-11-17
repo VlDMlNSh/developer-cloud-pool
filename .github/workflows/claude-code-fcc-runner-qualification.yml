@@ -360,11 +360,14 @@ jobs:
           wait "$server_pid"
           shutdown_status=$?
           set -e
+          if kill -0 "$server_pid" 2>/dev/null; then
+            echo "::error::FCC bridge server process remained after wait."
+            exit 1
+          fi
           server_pid=""
           test "$shutdown_status" -eq 0
           remaining_listener="$(ss -H -ltn "sport = :$port")"
           test -z "$remaining_listener"
-          ! pgrep -af "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" | grep -v grep
           printf '%s\n' \
             "fcc_bridge_shutdown=clean" \
             "fcc_bridge_process_exit_code=$shutdown_status" \
