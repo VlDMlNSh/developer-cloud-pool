@@ -10,6 +10,13 @@
 
 PR #120 already consolidated the system architecture, authority boundaries, persistence ownership, provider/account isolation, worker profiles, security baseline, Jarvis target and acceptance gates. This pass does not create a competing architecture. It adds a subordinate normative assurance document to close delivery and governance ambiguities: over-design risk, minimum end-to-end path, component proliferation, capacity semantics and measurable acceptance.
 
+## Additional 10/10 quality pass
+
+- Added [Independent 10/10 Architecture and Engineering Scorecard](../architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md), with criterion weights, evidence thresholds, hard caps and independent review protocol.
+- Linked the scorecard from the assurance addendum and README.
+- Prepended a current quality-bar snapshot to the GitHub Context Window.
+- This scorecard is an evaluation standard, not an assertion that the project already earns 10/10.
+
 ## Changes
 
 1. Added [Architecture Assurance Addendum](../architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md).
