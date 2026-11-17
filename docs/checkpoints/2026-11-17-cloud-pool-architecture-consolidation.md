@@ -91,3 +91,12 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - FCC pinned license AGPL-3.0-only; ECC MIT. Remote/network legal obligations require review before external deployment.
 - Issue #115 remains OPEN. No secrets/provider calls/real Claude session/Gemini dispatch/production deployment. Contour A NOT ACCEPTED.
 - PR #120 head at this checkpoint before these updates: `f016247a9886df904042000a26f17beabfbb8727`; OPEN/DRAFT/UNMERGED.
+
+
+## Traceability and Workspace acceptance reconciliation — 2026-11-17
+
+- Published traceability matrix at docs/reports/2026-11-17-chat-to-architecture-traceability.md.
+- Corrected canonical architecture and ADR-0015: persistent Workspace is a later staged milestone (not needed for first static GitHub PWA) but is mandatory before Contour A ACCEPTED.
+- Same browser/desktop filesystem, VS Code Remote SSH, code-server/Open VSX, per-task worktrees, single-writer fencing, qualified ingress and backup/restore remain Workspace acceptance conditions.
+- PR #120 remains OPEN/DRAFT/UNMERGED. No independent review, merge, deployment, provider call, secret read or Gemini dispatch.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
