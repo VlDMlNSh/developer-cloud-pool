@@ -1,3 +1,21 @@
+# /next — FCC loopback runtime evidence and current repository state — 2026-11-17 15:45 UTC
+
+**Latest reconciliation report:** [2026-11-17-next-fcc-runtime-and-state-reconciliation.md](../reports/2026-11-17-next-fcc-runtime-and-state-reconciliation.md)
+
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (unchanged).
+- Documentation branch before this update: `8786c0f9154c55d90ef3cc66afce245f84638481`.
+- PR #116: OPEN / DRAFT / UNMERGED; candidate head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`.
+- Exact-head runner qualification [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406): SUCCESS.
+- Exact-head Pool Contract Validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455): SUCCESS.
+- Issue #117 is CLOSED. FCC loopback lifecycle run [44076256742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44076256742) succeeded on historical exact head `596c03e19b4662f69a9b40791299f55afb9a928e`; do not conflate this with a later PR head.
+- PR #113 remains OPEN / DRAFT / UNMERGED; documentation branch changes are not accepted default-branch changes.
+- Issue #118 remains OPEN and BLOCKED / NOT RUN: no active authorized server #3; candidate host offline; Cloudflare zones/Tunnels absent and Access not enabled; persistent storage/backup/restore unproven.
+- Next: production runner hardening (trusted PATH ownership, HOME/XDG credential review, installer-byte integrity pinning, fail-closed egress policy); then one free FCC route/account/quota qualification under an approved contract; then production A0/D1 admission, lease/fencing, attempt ledger and recovery.
+- Real provider route/free entitlement/quota, runner-level egress, PATH/HOME integrity, production A0/D1, durable recovery, Jarvis PWA and workspace remain NOT VERIFIED as applicable.
+- `POOL_DISPATCH_ENABLED=false`; Gemini NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 # /next — Latest FCC allowlist PR head and review residuals — 2026-11-17
 
 Latest repository reconciliation after the synthetic environment pass:
