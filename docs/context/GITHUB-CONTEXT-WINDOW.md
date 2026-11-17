@@ -2,15 +2,31 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-17 — trusted GitHub Actions event adapter contract audit
+Last refreshed: 2026-11-17 — owner implementation baseline and first Claude Code/FCC/ECC runner revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (direct branch ref read-back, 2026-11-16)
+Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from repository commit history during /next, 2026-11-17; unchanged)
 Documentation continuation branch: `docs/next-2026-11-16-current-state-refresh`
 Latest daily report commit: `10aa4ccdc5e8b5e9031ce426fd3782f356f07fb0` (2026-11-17 report; documentation branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 ---
+
+> ## CURRENT OWNER BASELINE — 2026-11-17 (supersedes conflicting historical notes below)
+>
+> **Initial release:** one GitHub-hosted ephemeral CODE executor: Claude Code CLI + selected Everything Claude Code (ECC) toolkit + Free Claude Code (FCC) + one positively qualified free API route. No Anthropic API authentication. No secret-value reads. API-key presence, provider/account identity, route compatibility and remaining free quotas are NOT VERIFIED until safely evidenced.
+>
+> **Deferred capacity:** second CODE Claude Code profile only after measured first-profile daily use proves adequate verified free quota and runner capacity. MEDIA profile only after remote local-model video compute exists; it must use Claude Code + ECC + OmniRoute to the local model, with no API credentials and no external/paid fallback. Mac mini 2018 local inference is a future optional CODE route.
+>
+> **Optional components:** Codex/OpenAI, Gemini agents and other agents are not launch gates. The historical four-Gemini wave is optional, not a per-/next requirement. YouTube is a later connector, not a first-executor dependency.
+>
+> **Hosting boundary:** initial pool, Jarvis, orchestration and execution use GitHub-hosted infrastructure only. Jarvis starts as a static GitHub-hosted PWA with GitHub-native Issues/PRs/Actions navigation and status. GitHub Pages is static; Actions runners are ephemeral. No Cloudflare Worker, VPS, external always-on service, physical server or self-hosted runner is an initial dependency. Any feature that needs an always-on authenticated backend and cannot be implemented safely with GitHub-native primitives is BLOCKED, not silently moved to an external host.
+>
+> **Current implementation refs:** [Owner Architecture Freeze](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md) · [Implementation Roadmap](../roadmap/CLOUD-POOL-IMPLEMENTATION-ROADMAP-2026-11-17.md) · [Latest Checkpoint](../checkpoints/2026-11-17-next-claude-code-runner-installation.md).
+>
+> **Live state:** default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #116 latest head `7dcd58f73a87156c614ebf543c756ece6715762a` OPEN/DRAFT/UNMERGED; qualification run `44069573932` and contract run `44069573866` PENDING at last read. Previous run `44066723324` was CANCELLED after a source-backed workflow correction. No installation qualification, provider route, dispatch, Jarvis deployment or Contour A acceptance is claimed.
+>
+> Older Cloudflare/Hono hosting proposals, server-3 executor directions and mandatory four-Gemini-wave instructions remain historical only where they conflict with this baseline. Historical IDs and evidence are retained; do not treat unmerged drafts as accepted implementation.
 
 ## 1. Project objective, scope and priority order
 
@@ -80,6 +96,8 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 
 ## 5. Remote web console (primary Contour A user surface)
 
+> **Owner hosting correction — 2026-11-17:** Cloudflare Workers/Hono is historical candidate research only for the initial contour. The launch boundary is GitHub-hosted static PWA plus GitHub-native primitives. No external always-on API host is allowed as a launch dependency. See the Current Owner Baseline above and Issue #22 amendment.
+
 Controlling issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/22
 
 ### Existing UI and hosting direction
@@ -140,6 +158,8 @@ Controlling issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
 
 ## 8. Agent executors and orchestration policy
 
+> **Superseded by the 2026-11-17 owner freeze:** old mandatory Gemini, MediaHub-controller and server-3 executor notes in this section are historical. Cloud Pool starts with one GitHub-hosted Claude Code + ECC + FCC CODE profile; Gemini is optional and MediaHub's controller is not Cloud Pool dispatch authority. MEDIA is deferred and local-model-only with no API credentials.
+
 - Use free routes only; no paid fallback. GitHub is the cloud development/orchestration environment; physical servers are only for explicitly permitted local compute.
 - Gemini must be invoked exclusively through the approved `.github/workflows/gemini-batch-dispatch-controller.yml` in MediaHub OS. Before dispatch, verify controller contract, exact-main CI, secret/variable scope metadata without values, effective governance, security review and trusted-main no-secret probe. If any gate is missing, status is NOT RUN/BLOCKED. Do not bypass the controller or claim an individual assignment unless it was actually delivered.
 - Prefer three independent roles where the approved controller supports them: Agent 1 research/implementation; Agent 2 contract/test review; Agent 3 security, authority and provenance audit. Record immutable target SHA, controller run ID, child run/job IDs, terminal statuses, reports/artifact digests and verification.
@@ -149,6 +169,8 @@ Controlling issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
 - A ChatGPT /next message is not a GitHub event and is not proof of agent dispatch.
 
 ## 9. Cloudflare / hosting / persistence
+
+> **Superseded for initial deployment by the 2026-11-17 owner freeze:** Cloudflare Workers/D1 and any external always-on host are not part of the initial GitHub-only contour. The notes below are retained as historical research and do not authorize deployment.
 
 - Candidate: Cloudflare Workers Static Assets + Hono; not yet deployed.
 - Namespace `jarvis-developer-cloud-pool.workers.dev` was provisioned and previously read back.
@@ -160,7 +182,7 @@ Controlling issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/26
 
 ## 10. Open work inventory — PRs and issues
 
-All listed PR states were refreshed on 2026-11-06. Refresh before each subsequent action.
+The table below is historical inventory from 2026-11-06, not current state. Current relevant refs re-read on 2026-11-17: PR #113 (documentation freeze), #116 (first Claude Code runner proof), #114 (local D1 admission proof), #112 (read-only owner event proof), and #111 (local D1 lease proof). Refresh exact heads, reviews and CI before acting. Old candidate PRs are not automatically part of the launch path.
 
 | PR | Scope | Current state / ref |
 |---|---|---|
@@ -235,16 +257,33 @@ At the beginning of every /next:
 9. Record actual status using PLANNED, DISPATCHED, RUNNING, SUCCEEDED, VERIFIED, QUALIFIED, ACCEPTED, NOT RUN, BLOCKED, FAILED, NOT VERIFIED.
 10. End with factual status, evidence links, blockers and the next concrete step.
 
-## 14. Current next step
+## 14. Current next step — first Claude Code runner proof
 
-**Next engineering step:** implement a fixed-origin, read-only GitHub REST adapter as a bounded synthetic proof on top of the Hono web console. Cover repository allowlisting, strict API origin/redirect rules, bounded pagination and response size, ETag/cache behavior, timeout/rate-limit handling, and response minimization. Use synthetic fixtures only; no live GitHub token, no real OAuth session, no task dispatch, no provider calls. Keep adapter unmounted from protected routes until production OAuth/session and independent security review pass.
+**Current exact implementation candidate**
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 latest head: `7dcd58f73a87156c614ebf543c756ece6715762a`; OPEN / DRAFT / UNMERGED.
+- Workflow blob: `7c3133f7916e53c12385af13a01276a59419c581`.
+- Runner qualification run `44069573932`: PENDING at last read.
+- Pool Contract Validation run `44069573866`: PENDING at last read.
+- Previous runner run `44066723324` on prior head was CANCELLED after the workflow correction; do not claim installation success.
+- Previous contract run `44066723253` passed only on the prior head and observed `POOL_DISPATCH_ENABLED=false` at 10:38:50 UTC.
 
-In parallel, re-read Cloudflare entitlement through available read-only integration and verify the exact free-tier hosting constraints without payment changes. Do not deploy.
+**Latest workflow correction**
+- Claude Code uses the official native installer pinned to version `2.1.325`.
+- FCC source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; Python `3.14.10`; exact `pyproject.toml` and `uv.lock` Git blob hashes are verified before installation.
+- FCC uses `uv sync --frozen --no-dev --python 3.14.10`.
+- Source audit found `fcc-server --help` starts the server; only `--version` is metadata-only. The corrected workflow does not start FCC.
+- ECC pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`; only three selected skills are installed.
+- A bounded provenance/resource artifact is uploaded with a pinned action. No GitHub Secrets are read, no provider calls are made, and no production dispatch is enabled.
 
-**Contour A status: NOT ACCEPTED.** Do not start Contour B.
+**Next actions**
+1. Read exact-head run 44069573932 and contract run 44069573866.
+2. Inspect complete job logs and download/verify the evidence artifact and SHA-256 manifest.
+3. Fix only failures evidenced by those logs; keep PR #116 Draft and obtain independent review.
+4. After installation proof passes, qualify FCC retry/fallback policy and one free provider route without exposing secret values.
+5. Then integrate A0 admission/lease/worker identity and deliver the GitHub-only Jarvis static PWA/read-only surface according to the implementation roadmap.
 
----
-
+**Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.**
 ## Canonical navigation links
 
 - This unified context window: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cross-chat-continuation-2026-11-06/docs/context/GITHUB-CONTEXT-WINDOW.md
