@@ -139,3 +139,15 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Formalized three planes, Task Orchestrator, Agent Registry, Resource Manager, Quality Gate, dynamic logical roles, executor adapter contract, four memory layers, Agent Observability, six UI areas and autonomy/approval matrix.
 - Existing A0, single transactional state authority, fenced lease, Gemini controller-only dispatch, account/quota isolation, secret boundary and independent acceptance remain unchanged.
 - Documentation-only; no runtime, provider call, secret read, Gemini dispatch, deployment, merge or Contour A acceptance. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## /next checkpoint — runner PATH and HOME/XDG isolation — 2026-11-17
+
+- PR #116 candidate head: `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`.
+- Source/test/workflow changed: resolved PATH ownership and write-mode validation; private HOME/XDG confinement; dedicated isolated FCC runtime and bridge homes; eight adversarial environment tests.
+- Local unit tests: 8/8 PASS.
+- Exact-head Pool Contract Validation `44091902882`: SUCCESS.
+- Exact-head runner qualification `44091902840`: FAILED at FCC loopback startup step 8. Exact failure diagnostic NOT VERIFIED through current GitHub read interface. Do not claim successful FCC runtime after this change.
+- No secrets/provider calls/Gemini dispatch/merge/deployment. Default-branch Gemini controller file absent. `POOL_DISPATCH_ENABLED=false` remains mandatory.
+- Next: retrieve failing step annotations/logs, correct only evidence-backed cause, rerun exact-head CI.
+- Full report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.

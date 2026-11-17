@@ -2396,3 +2396,18 @@ The first GitHub-only static PWA milestone can precede Workspace. However, the o
 - No new service is implemented or qualified by this document. A0 admission, one transactional state authority, fenced leases, account-isolated quota, approved controller, worker isolation and independent acceptance remain binding.
 - Documentation-only: no secrets read, provider calls, Gemini dispatch, host deployment, dispatch enablement, merge or runtime change. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Exact branch head and exact-head CI must be re-read after publication; older CI evidence is superseded by the new commit.
+
+## /next — runner PATH and HOME/XDG hardening — 2026-11-17
+
+- Owner baseline and roadmap were re-read. Current first priority is the first GitHub-hosted Claude Code + ECC + FCC CODE profile; stale historical pointers prioritizing Gemini lease work are superseded. Gemini is optional supplementary capability; default-branch controller `.github/workflows/gemini-batch-dispatch-controller.yml` is absent, so Gemini dispatch NOT RUN.
+- PR #116 branch `feat/claude-code-fcc-runner-qualification-2026-11-17` advanced from `6d4a4c518d44aa4a79d8396390623f424499011a` to `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`.
+- Changed `exec_allowlist.py` to validate resolved PATH directories/ownership/write permissions, reject duplicate canonical PATH entries, require private current-user HOME and private XDG directories confined within HOME. Added 8 unit tests; isolated local unittest run 8/8 PASS. Workflow uses isolated FCC runtime and bridge HOME/XDG trees and a constructed PATH.
+- Exact head `846fd556b8726cc88b4fead7f071a8a002f464e9`: Pool Contract Validation `44091723935` SUCCESS; runner qualification `44091723923` FAILED at FCC loopback startup step 8. Duplicate `/bin`/ `/usr/bin` canonical PATH alias was corrected.
+- Latest exact head `caa4a9b80f598d08087a6fd5bedfb7d90c08e5bc`: Pool Contract Validation `44091902882` SUCCESS; runner qualification `44091902840` FAILED again at step 8. Earlier steps (unit tests, Claude install, uv and FCC install) succeeded; bridge/ECC skipped. Failing stderr/annotations not available in current connector reads; exact cause NOT VERIFIED. Do not claim runner qualification.
+- Active ruleset #26550182 requires PR and review-thread resolution, but 0 required approvals and no required checks. PR #116 and PR #120 remain OPEN/DRAFT/UNMERGED; reviews recorded are owner-authored comments, not independent approvals.
+- No secret values read/injected, provider calls, Claude agent task, Gemini dispatch, paid fallback, deployment or merge. FCC remains loopback-only; egress firewall, installer-byte integrity, FCC single-account/no-fallback, free route/quota and AGPL network-use review remain open.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-17-next-runner-path-home-isolation.md](../reports/2026-11-17-next-runner-path-home-isolation.md).
+- Next: retrieve failing step annotations/logs for run 44091902840, identify evidenced cause, make one narrow correction, rerun exact-head CI. Keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
