@@ -202,8 +202,8 @@ These are deliberately explicit; architecture completeness does not mean these p
 | Item | Status | Required evidence / resolution |
 |---|---|---|
 | PR #120 architecture consolidation | OPEN / DRAFT / UNMERGED; head `6b53bbac6c566d4dfe8ddf290eee772d465e07a5` | Independent review, exact-head CI, merge under governance |
-| PR #124 unified realization integration | OPEN / DRAFT / UNMERGED; head `39388657bc145bf4eb21fb69dc3c781dcf7d5a02`; prior parent-aligned head validation SUCCESS, latest sync pending | Independent review, pool contract/security check as applicable, governance-qualified merge |
-| Default ruleset | Earlier read observed zero required approvals and no required checks; current rules must be re-read | Effective independent approval and exact-head required checks |
+| PR #124 unified realization integration | OPEN / DRAFT / UNMERGED; head `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; Architecture Documentation Validation run `44094271623` SUCCESS | Independent review, pool contract/security check as applicable, governance-qualified merge |
+| Default ruleset | Live ruleset `26550182` is ACTIVE on `refs/heads/Основной`, requires PR and review-thread resolution, but has 0 required approvals and no required status checks | Effective independent approval and exact-head required checks |
 | Hosted transactional state | NOT QUALIFIED | One selected service, identity, free-tier, concurrency, restore and security evidence |
 | Durable supervisor | NOT QUALIFIED | Hosted fenced lease, outbox/inbox, recovery and adversarial evidence |
 | Provider route | NOT QUALIFIED | Real free account, issuer, quota, cost cap and no-fallback proof |
