@@ -45,6 +45,12 @@ The same candidate includes the Architecture Assurance Addendum and Independent 
 - Ruleset `26550182` active, but 0 required approvals and no required status checks; critical governance blocker.
 - PR #122/#123 closed as superseded; PR #116 latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`, exact-head CI NOT VERIFIED.
 
+## Final exact-head state
+- PR #124 head `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; base PR #120 head `baa2223bd44250edf0e8469247910051f4625955`; 38 ahead / 0 behind; mergeable=true.
+- Architecture Documentation Validation [44094563351](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094563351): SUCCESS on exact head.
+- Ruleset `26550182` has 0 required approvals and no required status checks; governance blocker.
+- PR #122/#123 CLOSED as superseded. PR #116 latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`, exact-head CI NOT VERIFIED.
+
 ## Blockers
 Jarvis authenticated deployment, hosted transactional authority, trusted admission, durable Supervisor/recovery, real free provider route, persistent Workspace/restore, effective governance and independent review remain NOT VERIFIED/BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
 
