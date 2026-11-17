@@ -31,11 +31,16 @@
 - Authenticated Jarvis, hosted transactional state, durable Supervisor and a real free provider route remain NOT QUALIFIED.
 - Governance ruleset was last observed without required approvals or status checks; exact re-read required.
 
+## Pull request
+
+- PR #123: https://github.com/VlDMlNSh/developer-cloud-pool/pull/123 — OPEN / DRAFT / UNMERGED; head `d0757ec995a57ce30d68960650ced2826d7b46ab`; base PR #120 branch at `35b47e0e0fd576dc0552934f733548a05cbcb435`; mergeable=true at read.
+- Compare: 8 commits ahead, 0 behind; 8 changed files.
+
 ## Verification status
 
 - Runtime tests: NOT RUN (documentation-only).
 - Local documentation validator: NOT RUN.
-- New branch exact-head CI: NOT VERIFIED.
+- New branch exact-head CI: NOT VERIFIED (zero status contexts and zero PR workflow runs returned at read).
 - Independent review: NOT RUN.
 - Secret reads/provider calls/dispatch/deployment/merge: NOT RUN.
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED.
