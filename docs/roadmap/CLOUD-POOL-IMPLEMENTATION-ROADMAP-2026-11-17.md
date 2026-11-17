@@ -207,3 +207,10 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 **Next implementation slice:** separate loopback-only FCC runtime/health/start-stop smoke with no provider credentials or provider calls; then a synthetic FCC-to-Claude CLI bridge test. Only after those pass should the first real free API route be qualified.
 
 **Contour A:** BLOCKED / NOT ACCEPTED. **Contour B:** DEFERRED.
+
+## Next bounded implementation issue
+
+- [Issue #117 — loopback-only FCC runtime health and lifecycle smoke](https://github.com/VlDMlNSh/developer-cloud-pool/issues/117) is the next implementation slice.
+- It starts FCC intentionally only on 127.0.0.1, uses a source-verified read-only health/readiness endpoint, checks listeners and clean shutdown, and makes no provider calls or secret reads.
+- No FCC Claude launcher, Claude session, completion endpoint, model route, external hosting or production dispatch is in scope.
+- After #117 passes, the next slice is a synthetic FCC-to-Claude CLI bridge test; real free-provider routing follows only after these no-secret runtime checks.
