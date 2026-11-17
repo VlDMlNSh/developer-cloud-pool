@@ -584,6 +584,8 @@ The first bounded CODE profile is installed and lifecycle-smoked on a standard G
 - Four credential slots or four key names do not prove four distinct Google accounts or independent quotas. Preserve opaque account identity and quota-domain evidence per credential. Do not mix quotas or silently fail over.
 - No Gemini dispatch occurred in this pass; production dispatch remains disabled and NOT RUN. Do not run agents just to satisfy a historical four-agent wording.
 
+- **Copilot:** optional adapter only; not part of the first CODE profile. Require verified free entitlement, explicit account/permission scope and spend controls before enabling; no paid fallback.
+
 ### 21.7 Explicit exclusions and status boundary
 
 - Cloud Pool is the only repository being developed in Contour A. MediaHub OS is a separate consumer/product repository; no Contour B implementation is authorized before Contour A acceptance.
