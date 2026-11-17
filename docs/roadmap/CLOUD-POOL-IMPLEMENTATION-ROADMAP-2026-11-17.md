@@ -292,3 +292,16 @@ Engineering Workspace is part of the final Contour A target, not a separate Medi
 - Workspace acceptance covers phone/desktop auth, shared filesystem, Git, SSH, WebSockets, lease/fencing, isolation, restart, encrypted backup/restore, audit and independent A3 evidence.
 
 Ordered delivery: (1) synthetic no-secret Claude/FCC bridge and independent runner review; (2) qualify free route/account/quota and integrated A0/D1/lease/fencing/recovery; (3) qualify host #3, Cloudflare, persistence and backup/restore; (4) install/qualify browser code-server and desktop Remote SSH on the same workspace; (5) integrate links/status into Jarvis and independently accept. This supersedes earlier wording that treated the workspace as permanently optional or outside Contour A; it does not weaken first CODE/A0/D1 gates or claim deployment.
+
+
+## 9. Latest status reconciliation — 2026-11-17
+
+- The synthetic Claude Code + ECC + FCC installation and mock-only CLI bridge are now qualified on PR #116 exact head `367c583a508061cebe41bb8d33e98c24a0dd8ba6`: qualification [44083961406](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406) SUCCESS; contract validation [44083961455](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961455) SUCCESS; artifact [14329030788](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44083961406/artifacts/14329030788) available.
+- Independent review [5938432852](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5938432852) is COMMENTED, not APPROVED. It does not qualify a real Claude session, provider route, free account or quota.
+- Issue #119 is CLOSED for the mock-only bridge objective. Issue #115 remains OPEN for remaining source/license provenance and real free-route/account/quota qualification.
+- Gemini is optional supplementary capability, not a mandatory every-/next dispatch or Contour A launch gate; this supersedes earlier roadmap text requiring four children per /next. All Gemini use remains controller-only after qualification. `POOL_DISPATCH_ENABLED=false`.
+- PR #116 and PR #113 remain OPEN/DRAFT/UNMERGED. Documentation changes are on the docs candidate branch and have not yet been accepted into default branch `Основной`.
+- Engineering Workspace remains part of the final Contour A target, staged behind A0/D1 and real free-route gates. Issue #118 host, Cloudflare and persistence blockers remain open.
+- No secrets read, real provider calls, Gemini dispatch, persistent deployment or merge occurred. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Next: qualify one real free provider route and account/quota identity under A0/D1, while preserving fail-closed dispatch. Then return to Workspace host/access/storage gates.
