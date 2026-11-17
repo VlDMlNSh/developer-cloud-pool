@@ -1,6 +1,9 @@
 name: Architecture Documentation Validation
 
 on:
+  push:
+    branches:
+      - "docs/unified-realization-integration-2026-11-17"
   pull_request:
     branches:
       - "Основной"
