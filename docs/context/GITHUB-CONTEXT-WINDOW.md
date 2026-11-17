@@ -2,17 +2,17 @@
 
 ## CURRENT RECONCILED SNAPSHOT — 2026-11-17
 
-This block is authoritative over older dated snapshots below. Historical sections are retained for provenance; re-read live refs before every engineering pass. The snapshot records the branch head immediately before the Context Window refresh commit; the refresh itself advances the branch by one commit.
+This block is authoritative over older dated snapshots below. It records the exact branch state immediately before this Context Window refresh commit; the refresh itself advances the integration branch. Always re-read the live branch ref first.
 
 - Repository: `VlDMlNSh/developer-cloud-pool`; default branch `Основной`; default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN/DRAFT/UNMERGED; head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true; base default HEAD above.
-- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head immediately before this context refresh `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; mergeable=true; compare 33 commits ahead / 0 behind. Includes realization map, assurance addendum, scorecard, reference/README links, validator/workflow, report and checkpoint.
-- Exact-head Architecture Documentation Validation run [44094271623](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094271623) SUCCESS on `9cc43cd1e1eb5a942aeebb9df0a9265c9095a6f4`; job `134077142746`. Pool Contract Validation not observed for this documentation-only head.
-- PR #122 and #123 are CLOSED as superseded after their substantive content was migrated into PR #124; their branch/review histories remain available.
-- PR #116: OPEN/DRAFT; current head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; earlier no-secret install/FCC loopback proof does not establish a real Claude task or free provider route. Exact-head status at this latest SHA NOT VERIFIED.
-- Ruleset `26550182` is ACTIVE on `refs/heads/Основной`, with PR required and review-thread resolution required, but 0 required approving reviews and no required status checks; no bypass actors. Governance is insufficient for critical architecture/security acceptance.
+- PR #120: OPEN/DRAFT/UNMERGED; head `baa2223bd44250edf0e8469247910051f4625955`; mergeable=true.
+- PR #124: OPEN/DRAFT/UNMERGED; base SHA exactly `baa2223bd44250edf0e8469247910051f4625955`; head immediately before this context refresh `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; mergeable=true; compare 38 commits ahead / 0 behind. Includes realization map, assurance addendum, scorecard, reference/README links, validator/workflow, report and checkpoint.
+- Exact-head Architecture Documentation Validation run [44094563351](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44094563351) SUCCESS on `81ff6a8df26cd6bca40d08d49ae66038db34ad2d`; job `134078171916`. Pool Contract Validation was not observed for this documentation-only head.
+- PR #122 and #123 are CLOSED / UNMERGED as superseded after substantive content migration into PR #124; their branches and review histories remain available.
+- PR #116: OPEN/DRAFT; latest head `d93e75df74e7213f96dc3e2cb335a73dc6710e19`; earlier no-secret install/FCC loopback proof does not establish real Claude task execution or a free provider route; exact-head status NOT VERIFIED.
+- Ruleset `26550182` ACTIVE on `refs/heads/Основной`; PR and review-thread resolution required, but required approving reviews = 0 and required status checks = none; no bypass actors. This is insufficient governance for critical architecture/security acceptance.
 - Architecture direction: one Jarvis app; modular-monolith Control Plane; one canonical task route; one transactional operational-state authority; separate project/workspace and immutable evidence domains; ephemeral Actions workers separate from persistent Workspace; capability-based scheduler; mature upstream tools only after qualification; no paid fallback; Gemini controller-only.
-- Execution status: authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
+- Authenticated Jarvis, hosted transactional state, trusted production admission, durable Supervisor/recovery, real free provider route and persistent Workspace remain NOT VERIFIED/BLOCKED.
 - Contour A NOT ACCEPTED. Contour B DEFERRED. No secrets read, provider calls, Gemini dispatch, production dispatch, deployment or merge in this pass.
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
