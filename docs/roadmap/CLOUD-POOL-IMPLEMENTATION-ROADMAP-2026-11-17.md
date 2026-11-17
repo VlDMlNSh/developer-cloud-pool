@@ -47,19 +47,23 @@ The following are deferred:
 
 ### Phase 1 — first CODE runtime installation proof
 
-**Status:** RUNNING.
+**Status:** PENDING / NOT VERIFIED on the latest candidate head. One superseded attempt was cancelled.
 
-- PR #116, branch feat/claude-code-fcc-runner-qualification-2026-11-17.
-- Exact head: c5c14f6a11782e5787a38b1edd5e7983f15bf2e2.
-- Workflow run: [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324).
-- Runner: ubuntu-24.04; permissions: contents: read; no GitHub Secret references; no provider calls.
-- Pins currently used for the feasibility proof: Claude Code CLI 2.1.325; FCC eb92e4c07af0d6ad8881dce1cd958c3d072c27c5; ECC e413166c50e85fb205b988b5e78874b5a88ea4d2.
-- FCC upstream requires Python exactly 3.14.10, uses AGPL-3.0-only and declares multiple provider adapters. Its pinned uv.lock blob is ee8490c29a36f8302f5c1f1d42b465f6271c10f2 (421,543 bytes); use the lockfile with uv sync --frozen --no-dev for a reproducible runtime proof rather than an unlocked dependency resolution. ECC is MIT. License notices must be retained.
-- Selected ECC modules only: search-first, tdd-workflow, security-review. Do not install every hook/MCP/skill by default.
-- Measure baseline and post-install disk, memory where practical, installation sizes, versions, startup, and cleanup. Add a provenance manifest and bounded evidence artifact.
-- Verify the current supported Claude Code installation method before production use; the npm package path is only a pinned compatibility probe, not a final installation decision.
+- PR #116: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116
+- Branch: `feat/claude-code-fcc-runner-qualification-2026-11-17`.
+- Latest exact head: `7dcd58f73a87156c614ebf543c756ece6715762a`.
+- Workflow file blob: `7c3133f7916e53c12385af13a01276a59419c581`.
+- Latest workflow run: [44069573932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573932), PENDING at last read.
+- Latest Pool Contract Validation run: [44069573866](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44069573866), PENDING at last read.
+- Superseded run [44066723324](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44066723324) on prior head `c5c14f6a11782e5787a38b1edd5e7983f15bf2e2` was CANCELLED after the workflow branch was updated. It did not qualify installation.
+- The prior Pool Contract Validation run `44066723253` succeeded on the old head only; it is not exact-head evidence for the latest workflow revision.
+- Latest workflow uses the official Claude Code native installer pinned to `2.1.325`, pinned FCC source commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`, exact FCC `pyproject.toml` Git blob `5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b`, and exact `uv.lock` Git blob `ee8490c29a36f8302f5c1f1d42b465f6271c10f2`.
+- FCC installation now uses `uv sync --frozen --no-dev --python 3.14.10` from the pinned checkout, avoiding unlocked dependency resolution. ECC remains pinned to `e413166c50e85fb205b988b5e78874b5a88ea4d2`, with only `search-first`, `tdd-workflow`, and `security-review` copied.
+- Source inspection found that FCC's `fcc-server --help` does not print help: the server entrypoint starts the server unless `--version` is supplied. The latest workflow uses `fcc-server --version` and `fcc-doctor --version` for metadata-only checks; it does not start FCC.
+- The workflow creates a bounded provenance/resource artifact and SHA-256 inventory, keeps `contents: read`, reads no GitHub Secrets, makes no provider calls, and does not dispatch an agent task.
+- A previous Pool Contract Validation run on old head `c5c14f6...` passed static YAML and security-contract checks and observed `POOL_DISPATCH_ENABLED=false` at 2026-11-17 10:38:50 UTC. This is timestamped evidence, not a permanent current-state guarantee.
 
-**Exit:** exact-head CI passes; all three components install reproducibly; resource headroom is measured; artifact digests and job provenance are available; no secrets/provider calls; independent review passes. This proves installation only, not model-route health.
+**Exit:** latest exact-head runner run succeeds; full job logs show reproducible installs and resource headroom; artifact and digests are read back; no provider calls or secret access; independent review passes. This proves installation only, not model-route health or quota.
 
 ### Phase 2 — FCC security and routing policy qualification
 
@@ -164,10 +168,11 @@ Until every criterion is independently verified, Contour A is NOT ACCEPTED and C
 
 - Default branch Основной HEAD: 35208f0ef28f0ac031a7acdf35fc90ccc9b16845.
 - Documentation PR #113: OPEN / DRAFT / UNMERGED; head ce90cf7a1394ec1bc45ac5951b4712177333fce9.
-- First executor PR #116: OPEN / DRAFT / UNMERGED; head c5c14f6a11782e5787a38b1edd5e7983f15bf2e2.
-- Workflow run #44066723324 was observed RUNNING. At last step read, checkout, runner baseline, Claude Code CLI install and uv install succeeded; FCC installation was in progress; ECC and final checks were pending.
-- No artifact was yet listed for run #44066723324. No provider call or secret access occurred.
-- Pool Contract Validation run 44066723253 / job 133982176620 completed SUCCESS on #116 exact head; its log parsed all six workflow YAML files, passed the pool contract validator, and observed POOL_DISPATCH_ENABLED=false. The runner installation workflow run 44066723324 remains RUNNING.
+- First executor PR #116: OPEN / DRAFT / UNMERGED; latest head 7dcd58f73a87156c614ebf543c756ece6715762a.
+- Latest runner qualification run 44069573932 and latest Pool Contract Validation run 44069573866 are PENDING at last read; exact-head results NOT VERIFIED.
+- Superseded runner run 44066723324 was CANCELLED after the workflow was corrected; it is not an install pass.
+- Previous contract run 44066723253 succeeded only on the superseded head c5c14f6a11782e5787a38b1edd5e7983f15bf2e2. Its timestamped log observed POOL_DISPATCH_ENABLED=false at 10:38:50 UTC.
+- Latest workflow now uses official pinned Claude Code native install, FCC locked dependency sync, metadata-only FCC version checks, selected ECC skills and a bounded evidence artifact. No secret values or provider calls were used.
 - Active ruleset #26550182: PR required, zero approvals, no bypass actors, no required status contexts.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
