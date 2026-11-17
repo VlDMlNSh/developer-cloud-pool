@@ -49,3 +49,7 @@
 ## Conclusion
 
 No chat-specific target requirement in the table was found missing from the consolidated architecture. One ambiguity was found and corrected: Workspace is a later staged capability but mandatory for final Contour A acceptance, not optional for the completed pool. The candidate branch is the only location containing these current amendments until PR #120 is independently reviewed and merged. No deployment, provider call, secret read, Gemini dispatch or Contour A acceptance occurred.
+
+## Historical artifact preservation check
+
+The PR #120 candidate branch also contains the earlier chat-session Engineering Workspace report, PR #116 independent mock bridge review report, runner checkpoint, owner architecture freeze and Workspace integration record. The detailed implementation roadmap has been copied into this candidate branch with a supersession notice pointing to the single normative reference architecture. These records remain available as evidence; they are not silently dropped when PR #120 becomes the consolidated architecture candidate.
