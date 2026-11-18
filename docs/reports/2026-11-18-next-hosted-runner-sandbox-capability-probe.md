@@ -40,7 +40,7 @@ The namespace probe was corrected so expected permission denial is captured as a
 
 ## CI disposition
 
-The new commit `aea59ae...` was re-read as PR #116's current head. At the time of this report, the commit-associated workflow-runs query returned no runs. Therefore the new diagnostic has **NOT RUN / NOT VERIFIED**. Do not reuse the previous successful CI as evidence for this changed workflow head.
+The new commit `aea59ae...` was re-read as PR #116's current head. A later exact-head query discovered Runner Qualification run [44264823103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103), job [134666618686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103/job/134666618686), currently **IN_PROGRESS**. Pool Contract Validation run [44264822929](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264822929) is **COMPLETED / SUCCESS**. The capability probe itself has not yet been observed completing; its artifact and results remain **NOT VERIFIED**. Do not infer a pass from the running job.
 
 ## Reuse-first decision remains
 
@@ -64,7 +64,7 @@ No runtime selected, installed or integrated.
 ## Status and next step
 
 - Capability-probe instrumentation: **IMPLEMENTED**, workflow file reread and blob verified.
-- New-head CI: **NOT RUN / NOT VERIFIED** at report time.
+- New-head Pool Contract Validation: **SUCCESS**; Runner Qualification: **RUNNING** (run 44264823103); capability artifact/results: **NOT VERIFIED**.
 - Actual sandbox capabilities: **NOT VERIFIED**.
 - PR #116: **OPEN / DRAFT / UNMERGED**.
 - Contour A: **BLOCKED / NOT ACCEPTED**.
