@@ -141,7 +141,7 @@ jobs:
           key_fingerprints="$(gpg --show-keys --with-colons "$key_file" | awk -F: '$1 == "pub" { primary=1; next } primary && $1 == "fpr" { print toupper($10); primary=0 }')"
           test "$key_fingerprints" = "$expected_fingerprint"
           sudo install -D -m 0644 "$key_file" /usr/share/keyrings/claude-code.asc
-          echo "deb [signed-by=/usr/share/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/latest stable main" | sudo tee /etc/apt/sources.list.d/claude-code.list >/dev/null
+          echo "deb [signed-by=/usr/share/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-code.list >/dev/null
           sudo apt-get update
           package_version="$(apt-cache madison claude-code | awk '$3 ~ /^2\.1\.325([.-]|$)/ { print $3; exit }')"
           if [ -z "$package_version" ]; then
@@ -567,7 +567,11 @@ jobs:
             echo "claude_code_version=$claude_version"
             echo "claude_code_install_method=official_signed_apt_repository"
             echo "claude_code_apt_key_fingerprint=$(cat "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt" 2>/dev/null || echo NOT_VERIFIED)"
-            echo "claude_code_release_manifest_signature=verified_only_if_integrity_step_passed"
+            if [ -s "$RUNNER_TEMP/qualification/claude-binary-integrity.json" ]; then
+              echo "claude_code_release_manifest_signature=verified"
+            else
+              echo "claude_code_release_manifest_signature=NOT_VERIFIED"
+            fi
             echo "claude_code_release_manifest_sha256=$(awk 'NR==1 {print $1}' "$RUNNER_TEMP/qualification/claude-release-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
             echo "claude_code_binary_sha256=$(awk 'NR==3 {print $1}' "$RUNNER_TEMP/qualification/claude-release-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
             echo "claude_code_installer_script_executed=false"
