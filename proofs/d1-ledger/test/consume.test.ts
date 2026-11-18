@@ -154,7 +154,7 @@ describe("D1 single-use approval ledger", () => {
         INSERT INTO pool_approval_ledger (
           approval_id, owner_numeric_id, repository_id, issue_number,
           target_sha, profile, executor_id, envelope_digest, expires_at, state
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'ready')
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ready')
       `).bind(
         approval.approvalId,
         approval.ownerNumericId,
