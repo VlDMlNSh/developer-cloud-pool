@@ -141,5 +141,30 @@ class FccProfileGuardTests(unittest.TestCase):
             self.audit()
 
 
+    def test_rejects_numbered_fallback_selecting_unconfigured_second_key(self):
+        self.write_config({
+            "FCC_CONFIG_SCHEMA": "2",
+            "GROQ_API_KEY": json.dumps(["synthetic-account-key"]),
+            "MODEL": "groq/test-model",
+            "MODEL_FALLBACKS": json.dumps([{
+                "model": "groq/fallback-model",
+                "api_key_number": 2,
+            }]),
+        })
+        with self.assertRaises(ProfilePolicyError) as caught:
+            self.audit()
+        self.assertNotIn("synthetic-account-key", str(caught.exception))
+
+    def test_rejects_process_level_fallback_and_custom_provider_overrides(self):
+        for name, value in (
+            ("MODEL_FALLBACKS", '[{"model":"groq/other","api_key_number":2}]'),
+            ("FCC_CUSTOM_PROVIDERS", '[{"provider_id":"custom"}]'),
+            ("ANTHROPIC_AUTH_TOKEN", "synthetic-proxy-token"),
+        ):
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ProfilePolicyError, "process-level"):
+                    self.audit({name: value})
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
