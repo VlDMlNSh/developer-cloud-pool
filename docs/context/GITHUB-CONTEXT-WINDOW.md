@@ -76,3 +76,15 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Production event provenance, hosted D1, approval issuer, Supervisor lease/fencing/recovery, outbox delivery, worker identity, route/account/quota, Jarvis remote UI and persistent Workspace/restore remain NOT VERIFIED / NOT QUALIFIED. No secrets read, dispatch, provider call, deployment or merge.
 - Contour A: **BLOCKED / NOT ACCEPTED**. Contour B: **DEFERRED**.
 - Next bounded step: secure independent A3 review of PR #125/#114 plus meaningful required-approval/status-check governance. Keep all dispatch fail-closed.
+
+
+### CURRENT RECONCILIATION — PR conversation-comment rejection test — 2026-11-18
+- PR #125 exact code head is now `2ca95775982c711a289881e94eb664d5fe14ed5a`, parent/base PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`; 19 ahead / 0 behind; OPEN/DRAFT/UNMERGED; mergeable=true; formal reviews 0.
+- Added explicit adversarial test for a GitHub `issue_comment` payload whose `issue.pull_request` marker identifies a PR conversation comment. The adapter rejects it as `WRONG_CONTROL_ISSUE`, with `dispatch:false` and `executionAuthorized:false`. Test blob `bf3c439a34c20c48503486b9fc50454de0e07a3e`.
+- Exact-head CI [44255849885](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255849885), job [134637228939](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255849885/job/134637228939): SUCCESS; logs prove checkout and git log exact SHA; **22/22** Workers-runtime tests pass across 2 files. npm ci and syntax check pass.
+- Report: [2026-11-18 PR comment rejection regression](../reports/2026-11-18-next-pr125-pr-comment-rejection-regression.md); PR comment [6971614420](https://github.com/VlDMlNSh/developer-cloud-pool/pull/125#issuecomment-6971614420).
+- Default branch remains `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #120 `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; PR #124 docs branch pending this Context Window update; PR #114 `ab9461eb84b14fe230918391d5212f19ca25592c`.
+- Active ruleset #26550182 has zero required approvals and zero required status checks; classic branch protection reports disabled. PR #114 and #125 formal reviews remain zero.
+- Production owner-event controller and approved Gemini controller are absent from default (404). Gemini dispatch: NOT RUN; no substitution or bypass. Hosted D1, live provenance, approval issuer, lease/fencing/recovery, outbox delivery, worker identity, provider route/quota, remote UI and persistent workspace/restore remain NOT VERIFIED / NOT QUALIFIED.
+- No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: independent A3 review and meaningful governance remediation before implementing live controller provenance. Keep dispatch fail-closed.
