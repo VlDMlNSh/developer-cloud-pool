@@ -126,3 +126,17 @@ No gate is passed by documentation alone. Every gate requires exact-head evidenc
 - PR #126 code change is technically promising and exact-head CI-green, but stale/diverged from current default. No merge is safe yet.
 - Admission proofs contain useful passing local tests, but none qualifies hosted D1, live webhook authentication, a production lease lock, provider quota isolation or worker dispatch.
 - The current safe next implementation is a clean-base port of PR #126; the next architecture task is a unified admission + lease + Actions-context proof chain. No dispatch, merge, deployment, hosted D1/R2 write, provider call or secret access was performed.
+
+
+## Pass 2 execution result — 2026-11-18
+
+- Completed source-level dependency audit for PRs #111, #112, #114 and #125. They are distinct proofs, not an accepted integrated controller.
+- Verified PR #126's six-file legacy DSH retirement and its exact-head Pool Contract Validation SUCCESS (run 44275194245). The original branch is 9 commits behind current default and must not be merged as-is.
+- Created clean-base branch `fix/retire-legacy-label-dispatch-clean-base-2026-11-18` from default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8`, ported the six exact changed paths and opened Draft PR #139.
+- PR #139 exact head `4b35f949fa9bd0f924582f9eb47008c191c061ee` has Pool Contract Validation run [44349941243](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44349941243) COMPLETED / SUCCESS. Verified steps: dispatch gate, workflow YAML parse, and pool security contract validator all passed.
+- PR #139 contains exactly the six expected paths; no review threads found. It remains OPEN/DRAFT/UNMERGED. The original PR #126 remains untouched.
+- Created Issue #140 for the next integration slice: one current-base D1 admission + Actions context + lease/fencing proof chain. It explicitly prohibits live dispatch, hosted D1, provider calls, secrets, deployment and merge.
+- No default-branch changes, merge, deployment, dispatch, provider call, secret read or production write occurred.
+
+### Next pass
+Execute Issue #140 by comparing source/schema overlap and porting the canonical admission + lease proof to one clean current-base branch. Keep all adapters non-dispatching. First resolve the profile mismatch in PR #125: remove the retired dsh-headless-probe allowlist and align with the owner-frozen CODE profile only after the no-secret CODE sandbox evidence is verified.
