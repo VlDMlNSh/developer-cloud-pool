@@ -1,3 +1,37 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, broad Contour A pass (final PR #126 verification)
+
+**Latest checkpoint:** [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md)  
+**Broad plan and executed safety pass:** [2026-11-18-contour-a-broad-plan-and-legacy-dispatch-retirement.md](../reports/2026-11-18-contour-a-broad-plan-and-legacy-dispatch-retirement.md)
+
+## Owner review sequencing
+Independent/external reviews are DEFERRED until the pool is operational and can perform its own bounded review workflow. Continue exact-head CI, deterministic tests, source inspection and evidence checks; do not label them independent review or acceptance. No new external review requests during this phase.
+
+## Current repository state
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Active Ruleset `26550182`: PR required, review-thread resolution required, zero required approvals, no bypass actors.
+- Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44272871545) was a heartbeat-only SUCCESS with `POOL_DISPATCH_ENABLED=false`; it did not execute tasks.
+- Critical legacy label-driven DSH dispatch path identified on default branch and retired in proposed [PR #126](https://github.com/VlDMlNSh/developer-cloud-pool/pull/126). PR branch `fix/retire-legacy-label-dispatch-2026-11-18`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; final head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`; OPEN/DRAFT/UNMERGED.
+- PR #126 makes Supervisor a scheduled read-only heartbeat, fails if old dispatch variable is literal true, removes write permissions/token injection/legacy triggers, and makes old DSH Worker inert. Contract validator enforces retirement.
+- Exact-head Pool Contract Validation [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245): COMPLETED/SUCCESS on final PR head; YAML syntax, pinned-action checks and pool security contract checks passed.
+
+## Existing executor and control proofs
+- PR #116 head `754f42b0b7fa84c73e90cececc6f3d8a65877fab`: no-secret Claude Code/ECC/FCC installation and synthetic handoff passed Runner Qualification [44273710771](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44273710771) and Pool Contract Validation [44273710870](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44273710870). Real provider route/account/quota, installer/binary integrity and hosted-use permission NOT VERIFIED.
+- PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`: local Workers-runtime D1 atomic admission proof only; hosted D1 and live controller NOT VERIFIED.
+- PR #125 head `69398d497c8e9be3e9fe7241e4dc6d3bc2e4c973`: GitHub Actions context-to-D1 local proof CI SUCCESS. It still uses legacy `dsh-headless-probe`; expected `cloud-pool-next-controller.yml` is absent from default branch. Not a deployed controller.
+- PR #112 head `c9a4c0ab2001f01a09632795283071c521e1c99d`: read-only owner-event envelope proof only.
+- PR #120 canonical architecture consolidation remains OPEN/DRAFT/UNMERGED.
+- Issue #118 persistent Engineering Workspace remains blocked: no active authorized server #3, no verified Access/Tunnel, no backup/restore proof.
+
+## Next execution order
+1. P1: harden first CODE executor runtime (PATH ownership, HOME/XDG credential surfaces, installer/binary integrity provenance, actual egress enforcement); resolve hosted-use and license boundaries.
+2. P2: qualify one free FCC route with account identity, quota domain, reset/rate-limit semantics and free eligibility. No cross-account fallback or paid fallback.
+3. P3: reconcile PRs #112/#114/#125; replace DSH profile with qualified CODE profile only after P1/P2; add actual default-branch `issue_comment` controller; provision hosted D1 only after local proof/free-tier/data-retention checks.
+4. P4: implement durable claim/lease/fencing/attempt/outbox/finalization/recovery and exact worker identity.
+5. P5: authenticated read-only Jarvis Web; static hosting is not an API/control plane.
+6. P6: resolve persistent workspace, Zero Trust, shared filesystem, worktree isolation and backup/restore; repeat operational qualification before Contour A acceptance.
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, broad Contour A pass
 
 **Latest checkpoint:** [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md)  
