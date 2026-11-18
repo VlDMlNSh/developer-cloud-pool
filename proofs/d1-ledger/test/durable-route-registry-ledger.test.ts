@@ -49,8 +49,20 @@ describe("durable route registry snapshot ledger migration", () => {
     await expect(insertSnapshot(db, snapshot(1000, "d".repeat(64), "registry-v1000", 1_800_000_400)))
       .rejects.toThrow();
 
-    const next = snapshot(1004, "e".repeat(64), "registry-v1004", 1_800_000_500);
+    const intermediate = snapshot(1004, "e".repeat(64), "registry-v1004", 1_800_000_500);
+    const next = snapshot(1005, "f".repeat(64), "registry-v1005", 1_800_000_600);
+    await insertSnapshot(db, intermediate);
     await insertSnapshot(db, next);
+
+    // The active watermark may not lag behind a newer accepted snapshot.
+    await expect(db.prepare(`
+      UPDATE pool_route_registry_state
+         SET current_epoch = ?, current_bundle_digest = ?,
+             current_registry_version = ?, updated_at = ?
+       WHERE state_id = 1 AND current_epoch = ? AND current_bundle_digest = ?
+    `).bind(intermediate.epoch, intermediate.digest, intermediate.version, intermediate.acceptedAt,
+      future.epoch, future.digest).run()).rejects.toThrow();
+
     await expect(db.prepare(`
       UPDATE pool_route_registry_state
          SET current_epoch = ?, current_bundle_digest = ?,
@@ -83,6 +95,6 @@ describe("durable route registry snapshot ledger migration", () => {
       INSERT INTO pool_route_registry_state (
         state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
       ) VALUES (1, ?, ?, ?, ?)
-    `).bind(next.epoch, "f".repeat(64), next.version, next.acceptedAt).run()).rejects.toThrow();
+    `).bind(next.epoch, "0".repeat(64), next.version, next.acceptedAt).run()).rejects.toThrow();
   });
 });
