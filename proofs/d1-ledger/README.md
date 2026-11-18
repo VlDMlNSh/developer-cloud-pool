@@ -42,3 +42,13 @@ Final validation note: D1 proof CI completed successfully with 13/13 tests on th
 
 - Hardening pass: task-key binding mismatch now raises a SQLite abort inside the approval-consumption trigger, rolling back the ledger transition rather than leaving a consumed unattached approval. Lease acquisition is capped at five attempts; an expired/pending exhausted task transitions to `dead` and its pending outbox row is dead-lettered in the same database trigger transaction.
 - Added tests for conflict rollback and five-attempt dead-letter behavior. Treat these as pending validation until CI runs on the resulting exact head.
+
+
+## Lease acquisition-attempt fencing experiment (2026-11-18)
+
+- Migration `0004_add_lease_attempt_identity.sql` adds a nullable `lease_attempt_id` column and lookup index to the isolated logical-task proof table.
+- Every lease acquisition generates a fresh UUID and writes it in the same conditional UPDATE that advances the generation. The follow-up SELECT is constrained by `task_key + lease_attempt_id`, so a same-worker reclaim cannot make an earlier caller read back a later generation.
+- If another acquisition supersedes the first before its readback, the earlier call fails closed with `LEASE_ACQUISITION_SUPERSEDED`; it does not return a lease token it no longer owns.
+- Expiry arithmetic is checked before SQL. Generation increment is bounded by JavaScript's maximum safe integer to avoid returning an imprecise generation.
+- The new Workers-runtime test deterministically injects a same-worker reclaim between the first UPDATE and readback, then asserts the first call is denied and the second attempt token is the only one persisted.
+- This remains an isolated proof. It does not add production integration, external dispatch, provider calls, credentials, or hosted D1 writes. Exact-head CI is pending.
