@@ -3209,3 +3209,12 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 ### CI poll update — 2026-11-18
 - Pool Contract Validation run #44286461574: COMPLETED / SUCCESS on exact PR #116 HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
 - Runner Qualification run #44286461561: IN_PROGRESS at latest poll; job `134740287165` RUNNING; no artifact yet. Runtime result NOT VERIFIED.
+
+### Latest P1 follow-up — synthetic mock/allowlist mismatch — 2026-11-18
+- Runner Qualification run #44286461561 failed on exact head `59514f6d1119ca113745f5da861a1195c66da2e5`. Artifact #14418489783 SHA-256 `cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267` matched GitHub; 36 files present, including pre-created bridge result/diagnostic files.
+- Artifact states remain `bridge_result_state=STARTED` and `bridge_shutdown_state=NOT_REACHED`; bridge server itself started, returned HTTP 200, then exited gracefully through cleanup trap.
+- Source contract mismatch identified: `exec_allowlist.py` forwards only `ALLOWED_ENV_KEYS`, excluding `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`; the previous synthetic mock incorrectly required both to be present. It failed before writing its result marker. The exact numeric CLI exit status was not captured and is not claimed.
+- Corrective test-only commit on PR #116: `37d7b4de7b885d278a35d9311a38bc15fac961dc`; workflow blob `f4c892c57b9994dc598436471a8e130c7998861a`. The step is now accurately named wrapper-to-mock CLI invocation and asserts ambient provider routing/auth variables are absent. No allowlist expansion or credential forwarding.
+- Exact-head checks queued at latest poll: Runner Qualification check `134741199311`; Pool Contract Validation check `134741199298`. Results NOT VERIFIED.
+- Latest detailed report: [2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
+- Next: poll exact-head checks and inspect the next artifact/result. Do not describe this synthetic test as real FCC-to-Claude provider routing.
