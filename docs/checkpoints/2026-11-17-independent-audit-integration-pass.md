@@ -186,3 +186,14 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Report: [2026-11-18 worker HOME isolation audit](../reports/2026-11-18-next-worker-home-isolation-audit.md).
 - No credentials, provider calls, dispatch, deployment, merge or host access. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: create an explicit per-task HOME provisioner and fail-closed validation/teardown contract with concurrent isolation tests; do not enable production dispatch.
+
+
+## /next — task HOME symlink and XDG permission hardening — 2026-11-18
+
+- Confirmed symlink defense now inspects original paths with `lstat()` before resolution; added/verified regression coverage for symlinked root and task HOME alias.
+- Found and fixed intermediate XDG parent permission gap: `.local` is now explicitly created, chmodded and checked at mode 0700/current uid. Added test assertions.
+- Code PR #116 final head: `ad8b120f9ffbd55423c8d49fe5a42af466cf4430`; helper blob `dc098728d4cbcd91d04d922fd548df6b71777054`; tests blob `d8a7dd10f4f2bb0a7852f95cb5f55eceaffadea2`.
+- Prior symlink-hardening head `b75b95a...` passed exact-head Runner Qualification [44262676210](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262676210) and Pool Contract Validation [44262676143](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262676143). Final-head CI [44262817505](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262817505) and [44262817611](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262817611) pending at checkpoint.
+- Report: [2026-11-18 task HOME XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md).
+- No secrets, provider calls, dispatch, deployment or merge. Production launcher integration and host sandbox/egress/external credential controls remain NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify final-head CI, request independent A3 review, then design production launcher integration with task lifecycle, OS/container and network/credential controls.
