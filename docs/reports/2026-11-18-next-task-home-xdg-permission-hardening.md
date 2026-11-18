@@ -62,3 +62,10 @@ Wait for exact-head CI on `ad8b120...`. If green, request independent security r
 - [Issue #115](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115)
 - [Task HOME symlink hardening report](./2026-11-18-next-task-home-symlink-hardening.md)
 - [Canonical MediaHub Chat Tree Map](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md)
+
+
+## Follow-up after initial report creation
+- Code branch advanced one commit beyond the XDG permission fix to `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`.
+- Added a regression test that injects a dangling `.aws` symlink into a newly created HOME and verifies the provisioner rejects it and removes the partial HOME.
+- The XDG permission fix itself at `ad8b120f9ffbd55423c8d49fe5a42af466cf4430` passed exact-head Runner Qualification [44262843742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843742) and Pool Contract Validation [44262843688](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843688), both COMPLETED/SUCCESS.
+- New final candidate `58a8cd5...`: Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) COMPLETED/SUCCESS; Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) IN_PROGRESS at this update. Do not claim final-head runner success until it completes.
