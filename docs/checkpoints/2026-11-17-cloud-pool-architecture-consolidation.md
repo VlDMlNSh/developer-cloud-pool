@@ -175,3 +175,24 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 - Keep `POOL_DISPATCH_ENABLED=false`; Gemini dispatch NOT RUN because controller is absent from default branch.
 - Full report: [2026-11-17-next-exact-head-checkout-provenance.md](../reports/2026-11-17-next-exact-head-checkout-provenance.md).
 
+
+
+## /next checkpoint — GitHub Actions-bound D1 admission context audit — 2026-11-18
+
+- Default branch `Основной` observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (unchanged).
+- PR #125 OPEN / DRAFT / UNMERGED; exact head `2ca95775982c711a289881e94eb664d5fe14ed5a`; parent PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`.
+- Exact-head D1 GitHub Actions Context Admission Proof run `44255849885` / job `134637228939`: SUCCESS; 2 test files, 22/22 tests. Adapter Validation run `44255841721` / job `134637205479`: SUCCESS; 2 test files, 22/22 tests. Both use immutable PR-head checkout, persist-credentials false, read-only contents permission and npm ci --ignore-scripts.
+- Candidate binds exact owner /next Issue #96 event to repository/owner identity, default ref and workflow ref; derives target SHA, workflow SHA, run ID and run attempt from runner variables; persists run attempt. Dispatch and execution authorization remain false.
+- Production `.github/workflows/cloud-pool-next-controller.yml` is absent on default branch (404), so a live `issue_comment` trigger cannot yet run. Environment object is injectable in the proof API; the production entrypoint must read directly from runner process environment and runner event file. Add explicit `RUNNER_ENVIRONMENT=github-hosted` enforcement alongside fixed hosted runner configuration.
+- No live webhook signature/API re-read, hosted D1, approval issuer, lease/fencing/recovery, outbox delivery, worker dispatch or provider route has been qualified.
+- Default-branch Gemini controller also absent (404); requested Gemini wave NOT RUN, no bypass used.
+- Active ruleset #26550182: PR required and thread resolution required; 0 approving reviews and 0 required status checks. Independent A3 review remains mandatory by project policy.
+- PR #124 current head `65af2a72fa4301bc5cf4f111e9b7a620bcac310c`; architecture link validation run `44256001611` SUCCESS. PR #120 head at pass start `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; architecture docs run `44094756333` and Pool Contract Validation `44094756250` SUCCESS.
+- No secret values read; no provider calls, Gemini runs, deployment, merge or production dispatch. Keep `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-18 GitHub Actions-bound D1 admission context audit](../reports/2026-11-18-next-github-actions-admission-context-audit.md).
+- Next: implement a trusted default-branch controller entrypoint with direct event/environment provenance and hosted-runner enforcement, no child dispatch, then independent A3 review.
+
+Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

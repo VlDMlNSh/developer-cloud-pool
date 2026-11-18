@@ -2,15 +2,44 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-17 — architecture consolidation and Contour A Workspace acceptance reconciliation
+Last refreshed: 2026-11-18 — GitHub Actions-bound D1 admission context proof audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-read from commits API at start of this pass)
 Current documentation working branch: `docs/cloud-pool-reference-architecture-2026-11-17` (NOT merged; PR #120 OPEN / DRAFT / UNMERGED; always re-read the branch ref for current HEAD)
-Latest open implementation PR observed: #116, head `6d4a4c518d44aa4a79d8396390623f424499011a`, base `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+Latest open implementation PR observed: #125, head `2ca95775982c711a289881e94eb664d5fe14ed5a`, stacked on PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`; OPEN / DRAFT / UNMERGED. Exact-head CI: runs 44255849885 and 44255841721 SUCCESS; each suite 22/22 tests.
 Latest PR #116 exact-head checks observed: No-secret install/runtime/mock proof SUCCESS (run 44086419084); workflow syntax/security invariants SUCCESS (run 44086419002); artifact 14329776221 available. Independent reviews 5938684495 and 5938737463 are COMMENT, not APPROVE. These checks do not prove provider route, agent task execution, persistent workspace, or Contour A acceptance.
 Active default-branch ruleset: ID `26550182`, enforcement active on `refs/heads/Основной`; PR required, review-thread resolution required, required approving review count 0, no required status-check contexts. Treat governance as insufficient for production acceptance.
-This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`. PR #120: https://github.com/VlDMlNSh/developer-cloud-pool/pull/120. The PR head advances with each documentation update; always re-read PR #120 head before validation. Exact-head check-runs at last inspection: 0; combined status contexts: 0; CI NOT VERIFIED / NOT RUN.
+This Context Window update is being prepared on a working branch and is NOT canonical until merged to `Основной`. PR #120: https://github.com/VlDMlNSh/developer-cloud-pool/pull/120. At this pass start, PR #120 head was `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; exact-head Architecture Documentation Validation run 44094756333 and Pool Contract Validation run 44094756250 both SUCCESS. Re-read the new commit head and its exact-head checks after each documentation update.
+
+## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-18
+
+**Pass time:** 2026-11-18 07:02–07:04 UTC.  
+**Default branch:** `Основной`, HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (freshly re-read; unchanged).  
+**Contour:** A only; Contour B remains DEFERRED.  
+**Canonical architecture candidate:** PR #120, branch `docs/cloud-pool-reference-architecture-2026-11-17`, head before this documentation pass `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`, OPEN/DRAFT/UNMERGED.  
+**Latest implementation candidate:** PR #125, branch `proof/d1-github-actions-context-adapter-2026-11-18`, head `2ca95775982c711a289881e94eb664d5fe14ed5a`, base PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`, OPEN/DRAFT/UNMERGED.
+
+### Admission proof status
+- PR #125 adds a synthetic GitHub Actions context adapter over the D1 atomic single-use admission proof. It validates exact Issue #96, exact owner-authored `/next`, repository and owner identity, default-branch ref, pinned workflow ref, SHA/run ID/run attempt fields; derives target/code/run metadata from runner variables and persists run attempt.
+- Exact-head workflows [44255849885](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255849885) and [44255841721](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255841721) SUCCESS on `2ca95775982c711a289881e94eb664d5fe14ed5a`. Each job: 2 test files, 22/22 tests, immutable PR-head checkout, no persisted checkout credentials, read-only contents permission.
+- This is a synthetic composition test only. No authentic live `issue_comment` run, webhook signature validation, independent API re-read, hosted D1, production controller, dispatch or provider call.
+- The intended production workflow `.github/workflows/cloud-pool-next-controller.yml` is absent from default branch (Contents API 404). GitHub documents that `issue_comment` workflows trigger only when the workflow file exists on the default branch; for that event, `GITHUB_SHA` is the latest default-branch commit and `GITHUB_REF` is the default branch: [event docs](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#issue_comment).
+- Adapter accepts an injectable environment object for deterministic tests. Production entrypoint must obtain event JSON and `GITHUB_*` only from runner-provided sources. The adapter does not assert `RUNNER_ENVIRONMENT=github-hosted`; require a fixed hosted runner profile and explicit check before claiming free GitHub-hosted worker qualification.
+- Active ruleset #26550182: PR required; review-thread resolution required; zero required approvals and zero required checks. Independent A3 review remains required; PR #125 has no formal review submission.
+- PR #124 head `65af2a72fa4301bc5cf4f111e9b7a620bcac310c` remains OPEN/DRAFT; architecture link validation run 44256001611 SUCCESS. PR #120 head `67a0cb1...` had architecture docs run 44094756333 and Pool Contract Validation 44094756250 SUCCESS. PR #116 exact-head runner/mock proof and contract runs 44094382662/44094382669 SUCCESS.
+
+### Executor/governance status
+- `.github/workflows/gemini-batch-dispatch-controller.yml` absent from default branch (404); owner-requested Gemini wave NOT RUN. No alternate route used.
+- `POOL_DISPATCH_ENABLED=false`; do not read secret values or trigger live provider calls.
+- PRs remain draft/unmerged; no merge, production deployment, or acceptance is claimed.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### Latest report and next step
+- [2026-11-18 GitHub Actions-bound D1 admission context audit](../reports/2026-11-18-next-github-actions-admission-context-audit.md).
+- Next: implement a trusted default-branch controller entrypoint with direct runner-environment/event-file provenance, explicit GitHub-hosted runner enforcement, and no child dispatch; independently review live-event and hosted D1 contracts before any dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 ## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-17
 
