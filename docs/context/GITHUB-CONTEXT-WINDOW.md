@@ -3047,3 +3047,17 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - No secret values read, no provider calls, no real Claude session, no dispatch, no merge/deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: verify exact-head run and artifact; then qualify actual worker execution inside the sandbox and provider-specific default-deny egress before any route call.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Latest execution — runner PATH qualification failure and corrective workflow change — 2026-11-18
+
+- Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no mainline change.
+- PR #116 remains OPEN / DRAFT / UNMERGED; base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; latest head `fa4e42f4c2d23f4eedd36cf574e87cf361810972`.
+- Runner Qualification [44278168889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889), job 134711549798: COMPLETED / FAILURE on previous exact head `6088a5d1e52191004c3228ed4cf6f3b72dabd116`. All focused suites passed (10+9+7); Claude signed APT and manifest/binary verification passed; Docker no-egress primitive passed; FCC profile guard 15/15 passed. FCC loopback startup failed because workflow included runner-owned virtualenv `bin` in PATH and the strengthened policy correctly rejected it. Synthetic bridge skipped.
+- Failed-run artifact [14414274574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889/artifacts/14414274574), 30,250 bytes, SHA-256 `7abf25036bed9a9538c105f21ada775d3b3c6e6bf042158e0de082a49779d7b0`.
+- Corrective workflow commit `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; workflow blob `23ca0d9c472486095c2b7b13b27fbb4229190867`. FCC runtime and synthetic bridge now use root-owned `/usr/bin:/bin` only; virtualenv server and mock launcher are executed by absolute path. Security policy remains unchanged.
+- Exact file read-back confirmed both modifications. Commit-associated workflow-runs query returned an empty list; exact-head qualification is NOT RUN / NOT VERIFIED. Pool Contract Validation on previous SHA `6088a5d1...` [44278168854](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168854) was SUCCESS, but it does not qualify the corrective commit.
+- Dated report: [2026-11-18 runner PATH qualification failure and fix](../reports/2026-11-18-runner-path-qualification-failure-and-fix.md). Checkpoint: [2026-11-18 Contour A broad pass](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- Issue #118 remains OPEN/BLOCKED: no active authorized server #3, no verified Access/Tunnel and no backup/restore evidence. PR #126 legacy dispatch retirement remains proposed, not merged. PR #120 canonical architecture remains proposed, not merged.
+- No secret values read, provider calls, real Claude session, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next exact action: obtain Runner Qualification and Pool Contract Validation on `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; inspect job steps and artifact. Then continue actual CODE-worker sandbox and provider-specific egress boundary. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
