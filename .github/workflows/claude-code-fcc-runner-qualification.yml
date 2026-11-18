@@ -8,6 +8,8 @@ on:
       - ".github/workflows/claude-code-fcc-runner-qualification.yml"
       - "scripts/cloud_pool/exec_allowlist.py"
       - "scripts/cloud_pool/test_exec_allowlist.py"
+      - "scripts/cloud_pool/fcc_profile_guard.py"
+      - "scripts/cloud_pool/test_fcc_profile_guard.py"
   workflow_dispatch:
 
 permissions:
@@ -128,6 +130,16 @@ jobs:
           test "$("$UV_PROJECT_ENVIRONMENT/bin/python" --version)" = "Python 3.14.10"
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" --version | tee "$RUNNER_TEMP/qualification/fcc-server-version.txt"
           "$UV_PROJECT_ENVIRONMENT/bin/fcc-doctor" --version | tee "$RUNNER_TEMP/qualification/fcc-doctor-version.txt"
+
+      - name: Test persisted FCC single-credential profile guard with synthetic data
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+        run: |
+          set -euo pipefail
+          "$UV_PROJECT_ENVIRONMENT/bin/python" scripts/cloud_pool/test_fcc_profile_guard.py 2>&1 | tee "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+          grep -Eq "^Ran 13 tests in " "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+          grep -Fxq "OK" "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
 
       - name: Start FCC on loopback and verify local readiness and shutdown
         shell: bash
