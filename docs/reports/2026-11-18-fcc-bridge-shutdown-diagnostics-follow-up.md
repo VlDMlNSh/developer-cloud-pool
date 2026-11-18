@@ -99,3 +99,14 @@ Source inspection established the deterministic test-contract mismatch:
 ### Exact-head CI poll — 2026-11-18
 - Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): COMPLETED / SUCCESS on `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
 - Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS on the same exact HEAD. Job `134741199311` is currently at signed APT package installation; subsequent manifest, Docker, FCC and bridge stages are pending. No final artifact/result yet; NOT VERIFIED.
+
+### Exact-head successful qualification — 2026-11-18
+- PR #116 now points to `2e944f13818f434cf135602c1c0e82051f1d3fa8` (base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`), OPEN / DRAFT / UNMERGED.
+- Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): COMPLETED / SUCCESS on that exact HEAD.
+- Claude Code + ECC + FCC Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): COMPLETED / SUCCESS on that exact HEAD. Job `134741981861`: all 18 steps succeeded, including signed package verification, Docker no-egress capability probe, FCC runtime lifecycle, synthetic wrapper-to-mock invocation, selected ECC skills and bounded evidence publication.
+- Artifact `14420066410`, 34,605 bytes, GitHub digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`, not expired at inspection. Artifact content has not yet been independently extracted and checked; treat artifact-level assertions as NOT VERIFIED beyond the successful job and published artifact metadata.
+- This is a meaningful qualification pass for the GitHub-hosted runner's install/runtime/synthetic wrapper path, not proof of a real Claude task, provider routing, network egress policy, persistent workspace or production worker.
+- Provenance and existing workflow statements continue to mark `runner_network_egress=NOT_VERIFIED`, `provider_egress_allowlist=NOT_IMPLEMENTED`, `real_agent_container_execution=false`, `provider_calls=false`, `real_claude_session=false`, and `production_dispatch=false`.
+- Issue #118 remains OPEN and deferred: no authorized active server #3, Cloudflare Access/Tunnel, persistent workspace or backup/restore proof.
+- Gemini controller remains unavailable on default branch; Gemini NOT RUN. `POOL_DISPATCH_ENABLED=false`.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
