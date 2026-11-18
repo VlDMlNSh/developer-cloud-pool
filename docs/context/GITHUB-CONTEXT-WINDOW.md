@@ -3104,3 +3104,11 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - PR #126 and #120 remain OPEN/DRAFT/UNMERGED; Issue #118 remains OPEN/BLOCKED (workspace host #3, Cloudflare Access/Tunnel and backup/restore unverified).
 - No secret values read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: inspect run 44284859244 and determine signal status vs wait status vs listener state. Only after full Runner Qualification and artifact verification proceed to actual CODE-in-container and provider-specific egress qualification. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Controller / agent dispatch preflight — 2026-11-18
+
+- Attempted read of `.github/workflows/gemini-batch-dispatch-controller.yml` from default branch `Основной`: GitHub returned 404; approved controller is NOT PRESENT/NOT VERIFIED on default branch at this path.
+- Therefore Gemini agents were NOT RUN. No alternative workflow, direct provider call, secret inspection or controller bypass was attempted.
+- PR #126 remains OPEN/DRAFT/UNMERGED at `f69f286b5b5a3de8dfdd80ed581859851ce271e5`; PR #120 remains OPEN/DRAFT/UNMERGED at `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; Issue #115 remains OPEN (actual free route/account/quota not qualified); Issue #118 remains OPEN (persistent workspace gates unresolved).
+- At the latest poll, Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) remained IN_PROGRESS; Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS. Do not infer runner qualification from the contract result.
