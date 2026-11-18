@@ -142,3 +142,16 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Report: [2026-11-18 PR stack and governance reconciliation](../reports/2026-11-18-next-pr-stack-governance-reconciliation.md).
 - No secrets read, provider/model calls, dispatch, deployment, merge or infrastructure mutation in this pass. Contour A remains **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
 - Next bounded step: reconcile PR #124's base with the latest PR #120 head without losing dependent changes, then require independent review and meaningful ruleset approvals/status checks before merge. Keep dispatch fail-closed.
+
+
+### CURRENT RECONCILIATION — worker HOME isolation boundary audit — 2026-11-18
+- Fresh default ref: `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #116 remains OPEN/DRAFT/UNMERGED at exact code head `6620a1557f14d26756dcb3bc11c8ab3d5e57c746`, mergeable=true. PR #114/#120/#124/#125 remain OPEN/DRAFT/UNMERGED; #124 currently reports mergeable=false; the others report mergeable=true.
+- Default worker workflow `.github/workflows/pool-worker.yml` and supervisor are DSH-only. No production FCC/Claude launcher is present in this path; worker workflow does not invoke FCC profile guard or FCC child allowlist.
+- PR #116 `exec_allowlist.py` filters inherited environment credentials/proxies and requires private current-user HOME and private XDG paths inside HOME. It trusts caller-supplied HOME: it does not create it, prove freshness/per-task uniqueness, or reject pre-existing external credential stores under HOME. XDG values are optional.
+- PR #116 qualification CI creates temporary HOME only for its own FCC loopback/mock test harness. Persisted profile tests use synthetic fixtures. This does not prove production worker isolation.
+- Default source blobs: worker workflow `fe1ee4c41a86807810a6b6bc85c677b46c3cebb4`; supervisor workflow `d4bd23d06c0dc98211cea165cdad30a1861eb3bd`; supervisor script `52bf03ca889edd92fd10c71ae96a2e35e106d43f`. PR #116 allowlist `f98ba421ec98e020b28fefb71083d65bd27213d4`; tests `dcf6000f9475a0bef598f175663475a12a787927`.
+- Exact-head Runner Qualification [44260105806](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806), job [134651081368](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806/job/134651081368): SUCCESS on exact PR #116 head; 13/13 synthetic profile tests and loopback/mock bridge passed. Pool Contract Validation [44260105903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105903): SUCCESS. Neither proves production HOME isolation.
+- Active ruleset #26550182 still requires 0 approving reviews and 0 status checks. Both Gemini and Cloud Pool /next controller workflows return 404 on default. Gemini NOT RUN.
+- Report: [worker HOME isolation boundary audit](../reports/2026-11-18-next-worker-home-isolation-audit.md).
+- No secrets read, provider calls, dispatch, deployment, merge or host inspection. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement fail-closed per-task HOME provisioning, explicit XDG paths, external credential-store rejection, safe teardown and concurrent isolation tests; keep dispatch disabled and require independent A3 review.
