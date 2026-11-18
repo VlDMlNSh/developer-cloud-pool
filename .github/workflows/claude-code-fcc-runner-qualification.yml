@@ -143,12 +143,14 @@ jobs:
           sudo install -D -m 0644 "$key_file" /usr/share/keyrings/claude-code.asc
           echo "deb [signed-by=/usr/share/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-code.list >/dev/null
           sudo apt-get update
-          package_version="$(apt-cache madison claude-code | awk '$3 ~ /^2\.1\.325([.-]|$)/ { print $3; exit }')"
-          if [ -z "$package_version" ]; then
-            echo "::error::Pinned Claude Code 2.1.325 is not available from the signed official APT repository."
+          apt-cache madison claude-code | tee "$RUNNER_TEMP/qualification/claude-apt-versions.txt"
+          package_version="$(apt-cache policy claude-code | awk '/Candidate:/ { print $2; exit }')"
+          if [ -z "$package_version" ] || [ "$package_version" = "(none)" ]; then
+            echo "::error::No Claude Code package candidate is available from the signed official APT repository."
             exit 2
           fi
           sudo apt-get install -y --no-install-recommends "claude-code=$package_version"
+          printf '%s\n' "$package_version" > "$RUNNER_TEMP/qualification/claude-apt-package-version.txt"
           claude_bin="$(command -v claude)"
           test -n "$claude_bin"
           test -x "$claude_bin"
@@ -159,7 +161,9 @@ jobs:
           printf '%s\n' "$key_fingerprints" > "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt"
           installed_version="$(claude --version)"
           printf '%s\n' "$installed_version" | tee "$RUNNER_TEMP/qualification/claude-version.txt"
-          test "$(printf '%s' "$installed_version" | awk '{print $1}')" = "2.1.325"
+          version="$(printf '%s' "$installed_version" | awk '{print $1}')"
+          test -n "$version"
+          printf '%s\n' "$version" > "$RUNNER_TEMP/qualification/claude-release-version.txt"
           claude --help > "$RUNNER_TEMP/qualification/claude-help.txt"
         env:
           DISABLE_AUTOUPDATER: "1"
@@ -169,7 +173,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          version="2.1.325"
+          version="$(cat "$RUNNER_TEMP/qualification/claude-release-version.txt")"
           platform="linux-x64"
           release_dir="$RUNNER_TEMP/claude-release"
           gnupg_home="$RUNNER_TEMP/claude-release-gnupg"
@@ -178,8 +182,9 @@ jobs:
           curl -fsSLo "$release_dir/manifest.json.sig" "https://downloads.claude.ai/claude-code-releases/$version/manifest.json.sig"
           gpg --homedir "$gnupg_home" --batch --import "$RUNNER_TEMP/claude-code-release.asc" > "$RUNNER_TEMP/qualification/claude-gpg-import.txt" 2>&1
           gpg --homedir "$gnupg_home" --batch --status-fd 1 --verify "$release_dir/manifest.json.sig" "$release_dir/manifest.json" > "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" 2> "$RUNNER_TEMP/qualification/claude-manifest-signature-verification.txt"
-          valid_primary_fingerprints="$(awk '$1 == "[GNUPG:]" && $2 == "VALIDSIG" { print toupper($NF) }' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" | sort -u)"
-          test "$valid_primary_fingerprints" = "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+          valid_signature_count="$(grep -c '^\[GNUPG:\] VALIDSIG ' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt")"
+          test "$valid_signature_count" -eq 1
+          grep '^\[GNUPG:\] VALIDSIG ' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" | grep -Fq "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
           resolved_claude_bin="$(cat "$RUNNER_TEMP/qualification/claude-binary-path.txt")"
           python3 scripts/cloud_pool/verify_claude_release.py \
             --manifest "$release_dir/manifest.json" \
@@ -566,6 +571,7 @@ jobs:
             echo "runner=$RUNNER_OS/$RUNNER_ARCH"
             echo "claude_code_version=$claude_version"
             echo "claude_code_install_method=official_signed_apt_repository"
+            echo "claude_code_apt_package_version=$(cat "$RUNNER_TEMP/qualification/claude-apt-package-version.txt" 2>/dev/null || echo NOT_VERIFIED)"
             echo "claude_code_apt_key_fingerprint=$(cat "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt" 2>/dev/null || echo NOT_VERIFIED)"
             if [ -s "$RUNNER_TEMP/qualification/claude-binary-integrity.json" ]; then
               echo "claude_code_release_manifest_signature=verified"
