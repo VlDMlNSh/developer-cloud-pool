@@ -318,3 +318,17 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - PR #130 OPEN/DRAFT/UNMERGED; reviews 0; threads 0. Ruleset/current dispatch variable NOT VERIFIED. Gemini NOT RUN. Dispatch remains fail-closed.
 - Report: [Issue #38 exact-head reconciliation](../reports/2026-11-18-issue38-d1-claim-lease-exact-head-reconciliation.md).
 - Next: recover actual branch tree, then exact-head CI with adversarial lease tests. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## Follow-up — D1 task identity and lease qualification plan — 2026-11-18
+
+- Source target: `proof/task-identity-fencing-design-2026-11-08` @ `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` (immutable; no source changes).
+- Recovered exact lease implementation, claim/outbox implementation, test file and migration. See report [2026-11-18-d1-task-identity-lease-next-qualification-plan.md](../reports/2026-11-18-d1-task-identity-lease-next-qualification-plan.md).
+- Tests present: generation increment on reclaim, stale renewal/finalizer rejection, live lease non-stealing, expiry denial, five-attempt dead-letter; existing 12-way contention test is approval claim/outbox, not lease acquisition.
+- Blocking identity issue: logical task key omits explicit canonical capability-set and payload digests, while approval-specific envelope digests are stored per attachment. Resolve task execution identity versus approval evidence before changing key derivation.
+- Additional gaps: no same-worker concurrent lease/readback race test; no lease-aware durable result/outbox mutation adapter; no proof of stale generation blocking external effects.
+- This pass: documentation only; source tests not executed; exact-head CI NOT VERIFIED; no secrets, hosted D1, provider calls, dispatch, deployment, merge or Gemini run.
+- Next: new isolated proof branch, define canonical execution-envelope contract, add adversarial lease/result/outbox/recovery tests, exact-head Workers Vitest/workerd CI, artifact digest readback and independent security review.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
