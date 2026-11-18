@@ -98,7 +98,15 @@ def build_child_environment(source: Mapping[str, str]) -> dict[str, str]:
     if not path_entries or any(not entry or not os.path.isabs(entry) for entry in path_entries):
         raise EnvironmentPolicyError("PATH must contain only non-empty absolute directories")
 
-    resolved_path = [_resolved_directory(entry, variable="PATH entry") for entry in path_entries]
+    resolved_path = []
+    for entry in path_entries:
+        resolved = _resolved_directory(entry, variable="PATH entry")
+        metadata = resolved.stat()
+        # The worker UID must not be able to replace a launcher after validation.
+        # Require immutable-to-worker, root-owned system directories in PATH.
+        if metadata.st_uid != 0:
+            raise EnvironmentPolicyError("PATH entries must be owned by root")
+        resolved_path.append(resolved)
     if len(set(resolved_path)) != len(resolved_path):
         raise EnvironmentPolicyError("PATH must not contain duplicate resolved directories")
     child["PATH"] = os.pathsep.join(str(entry) for entry in resolved_path)
