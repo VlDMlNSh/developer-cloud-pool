@@ -1,3 +1,21 @@
+# Latest checkpoint overlay — 2026-11-18, PR #132
+
+- Default `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Active proof PR [#132](https://github.com/VlDMlNSh/developer-cloud-pool/pull/132), branch `proof/d1-result-outbox-clean-2026-11-18`, current HEAD `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; base unchanged; 24 ahead / 0 behind; OPEN/DRAFT/UNMERGED.
+- Result adapter: Worker runtime clock; ignores caller `now`; verifies persisted result + completed task + outbox tuple; exact idempotent retry requires original worker/generation/attempt/digest/ref.
+- Lease adapter: Worker runtime clock; rejects invalid lease duration and caps duration at 900 seconds.
+- Workers Vitest adversarial coverage: same-worker reclaim with new attempt, stale old attempt, exact retry, foreign worker/attempt retry rejection, result substitution, trigger rollback, expiry equality.
+- Exact-head previous D1 CI on `af5428fae169a1724043edffade0c4da69ea292f`: [44316217911 SUCCESS](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316217911), all job steps incl. npm install, syntax and Workers-runtime D1 tests. This predates final idempotency tightening.
+- Current final-head Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) was in progress at last check; current-head D1 Workers test NOT VERIFIED.
+- PR description updated to explicitly distinguish prior-head D1 success from final-head pending evidence.
+- No independent review, no production dispatch, no hosted D1 mutation, secrets, provider calls, deployment or merge.
+- Next: obtain exact-head D1 runtime CI for current SHA; inspect full steps; then independent review and governance. Do not merge or enable dispatch before acceptance.
+- Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # Cloud Pool continuation checkpoint — D1 result/outbox audit
 Date: 2026-11-18
 
