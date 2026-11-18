@@ -95,3 +95,7 @@ Source inspection established the deterministic test-contract mismatch:
 - Changed the mock to assert that ambient provider routing and authentication variables are absent, matching the strict allowlist. No allowlist expansion, credential forwarding or security-gate weakening was made.
 - Read-back confirmed the updated step name, absence assertions and explicit non-live-route description.
 - Exact-head checks were queued at the latest poll: Runner Qualification check `134741199311`; Pool Contract Validation check `134741199298`. Workflow run IDs/results were not yet available; NOT VERIFIED.
+
+### Exact-head CI poll — 2026-11-18
+- Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): COMPLETED / SUCCESS on `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
+- Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS on the same exact HEAD. Job `134741199311` is currently at signed APT package installation; subsequent manifest, Docker, FCC and bridge stages are pending. No final artifact/result yet; NOT VERIFIED.
