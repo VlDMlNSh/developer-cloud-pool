@@ -7,12 +7,14 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "config/**"
   push:
     branches:
       - "Основной"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
+      - "config/**"
 
 permissions:
   contents: read
@@ -55,3 +57,4 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/validate-pool-contract.mjs
+          node --test scripts/provider-quota-ledger.test.mjs scripts/provider-slot-inventory.test.mjs scripts/provider-slot-admission.test.mjs scripts/agent-placement.test.mjs scripts/runner-capacity-profile.test.mjs

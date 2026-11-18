@@ -1,0 +1,38 @@
+{
+  "schema": "developer-cloud-pool.slot-capacity-policy.v1",
+  "registered_slots": {
+    "limit": null,
+    "meaning": "No fixed registration ceiling; slots remain inventory-only until explicitly admitted"
+  },
+  "active_slots": {
+    "hard_limit": 20,
+    "scope": "pool-wide",
+    "activation": "task-driven lease",
+    "idle_release": "release after task or verified idle timeout",
+    "credential_delivery": "gateway-only",
+    "paid_fallback_allowed": false
+  },
+  "admission_requirements": [
+    "qualification_status=accepted",
+    "credential_status=available",
+    "route_state=ready",
+    "requested_model in model_allowlist",
+    "billing_class explicitly allowed by task policy"
+  ],
+  "concurrency": {
+    "lease_store_required": true,
+    "atomic_admission_required": true,
+    "lease_ttl_required": true,
+    "stale_lease_recovery": "reconcile from durable task/worker state; never assume lease expired solely from worker silence"
+  },
+  "quota_accounting": {
+    "group_by": "provider-confirmed quota_domain_id",
+    "unknown_domain": "do not multiply quota across slots; conservatively treat as potentially shared",
+    "per_key_quota_sum_allowed": false
+  },
+  "enforcement": {
+    "max_active_slots": 20,
+    "deny_if_existing_active_count_exceeds_limit": true,
+    "deny_if_admission_store_unavailable": true
+  }
+}
