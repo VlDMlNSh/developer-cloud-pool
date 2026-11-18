@@ -291,3 +291,17 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Next bounded target: Issue #38 single-use claim protocol and real concurrent one-winner D1 proof. No Contents:write privilege expansion, no dispatch enablement.
 - Governance ruleset not re-fetched; NOT VERIFIED this pass. Gemini controller path 404 on default; Gemini NOT RUN. No secrets/provider calls/hosted D1 writes/deployment/merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## Follow-up — Issue #38 existing D1 claim/lease prototype audit — 2026-11-18
+
+- Report: [Issue #38 D1 claim/lease qualification audit](../reports/2026-11-18-issue38-d1-claim-lease-qualification-audit.md).
+- Existing proof branch `proof/task-identity-fencing-design-2026-11-08`: `src/task-lease.mjs` blob `b41edf89cdf960b2c007f38ba16554dc179f021a`; README blob `a364fb31ff340970d15658f3cf4ee5502696d4ef`; package blob `cd7a705ce39860685c3ec60134dc8442fab738d8`.
+- Existing proof README claims logical task identity, atomic claim/outbox, lease fencing and dead-lettering but explicitly says not integrated into production; all adapters `dispatch:false`. Source readback confirms conditional lease acquire and owner/generation/expiry-fenced renew/finalize.
+- Exact migration/test filenames were not retrieved; exact-head CI and independent review NOT VERIFIED. This is a source-level audit, not qualification.
+- Decision: qualify existing Workers+D1 proof before considering new infrastructure. Required adversarial tests: concurrent one-winner, reclaim increments generation, stale worker cannot renew/finalize/write outputs, idempotent outbox effects, crash recovery, dead-letter atomicity, ambiguous storage fail-closed.
+- No production code change, no hosted D1, secrets, provider calls, dispatch, deployment or merge. Gemini NOT RUN.
+- Next: recover exact proof branch tree and tests, run exact-head CI in separate proof stack; do not alter PR #130 chain.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
