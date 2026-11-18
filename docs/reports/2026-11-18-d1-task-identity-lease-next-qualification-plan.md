@@ -86,8 +86,9 @@ A lease is a time-bounded coordination primitive, not exactly-once execution and
 
 - Source readback: VERIFIED.
 - Existing authored test cases: VERIFIED as source text.
-- Test execution on exact source HEAD: NOT VERIFIED.
-- Exact-head CI: NOT VERIFIED.
+- PR #40 workflow run `42489887940`: `COMPLETED / SUCCESS` in PR merge context. Event head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; base `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`; checked-out merge commit `23e06138ddee46934c8cb137d04dd1585d390ea6`.
+- Job `128759748692`: `npm ci`, `npm run check`, and Workers Vitest passed; 2 test files, 27/27 tests. Artifact `13620723665`, ZIP SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`.
+- Classification: merge-context CI VERIFIED; standalone exact-head CI NOT VERIFIED.
 - Concurrent lease acquisition winner proof: NOT VERIFIED.
 - Result/outbox fencing: NOT VERIFIED.
 - Independent security review: NOT RUN.
