@@ -70,8 +70,7 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
       controllerRunId: "44170001001",
       controllerRunAttempt: "1",
       controllerCodeSha: WORKFLOW_SHA,
-      workflowRef: environment.GITHUB_WORKFLOW_REF,
-      dispatch: undefined
+      workflowRef: environment.GITHUB_WORKFLOW_REF
     });
     expect(bound.targetSha).not.toBe("c".repeat(40));
     expect(bound.trustedDefaultHeadSha).toBe(environment.GITHUB_SHA);
