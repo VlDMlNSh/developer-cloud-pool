@@ -18,9 +18,11 @@ export async function commitTaskResult(db, input) {
       !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_RESULT_COMMIT");
 
   try {
-    const before = await db.prepare("SELECT result_digest, result_ref FROM pool_task_results WHERE task_key = ?")
+    const before = await db.prepare("SELECT worker_id, lease_generation, lease_attempt_id, result_digest, result_ref FROM pool_task_results WHERE task_key = ?")
       .bind(input.taskKey).first();
-    if (before) return before.result_digest === input.resultDigest && before.result_ref === input.resultRef
+    if (before) return before.worker_id === input.workerId && before.lease_generation === input.generation &&
+      before.lease_attempt_id === input.leaseAttemptId && before.result_digest === input.resultDigest &&
+      before.result_ref === input.resultRef
       ? { decision: "RESULT_ALREADY_COMMITTED", taskKey: input.taskKey, effectId: `pool-result:${input.taskKey}`, dispatch: false }
       : deny("RESULT_IDENTITY_CONFLICT");
 
