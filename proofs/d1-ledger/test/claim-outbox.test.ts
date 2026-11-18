@@ -295,3 +295,90 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
     expect(outbox).toMatchObject({ status: "dead" });
   });
 });
+
+
+describe("lease acquisition-attempt identity and numeric boundaries", () => {
+  async function createLeaseTask() {
+    const item = { ...approval, approvalId: "approval-lease-attempt", envelopeDigest: "7".repeat(64) };
+    await seed(item);
+    const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
+    expect(claimed.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    return claimed.taskKey;
+  }
+
+  it("does not let an earlier same-worker acquisition read back a later reclaimed generation", async () => {
+    const taskKey = await createLeaseTask();
+    let injected = false;
+    let competingLease;
+    const interleavingDb = {
+      prepare(sql: string) {
+        const statement = env.POOL_DB.prepare(sql);
+        return {
+          bind(...values: unknown[]) {
+            const bound = statement.bind(...values);
+            return {
+              run: async () => {
+                const result = await bound.run();
+                if (!injected && sql.includes("lease_generation = lease_generation + 1") &&
+                    result?.success === true && result?.meta?.changes === 1) {
+                  injected = true;
+                  competingLease = await acquireTaskLease(
+                    env.POOL_DB, taskKey, "worker-same", NOW + 2, 30
+                  );
+                }
+                return result;
+              },
+              first: (...args: unknown[]) => bound.first(...args)
+            };
+          }
+        };
+      }
+    };
+
+    const earlier = await acquireTaskLease(interleavingDb as never, taskKey, "worker-same", NOW, 1);
+    expect(injected).toBe(true);
+    expect(competingLease).toMatchObject({
+      decision: "LEASE_ACQUIRED", generation: 2, workerId: "worker-same"
+    });
+    expect(earlier).toMatchObject({
+      decision: "DENY", reason: "LEASE_ACQUISITION_SUPERSEDED", dispatch: false
+    });
+
+    const row = await env.POOL_DB.prepare(
+      "SELECT lease_generation, lease_attempt_id FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(row.lease_generation).toBe(2);
+    expect(row.lease_attempt_id).toBe(competingLease.leaseAttemptId);
+    expect(row.lease_attempt_id).not.toBe(earlier.leaseAttemptId);
+  });
+
+  it("rejects lease expiry arithmetic that exceeds JavaScript safe integers", async () => {
+    const taskKey = await createLeaseTask();
+    const result = await acquireTaskLease(
+      env.POOL_DB, taskKey, "worker-overflow", Number.MAX_SAFE_INTEGER, 1
+    );
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "INVALID_LEASE_REQUEST", dispatch: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(row).toMatchObject({ state: "pending", lease_generation: 0 });
+  });
+
+  it("does not increment lease generation beyond JavaScript safe integer range", async () => {
+    const taskKey = await createLeaseTask();
+    await env.POOL_DB.prepare(
+      "UPDATE pool_tasks SET lease_generation = ? WHERE task_key = ?"
+    ).bind(Number.MAX_SAFE_INTEGER, taskKey).run();
+
+    const result = await acquireTaskLease(env.POOL_DB, taskKey, "worker-generation-max", NOW, 30);
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "TASK_NOT_LEASEABLE", dispatch: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first();
+    expect(row).toMatchObject({ state: "pending", lease_generation: Number.MAX_SAFE_INTEGER });
+  });
+});
