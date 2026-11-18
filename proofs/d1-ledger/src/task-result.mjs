@@ -11,11 +11,12 @@ function deny(reason) { return { decision: "DENY", dispatch: false, reason }; }
 export async function commitTaskResult(db, bucket, input) {
   const now = Math.floor(Date.now() / 1000);
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
-  if (!input || typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey) ||
-      typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId) ||
-      !Number.isSafeInteger(input.generation) || input.generation < 1 ||
-      typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId) ||
-      !input.artifact || typeof input.artifact !== "object") return deny("INVALID_RESULT_COMMIT");
+  if (!input) return deny("INVALID_RESULT_COMMIT");
+  if (typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey)) return deny("INVALID_TASK_KEY");
+  if (typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId)) return deny("INVALID_WORKER_ID");
+  if (!Number.isSafeInteger(input.generation) || input.generation < 1) return deny("INVALID_LEASE_GENERATION");
+  if (typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId)) return deny("INVALID_LEASE_ATTEMPT");
+  if (!input.artifact || typeof input.artifact !== "object") return deny("INVALID_ARTIFACT_REFERENCE");
 
   if (!bucket || typeof bucket.head !== "function" || typeof bucket.get !== "function") {
     return deny("STORAGE_UNAVAILABLE");
