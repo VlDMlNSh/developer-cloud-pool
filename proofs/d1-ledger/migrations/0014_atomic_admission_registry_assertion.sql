@@ -45,6 +45,7 @@ WHEN NOT EXISTS (
      AND q.observed_at >= NEW.checked_at - 300
      AND q.valid_until > NEW.checked_at
      AND s.current_epoch = NEW.registry_epoch
+     AND s.current_epoch = (SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots)
      AND s.current_bundle_digest = NEW.registry_bundle_digest
      AND rs.accepted_at <= NEW.checked_at
      AND rs.valid_until > NEW.checked_at

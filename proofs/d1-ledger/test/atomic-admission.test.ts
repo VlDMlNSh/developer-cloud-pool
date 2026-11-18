@@ -81,6 +81,32 @@ async function ensureRegistry() {
   registryReadyForTest = true;
 }
 
+async function appendNewerSnapshotWithoutAdvancingPointer() {
+  const db = env.POOL_DB;
+  const state = await db.prepare(
+    "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+  ).first();
+  const epoch = Number(state.current_epoch) + 1;
+  const digest = epoch.toString(16).padStart(64, "0");
+  const acceptedAt = NOW - 1;
+  await db.prepare(`
+    INSERT INTO pool_route_registry_snapshots (
+      registry_epoch, registry_version, root_key_id, bundle_digest,
+      issued_at, valid_until, accepted_at, issuer_key_count, route_count,
+      bundle_json, root_signature
+    ) VALUES (?, 'registry-v1', 'test-root', ?, ?, ?, ?, 1, 1, '{}', 'synthetic-test-only')
+  `).bind(epoch, digest, NOW - 20, NOW + 300, acceptedAt).run();
+  await db.prepare(`
+    INSERT INTO pool_route_registry_issuer_keys (
+      registry_epoch, bundle_digest, issuer_id, key_id, registry_version,
+      status, revoked_at, valid_from, valid_until, public_key_jwk
+    ) VALUES (?, ?, 'local-authority', 'issuer-key-newer', 'registry-v1',
+      'active', NULL, ?, ?, ?)
+  `).bind(epoch, digest, NOW - 100, NOW + 300,
+    JSON.stringify({ kty: "EC", crv: "P-256", x: "C".repeat(43), y: "D".repeat(43) })).run();
+  return epoch;
+}
+
 async function seed(overrides = {}) {
   await ensureRegistry();
   const a = { ...input.approval, ...overrides.approval };
@@ -301,6 +327,55 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(row.state).toBe("ready");
     expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first())
       .toMatchObject({ n: 0 });
+  });
+
+  it("rejects admission when a newer registry snapshot exists but the active pointer is stale", async () => {
+    const newerEpoch = await appendNewerSnapshotWithoutAdvancingPointer();
+    const state = await env.POOL_DB.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
+    expect(Number(state.current_epoch)).toBeLessThan(newerEpoch);
+
+    const result = await admitQualifiedTask(env.POOL_DB, input);
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS",
+      dispatch: false
+    });
+    const ledger = await env.POOL_DB.prepare(
+      "SELECT state, consumed_at, admission_id FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first();
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, current_attempt_id, attempt_number FROM pool_tasks WHERE task_key = ?"
+    ).bind(input.taskKey).first();
+    const outbox = await env.POOL_DB.prepare(
+      "SELECT status, admission_id, attempt_id, evidence_digest FROM pool_task_delivery_outbox WHERE task_key = ?"
+    ).bind(input.taskKey).first();
+    expect(ledger).toMatchObject({ state: "ready", consumed_at: null, admission_id: null });
+    // Task and delivery outbox rows are created by the admission transaction itself.
+    expect(task).toBeNull();
+    expect(outbox).toBeNull();
+    for (const table of [
+      "pool_tasks", "pool_task_delivery_outbox", "pool_admissions", "pool_attempts",
+      "pool_admission_commit_receipts", "pool_admission_registry_assertions"
+    ]) {
+      const row = await env.POOL_DB.prepare(`SELECT COUNT(*) AS n FROM ${table}`).first();
+      expect(row.n).toBe(0);
+    }
+  });
+
+  it("denies exact replay after the durable registry advances beyond the active pointer", async () => {
+    const first = await admitQualifiedTask(env.POOL_DB, input);
+    expect(first.decision).toBe("ADMITTED_QUEUED");
+    const newerEpoch = await appendNewerSnapshotWithoutAdvancingPointer();
+    const state = await env.POOL_DB.prepare(
+      "SELECT current_epoch FROM pool_route_registry_state WHERE state_id = 1"
+    ).first();
+    expect(Number(state.current_epoch)).toBeLessThan(newerEpoch);
+
+    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    expect(replay).toMatchObject({
+      decision: "DENY", reason: "ROUTE_EVIDENCE_REVOKED_OR_STALE", dispatch: false
+    });
   });
 
   it("rejects a route whose issuer key is revoked in the active root-signed registry snapshot", async () => {

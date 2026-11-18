@@ -258,6 +258,7 @@ export async function admitQualifiedTask(db, input) {
           JOIN pool_route_registry_state s
             ON s.state_id = 1 AND s.current_epoch = q.registry_epoch
            AND s.current_bundle_digest = q.registry_bundle_digest
+           AND s.current_epoch = (SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots)
           JOIN pool_route_registry_snapshots rs
             ON rs.registry_epoch = s.current_epoch
            AND rs.bundle_digest = s.current_bundle_digest
