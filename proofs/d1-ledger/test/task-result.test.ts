@@ -30,6 +30,8 @@ describe("fenced result/outbox transaction",()=>{
   const input={taskKey:key,workerId:lease.workerId,generation:lease.generation,leaseAttemptId:lease.leaseAttemptId,resultDigest:"e".repeat(64),resultRef:"stable",now:1};
   expect((await commitTaskResult(env.POOL_DB,input)).decision).toBe("RESULT_COMMITTED");
   expect((await commitTaskResult(env.POOL_DB,input)).decision).toBe("RESULT_ALREADY_COMMITTED");
+  expect(await commitTaskResult(env.POOL_DB,{...input,workerId:"other-worker"})).toMatchObject({decision:"DENY",reason:"RESULT_IDENTITY_CONFLICT",dispatch:false});
+  expect(await commitTaskResult(env.POOL_DB,{...input,leaseAttemptId:"00000000-0000-4000-8000-000000000099"})).toMatchObject({decision:"DENY",reason:"RESULT_IDENTITY_CONFLICT",dispatch:false});
   expect(await commitTaskResult(env.POOL_DB,{...input,resultDigest:"f".repeat(64),resultRef:"substituted"})).toMatchObject({decision:"DENY",reason:"RESULT_IDENTITY_CONFLICT",dispatch:false});
  });
  it("rolls back result insertion when the SQL fencing trigger rejects an expired attempt",async()=>{
