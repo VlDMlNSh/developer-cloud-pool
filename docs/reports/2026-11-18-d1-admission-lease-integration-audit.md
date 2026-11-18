@@ -108,3 +108,38 @@ Use PR #67/#72's existing `proofs/d1-ledger` as the sole schema lineage, not the
 ### Important qualification boundary
 
 This is a source-level integration decision, not proof that the old PR #67/#72 tests pass on the current base. The 81-commit ancestry gap, profile migration, migration 0012 addition, and current dependency/toolchain changes require exact-head requalification. No hosted D1, live GitHub event authenticity, provider credentials, dispatch, deployment or merge is authorized.
+
+
+## CODE-profile migration inventory on PR #72
+
+A repository-blob scan of the 39-file proofs/d1-ledger package at PR #72 head found 16 literal occurrences of dsh-headless-probe across 14 files. The profile is bound in both SQL and application/test contracts.
+
+Files requiring explicit profile review/update:
+- migrations/0001_create_pool_approval_ledger.sql
+- migrations/0011_atomic_qualified_admission.sql
+- src/a0-admission-contract.mjs
+- src/admit-qualified-task.mjs
+- src/claim-outbox.mjs
+- src/consume.mjs
+- test/a0-admission-contract.test.ts
+- test/atomic-admission.test.ts
+- test/claim-outbox.test.ts
+- test/consume.test.ts
+- test/d1-upgrade-binding.smoke.ts
+- test/d1-upgrade-fixture.smoke.ts
+- test/projection-delivery.test.ts
+- test/projection-envelope.test.ts
+
+The package README, package manifests, lease/attempt modules, and migrations 0002–0010 did not contain the literal legacy profile in this scan. This is a bounded literal-string inventory, not a semantic guarantee that no profile assumptions exist elsewhere.
+
+### Port checklist before code is changed
+
+- Define one exported constant for the exact frozen CODE profile and use it consistently in JS validators and fixtures.
+- Change SQL migration constraints at both approval issuance and route qualification; preserve strict equality, never replace with a permissive allowlist that retains DSH.
+- Preserve immutable historical migration semantics: because these migrations are an isolated proof not yet deployed, the clean-base port can carry corrected source migrations; if any environment has applied the old migration, it needs a forward-only corrective migration instead of rewriting history. No hosted D1 state was inspected.
+- Update the golden upgrade fixture/schema version and migration smoke tests deliberately; do not mass-replace blindly.
+- Add explicit negative tests proving dsh-headless-probe is rejected at approval, qualification, admission, task claim and projection-envelope boundaries.
+- Add positive tests proving only the exact CODE profile is admitted.
+- Re-run all relevant package suites, migration upgrade smoke, projection delivery/reconciliation and contract validation on exact final head.
+
+This inventory is preparatory evidence only. No profile code or migration has been changed yet.
