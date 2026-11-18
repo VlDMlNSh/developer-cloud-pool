@@ -351,13 +351,12 @@ describe("atomic qualified A0 -> D1 admission", () => {
       "SELECT status, admission_id, attempt_id, evidence_digest FROM pool_task_delivery_outbox WHERE task_key = ?"
     ).bind(input.taskKey).first();
     expect(ledger).toMatchObject({ state: "ready", consumed_at: null, admission_id: null });
-    expect(task).toMatchObject({ state: "pending", current_attempt_id: null, attempt_number: 0 });
-    expect(outbox).toMatchObject({
-      status: "pending", admission_id: null, attempt_id: null, evidence_digest: null
-    });
+    // Task and delivery outbox rows are created by the admission transaction itself.
+    expect(task).toBeNull();
+    expect(outbox).toBeNull();
     for (const table of [
-      "pool_admissions", "pool_attempts", "pool_admission_commit_receipts",
-      "pool_admission_registry_assertions"
+      "pool_tasks", "pool_task_delivery_outbox", "pool_admissions", "pool_attempts",
+      "pool_admission_commit_receipts", "pool_admission_registry_assertions"
     ]) {
       const row = await env.POOL_DB.prepare(`SELECT COUNT(*) AS n FROM ${table}`).first();
       expect(row.n).toBe(0);
