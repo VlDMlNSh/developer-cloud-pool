@@ -197,3 +197,10 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Report: [2026-11-18 task HOME XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md).
 - No secrets, provider calls, dispatch, deployment or merge. Production launcher integration and host sandbox/egress/external credential controls remain NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: verify final-head CI, request independent A3 review, then design production launcher integration with task lifecycle, OS/container and network/credential controls.
+
+
+## Follow-up — dangling credential-store symlink regression — 2026-11-18
+- Added a synthetic test for a dangling `.aws` symlink injected into a new HOME; provisioning must reject it and remove the partial HOME.
+- Latest PR #116 head: `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`. Contract CI [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) SUCCESS; runner CI [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) pending at update.
+- Previous head `ad8b120...` passed Runner [44262843742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843742) and Contract [44262843688](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843688).
+- See [task HOME XDG hardening report](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md). Production integration remains unqualified; Contour A BLOCKED / NOT ACCEPTED.
