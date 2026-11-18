@@ -36,6 +36,7 @@ jobs:
         shell: bash
         env:
           POOL_DISPATCH_ENABLED: ${{ vars.POOL_DISPATCH_ENABLED }}
+          POOL_AUTHORIZATION_CONTRACT_ACCEPTED: ${{ vars.POOL_AUTHORIZATION_CONTRACT_ACCEPTED }}
         run: |
           set -euo pipefail
           if [ "${POOL_DISPATCH_ENABLED:-}" = "true" ]; then

@@ -1,0 +1,40 @@
+name: Reusable Pool Worker Boundary Validation
+
+on:
+  push:
+    branches: [feat/reusable-pool-worker-boundary-2026-11-06]
+  pull_request:
+    branches: [Основной]
+    paths:
+      - ".github/workflows/pool-worker.yml"
+      - ".github/workflows/pool-supervisor.yml"
+      - "scripts/pool-supervisor.mjs"
+      - "tests/security/reusable-pool-worker-boundary.test.mjs"
+      - ".github/workflows/reusable-pool-worker-boundary-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reusable-pool-worker-boundary-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact pull request head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+      - name: Syntax-check Supervisor
+        run: node --check scripts/pool-supervisor.mjs
+      - name: Run authorization boundary tests
+        run: node --test tests/security/reusable-pool-worker-boundary.test.mjs
