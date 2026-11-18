@@ -3592,3 +3592,26 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: inspect the actual artifact storage/ingest boundary and implement a local-only digest-to-immutable-bytes proof under Issue #133; do not invent a bucket or broaden worker permissions.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## CURRENT VERIFIED OVERLAY — 2026-11-18 R2 orphan reconciliation dry-run
+
+- Current default branch `Основной` observed HEAD: `68183828cf7934e89109310c8f99281be4eb7ed8`. The two documentation-only commits are tracked by corrective PR #136; do not merge or rewrite refs without governance.
+- PR #135 cumulative D1/R2 proof remains OPEN/DRAFT/UNMERGED at exact head `adfd0c130ad45ebc57cf2c545f2eddb9c50b594a`, base `Основной`. Starting target for this pass: `f47b62462ed73e57e85f558e5178bdeea2d28332`.
+- Added `proofs/d1-ledger/src/artifact-reconcile.mjs`, `proofs/d1-ledger/test/artifact-reconcile.test.ts`, syntax check entry, workflow push branch filter, and README section. Planner is bounded to 1,000 objects/references/tasks and dry-run only; it preserves all result/outbox-referenced keys, unknown/non-dead tasks, young objects and incomplete snapshots. Candidate rows are never deletion eligible.
+- Exact-head Workers runtime CI [44339239948](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44339239948), job `134924313633`: SUCCESS; 3 files / 28 tests passed, 12 tests in new reconciliation suite.
+- Exact-head Pool Contract Validation [44339239961](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44339239961), job `134924320263`: SUCCESS; dispatch disabled, YAML and security contracts passed.
+- Local clone/npm install NOT COMPLETED because DNS resolution for github.com failed. Local Node syntax check and 9 direct planner assertions passed.
+- R2 native lifecycle expiry was evaluated and rejected for this namespace because prefix/age policy cannot consult D1 references or task state. No lifecycle rules were changed. [Cloudflare R2 lifecycle docs](https://developers.cloudflare.com/r2/buckets/object-lifecycles/).
+- PR #132 head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`, PR #134 head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9), PR #136 head `032fe0548ce5c8549976a9806ebc9e7f86cd8e4f`; all remain OPEN/DRAFT/UNMERGED. PR #136 exact-head CI NOT VERIFIED.
+- Issue #133 remains OPEN. Independent reviews for PR #132/#134/#135 remain absent; independent security review NOT VERIFIED.
+- Real R2 listing and D1 reference snapshot integration, completeness attestation, retention policy, compare-and-delete, IAM no-overwrite/no-delete and orphan cleanup remain NOT VERIFIED. No deletion code exists in this pass.
+- Gemini NOT RUN: approved controller workflow 404 on checked default ref; no secrets/variables inspected.
+- No production bucket, hosted D1 write, provider call, secret access, production dispatch, deployment, merge or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement bounded read-only R2 list pagination + D1 result/outbox reference inventory adapter and prove snapshot completeness; keep deletion disabled.
+- Report: [2026-11-18 Issue #133 R2 orphan reconciliation dry-run](../reports/2026-11-18-issue133-r2-orphan-reconciliation-dry-run.md).
+- Checkpoint: [2026-11-18 R2 orphan reconciliation checkpoint](../checkpoints/2026-11-18-issue133-r2-orphan-reconciliation-checkpoint.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
