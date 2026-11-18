@@ -1,3 +1,22 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, Issue #133 artifact-ingest architecture discovery
+
+**Latest report:** [Issue #133 artifact-ingest architecture discovery](../reports/2026-11-18-issue133-artifact-ingest-architecture-discovery.md)  
+**Latest checkpoint:** [Issue #133 artifact-ingest architecture checkpoint](../checkpoints/2026-11-18-issue133-artifact-ingest-architecture-checkpoint.md)
+
+- Default branch remains `Основной`; immutable HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. It is not the documentation branch.
+- Documentation branch `docs/next-2026-11-18-worker-sandbox-fit` was at `0a5fb79ca7dde636fd845d80fc7e9c24d9482e70` before this pass. Documentation report commit `7e78f25dff7884ffb0dd784424089221e234f842`; checkpoint commit `cbfc22f4e046f630ee42053fd6aff5b71212afde`; Context Window update follows on the same docs branch.
+- PR #132 remains OPEN / DRAFT / UNMERGED; branch `proof/d1-result-outbox-clean-2026-11-18`; exact head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- Issue #133 remains OPEN / PLANNED. Architecture discovery comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6981531405
+- Default-branch source inspection found no artifact/object-storage adapter or ingest route. Pool Worker writes a composition-output hash to workflow summary and updates Issue state/comments; Supervisor is an Issues/Actions queue controller. PR #132 D1 adapter stores digest/reference metadata but does not receive or hash bytes.
+- Exact-head PR #132 CI remains VERIFIED / SUCCESS: D1 Workers run [44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561); Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049), both on `4b3cd7e...`.
+- PR #132 independent review NOT VERIFIED (0 formal reviews, 0 inline review comments).
+- R2 conditional writes and Workers `crypto.DigestStream` researched as candidate only. No bucket/account was accessed; no adapter exists; no runtime semantics were qualified.
+- No source-code changes, no local tests, no production dispatch, hosted D1 writes, provider calls, secret reads, deployment or merge. Gemini NOT RUN; expected controller path was not found on the inspected docs branch.
+- Artifact ingest implementation NOT IMPLEMENTED; storage behavior NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: implement and test a local-only R2 adapter proof in an exact Workers-compatible runtime; adversarially verify bounded streaming digest, conditional create, ambiguous-write reconciliation, object identity binding, retry and orphan recovery. Keep production dispatch disabled and do not grant worker credentials.
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, PR #132 D1 result/outbox fencing
 
 **Current checkpoint:** [D1 result/outbox audit checkpoint](../checkpoints/2026-11-18-d1-result-outbox-audit.md)  
