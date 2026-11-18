@@ -25,3 +25,17 @@ Contour B: DEFERRED.
 
 Report: ../reports/2026-11-18-d1-result-outbox-source-audit.md  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 30-minute engineering pass — 2026-11-18
+- Report: [30-minute D1 result/outbox fencing pass](../reports/2026-11-18-30min-d1-result-outbox-fencing-pass.md).
+- Ref readback: default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; docs PR #127 HEAD `f2cb579092ab4b6bd6cd25688dc3dc455e176d46`; PR #131 HEAD `2cefe8d62b99012ff23d45f33e3251996747fb7b`.
+- PR #131 exact-head workflow runs and combined statuses returned empty; reviews and inline threads are zero. Exact-head CI/review NOT VERIFIED.
+- Result/outbox adapter, migration 0005, tests and workflow were re-read. Their blob SHAs are recorded in the report.
+- Important boundary: prerequisite migrations 0001–0004 exist on PR #131's proof lineage but the queried `proofs/d1-ledger/` paths are absent from default HEAD. Do not cherry-pick only migration 0005/adapter onto default; reconcile schema lineage first.
+- F1 remains: adapter's `meta.changes === 1` classification is unsafe with trigger side effects; replace with verified immutable readback and prove under Workers Vitest. Migration's SQL `changes()` immediately after its task UPDATE is a distinct SQLite API and is documented to reflect the preceding DML inside a trigger; still requires D1 runtime test.
+- Caller-supplied `now` is not trusted clock provenance. Artifact digest is format-checked but referenced bytes are not hashed by this adapter.
+- No source changes, branch creation, local tests, Workers Vitest, CI success, dispatch, secrets, hosted D1, deployment, merge or Contour B work in this pass.
+- Next: reconcile schema lineage, create clean proof from immutable base, implement readback/trusted clock, run pinned Workers Vitest and exact-head CI.
+
+Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
