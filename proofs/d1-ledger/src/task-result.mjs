@@ -5,6 +5,44 @@ const RESULT_REF = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
 
 function deny(reason) { return { decision: "DENY", dispatch: false, reason }; }
 
+async function readResult(db, taskKey) {
+  return db.prepare(`
+    SELECT worker_id, lease_generation, lease_attempt_id, result_digest, result_ref
+      FROM pool_task_results
+     WHERE task_key = ?
+  `).bind(taskKey).first();
+}
+
+async function readWriteSet(db, taskKey) {
+  return db.prepare(`
+    SELECT r.worker_id, r.lease_generation, r.lease_attempt_id, r.result_digest, r.result_ref,
+           t.state AS task_state, o.effect_id, o.event_type,
+           o.result_digest AS outbox_digest, o.status AS outbox_status
+      FROM pool_task_results r
+      JOIN pool_tasks t ON t.task_key = r.task_key
+      JOIN pool_task_result_outbox o ON o.task_key = r.task_key
+     WHERE r.task_key = ?
+  `).bind(taskKey).first();
+}
+
+function sameResult(row, input) {
+  return row &&
+    row.worker_id === input.workerId &&
+    row.lease_generation === input.generation &&
+    row.lease_attempt_id === input.leaseAttemptId &&
+    row.result_digest === input.resultDigest &&
+    row.result_ref === input.resultRef;
+}
+
+function completeWriteSet(row, input) {
+  return sameResult(row, input) &&
+    row.task_state === "completed" &&
+    row.effect_id === `pool-result:${input.taskKey}` &&
+    row.event_type === "pool.task.result" &&
+    row.outbox_digest === input.resultDigest &&
+    ["pending", "delivered"].includes(row.outbox_status);
+}
+
 /** Local-only result commit. The trigger atomically completes the task and creates an outbox intent. */
 export async function commitTaskResult(db, input) {
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
@@ -17,11 +55,15 @@ export async function commitTaskResult(db, input) {
       !Number.isSafeInteger(input.now) || input.now <= 0) return deny("INVALID_RESULT_COMMIT");
 
   try {
-    const before = await db.prepare("SELECT result_digest, result_ref FROM pool_task_results WHERE task_key = ?")
-      .bind(input.taskKey).first();
-    if (before) return before.result_digest === input.resultDigest && before.result_ref === input.resultRef
-      ? { decision: "RESULT_ALREADY_COMMITTED", taskKey: input.taskKey, effectId: `pool-result:${input.taskKey}`, dispatch: false }
-      : deny("RESULT_IDENTITY_CONFLICT");
+    const before = await readResult(db, input.taskKey);
+    if (before) {
+      if (!sameResult(before, input)) return deny("RESULT_IDENTITY_CONFLICT");
+      const persisted = await readWriteSet(db, input.taskKey);
+      return completeWriteSet(persisted, input)
+        ? { decision: "RESULT_ALREADY_COMMITTED", taskKey: input.taskKey,
+            effectId: `pool-result:${input.taskKey}`, dispatch: false }
+        : deny("RESULT_WRITE_SET_INCOMPLETE");
+    }
 
     const inserted = await db.prepare(`
       INSERT INTO pool_task_results (task_key, worker_id, lease_generation, lease_attempt_id, result_digest, result_ref, committed_at)
@@ -36,36 +78,18 @@ export async function commitTaskResult(db, input) {
       input.generation, input.leaseAttemptId, input.now).run();
     if (inserted?.success !== true) return deny("RESULT_COMMIT_AMBIGUOUS");
 
-    // D1 meta.changes is SQLite total_changes and includes AFTER-trigger writes.
-    // Verify the entire atomic write set instead of treating it as an INSERT count.
-    const persisted = await db.prepare(`
-      SELECT r.worker_id, r.lease_generation, r.lease_attempt_id, r.result_digest, r.result_ref,
-             t.state AS task_state, o.effect_id, o.event_type, o.result_digest AS outbox_digest, o.status AS outbox_status
-        FROM pool_task_results r
-        JOIN pool_tasks t ON t.task_key = r.task_key
-        JOIN pool_task_result_outbox o ON o.task_key = r.task_key
-       WHERE r.task_key = ?
-    `).bind(input.taskKey).first();
-
-    const exact = persisted &&
-      persisted.worker_id === input.workerId &&
-      persisted.lease_generation === input.generation &&
-      persisted.lease_attempt_id === input.leaseAttemptId &&
-      persisted.result_digest === input.resultDigest &&
-      persisted.result_ref === input.resultRef &&
-      persisted.task_state === "completed" &&
-      persisted.effect_id === `pool-result:${input.taskKey}` &&
-      persisted.event_type === "pool.task.result" &&
-      persisted.outbox_digest === input.resultDigest &&
-      ["pending", "delivered"].includes(persisted.outbox_status);
-    if (!exact) {
-      const existing = await db.prepare("SELECT result_digest, result_ref FROM pool_task_results WHERE task_key = ?")
-        .bind(input.taskKey).first();
-      if (existing) return deny("RESULT_IDENTITY_CONFLICT");
-      return deny("STALE_OR_EXPIRED_RESULT_WRITER");
+    // D1 meta.changes includes trigger side effects; verify the complete durable write set.
+    const persisted = await readWriteSet(db, input.taskKey);
+    if (completeWriteSet(persisted, input)) {
+      return { decision: "RESULT_COMMITTED", taskKey: input.taskKey, effectId: persisted.effect_id,
+        generation: input.generation, dispatch: false };
     }
-    return { decision: "RESULT_COMMITTED", taskKey: input.taskKey, effectId: persisted.effect_id,
-      generation: input.generation, dispatch: false };
+
+    const existing = await readResult(db, input.taskKey);
+    if (existing) return sameResult(existing, input)
+      ? deny("RESULT_WRITE_SET_INCOMPLETE")
+      : deny("RESULT_IDENTITY_CONFLICT");
+    return deny("STALE_OR_EXPIRED_RESULT_WRITER");
   } catch {
     return deny("RESULT_COMMIT_AMBIGUOUS");
   }
