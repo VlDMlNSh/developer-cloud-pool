@@ -207,7 +207,7 @@ describe("generation-fenced logical task leases", () => {
     const item = { ...approval, approvalId: "approval-lease-test", envelopeDigest: "9".repeat(64) };
     await seed(item);
     const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
-    expect(claimed.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    if (claimed.decision !== "TASK_CREATED_OR_ATTACHED") throw new Error(JSON.stringify(claimed));
     return claimed.taskKey;
   }
 
