@@ -72,3 +72,29 @@ Runner qualification: RUNNING / NOT VERIFIED at cutoff. Contract validation: VER
 - Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): COMPLETED/SUCCESS.
 - Exact-head Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416), job `134736343006`: IN_PROGRESS at cutoff; setup, checkout, focused child-environment tests, runner baseline and sandbox capability probe passed; install/FCC/bridge stages not yet verified.
 - Next: inspect run 44285275416. If the bridge reaches cleanup, read the emitted SIGINT/wait/listener values and artifact. Do not claim qualification until the entire run is SUCCESS and evidence is inspected.
+
+
+## Artifact-backed root-cause finding — FCC proxy environment contract — 2026-11-18
+
+### Exact current-head result
+- PR #116 remains OPEN/DRAFT/UNMERGED; head `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`.
+- Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416): COMPLETED/FAILURE, job `134736343006`. Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): COMPLETED/SUCCESS.
+- Artifact [14418937574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416/artifacts/14418937574), 31,263 bytes, GitHub digest `sha256:ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`. Downloaded ZIP SHA-256 matched GitHub; all 33 internal SHA256SUMS entries matched.
+- Verified successes: Claude Code signed APT package and signed release manifest/binary checksum; Docker `--network none` primitive (external TCP blocked, no default route, read-only rootfs, capabilities dropped); FCC install/metadata; 15/15 single-credential profile tests; FCC loopback HTTP 200 on exact `127.0.0.1:18765` and clean SIGINT shutdown with listener absent.
+- Synthetic CLI handoff still failed. Artifact contains `fcc-bridge-server.log` showing only server startup, one `GET /health` 200, and graceful cleanup; `fcc-bridge-stderr.txt` is empty. The expected `fcc-bridge-result.txt`, `fcc-bridge-expected-args.txt`, and shutdown diagnostics file are absent, so the mock did not reach the later success-recording assertions. No real Claude session or provider call occurred.
+
+### Root cause: missing trusted proxy environment construction
+- Cloud Pool `scripts/cloud_pool/exec_allowlist.py` has a fixed `ALLOWED_ENV_KEYS` set that deliberately excludes all `ANTHROPIC_*` values. It copies only explicitly allowed parent variables into the child.
+- The workflow's synthetic mock requires `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`, but the workflow invokes `exec_allowlist.py` directly and does not call a trusted FCC client-environment builder to inject these values. The mock therefore cannot pass its first environment assertions; this is an integration-contract gap, not a reason to forward ambient provider credentials.
+- Inspected pinned upstream FCC source at `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`: `src/free_claude_code/harnesses/claude.py` exposes `build_claude_proxy_env`; it removes ambient `ANTHROPIC_*` values and then inserts the trusted `proxy_root_url` and managed `auth_token`. `src/free_claude_code/cli/managed/claude.py` uses that helper for Claude subprocesses. This is the mature upstream contract to reuse/align with, subject to the FCC AGPL-3.0-only boundary already recorded.
+- The synthetic step currently overstates its coverage as an FCC-to-Claude handoff. It is not a real proxy handoff: the mock is launched directly through the Cloud Pool wrapper, while FCC server is only health-probed. No proxy token is obtained from FCC managed config.
+
+### Safe next implementation boundary
+- Do NOT add `ANTHROPIC_BASE_URL` or `ANTHROPIC_AUTH_TOKEN` to the generic ambient allowlist.
+- Implement a separate trusted child-environment construction path that first strips ambient `ANTHROPIC_*`, then receives the FCC-managed proxy URL and per-profile proxy token through an explicit protected contract; validate the URL as loopback-only, keep token out of argv/logs/artifacts, and prove only the two trusted proxy values reach the Claude child. Reuse upstream behavior conceptually without blindly copying AGPL source; resolve license implications before distributing/integrating code.
+- If that trusted integration is not implemented in the same pass, rename the current CI step to a sanitized mock CLI/argv test and explicitly mark FCC proxy handoff NOT VERIFIED. Do not weaken the generic allowlist.
+
+### Remaining gates
+- No real provider route/account/quota proof; provider-specific egress allowlist NOT IMPLEMENTED; actual CODE worker inside Docker NOT VERIFIED; hosted Claude-use entitlement and FCC network-use license review NOT VERIFIED; persistent workspace/Zero Trust/backup-restore blocked.
+- Gemini controller path remains 404 on default branch; Gemini agents NOT RUN. No secrets read, provider calls, real Claude task, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
