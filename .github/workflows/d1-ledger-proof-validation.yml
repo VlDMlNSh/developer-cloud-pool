@@ -18,6 +18,7 @@ on:
       - "proof/qualified-route-evidence-verifier-2026-11-15"
       - "proof/root-signed-route-registry-bundle-2026-11-15"
       - "impl/durable-route-registry-d1-2026-11-15"
+      - "fix/d1-bootstrap-watermark-guard-stacked-2026-11-18"
       - "fix/route-registry-epoch-order-2026-11-15"
     paths:
       - "proofs/d1-ledger/**"
