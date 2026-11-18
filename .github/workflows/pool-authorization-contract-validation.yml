@@ -1,0 +1,38 @@
+name: Pool Authorization Negative-First Validation
+
+on:
+  pull_request:
+    branches: ["Основной"]
+    paths:
+      - "tests/security/pool-authorization-contract.test.mjs"
+      - "tests/security/pool-authorization-decision.test.mjs"
+      - "src/pool/authorization-decision.mjs"
+      - ".github/workflows/pool-authorization-contract-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  negative-first-contract:
+    name: Assert production authorization boundaries
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout pull request merge commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Run isolated fail-closed decision model tests
+        run: node --test tests/security/pool-authorization-decision.test.mjs
+
+      - name: Run production-source security contract tests
+        run: node --test tests/security/pool-authorization-contract.test.mjs
