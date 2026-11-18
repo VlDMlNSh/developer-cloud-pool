@@ -3357,3 +3357,21 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: obtain independent review of combined #84 → #86 → #129 → #130 stack; keep PRs draft/unmerged until review and governance verification. Then investigate revocation/admission race and durable single-use claim/fencing.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18 PR #130 integration audit and durable-claim reuse assessment
+
+- Audit report: [PR #130 integration audit and claim reuse assessment](../reports/2026-11-18-pr130-integration-audit-and-claim-reuse-assessment.md).
+- PR #130 HEAD `6175eed8812fe52aad929523caab6b942cd01dd7`, base PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`; OPEN/DRAFT/UNMERGED.
+- Exact-head merge-context run [44299536170](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170), job `134785358773`: checkout PR #130 merge ref; merge commit `3272389`; `npm run check` PASS; 11/11 Workers Runtime files, 120/120 tests PASS; second D1 binding smoke 1/1 PASS; frozen schema-0010 fixture 2/2 PASS.
+- Artifact `14424184685`, 18,253 bytes, SHA-256 `ce05f89261c7120a95761c5a7068966a752d9d4ac60876d362886cd85d66819f`.
+- PR #130 formal reviews 0 / inline threads 0. Combined status API returned no contexts; do not infer required status checks from an empty response. Ruleset 26550182 was not re-fetched in this pass; current governance detail NOT VERIFIED.
+- Source review of migration 0012 and its test confirms initial singleton watermark and every advance must equal MAX persisted registry epoch; tests cover stale bootstrap 1001/1003 and stale intermediate advance 1004/1005. No defect established in this bounded review; no formal review submitted.
+- Upstream queue evaluation: pg-boss and Graphile Worker require PostgreSQL; BullMQ requires Redis; Temporal adds a separately operated service. None is a drop-in for free Workers + D1. Reuse protocol patterns (atomic claim, lease, attempt counter, idempotency, fencing, recovery), not their runtime dependencies, pending backend proof.
+- Issue #38 is the next engineering target: D1 conditional single-use claim versus dedicated state-repository reservation; require real concurrent one-winner proof, lease/recovery/idempotency/fencing and least privilege. Do not grant Supervisor Contents:write as shortcut.
+- Gemini controller workflow path still returns 404 on default; Gemini NOT RUN. No secrets, hosted D1 writes, provider calls, production dispatch, worker execution, deployment or merge.
+- Open blockers include #118 persistent workspace/Zero Trust, #22 remote console, #26 account-isolated routing/quota, #70 free-quota route gate, #115 CODE runner qualification, #38 durable claim, and #1 governance.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: bounded Issue #38 design + D1 concurrency proof, while preserving dispatch=false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
