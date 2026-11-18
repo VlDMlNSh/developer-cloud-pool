@@ -16,18 +16,27 @@ async function insertSnapshot(db: D1Database, row: ReturnType<typeof snapshot>) 
 }
 
 describe("durable route registry snapshot ledger migration", () => {
-  it("enforces append-only snapshots and a monotonic, snapshot-bound singleton watermark", async () => {
+  it("rejects stale bootstrap watermarks and enforces append-only monotonic state", async () => {
     const db = env.POOL_DB;
     const first = snapshot(1001, "a".repeat(64), "registry-v1001", 1_800_000_100);
     const future = snapshot(1003, "b".repeat(64), "registry-v1003", 1_800_000_200);
     const outOfOrder = snapshot(1002, "c".repeat(64), "registry-v1002", 1_800_000_300);
 
+    // Multiple valid snapshots can exist before singleton initialization.
+    // The initial watermark must select the newest persisted snapshot.
     await insertSnapshot(db, first);
+    await insertSnapshot(db, future);
     await expect(db.prepare(`
       INSERT INTO pool_route_registry_state (
         state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
       ) VALUES (1, ?, ?, ?, ?)
-    `).bind(first.epoch, first.digest, first.version, first.acceptedAt).run()).resolves.toBeTruthy();
+    `).bind(first.epoch, first.digest, first.version, first.acceptedAt).run()).rejects.toThrow();
+
+    await expect(db.prepare(`
+      INSERT INTO pool_route_registry_state (
+        state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
+      ) VALUES (1, ?, ?, ?, ?)
+    `).bind(future.epoch, future.digest, future.version, future.acceptedAt).run()).resolves.toBeTruthy();
 
     await expect(db.prepare(
       "UPDATE pool_route_registry_snapshots SET registry_version = 'tampered' WHERE registry_epoch = ?"
@@ -36,29 +45,39 @@ describe("durable route registry snapshot ledger migration", () => {
       "DELETE FROM pool_route_registry_snapshots WHERE registry_epoch = ?"
     ).bind(first.epoch).run()).rejects.toThrow();
 
-    await insertSnapshot(db, future);
-    // This used to pass: the active pointer is still 1001 even though epoch
-    // 1003 has already been persisted. Snapshot history must itself be ordered.
     await expect(insertSnapshot(db, outOfOrder)).rejects.toThrow();
-
     await expect(insertSnapshot(db, snapshot(1000, "d".repeat(64), "registry-v1000", 1_800_000_400)))
       .rejects.toThrow();
+
+    const intermediate = snapshot(1004, "e".repeat(64), "registry-v1004", 1_800_000_500);
+    const next = snapshot(1005, "f".repeat(64), "registry-v1005", 1_800_000_600);
+    await insertSnapshot(db, intermediate);
+    await insertSnapshot(db, next);
+
+    // The active watermark may not lag behind a newer accepted snapshot.
+    await expect(db.prepare(`
+      UPDATE pool_route_registry_state
+         SET current_epoch = ?, current_bundle_digest = ?,
+             current_registry_version = ?, updated_at = ?
+       WHERE state_id = 1 AND current_epoch = ? AND current_bundle_digest = ?
+    `).bind(intermediate.epoch, intermediate.digest, intermediate.version, intermediate.acceptedAt,
+      future.epoch, future.digest).run()).rejects.toThrow();
 
     await expect(db.prepare(`
       UPDATE pool_route_registry_state
          SET current_epoch = ?, current_bundle_digest = ?,
              current_registry_version = ?, updated_at = ?
        WHERE state_id = 1 AND current_epoch = ? AND current_bundle_digest = ?
-    `).bind(future.epoch, future.digest, future.version, future.acceptedAt,
-      first.epoch, first.digest).run()).resolves.toBeTruthy();
+    `).bind(next.epoch, next.digest, next.version, next.acceptedAt,
+      future.epoch, future.digest).run()).resolves.toBeTruthy();
 
     const current = await db.prepare(
       "SELECT current_epoch, current_bundle_digest, current_registry_version FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
     expect(current).toEqual({
-      current_epoch: future.epoch,
-      current_bundle_digest: future.digest,
-      current_registry_version: future.version
+      current_epoch: next.epoch,
+      current_bundle_digest: next.digest,
+      current_registry_version: next.version
     });
 
     await expect(db.prepare(`
@@ -66,7 +85,7 @@ describe("durable route registry snapshot ledger migration", () => {
          SET current_epoch = ?, current_bundle_digest = ?,
              current_registry_version = ?, updated_at = ?
        WHERE state_id = 1
-    `).bind(first.epoch, first.digest, first.version, 1_800_000_500).run()).rejects.toThrow();
+    `).bind(first.epoch, first.digest, first.version, 1_800_000_600).run()).rejects.toThrow();
 
     await expect(db.prepare(
       "DELETE FROM pool_route_registry_state WHERE state_id = 1"
@@ -76,7 +95,6 @@ describe("durable route registry snapshot ledger migration", () => {
       INSERT INTO pool_route_registry_state (
         state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
       ) VALUES (1, ?, ?, ?, ?)
-    `).bind(future.epoch, "e".repeat(64), future.version, future.acceptedAt).run())
-      .rejects.toThrow();
+    `).bind(next.epoch, "0".repeat(64), next.version, next.acceptedAt).run()).rejects.toThrow();
   });
 });
