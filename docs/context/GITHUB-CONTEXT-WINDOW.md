@@ -3136,3 +3136,16 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` is 404 on default branch; Gemini NOT RUN. No bypass/direct provider calls.
 - PR #126/#120 remain OPEN/DRAFT/UNMERGED; Issue #115/#118 OPEN. No secrets read, provider calls, real Claude task, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: inspect run 44285275416, especially bridge signal/wait/listener output and artifact. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next addendum — 2026-11-18 (FCC bridge shutdown diagnostics)
+- PR #116 remains OPEN/DRAFT/UNMERGED; exact current head read from PR: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Previous Runner Qualification `44284859244` passed FCC loopback startup/readiness and primary runtime shutdown but failed the synthetic FCC-to-mock-Claude bridge strict shutdown check. Artifact `14418074350` (31,271 bytes; SHA-256 `3c94c889560b7a3c8e40a1d88d10fbdf6a5ad94977331ef9bc2c5ad0865a910f`) was not independently inspected in this pass.
+- Diagnostic commit `c4839850a5b015a56a8ca2f591c11e0aeee7c950` added stdout output for signal/wait/listener diagnostics; run `44285187440` was superseded/cancelled before install/runtime and is NOT a qualification result.
+- Current-head commit `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1` moves SIGINT into non-errexit scope and captures signal-delivery and wait exit statuses separately; strict shutdown assertions remain.
+- Exact-head Pool Contract Validation `44285275314`: COMPLETED/SUCCESS. Exact-head Runner Qualification `44285275416`: IN_PROGRESS at latest readback; job `134736343006` passed checkout, environment allowlist tests, runner baseline and sandbox capability probe; installation/runtime not yet completed. Live job-log download returned NOT_FOUND while the job was running. Do not claim qualification.
+- Gemini controller `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404 on default branch `Основной`; Gemini NOT RUN. No bypass attempted.
+- Reuse search considered gVisor, Kata Containers, Firecracker and Cilium/network-policy candidates; license/compatibility evidence was insufficient to adopt any component in this pass.
+- Issue #118 remains OPEN/BLOCKED; PR #126/#120 OPEN/DRAFT/UNMERGED. No secrets, provider calls, real Claude task, Gemini/production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
+- Next: re-read run `44285275416` after completion and independently verify SIGINT delivery, process exit, liveness and listener absence. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
