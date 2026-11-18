@@ -1,3 +1,26 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, R2-to-D1 recovery qualification
+
+**Latest report:** [Issue #133 R2-to-D1 recovery qualification](../reports/2026-11-18-issue133-d1-r2-recovery-qualification.md)  
+**Latest checkpoint:** [Issue #133 R2-to-D1 recovery checkpoint](../checkpoints/2026-11-18-issue133-d1-r2-recovery-checkpoint.md)
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-verified, unchanged).
+- PR #132 OPEN / DRAFT / UNMERGED; head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- PR #134 OPEN / DRAFT / UNMERGED; local R2 proof head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #135 OPEN / DRAFT / UNMERGED; cumulative head `f47b62462ed73e57e85f558e5178bdeea2d28332`, base `Основной`.
+- Issue #133 OPEN. Latest comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6982199611
+- D1 Workers runtime exact-head CI [44329550935](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44329550935): SUCCESS; job `134889914796`; 16 tests passed across 2 files.
+- Pool Contract Validation exact-head CI [44329550986](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44329550986): SUCCESS on same head.
+- Recovery test proves local object-written/D1-not-committed handling: stale lease blocks result/outbox; stored object remains; next lease generation re-verifies and commits same object once. Exact caller retry tested separately.
+- Local R2 ingest, D1 byte re-verification and outbox identity binding are VERIFIED by local Workers runtime CI.
+- NOT VERIFIED: real R2/IAM/distributed consistency, trusted ingress authorization, post-publication no-overwrite/no-delete, orphan GC, production-grade cross-store recovery and independent security review.
+- No production bucket, hosted D1 write, provider, secret read, deployment, production dispatch or merge.
+- Gemini NOT RUN; required controller workflow not found on checked refs; no Secrets/Variables inspected.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: design and test a bounded orphan reconciliation/GC state machine; prove active/referenced objects cannot be collected and only expired/unreferenced objects are eligible. Keep deletion disabled pending independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, D1 verifier-side artifact binding
 
 **Latest report:** [Issue #133 D1 verifier-side artifact binding](../reports/2026-11-18-issue133-d1-verifier-artifact-binding.md)  
