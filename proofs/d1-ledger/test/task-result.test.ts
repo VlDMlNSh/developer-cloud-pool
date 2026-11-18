@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { env } from "cloudflare:workers";
 import { claimLogicalTask } from "../src/claim-outbox.mjs";
 import { acquireTaskLease } from "../src/task-lease.mjs";
@@ -38,5 +38,19 @@ describe("fenced result/outbox transaction",()=>{
   await expect(env.POOL_DB.prepare(`INSERT INTO pool_task_results(task_key,worker_id,lease_generation,lease_attempt_id,result_digest,result_ref,committed_at) VALUES(?,?,?,?,?,?,?)`).bind(key,lease.workerId,lease.generation,lease.leaseAttemptId,"a".repeat(64),"expired",Math.floor(Date.now()/1000)).run()).rejects.toThrow(/RESULT_LEASE_FENCE_LOST/);
   const counts=await env.POOL_DB.prepare("SELECT (SELECT count(*) FROM pool_task_results WHERE task_key=?) AS results,(SELECT count(*) FROM pool_task_result_outbox WHERE task_key=?) AS effects").bind(key,key).first();
   expect(counts).toMatchObject({results:0,effects:0});
+ });
+
+ it("reclaims a lease when expiry equals the Worker clock boundary",async()=>{
+  const key=await createTask(); const first=await acquireTaskLease(env.POOL_DB,key,"boundary-worker",60);
+  expect(first.decision).toBe("LEASE_ACQUIRED");
+  const boundary=Math.floor(Date.now()/1000);
+  await env.POOL_DB.prepare("UPDATE pool_tasks SET lease_expires_at=? WHERE task_key=?").bind(boundary,key).run();
+  const clock=vi.spyOn(Date,"now").mockReturnValue(boundary*1000);
+  try {
+   const reclaimed=await acquireTaskLease(env.POOL_DB,key,"boundary-worker",60);
+   expect(reclaimed.decision).toBe("LEASE_ACQUIRED");
+   expect(reclaimed.generation).toBe(first.generation+1);
+   expect(reclaimed.leaseAttemptId).not.toBe(first.leaseAttemptId);
+  } finally { clock.mockRestore(); }
  });
 });
