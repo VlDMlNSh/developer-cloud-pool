@@ -307,3 +307,5 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain exact-head workflow result for \`aea59ae...\`, inspect capability artifact, then decide whether gVisor is feasible on this runner.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- CI status refresh after report publication: exact-head Pool Contract Validation run [44264822929](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264822929) COMPLETED/SUCCESS; exact-head Runner Qualification [44264823103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103), job [134666618686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103/job/134666618686), IN_PROGRESS. Capability probe artifact/results remain NOT VERIFIED until job completion and artifact inspection.
