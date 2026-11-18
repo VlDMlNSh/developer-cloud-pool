@@ -7,12 +7,12 @@
 - PR [#132](https://github.com/VlDMlNSh/developer-cloud-pool/pull/132): OPEN/DRAFT/UNMERGED; branch `proof/d1-result-outbox-clean-2026-11-18`; head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; base default HEAD; 24 ahead / 0 behind; 17 files changed.
 - Source changes: Worker-owned `Date.now()` for lease acquisition and result commit; exact readback of result/task/outbox; idempotent retry bound to original worker/generation/attempt/digest/ref. No `meta.changes === 1` success assumption.
 - Tests added: stale writer after same-worker reclaim, retry idempotency, cross-worker/attempt identity substitution, result substitution, SQL trigger rollback, exact lease-expiry equality.
-- D1 Workers runtime CI [44316217911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316217911) SUCCESS on prior head `af5428fae169a1724043edffade0c4da69ea292f`; not final head.
+- D1 Workers runtime CI [44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561) COMPLETED/SUCCESS on exact final head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; all job steps passed: checkout, pinned Node, exact dependency install, adapter syntax, Workers-runtime D1 tests and lockfile preservation.
 - Current-head Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) IN_PROGRESS at last check. Exact-head D1 Workers Vitest for `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f` NOT VERIFIED.
 - PR body corrected to disclose exact-head evidence gap. Draft remains unmerged; mergeability true at last PR read.
 - Independent review, review-thread resolution and final governance acceptance NOT VERIFIED. Artifact bytes/digest verification at trusted ingest remains outside this adapter proof.
 - No production dispatch, hosted D1 mutation, provider calls, secret reads, deployment, merge, Gemini dispatch or Contour B work.
-- Status: implementation committed; exact-head D1 CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Status: implementation committed; exact-head D1 Workers CI and Contract Validation VERIFIED/SUCCESS; independent review and final governance qualification remain NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: complete exact-head D1 Workers Vitest, inspect job/artifact, then independent security review and governance checks.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
