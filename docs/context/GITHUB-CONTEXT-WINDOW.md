@@ -3185,3 +3185,11 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: amend step 13 to persist redacted failure diagnostics (cli exit status, marker/args existence, sanitized wrapper stderr category, HOME/XDG ownership/modes, shutdown state) to qualification artifact before assertions; keep synthetic credentials ephemeral and redact. Rerun exact-head qualification. Do not change FCC server code.
 - No live provider call, real Claude session/task, production dispatch, Gemini dispatch or Contour B. Contour A BLOCKED / NOT ACCEPTED.
 - Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
+
+
+## Diagnostic hardening follow-up — 2026-11-18
+
+- Confirmed FCC runtime step 12 is PASS; only step 13 synthetic CLI handoff failed on prior exact HEAD. Bridge health check itself was HTTP 200. Fault is not established; mock handoff success evidence was missing.
+- Updated PR #116 workflow to preserve failure diagnostics and mock marker/args/stderr (fixed synthetic test data only), CLI status and HOME/XDG mode/owner metadata in the qualification artifact. No credential values are copied. Workflow commit: `2e944f13818f434cf135602c1c0e82051f1d3fa8`; workflow blob: `ddb8688f362d66ec41ddf0c4990aa9ff3b40b644`.
+- Exact-head runs: Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337) RUNNING at last observation; Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360) RUNNING. Intermediate run [44286918539](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286918539) was CANCELLED after the follow-up commit and is not a verification result.
+- Next: inspect exact-head CI and new artifact if failure persists; do not alter FCC server. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
