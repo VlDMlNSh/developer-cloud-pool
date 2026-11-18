@@ -54,7 +54,7 @@ describe("fenced result/outbox transaction requires verified artifact capability
     expect(stale).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_RESULT_WRITER", dispatch: false });
 
     const artifact = await createVerifiedArtifact(key, "current verified result");
-    const accepted = await commitTaskResult(env.POOL_DB, {
+    const accepted = await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
       taskKey: key, workerId: live.workerId, generation: live.generation,
       leaseAttemptId: live.leaseAttemptId, artifact
     });
@@ -88,13 +88,13 @@ describe("fenced result/outbox transaction requires verified artifact capability
       taskKey: key, workerId: lease.workerId, generation: lease.generation,
       leaseAttemptId: lease.leaseAttemptId, artifact
     };
-    expect((await commitTaskResult(env.POOL_DB, input)).decision).toBe("RESULT_COMMITTED");
-    expect((await commitTaskResult(env.POOL_DB, input)).decision).toBe("RESULT_ALREADY_COMMITTED");
+    expect((await commitTaskResult(env.POOL_DB, env.ARTIFACTS, input)).decision).toBe("RESULT_COMMITTED");
+    expect((await commitTaskResult(env.POOL_DB, env.ARTIFACTS, input)).decision).toBe("RESULT_ALREADY_COMMITTED");
 
     const substituted = await createVerifiedArtifact(key, "different bytes");
-    expect(await commitTaskResult(env.POOL_DB, { ...input, artifact: substituted }))
+    expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, { ...input, artifact: substituted }))
       .toMatchObject({ decision: "DENY", reason: "RESULT_IDENTITY_CONFLICT", dispatch: false });
-    expect(await commitTaskResult(env.POOL_DB, { ...input, workerId: "other-worker" }))
+    expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, { ...input, workerId: "other-worker" }))
       .toMatchObject({ decision: "DENY", reason: "RESULT_IDENTITY_CONFLICT", dispatch: false });
   });
 
@@ -105,13 +105,13 @@ describe("fenced result/outbox transaction requires verified artifact capability
       taskKey: key, workerId: lease.workerId, generation: lease.generation,
       leaseAttemptId: lease.leaseAttemptId
     };
-    expect(await commitTaskResult(env.POOL_DB, {
+    expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
       ...base, resultDigest: "c".repeat(64), resultRef: "worker-controlled-ref"
     })).toMatchObject({ decision: "DENY", reason: "INVALID_RESULT_COMMIT", dispatch: false });
 
     const verified = await createVerifiedArtifact(key, "capability bytes");
     const forgedCopy = { ...verified, sha256: "c".repeat(64) };
-    expect(await commitTaskResult(env.POOL_DB, { ...base, artifact: forgedCopy }))
+    expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, { ...base, artifact: forgedCopy }))
       .toMatchObject({ decision: "DENY", reason: "UNVERIFIED_ARTIFACT", dispatch: false });
 
     const counts = await env.POOL_DB.prepare(
