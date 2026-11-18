@@ -410,7 +410,7 @@ jobs:
             > "$state_file"
           trap - EXIT
 
-      - name: Qualify synthetic FCC-to-Claude CLI handoff without provider access
+      - name: Qualify synthetic wrapper-to-mock CLI invocation without provider access
         id: fcc_bridge_qualification
         shell: bash
         env:
@@ -434,16 +434,17 @@ jobs:
           cat > "$mock_bin/claude" <<'MOCK'
           #!/usr/bin/env bash
           set -euo pipefail
-          test "${ANTHROPIC_BASE_URL:-}" = "http://127.0.0.1:18766"
-          test -n "${ANTHROPIC_AUTH_TOKEN:-}"
+          # The wrapper deliberately strips ambient provider routing and credentials.
+          # This mock qualifies only the allowlisted child-process boundary, not a live proxy route.
+          test -z "${ANTHROPIC_BASE_URL:-}"
+          test -z "${ANTHROPIC_AUTH_TOKEN:-}"
           if env | cut -d= -f1 | grep -Eq '(^GITHUB_TOKEN$|^GH_TOKEN$|_API_KEY$|_API_TOKEN$|_SECRET$|^AWS_|^HTTP_PROXY$|^HTTPS_PROXY$)'; then
             echo "credential-like environment variable reached mock" >&2
             exit 81
           fi
           {
-            echo "proxy_base_url_match=true"
-            echo "proxy_auth_token_present=true"
-            echo "provider_credential_variables_forwarded=false"
+            echo "ambient_provider_credentials_forwarded=false"
+            echo "ambient_proxy_routing_overrides_forwarded=false"
             echo "mock_executable=true"
           } > "$HOME/bridge-result.txt"
           printf '%s\n' "$@" > "$HOME/bridge-args.txt"
