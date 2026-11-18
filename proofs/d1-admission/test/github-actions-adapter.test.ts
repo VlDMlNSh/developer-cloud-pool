@@ -31,6 +31,7 @@ function valid(commentId = 6912000101) {
   const environment = {
     GITHUB_ACTIONS: "true",
     GITHUB_SERVER_URL: "https://github.com",
+    RUNNER_ENVIRONMENT: "github-hosted",
     GITHUB_EVENT_NAME: "issue_comment",
     GITHUB_REPOSITORY: "VlDMlNSh/developer-cloud-pool",
     GITHUB_REPOSITORY_ID: "1445644538",
@@ -160,6 +161,7 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
       x => { x.event.comment.body = "/next please"; },
       x => { x.event.comment.author_association = "COLLABORATOR"; },
       x => { x.environment.GITHUB_ACTIONS = "false"; },
+      x => { x.environment.RUNNER_ENVIRONMENT = "self-hosted"; },
       x => { x.environment.GITHUB_REPOSITORY_OWNER_ID = "999"; }
     ];
     for (const mutate of mutations) {
