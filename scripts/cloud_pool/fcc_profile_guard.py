@@ -135,28 +135,29 @@ def audit_fcc_profile(
     if any(tier_models):
         raise ProfilePolicyError("tier-specific model overrides are not permitted")
 
-    configured: list[tuple[str, str, int]] = []
-    seen: set[tuple[str, str]] = set()
+    grouped: dict[tuple[str, str], set[str]] = {}
     for descriptor in PROVIDER_CATALOG.values():
         if not descriptor.credential_env or not descriptor.credential_attr:
             continue
-        identity = (descriptor.provider_id, descriptor.credential_attr)
-        if identity in seen:
-            continue
-        seen.add(identity)
-        keys = getattr(settings, descriptor.credential_attr, ())
+        identity = (descriptor.credential_env, descriptor.credential_attr)
+        grouped.setdefault(identity, set()).add(descriptor.provider_id)
+
+    configured: list[tuple[str, str, set[str], int]] = []
+    for (credential_env, credential_attr), provider_ids in grouped.items():
+        keys = getattr(settings, credential_attr, ())
         count = len(keys)
         if count:
-            configured.append((descriptor.provider_id, descriptor.credential_env, count))
+            configured.append((credential_env, credential_attr, provider_ids, count))
 
     if len(configured) != 1:
-        raise ProfilePolicyError("exactly one API-key provider must be configured")
-    provider_id, _, key_count = configured[0]
+        raise ProfilePolicyError("exactly one API-key credential owner must be configured")
+    _, _, provider_ids, key_count = configured[0]
     if key_count != 1:
         raise ProfilePolicyError("exactly one credential must be configured")
     model_provider = settings.model.partition("/")[0]
-    if model_provider != provider_id:
+    if model_provider not in provider_ids:
         raise ProfilePolicyError("selected model provider does not match credential owner")
+    provider_id = model_provider
 
     return {
         "status": "PASS",
