@@ -141,7 +141,7 @@ describe("GitHub Actions context -> atomic D1 admission composition", () => {
       const context = valid();
       mutate(context);
       const result = await admitGitHubActionsEvent(env.POOL_DB, context, {
-        approvalId: "gha-rejected-" + Math.random(), profile: "dsh-headless-probe"
+        approvalId: "gha-rejected-static", profile: "dsh-headless-probe"
       }, NOW);
       expect(result.decision).toBe("DENY");
     }
