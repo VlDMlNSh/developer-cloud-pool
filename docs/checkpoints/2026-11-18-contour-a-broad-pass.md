@@ -133,3 +133,14 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Commit `570d78b7d3f7972b7458de9e69f6117ae642896a`; workflow blob `cde20dddcb9687d0797df7e099693a713ce71c31`: captures SIGINT and wait statuses before evaluating, with fail-closed diagnostics. No policy weakening.
 - Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281): SUCCESS. Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244): IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: inspect signal/wait/listener results on exact head `570d78b7d3f7972b7458de9e69f6117ae642896a`. Keep provider calls, real agent tasks and production dispatch disabled. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up — CODE worker sandbox upstream fit — 2026-11-18
+
+- Report: [CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
+- Documentation branch `docs/next-2026-11-18-worker-sandbox-fit`; report commit `bab5b2cd5cdd6f10eef476eeb7bdd299745f2daa`.
+- PR #116 head `570d78b7d3f7972b7458de9e69f6117ae642896a`: Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS; Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) IN_PROGRESS at observation; NOT VERIFIED.
+- PR #126 head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`: Pool Contract Validation [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245) SUCCESS; PR remains OPEN/DRAFT/UNMERGED, so default-branch DSH dispatch retirement is pending integration.
+- Upstream research decision: use Anthropic defending-code-reference-harness gVisor + internal Docker network + allowlist proxy as the main security topology reference; assess Eclipse Enclave for later persistent workspace; use Docker Agent sandbox policy only as a secondary reference. No component imported or deployed.
+- Next bounded implementation: verify current PR #116 runner result/artifact, then qualify the actual synthetic CODE worker inside the restricted container, still with no provider credentials or provider egress.
+- No secrets, provider calls, live agent, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
