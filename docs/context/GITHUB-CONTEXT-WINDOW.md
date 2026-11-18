@@ -3306,3 +3306,20 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Read-back confirmed migration/source/test changes on PR #129 branch. No hosted D1, root key configuration, provider calls, secret reads, deployment or dispatch. No independent review yet. PR #86 and PR #128 remain OPEN/DRAFT; do not merge isolated child PR before stack review and parent qualification.
 - Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; ruleset `26550182` (`Основной — verified`) active. Branch API reports `protected=false`; ruleset remains the active governance object.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: independent review PR #129 and stack ancestry, then decide safe integration ordering with PR #84/#86/#128/#77; continue only after review. Gemini not dispatched in this pass.
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #129 source and ancestry audit
+
+- PR #129 exact HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`; base PR #86 HEAD `a218f92274eca5491700d8f72a21172f8ce689dc`; OPEN/DRAFT/UNMERGED.
+- Source readback: migration 0014 assertion guard and exact-replay query both require active registry epoch = MAX persisted snapshot epoch. Adversarial tests cover stale pointer for first admission and exact replay. No source defect established in bounded review.
+- Compare PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`..PR #129 HEAD: 9 ahead / 0 behind. Ordered stack: PR #84 -> PR #86 -> PR #129. PR #84 itself builds on PR #81 verifier capability persistence.
+- PR #128 is a sibling stack on PR #77, not a parent of #86/#129; compare PR #77 base `e63f1dda4c046d485ae9c2f08392a1943a06553d`..PR #128 HEAD `c17a6026323e5ba1be7a2ae3345f387df6d12f25`: 8 ahead / 0 behind. Do not merge/rebase into #86/#129 without schema/ancestry reconciliation.
+- Exact-head PR CI [44298085395](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44298085395): SUCCESS; job 134780267666; 11/11 D1 test files, 120/120 tests; frozen schema fixture 2/2; second D1 binding smoke PASS. Artifact 14424053695 SHA-256 `0473cc1032079c90d4cc3332d58bc3898ad5245b785585e880a2b0eb813a5377`.
+- PR #129 formal reviews 0, inline threads 0; PR #86 formal reviews 0. No merge. Default `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Active ruleset previously identified as 26550182.
+- Gemini controller workflow path returned 404 on default; Gemini NOT RUN. No secret values, hosted D1, provider calls, deployment or production dispatch.
+- Detailed audit: [PR #129 source and ancestry audit](../reports/2026-11-18-pr129-source-ancestry-audit.md).
+- Next: test revocation/admission race and durable single-use task claim/fencing; first reconcile whether PR #128 bootstrap correction must be integrated before the PR #84 -> #86 -> #129 chain.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
