@@ -427,7 +427,7 @@ jobs:
           cli_status=NOT_RUN
           preserve_bridge_diagnostics() {
             {
-              printf '%s\\n' "cli_status=$cli_status"
+              printf '%s\n' "cli_status=$cli_status"
               for item in marker args_file stderr_file; do
                 case "$item" in
                   marker) source_path="$marker" ;;
@@ -435,19 +435,19 @@ jobs:
                   stderr_file) source_path="$stderr_file" ;;
                 esac
                 if [ -f "$source_path" ]; then
-                  printf '%s\\n' "$item=present"
+                  printf '%s\n' "$item=present"
                   case "$item" in
                     marker) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-result.txt" ;;
                     args_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-args.txt" ;;
                     stderr_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-stderr.txt" ;;
                   esac
                 else
-                  printf '%s\\n' "$item=absent"
+                  printf '%s\n' "$item=absent"
                 fi
               done
               for directory in "$bridge_home" "$bridge_home/.config" "$bridge_home/.local" "$bridge_home/.local/share" "$bridge_home/.cache"; do
                 if [ -d "$directory" ]; then
-                  printf 'directory_mode=%s\\n' "$(stat -c '%a:%u' "$directory")"
+                  printf 'directory_mode=%s\n' "$(stat -c '%a:%u' "$directory")"
                 fi
               done
             } > "$RUNNER_TEMP/qualification/fcc-bridge-failure-diagnostics.txt"
