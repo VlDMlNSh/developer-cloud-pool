@@ -70,3 +70,12 @@ This is a local SQLite/D1 integrity guard, not worker authentication or producti
 ## Executor identity binding (migration 0007)
 
 Migration `0007_bind_executor_identity.sql` adds an explicit executor instance identity to approval, logical task, and immutable attempt records. Accepted IDs are `claude-code-N`, `codex-N`, and `gemini-N` with a positive numeric suffix. `profile` remains the independent capability profile (`dsh-headless-probe`); it is not an executor identity. The canonical logical task key includes `executor_id`, so separate executor instances cannot silently coalesce into one task. Database triggers reject missing/mismatched identities and prevent reassignment after insertion. Existing historical proof rows are left NULL rather than guessed or backfilled to a particular executor. New inserts must supply an explicit executor ID. All of this remains local-only and `dispatch: false`.
+
+
+## Trusted executor registry lookup (local-only boundary proof)
+
+`src/trusted-executor-registry.mjs` implements a read-only GitHub API resolver. It first reads the repository's configured default-branch HEAD from the branches API, then reads `.github/pool-executor-registry.json` pinned to that exact commit SHA. It validates repository ID, default branch, executor ID, enabled status, and the requested capability profile. It does not trust a `trustedDefaultHeadSha` copied from `GITHUB_SHA` or a task payload.
+
+The registry is intentionally **not created or populated by this PR**. Until an owner-reviewed registry exists on the trusted default branch, lookup fails closed; no executor is implicitly enabled by this proof. The resolver's positive tests use synthetic API responses only.
+
+A successful result means only that the requested executor assignment is present in the owner-controlled registry snapshot. It does **not** attest the identity of the running process, authenticate a worker, authorize execution, or enable dispatch. Repository branch protection / review policy must protect the registry. The adapter accepts an injected fetch implementation and optional token; this proof stores no token or secret and performs no remote API call in CI. Every result keeps `executionAuthorized: false` and `dispatch: false`.
