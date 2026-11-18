@@ -141,3 +141,19 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Production controller and approved Gemini controller remain absent from default branch; Gemini agents NOT RUN. PR #125 / #114 reviews remain 0; ruleset still requires 0 reviews and 0 status checks.
 - No secret access, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent A3 review and governance remediation; retain fail-closed dispatch.
+
+
+## /next — FCC provider-key and fallback environment isolation regression — 2026-11-18
+
+- First executor qualification PR #116 exact head advanced to `a956129f6cf426c887e755c563740fe1813161d9`; base/default `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED; mergeable=true.
+- Added `test_fcc_provider_keys_and_fallback_settings_never_cross_child_boundary` to `scripts/cloud_pool/test_exec_allowlist.py`, blob `dcf6000f9475a0bef598f175663475a12a787927`. It checks the pinned FCC Settings environment aliases for provider key lists, `MODEL_FALLBACKS`, `FCC_CUSTOM_PROVIDERS`, and `ANTHROPIC_AUTH_TOKEN`; only inert synthetic markers are used. Test verifies these names/values do not appear in the child environment.
+- Upstream source review at FCC commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` confirms ordered API-key arrays, numbered credential selection and fallback tests that move across keys after 403/429. This creates a cross-account quota risk if keys from different accounts are combined in one FCC profile. Policy remains one account per isolated profile, no `MODEL_FALLBACKS`, no numbered-key cycling, no provider/paid fallback.
+- Exact-head runner qualification [44257088134](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134), job [134641259169](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134/job/134641259169): SUCCESS on exact SHA; Python unit suite **9/9 PASS**; full install/resource/FCC loopback readiness/shutdown and synthetic mock handoff workflow completed successfully.
+- Pool Contract Validation [44257088139](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088139), job 134641259701: SUCCESS; dispatch-disabled invariant validated.
+- Artifact [14406183728](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134/artifacts/14406183728): 26,805 bytes; ZIP digest `sha256:17e510f0d5c8b45862bc0f34e9bf7e33cf82ccfa5f9bf292c07bd70900dafad8`; available through 2026-11-25T07:13:22Z.
+- Report: [2026-11-18 FCC provider-key isolation regression](../reports/2026-11-18-next-fcc-provider-key-isolation-regression.md). PR #116 evidence comment: [6971812220](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#issuecomment-6971812220). Issue #115 evidence comment: [6971842639](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6971842639).
+- Important limit: this protects inherited child-process environment only; it does not constrain key lists or `MODEL_FALLBACKS` stored in FCC persisted settings. No real route/account/quota or live Claude session was tested. Issue #115 remains OPEN.
+- FCC license is AGPL-3.0-only; remote/network exposure remains blocked pending deployment-specific license review. Claude Code CLI remains subject to vendor terms.
+- Owner scope correction in Issue #94 supersedes the earlier per-/next four-Gemini requirement: Gemini is supplementary/optional, not a mandatory first-release or per-/next gate. Its Cloud Pool controller is still absent and no Gemini agents were dispatched.
+- No secret values read, provider calls, production dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: define and verify an FCC single-account profile configuration boundary without retrieving or logging credential values, then separately qualify a permitted free provider route and quota identity. Do not expose FCC remotely before resolving AGPL obligations.
