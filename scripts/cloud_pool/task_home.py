@@ -81,7 +81,13 @@ def create_task_home(root: str | Path, task_id: str) -> TaskHome:
         xdg: dict[str, str] = {}
         for variable, relative in XDG_LAYOUT.items():
             directory = home / relative
-            directory.mkdir(mode=0o700, parents=True, exist_ok=False)
+            # Create and validate intermediate parents explicitly as well;
+            # pathlib's parents=True does not apply the requested mode to them.
+            parent = directory.parent
+            parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+            os.chmod(parent, 0o700)
+            _private_directory(parent)
+            directory.mkdir(mode=0o700, exist_ok=False)
             os.chmod(directory, 0o700)
             xdg[variable] = str(_private_directory(directory))
         if any((home / item).exists() or (home / item).is_symlink() for item in FORBIDDEN_STORES):
