@@ -79,3 +79,13 @@ Migration `0007_bind_executor_identity.sql` adds an explicit executor instance i
 The PR adds `.github/pool-executor-registry.json` as an owner-controlled registry scaffold with an empty `executors` array. No executor is registered or enabled. Until this PR is reviewed and the registry is present on the trusted default branch, the resolver fails closed; after merge, every executor still remains ineligible until an owner explicitly adds and reviews an enabled entry. The resolver's positive tests use synthetic API responses only.
 
 A successful result means only that the requested executor assignment is present in the owner-controlled registry snapshot. It does **not** attest the identity of the running process, authenticate a worker, authorize execution, or enable dispatch. Repository branch protection / review policy must protect the registry. The adapter accepts an injected fetch implementation and optional token; this proof stores no token or secret and performs no remote API call in CI. Every result keeps `executionAuthorized: false` and `dispatch: false`.
+
+
+## GitHub Actions OIDC workflow authentication (local-only proof)
+
+- `src/github-actions-oidc-verifier.mjs` verifies an RS256 JWT signature against GitHub Actions' published OIDC JWKS, then checks issuer, audience, expiry/not-before/issued-at, repository and owner IDs, exact subject, workflow ref, and reusable-workflow ref.
+- `src/trusted-executor-auth.mjs` composes the independent default-branch registry lookup with OIDC verification. The expected OIDC claims come from the same owner-controlled registry entry, not from the caller.
+- Each future registry entry must include an `oidcBinding` with exact `audience`, `subject`, `workflowRef`, and `jobWorkflowRef`. The current registry remains empty; no workflow principal is enabled.
+- Tests generate ephemeral RSA keys and synthetic JWT/JWKS fixtures. CI does not request a real OIDC token or access production credentials.
+
+**Security boundary:** a valid token authenticates the GitHub Actions workflow/job principal represented by the claims. It does not attest the Claude Code/Codex/Gemini executable, its host, or its runtime process. Any process able to obtain the job's OIDC token shares that workflow principal. Stronger process/host attestation remains unresolved and requires a separately designed trusted runner/identity mechanism. The verifier never sets `executionAuthorized` or `dispatch` to true.
