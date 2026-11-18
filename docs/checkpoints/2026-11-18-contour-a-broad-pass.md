@@ -149,3 +149,12 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - The diagnostics file was written but not visible in job logs. Commit `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; workflow blob `34a3f73909d2b637112b77cc5fb0e54580d84417` now prints it to stdout before fail-closed checks.
 - Current-head Runner Qualification [44285187440](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187440) and Pool Contract Validation [44285187389](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187389) were IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: read diagnostic output from 44285187440 and isolate signal status, wait status and listener state. Do not relax shutdown requirements or enable provider calls. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up — bridge shutdown SIGINT fix correctly targeted — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- Audit correction: commit `570d78b7d3f7972b7458de9e69f6117ae642896a` changed the first FCC lifecycle block, not the synthetic bridge's signal block. It did not resolve the bridge failure.
+- Current PR #116 head `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`. Read-back confirms bridge now sets `+e` before SIGINT, captures signal and wait statuses, then restores strict mode; diagnostics are printed.
+- Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): SUCCESS. Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416): IN_PROGRESS at cutoff; NOT VERIFIED.
+- Next: inspect current run's bridge diagnostic values and complete artifact; no provider calls or production dispatch. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
