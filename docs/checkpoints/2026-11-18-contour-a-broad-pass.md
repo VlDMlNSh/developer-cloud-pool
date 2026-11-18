@@ -218,3 +218,15 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Current PRs: #116 OPEN/DRAFT; #126 OPEN/DRAFT with exact-head contract CI 44275194245 SUCCESS; #120 OPEN/DRAFT with architecture/contract CI 44260483070/44260483194 SUCCESS. None merged.
 - Default `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845` unchanged. Ruleset 26550182 active, PR required, no bypass actors, thread resolution required. Issue #118 remains blocked on server #3, Zero Trust access and persistence/restore. Gemini controller missing on default; NOT RUN.
 - Next: actual synthetic executor-in-Docker qualification, no secrets/no provider egress. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+
+## Follow-up — PR #129 admission max-epoch guard — 2026-11-18
+
+- Created stacked child PR #129 from PR #86 exact HEAD `a218f92274eca5491700d8f72a21172f8ce689dc`; PR #129 head `70265bbb21a8419312bc0cfe684d32184cffc497`, base PR #86 branch at `a218f92274eca5491700d8f72a21172f8ce689dc`.
+- Hardened migration 0014 assertion trigger: active registry epoch must equal the maximum persisted snapshot epoch. Hardened exact-replay active trust query with the same invariant.
+- Added adversarial cases for new admission and exact replay when a newer snapshot exists but active pointer remains stale. First CI run 44297960671 exposed a test-fixture assumption (task/outbox rows are created inside admission); test corrected to assert absence of task/outbox rows and all downstream admission records after rollback.
+- Corrected exact-head CI [44298085395](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44298085395) SUCCESS: job 134780267666; syntax check PASS; 11/11 test files, 120/120 tests PASS; isolated second D1 binding smoke PASS; frozen schema-0010 fixture 2/2 PASS.
+- Artifact 14424053695 SHA-256 `0473cc1032079c90d4cc3332d58bc3898ad5245b785585e880a2b0eb813a5377`.
+- PR #129 OPEN/DRAFT, no independent review. PR #86 and #128 OPEN/DRAFT. Default branch `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; active ruleset 26550182. No hosted D1, root key, provider call, secret read, deployment or dispatch.
+- Next: obtain independent review of PR #129 and validate full ancestry/integration order across PRs #84, #86, #128 and #77. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
