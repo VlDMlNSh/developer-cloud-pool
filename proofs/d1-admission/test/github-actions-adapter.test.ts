@@ -88,11 +88,12 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
       executionAuthorized: false
     });
     const receipt = await env.POOL_DB.prepare(
-      "SELECT target_sha, controller_run_id, controller_code_sha FROM pool_admission_receipts WHERE source_comment_id = ?"
+      "SELECT target_sha, controller_run_id, controller_run_attempt, controller_code_sha FROM pool_admission_receipts WHERE source_comment_id = ?"
     ).bind(String(event.comment.id)).first();
     expect(receipt).toEqual({
       target_sha: SHA,
       controller_run_id: "44170001001",
+      controller_run_attempt: 1,
       controller_code_sha: WORKFLOW_SHA
     });
   });
@@ -125,6 +126,12 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
     second.environment.GITHUB_RUN_ID = "0";
     expect(bindGitHubActionsContext(second.event, second.environment, {
       approvalId: "gha-approval-6", profile: "dsh-headless-probe"
+    })).toMatchObject({ decision: "DENY", reason: "INVALID_WORKFLOW_RUN_IDENTITY" });
+
+    const badAttempt = valid();
+    badAttempt.environment.GITHUB_RUN_ATTEMPT = "0";
+    expect(bindGitHubActionsContext(badAttempt.event, badAttempt.environment, {
+      approvalId: "gha-approval-6b", profile: "dsh-headless-probe"
     })).toMatchObject({ decision: "DENY", reason: "INVALID_WORKFLOW_RUN_IDENTITY" });
   });
 
