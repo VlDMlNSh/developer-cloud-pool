@@ -2487,3 +2487,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [2026-11-18 Claude provenance and hosted-use compliance gate](../reports/2026-11-18-next-claude-provenance-and-hosted-use-gate.md).
 - Next: add signed-manifest verification for the pinned binary (or signed apt repo) without live authentication, then obtain an approved vendor-compliant account/contract model or exclude Claude Code from free executor qualification.
 
+
+
+## Final verification — Claude provenance and hosted-use gate — 2026-11-18
+
+- Report and roadmap/freeze amendment published at documentation candidate commit `7df5482ad7324974ffdcb384cdc09b7b9e3f2ef3`.
+- Exact-head canonical architecture link validation run [44260268117](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260268117): SUCCESS.
+- Exact-head workflow syntax/security validation run [44260267429](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260267429): SUCCESS.
+- PR #120 remains OPEN/DRAFT/UNMERGED; documentation candidate is not default-branch canonical yet.
+- PR #116 finding comment: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#issuecomment-6972228539.
+- Legal and installer provenance gates remain open. CI verifies documentation/workflow invariants only; it does not establish vendor permission, free entitlement, binary integrity or real agent execution.

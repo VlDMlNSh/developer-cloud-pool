@@ -212,3 +212,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 Canonical architecture: [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final verification — Claude provenance and hosted-use gate — 2026-11-18
+
+- Report and roadmap/freeze amendment published at documentation candidate commit `7df5482ad7324974ffdcb384cdc09b7b9e3f2ef3`.
+- Exact-head canonical architecture link validation run [44260268117](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260268117): SUCCESS.
+- Exact-head workflow syntax/security validation run [44260267429](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260267429): SUCCESS.
+- PR #120 remains OPEN/DRAFT/UNMERGED; documentation candidate is not default-branch canonical yet.
+- PR #116 finding comment: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#issuecomment-6972228539.
+- Legal and installer provenance gates remain open. CI verifies documentation/workflow invariants only; it does not establish vendor permission, free entitlement, binary integrity or real agent execution.
