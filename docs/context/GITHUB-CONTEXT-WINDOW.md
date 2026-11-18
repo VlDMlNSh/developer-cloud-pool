@@ -1,3 +1,24 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-19 00:28 Europe/Vilnius — PR #143 executor identity/profile audit
+
+**Latest report:** [PR #143 current-head executor identity and capability-profile audit](../reports/2026-11-19-pr143-executor-identity-profile-audit.md)  
+**Latest checkpoint:** [PR #143 executor identity/profile audit checkpoint](../checkpoints/2026-11-19-pr143-executor-identity-profile-checkpoint.md)
+
+- Live default branch `Основной` HEAD: `68183828cf7934e89109310c8f99281be4eb7ed8`.
+- PR #143 current head: `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`; base is current default; 28 files / +5,748 lines; OPEN/DRAFT/UNMERGED.
+- Exact-head Isolated D1 Ledger Proof run `44367978517`, job `135026759486`: SUCCESS. Exact-head Pool Contract Validation `44367978376`, job `135026759792`: SUCCESS.
+- PR #143 formal reviews 0, inline threads 0. PR body contains stale earlier “exact HEAD” and run references; current evidence is the two runs above.
+- Source audit: executor identity is additively bound to approvals/tasks/attempts and immutable; registry scaffold is empty; OIDC authenticates GitHub workflow/job principal only, not process/host.
+- **Blocking contract gap:** migration 0001, `consume.mjs`, registry resolver and tests still use legacy `dsh-headless-probe` capability profile for `claude-code-1`. PR #142 correctly separates executor ID from capability profile, but Issue #140 requires the new canonical CODE profile and removal of DSH from the new canonical executor allowlist. The CODE profile contract is not yet defined/implemented in PR #143.
+- **Blocking output-contract gap:** Issue #140 requires both `dispatch:false` and `executionAuthorized:false` on all adapter outputs. Inspected consume/task-attempt adapters omit explicit `executionAuthorized:false` on some/all responses; add negative-first contract tests across every exported adapter.
+- Registry remains empty; positive resolver tests are synthetic; no live executor is enrolled. Independent review NOT VERIFIED.
+- Active ruleset #26550182: PR required, deletion/non-fast-forward blocked, thread resolution required, 0 required approvals, no bypass actors. Classic branch protection endpoint says `protected=false`.
+- Gemini NOT RUN: approved controller workflow path `.github/workflows/gemini-batch-dispatch-controller.yml` returns 404 on default branch. No secrets/variables inspected.
+- No local tests in this pass; CI above was read from GitHub. No hosted D1, OIDC credential, executor process, provider, dispatch, deployment, merge, production write or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile CODE capability profile with PR #142/Issue #140, fix uniform false authorization outputs, refresh PR provenance, then obtain independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18 19:33 Europe/Vilnius — current-base admission and governance revalidation
 
 **Latest report:** [Current-base admission/governance audit](../reports/2026-11-18-1933-current-base-admission-governance-audit.md)  
