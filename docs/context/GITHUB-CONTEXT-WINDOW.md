@@ -130,3 +130,15 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Active ruleset #26550182 has required PR/review-thread resolution but zero required approving reviews and zero required status checks; enforcement active, no bypass actors. Governance remains insufficient.
 - No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: independent review of profile guard plus launcher-level proof that each worker gets dedicated HOME and no external credential stores; only then proceed to permitted free-route/account/quota qualification.
+
+
+### CURRENT RECONCILIATION — PR stack and governance audit — 2026-11-18
+- Default `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120 remains OPEN/DRAFT/UNMERGED at `e93fb34a1f3430ca2db32fbf2e631903aac9570f`, based on default HEAD. Exact-head Architecture Documentation Validation [44260483070](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260483070) and Pool Contract Validation [44260483194](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260483194) both COMPLETED/SUCCESS.
+- PR #124 remains OPEN/DRAFT/UNMERGED at `e0041825cb9496c2454fb2c4728a9129ac344fc2`, based on earlier parent head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`. PR #120 has advanced 3 commits beyond that base; compare confirms 3 commits ahead / 0 behind from the PR #124 base to current PR #120 head. GitHub reports PR #124 `mergeable=false`. Treat this as a dirty/stale dependent stack; do not merge until explicitly reconciled against current PR #120 head and revalidated.
+- PR #124 exact-head Architecture Documentation Validation [44260431233](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260431233) COMPLETED/SUCCESS. No exact-head Pool Contract Validation run was observed for `e0041825...`; do not infer it passed.
+- Formal review submissions: PR #120 = 0; PR #124 = 0. Active ruleset #26550182 has PR/review-thread requirements but **0 required approvals and 0 required status checks**. Governance is insufficient for high-assurance acceptance despite active enforcement.
+- Fetch of default-branch `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404. Gemini dispatch remains NOT RUN; no alternate controller or direct provider route is authorized.
+- Report: [2026-11-18 PR stack and governance reconciliation](../reports/2026-11-18-next-pr-stack-governance-reconciliation.md).
+- No secrets read, provider/model calls, dispatch, deployment, merge or infrastructure mutation in this pass. Contour A remains **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
+- Next bounded step: reconcile PR #124's base with the latest PR #120 head without losing dependent changes, then require independent review and meaningful ruleset approvals/status checks before merge. Keep dispatch fail-closed.
