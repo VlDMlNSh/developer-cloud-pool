@@ -50,7 +50,7 @@ describe("trusted R2 artifact ingest proof", () => {
   it("rejects a stream that exceeds the configured byte cap", async () => {
     const id = uploadId();
     const result = await ingestArtifact(env.ARTIFACTS, {
-      uploadId: id, body: stream(["1234", "5678"]), maxBytes: 5
+      uploadId: id, body: stream(["1234", "5678"]), declaredSize: 5, maxBytes: 5
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "ARTIFACT_SIZE_LIMIT_EXCEEDED", dispatch: false });
     expect(await env.ARTIFACTS.head(`ingest/${id}`)).toBeNull();
@@ -59,7 +59,7 @@ describe("trusted R2 artifact ingest proof", () => {
   it("fails closed when the source stream errors", async () => {
     const id = uploadId();
     const result = await ingestArtifact(env.ARTIFACTS, {
-      uploadId: id, body: stream(["partial"], true)
+      uploadId: id, body: stream(["partial"], true), declaredSize: 7
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "ARTIFACT_STREAM_OR_STORAGE_FAILED", dispatch: false });
     expect(await env.ARTIFACTS.head(`ingest/${id}`)).toBeNull();
@@ -85,8 +85,8 @@ describe("trusted R2 artifact ingest proof", () => {
 
   it("rejects a retry that substitutes bytes under the same upload identity", async () => {
     const id = uploadId();
-    await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]) });
-    const conflict = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["substituted"]) });
+    await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]), declaredSize: 8 });
+    const conflict = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["substituted"]), declaredSize: 11 });
     expect(conflict).toMatchObject({ decision: "DENY", reason: "ARTIFACT_CONTENT_CONFLICT", dispatch: false });
   });
 
@@ -101,9 +101,9 @@ describe("trusted R2 artifact ingest proof", () => {
   });
 
   it("rejects invalid trusted upload identities and unsafe size limits", async () => {
-    expect(await ingestArtifact(env.ARTIFACTS, { uploadId: "short", body: stream(["x"]) }))
+    expect(await ingestArtifact(env.ARTIFACTS, { uploadId: "short", body: stream(["x"]), declaredSize: 1 }))
       .toMatchObject({ decision: "DENY", reason: "INVALID_ARTIFACT_INGEST", dispatch: false });
-    expect(await ingestArtifact(env.ARTIFACTS, { uploadId: uploadId(), body: stream(["x"]), maxBytes: 0 }))
+    expect(await ingestArtifact(env.ARTIFACTS, { uploadId: uploadId(), body: stream(["x"]), declaredSize: 1, maxBytes: 0 }))
       .toMatchObject({ decision: "DENY", reason: "INVALID_ARTIFACT_SIZE", dispatch: false });
   });
 });
