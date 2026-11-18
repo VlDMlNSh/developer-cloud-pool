@@ -3375,3 +3375,20 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Open blockers include #118 persistent workspace/Zero Trust, #22 remote console, #26 account-isolated routing/quota, #70 free-quota route gate, #115 CODE runner qualification, #38 durable claim, and #1 governance.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: bounded Issue #38 design + D1 concurrency proof, while preserving dispatch=false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18 Issue #38 D1 claim/lease prototype audit
+
+- Report: [Issue #38 D1 claim/lease qualification audit](../reports/2026-11-18-issue38-d1-claim-lease-qualification-audit.md).
+- Existing proof branch `proof/task-identity-fencing-design-2026-11-08`: readback `proofs/d1-ledger/src/task-lease.mjs` blob `b41edf89cdf960b2c007f38ba16554dc179f021a`; README blob `a364fb31ff340970d15658f3cf4ee5502696d4ef`; package.json blob `cd7a705ce39860685c3ec60134dc8442fab738d8`.
+- README describes local D1 logical-task identity, atomic trigger-backed claim+outbox, lease acquire/renew/reclaim, generation fencing, five-attempt dead-letter and conflict rollback. Explicitly NOT integrated into Hono console or production Supervisor/Worker; adapters return `dispatch:false`.
+- Source review confirms conditional lease acquisition increments generation/attempt only when pending or expired; renewal and finalization require owner + generation + unexpired lease. Failures deny. This is source-level assessment only.
+- Guessed migration/test paths were not found; exact tests and migration source are NOT VERIFIED. README notes lease tests were pending exact-head CI on the described revision. Do not treat README as CI evidence.
+- Preferred candidate: qualify existing Workers+D1 proof, not add PostgreSQL/Redis/Temporal service or broad Git Contents authority. Before integration prove concurrent one-winner, expired reclaim generation increment, stale generation cannot renew/finalize/write output, atomic outbox/dead-letter, crash recovery, idempotent side effects and ambiguous storage fail-closed.
+- Lease is not exactly-once external execution. Production dispatch stays false; no secrets, hosted D1 writes, provider calls, worker runs, deployment or merge.
+- Current PR #130 remains OPEN/DRAFT/UNMERGED; its exact-head merge-context CI remains run 44299536170. Formal review not established in this pass. Ruleset details not freshly re-fetched. Gemini NOT RUN.
+- Next: retrieve exact tree/HEAD of historical proof branch, reconcile tests/migrations with README, then run exact-head D1 runtime CI and adversarial tests in a separate proof branch. Do not modify PR #130 admission stack.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
