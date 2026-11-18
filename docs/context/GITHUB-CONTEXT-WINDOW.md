@@ -266,3 +266,19 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Report: [exact-head runner qualification closure](../reports/2026-11-18-next-exact-head-runner-qualification-closure.md).
 - Exact-head CI VERIFIED; independent A3 review NOT COMPLETE; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent A3 review against exact code head `a95700c...`, then resolve governance, legal/vendor and production isolation gates before any dispatch.
+
+
+## /next — independent Task HOME and child-process boundary review — 2026-11-18
+
+- Reviewed PR #116 exact head `a95700c0bf562aa3b0a142720892cff118dfeb9f` (branch `feat/claude-code-fcc-runner-qualification-2026-11-17`) and source files `scripts/cloud_pool/task_home.py`, `exec_allowlist.py`, tests and workflow.
+- Exact-head associated runs: Runner Qualification [44263708443](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443) COMPLETED/SUCCESS; Pool Contract Validation [44263708506](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708506) COMPLETED/SUCCESS. Combined status endpoint returned no status entries; do not infer required checks from that.
+- **BLOCKER F-1:** Task HOME/XDG mode 0700 is not isolation between tasks sharing one effective UID. Same-UID processes can access sibling task directories. Unique paths and chmod do not establish confidentiality/integrity. Requires distinct OS identities or qualified per-task container/VM plus adversarial cross-task access tests.
+- **BLOCKER F-2:** PATH validation is structural; current-UID-owned directories are accepted and may be mutable by same-UID workloads. Production launcher must own and pin trusted PATH directories and test executable replacement.
+- **BOUNDARY F-3:** child environment allowlist is only a child env filter, not a filesystem, network, descriptor, process, kernel or host credential sandbox.
+- Positive hygiene controls remain: safe task ID, private HOME/XDG creation, symlink checks, instance-bound ownership marker, dangling credential-store detection and explicit child env allowlist.
+- PR #116 remains OPEN/DRAFT/UNMERGED. Recorded reviews are COMMENTED by repository owner; independent A3 review remains NOT VERIFIED. Current code head supersedes all prior PR #116 head references.
+- Report: [2026-11-18 task isolation boundary review](../reports/2026-11-18-next-task-isolation-boundary-review.md).
+- No code change, secrets read, provider call, production dispatch, deployment or merge. Gemini controller absent from default; Gemini NOT RUN.
+- Next: qualify actual OS-level task boundary (distinct UID/container/VM), trusted PATH, private mounts, no sibling HOME/host credentials, and deny-by-default egress before production launcher integration.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
