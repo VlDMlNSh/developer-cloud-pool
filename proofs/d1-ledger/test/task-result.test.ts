@@ -107,7 +107,7 @@ describe("fenced result/outbox transaction requires verified artifact capability
     };
     expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
       ...base, resultDigest: "c".repeat(64), resultRef: "worker-controlled-ref"
-    })).toMatchObject({ decision: "DENY", reason: "INVALID_RESULT_COMMIT", dispatch: false });
+    })).toMatchObject({ decision: "DENY", reason: "INVALID_ARTIFACT_REFERENCE", dispatch: false });
 
     const verified = await createVerifiedArtifact(key, "capability bytes");
     const forgedCopy = { ...verified, sha256: "c".repeat(64) };
