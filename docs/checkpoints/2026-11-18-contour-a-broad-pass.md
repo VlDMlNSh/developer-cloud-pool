@@ -1,3 +1,19 @@
+# CURRENT UPDATE — 2026-11-18, PR #116 exact-head recheck
+
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 current head: `59514f6d1119ca113745f5da861a1195c66da2e5`, OPEN/DRAFT/UNMERGED.
+- Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED/SUCCESS.
+- Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): IN_PROGRESS at last observation; job 134740287165. Signed Claude Code installation/provenance and Docker no-egress passed; FCC bridge not yet run; artifact not yet available.
+- Earlier failure [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416) was for superseded SHA `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; not current-head evidence.
+- Latest bridge workflow blob: `a218c738e640c43f003cd4f24a348ab4b4aa996e`; it adds pre-created diagnostics and captures shutdown status before assertions.
+- PR #126 remains OPEN/DRAFT/UNMERGED at `f69f286b5b5a3de8dfdd80ed581859851ce271e5`.
+- Gemini controller path absent (404) on default branch; no Gemini dispatch.
+- No secrets/provider calls/real task/production dispatch/deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: recheck 44286461561, verify artifact, then run only a local mock CODE invocation inside the no-egress Docker sandbox.
+
+**Detailed report:** [2026-11-18-pr116-exact-head-reconciliation.md](../reports/2026-11-18-pr116-exact-head-reconciliation.md)
+
+---
 # CURRENT UPDATE — 2026-11-18, Claude Code provenance and Docker no-egress hardening
 
 ## Latest P1 evidence
