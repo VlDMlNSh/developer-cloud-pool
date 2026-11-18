@@ -153,6 +153,7 @@ class TaskHomeTests(unittest.TestCase):
             destroy_task_home(task, self.root)
         marker.unlink()
         marker.write_text(original_marker, encoding="utf-8")
+        os.chmod(marker, 0o600)
         destroy_task_home(task, self.root)
 
     def test_refuses_insecure_root(self):
