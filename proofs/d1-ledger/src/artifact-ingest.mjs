@@ -4,6 +4,12 @@ const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
 function deny(reason) {
   return { decision: "DENY", dispatch: false, reason };
 }
+function streamFailureReason(error) {
+  const message = String(error?.message ?? "");
+  if (message.includes("ARTIFACT_SIZE_LIMIT_EXCEEDED")) return "ARTIFACT_SIZE_LIMIT_EXCEEDED";
+  if (message.includes("ARTIFACT_DECLARED_SIZE_MISMATCH")) return "ARTIFACT_DECLARED_SIZE_MISMATCH";
+  return "ARTIFACT_STREAM_OR_STORAGE_FAILED";
+}
 
 function hex(bytes) {
   return [...new Uint8Array(bytes)].map((value) => value.toString(16).padStart(2, "0")).join("");
@@ -91,23 +97,28 @@ export async function ingestArtifact(bucket, input) {
   if (!bucket || typeof bucket.put !== "function" || typeof bucket.get !== "function" ||
       typeof bucket.head !== "function") return deny("STORAGE_UNAVAILABLE");
   if (!input || typeof input.uploadId !== "string" || !SAFE_UPLOAD_ID.test(input.uploadId) ||
-      !input.body || typeof input.body.pipeThrough !== "function") {
+      !input.body || typeof input.body.pipeThrough !== "function" ||
+      !Number.isSafeInteger(input.declaredSize)) {
     return deny("INVALID_ARTIFACT_INGEST");
   }
   const maxBytes = input.maxBytes === undefined ? DEFAULT_MAX_BYTES : input.maxBytes;
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > DEFAULT_MAX_BYTES ||
-      (input.declaredSize !== undefined &&
-       (!Number.isSafeInteger(input.declaredSize) || input.declaredSize < 0 || input.declaredSize > maxBytes))) {
+      input.declaredSize < 0 || input.declaredSize > maxBytes) {
     return deny("INVALID_ARTIFACT_SIZE");
   }
 
   const key = `ingest/${input.uploadId}`;
   const measured = digestingBody(input.body, { maxBytes, declaredSize: input.declaredSize });
   try {
-    const stored = await bucket.put(key, measured.stream, {
+    // R2 rejects arbitrary TransformStream readable sides: its stream length must be
+    // known. FixedLengthStream preserves streaming while enforcing declaredSize.
+    const fixed = new FixedLengthStream(input.declaredSize);
+    const pumping = measured.stream.pipeTo(fixed.writable);
+    const storing = bucket.put(key, fixed.readable, {
       onlyIf: { etagDoesNotMatch: [{ type: "wildcard" }] },
       customMetadata: { uploadId: input.uploadId }
     });
+    const [stored] = await Promise.all([storing, pumping]);
     if (!measured.completed) return deny("ARTIFACT_STREAM_INCOMPLETE");
     const sha256 = await measured.digest();
     if (stored === null) {
@@ -135,9 +146,7 @@ export async function ingestArtifact(bucket, input) {
       dispatch: false
     };
   } catch (error) {
-    if (!measured.completed) return deny(
-      error instanceof RangeError ? error.message : "ARTIFACT_STREAM_OR_STORAGE_FAILED"
-    );
+    if (!measured.completed) return deny(streamFailureReason(error));
     try {
       const sha256 = await measured.digest();
       return await reconcileExisting(bucket, key, input.uploadId, sha256, measured.byteLength, maxBytes);
