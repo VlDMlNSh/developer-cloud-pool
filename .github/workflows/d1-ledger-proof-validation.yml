@@ -1,14 +1,14 @@
 name: Isolated D1 Ledger Proof
 
 on:
-  # Run on pushes to the two isolated proof branches. This makes the
-  # validation workflow executable before either stacked PR is merged.
+  # Push validation remains scoped to isolated, local-only proof branches.
   push:
     branches:
       - "proof/d1-single-use-ledger-retry-2026-11-06"
       - "proof/d1-claim-outbox-atomic-2026-11-07"
       - "proof/task-identity-fencing-design-2026-11-08"
       - "proof/d1-lease-attempt-fencing-2026-11-18"
+      - "proof/d1-result-outbox-fencing-2026-11-18"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
@@ -18,6 +18,7 @@ on:
       - "proof/d1-single-use-ledger-retry-2026-11-06"
       - "proof/d1-claim-outbox-atomic-2026-11-07"
       - "proof/d1-lease-attempt-fencing-2026-11-18"
+      - "proof/d1-result-outbox-fencing-2026-11-18"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
