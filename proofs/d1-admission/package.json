@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest run --config vitest.config.ts",
-    "check": "node --check src/admission.mjs"
+    "check": "node --check src/admission.mjs && node --check src/github-actions-adapter.mjs"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "1.4.7",

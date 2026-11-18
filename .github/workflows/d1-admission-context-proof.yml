@@ -1,0 +1,39 @@
+name: D1 GitHub Actions Context Admission Proof
+
+on:
+  pull_request:
+    branches:
+      - feat/atomic-next-admission-d1-2026-11-16
+    paths:
+      - "proofs/d1-admission/**"
+      - ".github/workflows/d1-admission-context-proof.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  context-admission-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: proofs/d1-admission
+    steps:
+      - name: Checkout immutable PR head without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+      - name: Install exact declared dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Syntax check admission modules
+        run: npm run check
+      - name: Run local Workers-runtime D1 and Actions-context tests
+        run: npm test

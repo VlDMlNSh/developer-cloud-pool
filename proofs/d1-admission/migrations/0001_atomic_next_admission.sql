@@ -23,6 +23,7 @@ CREATE TABLE pool_admission_receipts (
   actor_id TEXT NOT NULL,
   owner_association TEXT NOT NULL CHECK (owner_association = 'OWNER'),
   controller_run_id TEXT NOT NULL,
+  controller_run_attempt INTEGER NOT NULL CHECK (controller_run_attempt > 0),
   controller_code_sha TEXT NOT NULL CHECK (length(controller_code_sha) = 40),
   target_sha TEXT NOT NULL CHECK (length(target_sha) = 40),
   profile TEXT NOT NULL,

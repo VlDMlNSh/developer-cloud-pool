@@ -35,3 +35,10 @@ The adapter requires `trustedDefaultHeadSha` and rejects admission unless it is 
 
 
 The approval-consumption trigger also requires the UPDATE itself to affect exactly one row (`changes() = 1`). A pre-consumed approval cannot authorize a new receipt even if its timestamp and task key happen to match. The adversarial Workers-runtime test covers this same-second pre-consumption case.
+
+
+## GitHub Actions context composition proof
+
+The additional `github-actions-adapter.mjs` binds the webhook event payload to runner-provided `GITHUB_*` values instead of accepting target SHA, workflow SHA, run ID, or ref as caller-selected fields. It checks the numeric repository/owner identity against both the runner environment and event payload and allowlists the future `.github/workflows/cloud-pool-next-controller.yml` workflow ref on the default branch.
+
+This is a no-secret local composition test only. The allowlisted production workflow does not yet exist on the default branch, and no live `issue_comment` run has exercised D1. No event signature verification, independent API re-read, hosted D1, admission approval issuer, lease/fencing, worker dispatch or provider call is qualified by these tests. Dispatch remains false.
