@@ -99,3 +99,30 @@ No gate is passed by documentation alone. Every gate requires exact-head evidenc
 - No direct writes to `Основной`; changes only on isolated branches through reviewed PRs.
 - No merge, deployment, dispatch, production D1/R2 access, provider calls, secret access, or artifact deletion without a separate explicit authorization and acceptance gate.
 - Report concise pass-by-pass outcomes, including blockers and what remains unverified.
+
+
+## Pass 2 — PR dependency and clean-base audit (2026-11-18)
+
+### Verified dependency map
+
+- PR #126 (legacy DSH retirement): exact head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`; one exact-head Pool Contract Validation check completed SUCCESS (run 44275194245). Its six-file diff removes the legacy label-driven supervisor API mutations and worker execution, replacing them with fail-closed guards. No review threads were found. It remains OPEN/DRAFT/UNMERGED.
+- PR #126's base was `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Comparing its head with current default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8` reports DIVERGED (2 commits ahead, 9 behind). Its earlier green check is valid for its exact old head only; it is not current-base acceptance. Do not merge as-is.
+- PR #112 is event-envelope validation only (21 tests); PR #114 is atomic D1 admission/outbox (12 local Workers-runtime tests); PR #111 is the D1 lease/attempt ledger (37 local Workers-runtime tests). All are open Draft proofs and not deployed.
+- PR #125 composes GitHub Actions context with PR #114's D1 admission adapter. Its exact head `69398d497c8e9be3e9fe7241e4dc6d3bc2e4c973` has two successful exact-head checks (runs 44265881516 and 44265877332). Its body explicitly says the composition remains synthetic-context/local proof, not a live authenticated controller or execution authorization.
+- PR #125 is stacked on PR #114, while PR #114 itself is based on the old default SHA. PR #111 is a separate clean-base lease proof, not yet composed with #114/#125. PR #112 is a separate read-only controller proof. PR #97/#98 are earlier admission approaches and should not be treated as additional canonical production paths.
+- PR #92 and #93 form a separate D1 admission/registry proof stack (exact replay integrity then verifier-issued registry persistence capability). They remain local-only and stacked; do not conflate them with the #111/#114/#125 admission-controller chain.
+
+### Decisions for the next execution pass
+
+1. First produce a clean-base legacy-retirement PR from current default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8`, carrying the reviewed six-file PR #126 change set. Re-run YAML, contract and exact-head CI. Keep the original #126 Draft as historical evidence; do not merge it.
+2. In parallel, map exact file overlap and schema compatibility between #111 lease ledger, #114 admission/outbox and #125 Actions-context composition. Choose one canonical chain; do not merge competing controller PRs.
+3. Port #114 and #111 onto a single current-base integration branch only after comparing migration IDs, D1 schema, immutable identities, approval consumption, outbox and lease fencing. Keep dispatch false in every adapter.
+4. Recompose #125 against the current-base #114 head and ensure it cannot allowlist the retired `dsh-headless-probe` profile. The owner-frozen first executor is Claude Code + ECC + FCC; Gemini is optional, not a launch gate.
+5. Keep #112 as a separately testable event predicate until the durable D1 path consumes the trusted Actions envelope. Do not wire its read-only workflow into a live dispatch trigger.
+6. Treat PR #92/#93 as registry/replay hardening inputs to integrate only after the admission/lease schema is unified; preserve verifier-issued capability and exact replay receipt integrity.
+
+### Pass 2 disposition
+
+- PR #126 code change is technically promising and exact-head CI-green, but stale/diverged from current default. No merge is safe yet.
+- Admission proofs contain useful passing local tests, but none qualifies hosted D1, live webhook authentication, a production lease lock, provider quota isolation or worker dispatch.
+- The current safe next implementation is a clean-base port of PR #126; the next architecture task is a unified admission + lease + Actions-context proof chain. No dispatch, merge, deployment, hosted D1/R2 write, provider call or secret access was performed.
