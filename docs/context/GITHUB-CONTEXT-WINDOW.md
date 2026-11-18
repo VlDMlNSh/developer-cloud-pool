@@ -3672,3 +3672,26 @@ The live default branch `Основной` is at `68183828cf7934e89109310c8f9928
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: audit all R2 write paths and D1 artifact-reference mutation paths. Implement an epoch/reservation gate only if every writer can be forced through the trusted boundary; keep deletion disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, R2 writer boundary and D1 artifact publication audit
+
+**Latest report:** [R2 writer boundary and D1 artifact publication audit](../reports/2026-11-18-issue133-r2-writer-boundary-audit.md)  
+**Latest checkpoint:** [R2 writer boundary audit checkpoint](../checkpoints/2026-11-18-issue133-r2-writer-boundary-checkpoint.md)
+
+- Default branch `Основной` HEAD re-read from branch API: `68183828cf7934e89109310c8f99281be4eb7ed8`. Repository default branch is `Основной`.
+- PR #135 source target `5554c3f27dd9f23b341224d6c00ccbf74642f289`; OPEN/DRAFT/UNMERGED; compare against current default is DIVERGED, 58 ahead / 2 behind; merge base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Do not merge.
+- PR #141 OPEN/DRAFT/UNMERGED; head `6d68f7f22655f4770fc3cb50c2d301b08df4a92c`; source-level audit identifies PR #67 + #72 as intended canonical D1 lineage. #67/#72 are 81 commits behind; selective clean-base transplant and exact-head requalification required. PR #141 formal reviews 0, inline threads 0.
+- PR #138 OPEN/DRAFT/UNMERGED; head `5406cc3a88b1b40fc93c286620ec3275f12215f6`; repository-wide implementation/acceptance plan.
+- PR #139 OPEN/DRAFT/UNMERGED; head `4b35f949fa9bd0f924582f9eb47008c191c061ee`; Pool Contract Validation exact-head run [44349941243](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44349941243) SUCCESS.
+- PR #135 exact-head prior CI: Workers PR run [44342212033](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342212033) SUCCESS (4 files / 38 tests); push run [44342193230](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342193230) SUCCESS; Contract Validation [44342211911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342211911) SUCCESS. These are not current-base integration qualification.
+- R2 source audit on PR #135: one explicit `bucket.put` in `artifact-ingest.mjs`; no delete call in changed-file set. taskKey/uploadId authorization is a documented precondition, not implemented. `worker.mjs` returns 404; no ingress route. Wrangler R2 binding is local proof config only.
+- D1 audit: `commitTaskResult` verifies R2 then writes result/outbox. Migration 0006 persists key/version/length atomically in D1; no upload reservation/epoch table. R2 verification and D1 commit are not atomic across stores; exclusive writer controls are NOT VERIFIED.
+- PR #67 already uses migration 0006 for projection outbox; PR #135's artifact migration 0006 must be selectively ported and renumbered/reconciled in the canonical chain. Do not stack blindly.
+- Epoch/fence remains DESIGN ONLY / NOT IMPLEMENTED / NOT QUALIFIED. Keep `crossStoreSnapshotConsistent=false` and `deletionPermitted=false`; no deletion/GC.
+- Active ruleset ID `26550182` on `refs/heads/Основной`: PR required, review-thread resolution required, 0 required approving reviews, stale reviews dismissed, no bypass, deletion/non-fast-forward prohibited. Branch API reports protected=false/protection disabled; do not conflate branch protection with active ruleset.
+- Gemini controller workflow not found on checked default ref; Gemini NOT RUN; no Secrets/Variables inspected.
+- No source/schema changes in this pass, no production R2/D1, secret/provider access, dispatch, deployment, merge, deletion or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean-base transplant of canonical PR #67/#72 lineage, then selective artifact byte-verification port with a single trusted ingress/reservation contract. Keep dispatch false and deletion disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
