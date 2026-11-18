@@ -1,18 +1,12 @@
 name: D1 GitHub Actions Context Admission Proof
 
 on:
-  push:
-    branches:
-      - proof/d1-github-actions-context-adapter-2026-11-18
-    paths:
-      - "proofs/d1-admission/**"
-      - ".github/workflows/d1-github-actions-context-proof.yml"
   pull_request:
     branches:
       - feat/atomic-next-admission-d1-2026-11-16
     paths:
       - "proofs/d1-admission/**"
-      - ".github/workflows/d1-github-actions-context-proof.yml"
+      - ".github/workflows/d1-admission-context-proof.yml"
 
 permissions:
   contents: read
