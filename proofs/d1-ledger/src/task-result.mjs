@@ -14,12 +14,12 @@ function deny(reason) {
  */
 export async function commitTaskResult(db, input) {
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
-  if (!input || !/^[a-f0-9]{64}$/.test(input.taskKey || "") ||
-      !SAFE_ID.test(input.workerId || "") ||
+  if (!input || typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey) ||
+      typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId) ||
       !Number.isSafeInteger(input.generation) || input.generation < 1 ||
-      !UUID.test(input.leaseAttemptId || "") ||
-      !SHA256.test(input.resultDigest || "") ||
-      !RESULT_REF.test(input.resultRef || "") ||
+      typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId) ||
+      typeof input.resultDigest !== "string" || !SHA256.test(input.resultDigest) ||
+      typeof input.resultRef !== "string" || !RESULT_REF.test(input.resultRef) ||
       !Number.isSafeInteger(input.now) || input.now <= 0) {
     return deny("INVALID_RESULT_COMMIT");
   }
