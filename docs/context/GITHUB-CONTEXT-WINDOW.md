@@ -105,3 +105,10 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - No secret values read, provider calls, dispatch, deployment or merge. Contour A: **BLOCKED / NOT ACCEPTED**. Contour B: **DEFERRED**.
 - Next bounded step: define/test a persisted FCC single-account configuration boundary without revealing credential values; then separately qualify a real permitted free route and quota accounting. Resolve AGPL exposure obligations before remote FCC service.
 - Reports: [FCC provider key/fallback isolation regression](../reports/2026-11-18-next-fcc-provider-key-isolation-regression.md); [Issue #115 evidence](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6971842639).
+
+
+### Documentation branch reconciliation — 2026-11-18
+- PR #124 documentation candidate head: `8b90b8b3290e9fdfd40977b3e7570dac8532c255`; base PR #120 head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; OPEN / DRAFT / UNMERGED.
+- GitHub pull request endpoint currently reports `mergeable=false` / `mergeable_state=dirty` for PR #124. Do not merge; the dirty state needs separate reconciliation before the docs candidate can be accepted.
+- Architecture Documentation Validation [44257717873](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257717873) completed SUCCESS on exact docs branch head `8b90b8b3290e9fdfd40977b3e7570dac8532c255`; job [134643313753](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257717873/job/134643313753).
+- The report, checkpoint and Context Window were re-fetched from GitHub and contain the PR #116 exact-head evidence. Documentation CI does not resolve PR mergeability or independently accept the architecture.
