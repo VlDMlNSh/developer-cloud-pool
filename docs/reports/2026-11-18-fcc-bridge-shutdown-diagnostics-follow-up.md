@@ -71,3 +71,7 @@ Change only the evidence publication path in a follow-up commit: include both br
 - No secrets read, provider calls, real Claude task, Gemini dispatch, production dispatch, deployment or merge.
 - Gemini controller remains absent from default branch (404); Gemini NOT RUN.
 - `POOL_DISPATCH_ENABLED=false`; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### CI poll update — 2026-11-18
+- Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED / SUCCESS on exact HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
+- Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): still IN_PROGRESS on the same exact HEAD at the latest poll; job `134740287165` RUNNING. No artifact published yet; runtime outcome NOT VERIFIED.
