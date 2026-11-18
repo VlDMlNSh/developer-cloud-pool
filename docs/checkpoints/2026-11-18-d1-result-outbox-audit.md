@@ -5,8 +5,8 @@
 - Result adapter: Worker runtime clock; ignores caller `now`; verifies persisted result + completed task + outbox tuple; exact idempotent retry requires original worker/generation/attempt/digest/ref.
 - Lease adapter: Worker runtime clock; rejects invalid lease duration and caps duration at 900 seconds.
 - Workers Vitest adversarial coverage: same-worker reclaim with new attempt, stale old attempt, exact retry, foreign worker/attempt retry rejection, result substitution, trigger rollback, expiry equality.
-- Exact-head previous D1 CI on `af5428fae169a1724043edffade0c4da69ea292f`: [44316217911 SUCCESS](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316217911), all job steps incl. npm install, syntax and Workers-runtime D1 tests. This predates final idempotency tightening.
-- Current final-head Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) was in progress at last check; current-head D1 Workers test NOT VERIFIED.
+- Exact-head D1 Workers CI on final head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`: [44316452561 SUCCESS](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561); all job steps passed incl. exact dependency install, syntax, Workers-runtime D1 tests and lockfile preservation.
+- Current final-head Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) COMPLETED/SUCCESS; dispatch-disabled assertion, YAML parse and security contracts passed.
 - PR description updated to explicitly distinguish prior-head D1 success from final-head pending evidence.
 - No independent review, no production dispatch, no hosted D1 mutation, secrets, provider calls, deployment or merge.
 - Next: obtain exact-head D1 runtime CI for current SHA; inspect full steps; then independent review and governance. Do not merge or enable dispatch before acceptance.
