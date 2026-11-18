@@ -1,3 +1,15 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 second exact-head recheck
+
+- PR #116 advanced again to `37d7b4de7b885d278a35d9311a38bc15fac961dc`; base remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): COMPLETED/SUCCESS.
+- Exact-head Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS at last observation; job 134741199311. Child-environment tests and sandbox capability probe passed; signed APT install was in progress. Remaining stages and artifact NOT VERIFIED.
+- Previous head `59514f6d1119ca113745f5da861a1195c66da2e5` Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): COMPLETED/FAILURE. Artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783), digest `sha256:cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267`.
+- Failure occurred in synthetic bridge shutdown qualification; job log confirms exit code 1 but runtime diagnostic values are not surfaced in the text log. The current source `exec_allowlist.py` uses `os.execvpe`, replacing the wrapper process; SIGINT/wait status semantics therefore require an explicit assertion against the actual process termination code and listener state. Treat this as a code-level diagnosis to verify against artifact diagnostics, not yet a proven single root cause.
+- Commit on current head renamed test to synthetic wrapper-to-mock CLI invocation and changed mock expectations to require that ambient provider credentials and proxy overrides are stripped. It does not prove provider routing.
+- No secrets/provider calls/real task/production dispatch/deployment/merge. Gemini NOT RUN. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: wait for exact-head run 44286730410; inspect its bridge evidence and artifact. If still failing, fix only the demonstrated process lifecycle assertion. Then qualify CODE inside Docker no-egress using a synthetic mock.
+
+---
 # CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 exact-head recheck
 
 **Latest report:** [2026-11-18-pr116-exact-head-reconciliation.md](../reports/2026-11-18-pr116-exact-head-reconciliation.md)
