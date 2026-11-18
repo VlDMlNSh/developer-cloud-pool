@@ -1,3 +1,22 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 runner qualification SUCCESS
+
+**Latest report:** [2026-11-18-pr116-exact-head-reconciliation.md](../reports/2026-11-18-pr116-exact-head-reconciliation.md)
+
+- PR #116 current head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED; mergeable true.
+- Exact-head Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): COMPLETED/SUCCESS.
+- Exact-head Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): COMPLETED/SUCCESS; job 134741981861; 18 steps, no failed or skipped steps.
+- Artifact [14420066410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337/artifacts/14420066410), 34,605 bytes; downloaded ZIP SHA-256 matches GitHub digest `17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; all 43 internal SHA256SUMS entries verified.
+- Tests: child env allowlist 10/10; task HOME/XDG isolation 9/9; Claude release verifier 7/7; FCC profile guard 15/15.
+- Claude Code `2.1.311-1` / CLI `2.1.311`; Anthropic signing key and detached release-manifest signature verified; installed Linux x64 binary checksum matches signed manifest.
+- Docker no-egress primitive: TCP blocked, no default route, read-only rootfs, capabilities dropped. Image `ubuntu@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8`.
+- FCC `6.19.35` loopback server HTTP 200 and clean shutdown; no provider/completion calls. Synthetic wrapper-to-mock invocation passed with ambient credentials/proxy overrides stripped, argv preserved, expected mock exit 37, clean server shutdown and listener absence.
+- Scope limits: FCC client launcher NOT invoked; no actual CODE execution inside Docker; host egress remains public; provider allowlist NOT IMPLEMENTED; Claude hosted-use entitlement/account authority and FCC AGPL network-exposure review NOT VERIFIED.
+- Previous failure on `59514f6...` was due mock expectations contradicting strict allowlist; artifact showed no mock marker. The mock was corrected to assert credentials/proxy overrides absent.
+- No secrets/provider calls/real Claude session/agent task/production dispatch/deployment/merge. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- PR #126 remains OPEN/DRAFT/UNMERGED; legacy DSH retirement is not on default branch. PR #127 documentation changes remain on its docs branch; current head and mergeability must be checked before merge.
+- Next: qualify actual Claude Code CLI inside Docker no-egress against a synthetic local mock, no provider credentials, with mount/capability/network/teardown evidence.
+
+---
 # CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 current exact head
 
 - PR #116 advanced to `2e944f13818f434cf135602c1c0e82051f1d3fa8`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
