@@ -112,3 +112,14 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Current-head Runner Qualification [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030), job `134732714813`: IN_PROGRESS at cutoff. Checkout, child-environment tests, runner baseline and sandbox capability probe passed; later installation/FCC steps not yet verified. Live log endpoint returned 404 while the job was still running.
 - No secrets read, provider calls, real Claude session, Gemini or production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: verify run 44284216030 on immutable target `a07cc438237e5c9d5f276e2f42ea9774ee333a56`, including FCC loopback, synthetic bridge and artifact checksums. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up — FCC loopback passes; synthetic bridge shutdown diagnostic — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- PR #116 exact target `a07cc438237e5c9d5f276e2f42ea9774ee333a56`: Runner Qualification [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030) COMPLETED/FAILURE. FCC loopback startup/readiness/clean shutdown passed; synthetic bridge step failed during its shutdown assertions.
+- Mock CLI handoff itself passed expected exit 37, marker/argument persistence, argument comparison and synthetic-value log checks. Process-liveness check did not print its explicit failure message; logs narrow the issue to nonzero bridge shutdown status or listener still present, but do not distinguish the two.
+- Artifact [14418332371](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030/artifacts/14418332371), 31,250 bytes, GitHub digest `sha256:951c8017003f59e4d0125ae17c0c79cb9fed1498cc4e5e01edbc6349698194e0`; archive contents not independently inspected.
+- Diagnostic-only workflow commit `52339ee70e00b9905710d411404b55778f68c70a`; workflow blob `5b18bdbe59ca52022a74b072fdd5674e0b11b497`. It captures shutdown exit status, process liveness and listener state and prints logs on failure; security policy and pass criteria remain unchanged.
+- Exact-head Runner Qualification [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) and Pool Contract Validation [44284614733](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614733) on `52339ee70e00b9905710d411404b55778f68c70a` were IN_PROGRESS at cutoff; NOT VERIFIED.
+- Next: read the new diagnostics, isolate exit status vs listener cleanup, and only then change behavior. No provider calls, secret reads, real Claude task, Gemini/production dispatch, merge or deployment. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
