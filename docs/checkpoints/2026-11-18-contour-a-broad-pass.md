@@ -332,3 +332,12 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - This pass: documentation only; source tests not executed; exact-head CI NOT VERIFIED; no secrets, hosted D1, provider calls, dispatch, deployment, merge or Gemini run.
 - Next: new isolated proof branch, define canonical execution-envelope contract, add adversarial lease/result/outbox/recovery tests, exact-head Workers Vitest/workerd CI, artifact digest readback and independent security review.
 - Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+
+## CI evidence reconciliation — D1 lease proof — 2026-11-18
+
+- PR #40 run `42489887940` COMPLETED/SUCCESS on merge commit `23e06138ddee46934c8cb137d04dd1585d390ea6` for head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` plus base `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`.
+- Job `128759748692`: install, check, 2 Workers test files and 27/27 tests passed. Artifact `13620723665`, SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`.
+- Classification: merge-context CI verified; standalone exact-head CI, adversarial concurrent lease acquisition and durable stale-side-effect fencing remain NOT VERIFIED.
+- PR #40 OPEN/DRAFT/UNMERGED; 0 formal reviews / 0 threads. PR #130 OPEN/DRAFT/UNMERGED; separate run `44299536170` passed 120/120 Workers tests on its merge-context.
+- Report and Context Window updated in this branch. No source code, PR #40/#130, production data, secrets, deployment or dispatch changed.
