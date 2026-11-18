@@ -86,7 +86,7 @@ describe("trusted R2 artifact ingest proof", () => {
   it("rejects a retry that substitutes bytes under the same upload identity", async () => {
     const id = uploadId();
     await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]), declaredSize: 8 });
-    const conflict = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["modified!"]), declaredSize: 8 });
+    const conflict = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["changed!"]), declaredSize: 8 });
     expect(conflict).toMatchObject({ decision: "DENY", reason: "ARTIFACT_CONTENT_CONFLICT", dispatch: false });
   });
 
