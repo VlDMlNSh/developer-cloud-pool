@@ -1,3 +1,34 @@
+# Follow-up — 2026-11-18, exact-head qualification SUCCESS and artifact verification
+
+## Current exact-head result
+- PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; OPEN/DRAFT/UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): COMPLETED/SUCCESS.
+- Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): COMPLETED/SUCCESS; job `134741981861`; all 18 steps completed, no failed/skipped steps.
+- Artifact [14420066410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337/artifacts/14420066410), 34,605 bytes. Downloaded archive SHA-256 `17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a` matches GitHub artifact digest. All 43 internal SHA256SUMS entries passed after stripping the recorded runner temp path prefix.
+
+## Verified evidence
+- Tests: `test_exec_allowlist.py` 10/10; `test_task_home.py` 9/9; `test_verify_claude_release.py` 7/7; FCC profile guard 15/15.
+- Claude Code package `2.1.311-1`, CLI `2.1.311`; Anthropic release signing key fingerprint `31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE`; detached manifest signature verified; Linux x64 binary SHA-256 `86dc1fcc69498159eaf15f446613e847010f9036bfbbdffd4c49350be8489ada` matches signed manifest.
+- Docker no-egress proof: TCP blocked, no default route, read-only rootfs, capabilities dropped; image digest `ubuntu@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8`.
+- FCC `6.19.35` loopback server readiness HTTP 200 and clean shutdown; no provider/completion endpoint calls.
+- Synthetic wrapper-to-mock invocation passed: ambient credentials and proxy overrides stripped; argv preserved; mock exit 37 observed; bridge shutdown exit 0; process dead; listener absent.
+
+## Exact scope and exclusions
+- The test now correctly qualifies a wrapper-to-mock invocation. It does NOT invoke FCC's own Claude client launcher; provenance explicitly records `fcc_client_launcher_invoked=false`.
+- Docker test proves the no-egress primitive only. The actual Claude Code CLI was installed on the GitHub-hosted runner and was not executed inside the Docker container; `real_agent_container_execution=false`.
+- Host runner egress remains public; provider allowlist proxy NOT IMPLEMENTED. No secrets read, provider calls, live Claude session, real agent task or production dispatch.
+- Claude hosted-use entitlement/account authority and FCC AGPL-3.0-only network-exposure legal review remain NOT VERIFIED.
+
+## Diagnosis of superseded failure
+- Run [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) on SHA `59514f6d1119ca113745f5da861a1195c66da2e5` failed in synthetic wrapper-to-mock qualification.
+- Its artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783) was downloaded and inspected: FCC bridge server started and shut down cleanly, but `bridge_result_state=STARTED`, marker absent, and diagnostics were not reached. The mock expected ambient provider base URL/auth token even though `exec_allowlist.py` deliberately strips them. The next code commit changed the mock to assert those variables are absent. Subsequent run on `37d7b4d...` was cancelled by a later push. The current `2e944f1...` run passes.
+
+## Remaining blockers / next step
+- Actual CODE execution inside a no-egress container is NOT VERIFIED; provider egress allowlist not implemented; runner host egress not isolated; hosted-use entitlement/account authority and AGPL network-use legal review NOT VERIFIED.
+- Next bounded pass: run actual Claude Code CLI inside Docker `--network none` against a synthetic local executable/mock only, with no provider credentials, then verify mount and teardown evidence. Do not connect a provider or enable external egress.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+
+---
 # Follow-up — 2026-11-18, PR #116 current head 2e944f1
 
 - Current PR #116 head: `2e944f13818f434cf135602c1c0e82051f1d3fa8`, OPEN/DRAFT/UNMERGED.
