@@ -140,3 +140,18 @@ No gate is passed by documentation alone. Every gate requires exact-head evidenc
 
 ### Next pass
 Execute Issue #140 by comparing source/schema overlap and porting the canonical admission + lease proof to one clean current-base branch. Keep all adapters non-dispatching. First resolve the profile mismatch in PR #125: remove the retired dsh-headless-probe allowlist and align with the owner-frozen CODE profile only after the no-secret CODE sandbox evidence is verified.
+
+
+## Pass 3 — D1 admission/lease integration audit (2026-11-18)
+
+- Audited the actual SQL migrations and adapters from PR #111, #112, #114 and #125.
+- Confirmed the branches are all diverged from current default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8`, with merge base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (two commits behind).
+- Found incompatible shared schemas: #111 and #114/#125 independently create `pool_approval_ledger`; their `pool_task_outbox` tables have different unique keys and event types; #111 adds a second task-level outbox and its `pool_tasks` shape cannot be retrofitted by `CREATE TABLE IF NOT EXISTS`.
+- Found profile/provenance defects to resolve before composition: #111/#125 still allow retired `dsh-headless-probe`; #125 sets `targetSha` and `trustedDefaultHeadSha` from the same `GITHUB_SHA`, so it does not independently establish current default-ref provenance.
+- PR #112 remains read-only event-envelope validation, not a durable admission path.
+- Recorded the complete schema compatibility matrix and canonical target in Draft PR #141: https://github.com/VlDMlNSh/developer-cloud-pool/pull/141
+- Updated Issue #140 with the concrete blockers and the no-dispatch integration direction.
+- Disposition: code composition is BLOCKED until one canonical migration lineage is implemented. Do not stack the existing migration roots.
+
+### Next code pass
+Create one clean-base integration branch from the current default; implement a single receipt-driven schema where the task row also owns lease/fencing state, keep exactly one task-ready outbox, add immutable attempts/events and a non-authorizing reconciliation queue, then port the event predicate and Actions adapter with an independently sourced current-ref SHA. Remove the DSH profile. Preserve `dispatch:false` and `executionAuthorized:false` throughout.
