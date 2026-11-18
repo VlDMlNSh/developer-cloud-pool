@@ -1,5 +1,16 @@
 const SAFE_UPLOAD_ID = /^[A-Za-z0-9_-]{16,128}$/;
 const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
+const VERIFIED_ARTIFACT_RECORDS = new WeakSet();
+
+function issueVerifiedArtifactRecord(fields) {
+  const record = Object.freeze({ ...fields, resultRef: `r2:${fields.uploadId}` });
+  VERIFIED_ARTIFACT_RECORDS.add(record);
+  return record;
+}
+
+export function isVerifiedArtifactRecord(record) {
+  return record !== null && typeof record === "object" && VERIFIED_ARTIFACT_RECORDS.has(record);
+}
 
 function deny(reason) {
   return { decision: "DENY", dispatch: false, reason };
@@ -78,14 +89,14 @@ async function reconcileExisting(bucket, key, uploadId, expectedDigest, expected
   }
   return {
     decision: "ARTIFACT_ALREADY_STORED",
-    artifact: {
+    artifact: issueVerifiedArtifactRecord({
       objectKey: key,
       objectVersion: existing.version,
       etag: existing.etag,
       sha256: actual.sha256,
       byteLength: actual.byteLength,
       uploadId
-    },
+    }),
     dispatch: false
   };
 }
@@ -137,14 +148,14 @@ export async function ingestArtifact(bucket, input) {
     }
     return {
       decision: "ARTIFACT_STORED",
-      artifact: {
+      artifact: issueVerifiedArtifactRecord({
         objectKey: key,
         objectVersion: stored.version,
         etag: stored.etag,
         sha256,
         byteLength: measured.byteLength,
         uploadId: input.uploadId
-      },
+      }),
       dispatch: false
     };
   } catch (error) {
