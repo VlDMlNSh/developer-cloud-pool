@@ -3205,3 +3205,7 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 1. Read exact-head CI results and artifact for runs #44286461561 and #44286461574.
 2. Verify pre-created diagnostics exist even on a failed bridge step and determine the actual signal/wait/listener predicate from recorded values.
 3. Continue only with one bounded, evidence-backed P1 correction. Do not weaken gates or enable provider access.
+
+### CI poll update — 2026-11-18
+- Pool Contract Validation run #44286461574: COMPLETED / SUCCESS on exact PR #116 HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
+- Runner Qualification run #44286461561: IN_PROGRESS at latest poll; job `134740287165` RUNNING; no artifact yet. Runtime result NOT VERIFIED.
