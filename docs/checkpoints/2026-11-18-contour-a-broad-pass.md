@@ -191,3 +191,18 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Pinned FCC upstream commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` has `build_claude_proxy_env` which removes ambient `ANTHROPIC_*` and injects trusted proxy URL/token; managed Claude invocation uses it. This is the reference contract, subject to AGPL license boundary. Current CI step is not a real FCC-to-Claude proxy handoff.
 - Next: implement a separate trusted proxy-env injection contract (loopback URL validation, managed token source, no argv/log/artifact exposure, ambient credential scrubbing) or rename the test to sanitization-only and keep proxy integration NOT VERIFIED. Never add ambient Anthropic variables to the generic allowlist.
 - Provider route/quota, egress gateway, actual Docker worker, hosted-use entitlement, FCC AGPL network review and persistent workspace remain NOT VERIFIED/BLOCKED. Gemini NOT RUN because approved controller path is absent on default branch. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
+## Follow-up checkpoint — 2026-11-18, FCC bridge evidence preservation
+
+- Current PR #116 HEAD: `59514f6d1119ca113745f5da861a1195c66da2e5`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Focused change: pre-create `fcc-bridge-result.txt` and `fcc-bridge-shutdown-diagnostics.txt` before bridge runtime startup; capture SIGINT, wait, process-liveness and listener-probe statuses while errexit is disabled; expose only non-secret numeric/boolean step outputs; retain all fail-closed assertions.
+- Workflow blob: `a218c738e640c43f003cd4f24a348ab4b4aa996e`. Read-back verified new step ID, pre-created files, GITHUB_OUTPUT records and unchanged shutdown gates.
+- Previous artifact #14418937574 (run #44285275416) re-downloaded: ZIP SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`, matching GitHub digest; 34 entries. Bridge diagnostic/result files absent because they were only written after the shutdown/listener-probe sequence. Exact failing predicate remains NOT VERIFIED.
+- Exact-head Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) and Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574) were IN_PROGRESS at checkpoint creation. Results NOT VERIFIED.
+- Report: [2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
+- Context Window overlay updated on the documentation branch. Documentation branch changes remain separate from default branch and are not accepted production changes.
+- Gemini NOT RUN: approved controller workflow path returned 404 on default branch. No secrets, provider calls, real Claude task, production dispatch, merge or deployment. `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: poll exact-head CI; inspect new artifact even if Runner Qualification fails; determine signal/wait/listener predicate from captured evidence before changing runtime behavior.
