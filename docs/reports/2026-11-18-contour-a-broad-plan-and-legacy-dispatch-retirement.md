@@ -33,8 +33,8 @@ This pass retires that path in a proposed PR:
 - Ensure the legacy DSH label queue cannot dispatch even if an old variable is accidentally enabled.
 - Remove unnecessary write permissions and credential exposure from the retired supervisor.
 - Make the old DSH worker inert.
-- Verify exact-head CI and publish a dated report.
-**Exit:** no legacy label-driven or manual DSH execution path remains active.
+- Exact-head Pool Contract Validation run [44274773431](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44274773431) completed SUCCESS on PR head `c3cd927bae82f6ba9c630567dcf6adcf25ad7c0c`; YAML syntax, pinned-action and pool contract checks passed. The PR remains OPEN/DRAFT/UNMERGED.
+**Exit:** code-level legacy label-driven dispatch and manual DSH execution are blocked by the proposed PR; they are not yet removed from the default branch until integration.
 
 ### P1 — Qualify the first CODE executor
 - Finish PR #116's no-secret installation/runtime qualification and keep the profile isolated.
@@ -84,7 +84,7 @@ This pass retires that path in a proposed PR:
 ## Explicit non-goals
 - No independent/external review request until the pool can perform its own review workflow.
 - No production dispatch, provider call, secret read, paid fallback, Gemini dispatch, external server deployment or Contour B work in this pass.
-- No merge is performed by this change; it remains a proposed safety patch pending exact-head CI and owner-controlled integration.
+- No merge is performed by this change. PR #126 remains a proposed safety patch; exact-head CI passed, while integration into the default branch remains pending. No independent/external review is requested under the owner's sequencing decision.
 
 ## Evidence and sources
 - Scheduled supervisor heartbeat run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44272871545
