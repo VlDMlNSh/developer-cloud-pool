@@ -2922,3 +2922,19 @@ Canonical MediaHub map (reference only; Contour B deferred): https://github.com/
 
 
 <!-- END VERBATIM PR #124 CONTEXT SNAPSHOT -->
+
+
+## /next — lossless PR #124 Context Window reconciliation — 2026-11-18
+
+- Immutable source versions re-read: merge-base `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8` (blob `3b0c42aebc91e2296a7fd2bfaa2277e6f5d12edb`, 2,445 lines); PR #120 branch `docs/cloud-pool-reference-architecture-2026-11-17` (blob `1e63c30a39020e72054017e2e901fcd062676782`, 2,500 lines); PR #124 branch pre-write (blob `5991962c244ebe4f3012018cd929f7dfe01830c7`, 413 lines).
+- Finding: PR #124's condensed context omitted most of the long historical engineering ledger retained by PR #120. The conflict candidate was not just a harmless one-path overlap; the two context versions had materially different preservation scope.
+- Reconciliation: PR #124 context now contains the complete PR #120 context text followed by the complete prior PR #124 context text verbatim under explicit provenance delimiters. Pre-write checks confirmed exact source inclusion; post-write read-back confirmed 2,925 lines and both source snapshots present.
+- New Context Window blob after first write: `5b400e02948dae799e259f45c784ebdf08bd4d8c`; first write commit `a64b317c360358426dd12ea66691a4c3811ea3a6`. Subsequent report commit `1bbe986b31b33a5df9780e0de3aac87c1e635b8b`; checkpoint commit `62bd9b8e0e32e1c16de1fb60e1d37e03ef652d53`.
+- Report: [lossless Context Window reconciliation](../reports/2026-11-18-next-pr124-context-window-lossless-reconciliation.md). Checkpoint: [reconciliation checkpoint](../checkpoints/2026-11-18-pr124-context-window-lossless-reconciliation.md).
+- PR #124 remains OPEN/DRAFT/UNMERGED. Live compare still reports 134 commits ahead / 3 behind with merge-base `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; GitHub mergeable=false. This documentation reconciliation does not itself resolve ancestry or guarantee a clean merge.
+- Exact-head CI, formal independent reviews and branch ruleset details for this new head remain NOT VERIFIED at this point; re-read before merge. Formal PR reviews and review threads were 0 at the read-back immediately after report/checkpoint commits.
+- No merge, rebase, force-push, dispatch, secret read, provider call, deployment or runtime change. Gemini controller is absent from default branch and optional under Issue #96; dispatch NOT RUN. Issue #118 remains OPEN with persistent workspace/access/restore blockers.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify exact latest PR #124 head CI and current mergeability, then obtain independent architecture/security review. Do not force-push or merge while ancestry remains dirty.
+
+Canonical MediaHub map (reference only; Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
