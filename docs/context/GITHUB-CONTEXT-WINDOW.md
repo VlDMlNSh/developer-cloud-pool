@@ -3431,3 +3431,18 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: create a clean proof branch from current default HEAD; port minimal result/outbox proof; fix F1 with verified readback; establish trusted clock for F2; run exact-head Workers Vitest/migration smoke and adversarial stale-worker, same-worker reclaim, expiry-equality, idempotency/conflict, and rollback tests; then independent review.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+
+
+## 2026-11-18 — bounded D1 result/outbox fencing pass
+- Latest observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (commit search; repository default branch `Основной`).
+- Documentation continuation PR #127: OPEN/DRAFT/UNMERGED, head `f2cb579092ab4b6bd6cd25688dc3dc455e176d46`.
+- PR #131 lease attempt proof: OPEN/DRAFT/UNMERGED, head `2cefe8d62b99012ff23d45f33e3251996747fb7b`, base `proof/task-identity-fencing-design-2026-11-08` @ `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; no formal reviews or inline threads; exact-head workflow runs/status contexts returned empty (NOT VERIFIED).
+- Result/outbox branch source blobs re-read: adapter `b0d50ae23b73d9b3286d9d784122cd0d8c6ec15a`; migration 0005 `b2be7384f1b427c545eb860a2168b235e6316cda`; tests `7fc3cd14400a488b51096ac4f7642ed193d65287`; workflow `48ca9468a0fb169394a445a340e01e78c121fa41`.
+- Schema lineage blocker: migrations 0001–0004 are present on PR #131 proof lineage but absent from the queried `proofs/d1-ledger/` paths at current default HEAD. Do not transplant only result migration/adapter to default; first reconcile the schema base and history.
+- Adapter F1: `meta.changes === 1` is not a sound success predicate where the result INSERT trigger updates task and inserts outbox. Replace with exact immutable readback and verify in Workers Vitest.
+- SQL `changes()` inside migration 0005 is a separate SQLite function call immediately after the trigger's UPDATE; SQLite docs state it reflects the previous DML inside a trigger. This makes the SQL row-count guard plausible, but D1 runtime proof is still required. https://www.sqlite.org/draft/capi3ref.html
+- Caller-provided `now` is not proof of trusted time. Artifact digest format validation does not verify referenced bytes.
+- Upstream reference: `provos/tasklease` demonstrates rotated task IDs and atomic handoff, but is not adopted; its deployment includes R2 credentials and paid-plan assumptions. https://github.com/provos/tasklease
+- Report: `docs/reports/2026-11-18-30min-d1-result-outbox-fencing-pass.md`; checkpoint updated accordingly. No source code changes, local tests, Workers Vitest, exact-head CI success, dispatch, secrets, hosted D1, deployment, merge, or Contour B work.
+- Next: reconcile migration lineage; create clean proof from immutable base; implement readback + trusted clock; run adversarial Workers Vitest and exact-head CI.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
