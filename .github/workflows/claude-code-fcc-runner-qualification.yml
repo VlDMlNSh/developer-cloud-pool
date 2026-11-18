@@ -12,6 +12,8 @@ on:
       - "scripts/cloud_pool/test_fcc_profile_guard.py"
       - "scripts/cloud_pool/task_home.py"
       - "scripts/cloud_pool/test_task_home.py"
+      - "scripts/cloud_pool/verify_claude_release.py"
+      - "scripts/cloud_pool/test_verify_claude_release.py"
   workflow_dispatch:
 
 permissions:
@@ -42,6 +44,7 @@ jobs:
           set -euo pipefail
           python3 scripts/cloud_pool/test_exec_allowlist.py
           python3 scripts/cloud_pool/test_task_home.py
+          python3 scripts/cloud_pool/test_verify_claude_release.py
 
       - name: Create evidence directory and record runner baseline
         shell: bash
@@ -128,31 +131,63 @@ jobs:
           chmod 600 "$out"
           cat "$out"
 
-      - name: Install pinned Claude Code with official native installer
+      - name: Install Claude Code from Anthropic's signed APT repository
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsSL https://claude.ai/install.sh -o "$RUNNER_TEMP/claude-install.sh"
-          bash "$RUNNER_TEMP/claude-install.sh" 2.1.325
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          export PATH="$HOME/.local/bin:$PATH"
-          if [ ! -x "$HOME/.local/bin/claude" ]; then
-            find "$HOME/.local" "$HOME/.claude" -maxdepth 5 \( -type f -o -type l \) -name claude -print || true
+          expected_fingerprint="31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+          key_file="$RUNNER_TEMP/claude-code-release.asc"
+          curl -fsSL https://downloads.claude.ai/keys/claude-code.asc -o "$key_file"
+          key_fingerprints="$(gpg --show-keys --with-colons "$key_file" | awk -F: '$1 == "pub" { primary=1; next } primary && $1 == "fpr" { print toupper($10); primary=0 }')"
+          test "$key_fingerprints" = "$expected_fingerprint"
+          sudo install -D -m 0644 "$key_file" /usr/share/keyrings/claude-code.asc
+          echo "deb [signed-by=/usr/share/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/latest stable main" | sudo tee /etc/apt/sources.list.d/claude-code.list >/dev/null
+          sudo apt-get update
+          package_version="$(apt-cache madison claude-code | awk '$3 ~ /^2\.1\.325([.-]|$)/ { print $3; exit }')"
+          if [ -z "$package_version" ]; then
+            echo "::error::Pinned Claude Code 2.1.325 is not available from the signed official APT repository."
+            exit 2
           fi
-          claude_bin="$HOME/.local/bin/claude"
-          if [ ! -x "$claude_bin" ]; then
-            claude_bin="$(find "$HOME/.local" "$HOME/.claude" -maxdepth 5 \( -type f -o -type l \) -name claude -print -quit 2>/dev/null || true)"
-          fi
+          sudo apt-get install -y --no-install-recommends "claude-code=$package_version"
+          claude_bin="$(command -v claude)"
           test -n "$claude_bin"
           test -x "$claude_bin"
-          echo "$(dirname "$claude_bin")" >> "$GITHUB_PATH"
-          export PATH="$(dirname "$claude_bin"):$PATH"
+          resolved_claude_bin="$(readlink -f "$claude_bin")"
+          test -f "$resolved_claude_bin"
+          printf '%s\n' "$claude_bin" > "$RUNNER_TEMP/qualification/claude-launcher-path.txt"
+          printf '%s\n' "$resolved_claude_bin" > "$RUNNER_TEMP/qualification/claude-binary-path.txt"
+          printf '%s\n' "$key_fingerprints" > "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt"
           installed_version="$(claude --version)"
           printf '%s\n' "$installed_version" | tee "$RUNNER_TEMP/qualification/claude-version.txt"
           test "$(printf '%s' "$installed_version" | awk '{print $1}')" = "2.1.325"
           claude --help > "$RUNNER_TEMP/qualification/claude-help.txt"
         env:
           DISABLE_AUTOUPDATER: "1"
+          DISABLE_UPDATES: "1"
+
+      - name: Verify Claude Code binary against Anthropic signed release manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="2.1.325"
+          platform="linux-x64"
+          release_dir="$RUNNER_TEMP/claude-release"
+          gnupg_home="$RUNNER_TEMP/claude-release-gnupg"
+          mkdir -m 0700 -p "$release_dir" "$gnupg_home"
+          curl -fsSLo "$release_dir/manifest.json" "https://downloads.claude.ai/claude-code-releases/$version/manifest.json"
+          curl -fsSLo "$release_dir/manifest.json.sig" "https://downloads.claude.ai/claude-code-releases/$version/manifest.json.sig"
+          gpg --homedir "$gnupg_home" --batch --import "$RUNNER_TEMP/claude-code-release.asc" > "$RUNNER_TEMP/qualification/claude-gpg-import.txt" 2>&1
+          gpg --homedir "$gnupg_home" --batch --status-fd 1 --verify "$release_dir/manifest.json.sig" "$release_dir/manifest.json" > "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" 2> "$RUNNER_TEMP/qualification/claude-manifest-signature-verification.txt"
+          valid_primary_fingerprints="$(awk '$1 == "[GNUPG:]" && $2 == "VALIDSIG" { print toupper($NF) }' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" | sort -u)"
+          test "$valid_primary_fingerprints" = "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+          resolved_claude_bin="$(cat "$RUNNER_TEMP/qualification/claude-binary-path.txt")"
+          python3 scripts/cloud_pool/verify_claude_release.py \
+            --manifest "$release_dir/manifest.json" \
+            --binary "$resolved_claude_bin" \
+            --version "$version" \
+            --platform "$platform" | tee "$RUNNER_TEMP/qualification/claude-binary-integrity.json"
+          sha256sum "$release_dir/manifest.json" "$release_dir/manifest.json.sig" "$resolved_claude_bin" > "$RUNNER_TEMP/qualification/claude-release-sha256.txt"
+          cp "$release_dir/manifest.json" "$RUNNER_TEMP/qualification/claude-release-manifest.json"
 
       - name: Install pinned uv bootstrap
         shell: bash
