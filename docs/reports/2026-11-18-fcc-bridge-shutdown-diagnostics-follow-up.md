@@ -75,3 +75,23 @@ Change only the evidence publication path in a follow-up commit: include both br
 ### CI poll update — 2026-11-18
 - Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED / SUCCESS on exact HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
 - Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): still IN_PROGRESS on the same exact HEAD at the latest poll; job `134740287165` RUNNING. No artifact published yet; runtime outcome NOT VERIFIED.
+
+## Root cause found from the next artifact — synthetic mock contradicted the allowlist
+
+Runner Qualification run [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) failed again on exact head `59514f6d1119ca113745f5da861a1195c66da2e5`. The improved artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783) was downloaded and inspected:
+- ZIP SHA-256: `cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267`, matching GitHub's digest.
+- Archive contains 36 files. Both pre-created bridge evidence files are now present, proving the artifact-preservation change worked.
+- `fcc-bridge-result.txt` remains at `bridge_result_state=STARTED`; shutdown diagnostics remain `bridge_shutdown_state=NOT_REACHED`. The bridge server log records successful startup, HTTP 200 and graceful cleanup via the EXIT trap. Thus the bridge step failed before recording CLI results and before explicit shutdown.
+
+Source inspection established the deterministic test-contract mismatch:
+- `exec_allowlist.py` constructs the child environment solely from `ALLOWED_ENV_KEYS`; neither `ANTHROPIC_BASE_URL` nor `ANTHROPIC_AUTH_TOKEN` is allowlisted, so both are deliberately removed.
+- The old synthetic mock incorrectly required those two ambient variables to be present before writing its marker. The mock therefore failed by construction; this was not evidence of an FCC server defect or a provider-route failure.
+- The actual CLI exit status was not captured in the artifact, so no numeric status is claimed. The root cause is established from the source contract and artifact state.
+
+### Corrective test-only change
+- PR #116 commit: `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
+- Workflow blob: `f4c892c57b9994dc598436471a8e130c7998861a`.
+- Renamed the step to “synthetic wrapper-to-mock CLI invocation” to avoid overstating it as a real FCC-to-Claude bridge.
+- Changed the mock to assert that ambient provider routing and authentication variables are absent, matching the strict allowlist. No allowlist expansion, credential forwarding or security-gate weakening was made.
+- Read-back confirmed the updated step name, absence assertions and explicit non-live-route description.
+- Exact-head checks were queued at the latest poll: Runner Qualification check `134741199311`; Pool Contract Validation check `134741199298`. Workflow run IDs/results were not yet available; NOT VERIFIED.
