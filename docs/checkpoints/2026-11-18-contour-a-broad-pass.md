@@ -123,3 +123,13 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Diagnostic-only workflow commit `52339ee70e00b9905710d411404b55778f68c70a`; workflow blob `5b18bdbe59ca52022a74b072fdd5674e0b11b497`. It captures shutdown exit status, process liveness and listener state and prints logs on failure; security policy and pass criteria remain unchanged.
 - Exact-head Runner Qualification [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) and Pool Contract Validation [44284614733](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614733) on `52339ee70e00b9905710d411404b55778f68c70a` were IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: read the new diagnostics, isolate exit status vs listener cleanup, and only then change behavior. No provider calls, secret reads, real Claude task, Gemini/production dispatch, merge or deployment. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up — FCC bridge SIGINT diagnostic capture — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- PR #116 head `52339ee70e00b9905710d411404b55778f68c70a` Runner Qualification [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) FAILED. FCC loopback passed; bridge shutdown step exited before emitting diagnostic output.
+- Log sequence is consistent with `kill -INT` failing under Bash `set -e` before `set +e` was enabled. Signal exit status was not captured, so this is a hypothesis, not a proven root cause. Artifact [14419215372](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737/artifacts/14419215372), 31,127 bytes, GitHub digest `sha256:3406b3d043829991a406455b1b94cd4c7da2533d1231d92ef320f934d33b9c5d`; contents not independently inspected.
+- Commit `570d78b7d3f7972b7458de9e69f6117ae642896a`; workflow blob `cde20dddcb9687d0797df7e099693a713ce71c31`: captures SIGINT and wait statuses before evaluating, with fail-closed diagnostics. No policy weakening.
+- Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281): SUCCESS. Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244): IN_PROGRESS at cutoff; NOT VERIFIED.
+- Next: inspect signal/wait/listener results on exact head `570d78b7d3f7972b7458de9e69f6117ae642896a`. Keep provider calls, real agent tasks and production dispatch disabled. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
