@@ -3124,3 +3124,15 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Gemini controller workflow remains 404 on default branch; Gemini agents NOT RUN. PR #126/#120 remain OPEN/DRAFT/UNMERGED; Issue #115/#118 OPEN.
 - No secrets read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: inspect run 44285187440 diagnostics and artifact; identify the exact signal/wait/listener state before any behavioral change. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Latest execution — correctly targeted FCC bridge SIGINT fix — 2026-11-18
+
+- Latest report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md); latest checkpoint: [2026-11-18 Contour A broad pass](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- Audit correction: prior commit `570d78b7d3f7972b7458de9e69f6117ae642896a` modified the first FCC lifecycle shutdown block, not the synthetic bridge block. It did not fix the bridge SIGINT ordering.
+- Current PR #116 head `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED. Workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b` read back: synthetic bridge now enables `set +e` before SIGINT, captures signal and wait statuses, then restores strict mode; diagnostic file is printed.
+- Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): COMPLETED/SUCCESS.
+- Exact-head Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416), job `134736343006`: IN_PROGRESS at cutoff; initial setup/checkout/tests/baseline/sandbox probe passed; subsequent install and bridge results NOT VERIFIED.
+- Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` is 404 on default branch; Gemini NOT RUN. No bypass/direct provider calls.
+- PR #126/#120 remain OPEN/DRAFT/UNMERGED; Issue #115/#118 OPEN. No secrets read, provider calls, real Claude task, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: inspect run 44285275416, especially bridge signal/wait/listener output and artifact. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
