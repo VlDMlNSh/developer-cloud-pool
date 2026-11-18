@@ -181,3 +181,15 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - PR #116 independent A3 review outstanding; governance ruleset #26550182 still requires 0 approvals and 0 status checks. PR #114/#125 admission proposals remain unmerged; production owner controller and Gemini controller absent on default. No secrets read, provider calls, dispatch, deployment or merge.
 - Contour A **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
 - Next: wait for final-head CI; if green, obtain independent review of task HOME + child env boundary, then separately qualify production launcher and OS/container/network/credential isolation. Keep dispatch fail-closed.
+
+
+### CURRENT RECONCILIATION — task HOME symlink and XDG permission hardening — 2026-11-18
+- Code PR #116 branch current HEAD: `ad8b120f9ffbd55423c8d49fe5a42af466cf4430`; default remains `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #116 remains OPEN/DRAFT/UNMERGED.
+- Reviewed and confirmed symlink checks now use `lstat()` before canonicalization, teardown rejects symlink aliases, and dangling forbidden credential-store symlinks count as present. Regression tests cover symlinked root and task HOME alias.
+- Additional issue fixed: intermediate XDG parent `.local` was not guaranteed mode 0700 because pathlib `parents=True` does not apply leaf mode to intermediate directories. The helper now creates/chmods/validates the parent explicitly; test asserts `.local` ownership and mode.
+- Current blobs: helper `dc098728d4cbcd91d04d922fd548df6b71777054`; tests `d8a7dd10f4f2bb0a7852f95cb5f55eceaffadea2`.
+- Symlink-hardening exact-head CI on prior code head `b75b95a2c67c9e3d84b191cd88137887dfdfc7dc`: Runner Qualification [44262676210](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262676210) SUCCESS, all 14 steps; Pool Contract Validation [44262676143](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262676143) SUCCESS. These are not final-head evidence for XDG parent fix.
+- Final-head CI on `ad8b120...`: Runner Qualification [44262817505](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262817505) and Pool Contract Validation [44262817611](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262817611) were IN_PROGRESS at last poll.
+- Report: [task HOME symlink and XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md).
+- Production worker remains DSH-only; helper is not wired into production launcher. OS/container isolation, egress, external credentials, host recovery and vendor hosted-use/compliance remain NOT VERIFIED. Ruleset #26550182 still has 0 required approvals and 0 required status checks; Gemini and Cloud Pool owner controllers absent from default. No secrets/provider calls/dispatch/deployment/merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: await final-head CI, then independent A3 security review; only afterward separately qualify production launcher and sandbox/egress/credential/vendor gates.
