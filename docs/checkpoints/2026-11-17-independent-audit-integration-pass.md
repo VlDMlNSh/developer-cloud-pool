@@ -174,3 +174,15 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Limits: synthetic fixtures only; no real user profile/credential, provider route/account identity/quota or model session was inspected. Guard covers FCC API-key catalog and FCC auth directory, not host-level egress or cloud SDK credentials outside isolated worker HOME. FCC AGPL-3.0-only remote exposure remains blocked pending review.
 - No provider calls, secret reads, production dispatch, deployment or merge. Issue #115 OPEN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review and launcher-level proof of dedicated HOME/no external credential stores before any permitted free-route qualification.
+
+
+## /next — worker HOME isolation boundary audit — 2026-11-18
+
+- Audited immutable default target `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` and PR #116 executor candidate `6620a1557f14d26756dcb3bc11c8ab3d5e57c746`.
+- Default worker workflow is still DSH-only. It does not invoke the FCC profile guard or child environment wrapper, and does not establish a production FCC/Claude launch path.
+- PR #116 child environment wrapper filters inherited env credentials and requires a private HOME, but HOME is caller-supplied. The wrapper does not provision a fresh per-task HOME, establish uniqueness, or inspect other credential stores already present under HOME. XDG variables are optional.
+- FCC qualification workflow's temporary HOME proves only its own synthetic loopback/mock test harness. It is not evidence of worker-level isolation. Production dedicated HOME remains NOT VERIFIED.
+- Exact-head PR #116 runner run [44260105806](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806) and contract run [44260105903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105903) remain SUCCESS on the exact candidate head; 13/13 synthetic profile tests passed.
+- Report: [2026-11-18 worker HOME isolation audit](../reports/2026-11-18-next-worker-home-isolation-audit.md).
+- No credentials, provider calls, dispatch, deployment, merge or host access. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create an explicit per-task HOME provisioner and fail-closed validation/teardown contract with concurrent isolation tests; do not enable production dispatch.
