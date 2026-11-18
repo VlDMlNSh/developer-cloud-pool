@@ -3061,3 +3061,19 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Issue #118 remains OPEN/BLOCKED: no active authorized server #3, no verified Access/Tunnel and no backup/restore evidence. PR #126 legacy dispatch retirement remains proposed, not merged. PR #120 canonical architecture remains proposed, not merged.
 - No secret values read, provider calls, real Claude session, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next exact action: obtain Runner Qualification and Pool Contract Validation on `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; inspect job steps and artifact. Then continue actual CODE-worker sandbox and provider-specific egress boundary. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Latest execution — FCC PATH canonicalization follow-up — 2026-11-18
+
+- Latest docs report: [2026-11-18-fcc-path-canonicalization-follow-up.md](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md); checkpoint: [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (no mainline change).
+- PR #116 OPEN/DRAFT/UNMERGED; branch `feat/claude-code-fcc-runner-qualification-2026-11-17`; observed current head `a07cc438237e5c9d5f276e2f42ea9774ee333a56`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Runner Qualification [44283688950](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44283688950) failed at FCC loopback because `/usr/bin:/bin` resolves to duplicate canonical PATH directories; policy correctly rejected it.
+- Commit `4f2b9581b75dab5424a4dbda8f78b6430007783e` normalized the remaining synthetic bridge PATH assignment to `/usr/bin`. Workflow blob `7ff0846e7957dba27210a04e29233f3af06be70f`; both FCC startup and bridge assignments read back as `PATH=/usr/bin`. No security rule was weakened.
+- Runner Qualification [44284080903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284080903) was cancelled after the branch advanced; not a pass.
+- Exact-current-head Pool Contract Validation [44284216029](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216029): COMPLETED/SUCCESS.
+- Exact-current-head Runner Qualification [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030), job `134732714813`: IN_PROGRESS at cutoff. Checkout, child-environment tests, runner baseline and sandbox capability probe passed. FCC startup, bridge, shutdown and artifact are NOT VERIFIED. Job-log retrieval returned 404 while run remained active.
+- PR #126 remains OPEN/DRAFT/UNMERGED; PR #120 remains OPEN/DRAFT/UNMERGED. Issue #118 remains OPEN; no active authorized workspace host #3, Access/Tunnel or backup/restore proof.
+- No secret values read, provider calls, real Claude session, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: re-read run 44284216030 on immutable target `a07cc438237e5c9d5f276e2f42ea9774ee333a56`; inspect FCC loopback HTTP 200, exact listener, clean shutdown, synthetic handoff and artifact checksums. Only then proceed to actual CODE-in-container and provider egress qualification.
+- Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
