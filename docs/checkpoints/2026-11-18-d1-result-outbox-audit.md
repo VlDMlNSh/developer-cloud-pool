@@ -9,7 +9,7 @@
 - Current final-head Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) COMPLETED/SUCCESS; dispatch-disabled assertion, YAML parse and security contracts passed.
 - PR description updated with exact-head D1 Workers CI and Contract Validation SUCCESS; independent review remains NOT VERIFIED.
 - Active ruleset 26550182 applies to `Основной`: PR required, deletion/non-fast-forward blocked, review-thread resolution required, zero required approvals, no bypass actors. Branch-protection endpoint itself returned 403. No independent review, no production dispatch, no hosted D1 mutation, secrets, provider calls, deployment or merge.
-- Next: obtain exact-head D1 runtime CI for current SHA; inspect full steps; then independent review and governance. Do not merge or enable dispatch before acceptance.
+- Next: independent security/architecture review, review-thread resolution, database-authoritative clock/skew qualification and artifact-byte digest verification at trusted ingest; do not merge or enable dispatch before acceptance.
 - Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
