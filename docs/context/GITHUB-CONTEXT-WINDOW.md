@@ -112,3 +112,21 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - GitHub pull request endpoint currently reports `mergeable=false` / `mergeable_state=dirty` for PR #124. Do not merge; the dirty state needs separate reconciliation before the docs candidate can be accepted.
 - Architecture Documentation Validation [44257717873](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257717873) completed SUCCESS on exact docs branch head `8b90b8b3290e9fdfd40977b3e7570dac8532c255`; job [134643313753](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257717873/job/134643313753).
 - The report, checkpoint and Context Window were re-fetched from GitHub and contain the PR #116 exact-head evidence. Documentation CI does not resolve PR mergeability or independently accept the architecture.
+
+
+### CURRENT RECONCILIATION — persisted FCC profile boundary — 2026-11-18
+- Default branch `Основной` observed HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 exact latest code head `6620a1557f14d26756dcb3bc11c8ab3d5e57c746`, base default; OPEN/DRAFT/UNMERGED; mergeable=true.
+- PR #116 adds value-redacting persisted FCC profile auditor `scripts/cloud_pool/fcc_profile_guard.py` (blob `2329e02424f407df57a6b4848991063da4f143e6`) and 13 synthetic tests `scripts/cloud_pool/test_fcc_profile_guard.py` (blob `141961313ff89ba28c0abc17fb7563a46979aef2`); workflow blob `8ce4999b08a16310eb44c355d481291412b7b005`.
+- FCC source at pinned commit confirms `~/.fcc/.env` is managed config, `~/.fcc/auth/` stores OAuth/native auth state, and Settings can be overridden by process environment. The guard checks private HOME/profile/file permissions, no alternate/legacy config, no process-level credential/model override, no FCC auth state, no custom provider, exactly one API-key owner and one key, model/provider match, no tier overrides and no `MODEL_FALLBACKS`. It emits only safe metadata; no key values/hashes.
+- Synthetic profile tests **13/13 PASS**.
+- Exact-head Runner Qualification [44260105806](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806), job [134651081368](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806/job/134651081368): COMPLETED / SUCCESS on exact SHA; all 14 workflow steps succeeded, including existing child environment tests, install, FCC loopback readiness/clean shutdown, synthetic mock handoff and selected ECC install.
+- Exact-head Pool Contract Validation [44260105903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105903): COMPLETED / SUCCESS on same SHA.
+- Artifact [14407638100](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806/artifacts/14407638100): 27,378 bytes; digest `sha256:bfde13007c9db2385ddd57e7502736a5591d33a0f52197ff8be1647b57ab5dfa`; expires 2026-11-25T07:36:30Z.
+- Report: [persisted FCC profile guard](../reports/2026-11-18-next-fcc-persisted-profile-guard.md).
+- Qualification boundary: synthetic profiles only; no real user FCC profile/credentials read; no actual provider identity, free quota, model call or real Claude session. Guard does not establish host egress or credentials outside dedicated HOME. FCC AGPL-3.0-only remote exposure remains blocked.
+- Issue #115 remains OPEN pending real permitted free route/account/quota qualification.
+- PR #124 documentation branch remains OPEN/DRAFT/UNMERGED; head `068cf55e3bed7b4bada71d31f66cd85f021cc602`, base PR #120 head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; GitHub reports mergeable=false. Architecture docs CI [44257963362](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257963362) succeeded on its exact head. Do not merge until dirty mergeability state is resolved.
+- Active ruleset #26550182 has required PR/review-thread resolution but zero required approving reviews and zero required status checks; enforcement active, no bypass actors. Governance remains insufficient.
+- No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: independent review of profile guard plus launcher-level proof that each worker gets dedicated HOME and no external credential stores; only then proceed to permitted free-route/account/quota qualification.
