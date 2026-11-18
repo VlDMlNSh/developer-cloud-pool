@@ -294,3 +294,16 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: no-secret capability probe of the actual approved ephemeral runner (kernel/user namespaces/cgroup v2/Docker/`/dev/kvm`), then evaluate gVisor first and nsjail second; keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — hosted runner sandbox capability probe instrumentation — 2026-11-18
+- PR #116 current head: \`aea59ae536358a827f05c2262647601ec53c8b33\`, branch \`feat/claude-code-fcc-runner-qualification-2026-11-17\`, base/default \`35208f0ef28f0ac031a7acdf35fc90ccc9b16845\`; OPEN/DRAFT/UNMERGED.
+- Previous exact-head Runner Qualification [44263708443](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443), job [134662967919](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443/job/134662967919), succeeded on previous head \`a95700c...\`. Its logs prove ubuntu-24.04 image \`20261111.127.1\`, Ubuntu 24.04.5 LTS, hosted compute AWS us-west-2, runner v2.338.2. They do not prove sandbox capabilities.
+- Added no-secret capability probe to \`.github/workflows/claude-code-fcc-runner-qualification.yml\`; final workflow blob \`d281af95da5b2f775c5e8f5dce5eff0420c7044d\`. It records kernel/userns/seccomp/cgroup v2, Docker daemon/security options, /dev/kvm, runsc/nsjail/bwrap presence, and bounded user/mount/PID/network namespace probes. No installation, provider calls, secret reads or dispatch.
+- Current-head workflow query returned no associated runs at report time: new probe NOT RUN / NOT VERIFIED. Previous CI is not evidence for changed workflow.
+- Report: [2026-11-18 hosted runner sandbox capability probe](../reports/2026-11-18-next-hosted-runner-sandbox-capability-probe.md).
+- gVisor remains first evaluation candidate, nsjail second, bubblewrap supplemental, Firecracker deferred pending KVM. No runtime selected or installed.
+- Issue #118 persistent workspace remains BLOCKED. Independent A3 review and default-branch governance remain NOT VERIFIED. No Gemini dispatch, provider calls, secrets read, merge or deployment.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain exact-head workflow result for \`aea59ae...\`, inspect capability artifact, then decide whether gVisor is feasible on this runner.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
