@@ -84,6 +84,25 @@ class TaskHomeTests(unittest.TestCase):
             destroy_task_home(forged, self.root)
         destroy_task_home(task, self.root)
 
+    def test_rejects_symlinked_root_and_task_home_without_following(self):
+        real_root = self.root / "real-root"
+        real_root.mkdir(mode=0o700)
+        os.chmod(real_root, 0o700)
+        root_link = self.root / "root-link"
+        root_link.symlink_to(real_root, target_is_directory=True)
+        with self.assertRaisesRegex(TaskHomeError, "symlink"):
+            create_task_home(root_link, "root-link")
+
+        task = create_task_home(self.root, "symlinked")
+        alias = self.root / "pool-task-symlinked-alias"
+        alias.symlink_to(task.path, target_is_directory=True)
+        forged = type(task)(task.task_id, alias, task.environment)
+        with self.assertRaisesRegex(TaskHomeError, "symlink"):
+            destroy_task_home(forged, self.root)
+        self.assertTrue(task.path.is_dir())
+        alias.unlink()
+        destroy_task_home(task, self.root)
+
     def test_refuses_insecure_root(self):
         os.chmod(self.root, 0o777)
         with self.assertRaises(TaskHomeError):
