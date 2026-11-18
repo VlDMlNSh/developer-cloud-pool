@@ -337,7 +337,7 @@ jobs:
           export XDG_CONFIG_HOME="$runtime_home/.config"
           export XDG_DATA_HOME="$runtime_home/.local/share"
           export XDG_CACHE_HOME="$runtime_home/.cache"
-          export PATH="/usr/bin:/bin"
+          export PATH="/usr/bin"
           cd "$RUNNER_TEMP/fcc-src"
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
           server_pid=$!
