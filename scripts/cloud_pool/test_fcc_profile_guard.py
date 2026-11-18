@@ -60,7 +60,7 @@ class FccProfileGuardTests(unittest.TestCase):
             "OPENAI_API_KEY": "synthetic-openai",
             "MODEL": "groq/test-model",
         })
-        with self.assertRaisesRegex(ProfilePolicyError, "exactly one API-key provider"):
+        with self.assertRaisesRegex(ProfilePolicyError, "exactly one API-key credential owner"):
             self.audit()
 
     def test_rejects_model_provider_mismatch(self):
