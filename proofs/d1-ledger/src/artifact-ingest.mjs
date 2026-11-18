@@ -11,7 +11,7 @@ function hex(bytes) {
 
 function digestingBody(body, { maxBytes, declaredSize }) {
   const digest = new crypto.DigestStream("SHA-256");
-  const writer = digest.writable.getWriter();
+  const writer = digest.getWriter();
   let byteLength = 0;
   let completed = false;
   const stream = body.pipeThrough(new TransformStream({
@@ -53,7 +53,7 @@ async function digestStoredObject(object, maxBytes) {
       controller.enqueue(chunk);
     }
   }));
-  await counted.pipeTo(digest.writable);
+  await counted.pipeTo(digest);
   return { sha256: hex(await digest.digest), byteLength };
 }
 
