@@ -40,7 +40,17 @@ The namespace probe was corrected so expected permission denial is captured as a
 
 ## CI disposition
 
-The new commit `aea59ae...` was re-read as PR #116's current head. A later exact-head query discovered Runner Qualification run [44264823103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103), job [134666618686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103/job/134666618686), currently **IN_PROGRESS**. Pool Contract Validation run [44264822929](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264822929) is **COMPLETED / SUCCESS**. The capability probe itself has not yet been observed completing; its artifact and results remain **NOT VERIFIED**. Do not infer a pass from the running job.
+The new commit `aea59ae...` was re-read as PR #116's current head. A later exact-head query discovered Runner Qualification run [44264823103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103), job [134666618686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103/job/134666618686), **COMPLETED / SUCCESS**. Pool Contract Validation run [44264822929](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264822929) is also **COMPLETED / SUCCESS**. Job logs expose the capability probe output; artifact [14409921197](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103/artifacts/14409921197) was uploaded (28,019 bytes; SHA-256 ZIP digest `c158ce33dcb612bafba409ef7cf829a8028bd84264806436a5488c0949a800c3`).
+
+## Observed capability results (exact head `aea59ae...`)
+
+- Kernel: `7.0.0-1014-aws`; runner: Linux x86_64; effective UID 1001.
+- User namespaces sysctl: enabled (`userns_clone=1`, `max_user_namespaces=55514`), but actual unprivileged user, mount, PID and network namespace probes all exited `1` (denied). Sysctl enablement does not override the outer sandbox policy.
+- cgroup v2: present; controllers reported: cpuset, cpu, io, memory, hugetlb, pids, rdma, misc, dmem.
+- Docker client and daemon: both `28.0.4`; daemon reports AppArmor, builtin seccomp and cgroup namespace security options.
+- `/dev/kvm` exists but is neither readable nor writable. Firecracker is therefore not feasible in this runner context.
+- `runsc`, `nsjail`, and `bwrap` are not preinstalled.
+- Seccomp status `0` and `NoNewPrivs=0` describe the current probe process; they are not evidence that task execution is safely confined.
 
 ## Reuse-first decision remains
 
@@ -64,8 +74,8 @@ No runtime selected, installed or integrated.
 ## Status and next step
 
 - Capability-probe instrumentation: **IMPLEMENTED**, workflow file reread and blob verified.
-- New-head Pool Contract Validation: **SUCCESS**; Runner Qualification: **RUNNING** (run 44264823103); capability artifact/results: **NOT VERIFIED**.
-- Actual sandbox capabilities: **NOT VERIFIED**.
+- New-head Pool Contract Validation and Runner Qualification: **SUCCESS** (runs 44264822929 and 44264823103); capability probe output observed in job logs; artifact uploaded.
+- Runner capability inventory: **VERIFIED**; actual task isolation/runtime security: **NOT VERIFIED**.
 - PR #116: **OPEN / DRAFT / UNMERGED**.
 - Contour A: **BLOCKED / NOT ACCEPTED**.
 - Contour B: **DEFERRED**.
