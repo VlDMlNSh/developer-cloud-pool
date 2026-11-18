@@ -100,3 +100,17 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [2026-11-18 GitHub Actions context adapter proof](../reports/2026-11-18-next-github-actions-context-adapter.md).
 - Next: obtain independent A3 security/contract review of PR #125 and stacked PR #114. Keep dispatch disabled until live provenance, hosted transactional state, lease/recovery, worker identity, routes/quotas and governance are separately qualified.
+
+ 
+## /next — workflow-attempt replay regression test — 2026-11-18
+
+- Extended PR #125 with an adversarial D1 test for one source comment replayed under the same GITHUB_RUN_ID and incremented GITHUB_RUN_ATTEMPT.
+- Test proves replay returns the original admission and leaves one receipt, one task, one task-approval and one outbox row; the stored receipt retains the original attempt number.
+- Updated PR #125 exact head: edfeaef277fe709a9acc37d99b7bd3cda3003774; base PR #114 ab9461eb84b14fe230918391d5212f19ca25592c; compare 18 ahead / 0 behind; OPEN/DRAFT/UNMERGED; mergeable=true; formal reviews 0.
+- Exact-head PR workflow [44253572758](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758), job [134629803561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758/job/134629803561): COMPLETED / SUCCESS; job log proves checkout and git log -1 on edfeaef277fe709a9acc37d99b7bd3cda3003774.
+- Workers-runtime tests: **21/21 PASS** across 2 files (12 original D1 transaction tests + 9 GitHub Actions context tests). Exact-head push validation [44253567272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253567272): SUCCESS on the same SHA.
+- Official GitHub docs confirm issue_comment uses the last commit on the default branch for GITHUB_SHA / default branch for GITHUB_REF, and requires the workflow file to exist on default branch. Default Основной HEAD remains 35208f0ef28f0ac031a7acdf35fc90ccc9b16845; production controller workflow is still absent. Sources: [event semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows), [default variables](https://docs.github.com/en/actions/reference/workflows-and-actions/variables).
+- PR #125 formal reviews 0; ruleset #26550182 has 0 required approvals and 0 required status checks. Independent A3 review remains NOT COMPLETE.
+- Gemini controller workflow absent on default; four Gemini assignments NOT RUN. No secret reads, provider calls, live webhook, hosted D1, dispatch, deployment or merge.
+- Report updated: [2026-11-18 GitHub Actions context adapter proof](../reports/2026-11-18-next-github-actions-context-adapter.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
