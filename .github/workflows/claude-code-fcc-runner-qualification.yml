@@ -10,6 +10,8 @@ on:
       - "scripts/cloud_pool/test_exec_allowlist.py"
       - "scripts/cloud_pool/fcc_profile_guard.py"
       - "scripts/cloud_pool/test_fcc_profile_guard.py"
+      - "scripts/cloud_pool/task_home.py"
+      - "scripts/cloud_pool/test_task_home.py"
   workflow_dispatch:
 
 permissions:
@@ -39,6 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/cloud_pool/test_exec_allowlist.py
+          python3 scripts/cloud_pool/test_task_home.py
 
       - name: Create evidence directory and record runner baseline
         shell: bash
