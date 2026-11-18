@@ -3171,3 +3171,37 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: design/implement a separate trusted proxy-env contract (loopback URL only, token from FCC managed config, no token in argv/log/artifact, ambient secret scrub), or rename current CI to sanitization-only and keep proxy handoff NOT VERIFIED. Never add ambient Anthropic variables to generic allowlist.
 - Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` remains 404 on default branch; Gemini NOT RUN. PR #126/#120 OPEN/DRAFT/UNMERGED; Issue #115/#118 OPEN. No secrets read, provider calls, real Claude task, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, FCC bridge evidence preservation
+
+**Latest report:** [2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md)
+
+## Current refs
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116: OPEN / DRAFT / UNMERGED; branch `feat/claude-code-fcc-runner-qualification-2026-11-17`; latest HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #126: OPEN / DRAFT / UNMERGED; HEAD `f69f286b5b5a3de8dfdd80ed581859851ce271e5`.
+- PR #120: OPEN / DRAFT / UNMERGED; HEAD `e93fb34a1f3430ca2db32fbf2e631903aac9570f`.
+- Issue #118 OPEN: authorized persistent host #3, Cloudflare Access/Tunnel and backup/restore remain unverified.
+- Active ruleset #26550182 applies to `refs/heads/Основной`; PR required, review-thread resolution required, zero required approvals, no bypass actors.
+
+## Latest P1 pass
+- Re-inspected Runner Qualification artifact #14418937574 from run #44285275416. ZIP SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446` matched GitHub's digest; archive has 34 entries. The two bridge diagnostic/result files were not present.
+- The upload step already targets the complete qualification directory. The missing evidence was generated only after the shutdown/listener-probe sequence; early step failure could occur before file creation. Exact failing predicate on old head remains NOT VERIFIED.
+- PR #116 commit `59514f6d1119ca113745f5da861a1195c66da2e5`; workflow blob `a218c738e640c43f003cd4f24a348ab4b4aa996e`. It pre-creates bridge evidence files, captures signal/wait/listener-probe statuses with errexit disabled, emits non-secret step outputs, and preserves fail-closed checks.
+- Exact-head Runner Qualification run [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) and Pool Contract Validation run [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574) were IN_PROGRESS when recorded; NOT VERIFIED pending completion.
+
+## Unchanged blockers and safety
+- Docker `--network none` proof is a capability test only; actual CODE task execution inside the container is not qualified.
+- Provider-specific allowlisted egress gateway NOT IMPLEMENTED; hosted runner egress is public by default.
+- Claude hosted-use entitlement/account authority and FCC AGPL-3.0-only network-exposure legal review NOT VERIFIED.
+- No live free provider route/account/quota, durable worker, hosted D1 admission/lease/recovery, Jarvis web UI, persistent workspace or backup/restore acceptance.
+- Gemini controller `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404 on default branch; Gemini NOT RUN. No bypass.
+- No secrets read, provider calls, real Claude task, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+## Next
+1. Read exact-head CI results and artifact for runs #44286461561 and #44286461574.
+2. Verify pre-created diagnostics exist even on a failed bridge step and determine the actual signal/wait/listener predicate from recorded values.
+3. Continue only with one bounded, evidence-backed P1 correction. Do not weaken gates or enable provider access.
