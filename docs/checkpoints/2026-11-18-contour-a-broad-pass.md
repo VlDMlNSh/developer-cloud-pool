@@ -144,3 +144,13 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Upstream research decision: use Anthropic defending-code-reference-harness gVisor + internal Docker network + allowlist proxy as the main security topology reference; assess Eclipse Enclave for later persistent workspace; use Docker Agent sandbox policy only as a secondary reference. No component imported or deployed.
 - Next bounded implementation: verify current PR #116 runner result/artifact, then qualify the actual synthetic CODE worker inside the restricted container, still with no provider credentials or provider egress.
 - No secrets, provider calls, live agent, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
+
+
+## Follow-up — PR #116 synthetic bridge test harness root cause and correction — 2026-11-18
+
+- Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) FAILED on `570d78b7d3f7972b7458de9e69f6117ae642896a`, job `134734780467`.
+- Signed Claude Code distribution verification, Docker no-egress primitive, FCC profile guard and FCC loopback lifecycle passed. Synthetic bridge failed because the workflow referenced `signal_status` without assigning it; under `set -u`, the diagnostic command aborted. This is a harness bug, not a demonstrated FCC runtime defect.
+- Corrective commit `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`. Captures SIGINT exit status and wait status with errexit disabled, then restores strict assertions. Read-back PASS.
+- Exact-head CI query returned no runs at cutoff; requalification NOT VERIFIED. PR #116 remains OPEN/DRAFT/UNMERGED.
+- Next: inspect exact-head CI and artifact integrity on corrective commit before beginning actual synthetic CODE-in-container work.
+- No secrets, provider calls, real Claude session, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
