@@ -542,6 +542,7 @@ jobs:
             "fcc_bridge_process_alive_after_wait=$(kill -0 "$server_pid" 2>/dev/null && echo true || echo false)" \
             "fcc_bridge_listener_after_signal=${remaining_listener:-absent}" \
             > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          cat "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
           if [ "$signal_status" -ne 0 ]; then
             echo "::error::FCC bridge SIGINT delivery returned exit=$signal_status."
             ps -o pid,ppid,state,cmd -p "$server_pid" || true
