@@ -354,3 +354,20 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Updated report commit `741fd75e067aad3737a3b664ee37fc562a0f44f2`, blob `fe1419f38edafa1902d13b709221a5f1b35ebaf6`; Context Window commit `a227ca7024ba0ecc95c7ddab5541770402d34c42`, blob `a5cda2e854212e92c49a86920a11ae22fc7d0152`.
 - No source/runtime tests executed; no code changed. PR #40/#130, production D1, secrets, dispatch and deployment untouched. Exact-head CI NOT VERIFIED; race test NOT VERIFIED; independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile branch ancestry, verify D1 SQL/runtime support, implement unique acquisition-attempt fencing with deterministic race tests on a fresh isolated proof branch, then exact-head CI and independent review.
+
+
+---
+
+## Follow-up — lease acquisition-attempt fencing — 2026-11-18
+
+- New isolated branch `proof/d1-lease-attempt-fencing-2026-11-18`, parent `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`, exact source HEAD `2cefe8d62b99012ff23d45f33e3251996747fb7b`.
+- Added per-acquisition UUID to the successful conditional lease UPDATE and selected readback by this attempt ID. Added migration 0004, safe expiry arithmetic and safe generation upper bound.
+- Added deterministic Workers-runtime test that injects same-worker reclaim between the first update and readback; first attempt must fail closed and later attempt owns the persisted ID. Added expiry and generation overflow tests.
+- Exact-head push workflow run `44307008802` COMPLETED/SUCCESS. Job `134811053620` SUCCESS: npm ci, syntax check and Workers-runtime D1 tests all passed. Artifact `14429260200`, SHA-256 `d73de3e274d3c49f5251c7cb0e6d54f983bdbbd1f58d60595ae1b43d6d0db77c`.
+- PR #131 OPEN / DRAFT / UNMERGED, based on the parent proof branch. No production/default-branch merge.
+- Cloudflare D1 SQL documentation does not explicitly qualify `UPDATE ... RETURNING` for this runtime combination; implementation avoids that assumption.
+- Independent review NOT RUN; result/outbox generation fencing and effect idempotency NOT VERIFIED; crash recovery and production execution NOT VERIFIED. Dispatch remains false. No secrets, hosted D1, provider calls or deployment.
+- Report: [D1 lease acquisition-attempt fencing](../reports/2026-11-18-d1-lease-acquisition-attempt-fencing.md).
+- Next: independent review; implement and test transactional fencing of durable result/outbox mutations by current lease generation and stable effect identity.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
