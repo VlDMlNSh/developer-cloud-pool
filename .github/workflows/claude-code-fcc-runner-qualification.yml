@@ -196,7 +196,7 @@ jobs:
         run: |
           set -euo pipefail
           "$UV_PROJECT_ENVIRONMENT/bin/python" scripts/cloud_pool/test_fcc_profile_guard.py 2>&1 | tee "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
-          grep -Eq "^Ran 13 tests in " "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+          grep -Eq "^Ran 15 tests in " "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
           grep -Fxq "OK" "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
 
       - name: Start FCC on loopback and verify local readiness and shutdown
