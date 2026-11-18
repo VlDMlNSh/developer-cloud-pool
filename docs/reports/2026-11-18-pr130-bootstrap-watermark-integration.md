@@ -63,3 +63,19 @@ Obtain exact-head CI for PR #130 and inspect the merged workflow context. If the
 Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Follow-up — integrated exact-head CI now verified
+
+The initial workflow lookup returned no runs while the PR event was still propagating. A subsequent lookup found and verified the PR workflow:
+
+- Run [44299536170](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170): COMPLETED / SUCCESS.
+- Job `134785358773`: all required steps completed successfully.
+- Workflow log confirms checkout of `refs/remotes/pull/130/merge`, merge commit `3272389`, combining exact PR #130 HEAD `6175eed8812fe52aad929523caab6b942cd01dd7` into base PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`.
+- Node `v24.9.0`; `npm ci` and `npm run check` passed.
+- Workers-runtime D1 suite: 11/11 files, 120/120 tests PASS.
+- Second D1 binding smoke: 1/1 PASS.
+- Frozen schema-0010 fixture smoke: 2/2 PASS; golden SHA-256 `afbf1445c6d2fa0b51cdbd0da932d158aa2850832ca8297f83b103c00d8b2187`.
+- Artifact [14424184685](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170/artifacts/14424184685), 18,253 bytes, SHA-256 `ce05f89261c7120a95761c5a7068966a752d9d4ac60876d362886cd85d66819f`.
+
+Therefore PR #130 is exact-head CI VERIFIED in the GitHub PR merge context. It remains OPEN / DRAFT / UNMERGED with no formal review or inline threads. This is still a local Workers-runtime proof, not hosted D1 or production acceptance.
