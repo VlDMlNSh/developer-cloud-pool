@@ -157,3 +157,20 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Owner scope correction in Issue #94 supersedes the earlier per-/next four-Gemini requirement: Gemini is supplementary/optional, not a mandatory first-release or per-/next gate. Its Cloud Pool controller is still absent and no Gemini agents were dispatched.
 - No secret values read, provider calls, production dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: define and verify an FCC single-account profile configuration boundary without retrieving or logging credential values, then separately qualify a permitted free provider route and quota identity. Do not expose FCC remotely before resolving AGPL obligations.
+
+
+## /next — persisted FCC single-credential profile guard — 2026-11-18
+
+- PR #116 exact code head: `6620a1557f14d26756dcb3bc11c8ab3d5e57c746`; base/default `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED; mergeable=true.
+- Upstream FCC pinned source review identified persisted managed settings at `~/.fcc/.env`, OAuth/native state under `~/.fcc/auth/`, process override precedence, and alternate/legacy env sources. This confirms child env allowlisting alone was not enough.
+- Added `scripts/cloud_pool/fcc_profile_guard.py`, blob `2329e02424f407df57a6b4848991063da4f143e6`, and `scripts/cloud_pool/test_fcc_profile_guard.py`, blob `141961313ff89ba28c0abc17fb7563a46979aef2`; workflow integration blob `8ce4999b08a16310eb44c355d481291412b7b005`.
+- Guard checks private worker HOME/profile/file modes, no symlink/alternate/legacy config, no process-level credential/model overrides, no FCC auth/OAuth state, no custom provider, exactly one API-key provider owner and one key, model/provider match, no tier overrides and no `MODEL_FALLBACKS`. Values are parsed in memory by pinned FCC Settings; no credential value or hash is emitted.
+- Synthetic tests: **13/13 PASS**.
+- Runner Qualification [44260105806](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806), job [134651081368](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806/job/134651081368): SUCCESS on exact head; all 14 steps passed, including profile guard, child env allowlist, FCC loopback lifecycle and synthetic mock handoff.
+- Pool Contract Validation [44260105903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105903): SUCCESS on same head.
+- Artifact [14407638100](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44260105806/artifacts/14407638100): 27,378 bytes; ZIP digest `sha256:bfde13007c9db2385ddd57e7502736a5591d33a0f52197ff8be1647b57ab5dfa`; retention through 2026-11-25T07:36:30Z.
+- Prior run at `8a918b77306839cc58c581bad24d36fabcaa6300` had 12/13 pass due one expected-message mismatch; assertion corrected, full workflow rerun successfully on final head.
+- Report: [2026-11-18 persisted FCC profile guard](../reports/2026-11-18-next-fcc-persisted-profile-guard.md).
+- Limits: synthetic fixtures only; no real user profile/credential, provider route/account identity/quota or model session was inspected. Guard covers FCC API-key catalog and FCC auth directory, not host-level egress or cloud SDK credentials outside isolated worker HOME. FCC AGPL-3.0-only remote exposure remains blocked pending review.
+- No provider calls, secret reads, production dispatch, deployment or merge. Issue #115 OPEN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review and launcher-level proof of dedicated HOME/no external credential stores before any permitted free-route qualification.
