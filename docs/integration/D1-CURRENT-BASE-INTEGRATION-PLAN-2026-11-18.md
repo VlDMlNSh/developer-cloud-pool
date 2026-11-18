@@ -30,6 +30,14 @@ Before schema changes, trace every producer, consumer, validator, SQL constraint
 
 If the current production contract has no executor identity field, introduce it additively with explicit validation and immutable task/attempt binding. The first permitted value for the Claude Code stack is `claude-code-1`; future families follow the owner-confirmed convention. Do not assume that a profile name is an executor ID.
 
+## Current default-branch inventory (verified 2026-11-18)
+
+The recursive Git tree for default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8` contains 64 entries. It has no `proofs/d1-ledger/`, no D1 migration directory, no application `wrangler.toml/jsonc` D1 binding, and no executable D1 adapter in the default tree. The current tree contains documentation describing D1 admission as design/isolated proof, plus `scripts/pool-supervisor.mjs` and GitHub Actions workflows.
+
+The current Supervisor's durable coordination path is GitHub Issue state/labels and workflow runs; its source has an explicit `POOL_DISPATCH_ENABLED !== "true"` heartbeat-only guard. The pool task issue template currently exposes only the DSH headless probe profile. The Supervisor's task path is not yet connected to D1.
+
+Consequently, this branch must not be described as integrating an existing production D1 schema. The first engineering deliverable is a separately isolated, local-only D1 proof and a clearly defined adapter boundary to the current GitHub-based Supervisor. Any future production schema/wiring requires a separate review and authorization.
+
 ## Evidence and known integration blockers
 
 - PR #67 contains the earlier isolated D1 proof migration series (0001–0010).
