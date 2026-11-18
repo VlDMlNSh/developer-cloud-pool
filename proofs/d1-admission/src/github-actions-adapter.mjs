@@ -37,7 +37,9 @@ export function bindGitHubActionsContext(event, environment, { approvalId, profi
   const env = environment ?? {};
   const repository = event?.repository;
 
-  if (env.GITHUB_ACTIONS !== "true" || env.GITHUB_SERVER_URL !== "https://github.com") {
+  if (env.GITHUB_ACTIONS !== "true" ||
+      env.GITHUB_SERVER_URL !== "https://github.com" ||
+      env.RUNNER_ENVIRONMENT !== "github-hosted") {
     return deny("NOT_GITHUB_HOSTED_ACTIONS_CONTEXT");
   }
   if (env.GITHUB_EVENT_NAME !== "issue_comment" || event?.action !== "created") {
