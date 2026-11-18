@@ -97,3 +97,18 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - No secret values read, provider calls, real Claude session, Gemini/production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: obtain exact-head Runner Qualification and Pool Contract Validation for `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; inspect all steps/artifact before starting actual CODE-in-container work.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## Follow-up — FCC PATH canonicalization and exact-head CI — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- PR #116 current observed head: `a07cc438237e5c9d5f276e2f42ea9774ee333a56`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Runner Qualification [44283688950](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44283688950) failed at FCC startup because `/usr/bin:/bin` resolves to duplicate canonical PATH directories. This is a correctly enforced policy, not a reason to relax validation.
+- Commit `4f2b9581b75dab5424a4dbda8f78b6430007783e` normalized the remaining synthetic-bridge PATH to `/usr/bin`; workflow blob `7ff0846e7957dba27210a04e29233f3af06be70f`; both FCC PATH assignments read back as `/usr/bin`.
+- Superseded Runner Qualification [44284080903](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284080903) was cancelled after a subsequent branch update; do not count it as a pass.
+- Current-head Pool Contract Validation [44284216029](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216029): COMPLETED/SUCCESS.
+- Current-head Runner Qualification [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030), job `134732714813`: IN_PROGRESS at cutoff. Checkout, child-environment tests, runner baseline and sandbox capability probe passed; later installation/FCC steps not yet verified. Live log endpoint returned 404 while the job was still running.
+- No secrets read, provider calls, real Claude session, Gemini or production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: verify run 44284216030 on immutable target `a07cc438237e5c9d5f276e2f42ea9774ee333a56`, including FCC loopback, synthetic bridge and artifact checksums. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
