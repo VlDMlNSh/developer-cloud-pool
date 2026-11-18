@@ -1,3 +1,15 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 current exact head
+
+- PR #116 advanced to `2e944f13818f434cf135602c1c0e82051f1d3fa8`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): IN_PROGRESS at last observation.
+- Exact-head Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): IN_PROGRESS at last observation; job 134741981861, signed Claude Code APT install step active. No final result/artifact yet.
+- Prior head `37d7b4de7b885d278a35d9311a38bc15fac961dc` runner run [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410) was CANCELLED after a subsequent push; its early environment and sandbox tests passed, later qualification steps were skipped. Do not treat as a failure or success.
+- Latest commit `2e944f13818f434cf135602c1c0e82051f1d3fa8` corrects `printf` newline escapes in failure-diagnostic capture. This improves artifact readability; it is not a qualification result.
+- Prior completed failure on SHA `59514f6d1119ca113745f5da861a1195c66da2e5`: Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) FAILURE; artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783), digest `sha256:cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267`. Text log reports step exit 1 but not diagnostic values; process signal interpretation remains to be verified.
+- No secrets/provider calls/real task/production dispatch/deployment/merge. Gemini NOT RUN. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify both exact-head runs for `2e944f1`; inspect bridge diagnostics and artifact before further code changes.
+
+---
 # CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 second exact-head recheck
 
 - PR #116 advanced again to `37d7b4de7b885d278a35d9311a38bc15fac961dc`; base remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
