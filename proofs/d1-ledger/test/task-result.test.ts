@@ -79,6 +79,46 @@ describe("fenced result/outbox transaction requires verified artifact capability
     });
   });
 
+  it("recovers when object storage succeeds but the first D1 commit is fenced out", async () => {
+    const key = await createTask();
+    const firstLease = await acquireTaskLease(env.POOL_DB, key, "recovery-worker", 60);
+    const artifact = await createVerifiedArtifact(key, "object survives D1 commit failure");
+
+    await env.POOL_DB.prepare("UPDATE pool_tasks SET lease_expires_at=? WHERE task_key=?")
+      .bind(Math.floor(Date.now() / 1000) - 1, key).run();
+    const rejected = await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
+      taskKey: key, workerId: firstLease.workerId, generation: firstLease.generation,
+      leaseAttemptId: firstLease.leaseAttemptId, artifact
+    });
+    expect(rejected).toMatchObject({
+      decision: "DENY", reason: "STALE_OR_EXPIRED_RESULT_WRITER", dispatch: false
+    });
+    const empty = await env.POOL_DB.prepare(
+      "SELECT (SELECT count(*) FROM pool_task_results WHERE task_key=?) AS results," +
+      "(SELECT count(*) FROM pool_task_result_outbox WHERE task_key=?) AS effects"
+    ).bind(key, key).first();
+    expect(empty).toMatchObject({ results: 0, effects: 0 });
+    expect(await env.ARTIFACTS.head(artifact.objectKey)).toMatchObject({
+      version: artifact.objectVersion, size: artifact.byteLength
+    });
+
+    const recoveredLease = await acquireTaskLease(env.POOL_DB, key, "recovery-worker", 60);
+    expect(recoveredLease.decision).toBe("LEASE_ACQUIRED");
+    expect(recoveredLease.generation).toBe(firstLease.generation + 1);
+    const recovered = await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
+      taskKey: key, workerId: recoveredLease.workerId, generation: recoveredLease.generation,
+      leaseAttemptId: recoveredLease.leaseAttemptId, artifact
+    });
+    expect(recovered).toMatchObject({
+      decision: "RESULT_COMMITTED", effectId: `pool-result:${key}`, dispatch: false
+    });
+    const counts = await env.POOL_DB.prepare(
+      "SELECT (SELECT count(*) FROM pool_task_results WHERE task_key=?) AS results," +
+      "(SELECT count(*) FROM pool_task_result_outbox WHERE task_key=?) AS effects"
+    ).bind(key, key).first();
+    expect(counts).toMatchObject({ results: 1, effects: 1 });
+  });
+
   it("is idempotent for the exact verified record and rejects substituted artifact identity", async () => {
     const key = await createTask();
     const lease = await acquireTaskLease(env.POOL_DB, key, "retry-worker", 60);
