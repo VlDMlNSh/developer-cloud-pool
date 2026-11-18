@@ -3077,3 +3077,18 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - No secret values read, provider calls, real Claude session, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: re-read run 44284216030 on immutable target `a07cc438237e5c9d5f276e2f42ea9774ee333a56`; inspect FCC loopback HTTP 200, exact listener, clean shutdown, synthetic handoff and artifact checksums. Only then proceed to actual CODE-in-container and provider egress qualification.
 - Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Latest execution — FCC loopback success and synthetic bridge shutdown diagnostic — 2026-11-18
+
+- Latest report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md); latest checkpoint: [2026-11-18 Contour A broad pass](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no mainline changes.
+- PR #116 remains OPEN/DRAFT/UNMERGED; latest observed head `52339ee70e00b9905710d411404b55778f68c70a`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- On prior exact head `a07cc438237e5c9d5f276e2f42ea9774ee333a56`, Runner Qualification [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030) FAILED. FCC loopback lifecycle passed after canonical PATH was normalized to `/usr/bin`. Signed Claude package/manifest/binary checks, Docker no-egress primitive and FCC 15 synthetic profile tests passed.
+- Synthetic FCC-to-mock-CLI handoff returned expected exit 37; marker and argument files were created; argument comparison and synthetic-value log checks passed. Failure occurred in bridge shutdown assertions. Process-liveness check did not print its explicit error, leaving nonzero shutdown status vs lingering listener as the unresolved distinction.
+- Artifact [14418332371](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030/artifacts/14418332371), 31,250 bytes, GitHub digest `sha256:951c8017003f59e4d0125ae17c0c79cb9fed1498cc4e5e01edbc6349698194e0`; contents not independently inspected.
+- Diagnostic-only workflow commit `52339ee70e00b9905710d411404b55778f68c70a`; workflow blob `5b18bdbe59ca52022a74b072fdd5674e0b11b497`. New diagnostics record shutdown exit status, process liveness and listener state and emit logs on failure; no security rule was weakened.
+- Exact-head Runner Qualification [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) and Pool Contract Validation [44284614733](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614733) were IN_PROGRESS at last check; exact-head CI remains NOT VERIFIED.
+- PR #126 and PR #120 remain OPEN/DRAFT/UNMERGED. Issue #118 remains OPEN; no authorized workspace host #3, Cloudflare Access/Tunnel or backup/restore proof.
+- No secrets read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: inspect exact-head run 44284614737 diagnostics and determine shutdown exit status vs lingering listener. Then perform only evidence-based correction. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
