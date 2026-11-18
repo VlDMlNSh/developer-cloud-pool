@@ -1,3 +1,25 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, local R2 artifact-ingest proof
+
+**Latest report:** [Issue #133 local R2 artifact-ingest proof](../reports/2026-11-18-issue133-local-r2-artifact-ingest-proof.md)  
+**Latest checkpoint:** [Issue #133 local R2 artifact-ingest checkpoint](../checkpoints/2026-11-18-issue133-local-r2-artifact-ingest-checkpoint.md)
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-verified; unchanged).
+- PR #132: OPEN / DRAFT / UNMERGED, head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- Issue #133: OPEN / PLANNED.
+- PR #134: OPEN / DRAFT / UNMERGED, stacked on PR #132; branch `proof/trusted-artifact-ingest-r2-local-2026-11-18`; head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #134 exact-head CI run [44327671549](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44327671549) COMPLETED / SUCCESS; job `134883244667` SUCCESS; 13 tests passed across 2 files; dependency install, syntax check and lockfile artifact upload all succeeded.
+- Local proof: bounded stream hashing with Workers `crypto.DigestStream`, `FixedLengthStream` (required for known-length R2 streams), conditional create and readback/re-hash reconciliation. Worker-supplied digest ignored. Adversarial tests include length mismatch, overflow, stream failure, retry, concurrent same-key create, substitution and overwrite detection.
+- PR #134 source blobs: adapter `caafccdeffe2ecdb445bbb2320f10478bde4e92f`; tests `382010f711274a2f2d913cfd598ee69cb27b6d5f`; Wrangler `e097256e7615f8035676a90dd501ac8c09177fa5`; package `39c802eae3a824dae0d977ec8d279714e58d64ca`.
+- Issue #133 update comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6981931281
+- Explicit NOT VERIFIED: real Cloudflare R2 account/bucket behavior and IAM; trusted-ingress issuance of uploadId; verifier-issued artifact capability and D1 result/outbox gating; cross-store crash recovery/orphan cleanup; prevention of post-publication overwrite/delete by other authorized principals; independent security review.
+- No production bucket, hosted D1 write, provider call, secret read, deployment, production dispatch or merge.
+- Gemini NOT RUN: required controller workflow returned HTTP 404 on checked refs; no secrets/variables inspected.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: make `commitTaskResult` accept only an unforgeable verifier-issued artifact capability; derive digest, length, object key and version from that record; prove raw worker digest/reference cannot create result/outbox rows.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, Issue #133 artifact-ingest architecture discovery
 
 **Latest report:** [Issue #133 artifact-ingest architecture discovery](../reports/2026-11-18-issue133-artifact-ingest-architecture-discovery.md)  
