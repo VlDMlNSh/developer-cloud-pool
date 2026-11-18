@@ -83,6 +83,17 @@ describe("trusted R2 artifact ingest proof", () => {
     });
   });
 
+  it("serializes concurrent create attempts for one trusted upload identity", async () => {
+    const id = uploadId();
+    const [left, right] = await Promise.all([
+      ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["concurrent"]), declaredSize: 10 }),
+      ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["concurrent"]), declaredSize: 10 })
+    ]);
+    expect([left.decision, right.decision].sort()).toEqual(["ARTIFACT_ALREADY_STORED", "ARTIFACT_STORED"]);
+    expect(left.artifact.objectVersion).toBe(right.artifact.objectVersion);
+    expect(left.artifact.sha256).toBe(right.artifact.sha256);
+  });
+
   it("rejects a retry that substitutes bytes under the same upload identity", async () => {
     const id = uploadId();
     await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]), declaredSize: 8 });
