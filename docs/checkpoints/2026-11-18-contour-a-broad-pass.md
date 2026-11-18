@@ -263,3 +263,18 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Next: secure exact-head CI and independent review before revocation/admission race and durable single-use claim/fencing.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+## CI reconciliation — PR #130 exact-head verification — 2026-11-18
+
+- PR #130 exact-head merge-context CI [44299536170](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170): COMPLETED / SUCCESS; job 134785358773.
+- Log confirms checkout of PR #130 merge ref, merge commit `3272389`, combining head `6175eed8812fe52aad929523caab6b942cd01dd7` with base PR #129 `70265bbb21a8419312bc0cfe684d32184cffc497`.
+- Node 24.9.0, npm ci, syntax PASS; Workers-runtime D1 11/11 files, 120/120 tests PASS; second D1 binding smoke 1/1 PASS; frozen schema-0010 fixture 2/2 PASS.
+- Artifact 14424184685 SHA-256 `ce05f89261c7120a95761c5a7068966a752d9d4ac60876d362886cd85d66819f`.
+- PR #130 exact-head CI VERIFIED in merge context; still OPEN/DRAFT/UNMERGED, formal reviews 0, inline threads 0. No merge to default.
+- Updated report: [PR #130 bootstrap watermark integration](../reports/2026-11-18-pr130-bootstrap-watermark-integration.md).
+- Next: independent review of combined #84 -> #86 -> #129 -> #130 ancestry and governance; then revocation/admission race and durable single-use claim/fencing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
