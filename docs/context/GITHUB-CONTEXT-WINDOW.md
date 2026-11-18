@@ -3392,3 +3392,21 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: retrieve exact tree/HEAD of historical proof branch, reconcile tests/migrations with README, then run exact-head D1 runtime CI and adversarial tests in a separate proof branch. Do not modify PR #130 admission stack.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, Issue #38 D1 lease exact-head reconciliation
+
+**Report:** [2026-11-18-issue38-d1-claim-lease-exact-head-reconciliation.md](../reports/2026-11-18-issue38-d1-claim-lease-exact-head-reconciliation.md)
+
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Proof branch `proof/task-identity-fencing-design-2026-11-08`: exact HEAD `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- Current lease source blob: `b41edf89cdf960b2c007f38ba16554dc179f021a`; README `a364fb31ff340970d15658f3cf4ee5502696d4ef`; package `cd7a705ce39860685c3ec60134dc8442fab738d8`; Vitest config `39bcf53a51180e7e5f309978e307e9964a2cc22e`.
+- Historical CI run [42489887940](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489887940) succeeded on PR #40 merge ref `23e06138ddee46934c8cb137d04dd1585d390ea6` (proof commit merged into `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`): syntax check and 27 consume/claim-outbox tests passed. It did not execute current task-lease tests and is not exact-head CI for current proof HEAD.
+- Current proof HEAD combined status has no entries; exact-head CI NOT VERIFIED. Exact test/migration tree not recovered; guessed file paths returned 404 and are not evidence.
+- Lease adapter source confirms conditional acquisition, bounded attempts and owner/generation/expiry fencing for renew/finalize; it accepts a precomputed task key and does not prove canonical identity derivation or output/outbox fencing.
+- PR #130 remains OPEN/DRAFT/UNMERGED, reviews 0, threads 0. PR #129/#128/#86/#84/#81/#77 remain OPEN/DRAFT/UNMERGED at metadata readback.
+- Ruleset and current dispatch variable NOT VERIFIED. Gemini NOT RUN. No secrets, hosted D1 writes, provider calls, dispatch, deployment, merge or Contour B work.
+- Next: recover exact proof tree and actual lease tests/migrations, then run exact-head CI with adversarial concurrency, stale-generation output/outbox and recovery tests. Keep dispatch disabled.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
