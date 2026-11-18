@@ -1,4 +1,4 @@
-import { isVerifiedArtifactRecord } from "./artifact-ingest.mjs";
+import { verifyStoredArtifact } from "./artifact-ingest.mjs";
 
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{12}$/;
@@ -7,17 +7,26 @@ const RESULT_REF = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
 
 function deny(reason) { return { decision: "DENY", dispatch: false, reason }; }
 
-/** Local-only result commit. Only an in-process verifier-issued artifact capability is accepted. */
-export async function commitTaskResult(db, input) {
+/** Local-only result commit. Re-hashes the stored object before publishing D1 result/outbox intent. */
+export async function commitTaskResult(db, bucket, input) {
   const now = Math.floor(Date.now() / 1000);
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
   if (!input || typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey) ||
       typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId) ||
       !Number.isSafeInteger(input.generation) || input.generation < 1 ||
       typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId) ||
-      !isVerifiedArtifactRecord(input.artifact)) return deny("INVALID_RESULT_COMMIT");
+      !input.artifact || typeof input.artifact !== "object") return deny("INVALID_RESULT_COMMIT");
 
-  const artifact = input.artifact;
+  if (!bucket || typeof bucket.head !== "function" || typeof bucket.get !== "function") {
+    return deny("STORAGE_UNAVAILABLE");
+  }
+  let artifact;
+  try {
+    artifact = await verifyStoredArtifact(bucket, input.artifact, input.taskKey);
+  } catch {
+    return deny("ARTIFACT_VERIFICATION_FAILED");
+  }
+  if (!artifact) return deny("UNVERIFIED_ARTIFACT");
   const resultDigest = artifact.sha256;
   const resultRef = artifact.resultRef;
   const artifactObjectKey = artifact.objectKey;
