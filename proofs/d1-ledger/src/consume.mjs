@@ -2,6 +2,7 @@ const ALLOWED_PROFILES = new Set(["dsh-headless-probe"]);
 const SHA40 = /^[a-f0-9]{40}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const NUMERIC_ID = /^[0-9]+$/;
+const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function validBinding(binding, now) {
   return Boolean(
@@ -19,6 +20,7 @@ function validBinding(binding, now) {
     SHA40.test(binding.targetSha) &&
     typeof binding.profile === "string" &&
     ALLOWED_PROFILES.has(binding.profile) &&
+    typeof binding.executorId === "string" && EXECUTOR_ID.test(binding.executorId) &&
     typeof binding.envelopeDigest === "string" &&
     SHA256.test(binding.envelopeDigest) &&
     Number.isSafeInteger(now) &&
@@ -57,6 +59,7 @@ export async function consumeApproval(db, binding, now) {
          AND issue_number = ?
          AND target_sha = ?
          AND profile = ?
+         AND executor_id = ?
          AND envelope_digest = ?
          AND state = 'ready'
          AND consumed_at IS NULL
@@ -69,6 +72,7 @@ export async function consumeApproval(db, binding, now) {
       binding.issueNumber,
       binding.targetSha,
       binding.profile,
+      binding.executorId,
       binding.envelopeDigest,
       now
     ).run();
