@@ -1,3 +1,14 @@
+# Follow-up — 2026-11-18, PR #116 head advanced to 37d7b4d
+
+- PR #116 current head: `37d7b4de7b885d278a35d9311a38bc15fac961dc`, OPEN/DRAFT/UNMERGED.
+- Exact-head contract validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): SUCCESS.
+- Exact-head runner qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS at last observation, job 134741199311.
+- Superseded head `59514f6d1119ca113745f5da861a1195c66da2e5` run [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561) failed. Artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783), digest `sha256:cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267`.
+- The failing step is synthetic wrapper-to-mock CLI handoff/shutdown. Job text log records process exit code 1 but does not expose runtime values from the diagnostics file. `exec_allowlist.py` calls `os.execvpe`, replacing its wrapper process; test assertions must distinguish expected signal-derived exit status from a still-running process or a listener leak. Root cause remains provisional pending artifact diagnostic inspection.
+- Latest commit aligns mock expectations with strict allowlist: no ambient provider credential variables or proxy overrides are forwarded.
+- No secrets/provider calls/real Claude session/task/production dispatch/deployment/merge. Gemini NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
 # /next — PR #116 exact-head reconciliation — 2026-11-18
 
 ## Immutable target and repository state
