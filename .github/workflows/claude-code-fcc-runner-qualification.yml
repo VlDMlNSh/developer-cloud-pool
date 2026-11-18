@@ -376,8 +376,9 @@ jobs:
             exit 1
           fi
 
-          kill -INT "$server_pid"
           set +e
+          kill -INT "$server_pid"
+          signal_status=$?
           wait "$server_pid"
           shutdown_status=$?
           set -e
@@ -536,10 +537,17 @@ jobs:
           set -e
           remaining_listener="$(ss -H -ltn "sport = :$port")"
           printf '%s\\n' \
+            "fcc_bridge_signal_exit_status=$signal_status" \
             "fcc_bridge_shutdown_exit_status=$shutdown_status" \
             "fcc_bridge_process_alive_after_wait=$(kill -0 "$server_pid" 2>/dev/null && echo true || echo false)" \
             "fcc_bridge_listener_after_signal=${remaining_listener:-absent}" \
             > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          if [ "$signal_status" -ne 0 ]; then
+            echo "::error::FCC bridge SIGINT delivery returned exit=$signal_status."
+            ps -o pid,ppid,state,cmd -p "$server_pid" || true
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
           if [ "$shutdown_status" -ne 0 ]; then
             echo "::error::FCC bridge shutdown returned exit=$shutdown_status."
             cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
