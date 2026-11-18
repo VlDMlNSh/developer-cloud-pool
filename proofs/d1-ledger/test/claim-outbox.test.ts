@@ -12,6 +12,7 @@ const approval = {
   issueNumber: 42,
   targetSha: "a".repeat(40),
   profile: "dsh-headless-probe",
+  executorId: "claude-code-1",
   envelopeDigest: "b".repeat(64)
 };
 
@@ -20,11 +21,11 @@ async function seed(overrides = {}) {
   await env.POOL_DB.prepare(`
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number,
-      target_sha, profile, envelope_digest, expires_at, state, consumed_at
+      target_sha, profile, executor_id, envelope_digest, expires_at, state, consumed_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     row.approvalId, row.ownerNumericId, row.repositoryId, row.issueNumber,
-    row.targetSha, row.profile, row.envelopeDigest, row.expiresAt, row.state, row.consumedAt
+    row.targetSha, row.profile, row.executorId, row.envelopeDigest, row.expiresAt, row.state, row.consumedAt
   ).run();
 }
 
@@ -257,17 +258,17 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
     await seed(item);
     const canonical = JSON.stringify([
       "pool-task-v1", item.repositoryId, item.issueNumber,
-      item.targetSha, item.profile, 1
+      item.targetSha, item.profile, item.executorId, 1
     ]);
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
     const taskKey = [...new Uint8Array(digest)].map((v) => v.toString(16).padStart(2, "0")).join("");
 
     await env.POOL_DB.prepare(`
       INSERT INTO pool_tasks (
-        task_key, repository_id, issue_number, target_sha, profile,
+        task_key, repository_id, issue_number, target_sha, profile, executor_id,
         state, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, 'pending', ?, ?)
-    `).bind(taskKey, "999999", item.issueNumber, item.targetSha, item.profile, NOW, NOW).run();
+      ) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?)
+    `).bind(taskKey, "999999", item.issueNumber, item.targetSha, item.profile, item.executorId, NOW, NOW).run();
 
     const result = await claimLogicalTask(env.POOL_DB, item, NOW);
     expect(result).toMatchObject({ decision: "DENY", reason: "TASK_KEY_BINDING_CONFLICT" });
@@ -316,7 +317,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
 
   async function createAttempt(taskKey, attemptNumber = 1, attemptId = `attempt-${attemptNumber}`) {
     const result = await createTaskAttempt(env.POOL_DB, {
-      taskKey, attemptId, attemptNumber, inputDigest: "d".repeat(64),
+      taskKey, executorId: approval.executorId, attemptId, attemptNumber, inputDigest: "d".repeat(64),
       executionIdempotencyKey: `exec-${attemptId}`, now: NOW + attemptNumber
     });
     if (!["ATTEMPT_CREATED", "ATTEMPT_ALREADY_CREATED"].includes(result.decision)) {
@@ -603,6 +604,7 @@ describe("attempt transition integrity guard", () => {
 
     const created = await createTaskAttempt(env.POOL_DB, {
       taskKey: claimed.taskKey,
+      executorId: approval.executorId,
       attemptId: "attempt-running-guard",
       attemptNumber: 1,
       inputDigest: "d".repeat(64),
