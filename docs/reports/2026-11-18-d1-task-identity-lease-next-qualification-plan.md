@@ -104,3 +104,36 @@ A lease is a time-bounded coordination primitive, not exactly-once execution and
 - Contour B: DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Follow-up engineering investigation — same-worker lease readback race — 2026-11-18
+
+### Immutable source and scope
+- Inspected proof source at `proof/task-identity-fencing-design-2026-11-08` / `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; no source/runtime files changed.
+- Read back `src/task-lease.mjs` blob `b41edf89cdf960b2c007f38ba16554dc179f021a`, migration `0003` blob `49b0798871429d7961e81eb1d86ad892dba0b9b9`, test blob `723411c806fdc9afa97b1d81f3097e28fa52ed58`, and workflow blob `130b7a18599f2674f53c1d062d5fbb0ccdec879e`.
+- Production D1, dispatch, secrets, provider credentials and deployment were not touched.
+
+### Confirmed source-level defect candidate: lease acquisition readback is not bound to the winning update
+- `acquireTaskLease` performs a conditional UPDATE that increments `lease_generation`, then performs a separate SELECT filtered only by `task_key` and `lease_owner`.
+- The API permits the same `workerId` on concurrent/retried calls. If acquisition A commits, its lease expires before A's readback, and acquisition B with the same worker ID reclaims the task, A's SELECT can observe B's newer generation. A can therefore return a lease token it did not acquire. This is a source-level interleaving analysis; it has NOT yet been reproduced in the Workers runtime.
+- A unique worker ID per process is not a sufficient invariant: process identity is not an acquisition-attempt identity.
+
+### Required correction and tests (not yet implemented)
+- Bind readback to the exact winning UPDATE. Preferred proof options: a unique per-attempt lease token persisted by the conditional UPDATE and selected by that token, or a verified D1-supported atomic `UPDATE ... RETURNING` path that returns the changed row from the winning statement. Do not assume D1 supports a particular SQL feature until its current official contract and the actual Miniflare/workerd runtime are checked.
+- Add deterministic same-worker contention tests: simultaneous same-worker calls; lease expiry/reclaim between update and readback; first caller must never receive the later generation; only the actual winner's attempt token may be returned.
+- Add integer safety guards for `now + leaseSeconds` and `lease_generation + 1`; reject unsafe JS integers and prove database overflow behavior rather than relying on SQLite coercion.
+- Preserve the invariant that lease generation fences only local task-row mutations. No external side effect is safe until result/outbox writes themselves atomically check the current generation and effect identity.
+
+### Canonical identity / upstream component decision
+- Current `logicalTaskKey` is a fixed-order JSON array of constrained scalar fields, not a general object serializer. The immediate identity gap is missing explicit canonical payload and capability-set digests, not merely JSON key ordering.
+- For a future object-shaped signed/hashable execution envelope, use RFC 8785 JCS and its test vectors rather than inventing a serializer. RFC 8785 lists the JavaScript `canonicalize` implementation; do not add a dependency or change existing task keys until envelope fields, normalization, compatibility/versioning and vectors are approved. Reference: https://www.rfc-editor.org/rfc/rfc8785.html ; upstream implementation: https://github.com/cyberphone/json-canonicalization.
+
+### Provenance / branch topology finding
+- The documentation branch currently ends at `fa93ee478880071c50f131b7f42ffb544c6860cd`; source proof branch remains at `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- GitHub compare reports the documentation branch and source proof branch as DIVERGED (397 commits ahead / 77 behind, merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`). Do not stack new runtime work or merge the documentation branch into the proof branch without a deliberate ancestry reconciliation. Keep this pass documentation-only.
+
+### Validation and status
+- Verified source/blob readbacks and PR #40 workflow run `42489887940` = COMPLETED/SUCCESS in merge context; that CI ran 27 tests on merge commit `23e06138ddee46934c8cb137d04dd1585d390ea6`, not standalone exact-head.
+- No local/Workers runtime tests were executed in this investigation. Race reproduction, exact-head CI, D1 SQL feature qualification and independent security review remain NOT VERIFIED / NOT RUN.
+- PR #40 and #130 were not changed; no merge, dispatch or production integration.
+- Next bounded step: create a fresh isolated proof branch from an explicitly reconciled immutable source; implement lease-attempt fencing and deterministic race tests only after verifying the D1 SQL/runtime contract. Keep dispatch false.
