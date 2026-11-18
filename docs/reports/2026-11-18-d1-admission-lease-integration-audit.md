@@ -79,3 +79,32 @@ No live webhook controller, signature verification, hosted D1 provisioning/write
 ## Audit disposition
 
 BLOCKED FOR CODE COMPOSITION until the shared schema is unified. The next safe code change is not a blind PR stack; it is a single clean-base migration/adapter implementation against the canonical target above.
+
+
+## Follow-up ancestry audit: the earlier canonical D1 proof stack
+
+A deeper read of the current-default design contract and PR #67/#72 changes the preferred integration source. Do not treat PR #114/#125 as the canonical D1 schema. The default-branch design document explicitly identifies the isolated `proofs/d1-ledger` stack from PR #67 and its additive atomic-admission extension in PR #72 as the intended substrate.
+
+### Verified ancestry and migration lineage
+
+- PR #67 (`a53f6232bd5b50d3e150addf528b8e722002f9dd`) contains the full isolated `proofs/d1-ledger` package, migrations 0001–0010, logical task, lease, immutable attempts, reconciliation, and projection-delivery proof.
+- PR #72 (`a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`) is stacked on PR #67 and adds migration 0011 plus `admit-qualified-task.mjs`, the composite A0/D1 batch adapter and tests.
+- PR #111 is a clean-default port of only the lease ledger subset, but its migration 0006 is `0006_guard_running_attempt_requires_lease.sql`. In PR #67, migration 0006 is already `0006_create_attempt_projection_outbox.sql`. Copying #111's migration filename into the #67/#72 chain would collide.
+- PR #67 and #72 both have merge base `221f216c00ca7e5596bcc682ba185ad155a10603` against current default `68183828cf7934e89109310c8f99281be4eb7ed8`, and are 81 commits behind. They must be selectively transplanted/reconciled on a clean current base, not merged as-is.
+- PR #72 migration 0011 and adapter hardcode `dsh-headless-probe` as the capability profile. That is incompatible with the owner-frozen CODE executor profile and must be removed from SQL checks, adapter validation, fixtures, tests and docs.
+- PR #125 is a separate `proofs/d1-admission` package. Its adapter does not independently authenticate the current default ref; it must not become a second D1 admission authority.
+
+### Revised canonical implementation decision
+
+Use PR #67/#72's existing `proofs/d1-ledger` as the sole schema lineage, not the independent `proofs/d1-admission` schema from #114/#125.
+
+1. Selectively port the complete required #67 D1 package and #72 migration 0011/composite batch adapter onto a clean branch from current default, after reconciling all changed files and current package conventions.
+2. Preserve the #67 migration history 0001–0011. Port the #111 running-attempt lease guard as migration **0012**, not 0006, and verify it against the actual #67 attempt schema and trigger ordering.
+3. Replace every legacy DSH profile restriction with the exact frozen CODE profile, including approval rows, qualification rows, adapter validation, fixtures and adversarial tests. Do not broaden to arbitrary profile strings.
+4. Preserve the single logical-task table and task-level outbox already implemented in #67. Do not import #114's second schema or create another controller.
+5. Compose owner-only event validation from #112 and Actions provenance only after defining an independent trusted current-default-ref lookup. Do not accept a runner-provided `GITHUB_SHA` as proof of the current branch head.
+6. Run all package migrations and Workers-runtime tests, frozen upgrade fixture, syntax/security checks and exact-head CI on the resulting clean-base head. Dispatch and execution authorization stay false.
+
+### Important qualification boundary
+
+This is a source-level integration decision, not proof that the old PR #67/#72 tests pass on the current base. The 81-commit ancestry gap, profile migration, migration 0012 addition, and current dependency/toolchain changes require exact-head requalification. No hosted D1, live GitHub event authenticity, provider credentials, dispatch, deployment or merge is authorized.
