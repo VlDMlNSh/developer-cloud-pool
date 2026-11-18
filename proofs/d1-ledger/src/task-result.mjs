@@ -5,8 +5,9 @@ const RESULT_REF = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
 
 function deny(reason) { return { decision: "DENY", dispatch: false, reason }; }
 
-/** Local-only result commit. The trigger atomically completes the task and creates an outbox intent. */
+/** Local-only result commit. Time is taken from the Worker runtime, never from request input. */
 export async function commitTaskResult(db, input) {
+  const now = Math.floor(Date.now() / 1000);
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
   if (!input || typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey) ||
       typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId) ||
@@ -14,7 +15,7 @@ export async function commitTaskResult(db, input) {
       typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId) ||
       typeof input.resultDigest !== "string" || !SHA256.test(input.resultDigest) ||
       typeof input.resultRef !== "string" || !RESULT_REF.test(input.resultRef) ||
-      !Number.isSafeInteger(input.now) || input.now <= 0) return deny("INVALID_RESULT_COMMIT");
+      !Number.isSafeInteger(now) || now <= 0) return deny("INVALID_RESULT_COMMIT");
 
   try {
     const before = await db.prepare("SELECT result_digest, result_ref FROM pool_task_results WHERE task_key = ?")
@@ -32,12 +33,11 @@ export async function commitTaskResult(db, input) {
        )
       ON CONFLICT(task_key) DO NOTHING
     `).bind(input.taskKey, input.workerId, input.generation, input.leaseAttemptId,
-      input.resultDigest, input.resultRef, input.now, input.taskKey, input.workerId,
-      input.generation, input.leaseAttemptId, input.now).run();
+      input.resultDigest, input.resultRef, now, input.taskKey, input.workerId,
+      input.generation, input.leaseAttemptId, now).run();
     if (inserted?.success !== true) return deny("RESULT_COMMIT_AMBIGUOUS");
 
-    // D1 meta.changes is SQLite total_changes and includes AFTER-trigger writes.
-    // Verify the entire atomic write set instead of treating it as an INSERT count.
+    // D1 meta.changes includes trigger writes. Verify the full atomic write set.
     const persisted = await db.prepare(`
       SELECT r.worker_id, r.lease_generation, r.lease_attempt_id, r.result_digest, r.result_ref,
              t.state AS task_state, o.effect_id, o.event_type, o.result_digest AS outbox_digest, o.status AS outbox_status
