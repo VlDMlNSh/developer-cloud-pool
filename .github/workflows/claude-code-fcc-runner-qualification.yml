@@ -326,6 +326,7 @@ jobs:
                 'fcc_process_cleanup_attempted=true' \
                 > "$state_file"
             fi
+            preserve_bridge_diagnostics
             exit "$original_status"
           }
           trap cleanup EXIT
@@ -423,6 +424,34 @@ jobs:
           args_file="$RUNNER_TEMP/fcc-bridge-home/bridge-args.txt"
           stderr_file="$RUNNER_TEMP/qualification/fcc-bridge-stderr.txt"
           port=18766
+          cli_status=NOT_RUN
+          preserve_bridge_diagnostics() {
+            {
+              printf '%s\\n' "cli_status=$cli_status"
+              for item in marker args_file stderr_file; do
+                case "$item" in
+                  marker) source_path="$marker" ;;
+                  args_file) source_path="$args_file" ;;
+                  stderr_file) source_path="$stderr_file" ;;
+                esac
+                if [ -f "$source_path" ]; then
+                  printf '%s\\n' "$item=present"
+                  case "$item" in
+                    marker) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-result.txt" ;;
+                    args_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-args.txt" ;;
+                    stderr_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-stderr.txt" ;;
+                  esac
+                else
+                  printf '%s\\n' "$item=absent"
+                fi
+              done
+              for directory in "$bridge_home" "$bridge_home/.config" "$bridge_home/.local" "$bridge_home/.local/share" "$bridge_home/.cache"; do
+                if [ -d "$directory" ]; then
+                  printf 'directory_mode=%s\\n' "$(stat -c '%a:%u' "$directory")"
+                fi
+              done
+            } > "$RUNNER_TEMP/qualification/fcc-bridge-failure-diagnostics.txt"
+          }
           mkdir -p "$bridge_home" "$mock_bin"
           chmod 700 "$bridge_home" "$mock_bin"
           # Pre-create bounded evidence so even an early failure is represented in the artifact.
@@ -517,6 +546,7 @@ jobs:
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$mock_bin/claude" --version --synthetic-bridge-probe "argument with spaces" 2> "$stderr_file"
           cli_status=$?
           set -e
+          preserve_bridge_diagnostics
           test "$cli_status" -eq 37
           test -s "$marker"
           test -s "$args_file"
