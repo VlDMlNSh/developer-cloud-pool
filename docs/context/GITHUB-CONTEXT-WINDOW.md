@@ -223,3 +223,14 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Final report: [task HOME symlink and XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md). Context/checkpoint refreshed after CI.
 - This verifies only a filesystem provisioning primitive in ephemeral CI. It is not production launcher integration, OS/container sandbox, network egress, credential isolation outside HOME, host recovery, vendor hosted-use permission, real Claude task or free provider route/quota. PR #116 remains Draft; independent A3 review and governance approvals/status requirements remain missing. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent A3 review of HOME + child env boundary, followed by a separate production launcher integration and host isolation qualification; keep dispatch disabled.
+
+
+
+### CURRENT RECONCILIATION — Task HOME descriptor-binding review — 2026-11-18
+- Fresh exact-head CI recheck for PR #116 head `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`: Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) COMPLETED / SUCCESS (job 134660515082, all 15 steps); Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) COMPLETED / SUCCESS (job 134660514970).
+- Source inspection of `task_home.py` found a descriptor-instance binding gap: `destroy_task_home()` checks root containment and a task-id name prefix, but does not verify that the descriptor refers to the exact directory instance returned by `create_task_home()`. With two homes sharing a task_id, a forged/mismatched descriptor can point at the other home and pass the current prefix check. This is an API integrity / accidental cross-task deletion finding, not evidence of remote exploitation or sandbox escape.
+- Recommended repair: per-instance unguessable identifier plus private ownership marker (or equivalent handle), verify before deletion, and add same-task-id forged-descriptor regression tests. This helper remains filesystem hygiene only; hostile tasks sharing one OS identity still require a separate sandbox/UID/container boundary.
+- Report: [2026-11-18 Task HOME descriptor-binding review](../reports/2026-11-18-next-task-home-descriptor-binding-review.md).
+- This was maintainer-side source inspection, **not independent A3 review**. PR #116 remains OPEN / DRAFT / UNMERGED. No merge, provider call, dispatch or secret access.
+- Exact-head CI is VERIFIED; descriptor binding GAP IDENTIFIED / NOT VERIFIED; independent A3 review NOT COMPLETE. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: repair descriptor-instance binding and add regression tests on a new immutable PR head, then rerun both exact-head workflows and request independent A3 review.
