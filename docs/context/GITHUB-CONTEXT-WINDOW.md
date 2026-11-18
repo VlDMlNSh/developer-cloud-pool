@@ -3467,3 +3467,20 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Report: `docs/reports/2026-11-18-30min-d1-result-outbox-fencing-pass.md`; checkpoint updated accordingly. No source code changes, local tests, Workers Vitest, exact-head CI success, dispatch, secrets, hosted D1, deployment, merge, or Contour B work.
 - Next: reconcile migration lineage; create clean proof from immutable base; implement readback + trusted clock; run adversarial Workers Vitest and exact-head CI.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## CURRENT VERIFIED OVERLAY — 2026-11-18 PR #132 D1 fencing and artifact-ingest boundary
+
+- PR #132: https://github.com/VlDMlNSh/developer-cloud-pool/pull/132 — OPEN / DRAFT / UNMERGED; branch `proof/d1-result-outbox-clean-2026-11-18`; exact HEAD `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; base `Основной` `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Re-read source: `task-result.mjs` blob `73877ee4935e95081aab864fe78d929c86841802`; `task-lease.mjs` blob `f07c5448363ca37809fb9d8ac666df0a19d09050`. Result adapter verifies persisted result/task/outbox tuple rather than relying on `meta.changes`; retries bind worker, generation, lease-attempt UUID, digest and result reference. Lease acquisition rotates an attempt UUID and uses Worker runtime time.
+- Exact-head associated CI: Workers-runtime D1 [44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561), job `134843740244`, all steps SUCCESS; Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049), job `134843738925`, all steps SUCCESS.
+- PR #132 formal reviews 0; inline threads 0. Independent review NOT VERIFIED. Worker runtime clock is server-owned rather than caller-supplied, but DB-authoritative/cross-region clock-skew qualification remains open.
+- Artifact adapter validates digest syntax and stores result reference but does not hash referenced bytes or prove immutability/anti-substitution. Artifact integrity NOT VERIFIED.
+- Created Issue #133: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133 — trusted byte-stream ingest, SHA-256 computed at trusted boundary, bounded streaming, immutable object version binding, adversarial tests, crash recovery and independent review.
+- Audit: [PR #132 D1 fencing and artifact-ingest audit](../reports/2026-11-18-pr132-d1-fencing-and-artifact-ingest-audit.md); checkpoint: [PR #132 artifact-ingest checkpoint](../checkpoints/2026-11-18-pr132-artifact-ingest-checkpoint.md).
+- No source code changed in this pass. No default-branch mutation, merge, deployment, production dispatch, hosted D1 writes, provider calls or secret access. Gemini NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: inspect the actual artifact storage/ingest boundary and implement a local-only digest-to-immutable-bytes proof under Issue #133; do not invent a bucket or broaden worker permissions.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
