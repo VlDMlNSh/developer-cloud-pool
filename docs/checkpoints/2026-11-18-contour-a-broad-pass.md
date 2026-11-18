@@ -210,3 +210,12 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 ### CI poll update
 - Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED / SUCCESS on exact HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
 - Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): IN_PROGRESS at latest poll; job `134740287165` RUNNING; no artifact yet. NOT VERIFIED.
+
+### Root cause and correction follow-up
+- Runner Qualification run #44286461561 failed on exact HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`. Artifact #14418489783 was independently downloaded; SHA-256 `cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267` matched GitHub, 36 files present.
+- Pre-created evidence files now survive failure. Result remains `bridge_result_state=STARTED`, shutdown diagnostics `bridge_shutdown_state=NOT_REACHED`; server started, returned HTTP 200, and was gracefully cleaned up by EXIT trap.
+- Source review found a deterministic harness mismatch: child environment allowlist excludes `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`, but the mock incorrectly required them. No actual provider routing or FCC defect is established; numeric CLI exit status remains NOT VERIFIED.
+- Corrective commit #116: `37d7b4de7b885d278a35d9311a38bc15fac961dc`; workflow blob `f4c892c57b9994dc598436471a8e130c7998861a`. The test now accurately names wrapper-to-mock invocation and asserts ambient provider routing/auth variables are absent. No credential forwarding or policy weakening.
+- Exact-head Runner Qualification check `134741199311` and Pool Contract Validation check `134741199298` queued at latest poll; NOT VERIFIED.
+- Report and Context Window updated on documentation branch; still separate from default branch.
+- Next: poll exact-head checks and inspect new artifact. Keep provider calls, production dispatch and Gemini disabled.
