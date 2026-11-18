@@ -219,3 +219,7 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Exact-head Runner Qualification check `134741199311` and Pool Contract Validation check `134741199298` queued at latest poll; NOT VERIFIED.
 - Report and Context Window updated on documentation branch; still separate from default branch.
 - Next: poll exact-head checks and inspect new artifact. Keep provider calls, production dispatch and Gemini disabled.
+
+### Latest exact-head CI poll
+- Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): COMPLETED / SUCCESS on `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
+- Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS on same HEAD; job #134741199311 is at signed APT installation. Later steps pending; NOT VERIFIED.
