@@ -24,12 +24,12 @@ async function createTask() {
 }
 
 let artifactSeq = 0;
-async function createVerifiedArtifact(text = "verified result bytes") {
+async function createVerifiedArtifact(taskKey, text = "verified result bytes") {
   artifactSeq += 1;
   const uploadId = `artifact_d1_${String(artifactSeq).padStart(16, "0")}`;
   const bytes = new TextEncoder().encode(text);
   const result = await ingestArtifact(env.ARTIFACTS, {
-    uploadId, body: new ReadableStream({ start(controller) { controller.enqueue(bytes); controller.close(); } }),
+    taskKey, uploadId, body: new ReadableStream({ start(controller) { controller.enqueue(bytes); controller.close(); } }),
     declaredSize: bytes.byteLength
   });
   expect(result.decision).toBe("ARTIFACT_STORED");
@@ -47,13 +47,13 @@ describe("fenced result/outbox transaction requires verified artifact capability
     expect(live.decision).toBe("LEASE_ACQUIRED");
     expect(live.generation).toBe(old.generation + 1);
 
-    const stale = await commitTaskResult(env.POOL_DB, {
+    const stale = await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
       taskKey: key, workerId: old.workerId, generation: old.generation,
-      leaseAttemptId: old.leaseAttemptId, artifact: await createVerifiedArtifact("stale attempt")
+      leaseAttemptId: old.leaseAttemptId, artifact: await createVerifiedArtifact(key, "stale attempt")
     });
     expect(stale).toMatchObject({ decision: "DENY", reason: "STALE_OR_EXPIRED_RESULT_WRITER", dispatch: false });
 
-    const artifact = await createVerifiedArtifact("current verified result");
+    const artifact = await createVerifiedArtifact(key, "current verified result");
     const accepted = await commitTaskResult(env.POOL_DB, {
       taskKey: key, workerId: live.workerId, generation: live.generation,
       leaseAttemptId: live.leaseAttemptId, artifact
@@ -83,7 +83,7 @@ describe("fenced result/outbox transaction requires verified artifact capability
     const key = await createTask();
     const lease = await acquireTaskLease(env.POOL_DB, key, "retry-worker", 60);
     expect(lease.decision).toBe("LEASE_ACQUIRED");
-    const artifact = await createVerifiedArtifact("stable bytes");
+    const artifact = await createVerifiedArtifact(key, "stable bytes");
     const input = {
       taskKey: key, workerId: lease.workerId, generation: lease.generation,
       leaseAttemptId: lease.leaseAttemptId, artifact
@@ -91,7 +91,7 @@ describe("fenced result/outbox transaction requires verified artifact capability
     expect((await commitTaskResult(env.POOL_DB, input)).decision).toBe("RESULT_COMMITTED");
     expect((await commitTaskResult(env.POOL_DB, input)).decision).toBe("RESULT_ALREADY_COMMITTED");
 
-    const substituted = await createVerifiedArtifact("different bytes");
+    const substituted = await createVerifiedArtifact(key, "different bytes");
     expect(await commitTaskResult(env.POOL_DB, { ...input, artifact: substituted }))
       .toMatchObject({ decision: "DENY", reason: "RESULT_IDENTITY_CONFLICT", dispatch: false });
     expect(await commitTaskResult(env.POOL_DB, { ...input, workerId: "other-worker" }))
@@ -109,11 +109,29 @@ describe("fenced result/outbox transaction requires verified artifact capability
       ...base, resultDigest: "c".repeat(64), resultRef: "worker-controlled-ref"
     })).toMatchObject({ decision: "DENY", reason: "INVALID_RESULT_COMMIT", dispatch: false });
 
-    const verified = await createVerifiedArtifact("capability bytes");
-    const forgedCopy = { ...verified };
+    const verified = await createVerifiedArtifact(key, "capability bytes");
+    const forgedCopy = { ...verified, sha256: "c".repeat(64) };
     expect(await commitTaskResult(env.POOL_DB, { ...base, artifact: forgedCopy }))
-      .toMatchObject({ decision: "DENY", reason: "INVALID_RESULT_COMMIT", dispatch: false });
+      .toMatchObject({ decision: "DENY", reason: "UNVERIFIED_ARTIFACT", dispatch: false });
 
+    const counts = await env.POOL_DB.prepare(
+      "SELECT (SELECT count(*) FROM pool_task_results WHERE task_key=?) AS results," +
+      "(SELECT count(*) FROM pool_task_result_outbox WHERE task_key=?) AS effects"
+    ).bind(key, key).first();
+    expect(counts).toMatchObject({ results: 0, effects: 0 });
+  });
+
+  it("rejects an object overwritten after ingest and before D1 publication", async () => {
+    const key = await createTask();
+    const lease = await acquireTaskLease(env.POOL_DB, key, "overwrite-worker", 60);
+    const artifact = await createVerifiedArtifact(key, "original bytes");
+    await env.ARTIFACTS.put(artifact.objectKey, "tampered bytes", {
+      customMetadata: { taskKey: key, uploadId: artifact.uploadId }
+    });
+    expect(await commitTaskResult(env.POOL_DB, env.ARTIFACTS, {
+      taskKey: key, workerId: lease.workerId, generation: lease.generation,
+      leaseAttemptId: lease.leaseAttemptId, artifact
+    })).toMatchObject({ decision: "DENY", reason: "UNVERIFIED_ARTIFACT", dispatch: false });
     const counts = await env.POOL_DB.prepare(
       "SELECT (SELECT count(*) FROM pool_task_results WHERE task_key=?) AS results," +
       "(SELECT count(*) FROM pool_task_result_outbox WHERE task_key=?) AS effects"
