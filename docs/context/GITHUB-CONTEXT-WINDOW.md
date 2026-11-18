@@ -371,3 +371,23 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: diagnose PR #124 mergeability against live base branch head, reconcile ancestry/stale evidence non-destructively, then independent A3 review on exact current heads. Dispatch stays disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## LIVE OVERRIDE — PR #124 ancestry revalidation — 2026-11-18
+
+This section supersedes stale PR #124 values in earlier context sections above. Always use live GitHub refs; prior PR body text is not authoritative.
+
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120: OPEN / DRAFT / UNMERGED; head `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; base default HEAD; GitHub `mergeable=true`, `mergeable_state=clean`.
+- PR #124: OPEN / DRAFT / UNMERGED; current head `dd5b52b2ac28afc00354dcb6e017898ec8b1db86`; base ref `docs/cloud-pool-reference-architecture-2026-11-17`; recorded base SHA `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; current base branch head `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; `mergeable=false`, `mergeable_state=dirty`.
+- Compare current base branch to PR #124 head: diverged, 125 ahead / 3 behind; merge base `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`. Base branch advanced exactly 3 commits since recorded PR base.
+- Exact conflicting paths/root cause for `dirty`: NOT VERIFIED. No rebase, force-push or merge.
+- PR #124 exact-head CI: commit status pending with 0 statuses; 0 check-runs; 0 PR-associated workflow runs. Exact-head CI NOT VERIFIED. Formal reviews: 0.
+- Ruleset #26550182 active but requires 0 approvals and 0 status checks; insufficient critical-path governance.
+- Issue #96 remains owner-only `/next` admission. Gemini optional; dispatch NOT RUN absent controller/security gates. Issue #118 persistent workspace remains OPEN / BLOCKED on host, Cloudflare access, persistence and restore evidence.
+- No code change, test execution, deployment, provider call, secret access, or production dispatch in this pass. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Latest report: [PR #124 ancestry revalidation](../reports/2026-11-18-next-pr124-ancestry-revalidation.md).
+- Latest checkpoint: [PR #124 ancestry checkpoint](../checkpoints/2026-11-18-pr124-ancestry-revalidation.md).
+- Next: inspect the 3 base-branch commits and overlapping paths; only then consider a non-destructive synchronization, followed by exact-head CI and independent review.
+
+Canonical MediaHub map (reference only; Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
