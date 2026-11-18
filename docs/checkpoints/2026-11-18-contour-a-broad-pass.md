@@ -1,3 +1,18 @@
+# CURRENT UPDATE — 2026-11-18, PR #116 exact-head runner qualification SUCCESS
+
+- PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`, OPEN/DRAFT/UNMERGED.
+- Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): SUCCESS.
+- Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): SUCCESS; job 134741981861; 18/18 steps, no failures/skips.
+- Artifact [14420066410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337/artifacts/14420066410), 34,605 bytes; downloaded SHA-256 matches GitHub digest; all 43 internal checksums passed.
+- Tests: allowlist 10/10; task HOME/XDG 9/9; Claude release verifier 7/7; FCC profile guard 15/15.
+- Verified Claude Code signed package/manifest/binary provenance; Docker no-egress primitive; FCC loopback health/shutdown; synthetic wrapper-to-mock credential stripping and argv preservation.
+- Scope: FCC client launcher not invoked; no actual CODE execution inside Docker; host egress public; provider allowlist not implemented; hosted-use entitlement and FCC AGPL network-use review NOT VERIFIED.
+- No secrets/provider calls/real task/production dispatch/deployment/merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: qualify actual Claude Code CLI inside no-egress Docker against a synthetic local mock.
+
+**Detailed report:** [2026-11-18-pr116-exact-head-reconciliation.md](../reports/2026-11-18-pr116-exact-head-reconciliation.md)
+
+---
 # CURRENT UPDATE — 2026-11-18, PR #116 current head 2e944f1
 
 - PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`, OPEN/DRAFT/UNMERGED.
