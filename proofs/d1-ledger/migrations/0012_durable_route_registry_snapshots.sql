@@ -54,13 +54,17 @@ END;
 
 CREATE TRIGGER pool_route_registry_state_insert_guard
 BEFORE INSERT ON pool_route_registry_state
-WHEN NEW.state_id <> 1 OR NOT EXISTS (
-  SELECT 1 FROM pool_route_registry_snapshots s
-   WHERE s.registry_epoch = NEW.current_epoch
-     AND s.bundle_digest = NEW.current_bundle_digest
-     AND s.registry_version = NEW.current_registry_version
-     AND s.accepted_at = NEW.updated_at
-)
+WHEN NEW.state_id <> 1
+  OR NEW.current_epoch <> (
+    SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots
+  )
+  OR NOT EXISTS (
+    SELECT 1 FROM pool_route_registry_snapshots s
+     WHERE s.registry_epoch = NEW.current_epoch
+       AND s.bundle_digest = NEW.current_bundle_digest
+       AND s.registry_version = NEW.current_registry_version
+       AND s.accepted_at = NEW.updated_at
+  )
 BEGIN
   SELECT RAISE(ABORT, 'ROUTE_REGISTRY_INITIAL_STATE_UNBOUND');
 END;
@@ -70,6 +74,9 @@ BEFORE UPDATE ON pool_route_registry_state
 WHEN OLD.state_id <> 1
   OR NEW.state_id <> OLD.state_id
   OR NEW.current_epoch <= OLD.current_epoch
+  OR NEW.current_epoch <> (
+    SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots
+  )
   OR NEW.updated_at <= OLD.updated_at
   OR NOT EXISTS (
     SELECT 1 FROM pool_route_registry_snapshots s
