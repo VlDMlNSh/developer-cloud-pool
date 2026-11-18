@@ -155,3 +155,17 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Report: [worker HOME isolation boundary audit](../reports/2026-11-18-next-worker-home-isolation-audit.md).
 - No secrets read, provider calls, dispatch, deployment, merge or host inspection. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement fail-closed per-task HOME provisioning, explicit XDG paths, external credential-store rejection, safe teardown and concurrent isolation tests; keep dispatch disabled and require independent A3 review.
+
+
+### CURRENT RECONCILIATION — disposable per-task HOME isolation primitive — 2026-11-18
+- Fresh default branch remains `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #116 remains OPEN/DRAFT/UNMERGED, based on default; after this pass its exact head is `2bc5e78c45d0df5d8c1488fb74feae27dd02e5dc`, mergeable=true / mergeable_state=unstable.
+- Added `scripts/cloud_pool/task_home.py`: fresh unique per-task HOME below a private root; owner/mode 0700 enforcement; explicit XDG config/data/cache paths; rejection of known credential/config stores in the fresh HOME; no copying from runner HOME; exact-root constrained teardown and context-manager cleanup.
+- Added `scripts/cloud_pool/test_task_home.py`: five tests covering private/fresh paths, eight concurrent distinct homes, success/exception teardown, invalid task IDs, out-of-root deletion rejection and insecure root rejection.
+- Updated PR #116 runner workflow to execute the suite and trigger on both new files.
+- Verified blobs: module `f44efe08e2e027f53c46f78d7616714fdebf12df`; tests `01f70abd2033d87ddd92216f32c0a76f4abb2560`; workflow `52258300a99269d038b2970462d3cf3ab0fd94c2`.
+- Exact-head runner qualification [44262440288](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262440288) was PENDING at last poll; exact-head Pool Contract Validation [44262440272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262440272) was IN_PROGRESS. No final-head test success is claimed yet. Previous runner run [44262423499](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262423499) was on an earlier head and is not final-head evidence.
+- Important boundary: this primitive is not yet integrated into the production worker launcher/default worker workflow; default worker remains DSH-only. It does not establish container/OS isolation, egress controls, credential stores outside HOME or host recovery after runner loss.
+- Report: [2026-11-18 disposable per-task HOME isolation](../reports/2026-11-18-next-disposable-task-home-isolation.md).
+- PR #116 remains Draft and needs independent A3 review. Ruleset #26550182 still requires 0 approvals and 0 status checks. Cloud Pool owner /next controller and Gemini dispatch controller remain absent from default; no dispatch or provider calls occurred.
+- No secrets read, host access, provider calls, Gemini dispatch, deployment or merge. Contour A **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
+- Next: await exact-head CI; if green, request independent A3 review, then separately design and qualify production launcher integration plus OS/container, network-egress and external credential-store boundaries.
