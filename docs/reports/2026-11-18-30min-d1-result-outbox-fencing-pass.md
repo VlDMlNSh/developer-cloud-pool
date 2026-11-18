@@ -9,7 +9,7 @@ The earlier report below is historical and remains unchanged. This follow-up sup
 - Idempotent result retry is now bound to original worker ID, lease generation, attempt UUID, digest and result reference.
 - Workers-runtime tests cover stale lease attempt after same-worker reclaim, exact retry, identity substitution, result substitution, SQL trigger rollback, and exact expiry equality.
 - Exact-head D1 Workers CI [run 44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561) COMPLETED/SUCCESS on `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; all job steps passed, including Workers-runtime D1 tests.
-- Current-head Pool Contract Validation [run 44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) was IN_PROGRESS at last readback. Exact-head Workers-runtime CI for `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f` NOT VERIFIED.
+- Current-head Pool Contract Validation [run 44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) COMPLETED/SUCCESS on the same exact head; dispatch-disabled, YAML and security-contract checks passed.
 - PR #132 remains draft, unmerged, and mergeable at last metadata read. Formal reviews 0 and inline threads 0; independent acceptance NOT VERIFIED.
 - Remaining: independent review, governance/provenance qualification, database-authoritative clock/skew decision, trusted artifact-byte digest verification at ingest. Production dispatch remains false; no hosted D1, secrets, provider calls, deployment, merge or Contour B work.
 - Status: source change SUCCEEDED; exact-head D1 Workers CI and Contract Validation VERIFIED/SUCCESS; independent review and final qualification remain NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
