@@ -3149,3 +3149,12 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Issue #118 remains OPEN/BLOCKED; PR #126/#120 OPEN/DRAFT/UNMERGED. No secrets, provider calls, real Claude task, Gemini/production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
 - Next: re-read run `44285275416` after completion and independently verify SIGINT delivery, process exit, liveness and listener absence. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Artifact inspection supplement — run 44285275416 (2026-11-18)
+- Run `44285275416` completed FAILURE at synthetic FCC-to-Claude CLI handoff; exact-head Pool Contract Validation `44285275314` SUCCESS.
+- Artifact `14418937574`, 31,263 bytes, SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`. Downloaded and inspected; all 33 SHA256SUMS entries verified against ZIP members.
+- Artifact `fcc-runtime-state.txt`: primary FCC returned HTTP 200, listened only on `127.0.0.1:18765`, exited status 0 and left no listener. No provider/completion calls.
+- Bridge server log records HTTP 200, graceful shutdown and “Finished server process”; bridge stderr empty. But artifact omitted both `fcc-bridge-shutdown-diagnostics.txt` and `fcc-bridge-result.txt`. Thus signal status, wait status, post-wait process liveness and remaining listener are NOT VERIFIED. Logs do not identify which strict assertion caused exit 1.
+- Do not infer SIGINT exit semantics or relax assertions. Next narrow change: publish the two bounded diagnostic/result files in artifact allowlist and expose numeric/boolean diagnostic values as step outputs; never expose synthetic credential values. Re-run exact-head qualification.
+- Updated report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
