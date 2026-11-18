@@ -341,3 +341,16 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Classification: merge-context CI verified; standalone exact-head CI, adversarial concurrent lease acquisition and durable stale-side-effect fencing remain NOT VERIFIED.
 - PR #40 OPEN/DRAFT/UNMERGED; 0 formal reviews / 0 threads. PR #130 OPEN/DRAFT/UNMERGED; separate run `44299536170` passed 120/120 Workers tests on its merge-context.
 - Report and Context Window updated in this branch. No source code, PR #40/#130, production data, secrets, deployment or dispatch changed.
+
+
+---
+
+## Follow-up — same-worker lease readback race — 2026-11-18
+
+- Read-only source audit of immutable proof HEAD `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` found that `acquireTaskLease` reads the acquired lease in a second SELECT using only task key + worker ID. If the lease expires and the same worker ID reclaims between UPDATE and SELECT, the earlier invocation may return the later generation. Source-level race identified; runtime reproduction NOT VERIFIED.
+- Fix direction: unique per-acquisition token persisted by the winning UPDATE and used for readback, or verified atomic UPDATE RETURNING supported by both D1 and the test runtime. Add same-worker interleaving tests and integer-overflow guards before considering qualification.
+- Reviewed RFC 8785 JCS and upstream canonicalization project. Use JCS for a future object-shaped execution envelope; current fixed scalar tuple is deterministic but lacks explicit payload/capability-set digests. No dependency/key migration in this pass.
+- Important topology: docs branch HEAD `fa93ee478880071c50f131b7f42ffb544c6860cd` and proof branch HEAD `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` are DIVERGED (397 ahead / 77 behind). Do not merge/stack without ancestry reconciliation.
+- Updated report commit `741fd75e067aad3737a3b664ee37fc562a0f44f2`, blob `fe1419f38edafa1902d13b709221a5f1b35ebaf6`; Context Window commit `a227ca7024ba0ecc95c7ddab5541770402d34c42`, blob `a5cda2e854212e92c49a86920a11ae22fc7d0152`.
+- No source/runtime tests executed; no code changed. PR #40/#130, production D1, secrets, dispatch and deployment untouched. Exact-head CI NOT VERIFIED; race test NOT VERIFIED; independent review NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: reconcile branch ancestry, verify D1 SQL/runtime support, implement unique acquisition-attempt fencing with deterministic race tests on a fresh isolated proof branch, then exact-head CI and independent review.
