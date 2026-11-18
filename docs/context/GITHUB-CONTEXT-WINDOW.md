@@ -3437,3 +3437,14 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Evidence classification: PR merge-context CI VERIFIED; standalone exact-head CI NOT VERIFIED; lease contention and stale durable side-effect fencing NOT VERIFIED.
 - PR #40 remains OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads. PR #130 remains OPEN/DRAFT/UNMERGED; its latest readback showed exact-head merge-context CI success at run `44299536170` (120/120 tests), but that is separate work and does not qualify this lease proof.
 - Updated report: `docs/reports/2026-11-18-d1-task-identity-lease-next-qualification-plan.md` (commit `a41cd72de54178a5f1e67a5d69868c94e8437d4c`).
+
+
+## 2026-11-18 follow-up — lease acquisition readback race investigation
+
+- Latest documentation/report commit: `741fd75e067aad3737a3b664ee37fc562a0f44f2`; report blob `fe1419f38edafa1902d13b709221a5f1b35ebaf6`.
+- Immutable proof source remains `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`. Source readback confirms `acquireTaskLease` does UPDATE then SELECT by task_key + worker_id only. Same-worker reclaim can interleave between those statements; earlier caller may read back the later generation. This is a concrete source-level race candidate, NOT yet reproduced in Workers runtime.
+- Required fix: bind readback to unique acquisition-attempt token or verified atomic UPDATE RETURNING; verify D1/Miniflare support before choosing. Add deterministic same-worker interleaving test and safe-integer/generation-overflow guards. No code changed in this pass.
+- RFC 8785 JCS selected as the standard for a future object-shaped execution envelope; current tuple serialization itself is not the primary gap. Missing explicit payload/capability-set digests remain unresolved. Do not change task key or add dependency before envelope contract and test vectors are approved. RFC: https://www.rfc-editor.org/rfc/rfc8785.html ; upstream implementation: https://github.com/cyberphone/json-canonicalization.
+- Branch topology: docs branch `fa93ee478880071c50f131b7f42ffb544c6860cd` versus proof branch `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` is DIVERGED (397 ahead / 77 behind; merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`). Do not merge or stack runtime changes without ancestry reconciliation.
+- PR #40 run `42489887940` remains merge-context SUCCESS only (27/27); standalone exact-head CI NOT VERIFIED. Race reproduction and stale durable result/outbox fencing NOT VERIFIED; independent review NOT RUN. PR #40/#130 untouched; dispatch remains false.
+- Next: reconcile source ancestry, create fresh isolated proof branch, verify D1 SQL/runtime contract, then implement lease-attempt fencing + deterministic adversarial tests. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
