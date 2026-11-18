@@ -33,7 +33,7 @@ class ChildEnvironmentTests(unittest.TestCase):
 
     def valid_parent(self) -> dict[str, str]:
         return {
-            "PATH": os.pathsep.join((str(self.bin_dir), "/usr/bin")),
+            "PATH": "/usr/bin",
             "HOME": str(self.home),
             **self.xdg_dirs,
             "USER": "runner",
@@ -57,7 +57,7 @@ class ChildEnvironmentTests(unittest.TestCase):
         parent = self.valid_parent()
         child = build_child_environment(parent)
         self.assertEqual(set(child), set(parent).intersection(ALLOWED_ENV_KEYS))
-        self.assertEqual(child["PATH"], os.pathsep.join((str(self.bin_dir.resolve()), "/usr/bin")))
+        self.assertEqual(child["PATH"], "/usr/bin")
         self.assertEqual(child["HOME"], str(self.home.resolve()))
         self.assertEqual(child["XDG_CONFIG_HOME"], str((self.home / "xdg_config_home").resolve()))
         self.assertEqual(child["HOST"], "127.0.0.1")
@@ -154,17 +154,23 @@ class ChildEnvironmentTests(unittest.TestCase):
 
     def test_relative_empty_missing_and_duplicate_path_entries_are_rejected(self) -> None:
         for value in (
-            f"{self.bin_dir}::/usr/bin",
-            f"{self.bin_dir}:relative:/usr/bin",
-            f"{self.bin_dir}:.:/usr/bin",
-            f"{self.bin_dir}:{self.bin_dir.resolve()}",
-            f"{self.bin_dir}:/does/not/exist",
+            "/usr/bin::/bin",
+            "/usr/bin:relative",
+            "/usr/bin:.",
+            "/usr/bin:/usr/bin",
+            "/usr/bin:/does/not/exist",
         ):
             parent = self.valid_parent()
             parent["PATH"] = value
             with self.subTest(path=value):
                 with self.assertRaises(EnvironmentPolicyError):
                     build_child_environment(parent)
+
+    def test_runner_owned_path_directory_is_rejected_even_when_private(self) -> None:
+        parent = self.valid_parent()
+        parent["PATH"] = str(self.bin_dir)
+        with self.assertRaisesRegex(EnvironmentPolicyError, "PATH entries must be owned by root"):
+            build_child_environment(parent)
 
     def test_path_file_and_group_world_writable_directory_are_rejected(self) -> None:
         file_path = self.root / "not-a-directory"
