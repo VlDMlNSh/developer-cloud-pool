@@ -33,3 +33,16 @@ GitHub repository discovery was attempted for gVisor, Kata Containers, Firecrack
 
 ## Next bounded action
 Re-read exact-head run `44285275416` and its job/artifact after completion. Verify bridge signal delivery, child exit status, process liveness and listener absence independently. If failure persists, isolate the measured process/signal semantics; do not relax shutdown checks or enable provider access. Only after the entire no-provider qualification passes should actual CODE-worker isolation and provider-specific egress qualification proceed.
+
+
+## Artifact inspection supplement — run 44285275416
+The run has now completed as FAILED at the synthetic FCC-to-Claude CLI handoff step. Its artifact was downloaded and inspected locally:
+- Artifact ID `14418937574`; ZIP size 31,263 bytes; GitHub digest and independently calculated SHA-256 both `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`.
+- All 33 entries listed in `SHA256SUMS.txt` were present and their SHA-256 values verified against the archive contents.
+- `fcc-runtime-state.txt` proves the primary FCC server returned HTTP 200 at `127.0.0.1:18765`, exited cleanly with status 0, and left no listener. Provider calls and completion endpoints were false.
+- `fcc-bridge-server.log` records application startup, HTTP 200 on `/health`, graceful shutdown and “Finished server process”. `fcc-bridge-stderr.txt` is empty.
+- The artifact does NOT contain `fcc-bridge-shutdown-diagnostics.txt` or `fcc-bridge-result.txt`, despite the workflow writing the diagnostic file before assertions. Therefore actual `signal_status`, `shutdown_status`, post-wait process liveness and listener state are NOT independently recoverable from this artifact.
+- The step failed with exit code 1, but logs only exposed the shell trace and final generic process exit. It did not expose which strict assertion fired. Do not guess that the process was killed by SIGINT or that a zombie/PID reuse occurred.
+
+## Correct next action
+Change only the evidence publication path in a follow-up commit: include both bridge result/diagnostic files in the bounded artifact allowlist and print the exact diagnostic values as structured GitHub step outputs (without printing synthetic token values). Keep all current acceptance assertions unchanged. Re-run exact-head qualification and use the new artifact to determine which predicate failed. No production/provider behavior should be added.
