@@ -3257,3 +3257,11 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Issue #118 OPEN/deferred: server #3, Access/Tunnel and persistent workspace/backup-restore evidence absent. Gemini controller workflow absent on default (404); Gemini NOT RUN. No secrets read, provider calls, deployment or production dispatch.
 - PR #127 documentation branch `docs/next-2026-11-18-worker-sandbox-fit` head `fb4ac30442a8d41f6588282485086bd8ee39d08e`, OPEN/DRAFT/UNMERGED; exact-head CI NOT VERIFIED. This documentation update does not change default.
 - Next: qualify a synthetic executor actually running inside the Docker sandbox, with no credentials/provider egress, bounded resources, read-only filesystem, non-root/capability restrictions, task/target binding and deterministic termination. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+## D1 bootstrap watermark fix PR #128 — 2026-11-18
+
+- PR [#128](https://github.com/VlDMlNSh/developer-cloud-pool/pull/128), OPEN/DRAFT/UNMERGED; stacked on PR #77 branch `impl/durable-route-registry-d1-2026-11-15`, base SHA `e63f1dda4c046d485ae9c2f08392a1943a06553d`; head `5548314818f8899290aaf322ea720c4bdfc42459`.
+- Migration #0012 bootstrap guard requires initial state epoch equal MAX(persisted epoch), preserving digest/version/accepted_at binding. Adversarial test inserts epochs 1001 and 1003 before singleton state, rejects stale 1001, accepts 1003, then verifies monotonic advance to 1004 and append-only/replay guards.
+- D1 workflow push allowlist includes fix branch. Exact push-run ID/status unavailable through current GitHub workflow-run connector (PR-run lookup returns no run); CI **NOT VERIFIED**, no local test run. Do not call the fix verified until exact-head CI succeeds and independent review occurs.
+- Default branch remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No merge, hosted D1, secrets, provider calls, deployment or dispatch.
+- Next: verify exact-head D1 push run for `5548314818f8899290aaf322ea720c4bdfc42459`, inspect artifact/test output, then independent review. A0 and Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
