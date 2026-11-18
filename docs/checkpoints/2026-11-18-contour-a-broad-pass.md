@@ -278,3 +278,16 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Next: independent review of combined #84 -> #86 -> #129 -> #130 ancestry and governance; then revocation/admission race and durable single-use claim/fencing.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+## Follow-up — PR #130 integration audit and durable claim reuse assessment — 2026-11-18
+
+- Report: [PR #130 integration audit and claim reuse assessment](../reports/2026-11-18-pr130-integration-audit-and-claim-reuse-assessment.md).
+- PR #130 exact-head merge-context CI [44299536170](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170), job 134785358773: SUCCESS; 11/11 test files, 120/120 tests, second D1 binding smoke 1/1, frozen schema fixture 2/2; artifact 14424184685 SHA-256 `ce05f89261c7120a95761c5a7068966a752d9d4ac60876d362886cd85d66819f`.
+- PR #130 source bounded review: migration 0012 bootstrap and advance require MAX persisted epoch; adversarial stale watermark cases present. Formal review 0 / threads 0; remain DRAFT/UNMERGED.
+- Reuse assessment: pg-boss/Graphile Worker require PostgreSQL, BullMQ requires Redis, Temporal requires separately operated service. No drop-in meets current free Workers+D1 constraint; reuse atomic claim/lease/fencing/idempotency/recovery patterns only.
+- Next bounded target: Issue #38 single-use claim protocol and real concurrent one-winner D1 proof. No Contents:write privilege expansion, no dispatch enablement.
+- Governance ruleset not re-fetched; NOT VERIFIED this pass. Gemini controller path 404 on default; Gemini NOT RUN. No secrets/provider calls/hosted D1 writes/deployment/merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
