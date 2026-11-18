@@ -1,3 +1,28 @@
+# CURRENT UPDATE — 2026-11-18, Claude Code provenance and Docker no-egress hardening
+
+## Latest P1 evidence
+- PR #116 head: `76fa4859503c377ab8122b61223fe809133a3057`; OPEN/DRAFT/UNMERGED.
+- Runner Qualification [44277244612](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244612): COMPLETED/SUCCESS.
+- Pool Contract Validation [44277244629](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244629): COMPLETED/SUCCESS.
+- Artifact [14415785535](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244612/artifacts/14415785535), SHA-256 `afd97c64a8ac02b9719565e3a5a57443916d2c1e15cd1286c49c3abdb42c0d02`; downloaded ZIP digest matched GitHub, all 38 internal SHA256SUMS entries matched.
+- Claude Code installed via Anthropic signed stable APT repo: package `2.1.311-1`, CLI `2.1.311`; signing-key fingerprint verified; detached release-manifest signature verified; Linux x64 binary SHA-256 matched signed manifest (`86dc1fcc69498159eaf15f446613e847010f9036bfbbdffd4c49350be8489ada`).
+- Docker `--network none` proof PASS using immutable per-run Ubuntu image digest: outbound TCP blocked, no default route, read-only rootfs, dropped capabilities. This proves the no-egress container primitive only, not the real CODE worker.
+- Existing PATH/HOME/XDG tests passed; FCC profile guard 15/15 PASS; FCC loopback health HTTP 200 and clean shutdown; synthetic FCC-to-mock-CLI handoff PASS with no provider call.
+- User secrets read: none. Provider calls: none. Real Claude session/task: none.
+
+## P1 remaining blockers
+- Provider-specific allowlisted egress proxy/gateway NOT IMPLEMENTED.
+- GitHub-hosted runner host itself has public internet egress; not isolated.
+- Actual CODE executor has not run inside the Docker sandbox.
+- Claude Code hosted-use entitlement/account authority NOT VERIFIED.
+- FCC AGPL-3.0-only legal review for network-exposed service NOT VERIFIED.
+- No provider route/account/free quota/live task/persistent worker qualification.
+
+## New detailed report
+[Claude Code provenance and Docker no-egress hardening report](../reports/2026-11-18-claude-code-provenance-docker-egress-hardening.md)
+
+---
+
 # Contour A checkpoint — 2026-11-18 broad pass
 
 ## Owner sequencing decision
