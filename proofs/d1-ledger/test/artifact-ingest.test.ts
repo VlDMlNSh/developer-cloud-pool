@@ -36,7 +36,7 @@ describe("trusted R2 artifact ingest proof", () => {
       sha256: await sha256("trusted artifact")
     });
     expect(result.artifact.objectVersion).toBeTruthy();
-    expect((await env.ARTIFACTS.head(`ingest/${id}`))?.version).toBe(result.artifact.objectVersion);
+    expect((await env.ARTIFACTS.head(`ingest/${TASK_KEY}/${id}`))?.version).toBe(result.artifact.objectVersion);
   });
 
   it("rejects declared-length mismatch without publishing an object", async () => {
@@ -45,7 +45,7 @@ describe("trusted R2 artifact ingest proof", () => {
       taskKey: TASK_KEY, uploadId: id, body: stream(["short"]), declaredSize: 99
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "ARTIFACT_DECLARED_SIZE_MISMATCH", dispatch: false });
-    expect(await env.ARTIFACTS.head(`ingest/${id}`)).toBeNull();
+    expect(await env.ARTIFACTS.head(`ingest/${TASK_KEY}/${id}`)).toBeNull();
   });
 
   it("rejects a stream that exceeds the configured byte cap", async () => {
@@ -54,7 +54,7 @@ describe("trusted R2 artifact ingest proof", () => {
       taskKey: TASK_KEY, uploadId: id, body: stream(["1234", "5678"]), declaredSize: 5, maxBytes: 5
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "ARTIFACT_SIZE_LIMIT_EXCEEDED", dispatch: false });
-    expect(await env.ARTIFACTS.head(`ingest/${id}`)).toBeNull();
+    expect(await env.ARTIFACTS.head(`ingest/${TASK_KEY}/${id}`)).toBeNull();
   });
 
   it("fails closed when the source stream errors", async () => {
@@ -63,7 +63,7 @@ describe("trusted R2 artifact ingest proof", () => {
       taskKey: TASK_KEY, uploadId: id, body: stream(["partial"], true), declaredSize: 7
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "ARTIFACT_STREAM_OR_STORAGE_FAILED", dispatch: false });
-    expect(await env.ARTIFACTS.head(`ingest/${id}`)).toBeNull();
+    expect(await env.ARTIFACTS.head(`ingest/${TASK_KEY}/${id}`)).toBeNull();
   });
 
   it("is idempotent for an exact byte-for-byte retry", async () => {
