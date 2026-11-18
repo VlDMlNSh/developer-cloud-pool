@@ -133,3 +133,10 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Commit `570d78b7d3f7972b7458de9e69f6117ae642896a`; workflow blob `cde20dddcb9687d0797df7e099693a713ce71c31`: captures SIGINT and wait statuses before evaluating, with fail-closed diagnostics. No policy weakening.
 - Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281): SUCCESS. Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244): IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: inspect signal/wait/listener results on exact head `570d78b7d3f7972b7458de9e69f6117ae642896a`. Keep provider calls, real agent tasks and production dispatch disabled. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Agent dispatch and final current poll — 2026-11-18
+
+- Approved Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404 on default branch `Основной`; Gemini agents NOT RUN. No bypass or direct provider calls.
+- PR #126 OPEN/DRAFT/UNMERGED (`f69f286b5b5a3de8dfdd80ed581859851ce271e5`); PR #120 OPEN/DRAFT/UNMERGED (`e93fb34a1f3430ca2db32fbf2e631903aac9570f`); Issue #115 OPEN; Issue #118 OPEN.
+- At latest poll, Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) remained IN_PROGRESS and Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS. Exact-head runner result NOT VERIFIED.
