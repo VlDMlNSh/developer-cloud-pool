@@ -5,6 +5,7 @@ import tempfile
 import threading
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from task_home import (
     FORBIDDEN_STORES,
@@ -104,6 +105,20 @@ class TaskHomeTests(unittest.TestCase):
         self.assertTrue(task.path.is_dir())
         alias.unlink()
         destroy_task_home(task, self.root)
+
+    def test_rejects_dangling_credential_store_symlink_and_cleans_home(self):
+        real_mkdtemp = tempfile.mkdtemp
+
+        def contaminated_home(*args, **kwargs):
+            created = Path(real_mkdtemp(*args, **kwargs))
+            (created / ".aws").symlink_to(created / "missing-credential-target")
+            return str(created)
+
+        with patch("task_home.tempfile.mkdtemp", side_effect=contaminated_home):
+            with self.assertRaisesRegex(TaskHomeError, "credential store"):
+                create_task_home(self.root, "dangling-store")
+
+        self.assertEqual(list(self.root.iterdir()), [])
 
     def test_refuses_insecure_root(self):
         os.chmod(self.root, 0o777)
