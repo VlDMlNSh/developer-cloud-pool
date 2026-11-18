@@ -28,6 +28,8 @@ class TaskHomeTests(unittest.TestCase):
         self.addCleanup(lambda: destroy_task_home(task, self.root))
         self.assertEqual(task.path.parent, self.root.resolve())
         self.assertEqual(task.path.stat().st_mode & 0o777, 0o700)
+        self.assertEqual((task.path / ".local").stat().st_mode & 0o777, 0o700)
+        self.assertEqual((task.path / ".local").stat().st_uid, os.geteuid())
         self.assertEqual(set(task.environment), {"HOME", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME"})
         for key, value in task.environment.items():
             path = Path(value)
