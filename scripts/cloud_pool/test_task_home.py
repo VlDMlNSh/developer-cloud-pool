@@ -143,6 +143,7 @@ class TaskHomeTests(unittest.TestCase):
     def test_rejects_modified_or_symlinked_ownership_marker(self):
         task = create_task_home(self.root, "marker-check")
         marker = task.path / ".cloud-pool-task-home-owner.json"
+        original_marker = marker.read_text(encoding="utf-8")
         marker.write_text('{"task_id":"marker-check","instance_id":"0000000000000000000000000000000000000000000000000000000000000000"}' + chr(10), encoding="utf-8")
         with self.assertRaisesRegex(TaskHomeError, "does not match this directory instance"):
             destroy_task_home(task, self.root)
@@ -151,6 +152,7 @@ class TaskHomeTests(unittest.TestCase):
         with self.assertRaisesRegex(TaskHomeError, "ownership marker is unsafe"):
             destroy_task_home(task, self.root)
         marker.unlink()
+        marker.write_text(original_marker, encoding="utf-8")
         destroy_task_home(task, self.root)
 
     def test_refuses_insecure_root(self):
