@@ -7,7 +7,7 @@ const registry = {
   repositoryId: "1445644538",
   defaultBranch: "Основной",
   executors: [
-    { executorId: "claude-code-1", status: "enabled", profiles: ["dsh-headless-probe"] },
+    { executorId: "claude-code-1", status: "enabled", profiles: ["dsh-headless-probe"], oidcBinding: { audience: "https://github.com/VlDMlNSh/developer-cloud-pool", subject: "repo:VlDMlNSh/developer-cloud-pool:environment:pool-executor-claude-code-1", workflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной", jobWorkflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной" } },
     { executorId: "codex-1", status: "disabled", profiles: ["dsh-headless-probe"] }
   ]
 };
@@ -68,7 +68,7 @@ describe("trusted GitHub executor registry resolver", () => {
 
   it("rejects an executor without the requested capability profile", async () => {
     const altered = { ...registry, executors: [
-      { executorId: "claude-code-1", status: "enabled", profiles: [] }
+      { executorId: "claude-code-1", status: "enabled", profiles: [], oidcBinding: registry.executors[0].oidcBinding }
     ] };
     const { fetchImpl } = fakeFetch({
       fileBody: { path: ".github/pool-executor-registry.json", encoding: "base64", content: base64Json(altered) }
