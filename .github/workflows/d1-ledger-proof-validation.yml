@@ -12,6 +12,7 @@ on:
       - "fix/deny-attempt-lease-takeover-2026-11-10"
       - "fix/attempt-finalization-idempotency-2026-11-08"
       - "feat/indeterminate-reconciliation-queue-2026-11-08"
+      - "proof/d1-current-base-ledger-2026-11-18"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
