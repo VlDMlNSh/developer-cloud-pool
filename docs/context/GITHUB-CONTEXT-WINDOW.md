@@ -1,3 +1,38 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, P1 Claude Code provenance and Docker isolation
+
+**Latest checkpoint:** [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md)  
+**P1 report:** [2026-11-18-claude-code-provenance-docker-egress-hardening.md](../reports/2026-11-18-claude-code-provenance-docker-egress-hardening.md)  
+**Broad Contour A plan:** [2026-11-18-contour-a-broad-plan-and-legacy-dispatch-retirement.md](../reports/2026-11-18-contour-a-broad-plan-and-legacy-dispatch-retirement.md)
+
+## Owner review sequencing
+Independent/external reviews remain DEFERRED until Cloud Pool is operational and can perform its own bounded review workflow. Exact-head CI, deterministic tests and source/provenance checks remain mandatory but are not independent review or final acceptance.
+
+## Latest P1 implementation
+- PR #116 current head: `76fa4859503c377ab8122b61223fe809133a3057`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Exact-head Runner Qualification [44277244612](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244612): COMPLETED/SUCCESS.
+- Exact-head Pool Contract Validation [44277244629](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244629): COMPLETED/SUCCESS.
+- Artifact [14415785535](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44277244612/artifacts/14415785535), 33,315 bytes, SHA-256 `afd97c64a8ac02b9719565e3a5a57443916d2c1e15cd1286c49c3abdb42c0d02`. Downloaded ZIP digest matched GitHub and all 38 internal file checksums matched.
+- Claude Code package `2.1.311-1`, CLI `2.1.311`, installed from Anthropic signed stable APT repo; release key fingerprint and detached manifest signature verified; binary checksum matched signed manifest.
+- Docker `--network none` capability test PASS: outbound TCP blocked, no default route, read-only rootfs and dropped capabilities. Image digest recorded in artifact.
+- PATH/HOME/XDG deterministic tests PASS; FCC profile guard 15/15 PASS; FCC loopback lifecycle PASS; synthetic FCC-to-mock-CLI handoff PASS.
+- No secret values read, no provider calls, no real Claude session, no agent task, no production dispatch.
+
+## P1 NOT VERIFIED / blockers
+- The Docker proof validates the isolation primitive only; actual CODE execution inside the container is not yet qualified.
+- Provider-specific allowlisted egress proxy/gateway NOT IMPLEMENTED.
+- GitHub-hosted runner host has public internet access; host egress is NOT isolated.
+- Claude Code hosted-use entitlement/account authority NOT VERIFIED.
+- FCC AGPL-3.0-only network-exposure legal review NOT VERIFIED.
+- No live provider route/account/quota, persistent worker or end-to-end task qualification.
+
+## Next execution order
+1. Build the real CODE worker container profile around the verified Docker no-egress primitive.
+2. Design and qualify provider-specific egress gateway/allowlist; keep live provider calls disabled until account, quota, entitlement and legal gates are met.
+3. Then reconcile D1 admission/controller/leases and move to persistent worker orchestration.
+4. Jarvis Web and persistent Engineering Workspace remain later P5/P6 work. Contour B remains prohibited until Contour A ACCEPTED.
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, broad Contour A pass (final PR #126 verification)
 
 **Latest checkpoint:** [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md)  
