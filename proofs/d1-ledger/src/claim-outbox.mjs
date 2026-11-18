@@ -114,8 +114,8 @@ export async function claimLogicalTask(db, binding, now) {
       dispatch: false,
       reason: first ? "APPROVAL_CONSUMED_AND_TASK_ATTACHED" : "IDEMPOTENT_TASK_ATTACHMENT"
     };
-  } catch (error) {
-    return deny("TASK_CLAIM_OUTCOME_AMBIGUOUS:" + String(error?.message || "unknown"));
+  } catch {
+    return deny("TASK_CLAIM_OUTCOME_AMBIGUOUS");
   }
 }
 
