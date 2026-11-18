@@ -3410,3 +3410,21 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Ruleset and current dispatch variable NOT VERIFIED. Gemini NOT RUN. No secrets, hosted D1 writes, provider calls, dispatch, deployment, merge or Contour B work.
 - Next: recover exact proof tree and actual lease tests/migrations, then run exact-head CI with adversarial concurrency, stale-generation output/outbox and recovery tests. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18 D1 task identity + lease qualification pass
+
+- Source target remains immutable: `proof/task-identity-fencing-design-2026-11-08` @ `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`.
+- Exact source readbacks: task lease `b41edf89cdf960b2c007f38ba16554dc179f021a`; claim/outbox `37d75e2b31d9214b04398527eb08dce296f1ff27`; lease test file `723411c806fdc9afa97b1d81f3097e28fa52ed58`; logical identity migration `49b0798871429d7961e81eb1d86ad892dba0b9b9`; package `cd7a705ce39860685c3ec60134dc8442fab738d8`; README `a364fb31ff340970d15658f3cf4ee5502696d4ef`.
+- Important correction: exact test and migration paths are now recovered. `claim-outbox.test.ts` includes generation reclaim, stale renew/finalize denial, live lease non-stealing, expiry renewal denial and five-attempt dead-letter. Its 12-way concurrency case tests approval claim/outbox, not concurrent lease acquisition.
+- New source finding: `logicalTaskKey()` hashes `pool-task-v1, repositoryId, issueNumber, targetSha, profile, 1`; it excludes an explicit capability-set digest and canonical payload digest. Migration stores approval `envelope_digest` per approval while allowing multiple approvals to attach to one task. Contract must separate task execution identity from approval evidence and prove that attached approvals authorize the exact same canonical capability/payload. Do not blindly add per-approval envelope digest to task key, as that may defeat intentional multi-approval deduplication.
+- Lease adapter readback selects by task key + worker ID, not a unique claim-attempt token; same-worker concurrency and readback/reclaim interleavings require tests. No lease-aware durable result-write/outbox-delivery adapter is present in this proof; external side-effect fencing NOT VERIFIED.
+- Authored exact-head adversarial tests are NOT RUN. Exact-head CI NOT VERIFIED. No D1 runtime was executed in this pass.
+- Created qualification documentation branch `docs/2026-11-18-d1-lease-identity-qualification` from `docs/next-2026-11-18-worker-sandbox-fit`.
+- Report: [D1 task identity and lease qualification plan](../reports/2026-11-18-d1-task-identity-lease-next-qualification-plan.md).
+- This pass changed documentation only. No source proof, PR #40, PR #130, production workflow, secret, hosted D1, provider, deployment or dispatch was changed/invoked. Gemini NOT RUN; governance gates not freshly qualified.
+- Next: define canonical execution envelope and separate approval evidence; add lease contention (2/12/50), same-worker, expiry-boundary, stale result/outbox fencing, crash recovery, ambiguous-storage, clock and overflow tests on a fresh proof branch; run exact-head Workers Vitest/workerd CI and inspect artifacts.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
