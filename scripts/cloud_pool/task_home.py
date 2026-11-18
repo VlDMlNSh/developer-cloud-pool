@@ -49,8 +49,17 @@ def _private_directory(path: Path, *, create: bool = False) -> Path:
     if create:
         path.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
+        # Inspect the supplied path before resolving it: resolve() follows
+        # symlinks and would otherwise hide a symlinked HOME/root from callers.
+        supplied = path.lstat()
+        if stat.S_ISLNK(supplied.st_mode):
+            raise TaskHomeError("task HOME path must not be a symlink")
+        if not stat.S_ISDIR(supplied.st_mode):
+            raise TaskHomeError("task HOME path is not a directory")
         resolved = path.resolve(strict=True)
         info = resolved.stat()
+    except TaskHomeError:
+        raise
     except (OSError, RuntimeError) as exc:
         raise TaskHomeError("task HOME directory is unavailable") from exc
     if not stat.S_ISDIR(info.st_mode):
@@ -75,7 +84,7 @@ def create_task_home(root: str | Path, task_id: str) -> TaskHome:
             directory.mkdir(mode=0o700, parents=True, exist_ok=False)
             os.chmod(directory, 0o700)
             xdg[variable] = str(_private_directory(directory))
-        if any((home / item).exists() for item in FORBIDDEN_STORES):
+        if any((home / item).exists() or (home / item).is_symlink() for item in FORBIDDEN_STORES):
             raise TaskHomeError("fresh task HOME unexpectedly contains a credential store")
         return TaskHome(
             task_id=task_id,
@@ -90,12 +99,13 @@ def create_task_home(root: str | Path, task_id: str) -> TaskHome:
 
 def destroy_task_home(task_home: TaskHome, root: str | Path) -> None:
     """Remove only the exact private task directory created below root."""
+    # Validate the caller-supplied paths before canonicalization so a symlink
+    # cannot be silently resolved into an apparently valid in-root directory.
     base = _private_directory(Path(root))
-    home = _private_directory(task_home.path)
+    _private_directory(task_home.path)
+    home = task_home.path.resolve(strict=True)
     if home.parent != base or not home.name.startswith(f"pool-task-{task_home.task_id}-"):
         raise TaskHomeError("refusing to remove a path outside this task's private root")
-    if home.is_symlink():
-        raise TaskHomeError("refusing to remove a symlink task HOME")
     shutil.rmtree(home)
 
 
