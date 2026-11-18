@@ -206,3 +206,7 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Gemini NOT RUN: approved controller workflow path returned 404 on default branch. No secrets, provider calls, real Claude task, production dispatch, merge or deployment. `POOL_DISPATCH_ENABLED=false`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: poll exact-head CI; inspect new artifact even if Runner Qualification fails; determine signal/wait/listener predicate from captured evidence before changing runtime behavior.
+
+### CI poll update
+- Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED / SUCCESS on exact HEAD `59514f6d1119ca113745f5da861a1195c66da2e5`.
+- Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): IN_PROGRESS at latest poll; job `134740287165` RUNNING; no artifact yet. NOT VERIFIED.
