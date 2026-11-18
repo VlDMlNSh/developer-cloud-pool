@@ -112,13 +112,16 @@ jobs:
               fi
             done
             for probe in user mount pid net; do
-              case "$probe" in
+              if case "$probe" in
                 user) timeout 5s unshare --user --map-root-user true >/dev/null 2>&1 ;;
                 mount) timeout 5s unshare --user --map-root-user --mount true >/dev/null 2>&1 ;;
                 pid) timeout 5s unshare --user --map-root-user --pid --fork true >/dev/null 2>&1 ;;
                 net) timeout 5s unshare --user --map-root-user --net true >/dev/null 2>&1 ;;
-              esac
-              status=$?
+              esac; then
+                status=0
+              else
+                status=$?
+              fi
               echo "unshare_${probe}_namespace_exit=$status"
             done
           } > "$out"
