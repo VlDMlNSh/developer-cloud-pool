@@ -89,3 +89,15 @@ Consequently, this branch must not be described as integrating an existing produ
 6. **Still blocked:** trusted webhook authenticity / independent trusted-head provenance, qualification issuer cryptographic trust, suspended/revoked qualification lifecycle, durable reconciliation for indeterminate attempts, and any production/hosted D1 or execution wiring.
 
 This matrix is a source-selection decision, not an implementation or runtime qualification. All source PRs remain unmerged; successful historical exact-HEAD CI applies only to the SHA shown above, not to a new combined branch.
+
+
+## Current-default ancestry check (2026-11-18)
+
+GitHub compare against default HEAD `68183828cf7934e89109310c8f99281be4eb7ed8` returned:
+- PR #111 branch: `diverged`, 4 commits ahead / 2 behind.
+- PR #112 branch: `diverged`, 3 ahead / 2 behind.
+- PR #114 branch: `diverged`, 36 ahead / 2 behind.
+- PR #125 branch: `diverged`, 57 ahead / 2 behind.
+- This integration branch: `ahead`, 3 ahead / 0 behind.
+
+Thus even the focused current-base proof branches need reconciliation with the two newer default commits before transplant. Do not merge or cherry-pick their complete branch histories. Port reviewed file-level behavior onto this branch, then run CI on the resulting exact HEAD.
