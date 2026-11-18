@@ -642,3 +642,58 @@ describe("attempt transition integrity guard", () => {
     expect(running).toMatchObject({ status: "running", lease_generation: 1 });
   });
 });
+
+
+describe("immutable executor identity binding", () => {
+  it("keeps different executor instances in separate logical tasks", async () => {
+    const claude = { ...approval, approvalId: "approval-executor-claude", envelopeDigest: "1".repeat(64) };
+    const codex = { ...approval, approvalId: "approval-executor-codex", executorId: "codex-1", envelopeDigest: "2".repeat(64) };
+    await seed(claude);
+    await seed(codex);
+    const [a, b] = await Promise.all([
+      claimLogicalTask(env.POOL_DB, claude, NOW),
+      claimLogicalTask(env.POOL_DB, codex, NOW)
+    ]);
+    expect(a.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    expect(b.decision).toBe("TASK_CREATED_OR_ATTACHED");
+    expect(a.taskKey).not.toBe(b.taskKey);
+    const rows = await env.POOL_DB.prepare(
+      "SELECT executor_id FROM pool_tasks WHERE task_key IN (?, ?) ORDER BY executor_id"
+    ).bind(a.taskKey, b.taskKey).all();
+    expect(rows.results).toEqual([{ executor_id: "claude-code-1" }, { executor_id: "codex-1" }]);
+  });
+
+  it("rejects executor substitution at approval and attempt boundaries", async () => {
+    const item = { ...approval, approvalId: "approval-executor-mismatch", envelopeDigest: "3".repeat(64) };
+    await seed(item);
+    const mismatch = await claimLogicalTask(env.POOL_DB, { ...item, executorId: "gemini-1" }, NOW);
+    expect(mismatch).toMatchObject({ decision: "DENY", dispatch: false });
+
+    const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
+    const wrongAttempt = await createTaskAttempt(env.POOL_DB, {
+      taskKey: claimed.taskKey, executorId: "codex-1",
+      attemptId: "attempt-wrong-executor", attemptNumber: 1,
+      inputDigest: "4".repeat(64), executionIdempotencyKey: "exec-wrong-executor",
+      now: NOW + 1
+    });
+    expect(wrongAttempt.decision).toBe("DENY");
+
+    await createAttempt(claimed.taskKey, 1, "attempt-executor-immutable");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_attempts SET executor_id = ? WHERE attempt_id = ?"
+    ).bind("codex-1", "attempt-executor-immutable").run()).rejects.toThrow("ATTEMPT_EXECUTOR_ID_IMMUTABLE");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_tasks SET executor_id = ? WHERE task_key = ?"
+    ).bind("codex-1", claimed.taskKey).run()).rejects.toThrow("TASK_EXECUTOR_ID_IMMUTABLE");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_approval_ledger SET executor_id = ? WHERE approval_id = ?"
+    ).bind("codex-1", item.approvalId).run()).rejects.toThrow("APPROVAL_EXECUTOR_ID_IMMUTABLE");
+  });
+
+  it.each(["claude-code-0", "codex-x", "gemini-", "dsh-headless-probe"])(
+    "rejects invalid executor identifier %s", async (executorId) => {
+      const item = { ...approval, approvalId: `approval-invalid-${executorId}`, executorId };
+      await expect(seed(item)).rejects.toThrow("INVALID_EXECUTOR_ID");
+    }
+  );
+});
