@@ -97,3 +97,24 @@ After run 44284859244 reaches a terminal state, inspect its exact-head job logs 
 - Read-back verified the exact source block contains the status capture. PR #116 current head is the corrective commit, OPEN/DRAFT/UNMERGED. Commit-associated workflow lookup returned no runs at observation time; exact-head requalification is NOT RUN / NOT VERIFIED.
 - No provider calls, secrets read, real Claude session, agent task, Gemini dispatch, production dispatch, deployment or merge.
 - Next: wait for/inspect exact-head CI on `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; do not start the actual CODE-in-container slice until the complete no-secret qualification is green and artifact integrity is checked.
+
+
+## Follow-up — exact-head Runner Qualification failure after bridge correction — 2026-11-18
+
+- PR #116 immutable tested HEAD: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR remains OPEN / DRAFT / UNMERGED.
+- Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): COMPLETED / SUCCESS.
+- Exact-head Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416): COMPLETED / FAILURE; job `134736343006`. The workflow correction fixed the unset signal-status diagnostic, but did not yield a passing qualification.
+- Step 12, “Start FCC on loopback and verify local readiness and shutdown”, failed: the process did not establish the expected HTTP 200 on `127.0.0.1:18765/admin/api/status`; logs include connection refusal. Step 13, synthetic FCC-to-mock-Claude bridge, also failed. Therefore the prior statement that FCC loopback lifecycle passed at this exact head is incorrect; it is superseded by this run evidence.
+- Steps 3–11 passed: child-environment policy tests, runner baseline, sandbox capability probe, signed Claude package/manifest/binary verification, Docker no-egress primitive, pinned uv install, FCC install/metadata and synthetic profile guard. ECC skill install was skipped because the dependent qualification stage did not pass. These are bounded sub-proofs only.
+- Artifact [14418937574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416/artifacts/14418937574), SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`; uploaded and available. Artifact presence does not convert the failed job into success.
+- Root cause of FCC listener/readiness failure is NOT YET DETERMINED. The workflow source shows FCC is launched through `exec_allowlist.py` with a constrained HOME/XDG/PATH and explicit loopback HOST/PORT. Do not infer the cause from the wrapper or from the earlier signal-variable bug; inspect the artifact's runtime/server logs and reproduce before changing code.
+- No provider calls, secret reads, real Claude session/task, Gemini dispatch, production dispatch, deployment, merge or Contour B. Keep all dispatch disabled.
+- Next bounded step: inspect artifact contents (including `fcc-server-runtime.log`, bridge server log and diagnostics), isolate why the FCC server does not bind/readiness-check, add a regression test, and rerun exact-head qualification. Do not proceed to CODE-in-container until all required no-secret steps pass.
+
+## Current disposition
+
+- PR #116 Runner Qualification: FAILED; corrective diagnosis remains open.
+- PR #116 Pool Contract Validation: SUCCESS.
+- PR #126 legacy DSH dispatch retirement: OPEN / DRAFT / UNMERGED; exact-head contract run [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245) SUCCESS; default branch still contains the legacy path.
+- PR #127 documentation continuation: OPEN / DRAFT / UNMERGED; this update is on its documentation branch only.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
