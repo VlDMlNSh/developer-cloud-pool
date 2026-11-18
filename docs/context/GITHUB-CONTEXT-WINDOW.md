@@ -356,3 +356,18 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent A3 review + meaningful required-review/status-check governance, then production wrapper reading actual runner inputs and independently checking current default HEAD. Keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — PR chain and governance revalidation — 2026-11-18
+- Default `Основной` HEAD unchanged: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Current PRs: #114 OPEN/DRAFT; #116 OPEN/DRAFT head `aea59ae536358a827f05c2262647601ec53c8b33`; #120 OPEN/DRAFT head `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; #124 OPEN/DRAFT head `9d575e4622022b066b7bd5ad3934cfa20a24f616`, base docs branch SHA `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`, GitHub reports `mergeable=false`; #125 OPEN/DRAFT head `69398d497c8e9be3e9fe7241e4dc6d3bc2e4c973`. No PR merged.
+- PR #124 current mergeability differs from stale PR body (body says mergeable=true on an earlier snapshot); root cause NOT VERIFIED, no force-push or rewrite performed.
+- Ruleset #26550182 ACTIVE but requires 0 approvals and no required status checks. PR #114/#125 formal reviews 0. PR #116 has COMMENTED reviews on old heads, not current-head independent approval.
+- Docs branch current head `9d575e4622022b066b7bd5ad3934cfa20a24f616`; Architecture Documentation Validation run [44268988130](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44268988130) COMPLETED/SUCCESS on exact SHA. Commit status API returned pending with zero status entries; no configured required-check evidence.
+- PR #116 exact-head runner and pool contract runs [44264823103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264823103) and [44264822929](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44264822929) SUCCESS, but ephemeral runner smoke only; OS isolation/provider execution remain unqualified.
+- Issue #96 OPEN; Issue #118 OPEN and persistent workspace remains blocked (no authorized host, Cloudflare Zero Trust tunnel/access, backup/restore evidence).
+- Report: [PR chain and governance revalidation](../reports/2026-11-18-next-pr-chain-governance-revalidation.md). Checkpoint: [PR chain and governance checkpoint](../checkpoints/2026-11-18-pr-chain-governance-revalidation.md).
+- Gemini remains optional supplementary capacity per Issue #96 correction; NOT RUN. No secrets read, provider calls, dispatch, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: diagnose PR #124 mergeability against live base branch head, reconcile ancestry/stale evidence non-destructively, then independent A3 review on exact current heads. Dispatch stays disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
