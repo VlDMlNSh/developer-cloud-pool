@@ -3342,3 +3342,18 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: obtain exact-head CI for #130; diagnose trigger/filter without weakening controls; independent review combined stack; then revocation/admission race and durable single-use claim/fencing.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+# CI RECONCILIATION — PR #130 exact-head verification — 2026-11-18
+
+- The earlier empty workflow lookup was transient. PR #130 exact-head merge-context workflow [44299536170](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44299536170) COMPLETED / SUCCESS.
+- Job 134785358773; checkout log confirms merge commit `3272389` = PR #130 HEAD `6175eed8812fe52aad929523caab6b942cd01dd7` merged into base PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`.
+- Node 24.9.0, npm ci, npm run check PASS; Workers-runtime D1 11/11 files, 120/120 tests PASS; second binding smoke 1/1 PASS; frozen schema-0010 fixture 2/2 PASS.
+- Artifact 14424184685, 18,253 bytes, SHA-256 `ce05f89261c7120a95761c5a7068966a752d9d4ac60876d362886cd85d66819f`.
+- PR #130 now exact-head CI VERIFIED in PR merge context; remains OPEN/DRAFT/UNMERGED, reviews 0, inline threads 0. No default-branch merge.
+- Detailed report updated: [PR #130 bootstrap watermark integration](../reports/2026-11-18-pr130-bootstrap-watermark-integration.md).
+- Next: obtain independent review of combined #84 → #86 → #129 → #130 stack; keep PRs draft/unmerged until review and governance verification. Then investigate revocation/admission race and durable single-use claim/fencing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
