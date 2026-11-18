@@ -180,3 +180,14 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Bridge log shows HTTP 200 and graceful shutdown; stderr empty. However diagnostic/result files are missing from artifact. Exact signal/wait status, post-wait process liveness and listener state are NOT VERIFIED; failure assertion remains unidentified.
 - Next bounded action: include `fcc-bridge-shutdown-diagnostics.txt` and `fcc-bridge-result.txt` in the artifact allowlist and surface non-secret numeric/boolean diagnostics as step outputs. Keep acceptance checks unchanged; rerun exact-head qualification.
 - Report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
+
+
+## Follow-up — artifact-backed FCC proxy environment contract finding — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- Current PR #116 head `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416) FAILURE; Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314) SUCCESS.
+- Artifact [14418937574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416/artifacts/14418937574), 31,263 bytes; downloaded SHA-256 matched GitHub digest `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`; all 33 internal SHA256SUMS entries matched.
+- Artifact confirms FCC loopback health and clean shutdown. Bridge server log records only `GET /health`; mock did not produce result/expected-argument files. Root cause: test expects `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`, but generic `exec_allowlist.py` intentionally strips non-allowlisted ambient variables and workflow does not call a trusted FCC proxy-env builder.
+- Pinned FCC upstream commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` has `build_claude_proxy_env` which removes ambient `ANTHROPIC_*` and injects trusted proxy URL/token; managed Claude invocation uses it. This is the reference contract, subject to AGPL license boundary. Current CI step is not a real FCC-to-Claude proxy handoff.
+- Next: implement a separate trusted proxy-env injection contract (loopback URL validation, managed token source, no argv/log/artifact exposure, ambient credential scrubbing) or rename the test to sanitization-only and keep proxy integration NOT VERIFIED. Never add ambient Anthropic variables to the generic allowlist.
+- Provider route/quota, egress gateway, actual Docker worker, hosted-use entitlement, FCC AGPL network review and persistent workspace remain NOT VERIFIED/BLOCKED. Gemini NOT RUN because approved controller path is absent on default branch. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
