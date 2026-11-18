@@ -5,9 +5,13 @@ This package is a local-only proof of D1 transaction and conditional-consume beh
 ## Scope
 
 - Uses the official Cloudflare Workers Vitest integration and local Miniflare/workerd runtime.
-- Uses a synthetic D1 binding and local SQL migration.
-- Tests concurrent first-consumer-wins, replay, immutable binding checks, expiry, malformed input, unavailable storage, ambiguous storage exceptions, D1 batch rollback, atomic trigger-backed claim-plus-outbox creation, deterministic retry identity, same-timestamp pre-consumed replay rejection, and rollback when outbox insertion fails.
-- The consume and claim/outbox adapters return `dispatch: false` even on successful local proofs. The claim/outbox adapter conditionally consumes approval; a SQLite AFTER UPDATE trigger creates the durable claim and deterministic outbox event in the same transaction as the state transition. This prevents a previously consumed approval with a matching timestamp from being attributed to a later claim attempt. It has no GitHub, provider, dispatch, or secret integrations.
+- Uses a synthetic D1 binding and local SQL migrations.
+- Tests concurrent first-consumer-wins, replay, immutable binding checks, expiry, malformed input, unavailable storage, ambiguous storage exceptions, D1 batch rollback, atomic trigger-backed claim-plus-outbox creation, deterministic retry identity, same-timestamp pre-consumed replay rejection, lease reclaim/fencing, and rollback when outbox insertion fails.
+- The consume, claim/outbox, lease, and result adapters return `dispatch: false`. No adapter performs a GitHub, provider, or other external call.
+- The logical-task adapter conditionally consumes approval; a SQLite AFTER UPDATE trigger creates the durable task and task-ready outbox event in the same transaction.
+- The lease adapter uses a unique per-acquisition token, not only a reusable worker ID, for readback.
+- The result adapter accepts one immutable result only while task key, worker, generation, attempt token, and lease expiry all match. A trigger completes the task and creates one deterministic result-effect outbox row atomically. A failed outbox insert rolls back the result and completion.
+- The result outbox is only a durable intent. There is deliberately no dispatcher or external side-effect executor in this proof.
 
 ## Dependency policy
 
@@ -22,7 +26,8 @@ The repository includes a committed `package-lock.json` (lockfileVersion 3). The
 From this directory, with Node.js 24:
 
 ```sh
-npm install
+npm ci --ignore-scripts --no-audit --no-fund
+npm run check
 npm test
 ```
 
@@ -32,23 +37,12 @@ No Cloudflare account API, D1 provisioning, billing, deployment, GitHub dispatch
 
 The migration helper is imported from the package public entrypoint (`@cloudflare/vitest-plugin`), matching the current official D1 Vitest fixture.
 
-Final validation note: D1 proof CI completed successfully with 13/13 tests on the immediately preceding source revision; report metadata is also recorded in `docs/reports/2026-11-06-d1-ledger-proof-implementation.md`.
-
-- Experimental logical-task identity migration (0003) introduces a canonical SHA-256 task key separate from approval IDs, permits multiple individually audited approvals to attach to one task, and enforces one task-level outbox row per task key. The `claimLogicalTask` adapter remains local-only and returns `dispatch: false`.
-- This is an isolated proof extension, not a production schema decision. Lease acquire/renew/reclaim and generation fencing are implemented as a standalone local adapter; they are not integrated into production execution. Exact-head CI evidence is recorded separately.
-
-- Experimental task lease proof (`src/task-lease.mjs`) adds conditional lease acquisition, expiry-based reclaim with monotonically incremented generation, generation/owner-fenced renewal, and generation/owner/expiry-fenced completion. It is not integrated into a Worker and cannot dispatch work.
-- Added local runtime tests for reclaim generation increment, stale worker renewal/finalizer rejection, live-lease non-stealing, and expired lease renewal denial. These tests are authored but remain NOT RUN until exact-head CI returns.
-
-- Hardening pass: task-key binding mismatch now raises a SQLite abort inside the approval-consumption trigger, rolling back the ledger transition rather than leaving a consumed unattached approval. Lease acquisition is capped at five attempts; an expired/pending exhausted task transitions to `dead` and its pending outbox row is dead-lettered in the same database trigger transaction.
-- Added tests for conflict rollback and five-attempt dead-letter behavior. Treat these as pending validation until CI runs on the resulting exact head.
-
-
 ## Lease acquisition-attempt fencing experiment (2026-11-18)
 
-- Migration `0004_add_lease_attempt_identity.sql` adds a nullable `lease_attempt_id` column and lookup index to the isolated logical-task proof table.
-- Every lease acquisition generates a fresh UUID and writes it in the same conditional UPDATE that advances the generation. The follow-up SELECT is constrained by `task_key + lease_attempt_id`, so a same-worker reclaim cannot make an earlier caller read back a later generation.
-- If another acquisition supersedes the first before its readback, the earlier call fails closed with `LEASE_ACQUISITION_SUPERSEDED`; it does not return a lease token it no longer owns.
-- Expiry arithmetic is checked before SQL. Generation increment is bounded by JavaScript's maximum safe integer to avoid returning an imprecise generation.
-- The new Workers-runtime test deterministically injects a same-worker reclaim between the first UPDATE and readback, then asserts the first call is denied and the second attempt token is the only one persisted.
-- This remains an isolated proof. It does not add production integration, external dispatch, provider calls, credentials, or hosted D1 writes. Exact-head CI is pending.
+Migration `0004_add_lease_attempt_identity.sql` adds a nullable `lease_attempt_id` and lookup index. Each successful conditional acquisition writes a fresh UUID and reads back only by task key plus that UUID. Same-worker reclaim between UPDATE and SELECT therefore makes the earlier call fail closed.
+
+## Fenced result and transactional effect-intent experiment (2026-11-18)
+
+Migration `0005_create_fenced_task_result_outbox.sql` adds immutable task results and a result-effect outbox. `commitTaskResult` inserts only when the exact lease tuple is current and unexpired: task key, worker ID, generation, and acquisition-attempt UUID. The insert trigger rechecks that tuple, atomically marks the task completed, clears lease ownership, and creates one deterministic outbox intent. The unique task result and effect ID make identical retries idempotent and conflicting result substitution fail closed.
+
+Tests cover stale worker rejection after same-worker reclaim, current worker acceptance, duplicate retry, result substitution, and rollback if outbox insertion fails. This proves only the local durable commit boundary. It does not prove an external provider or GitHub side effect, because no dispatcher exists and all adapters keep `dispatch: false`.
