@@ -13,7 +13,7 @@
 - Active repository ruleset `26550182` on `Основной`: PR required; deletion and non-fast-forward blocked; review-thread resolution required; zero required approvals; no bypass actors. Branch-protection endpoint returned 403, so no further protection settings are claimed. PR #132 formal reviews 0 and inline threads 0 at last read; independent review and final acceptance NOT VERIFIED. Artifact bytes/digest verification at trusted ingest remains outside this adapter proof. Worker runtime clock is server-owned but database-authoritative cross-region clock/skew is NOT QUALIFIED.
 - No production dispatch, hosted D1 mutation, provider calls, secret reads, deployment, merge, Gemini dispatch or Contour B work.
 - Status: implementation committed; exact-head D1 Workers CI and Contract Validation VERIFIED/SUCCESS; independent review and final governance qualification remain NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: complete exact-head D1 Workers Vitest, inspect job/artifact, then independent security review and governance checks.
+- Next: obtain independent security/architecture review, resolve review threads, qualify database-authoritative clock/skew and artifact-byte digest verification at trusted ingest; only then proceed toward acceptance.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
