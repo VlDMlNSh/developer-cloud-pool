@@ -23,11 +23,21 @@ describe("durable route registry snapshot ledger migration", () => {
     const outOfOrder = snapshot(1002, "c".repeat(64), "registry-v1002", 1_800_000_300);
 
     await insertSnapshot(db, first);
+    await insertSnapshot(db, future);
+
+    // Bootstrap must select the newest already-persisted snapshot. An older
+    // matching snapshot is not a valid initial watermark.
     await expect(db.prepare(`
       INSERT INTO pool_route_registry_state (
         state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
       ) VALUES (1, ?, ?, ?, ?)
-    `).bind(first.epoch, first.digest, first.version, first.acceptedAt).run()).resolves.toBeTruthy();
+    `).bind(first.epoch, first.digest, first.version, first.acceptedAt).run()).rejects.toThrow();
+
+    await expect(db.prepare(`
+      INSERT INTO pool_route_registry_state (
+        state_id, current_epoch, current_bundle_digest, current_registry_version, updated_at
+      ) VALUES (1, ?, ?, ?, ?)
+    `).bind(future.epoch, future.digest, future.version, future.acceptedAt).run()).resolves.toBeTruthy();
 
     await expect(db.prepare(
       "UPDATE pool_route_registry_snapshots SET registry_version = 'tampered' WHERE registry_epoch = ?"
@@ -36,8 +46,7 @@ describe("durable route registry snapshot ledger migration", () => {
       "DELETE FROM pool_route_registry_snapshots WHERE registry_epoch = ?"
     ).bind(first.epoch).run()).rejects.toThrow();
 
-    await insertSnapshot(db, future);
-    // This used to pass: the active pointer is still 1001 even though epoch
+    // This used to pass: the active pointer is still 1003 even though epoch
     // 1003 has already been persisted. Snapshot history must itself be ordered.
     await expect(insertSnapshot(db, outOfOrder)).rejects.toThrow();
 
@@ -56,9 +65,9 @@ describe("durable route registry snapshot ledger migration", () => {
       "SELECT current_epoch, current_bundle_digest, current_registry_version FROM pool_route_registry_state WHERE state_id = 1"
     ).first();
     expect(current).toEqual({
-      current_epoch: future.epoch,
-      current_bundle_digest: future.digest,
-      current_registry_version: future.version
+      current_epoch: next.epoch,
+      current_bundle_digest: next.digest,
+      current_registry_version: next.version
     });
 
     await expect(db.prepare(`
