@@ -2471,3 +2471,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [2026-11-17-next-exact-head-checkout-provenance.md](../reports/2026-11-17-next-exact-head-checkout-provenance.md).
 - Next: close source/integrity and legal review gates (Claude installer bytes, FCC AGPL network-use), then prove effective one-account/no-fallback configuration without reading secrets. Do not run a live provider call before independent A3 review, egress and route/quota qualification.
 
+
+
+## CURRENT AUTHORITATIVE SNAPSHOT — 2026-11-18 Claude provenance and vendor-use gate
+
+- PR #116 current head `a956129f6cf426c887e755c563740fe1813161d9`, OPEN/DRAFT/UNMERGED. Exact-head runner check 44257088134 SUCCESS; workflow/security check 44257088139 SUCCESS. Both checks point to this exact SHA. Three existing PR reviews are owner-authored COMMENTED submissions, not independent approval.
+- Workflow downloads mutable `https://claude.ai/install.sh`, executes it, passes version `2.1.325`, and checks reported CLI version. This does not authenticate installer bytes or verify installed binary against signed manifest. Installer provenance NOT VERIFIED.
+- Anthropic first-party setup docs describe signed `manifest.json` + `manifest.json.sig`, GPG key fingerprint `31DDDE24DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`, and binary SHA-256 verification; signatures available from 2.1.89. No such verification currently occurs in PR #116. See https://code.claude.com/docs/en/setup#binary-integrity-and-code-signing.
+- Anthropic legal/compliance docs require Commercial Terms agreement for preinstalling/running Claude Code in hosted sandboxes or agent infrastructure; each end user must authenticate with their own permitted credential; platform may not pay for, resell or intermediate usage; do not collect/store/intermediate Claude.ai login credentials/session tokens. See https://code.claude.com/docs/en/legal-and-compliance#can-customers-offer-claude-code-in-their-products.
+- Anthropic setup docs state Free claude.ai plan does not include Claude Code; eligible options include paid Claude plans/Console or listed third-party provider. See https://code.claude.com/docs/en/setup#authenticate. This blocks assumption of a free shared Claude Code route. No live login/session/provider call is allowed pending vendor-compliant contract/account model review.
+- PR #116 remains only a no-secret install/resource + FCC loopback + synthetic mock bridge qualification. It is not real Claude task execution, entitlement, account/quota, egress or hosted deployment qualification.
+- Active ruleset #26550182: PR + thread resolution, zero required approvals/checks. Independent A3 review still mandatory. PR #125 head 2ca95775982c711a289881e94eb664d5fe14ed5a and PR #120 documentation branch remain open/draft/unmerged; PR #124 base behind docs candidate.
+- Gemini controller absent from default branch; Gemini dispatch NOT RUN. `POOL_DISPATCH_ENABLED=false`; no secrets read, no provider calls, no deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-18 Claude provenance and hosted-use compliance gate](../reports/2026-11-18-next-claude-provenance-and-hosted-use-gate.md).
+- Next: add signed-manifest verification for the pinned binary (or signed apt repo) without live authentication, then obtain an approved vendor-compliant account/contract model or exclude Claude Code from free executor qualification.
+

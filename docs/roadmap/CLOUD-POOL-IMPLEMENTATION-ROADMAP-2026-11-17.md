@@ -341,3 +341,16 @@ The current no-secret installation/mock qualification does not satisfy this gate
 ## Supersession notice — 2026-11-17
 
 This dated roadmap is retained as a detailed execution sequence and historical record. The single normative system-level architecture is [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md), with current status in [GitHub Context Window](../context/GITHUB-CONTEXT-WINDOW.md). If wording differs, the canonical architecture and later dated amendments control. Persistent Engineering Workspace is a staged capability after the first static GitHub-only Jarvis PWA, but it is mandatory before Contour A acceptance. PR #120 remains OPEN/DRAFT/UNMERGED; this document is not mainline acceptance.
+
+
+## 12. Claude Code provenance and hosted-use compliance gate — 2026-11-18
+
+The current PR #116 qualification workflow fetches and executes the mutable `https://claude.ai/install.sh`, requests version `2.1.325`, and checks only the reported version. It does not authenticate installer bytes or verify the installed binary against Anthropic's signed release manifest. Therefore installer provenance remains NOT VERIFIED.
+
+Anthropic's first-party setup docs describe detached signatures for release `manifest.json`, a published GPG key fingerprint, and SHA-256 verification of the installed binary. Add this verification before treating the CLI binary as provenance-qualified: https://code.claude.com/docs/en/setup#binary-integrity-and-code-signing.
+
+Anthropic's legal/compliance docs require agreement to Commercial Terms when Claude Code is preinstalled/run in hosted sandboxes or agent infrastructure; each end user must authenticate with their own permitted credentials; platform-side payment/resale/intermediation and collection/storage/intermediation of Claude.ai login credentials/session tokens are prohibited absent the specified agreement/conditions. Official setup docs say the Free claude.ai plan does not include Claude Code. Sources:
+- https://code.claude.com/docs/en/legal-and-compliance#can-customers-offer-claude-code-in-their-products
+- https://code.claude.com/docs/en/setup#authenticate
+
+Consequently, do not assume a free shared Claude Code route is available for Cloud Pool. Do not initiate a real session, collect credentials or proxy a subscription login. Obtain vendor/legal confirmation and a compliant end-user identity/contract model, or exclude Claude Code from the free executor set. The current PR #116 proof is limited to no-secret install/resource checks and a synthetic mock bridge; it is not real-agent, entitlement, quota or hosted-use qualification. Keep `POOL_DISPATCH_ENABLED=false`.

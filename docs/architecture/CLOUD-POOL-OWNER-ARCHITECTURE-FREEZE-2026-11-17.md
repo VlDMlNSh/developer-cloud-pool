@@ -219,3 +219,13 @@ Pinned source inspection: FCC `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` is `AGP
 ## FCC account/quota isolation restriction — 2026-11-17
 
 Pinned FCC source and tests show support for numbered API-key lists and `MODEL_FALLBACKS` entries that can move between keys after rate-limit/permission failures. Cloud Pool must not use this behavior across accounts. Each qualified FCC executor profile must contain exactly one provider credential/account, one selected model route, no fallback-model list and no key cycling. Distinct accounts require distinct isolated profiles and independent quota ledgers. Verify configuration metadata without reading or logging secret values. This is an unresolved gate for Issue #115; installation/mock success does not qualify it.
+
+
+## Claude Code hosted-use and installer provenance gate — 2026-11-18
+
+- The latest PR #116 exact-head CI is green, but the workflow still executes mutable `https://claude.ai/install.sh` and verifies only the installed version string `2.1.325`. It does not verify the installed binary against Anthropic's signed manifest. Installer/binary provenance is NOT VERIFIED.
+- First-party Anthropic docs now document signed release manifests and SHA-256 binary verification; implement this before calling the CLI binary provenance-qualified: https://code.claude.com/docs/en/setup#binary-integrity-and-code-signing.
+- First-party Anthropic legal docs state hosted sandboxes/agent infrastructure running Claude Code require agreement to Commercial Terms; each end user must authenticate with their own permitted credential; platform may not pay/resell/intermediate usage; Claude.ai login credentials/session tokens must not be collected, stored or intermediated: https://code.claude.com/docs/en/legal-and-compliance#can-customers-offer-claude-code-in-their-products.
+- Official setup docs state Free claude.ai plan does not include Claude Code: https://code.claude.com/docs/en/setup#authenticate.
+- Therefore no free shared Claude Code route is assumed. No real session, login, provider call, or credential proxy until vendor-compliant contract and per-user identity model are confirmed. If incompatible with free-only constraints, remove Claude Code from free executor eligibility.
+- This does not invalidate the existing synthetic mock/loopback qualification; it limits its scope. Keep `POOL_DISPATCH_ENABLED=false`.

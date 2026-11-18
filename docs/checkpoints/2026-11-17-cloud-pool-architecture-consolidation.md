@@ -196,3 +196,19 @@ Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-
 Canonical architecture: [Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next checkpoint — Claude provenance and hosted-use compliance gate — 2026-11-18
+
+- Reviewed PR #116 exact head `a956129f6cf426c887e755c563740fe1813161d9`. Exact-head checks 44257088134 and 44257088139 SUCCESS.
+- Current workflow downloads `https://claude.ai/install.sh`, executes it, requests version 2.1.325 and checks CLI version string only. Installer script bytes are not authenticated; installed binary is not compared to Anthropic's signed release manifest. Installer provenance NOT VERIFIED.
+- Official Anthropic setup docs document signed `manifest.json`, detached `.sig`, release signing key fingerprint `31DDDE24DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`, and binary SHA-256 comparison; signatures are available from 2.1.89. No implementation in current workflow. Source https://code.claude.com/docs/en/setup#binary-integrity-and-code-signing.
+- Official Anthropic legal/compliance docs require Commercial Terms agreement for hosted sandbox/agent infrastructure running Claude Code, require each end user to authenticate with their own credentials, prohibit paying/reselling/intermediating usage on end users' behalf, and prohibit collecting/storing/intermediating Claude.ai login credentials/session tokens. Source https://code.claude.com/docs/en/legal-and-compliance#can-customers-offer-claude-code-in-their-products.
+- Official setup docs state Free claude.ai plan does not include Claude Code access. This blocks the previously assumed free hosted Claude route absent a compliant alternative contract/provider route. Source https://code.claude.com/docs/en/setup#authenticate.
+- Existing PR #116 proof remains synthetic/no-secret only; no real Claude session or provider call. Keep FCC loopback-only and dispatch disabled.
+- No secret values read; no login, provider call, Gemini dispatch, merge or deployment. `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement signed-manifest verification (or signed apt repository) for pinned CLI bytes, then establish vendor-compliant end-user identity/contract model or exclude Claude Code from free executor qualification.
+
+Canonical architecture: [Cloud Pool Reference Architecture 1.0](../architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md).
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
