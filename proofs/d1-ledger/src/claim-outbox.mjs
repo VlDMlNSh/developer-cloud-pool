@@ -77,7 +77,7 @@ export async function claimLogicalTask(db, binding, now) {
     `).bind(
       now, taskKey, binding.approvalId, binding.ownerNumericId,
       binding.repositoryId, binding.issueNumber, binding.targetSha,
-      binding.profile, binding.envelopeDigest, now
+      binding.profile, binding.executorId, binding.envelopeDigest, now
     ).run();
 
     const attached = await db.prepare(`
