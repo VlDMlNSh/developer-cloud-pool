@@ -3236,3 +3236,12 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Issue #117 CLOSED (FCC loopback lifecycle); next sequence is independent review and A0 gates: Issue #70 route allowlist/quota evidence fail-closed, Issue #38 durable single-use task claims. Issue #118 persistent workspace remains deferred until A0 gates pass.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch stays disabled.
 - Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
+
+
+## A0 D1 registry bootstrap audit — 2026-11-18
+
+- PR #77 `e63f1dda4c046d485ae9c2f08392a1943a06553d`, OPEN/DRAFT/UNMERGED; exact-head run [43707424040](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43707424040) SUCCESS, 115 Workers-runtime tests plus D1 migration/frozen fixture smoke. Artifact [14158817485](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43707424040/artifacts/14158817485), SHA-256 `261a1eff4d93d58598d1b4495bf2f0e9b1632b71b4c9e03fa33b4b9b249f6e5f`.
+- Review finding: initial singleton state can select an older persisted snapshot even if a higher epoch is already present. The state INSERT guard only checks existence/binding, not `MAX(registry_epoch)`. PR #78 fixed append-order against MAX(epoch), but left initial state guard unchanged. Required regression: persist epochs N,N+1 before state creation; N initialization must fail; N+1 succeeds. Comment recorded on PR #77 (ID 6977025915).
+- PR #78 run [43708444649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708444649) SUCCESS; PR #80 run [43708731241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241) SUCCESS; both CLOSED but NOT MERGED. PR #77 OPEN/DRAFT. No formal review on #77.
+- Default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no default branch change. Dispatch remains disabled; no hosted D1, provider calls, secrets or deployment.
+- Next: fix bootstrap max-epoch guard + adversarial regression in clean integration chain; independent review; keep Contour A BLOCKED / NOT ACCEPTED and Contour B DEFERRED.
