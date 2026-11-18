@@ -7,8 +7,10 @@ boundary. The returned HOME is fresh and never populated from the runner HOME.
 """
 from __future__ import annotations
 
+import json
 import os
 import re
+import secrets
 import shutil
 import stat
 import tempfile
@@ -25,6 +27,8 @@ XDG_LAYOUT = {
     "XDG_DATA_HOME": ".local/share",
     "XDG_CACHE_HOME": ".cache",
 }
+OWNER_MARKER = ".cloud-pool-task-home-owner.json"
+
 FORBIDDEN_STORES = (
     ".claude",
     ".fcc",
@@ -43,6 +47,7 @@ class TaskHome:
     task_id: str
     path: Path
     environment: dict[str, str]
+    instance_id: str = ""
 
 
 def _private_directory(path: Path, *, create: bool = False) -> Path:
@@ -78,6 +83,13 @@ def create_task_home(root: str | Path, task_id: str) -> TaskHome:
         home = Path(tempfile.mkdtemp(prefix=f"pool-task-{task_id}-", dir=base))
         os.chmod(home, 0o700)
         home = _private_directory(home)
+        instance_id = secrets.token_hex(32)
+        marker = home / OWNER_MARKER
+        marker_fd = os.open(marker, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
+        with os.fdopen(marker_fd, "w", encoding="utf-8") as marker_file:
+            json.dump({"task_id": task_id, "instance_id": instance_id}, marker_file, sort_keys=True)
+            marker_file.write("\n")
+        os.chmod(marker, 0o600)
         xdg: dict[str, str] = {}
         for variable, relative in XDG_LAYOUT.items():
             directory = home / relative
@@ -96,6 +108,7 @@ def create_task_home(root: str | Path, task_id: str) -> TaskHome:
             task_id=task_id,
             path=home,
             environment={"HOME": str(home), **xdg},
+            instance_id=instance_id,
         )
     except Exception:
         if "home" in locals():
@@ -112,6 +125,21 @@ def destroy_task_home(task_home: TaskHome, root: str | Path) -> None:
     home = task_home.path.resolve(strict=True)
     if home.parent != base or not home.name.startswith(f"pool-task-{task_home.task_id}-"):
         raise TaskHomeError("refusing to remove a path outside this task's private root")
+    if not re.fullmatch(r"[0-9a-f]{64}", task_home.instance_id or ""):
+        raise TaskHomeError("task HOME instance identity is missing or invalid")
+    marker = home / OWNER_MARKER
+    try:
+        marker_info = marker.lstat()
+        if not stat.S_ISREG(marker_info.st_mode) or marker_info.st_uid != os.geteuid() or stat.S_IMODE(marker_info.st_mode) != 0o600:
+            raise TaskHomeError("task HOME ownership marker is unsafe")
+        with marker.open("r", encoding="utf-8") as marker_file:
+            ownership = json.load(marker_file)
+    except TaskHomeError:
+        raise
+    except (OSError, ValueError, TypeError) as exc:
+        raise TaskHomeError("task HOME ownership marker is unavailable or invalid") from exc
+    if ownership != {"task_id": task_home.task_id, "instance_id": task_home.instance_id}:
+        raise TaskHomeError("task HOME descriptor does not match this directory instance")
     shutil.rmtree(home)
 
 
