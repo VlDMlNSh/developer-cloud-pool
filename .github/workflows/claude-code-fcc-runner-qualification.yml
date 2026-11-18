@@ -530,8 +530,9 @@ jobs:
             "fcc_bridge_auth_token_value_persisted=false" \
             >> "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
 
-          kill -INT "$server_pid"
           set +e
+          kill -INT "$server_pid"
+          signal_status=$?
           wait "$server_pid"
           shutdown_status=$?
           set -e
