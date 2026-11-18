@@ -3435,7 +3435,7 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 
 ## 2026-11-18 — bounded D1 result/outbox fencing pass
 - Latest observed default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (commit search; repository default branch `Основной`).
-- Documentation continuation PR #127: OPEN/DRAFT/UNMERGED; initial observed head `f2cb579092ab4b6bd6cd25688dc3dc455e176d46`, advanced by this pass's report/checkpoint/context commits to final observed head `5be9a346f03fe39fd8fcd7abec14cbfff4997155`.
+- Documentation continuation PR #127: OPEN/DRAFT/UNMERGED. Initial observed head was `f2cb579092ab4b6bd6cd25688dc3dc455e176d46`; report, checkpoint and context were updated sequentially during this pass. Always re-read PR #127 head rather than relying on a copied historical SHA.
 - PR #131 lease attempt proof: OPEN/DRAFT/UNMERGED, head `2cefe8d62b99012ff23d45f33e3251996747fb7b`, base `proof/task-identity-fencing-design-2026-11-08` @ `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; no formal reviews or inline threads; exact-head workflow runs/status contexts returned empty (NOT VERIFIED).
 - Result/outbox branch source blobs re-read: adapter `b0d50ae23b73d9b3286d9d784122cd0d8c6ec15a`; migration 0005 `b2be7384f1b427c545eb860a2168b235e6316cda`; tests `7fc3cd14400a488b51096ac4f7642ed193d65287`; workflow `48ca9468a0fb169394a445a340e01e78c121fa41`.
 - Schema lineage blocker: migrations 0001–0004 are present on PR #131 proof lineage but absent from the queried `proofs/d1-ledger/` paths at current default HEAD. Do not transplant only result migration/adapter to default; first reconcile the schema base and history.
