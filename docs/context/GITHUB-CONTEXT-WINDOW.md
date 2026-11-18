@@ -3205,3 +3205,15 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Updated PR #116 workflow to preserve failure diagnostics and mock marker/args/stderr (fixed synthetic test data only), CLI status and HOME/XDG mode/owner metadata in the qualification artifact. No credential values are copied. Workflow commit: `2e944f13818f434cf135602c1c0e82051f1d3fa8`; workflow blob: `ddb8688f362d66ec41ddf0c4990aa9ff3b40b644`.
 - Exact-head runs: Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337) RUNNING at last observation; Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360) RUNNING. Intermediate run [44286918539](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286918539) was CANCELLED after the follow-up commit and is not a verification result.
 - Next: inspect exact-head CI and new artifact if failure persists; do not alter FCC server. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Exact-head Runner Qualification SUCCESS — 2026-11-18
+
+- PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+- Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337) COMPLETED / SUCCESS, job `134741981861`, all 16 steps PASS. Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360) COMPLETED / SUCCESS, job `134741972786`; dispatch false observed; YAML/security invariants PASS.
+- Artifact [14420066410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337/artifacts/14420066410), 34,605 bytes, SHA-256 `17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`, downloaded and inspected. FCC loopback, profile guard 15 tests, synthetic mock CLI, environment filtering, ECC install, signed Claude binary provenance and Docker no-egress primitive all passed.
+- Scope limitations: host runner still has public internet by default; provider egress allowlist NOT IMPLEMENTED; actual Claude agent container execution NOT RUN; real Claude session/task NOT RUN; production dispatch false. The Docker no-egress check is a primitive proof only. FCC AGPL-3.0-only, ECC MIT, Claude Code proprietary terms remain legal/use review items.
+- PR #116 review API currently shows four COMMENTED reviews authored by repository owner account `VlDMlNSh`; no independent reviewer evidence. Branch protection endpoint returned 403, so governance enforcement NOT VERIFIED here. Issue #115 remains OPEN; do not close/accept on CI alone.
+- Issue #117 CLOSED (FCC loopback lifecycle); next sequence is independent review and A0 gates: Issue #70 route allowlist/quota evidence fail-closed, Issue #38 durable single-use task claims. Issue #118 persistent workspace remains deferred until A0 gates pass.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch stays disabled.
+- Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
