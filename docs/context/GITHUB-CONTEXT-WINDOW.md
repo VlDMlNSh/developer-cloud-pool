@@ -248,3 +248,9 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Report: [Task HOME descriptor-instance binding](../reports/2026-11-18-next-task-home-descriptor-instance-binding.md).
 - No secrets, provider calls, Gemini dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: verify both workflows on exact head `a95700c0bf562aa3b0a142720892cff118dfeb9f`, fix any concrete failures, then obtain independent A3 review and resolve legal/provenance gates.
+
+
+### CI live update — exact PR #116 head a95700c0bf562aa3b0a142720892cff118dfeb9f — 2026-11-18
+- Pool Contract Validation [44263708506](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708506): COMPLETED / SUCCESS on exact head.
+- Runner Qualification [44263708443](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443): RUNNING at last poll; job 134662967919. Completed successfully: checkout without persisted credentials, child environment allowlist + Task HOME regression tests, runner baseline, Claude installer/version, uv bootstrap, pinned FCC install/metadata checks, 13 synthetic FCC profile guard tests, and FCC loopback readiness/listener/SIGINT shutdown. Synthetic FCC-to-Claude CLI handoff was IN_PROGRESS; ECC install/provenance and artifact publication were pending. Do not claim full Runner Qualification success until the run concludes.
+- The earlier failed runs 44263548591 and 44263636820 exposed only test-fixture cleanup defects; the current exact-head Task HOME tests now PASS. No production provider calls or secret reads.
