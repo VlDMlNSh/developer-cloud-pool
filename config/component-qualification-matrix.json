@@ -1,0 +1,673 @@
+{
+  "schema_version": "1.0.0",
+  "matrix_id": "developer-cloud-pool-component-qualification",
+  "as_of": "2026-11-14",
+  "repository": "VlDMlNSh/developer-cloud-pool",
+  "branch": "docs/unified-cloud-pool-jarvis-plan-2026-11-14",
+  "authority": "Decision and evidence register; not an installation manifest. Candidate/selected status never implies runtime qualification.",
+  "dispatch_enabled": false,
+  "secret_values_stored": false,
+  "records": [
+    {
+      "id": "pool-actions-runner",
+      "name": "GitHub-hosted Actions runner",
+      "kind": "execution substrate",
+      "source": "https://github.com/actions/runner-images",
+      "decision": "SELECTED_BOOTSTRAP",
+      "scope": "phase-1 cloud execution",
+      "version_pin": "ubuntu-24.04 label; hosted image is maintained by GitHub and is not an immutable image digest",
+      "license": "GitHub-hosted service; runner-images repository MIT",
+      "security": "ephemeral job; least-privilege permissions; do not expose secrets to untrusted code",
+      "runtime_qualification": "EIGHT_READ_ONLY_RESOURCE_PROBES_PASS; FIVE_AZURE_IMAGE_20261111_370_1; THREE_AWS_IMAGE_20261111_127_1; CAPACITY_NOT_QUALIFIED",
+      "evidence": [
+        "PR #68 run 43595157109: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1",
+        "PR #68 run 43595609567: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1",
+        "PR #68 exact-head follow-up run 43600395359: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1; repeated same image/version/region family as run 43595609567",
+        "PR #68 exact-head follow-up run 43600485990: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1, AMD EPYC 9V74; same image/version/region family as runs 43595609567 and 43600395359, with a different observed CPU model",
+        "PR #68 exact-head follow-up run 43601408557: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 85.26 GiB available workspace, Azure northcentralus, image 20261111.370.1, AMD EPYC 7763; fourth observation in the same image/version/region family",
+        "PR #68 exact-head follow-up run 43601557812: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-east-1, image 20261111.127.1, Intel Xeon 6975P-C; second observation in the AWS image/region family",
+        "PR #68 exact-head follow-up run 43601648756: Ubuntu 24.04.5 x64, 15 GiB RAM, 85.26 GiB available workspace, Azure westus3, image 20261111.370.1, AMD EPYC 9V45; first observation in this Azure region",
+        "PR #68 exact-head follow-up run 43601762099: Ubuntu 24.04.5 x64, 4 vCPU, 15 GiB RAM, 88.46 GiB available workspace, AWS us-west-2, image 20261111.127.1, Intel Xeon 6975P-C; first observation in this AWS region"
+      ],
+      "blockers": [
+        "eight observations total: five Azure/image 20261111.370.1 across northcentralus and westus3, and three AWS/image 20261111.127.1 across us-east-1 and us-west-2; CPU models differ (AMD EPYC 7763, EPYC 9V74, EPYC 9V45, Intel Xeon 6975P-C); no reserved capacity or multi-agent packing evidence",
+        "no agent install/benchmark or multi-agent packing test",
+        "hosted runner capacity is ephemeral and not guaranteed reservation"
+      ],
+      "next_gate": "benchmark pinned no-secret worker profiles and repeat resource measurements before capacity admission"
+    },
+    {
+      "id": "pool-supervisor",
+      "name": "Pool Supervisor",
+      "kind": "A0 bootstrap coordinator",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/scripts/pool-supervisor.mjs",
+      "decision": "SELECTED_EXISTING_INTERNAL",
+      "scope": "bootstrap A0 only",
+      "version_pin": "repository commit SHA; current PR head must be recorded per run",
+      "license": "repository license metadata not yet verified",
+      "security": "dispatch fail-closed unless POOL_DISPATCH_ENABLED is literal true; currently false",
+      "runtime_qualification": "HEARTBEAT_ONLY_RUN; DISPATCH_DISABLED; NOT_TRANSACTIONAL_DISPATCH_QUALIFIED",
+      "evidence": [
+        "scripts/pool-supervisor.mjs",
+        ".github/workflows/pool-supervisor.yml",
+        "Supervisor run 43574445786: heartbeat-only success; log confirms POOL_DISPATCH_ENABLED=false and no worker dispatch"
+      ],
+      "blockers": [
+        "default-branch governance not proven",
+        "atomic durable leases and tenant-aware admission absent",
+        "only one DSH profile allowlisted"
+      ],
+      "next_gate": "negative tests on a controlled non-dispatch harness; replace GitHub label read-modify-write authority with durable fenced ledger before any dispatch"
+    },
+    {
+      "id": "github-issues-queue",
+      "name": "GitHub Issues task queue",
+      "kind": "bootstrap queue and audit trail",
+      "source": "https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues",
+      "decision": "SELECTED_BOOTSTRAP_LIMITED",
+      "scope": "single-repository bootstrap queue",
+      "version_pin": "GitHub service",
+      "license": "GitHub service",
+      "security": "labels and issue fields are not a transactional multi-tenant database",
+      "runtime_qualification": "IMPLEMENTED_SCAFFOLD_NOT_TRANSACTIONALLY_QUALIFIED",
+      "evidence": [
+        "scripts/pool-supervisor.mjs"
+      ],
+      "blockers": [
+        "no atomic multi-resource reservation",
+        "no tenant-isolated namespaces",
+        "retention and idempotency semantics incomplete"
+      ],
+      "next_gate": "race/replay tests; keep as bootstrap only"
+    },
+    {
+      "id": "pool-worker-dsh",
+      "name": "Pool Worker DSH headless probe",
+      "kind": "worker profile",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/blob/Основной/.github/workflows/pool-worker.yml",
+      "decision": "SELECTED_PROBE_ONLY",
+      "scope": "no-model, no-provider-secret smoke profile",
+      "version_pin": "DSH 0.2.1-rc.5; Node 24.9.0; Actions pinned to commit SHA",
+      "license": "DSH license/security posture needs upstream review",
+      "security": "probe job receives no provider secrets; immutable target SHA required",
+      "runtime_qualification": "IMPLEMENTED_NOT_RUN_IN_THIS_PASS",
+      "evidence": [
+        ".github/workflows/pool-worker.yml"
+      ],
+      "blockers": [
+        "profile is not a general coding agent",
+        "no provider-backed task execution",
+        "no A3 verification"
+      ],
+      "next_gate": "authorized synthetic smoke task after dispatch governance"
+    },
+    {
+      "id": "dsh-runtime",
+      "name": "DeepSeek Harness",
+      "kind": "agent harness",
+      "source": "https://github.com/deepseek-ai/deepseek-harness",
+      "decision": "CONDITIONAL_PREVIEW",
+      "scope": "headless composition probe only",
+      "version_pin": "0.2.1-rc.5 in existing workflow",
+      "license": "verify exact package/repository license and transitive licenses",
+      "security": "upstream describes developer preview; no security audit claim",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        ".github/workflows/dsh-runtime-evaluation.yml"
+      ],
+      "blockers": [
+        "developer-preview status",
+        "security review absent",
+        "no model-call or production qualification"
+      ],
+      "next_gate": "package provenance, SBOM, permission and sandbox review"
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI and existing multi-agent workflows",
+      "kind": "agent executor",
+      "source": "https://github.com/google-gemini/gemini-cli",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "verify upstream license and dependency notices at selected release",
+      "security": "no pool credential binding or isolated runner profile yet",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "no pool adapter",
+        "credential presence/auth/model probe not performed",
+        "resource footprint unknown"
+      ],
+      "next_gate": "pin release and run secret-free install plus authorized provider probe"
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "kind": "agent executor",
+      "source": "https://docs.claude.com/en/docs/claude-code/overview",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "commercial product terms must be reviewed; not treated as open-source",
+      "security": "tenant-scoped credential delivery and permission profile absent",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "pool adapter absent",
+        "auth/model probe not performed",
+        "terms and resource footprint not recorded"
+      ],
+      "next_gate": "validate supported auth route and terms; no secrets in PR workflows"
+    },
+    {
+      "id": "codex-cli",
+      "name": "OpenAI Codex CLI",
+      "kind": "agent executor",
+      "source": "https://github.com/openai/codex",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "provider-backed coding agent profile",
+      "version_pin": "not pinned in Developer Cloud Pool",
+      "license": "verify exact release license and dependency notices",
+      "security": "pool-specific least-privilege profile and secret scope absent",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub agent registry is reference evidence only"
+      ],
+      "blockers": [
+        "no pool adapter",
+        "auth and model availability not tested",
+        "resource footprint unknown"
+      ],
+      "next_gate": "pin release; install and run non-mutating provider probe"
+    },
+    {
+      "id": "openhands-app",
+      "name": "OpenHands application",
+      "kind": "Jarvis web workspace candidate",
+      "source": "https://github.com/OpenHands/OpenHands",
+      "decision": "PRIMARY_UI_CANDIDATE_NOT_ADOPTED",
+      "scope": "candidate user interface/workspace; subordinate to A0",
+      "version_pin": "no release/commit pinned in pool",
+      "license": "MIT reported in upstream repository; recheck selected commit and bundled components",
+      "security": "multi-tenant isolation, auth, workspace and secret handling not qualified here",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Jarvis repository-reuse decision is research evidence"
+      ],
+      "blockers": [
+        "tenant isolation review absent",
+        "pool task API adapter absent",
+        "deployment and maintenance footprint unmeasured"
+      ],
+      "next_gate": "pin commit and perform threat-model/capability crosswalk"
+    },
+    {
+      "id": "openhands-sdk",
+      "name": "OpenHands Software Agent SDK",
+      "kind": "agent execution SDK",
+      "source": "https://github.com/OpenHands/software-agent-sdk",
+      "decision": "CONDITIONAL_CANDIDATE",
+      "scope": "optional execution adapter; not Jarvis UI or A0",
+      "version_pin": "no pool pin",
+      "license": "verify exact repository/release license",
+      "security": "workspace, tool permissions and tenant context need review",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Wave 24 source pin requires refresh"
+      ],
+      "blockers": [
+        "API parity and release pin not refreshed",
+        "no pool adapter",
+        "no sandbox qualification"
+      ],
+      "next_gate": "refresh commit and evaluate minimal task adapter"
+    },
+    {
+      "id": "ecc-toolbox",
+      "name": "Everything Claude Code (public affaan-m/ECC)",
+      "kind": "agent skills/hooks toolbox",
+      "source": "https://github.com/affaan-m/ECC",
+      "decision": "SELECTIVE_CONDITIONAL",
+      "scope": "selected skills/hooks only; not user's Every Cloud Code controller",
+      "version_pin": "no pool pin",
+      "license": "verify exact upstream license and component licenses",
+      "security": "review hooks, shell commands, MCP permissions individually",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub candidate notes"
+      ],
+      "blockers": [
+        "not A0 or a scheduler",
+        "user's Every Cloud Code name remains a separate unresolved identity"
+      ],
+      "next_gate": "map individual modules and permissions; do not bulk-install"
+    },
+    {
+      "id": "personaljarvis",
+      "name": "PersonalJarvis",
+      "kind": "personal assistant UX candidate",
+      "source": "https://github.com/PersonalJarvis/PersonalJarvis",
+      "decision": "HOLD_PROVENANCE",
+      "scope": "not selected",
+      "version_pin": "none",
+      "license": "canonical upstream provenance and license unresolved in prior review",
+      "security": "not reviewed",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub Wave 22/24 review notes"
+      ],
+      "blockers": [
+        "canonical upstream identity unresolved",
+        "conflicting lookalike snapshots"
+      ],
+      "next_gate": "resolve authoritative repository before reconsideration"
+    },
+    {
+      "id": "agent-browser",
+      "name": "agent-browser",
+      "kind": "browser automation adapter",
+      "source": "https://github.com/vercel-labs/agent-browser",
+      "decision": "CONDITIONAL_LATER",
+      "scope": "isolated browser profile",
+      "version_pin": "not pinned",
+      "license": "verify selected release license",
+      "security": "separate browser profile, no cross-tenant cookies, restricted network egress",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "candidate listed in consolidated plan"
+      ],
+      "blockers": [
+        "browser sandbox and tenant isolation not implemented"
+      ],
+      "next_gate": "browser threat model and isolated smoke tests"
+    },
+    {
+      "id": "playwright",
+      "name": "Playwright",
+      "kind": "browser QA automation",
+      "source": "https://github.com/microsoft/playwright",
+      "decision": "SELECTED_QA_CANDIDATE",
+      "scope": "QA and browser tests, not A0",
+      "version_pin": "not pinned in pool",
+      "license": "Apache-2.0 upstream; recheck selected release",
+      "security": "ephemeral browser context; no shared profiles or credentials",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "candidate listed in consolidated plan"
+      ],
+      "blockers": [
+        "not integrated",
+        "browser runner resources and artifact redaction not measured"
+      ],
+      "next_gate": "pin version and run isolated browser smoke"
+    },
+    {
+      "id": "litellm",
+      "name": "LiteLLM Proxy",
+      "kind": "model gateway",
+      "source": "https://github.com/BerriAI/litellm",
+      "decision": "DEFERRED",
+      "scope": "future gateway only if direct provider routing is insufficient",
+      "version_pin": "none",
+      "license": "verify exact release license and dependencies",
+      "security": "introduces a high-value credential concentration point",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "not needed for first cloud-only bootstrap",
+        "secret broker and gateway hardening absent"
+      ],
+      "next_gate": "security review, tenancy and key isolation design"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph",
+      "kind": "agent orchestration framework",
+      "source": "https://github.com/langchain-ai/langgraph",
+      "decision": "DEFERRED",
+      "scope": "only if a demonstrated workflow need exceeds GitHub-native orchestration",
+      "version_pin": "none",
+      "license": "verify selected package/release terms",
+      "security": "state persistence and tenant scoping need review",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "no proven need; risks duplicate orchestration beside A0"
+      ],
+      "next_gate": "benchmark against simpler existing workflow before adoption"
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "kind": "durable state store",
+      "source": "https://github.com/postgres/postgres",
+      "decision": "DEFERRED_UNTIL_GAP_PROVEN",
+      "scope": "future durable queue/quota/lease state",
+      "version_pin": "none",
+      "license": "PostgreSQL License",
+      "security": "requires managed lifecycle, backup, tenant row-level access and migrations",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "GitHub-native bootstrap may suffice initially; no scale evidence for DB yet"
+      ],
+      "next_gate": "introduce only after atomicity/durability tests prove a gap"
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "kind": "integration automation",
+      "source": "https://github.com/n8n-io/n8n",
+      "decision": "OPTIONAL_LATER",
+      "scope": "non-privileged notifications and integrations only",
+      "version_pin": "none",
+      "license": "source-available Sustainable Use License; not OSI open source; check use case",
+      "security": "must not own privileged dispatch or hold broad provider secrets",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "not required for pool bootstrap"
+      ],
+      "next_gate": "review license and isolate from A0"
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram Bot API",
+      "kind": "user intake connector",
+      "source": "https://core.telegram.org/bots/api",
+      "decision": "LATER_CONNECTOR",
+      "scope": "identity-bound user notifications/intake",
+      "version_pin": "hosted API",
+      "license": "official API documentation; not a bundled code dependency",
+      "security": "bind chat identity to tenant principal; no command-only authorization",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "tenant identity and scoped API not implemented"
+      ],
+      "next_gate": "identity binding and replay/rate-limit tests"
+    },
+    {
+      "id": "meta-instagram",
+      "name": "Meta Instagram APIs",
+      "kind": "social connector",
+      "source": "https://developers.facebook.com/docs/instagram-platform/",
+      "decision": "LATER_CONNECTOR",
+      "scope": "official supported professional-account operations only",
+      "version_pin": "Meta Graph API version must be pinned at implementation",
+      "license": "official API terms apply",
+      "security": "OAuth scopes, app review and account eligibility required",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "consolidated architecture decision"
+      ],
+      "blockers": [
+        "no approved app/scopes or tenant OAuth flow"
+      ],
+      "next_gate": "official API permission and app-review checklist"
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama/local model runtime",
+      "kind": "local model runtime",
+      "source": "https://github.com/ollama/ollama",
+      "decision": "EXTERNAL_NODES_LATER",
+      "scope": "optional user-owned or owned external compute after pool acceptance",
+      "version_pin": "none",
+      "license": "verify release and model-specific licenses separately",
+      "security": "untrusted worker by default; no central tenant secrets; explicit opt-in",
+      "runtime_qualification": "NOT_RUN",
+      "evidence": [
+        "MediaHub local-agent fabric is reference only"
+      ],
+      "blockers": [
+        "cloud pool must launch first",
+        "no remote worker trust/attestation contract"
+      ],
+      "next_gate": "separate worker-admission and isolation design"
+    },
+    {
+      "id": "quota-ledger",
+      "name": "Pool quota ledger",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED",
+      "scope": "pure provider quota state machine; route eligibility and authoritative reset/cooldown semantics; no durable shared ledger or live router",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
+      "license": "internal project",
+      "security": "atomic reservation, least-privilege secret refs, paid fallback off",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; NOT_INTEGRATED_WITH_DISPATCH",
+      "evidence": [
+        "scripts/provider-quota-ledger.mjs in PR #29",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
+      ],
+      "blockers": [
+        "pure in-memory transitions only; no durable shared ledger",
+        "not wired into A0 or provider execution",
+        "provider accounts/quota domains remain unverified",
+        "no provider credential broker"
+      ],
+      "next_gate": "integrate with authoritative task admission and provider evidence after branch reconciliation"
+    },
+    {
+      "id": "tenant-isolation",
+      "name": "Tenant isolation boundary",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "tenant-bound repos, keys, memory, workspaces and artifacts",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "cross-tenant denial tests and secret non-disclosure",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture section 11.5"
+      ],
+      "blockers": [
+        "no tenant API or isolation implementation"
+      ],
+      "next_gate": "implement two-tenant adversarial qualification"
+    },
+    {
+      "id": "task-dag",
+      "name": "Task DAG and durable lifecycle",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
+      "scope": "idempotency, dependencies, leases, cancellation, retries, checkpoints",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "immutable SHA, authenticated approval provenance, replay protection",
+      "runtime_qualification": "PARTIAL_LOCAL_ATTEMPT_LIFECYCLE_PROOF; GENERAL_DAG_NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #54 50-way logical task contention and immutable attempt/lease tests",
+        "PR #67 local Workers/D1 projection proof run 43182768560"
+      ],
+      "blockers": [
+        "attempt lifecycle exists in local D1 proof but no general dependency DAG",
+        "not hosted or integrated with A0",
+        "trusted issuer and time missing"
+      ],
+      "next_gate": "reconcile attempt store as one canonical task lifecycle; add dependency graph only where required"
+    },
+    {
+      "id": "a3-verifier",
+      "name": "Independent A3 verifier",
+      "kind": "internal required capability",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool",
+      "decision": "INTERNAL_GAP_REQUIRED",
+      "scope": "separate-context result verification and evidence manifest",
+      "version_pin": "not implemented",
+      "license": "internal project",
+      "security": "worker cannot self-approve; immutable target SHA",
+      "runtime_qualification": "NOT_IMPLEMENTED",
+      "evidence": [
+        "PR #68 architecture sections 11.2 and 11.8"
+      ],
+      "blockers": [
+        "no pool A3 executable verifier"
+      ],
+      "next_gate": "independent verifier job and tamper-evident evidence tests"
+    },
+    {
+      "id": "d1-claim-attempt-projection",
+      "name": "Cloudflare Workers + D1 claim / attempt / projection proof",
+      "kind": "transactional task lifecycle prototype",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/67",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
+      "scope": "transactional claim/outbox, immutable attempts, fenced leases, projection retry and receipt-bound delivery proof only",
+      "version_pin": "local proof package lock; PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd",
+      "license": "Cloudflare Workers/D1 service terms; local test dependencies pinned in package-lock",
+      "security": "synthetic local D1; no hosted service, production issuer, trusted time or live GitHub write",
+      "runtime_qualification": "LOCAL_WORKERS_D1_84_TESTS_PASS; UPGRADE_BINDING_1_PASS; FROZEN_FIXTURE_2_PASS; NOT_HOSTED",
+      "evidence": [
+        "PR #39 12-way local conditional consume proof",
+        "PR #54 50-way logical-task contention proof",
+        "PR #67 exact-head run 43600901068: 84 Workers-runtime tests passed across 6 files",
+        "PR #67 exact-head upgrade-binding smoke: 1 passed; frozen schema-0010 fixture smoke: 2 passed",
+        "PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd remains draft and unmerged"
+      ],
+      "blockers": [
+        "local Workers-runtime proof only; hosted D1 not provisioned or qualified",
+        "issuer authentication, trusted time, nonce and revocation absent",
+        "A0 admission contract uses injected test authorities and is not integrated with Supervisor/Worker",
+        "production quota evidence and atomic durable capability consumption are not qualified",
+        "projection API integration remains local/fake; no dispatch"
+      ],
+      "next_gate": "design and test one atomic A0 admission transaction over the existing D1 task/attempt ledger; keep dispatch false and do not provision hosted D1 without explicit authorization"
+    },
+    {
+      "id": "provider-slot-inventory",
+      "name": "Provider slot inventory (24 cloud routes)",
+      "kind": "provider/model/credential-reference registry",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/29",
+      "decision": "INVENTORY_ONLY",
+      "scope": "24 cloud slots; local Ollama excluded; no automatic provider independence assumption",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
+      "license": "inventory data; provider-specific API terms apply separately",
+      "security": "opaque credential references only; secret values and presence were not checked",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; ALL_24_ACCOUNT_AND_QUOTA_DOMAINS_UNVERIFIED",
+      "evidence": [
+        "config/provider-slot-inventory.json in PR #29",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
+      ],
+      "blockers": [
+        "verified account identities 0",
+        "verified quota domains 0",
+        "provider/model availability and billing status not checked",
+        "no credential broker or live routing"
+      ],
+      "next_gate": "reconcile provider accounts and quota-domain evidence without revealing key material"
+    },
+    {
+      "id": "provider-quota-placement",
+      "name": "Provider quota ledger and agent placement",
+      "kind": "pure routing/quota/admission/capacity primitives",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/29",
+      "decision": "LOCAL_POLICY_IMPLEMENTATION_NOT_INTEGRATED",
+      "scope": "route cooldown/reset evidence, 20-slot cap, admission and placement policy",
+      "version_pin": "PR #29 head e4c8d642bbc054e7c52b391356965b492dad32b4",
+      "license": "internal code; no external runtime adopted",
+      "security": "pure state machine; provider reset requires provider-authoritative evidence; no secrets",
+      "runtime_qualification": "43_POLICY_TESTS_PASS; NO_LIVE_PROVIDER_OR_SHARED_LEDGER",
+      "evidence": [
+        "scripts/provider-quota-ledger.mjs",
+        "scripts/agent-placement.mjs",
+        "scripts/runner-capacity-profile.mjs",
+        "PR #29 exact-head CI run 43031920223: 43 tests passed"
+      ],
+      "blockers": [
+        "not connected to actual agent dispatch",
+        "no durable shared ledger or authenticated provider gateway",
+        "single runner sample cannot satisfy verified capacity evidence",
+        "no provider account/quota-domain proof"
+      ],
+      "next_gate": "integrate policy into A0 admission and authoritative quota state only after source reconciliation"
+    },
+    {
+      "id": "jarvis-hono-console",
+      "name": "Jarvis Hono web console prototype",
+      "kind": "user-facing control panel",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/25",
+      "decision": "DEMO_PROTOTYPE_NOT_PRODUCTION",
+      "scope": "static demo dashboard and fail-closed Hono API prototype",
+      "version_pin": "PR #25 head 8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85",
+      "license": "verify dependencies and deployment license notices at adoption",
+      "security": "synthetic auth/fixture tests; no production OAuth, tenant isolation or deployed service",
+      "runtime_qualification": "PROTOTYPE_CI_PASS; NO_HOSTED_DEPLOYMENT",
+      "evidence": [
+        "PR #25 exact-head runs 42228269676 and 42228269689 succeeded",
+        "PR #24 OpenAPI contract candidate",
+        "PR #30 oauth4webapi synthetic compatibility proof",
+        "PR #61 isolated local D1 session/auth tests"
+      ],
+      "blockers": [
+        "OAuth issuer/session lifecycle and account allowlist need production implementation and review",
+        "no tenant-aware task API integration",
+        "not deployed; no live secret store or service binding"
+      ],
+      "next_gate": "reconcile Hono/API/auth stack; threat-model, integrate read-only tenant-scoped APIs, then deployment approval"
+    },
+    {
+      "id": "a0-admission-contract",
+      "name": "A0 fail-closed admission contract harness",
+      "kind": "local admission policy contract proof",
+      "source": "https://github.com/VlDMlNSh/developer-cloud-pool/pull/67",
+      "decision": "LOCAL_PROOF_NOT_HOSTED",
+      "scope": "immutable task/attempt binding, owner-approval authority interface, single-use capability contract, cost/quota fail-closed checks and dispatch-off invariant",
+      "version_pin": "PR #67 exact head a53f6232bd5b50d3e150addf528b8e722002f9dd",
+      "license": "internal project code; test dependencies pinned in proofs/d1-ledger/package-lock.json",
+      "security": "isolated tests with injected mock authorities; no production cryptographic verifier, trusted clock, durable replay store, provider quota source or Supervisor/Worker integration",
+      "runtime_qualification": "14_A0_CONTRACT_TESTS_PASS; INJECTED_AUTHORITIES; NOT_PRODUCTION_INTEGRATED",
+      "evidence": [
+        "proofs/d1-ledger/src/a0-admission-contract.mjs",
+        "proofs/d1-ledger/test/a0-admission-contract.test.ts",
+        "PR #67 exact-head run 43600901068: A0 admission contract 14 tests passed",
+        "Successful outcomes remain queue-only and dispatch:false; dispatchEnabled=true is rejected"
+      ],
+      "blockers": [
+        "owner approval verification is a test double, not a qualified cryptographic issuer",
+        "single-use capability consumer is injected and not proven atomic/durable",
+        "quota-domain evidence is mocked and not provider-authoritative",
+        "not connected to a single durable A0 admission transaction or production Supervisor/Worker"
+      ],
+      "next_gate": "integrate the contract with the existing durable task/attempt ledger through one atomic admission transaction; retain dispatch:false and add failure/replay/concurrency tests"
+    }
+  ],
+  "provider_cost_policy": {
+    "effective_for": "initial_launch",
+    "paid_provider_apis": "DENY",
+    "openai": "DEFERRED_REQUIRES_EXPLICIT_OWNER_APPROVAL",
+    "anthropic_api": "DENY",
+    "claude_code": "FREE_CLAUDE_CODE_ROUTE_ONLY; if unavailable or unsupported, BLOCK profile; never use Anthropic API",
+    "local_models": "OLLAMA_LOCAL_ONLY_AS_QUALIFIED; includes Llama",
+    "external_providers": "OFFICIAL_FREE_QUOTAS_OR_FREE_ROUTES_ONLY",
+    "quota_exhaustion": "QUEUE_DEFER_OR_ROUTE_TO_QUALIFIED_FREE_OR_LOCAL_PROFILE",
+    "account_or_key_rotation_to_evade_limits": "PROHIBITED",
+    "unknown_cost_class": "FAIL_CLOSED",
+    "allowed_cost_classes_initial": [
+      "free_quota",
+      "local"
+    ],
+    "deferred_cost_classes": [
+      "paid_explicitly_approved"
+    ],
+    "secret_values_stored": false,
+    "owner_decision_date": "2026-11-14"
+  }
+}
