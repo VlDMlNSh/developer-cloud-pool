@@ -14,6 +14,7 @@ function valid(commentId = 6912000001) {
     trustedDefaultHeadSha: TARGET,
     controllerCodeSha: CODE,
     controllerRunId: "43890000001",
+    controllerRunAttempt: "1",
     approvalId: "approval-" + commentId,
     profile: "dsh-headless-probe",
     repository: {
