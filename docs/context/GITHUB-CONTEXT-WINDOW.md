@@ -3112,3 +3112,15 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Therefore Gemini agents were NOT RUN. No alternative workflow, direct provider call, secret inspection or controller bypass was attempted.
 - PR #126 remains OPEN/DRAFT/UNMERGED at `f69f286b5b5a3de8dfdd80ed581859851ce271e5`; PR #120 remains OPEN/DRAFT/UNMERGED at `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; Issue #115 remains OPEN (actual free route/account/quota not qualified); Issue #118 remains OPEN (persistent workspace gates unresolved).
 - At the latest poll, Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) remained IN_PROGRESS; Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS. Do not infer runner qualification from the contract result.
+
+
+## Latest execution — explicit FCC shutdown diagnostics — 2026-11-18
+
+- Latest report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md); latest checkpoint: [2026-11-18 Contour A broad pass](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- PR #116 current observed head `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED. Workflow blob `34a3f73909d2b637112b77cc5fb0e54580d84417` read back.
+- Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) FAILED on prior head `570d78b7d3f7972b7458de9e69f6117ae642896a`. FCC loopback passed, synthetic bridge shutdown failed. Artifact [14418074350](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244/artifacts/14418074350), 31,271 bytes, digest `sha256:3c94c889560b7a3c8e40a1d88d10fbdf6a5ad94977331ef9bc2c5ad0865a910f`; archive not independently inspected.
+- The prior diagnostics file was written but its values did not appear in job logs. Commit `c4839850a5b015a56a8ca2f591c11e0aeee7c950` explicitly prints that file before fail-closed assertions; no pass criteria or security controls were relaxed.
+- Exact-head Runner Qualification [44285187440](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187440) and Pool Contract Validation [44285187389](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187389) were IN_PROGRESS at cutoff; NOT VERIFIED.
+- Gemini controller workflow remains 404 on default branch; Gemini agents NOT RUN. PR #126/#120 remain OPEN/DRAFT/UNMERGED; Issue #115/#118 OPEN.
+- No secrets read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: inspect run 44285187440 diagnostics and artifact; identify the exact signal/wait/listener state before any behavioral change. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
