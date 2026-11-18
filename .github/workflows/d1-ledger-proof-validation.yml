@@ -29,6 +29,7 @@ on:
   pull_request:
     branches:
       - "Основной"
+      - "fix/admission-registry-max-epoch-guard-2026-11-18"
       - "proof/d1-single-use-ledger-retry-2026-11-06"
       - "proof/d1-claim-outbox-atomic-2026-11-07"
       - "proof/task-identity-fencing-design-2026-11-08"
