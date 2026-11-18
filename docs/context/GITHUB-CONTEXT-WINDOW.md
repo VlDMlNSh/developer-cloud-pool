@@ -3245,3 +3245,15 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - PR #78 run [43708444649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708444649) SUCCESS; PR #80 run [43708731241](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43708731241) SUCCESS; both CLOSED but NOT MERGED. PR #77 OPEN/DRAFT. No formal review on #77.
 - Default HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no default branch change. Dispatch remains disabled; no hosted D1, provider calls, secrets or deployment.
 - Next: fix bootstrap max-epoch guard + adversarial regression in clean integration chain; independent review; keep Contour A BLOCKED / NOT ACCEPTED and Contour B DEFERRED.
+
+
+## Independent qualification artifact integrity and scope audit — 2026-11-18
+
+- PR #116 exact head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; Runner Qualification run 44286955337 / job 134741981861 COMPLETED/SUCCESS; all job steps SUCCESS. Pool Contract Validation run 44286955360 COMPLETED/SUCCESS; dispatch remained false.
+- Artifact 14420066410 independently downloaded: GitHub digest and local SHA-256 both `17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; ZIP integrity PASS; all 43 internal SHA256SUMS entries verified. Artifact read-back confirms signed Claude distribution provenance, FCC profile/loopback lifecycle, synthetic wrapper-to-mock bridge, ECC skills and Docker no-egress primitive.
+- Limits: GitHub runner host egress NOT VERIFIED/public by default; provider egress allowlist NOT IMPLEMENTED; actual CODE executor-in-container NOT RUN; real Claude session/task NOT RUN; production dispatch false. Artifact integrity is verified, but does not qualify a production worker.
+- PR #126 head f69f286b5b5a3de8dfdd80ed581859851ce271e5 exact-head contract run 44275194245 SUCCESS, still OPEN/DRAFT/UNMERGED. PR #120 head e93fb34a1f3430ca2db32fbf2e631903aac9570f architecture run 44260483070 and contract run 44260483194 SUCCESS, still OPEN/DRAFT/UNMERGED.
+- Default `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. Active ruleset 26550182 requires PR, blocks deletion/non-fast-forward, requires review-thread resolution, has 0 required approvals and no bypass actors.
+- Issue #118 OPEN/deferred: server #3, Access/Tunnel and persistent workspace/backup-restore evidence absent. Gemini controller workflow absent on default (404); Gemini NOT RUN. No secrets read, provider calls, deployment or production dispatch.
+- PR #127 documentation branch `docs/next-2026-11-18-worker-sandbox-fit` head `fb4ac30442a8d41f6588282485086bd8ee39d08e`, OPEN/DRAFT/UNMERGED; exact-head CI NOT VERIFIED. This documentation update does not change default.
+- Next: qualify a synthetic executor actually running inside the Docker sandbox, with no credentials/provider egress, bounded resources, read-only filesystem, non-root/capability restrictions, task/target binding and deterministic termination. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
