@@ -88,9 +88,10 @@ export async function claimLogicalTask(db, binding, now) {
     const attached = await db.prepare(`
       SELECT t.task_key, t.state, t.lease_generation,
              o.outbox_id, o.status AS outbox_status,
-             a.envelope_digest, a.executor_id AS approval_executor_id
+             a.envelope_digest, approval.executor_id AS approval_executor_id
         FROM pool_tasks t
         JOIN pool_task_approvals a ON a.task_key = t.task_key
+        JOIN pool_approval_ledger approval ON approval.approval_id = a.approval_id
         JOIN pool_task_delivery_outbox o ON o.task_key = t.task_key
        WHERE t.task_key = ? AND a.approval_id = ?
     `).bind(taskKey, binding.approvalId).first();
