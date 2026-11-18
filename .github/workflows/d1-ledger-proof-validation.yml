@@ -20,6 +20,7 @@ on:
       - "proof/d1-claim-outbox-atomic-2026-11-07"
       - "proof/d1-lease-attempt-fencing-2026-11-18"
       - "proof/d1-result-outbox-fencing-2026-11-18"
+      - "proof/d1-result-outbox-clean-2026-11-18"
     paths:
       - "proofs/d1-ledger/**"
       - ".github/workflows/d1-ledger-proof-validation.yml"
