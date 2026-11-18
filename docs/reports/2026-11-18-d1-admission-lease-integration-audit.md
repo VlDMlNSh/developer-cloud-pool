@@ -143,3 +143,78 @@ The package README, package manifests, lease/attempt modules, and migrations 000
 - Re-run all relevant package suites, migration upgrade smoke, projection delivery/reconciliation and contract validation on exact final head.
 
 This inventory is preparatory evidence only. No profile code or migration has been changed yet.
+
+
+## Pass 5 — broad integration execution plan and deeper source audit (2026-11-18)
+
+### Verified current evidence
+- Current default branch HEAD was re-read and remains `68183828cf7934e89109310c8f99281be4eb7ed8`; no new default commits appeared during this pass.
+- PR #139 remains the clean-base legacy-retirement candidate; its exact-head Pool Contract Validation run `44349941243` completed SUCCESS. This removes the legacy label-driven DSH dispatch path only in the proposed PR; it is not yet on default.
+- PR #116 (Claude Code + ECC + FCC no-secret runner qualification) is OPEN/DRAFT at `2e944f13818f434cf135602c1c0e82051f1d3fa8`, compares 74 ahead / 2 behind current default (merge base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`), and has exact-head successful runs `44286955360` (Pool Contract Validation) and `44286955337` (Claude Code + ECC + FCC Runner Qualification). These prove only the scoped no-secret runner/install tests at that head, not a production executor or D1 profile identifier.
+- PR #72 is OPEN/DRAFT and its current head is `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`, stacked on PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`. No exact-head PR workflow runs were returned for the current #72 head. PR #67's successful runs `43600901063` and `43600901068` belong to its own earlier exact head, not #72's current head.
+- The frozen executor is described as Claude Code + ECC + FCC, but no canonical D1/worker profile identifier literal is present in the retrieved prior context or PR #116 source. PR #116's `.fcc` directory is a filesystem profile path, not a declared immutable executor-profile ID. Do not invent a slug or silently equate `.fcc` with a D1 capability profile.
+
+### D1 migration and adapter findings from source
+1. Migration 0002 creates the historical per-approval `pool_task_claims` and `pool_task_outbox` path (`pool.task.claimed`). Migration 0003 adds logical `pool_tasks`, `pool_task_approvals`, and task-level `pool_task_delivery_outbox` (`pool.task.ready`) but deliberately retains the old claim/outbox trigger for approvals without `task_key`. The package therefore contains two queue/outbox paths. The composite #72 adapter uses the task-level path, but the old path remains executable through the lower-level claim/consume APIs. The integration must explicitly mark the legacy path non-authoritative or remove it from the admitted flow with regression coverage; do not claim the schema has only one outbox table.
+2. Migration 0011 adds only `admission_id` to `pool_approval_ledger`; it does not add the full qualification/evidence/model/idempotency binding columns described in the normative contract. The admission row stores qualification ID and evidence digest, while the remaining identity is reconstructed by joins to approval and qualification rows. Decide whether the normative contract should be narrowed to this normalized binding or the schema expanded; whichever is chosen, enforce immutable binding at the database boundary.
+3. Migration 0001 constrains approval `profile` to `dsh-headless-probe`; migration 0011 constrains `capability_profile` to the same retired value. The composite adapter, A0 evaluator, consume/claim adapters and tests also hardcode it. A corrected clean-base proof must change the source migration chain and all 14 identified source/test files together. The exact replacement profile ID is currently UNDEFINED in repository evidence; this is a hard blocker for profile-bound schema/code edits, not permission to invent a value.
+4. Migration 0011 creates append-only guards for admissions and receipts, and immutable route identity/revocation guards. It does not add a database trigger freezing all approval identity columns (owner, repository, issue, target SHA, profile, envelope digest, expiry) after issuance/consumption. The next migration must enforce that binding or provide an equally strong schema-level invariant, with tests attempting direct SQL mutation.
+5. Migration 0011's route status supports `qualified` and `revoked`; the normative contract also names `suspended` as a deny state. The next schema revision must model suspension explicitly and make qualification status transitions monotonic and fail-closed, or update the contract with an explicit reason why suspension is represented elsewhere.
+6. The existing task-level outbox is initially created by the approval-consumption trigger and later bound to admission/attempt/evidence in the same D1 batch. Preserve this transaction sequence and its CHECK-backed receipt assertion; test every intermediate failure and ensure no duplicate queue intent.
+7. Migration 0012 lease guard from PR #111 is compatible in intent with migration 0004's lease-acquired trigger: a `prepared -> running` transition must match the task's current attempt, lease attempt, non-null owner, positive generation and unexpired lease at `started_at`. Port it as 0012 only after adding exact migration-upgrade tests for the full 0001–0012 chain.
+8. `src/task-attempts.mjs` permits expired-running-attempt takeover when caller supplies `{resumable: true}`. A caller boolean is not independent evidence that the prior executor stopped or that replay is safe. Replace this with a durable, typed, separately authorized reconciliation decision bound to task, attempt and prior lease generation; expiry alone and a boolean must never authorize takeover.
+9. The older `src/task-lease.mjs` API can reclaim an expired task lease without the immutable-attempt lifecycle checks. Keep it explicitly segregated as a legacy proof primitive or remove it from any composed/public admission path. Do not mix it with `task-attempts.mjs` semantics.
+10. `claimLogicalTask()` and `consumeApproval()` remain callable as separate low-level APIs, so they can create a consumed task/outbox without an immutable attempt. The integrated controller must call only the single composite admission boundary; low-level primitives should be documented/tested as non-authorizing internal proof helpers, not alternative admission routes.
+11. The route-qualification row is assumed to have been inserted by a trusted authority. No qualified writer, cryptographic issuer verifier, canonical evidence serialization or live provider/account/quota proof exists in this package. Admission must remain blocked until that authority boundary is implemented or explicitly provided by a separately qualified service.
+12. The existing exact retry path checks that route evidence is still active/fresh before returning `ADMISSION_ALREADY_COMMITTED`. Add a test and make the intended semantics explicit for an already-committed receipt whose route later expires or is revoked: a read-only replay may return the immutable historical receipt, but must never authorize new execution or queue delivery.
+
+### Maximum-width, dependency-ordered next pass
+
+**Gate 0 — freeze immutable inputs and scope**
+- Pin current default SHA, owner/repository numeric identity, issue #140, exact profile ID, profile version, allowed model/provider policy and task-key canonicalization.
+- Resolve the missing executor profile ID from an owner-authored source. Until then, no D1 profile constraint or allowlist replacement is to be guessed.
+- Keep dispatch=false and executionAuthorized=false in all fixtures, adapters, workflow environments and receipts.
+
+**Gate 1 — retire legacy paths**
+- Carry PR #139's exact-head retirement changes forward only after rechecking base/head and required checks.
+- Explicitly prevent the old per-approval claim/outbox API from acting as a second admission path.
+- Confirm the DSH worker remains inert and the supervisor has no label mutation, dispatch, write token or API path even if the old variable is set true.
+
+**Gate 2 — qualify the CODE executor boundary**
+- Reconcile PR #116 file-by-file onto current default; retain signed Claude release verification, isolated task HOME, strict child environment, FCC single-account/no-fallback guard, and synthetic secret-redaction tests.
+- Verify runtime sandbox/effective egress controls separately from runner inventory; a no-secret install pass is not proof of a task execution sandbox.
+- Record pinned tool/runtime versions, image/action digests, runner architecture, and exact workflow run metadata. No provider credential values or live model call.
+
+**Gate 3 — canonical D1 schema and atomic admission**
+- Selectively port the complete #67/#72 package, not their stale branch ancestry.
+- Correct profile constraints only after Gate 0 supplies the exact profile ID.
+- Choose one authoritative task-ready outbox; deprecate the approval-keyed legacy path in code/tests or preserve it only as a clearly isolated legacy fixture.
+- Enforce immutable approval identity, route qualification identity, admission identity and task/outbox binding at SQL level.
+- Model qualified/suspended/revoked status with monotonic transitions and version fencing.
+- Add migration 0012 for current-attempt lease requirement, plus durable reconciliation authorization; remove caller-boolean resumability.
+- Preserve one atomic D1 batch: conditional approval consume + trigger-created task/approval/outbox + admission + immutable attempt + outbox evidence binding + CHECK-backed commit receipt. All failures roll back; exact replay resolves durable receipt without creating new attempt/outbox.
+
+**Gate 4 — event and controller provenance**
+- Port the pure owner-only `/next` predicate from PR #112 with adversarial tests for sender ID, repo owner/repo IDs, issue number, exact command, event/action and comment identity.
+- Port PR #125's GitHub Actions context adapter only after correcting its target-SHA flaw: runner `GITHUB_SHA` is not an independent trusted current-default-head lookup. Read the current default ref through an authenticated GitHub API source and bind both expected ref and actual workflow code SHA separately.
+- Bind run ID, run attempt, workflow ref/SHA, event SHA, source comment ID, numeric owner/repository IDs, target SHA, profile ID, approval ID and D1 receipt. Reject stale, cross-repo, replayed and ambiguous context.
+- Add a durable controller lease with owner/generation/expiry/read-back and crash recovery. No caller boolean (`lockHeld`, `resumable`, etc.) may grant authority.
+
+**Gate 5 — complete adversarial acceptance matrix**
+- Migration upgrade from frozen 0010 fixture through 0012; schema introspection and trigger ordering.
+- Concurrent approval consumption/admission (12+ contenders); exact retry after lost batch response; duplicate IDs and idempotency keys.
+- Direct SQL mutation of approval, route, admission, task, attempt and outbox identities.
+- Route evidence unknown/stale/suspended/revoked, issuer/account/model/provider/quota-domain substitution, evidence digest mismatch and revocation race.
+- Task-key collision, attempt insertion failure, outbox bind failure, receipt assertion failure, D1 batch exception/ambiguous outcome.
+- Lease expiry, stale owner, stale generation, prepared->running without lease, indeterminate attempt, authorized reconciliation, stale finalizer and retry after indeterminate.
+- Event spoofing, non-owner `/next`, wrong repo/issue, stale default SHA, forged workflow context, run-attempt mismatch, duplicate source comment and duplicate admission.
+- Confirm no secret values, provider calls, dispatch or external side effects in all tests.
+
+**Gate 6 — exact-head CI and evidence publication**
+- Run Pool Contract Validation, isolated D1 Workers-runtime matrix, syntax/security checks, migration upgrade binding, frozen upgrade fixture, CODE runner qualification and provenance/controller tests on one exact candidate SHA.
+- Inspect each workflow job and artifact; report exact SHA/run IDs/conclusions. A green PR #67 or earlier #72 SHA is not evidence for a new transplanted head.
+- Verify required ruleset status contexts separately; do not equate zero contexts with required checks satisfied.
+- Keep all implementation PRs Draft until the acceptance matrix is green. No merge, hosted D1, deployment, dispatch, provider call or independent review request.
+
+### Execution outcome of this pass
+This pass completed the full source-level dependency audit and expanded the canonical report and Issue #140. It did not transplant code because two prerequisites are unresolved and changing them by guess would create a false contract: (1) the exact immutable CODE executor profile identifier has not been defined in owner-authored repository evidence; (2) PR #72's current head has no returned exact-head CI evidence, and its D1 package contains the schema/API issues listed above. The next safe code action is to build a clean-base candidate after the profile ID is frozen, then port/fix the entire schema and adapter chain together. No source code, migration, dispatch variable, production resource or default-branch file was changed in this pass.
