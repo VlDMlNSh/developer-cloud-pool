@@ -210,3 +210,13 @@ The previous overlay incorrectly described workflow step 12 (FCC loopback readin
 - Artifact [14423147696](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103/artifacts/14423147696), SHA-256 `3b31135452722f8cee874dcfff2743046273cf3bab2ba806aee5af10ccb3f111`.
 - PR formal review count remains zero. Findings and evidence commented on PR #128 and parent #77. No hosted D1, production key configuration, provider calls, secret reads, deployment or dispatch. Contour A BLOCKED / NOT ACCEPTED.
 - Next: independent review, then carefully integrate the route-registry stack and qualify atomic D1 admission/revocation behavior.
+
+## PR #86 admission trust assertion review — 2026-11-18
+
+- Audited exact source `a218f92274eca5491700d8f72a21172f8ce689dc`. Migration #0014 checks the selected active snapshot, issuer key and validity but does not require active `current_epoch` to equal `MAX(registry_epoch)`.
+- PR #128 contains the relevant state INSERT/UPDATE watermark guards but is a sibling stack based on PR #77 head `e63f1dda4c046d485ae9c2f08392a1943a06553d`; PR #86 is based on PR #84 head `390ef0a09af2585c79f7e15d789343eb23fa370f`. Thus PR #86 does not inherit that hardening.
+- Posted finding `6977331934` on PR #86: add `s.current_epoch = (SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots)` to assertion trigger and adversarial N/N+1 test. Admission on stale N must abort with approval/task/outbox/admission/attempt/receipt unchanged; N+1 must pass.
+- Existing exact-head D1 CI [43710912595](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43710912595) SUCCESS; job `132802030185`, all 12 steps succeeded. It does not cover this newly requested regression. PR #86 remains OPEN/DRAFT; no independent reviews.
+- Confirmed atomic batch semantics against official Cloudflare D1 docs: https://developers.cloudflare.com/d1/worker-api/d1-database/ — statements execute sequentially in one SQL transaction and a failed statement rolls back the batch. This validates the batch premise only.
+- No code changed. No hosted D1, provider calls, secret reads, deployment or dispatch. Default branch remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; Contour A BLOCKED / NOT ACCEPTED.
+- Next: port max-epoch assertion invariant and adversarial regression into a clean child of PR #86's stack, run exact-head D1 proof, then obtain independent review.
