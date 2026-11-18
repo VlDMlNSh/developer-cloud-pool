@@ -282,3 +282,15 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Next: qualify actual OS-level task boundary (distinct UID/container/VM), trusted PATH, private mounts, no sibling HOME/host credentials, and deny-by-default egress before production launcher integration.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — reusable sandbox runtime assessment — 2026-11-18
+- Current code target: PR #116 head `a95700c0bf562aa3b0a142720892cff118dfeb9f`; default/base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #116 OPEN/DRAFT/UNMERGED.
+- Exact-head Runner Qualification [44263708443](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443) and Pool Contract Validation [44263708506](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708506) both COMPLETED/SUCCESS. Three prior reviews are COMMENTED; independent A3 approval on current head NOT VERIFIED.
+- Reuse-first review compared mature sandbox projects: gVisor `runsc` (primary evaluation candidate, OCI runtime/userspace kernel; Linux 5.6+ and Docker prerequisites), nsjail (secondary process-isolation candidate: namespaces/cgroups/rlimits/seccomp), bubblewrap (supplemental low-level namespace/filesystem building block, not sufficient alone), Firecracker (deferred until KVM/`/dev/kvm` host is actually qualified).
+- No candidate selected, installed or integrated. Compatibility on GitHub-hosted runner, artifact provenance, license review, cross-task adversarial tests and deny-by-default egress remain NOT RUN.
+- Report: [2026-11-18 reusable sandbox runtime assessment](../reports/2026-11-18-next-reusable-sandbox-runtime-assessment.md).
+- Persistent Engineering Workspace remains BLOCKED by Issue #118 (zero active authorized hosts in latest recorded evidence). No provider calls, secret reads, Gemini dispatch, deployment or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: no-secret capability probe of the actual approved ephemeral runner (kernel/user namespaces/cgroup v2/Docker/`/dev/kvm`), then evaluate gVisor first and nsjail second; keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
