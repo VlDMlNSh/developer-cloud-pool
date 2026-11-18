@@ -155,3 +155,28 @@ Execute Issue #140 by comparing source/schema overlap and porting the canonical 
 
 ### Next code pass
 Create one clean-base integration branch from the current default; implement a single receipt-driven schema where the task row also owns lease/fencing state, keep exactly one task-ready outbox, add immutable attempts/events and a non-authorizing reconciliation queue, then port the event predicate and Actions adapter with an independently sourced current-ref SHA. Remove the DSH profile. Preserve `dispatch:false` and `executionAuthorized:false` throughout.
+
+
+## Pass 4 — legacy DSH PR dependency and canonical D1 lineage (2026-11-18)
+
+### PR #126 dependency disposition
+- PR #126 is based on stale default SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Its six-file retirement change has been transplanted to Draft PR #139 from current default `68183828cf7934e89109310c8f99281be4eb7ed8`.
+- PR #139 head `4b35f949fa9bd0f924582f9eb47008c191c061ee` compares as 6 ahead / 0 behind and changes exactly the six intended files.
+- Exact-head Pool Contract Validation run `44349941243` completed SUCCESS.
+- PR #126 remains open/draft; do not merge it. PR #139 is the current-base candidate. No merge or close action was taken.
+
+### Canonical D1 lineage refined
+- Current-default design docs identify PR #67's isolated `proofs/d1-ledger` package (migrations 0001–0010) plus stacked PR #72's additive migration 0011 and composite admission adapter as the intended single D1 lineage.
+- PR #111's lease guard is numbered 0006 in its port, but #67 already uses 0006 for projection outbox. Reconcile it as migration 0012 only after validating exact trigger/schema ordering.
+- PR #72 hardcodes retired `dsh-headless-probe` in migration and adapter. Replace with the exact frozen CODE profile across schema, adapters, fixtures and tests.
+- PR #67/#72 are 81 commits behind current default; selective transplant and exact-head requalification are mandatory. They must not be merged as-is.
+- PR #114/#125's separate `proofs/d1-admission` package must not become a second admission authority. PR #125 also needs an independently sourced current-default-ref SHA boundary.
+
+### Evidence and records
+- Refined integration audit is recorded in Draft PR #141: https://github.com/VlDMlNSh/developer-cloud-pool/pull/141
+- Issue #140 updated with the revised canonical lineage and porting requirements.
+- PR #126 dependency comment points to current-base PR #139.
+
+### Next implementation stage
+Create one clean-base integration branch. Selectively transplant the #67/#72 D1 ledger package, reconcile migration 0012 for the lease guard, replace the retired DSH profile with the frozen CODE profile, then port the owner-only event predicate and a trusted Actions context adapter with an independent current-ref read. Run complete exact-head Workers-runtime and contract CI. Keep dispatch and execution authorization false.
