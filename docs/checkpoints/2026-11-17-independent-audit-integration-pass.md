@@ -215,3 +215,17 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - The checks qualify synthetic task HOME path/symlink/XDG/dangling-store behavior and ephemeral no-secret runner workflow only. Production launcher, OS/container, egress, external credential stores, host recovery, hosted-use vendor terms, real provider/account/free-quota remain NOT VERIFIED.
 - No secrets, provider calls, production dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent A3 review; then separately implement/qualify production launcher and host isolation.
+
+
+## /next follow-up — Task HOME and child-process boundary review — 2026-11-18
+
+- Reviewed PR #116 exact code head `a95700c0bf562aa3b0a142720892cff118dfeb9f`.
+- Exact-head Runner Qualification [44263708443](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708443) and Pool Contract Validation [44263708506](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263708506): COMPLETED / SUCCESS.
+- Security finding: mode 0700 does not isolate sibling task directories when workloads share one effective UID. Task HOME remains filesystem hygiene only, not an isolation boundary.
+- Security finding: PATH entries may be owned by the current UID and are not provenance-pinned; production launcher must construct a trusted immutable PATH.
+- Child env allowlist is not a host/network/filesystem/process sandbox.
+- PR #116 OPEN/DRAFT/UNMERGED; owner COMMENTED reviews are not independent A3 acceptance. No formal independent A3 review verified.
+- Report: [2026-11-18 task isolation boundary review](../reports/2026-11-18-next-task-isolation-boundary-review.md).
+- No code changes, provider calls, secret reads, production dispatch, deployment or merge.
+- Next: define and test distinct-UID or qualified per-task container/VM execution with private mounts, trusted PATH, no sibling/host credential visibility and deny-by-default egress.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
