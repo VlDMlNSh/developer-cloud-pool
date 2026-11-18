@@ -71,6 +71,79 @@ class ChildEnvironmentTests(unittest.TestCase):
         ):
             self.assertNotIn(name, child)
 
+    def test_fcc_provider_keys_and_fallback_settings_never_cross_child_boundary(self) -> None:
+        # Names are derived from the Settings aliases in pinned FCC commit
+        # eb92e4c07af0d6ad8881dce1cd958c3d072c27c5. Values are inert sentinels.
+        # This guard prevents inherited process config from supplying provider
+        # key lists, numbered slots, custom providers or model fallback policy.
+        fcc_provider_settings = (
+            "FCC_CUSTOM_PROVIDERS",
+            "MODEL",
+            "MODEL_FALLBACKS",
+            "OPENAI_API_KEY",
+            "AZURE_OPENAI_API_KEY",
+            "OPENROUTER_API_KEY",
+            "MISTRAL_API_KEY",
+            "CODESTRAL_API_KEY",
+            "DEEPSEEK_API_KEY",
+            "KIMI_API_KEY",
+            "KIMI_CODE_API_KEY",
+            "WAFER_API_KEY",
+            "MINIMAX_API_KEY",
+            "OPENCODE_API_KEY",
+            "AI_GATEWAY_API_KEY",
+            "AWS_BEARER_TOKEN_BEDROCK",
+            "HUGGINGFACE_API_KEY",
+            "COHERE_API_KEY",
+            "SAMBANOVA_API_KEY",
+            "KILO_API_KEY",
+            "ZAI_API_KEY",
+            "TOKENROUTER_API_KEY",
+            "NARAROUTE_API_KEY",
+            "POOLSIDE_API_KEY",
+            "LLM7_API_KEY",
+            "LIGHTNING_API_KEY",
+            "EXPLABS_API_KEY",
+            "CHEAPER_INFERENCE_API_KEY",
+            "ORCAROUTER_API_KEY",
+            "ATLASCLOUD_API_KEY",
+            "XKIRO_API_KEY",
+            "OPPER_API_KEY",
+            "FIREWORKS_API_KEY",
+            "NOVITA_API_KEY",
+            "CLOUDFLARE_API_TOKEN",
+            "GEMINI_API_KEY",
+            "GROQ_API_KEY",
+            "CLINE_API_KEY",
+            "XAI_API_KEY",
+            "ANTHROPIC_API_KEY",
+            "ALIBABA_CLOUD_API_KEY",
+            "QWENCLOUD_API_KEY",
+            "QWENCLOUD_CODING_API_KEY",
+            "TOGETHER_API_KEY",
+            "DEEPINFRA_API_KEY",
+            "SILICONFLOW_API_KEY",
+            "NEBIUS_API_KEY",
+            "CHUTES_API_KEY",
+            "FEATHERLESS_API_KEY",
+            "AGNES_API_KEY",
+            "ZENMUX_API_KEY",
+            "WANDB_API_KEY",
+            "CEREBRAS_API_KEY",
+            "OLLAMA_API_KEY",
+            "NVIDIA_NIM_API_KEY",
+            "ANTHROPIC_AUTH_TOKEN",
+        )
+        parent = self.valid_parent()
+        parent.update({name: "synthetic-placeholder" for name in fcc_provider_settings})
+
+        child = build_child_environment(parent)
+
+        for name in fcc_provider_settings:
+            with self.subTest(variable=name):
+                self.assertNotIn(name, child)
+        self.assertFalse(any("synthetic-placeholder" in value for value in child.values()))
+
     def test_missing_required_values_fail_closed(self) -> None:
         for missing in ("PATH", "HOME"):
             parent = self.valid_parent()
