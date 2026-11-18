@@ -1,3 +1,18 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18 12:06 Europe/Moscow
+
+**Latest reconciliation report:** [2026-11-18-contour-a-reconciliation.md](../reports/2026-11-18-contour-a-reconciliation.md)
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Documentation branch `docs/next-2026-11-16-current-state-refresh`; prior HEAD `d6ddce37a698867593fffda751d34a14f349902f`; report commit `dc9edab079804937c6d921514ff3895f2f7247fd`.
+- Active ruleset #26550182 targets only `refs/heads/Основной`; PR required, zero required approvals, thread resolution required, no bypass actors.
+- PR #116 current head `aea59ae536358a827f05c2262647601ec53c8b33`: runner qualification run 44264823103 and Pool Contract Validation run 44264822929 both COMPLETED/SUCCESS. Artifact 14409921197, SHA-256 `c158ce33dcb612bafba409ef7cf829a8028bd84264806436a5488c0949a800c3`. Review records are stale relative to current head; independent current-head review NOT VERIFIED. FCC cross-account fallback risk remains a required guard/test.
+- PR #124 current head `67ff1693e97101af68a1b1508e3e66e3b3a14fb4`; exact-head Architecture Documentation Validation run 44272506917 SUCCESS; zero reviews returned. PR body contains stale head references; verify parent PR #120 exact head/base before integration.
+- MediaHub Issue #301 is open; MediaHub PR #437 merged at `7cbbc0025ce01b8c476d512cfc5e12dc35fd952c`; PR #441 remains open/dirty. Controller workflow path checked in this pass returned 404: availability NOT VERIFIED.
+- No secrets read, provider calls, Gemini dispatch, production dispatch, deployment, merge, or Contour B work.
+- Next: current-head independent review and no-secret FCC one-credential-per-profile / no-cross-account-fallback test; reconcile PR #124 against #120.
+
+---
+
 # /next — FCC loopback runtime evidence and current repository state — 2026-11-17 15:45 UTC
 
 **Latest reconciliation report:** [2026-11-17-next-fcc-runtime-and-state-reconciliation.md](../reports/2026-11-17-next-fcc-runtime-and-state-reconciliation.md)
