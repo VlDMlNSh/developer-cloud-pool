@@ -128,3 +128,16 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Hosted D1, live event provenance, approval issuer, lease/fencing/recovery, outbox delivery, worker identity, provider route/quota, authenticated Jarvis UI, persistent workspace/restore remain NOT VERIFIED / NOT QUALIFIED. No secrets, deployment, dispatch or merge.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain genuinely independent A3 review and resolve governance; only then progress to trusted live event provenance and hosted transactional state.
+
+
+## /next — explicit rejection of PR conversation comments — 2026-11-18
+
+- PR #125 exact head: `2ca95775982c711a289881e94eb664d5fe14ed5a`, base PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`; 19 ahead / 0 behind; OPEN/DRAFT/UNMERGED; mergeable=true.
+- Added one adversarial test that models a GitHub `issue_comment` event whose `issue` object contains `pull_request`, with PR #125 issue/API identity. Requires `DENY / WRONG_CONTROL_ISSUE` and both dispatch flags false. The production predicate already rejected this case; new regression explicitly guards it.
+- Changed test blob read back from GitHub: `bf3c439a34c20c48503486b9fc50454de0e07a3e`.
+- Exact-head CI [44255849885](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255849885), job [134637228939](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44255849885/job/134637228939): COMPLETED / SUCCESS. Job log verifies checkout and `git log -1` are exact `2ca95775982c711a289881e94eb664d5fe14ed5a`. Workers-runtime: **22/22 PASS** (12 admission + 10 context adapter tests); npm ci, syntax check and test commands completed successfully.
+- Report: [2026-11-18 PR comment rejection regression](../reports/2026-11-18-next-pr125-pr-comment-rejection-regression.md). PR evidence comment: [6971614420](https://github.com/VlDMlNSh/developer-cloud-pool/pull/125#issuecomment-6971614420).
+- This is synthetic event/context plus local Workers-runtime D1 evidence; no live webhook, hosted D1 or production controller.
+- Production controller and approved Gemini controller remain absent from default branch; Gemini agents NOT RUN. PR #125 / #114 reviews remain 0; ruleset still requires 0 reviews and 0 status checks.
+- No secret access, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent A3 review and governance remediation; retain fail-closed dispatch.
