@@ -175,6 +175,28 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
       approvalId: "gha-approval-9", profile: "unbounded"
     })).toMatchObject({ decision: "DENY", reason: "PROFILE_NOT_ALLOWED" });
   });
+  it("rejects issue_comment events that are actually pull-request conversation comments", () => {
+    const { event, environment } = valid(6912000111);
+    event.issue = {
+      number: 125,
+      state: "open",
+      repository_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/125",
+      pull_request: {
+        url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/pulls/125"
+      }
+    };
+
+    expect(bindGitHubActionsContext(event, environment, {
+      approvalId: "gha-pr-comment-must-deny",
+      profile: "dsh-headless-probe"
+    })).toMatchObject({
+      decision: "DENY",
+      reason: "WRONG_CONTROL_ISSUE",
+      dispatch: false,
+      executionAuthorized: false
+    });
+  });
+
   it("replays the same source comment across workflow attempts and preserves the first receipt", async () => {
     const { event, environment } = valid(6912000110);
     const approval = { approvalId: "gha-approval-run-attempt-replay", profile: "dsh-headless-probe" };
