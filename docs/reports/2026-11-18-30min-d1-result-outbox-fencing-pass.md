@@ -1,3 +1,23 @@
+# Follow-up implementation overlay — 2026-11-18, PR #132
+
+The earlier report below is historical and remains unchanged. This follow-up supersedes its proposed next-step state.
+
+- Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Clean proof branch: `proof/d1-result-outbox-clean-2026-11-18`; PR [#132](https://github.com/VlDMlNSh/developer-cloud-pool/pull/132), OPEN/DRAFT/UNMERGED, current head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; 24 commits ahead, 0 behind, 17 files changed.
+- Adapter now uses Worker `Date.now()` rather than caller `input.now`, and verifies the joined result/task/outbox write set. It no longer uses `meta.changes === 1`.
+- Lease acquisition now uses Worker `Date.now()`; caller cannot backdate/extend a lease.
+- Idempotent result retry is now bound to original worker ID, lease generation, attempt UUID, digest and result reference.
+- Workers-runtime tests cover stale lease attempt after same-worker reclaim, exact retry, identity substitution, result substitution, SQL trigger rollback, and exact expiry equality.
+- D1 Workers CI passed on prior head `af5428fae169a1724043edffade0c4da69ea292f` in [run 44316217911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316217911). This is not evidence for final head because idempotency identity tightening followed.
+- Current-head Pool Contract Validation [run 44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) was IN_PROGRESS at last readback. Exact-head Workers-runtime CI for `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f` NOT VERIFIED.
+- PR #132 remains draft, unmerged, and mergeable at last metadata read. No reviews/independent acceptance were established in this pass.
+- Remaining: exact-head D1 CI, independent review, governance/provenance check, trusted artifact-byte digest verification at ingest. Production dispatch remains false; no hosted D1, secrets, provider calls, deployment, merge or Contour B work.
+- Status: source change SUCCEEDED; current-head exact D1 CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # 30-minute engineering pass — D1 result/outbox fencing
 Date: 2026-11-18
 
