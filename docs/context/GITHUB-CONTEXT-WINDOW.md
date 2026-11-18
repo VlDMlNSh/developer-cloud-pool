@@ -391,3 +391,22 @@ This section supersedes stale PR #124 values in earlier context sections above. 
 - Next: inspect the 3 base-branch commits and overlapping paths; only then consider a non-destructive synchronization, followed by exact-head CI and independent review.
 
 Canonical MediaHub map (reference only; Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## LIVE OVERRIDE — PR #124 conflict-path diagnosis — 2026-11-18
+
+Supersedes the earlier NOT VERIFIED conflict-path note above:
+- Current default HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120 / base branch HEAD: `e93fb34a1f3430ca2db32fbf2e631903aac9570f`; OPEN/DRAFT, mergeable clean.
+- PR #124 head before this documentation refresh: `87f5768391f6bfa545d5ca6792a07982b3a9b40f`; recorded base/merge-base `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; OPEN/DRAFT, GitHub mergeable=false / dirty.
+- Three base-advance commits: `023a6d5ed16585148cb5b388902fec51587407ca` (GitHub Actions D1 admission context audit), `7df5482ad7324974ffdcb384cdc09b7b9e3f2ef3` (Claude hosted-use / installer provenance), `e93fb34a1f3430ca2db32fbf2e631903aac9570f` (Claude gate final verification).
+- Exact changed-path intersection between merge-base→current base and merge-base→PR #124: only `docs/context/GITHUB-CONTEXT-WINDOW.md`. Base commits and PR #124 both modify this canonical context file. This is the concrete conflict candidate consistent with GitHub `dirty`; no other changed paths overlap. Path overlap alone does not prove exact hunk conflict.
+- PR #124 formal reviews 0; review threads 0; exact-head CI remains NOT VERIFIED. Ruleset #26550182 active but 0 required approvals / 0 required checks.
+- No PR branch rewrite or merge performed. Reconciliation must preserve both context histories; avoid whole-file overwrite.
+- Issue #118 persistent workspace remains OPEN / BLOCKED. Gemini controller absent on default branch; dispatch NOT RUN and optional.
+- Report: [PR #124 conflict-path diagnosis](../reports/2026-11-18-next-pr124-conflict-path-diagnosis.md).
+- Checkpoint: [PR #124 conflict-path checkpoint](../checkpoints/2026-11-18-pr124-conflict-path-diagnosis.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: content-level Context Window reconciliation on PR #124 branch, then docs validation, exact-head CI and independent review.
+
+Canonical MediaHub map (reference only; Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
