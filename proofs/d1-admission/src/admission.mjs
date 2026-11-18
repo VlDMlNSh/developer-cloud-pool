@@ -19,14 +19,16 @@ async function digest(value) {
 }
 
 function validate(input, now) {
-  const { event, repository, ref, targetSha, trustedDefaultHeadSha, controllerRunId, controllerCodeSha, approvalId, profile } = input ?? {};
+  const { event, repository, ref, targetSha, trustedDefaultHeadSha, controllerRunId, controllerRunAttempt, controllerCodeSha, approvalId, profile } = input ?? {};
   if (input?.eventName !== "issue_comment" || event?.action !== "created") return "EVENT_NOT_NEW_ISSUE_COMMENT";
   if (repository?.full_name !== OWNER_REPO || String(repository?.id) !== REPOSITORY_ID) return "WRONG_REPOSITORY";
   if (repository?.owner?.login !== OWNER_LOGIN || String(repository?.owner?.id) !== OWNER_ID) return "WRONG_REPOSITORY_OWNER";
   if (repository?.default_branch !== "Основной" || ref !== DEFAULT_REF) return "UNTRUSTED_WORKFLOW_REF";
   if (!SHA40.test(targetSha ?? "") || !SHA40.test(controllerCodeSha ?? "")) return "INVALID_CONTROLLER_OR_TARGET_SHA";
   if (!SHA40.test(trustedDefaultHeadSha ?? "") || targetSha !== trustedDefaultHeadSha) return "STALE_OR_UNBOUND_TARGET_SHA";
-  if (!NUMERIC.test(String(controllerRunId ?? "")) || !approvalId || approvalId.length > 128) return "INVALID_CONTROLLER_OR_APPROVAL_ID";
+  if (!NUMERIC.test(String(controllerRunId ?? "")) || !Number.isSafeInteger(Number(controllerRunId)) || Number(controllerRunId) <= 0 ||
+      !NUMERIC.test(String(controllerRunAttempt ?? "")) || !Number.isSafeInteger(Number(controllerRunAttempt)) || Number(controllerRunAttempt) <= 0 ||
+      !approvalId || approvalId.length > 128) return "INVALID_CONTROLLER_OR_APPROVAL_ID";
   if (!PROFILES.has(profile)) return "PROFILE_NOT_ALLOWED";
   if (!Number.isSafeInteger(now) || now <= 0) return "INVALID_CLOCK";
   const issue = event?.issue;
@@ -51,7 +53,7 @@ export async function admitOwnerNextEvent(db, input, now) {
   if (invalid) return deny(invalid);
   if (!db || typeof db.prepare !== "function") return deny("STORAGE_UNAVAILABLE");
 
-  const { event, repository, targetSha, controllerRunId, controllerCodeSha, approvalId, profile } = input;
+  const { event, repository, targetSha, controllerRunId, controllerRunAttempt, controllerCodeSha, approvalId, profile } = input;
   const sourceCommentId = String(event.comment.id);
   const actorId = String(event.comment.user.id);
   const waveId = await digest(JSON.stringify(["pool-wave-v1", REPOSITORY_ID, ISSUE_NUMBER, sourceCommentId]));
@@ -59,12 +61,12 @@ export async function admitOwnerNextEvent(db, input, now) {
   const admissionId = await digest(JSON.stringify(["pool-admission-v1", REPOSITORY_ID, ISSUE_NUMBER, sourceCommentId]));
   const envelopeDigest = await digest(JSON.stringify([
     "pool-admission-envelope-v1", REPOSITORY_ID, ISSUE_NUMBER, actorId,
-    String(controllerRunId), controllerCodeSha, targetSha, profile, waveId
+    String(controllerRunId), String(controllerRunAttempt), controllerCodeSha, targetSha, profile, waveId
   ]));
 
   const values = [
     sourceCommentId, admissionId, String(repository.id), ISSUE_NUMBER, actorId, "OWNER",
-    String(controllerRunId), controllerCodeSha, targetSha, profile, waveId,
+    String(controllerRunId), Number(controllerRunAttempt), controllerCodeSha, targetSha, profile, waveId,
     envelopeDigest, taskKey, approvalId, now
   ];
 
@@ -73,9 +75,9 @@ export async function admitOwnerNextEvent(db, input, now) {
     insertResult = await db.prepare(`
       INSERT INTO pool_admission_receipts (
         source_comment_id, admission_id, repository_id, issue_number, actor_id,
-        owner_association, controller_run_id, controller_code_sha, target_sha,
+        owner_association, controller_run_id, controller_run_attempt, controller_code_sha, target_sha,
         profile, wave_id, envelope_digest, task_key, approval_id, admitted_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(source_comment_id) DO NOTHING
       RETURNING admission_id
     `).bind(...values).first();
@@ -109,7 +111,7 @@ export async function admitOwnerNextEvent(db, input, now) {
   try {
     const prior = await db.prepare(`
       SELECT admission_id, repository_id, issue_number, actor_id, owner_association,
-             controller_run_id, controller_code_sha, target_sha, profile, wave_id,
+             controller_run_id, controller_run_attempt, controller_code_sha, target_sha, profile, wave_id,
              envelope_digest, task_key, approval_id
         FROM pool_admission_receipts WHERE source_comment_id = ?
     `).bind(sourceCommentId).first();
@@ -135,6 +137,7 @@ export async function admitOwnerNextEvent(db, input, now) {
     }
 
     if (prior.controller_run_id !== String(controllerRunId) ||
+        prior.controller_run_attempt !== Number(controllerRunAttempt) ||
         prior.controller_code_sha !== controllerCodeSha ||
         prior.target_sha !== targetSha || prior.profile !== profile ||
         prior.envelope_digest !== envelopeDigest || prior.task_key !== taskKey ||
@@ -169,7 +172,7 @@ export async function deriveAdmissionEnvelope(input) {
   const taskKey = await digest(JSON.stringify(["pool-task-v2", REPOSITORY_ID, ISSUE_NUMBER, input.targetSha, input.profile, waveId]));
   const envelopeDigest = await digest(JSON.stringify([
     "pool-admission-envelope-v1", REPOSITORY_ID, ISSUE_NUMBER, actorId,
-    String(input.controllerRunId), input.controllerCodeSha, input.targetSha, input.profile, waveId
+    String(input.controllerRunId), String(input.controllerRunAttempt), input.controllerCodeSha, input.targetSha, input.profile, waveId
   ]));
   return { sourceCommentId, waveId, taskKey, envelopeDigest };
 }
