@@ -3448,3 +3448,18 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Branch topology: docs branch `fa93ee478880071c50f131b7f42ffb544c6860cd` versus proof branch `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb` is DIVERGED (397 ahead / 77 behind; merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`). Do not merge or stack runtime changes without ancestry reconciliation.
 - PR #40 run `42489887940` remains merge-context SUCCESS only (27/27); standalone exact-head CI NOT VERIFIED. Race reproduction and stale durable result/outbox fencing NOT VERIFIED; independent review NOT RUN. PR #40/#130 untouched; dispatch remains false.
 - Next: reconcile source ancestry, create fresh isolated proof branch, verify D1 SQL/runtime contract, then implement lease-attempt fencing + deterministic adversarial tests. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Follow-up — lease acquisition-attempt fencing — 2026-11-18
+
+- Isolated source branch `proof/d1-lease-attempt-fencing-2026-11-18` starts from immutable proof parent `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; source HEAD `2cefe8d62b99012ff23d45f33e3251996747fb7b`.
+- Implemented migration `0004_add_lease_attempt_identity.sql`, unique UUID per acquisition persisted by the winning conditional UPDATE, readback by `task_key + lease_attempt_id`, safe expiry arithmetic and JS-safe generation cap.
+- Added deterministic same-worker reclaim interleaving test plus expiry/generation overflow tests. Workers-runtime test step passed in exact-head push CI.
+- Exact-head workflow run `44307008802` COMPLETED/SUCCESS; head SHA matches source HEAD. Job `134811053620` SUCCESS; `npm ci`, `npm run check`, `npm test` all passed. Artifact `14429260200`, SHA-256 `d73de3e274d3c49f5251c7cb0e6d54f983bdbbd1f58d60595ae1b43d6d0db77c`.
+- Draft PR #131 OPEN / UNMERGED; target is only the parent proof branch. PR #40 and #130 untouched. Default branch remains `Основной`; this work is not merged into it or into the canonical docs branch.
+- D1 `UPDATE ... RETURNING` not used: Cloudflare docs describe broad SQLite compatibility but do not explicitly qualify this syntax/runtime combination. The attempt-token correction avoids this uncertainty.
+- Independent review NOT RUN. Lease-aware durable result/outbox writes, effect idempotency, crash recovery, hosted execution, production governance and dispatch remain NOT VERIFIED. Dispatch false; no secrets/hosted D1/provider/deploy actions.
+- Report: `docs/reports/2026-11-18-d1-lease-acquisition-attempt-fencing.md`.
+- Next: independent review of PR #131; prove atomic current-generation + effect-identity fencing for result/outbox writes, then stale-output, duplicate-delivery and crash-recovery tests.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
