@@ -3265,3 +3265,11 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - D1 workflow push allowlist includes fix branch. Exact push-run ID/status unavailable through current GitHub workflow-run connector (PR-run lookup returns no run); CI **NOT VERIFIED**, no local test run. Do not call the fix verified until exact-head CI succeeds and independent review occurs.
 - Default branch remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No merge, hosted D1, secrets, provider calls, deployment or dispatch.
 - Next: verify exact-head D1 push run for `5548314818f8899290aaf322ea720c4bdfc42459`, inspect artifact/test output, then independent review. A0 and Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### PR #128 exact-head D1 CI — SUCCESS — 2026-11-18
+
+- Exact candidate SHA `5548314818f8899290aaf322ea720c4bdfc42459`; associated workflow run [44294225475](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475) COMPLETED / SUCCESS; job `134766938542` completed SUCCESS, all 12 steps SUCCESS.
+- Workers runtime: 10 test files / 115 tests passed, including `durable-route-registry-ledger.test.ts` (1 test). Isolated D1 upgrade-binding smoke: 1 passed. Frozen schema-0010 fixture reproduction: 2 passed. Adapter syntax check and dependency install passed.
+- Artifact [14422202598](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475/artifacts/14422202598), lockfile package, SHA-256 `94de3feff7ff859748c60c8049c71805c2c066412eba351e4206be9d005cd83f`.
+- Source/test readback confirms initial-state guard requires MAX(epoch) and regression rejects epoch 1001 when 1003 exists before bootstrap, then accepts 1003 and advances to 1004. PR #128 remains OPEN/DRAFT/UNMERGED; zero PR reviews so far. CI is verified, independent review is not.
+- Default branch unchanged `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No hosted D1, provider calls, secrets, deployment or dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
