@@ -57,10 +57,12 @@ export async function collectArtifactInventory(bucket, db, options = {}) {
   const seenCursors = new Set();
   const reasons = [];
   let cursor;
+  let pagesRequested = 0;
   let objectListingComplete = false;
 
   for (let pageNumber = 0; pageNumber < config.maxPages; pageNumber += 1) {
     let page;
+    pagesRequested += 1;
     try {
       page = await bucket.list({
         prefix: config.prefix,

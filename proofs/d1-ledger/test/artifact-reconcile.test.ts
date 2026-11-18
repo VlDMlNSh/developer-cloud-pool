@@ -23,7 +23,8 @@ function input(overrides = {}) {
     tasks: [{ taskKey, state: "dead" }],
     cutoffEpochMs, retentionMs,
     objectListingComplete: true,
-    referenceSnapshotComplete: true,\n    crossStoreSnapshotConsistent: true,
+    referenceSnapshotComplete: true,
+    crossStoreSnapshotConsistent: true,
     ...overrides
   };
 }
@@ -69,7 +70,13 @@ describe("R2 artifact orphan reconciliation planner", () => {
     expect(report.retained[0].reason).toBe("TASK_STATE_UNKNOWN");
   });
 
-  it("preserves objects when R2 and D1 snapshots are not jointly attested", () => {\n    const report = planArtifactOrphanReconciliation(input({ crossStoreSnapshotConsistent: false }));\n    expect(report.candidateCount).toBe(0);\n    expect(report.retained[0].reason).toBe("CROSS_STORE_SNAPSHOT_NOT_ATTESTED");\n  });\n\n  it("preserves objects until the full retention window has elapsed", () => {
+  it("preserves objects when R2 and D1 snapshots are not jointly attested", () => {
+    const report = planArtifactOrphanReconciliation(input({ crossStoreSnapshotConsistent: false }));
+    expect(report.candidateCount).toBe(0);
+    expect(report.retained[0].reason).toBe("CROSS_STORE_SNAPSHOT_NOT_ATTESTED");
+  });
+
+  it("preserves objects until the full retention window has elapsed", () => {
     const report = planArtifactOrphanReconciliation(input({
       objects: [object({ uploaded: new Date(cutoffEpochMs - retentionMs + 1) })]
     }));
