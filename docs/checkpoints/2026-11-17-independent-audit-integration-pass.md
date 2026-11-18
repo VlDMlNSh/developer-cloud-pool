@@ -85,3 +85,18 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - No runtime changes, secret reads, provider calls, Gemini/production dispatch, resource creation, deployment, merge or local tests. Gemini NOT RUN.
 - Contour A NOT ACCEPTED; Contour B DEFERRED. Report: [2026-11-17-next-exact-head-governance-reconciliation.md](../reports/2026-11-17-next-exact-head-governance-reconciliation.md).
 - Next: independent architecture/security review and meaningful governance gates, then the next eligible no-secret vertical slice without bypassing A0/FCC prerequisites.
+
+
+## /next — GitHub Actions context binding for atomic D1 admission — 2026-11-18
+
+- Implementation PR #125: OPEN / DRAFT / UNMERGED; branch `proof/d1-github-actions-context-adapter-2026-11-18`; exact code head `c58494e730df0dd83620a085f870c811f9e1b0e0`; base PR #114 `ab9461eb84b14fe230918391d5212f19ca25592c`; 17 ahead / 0 behind; mergeable=true; formal reviews 0.
+- Added GitHub Actions context composition against runner variables: repository/owner IDs checked against payload, exact Issue #96 owner comment, default ref, fixed controller workflow_ref, `GITHUB_SHA`, `GITHUB_WORKFLOW_SHA`, run ID and run attempt. Target/trusted head/run/code fields are derived only from runner environment. All outcomes remain `dispatch:false` and `executionAuthorized:false`.
+- D1 receipt now persists `controller_run_attempt`; this field is included in envelope binding and verified on read-back.
+- Exact-head PR CI [44252929666](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252929666), job [134627714836](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252929666/job/134627714836): COMPLETED / SUCCESS on exact PR head `c58494e730df0dd83620a085f870c811f9e1b0e0`. Job log `git checkout` and `git log -1` both verify the exact head (not a PR merge commit). Workers runtime: 20/20 tests PASS (12 D1 + 8 context), syntax and npm install PASS.
+- Exact-head push validation [44252926012](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252926012): COMPLETED / SUCCESS on the same SHA.
+- Default branch remains `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. The allowlisted `.github/workflows/cloud-pool-next-controller.yml` is not present on default; this remains a local composition proof, not a live webhook/controller. Hosted D1, webhook signature/authenticity, independent default-head API read, worker identity, leases/fencing/recovery, outbox delivery and production dispatch remain NOT QUALIFIED.
+- Active ruleset #26550182 still requires 0 approvals and 0 status checks. PR #125 has 0 formal reviews. No merge or deployment.
+- Default-branch `.github/workflows/gemini-batch-dispatch-controller.yml` is absent (404): four Gemini tasks NOT RUN; no bypass or direct provider calls. No secrets read, no provider calls, no hosted resource provisioning, no dispatch.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-18 GitHub Actions context adapter proof](../reports/2026-11-18-next-github-actions-context-adapter.md).
+- Next: obtain independent A3 security/contract review of PR #125 and stacked PR #114. Keep dispatch disabled until live provenance, hosted transactional state, lease/recovery, worker identity, routes/quotas and governance are separately qualified.
