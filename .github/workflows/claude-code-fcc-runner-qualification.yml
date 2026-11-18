@@ -220,8 +220,7 @@ jobs:
                 echo "docker_network_none_external_tcp=UNEXPECTEDLY_REACHABLE"
                 exit 9
               fi
-              default_route="$(awk "NR > 1 && \$2 == \"00000000\" {print}" /proc/net/route)"
-              test -z "$default_route"
+              if grep -q "^00000000" /proc/net/route; then exit 8; fi
               test ! -w /etc
               echo "docker_network_none_external_tcp=BLOCKED"
               echo "docker_network_none_default_route=ABSENT"
