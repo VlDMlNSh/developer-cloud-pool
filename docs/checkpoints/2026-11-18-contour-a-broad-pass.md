@@ -82,3 +82,18 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Remaining P1 gates: actual CODE worker inside sandbox; provider-specific default-deny egress gateway; Claude hosted-use entitlement; free provider account/quota proof; FCC AGPL legal assessment.
 - Next step: re-read exact-head run 44278168889, inspect job logs/artifact/digests, then implement the worker-container + egress boundary without enabling provider calls.
 - Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+
+---
+
+## Follow-up — runner PATH qualification failure and corrective change — 2026-11-18
+
+- Full Runner Qualification [44278168889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889), job 134711549798: COMPLETED / FAILURE on exact target `6088a5d1e52191004c3228ed4cf6f3b72dabd116`.
+- Root cause: FCC lifecycle step placed runner-owned `$UV_PROJECT_ENVIRONMENT/bin` in PATH. The new root-owned PATH policy correctly rejected this. Focused suites passed (10/10 child environment, 9/9 task HOME, 7/7 release verifier); Claude signature/binary verification, Docker no-egress primitive and FCC 15/15 guard passed. FCC readiness failed before HTTP health; synthetic bridge was skipped.
+- Failed-run artifact [14414274574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889/artifacts/14414274574), SHA-256 `7abf25036bed9a9538c105f21ada775d3b3c6e6bf042158e0de082a49779d7b0`.
+- Corrective PR #116 commit: `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; workflow blob `23ca0d9c472486095c2b7b13b27fbb4229190867`. Both FCC steps now use `/usr/bin:/bin`; FCC server and synthetic mock are invoked by absolute path. The security policy was not weakened.
+- Read-back confirmed both edits. Commit-associated workflow query returned no run; exact-head requalification is NOT RUN / NOT VERIFIED. PR #116 remains OPEN/DRAFT/UNMERGED.
+- Detailed report: [runner PATH qualification failure and fix](../reports/2026-11-18-runner-path-qualification-failure-and-fix.md).
+- No secret values read, provider calls, real Claude session, Gemini/production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: obtain exact-head Runner Qualification and Pool Contract Validation for `fa4e42f4c2d23f4eedd36cf574e87cf361810972`; inspect all steps/artifact before starting actual CODE-in-container work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
