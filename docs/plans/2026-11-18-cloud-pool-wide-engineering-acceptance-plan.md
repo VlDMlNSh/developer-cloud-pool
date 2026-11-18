@@ -4,7 +4,7 @@
 
 This plan is a repository-wide execution map, not a claim that the Cloud Pool is production-ready. Work is performed through GitHub APIs on isolated branches and pull requests. The default branch `Основной` is not modified directly. No secrets are read or printed; no production credentials, provider calls, deployments, external dispatch, object deletion, or merges are performed as part of this plan.
 
-Acceptance is evidence-based: exact commit SHA, pinned dependencies, least-privilege workflow, deterministic tests, CI run URLs, artifact hashes where relevant, explicit negative tests, and independent review. A local Workers/Miniflare proof is not hosted Cloudflare D1/R2 qualification. A passing smoke test is not a security audit.
+Acceptance is evidence-based: exact commit SHA, pinned dependencies, least-privilege workflow, deterministic tests, CI run URLs, artifact hashes where relevant, and explicit negative tests. The current owner direction defers external/independent reviews until the pool can perform its own bounded review workflow; this deferral must be stated, not misrepresented as a completed review. A local Workers/Miniflare proof is not hosted Cloudflare D1/R2 qualification. A passing smoke test is not a security audit.
 
 ## Repository baseline observed
 
@@ -13,6 +13,7 @@ Acceptance is evidence-based: exact commit SHA, pinned dependencies, least-privi
 - Dispatch is fail-closed until default-branch governance is enabled and `POOL_DISPATCH_ENABLED=true`; the README explicitly says dispatch is currently disabled.
 - README also says DSH is developer-preview, has not undergone security audit, hosted runners are ephemeral (six-hour maximum), and provider egress allowlisting is not yet implemented.
 - PR #135 records 38 passing local Workers-runtime tests and successful exact-head CI for its head, but explicitly leaves cross-store R2/D1 snapshot consistency unqualified. Its inventory adapter always reports `crossStoreSnapshotConsistent: false` and `deletionPermitted: false`.
+- PR #126 proposes retiring the currently active legacy label-driven DSH dispatch path; its exact-head Pool Contract Validation passed, but the PR remains draft/unmerged, so the default branch still contains the legacy path. This is the highest-priority code-level safety correction.
 - PR #136 is a corrective documentation-only boundary repair; it removes exactly two misplaced docs from default branch. Keep it separate from source/proof changes.
 - PR #116 records a hosted runner qualification for Claude Code/ECC/FCC with a no-egress Docker container proof, but explicitly does not establish runner-wide egress allowlisting.
 - PR #114 records a clean-base owner `/next` admission proof: local D1 atomic admission, replay handling, and `dispatch: false` / `executionAuthorized: false`. This is not live dispatch qualification.
@@ -22,10 +23,11 @@ Acceptance is evidence-based: exact commit SHA, pinned dependencies, least-privi
 
 ### P0 — Protect the control plane and preserve branch hygiene
 1. Verify default-branch ruleset/branch protection, required checks, review policy, and bypass actors using supported GitHub governance endpoints.
-2. Keep `POOL_DISPATCH_ENABLED` false until governance and the complete dispatch acceptance gate are independently verified.
-3. Audit PR #136 exact diff and ensure the two misplaced documentation files are restored only on their intended docs branch.
-4. Build a dependency DAG for stacked PRs; reject stale bases, cycles, accidental cross-lane coupling, and unrelated files in a PR.
-5. Ensure no secrets, credentials, tokens, or private environment values appear in logs, docs, artifacts, or test fixtures.
+2. Keep `POOL_DISPATCH_ENABLED` false until governance and the complete dispatch acceptance gate are verified.
+3. Complete the PR #126 retirement of legacy label-driven DSH dispatch before any future dispatch enablement; the default branch still contains the old path until that PR is integrated.
+4. Audit PR #136 exact diff and ensure the two misplaced documentation files are restored only on their intended docs branch.
+5. Build a dependency DAG for stacked PRs; reject stale bases, cycles, accidental cross-lane coupling, and unrelated files in a PR.
+6. Ensure no secrets, credentials, tokens, or private environment values appear in logs, docs, artifacts, or test fixtures.
 
 ### P1 — Durable task admission, claims, attempts, and recovery
 1. Reconcile PRs #114, #111, #112, #102, #98, #97, #92, #93 and related Issues #96/#38.
@@ -70,13 +72,14 @@ Acceptance is evidence-based: exact commit SHA, pinned dependencies, least-privi
 
 ## Immediate next passes
 
-1. Inspect the exact diff, review threads, CI and base of PR #135; verify whether the README and implementation still agree.
-2. Inspect PR #136's exact two-file corrective diff and CI; do not merge it automatically.
-3. Build the PR dependency DAG from branch heads and merge bases; identify stale/stacked PRs and duplicate work.
-4. Audit governance and workflow permissions, including scheduled/event-driven dispatch gates.
-5. Reconcile the clean D1 admission/lease/result stacks and registry stack; nominate one candidate per lane for next acceptance.
-6. Continue Issue #137 with a no-delete protocol and adversarial race tests.
-7. Produce a current evidence matrix: claim, exact SHA, test/CI run, artifact, known gap, next acceptance action.
+1. Inspect the exact diff, review threads, CI and base of PR #126; verify the legacy dispatcher is removed only in the proposed branch and its safety validator is exact-head green.
+2. Inspect the exact diff, review threads, CI and base of PR #135; verify whether the README and implementation still agree.
+3. Inspect PR #136's exact two-file corrective diff and CI; do not merge it automatically.
+4. Build the PR dependency DAG from branch heads and merge bases; identify stale/stacked PRs and duplicate work.
+5. Audit governance and workflow permissions, including scheduled/event-driven dispatch gates.
+6. Reconcile the clean D1 admission/lease/result stacks and registry stack; nominate one candidate per lane for next acceptance.
+7. Continue Issue #137 with a no-delete protocol and adversarial race tests.
+8. Produce a current evidence matrix: claim, exact SHA, test/CI run, artifact, known gap, next acceptance action.
 
 ## Acceptance gates
 
