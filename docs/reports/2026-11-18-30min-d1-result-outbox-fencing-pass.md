@@ -8,7 +8,7 @@ The earlier report below is historical and remains unchanged. This follow-up sup
 - Lease acquisition now uses Worker `Date.now()`; caller cannot backdate/extend a lease.
 - Idempotent result retry is now bound to original worker ID, lease generation, attempt UUID, digest and result reference.
 - Workers-runtime tests cover stale lease attempt after same-worker reclaim, exact retry, identity substitution, result substitution, SQL trigger rollback, and exact expiry equality.
-- D1 Workers CI passed on prior head `af5428fae169a1724043edffade0c4da69ea292f` in [run 44316217911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316217911). This is not evidence for final head because idempotency identity tightening followed.
+- Exact-head D1 Workers CI [run 44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561) COMPLETED/SUCCESS on `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`; all job steps passed, including Workers-runtime D1 tests.
 - Current-head Pool Contract Validation [run 44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049) was IN_PROGRESS at last readback. Exact-head Workers-runtime CI for `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f` NOT VERIFIED.
 - PR #132 remains draft, unmerged, and mergeable at last metadata read. No reviews/independent acceptance were established in this pass.
 - Remaining: exact-head D1 CI, independent review, governance/provenance check, trusted artifact-byte digest verification at ingest. Production dispatch remains false; no hosted D1, secrets, provider calls, deployment, merge or Contour B work.
