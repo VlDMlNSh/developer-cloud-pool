@@ -118,3 +118,15 @@ After run 44284859244 reaches a terminal state, inspect its exact-head job logs 
 - PR #126 legacy DSH dispatch retirement: OPEN / DRAFT / UNMERGED; exact-head contract run [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245) SUCCESS; default branch still contains the legacy path.
 - PR #127 documentation continuation: OPEN / DRAFT / UNMERGED; this update is on its documentation branch only.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+## Evidence correction — FCC loopback passed; bridge handoff failed — 2026-11-18
+
+The previous overlay incorrectly described workflow step 12 (FCC loopback readiness/shutdown) as FAILED. Direct inspection of artifact `14418937574` disproves that statement. Artifact ZIP SHA-256: `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`.
+
+- Step 12 “Start FCC on loopback and verify local readiness and shutdown”: COMPLETED / SUCCESS. `fcc-runtime-state.txt` records HTTP 200, listener exactly `127.0.0.1:18765`, clean shutdown, process exit 0, and listener absent afterward. `fcc-server-runtime.log` confirms startup, GET status 200, and clean application shutdown.
+- Step 13 “Qualify synthetic FCC-to-Claude CLI handoff without provider access”: FAILED. Bridge server itself started and served `GET /health` with HTTP 200 on loopback port 18766; its runtime log records clean server shutdown. However the step failed before writing `fcc-bridge-result.txt` / the synthetic mock marker into the qualification evidence. Provenance records `fcc_client_launcher_invoked=false`; this is consistent with the mock handoff not being proven.
+- Therefore the correct fault boundary is the synthetic CLI handoff / its assertions or child environment, NOT the FCC server startup/readiness path. Exact failing assertion is not yet established because the workflow does not preserve bridge-home marker/args files and the stderr artifact is empty. Do not claim a confirmed root cause.
+- Steps 3–12, 14? No: step 14 ECC installation was SKIPPED because step 13 failed. Steps 3–12 succeeded, and steps 15–16 (provenance/evidence upload) succeeded. Exact step list: 3–12 SUCCESS, 13 FAILURE, 14 SKIPPED, 15–16 SUCCESS.
+- Next bounded action: improve step 13's failure observability without persisting credential values: record `cli_status`, marker existence, args-file existence, wrapper stderr classification, child HOME path/mode metadata, and shutdown diagnostics into the uploaded qualification directory before each assertion; keep synthetic values ephemeral and redact them. Then rerun exact-head qualification. Do not modify FCC runtime based on this evidence.
+- This correction supersedes the earlier erroneous statement that FCC loopback readiness failed. Contour A remains BLOCKED / NOT ACCEPTED; no real Claude session, provider calls, agent task, Gemini dispatch, deployment or Contour B.
