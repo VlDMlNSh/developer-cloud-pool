@@ -194,6 +194,41 @@ jobs:
           sha256sum "$release_dir/manifest.json" "$release_dir/manifest.json.sig" "$resolved_claude_bin" > "$RUNNER_TEMP/qualification/claude-release-sha256.txt"
           cp "$release_dir/manifest.json" "$RUNNER_TEMP/qualification/claude-release-manifest.json"
 
+      - name: Qualify Docker no-egress sandbox capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          image_tag="ubuntu:24.04"
+          docker pull "$image_tag"
+          image_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$image_tag")"
+          test -n "$image_digest"
+          printf '%s\n' "$image_digest" > "$RUNNER_TEMP/qualification/docker-sandbox-image-digest.txt"
+          docker run --rm \
+            --network none \
+            --read-only \
+            --cap-drop ALL \
+            --security-opt no-new-privileges \
+            --pids-limit 64 \
+            --memory 512m \
+            --cpus 1 \
+            --tmpfs /tmp:rw,noexec,nosuid,nodev,size=32m \
+            --user 65532:65532 \
+            "$image_digest" \
+            bash -c '
+              set -euo pipefail
+              if timeout 3 bash -c "echo >/dev/tcp/1.1.1.1/443" >/dev/null 2>&1; then
+                echo "docker_network_none_external_tcp=UNEXPECTEDLY_REACHABLE"
+                exit 9
+              fi
+              default_route="$(awk "NR > 1 && \$2 == \"00000000\" {print}" /proc/net/route)"
+              test -z "$default_route"
+              test ! -w /etc
+              echo "docker_network_none_external_tcp=BLOCKED"
+              echo "docker_network_none_default_route=ABSENT"
+              echo "docker_network_none_rootfs=READ_ONLY"
+              echo "docker_network_none_capabilities=DROPPED"
+            ' | tee "$RUNNER_TEMP/qualification/docker-no-egress-result.txt"
+
       - name: Install pinned uv bootstrap
         shell: bash
         run: |
@@ -583,6 +618,9 @@ jobs:
             echo "claude_code_installer_script_executed=false"
             echo "claude_code_distribution_license=vendor_terms_review_required"
             echo "runner_network_egress=NOT_VERIFIED_github_hosted_runner_has_public_internet_by_default"
+            echo "docker_no_egress_sandbox=$(grep -F 'docker_network_none_external_tcp=BLOCKED' "$RUNNER_TEMP/qualification/docker-no-egress-result.txt" 2>/dev/null | cut -d= -f2 || echo NOT_VERIFIED)"
+            echo "provider_egress_allowlist=NOT_IMPLEMENTED"
+            echo "real_agent_container_execution=false"
             echo "fcc_repository=https://github.com/Alishahryar1/free-claude-code"
             echo "fcc_commit=eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
             echo "fcc_pyproject_git_blob=5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b"
