@@ -74,7 +74,7 @@ This research supports a candidate proof, not a claim of production immutability
 
 - Active default-branch ruleset `26550182`: PR required; deletion and non-fast-forward blocked; review-thread resolution required; 0 required approvals; no bypass actors.
 - Pool Supervisor source defaults dispatch to disabled unless repository variable `POOL_DISPATCH_ENABLED=true`; no dispatch was enabled or triggered by this pass.
-- Gemini controller workflow was not found at the expected path on the documentation branch; dispatch NOT RUN. No secrets/variables were inspected.
+- The required `.github/workflows/gemini-batch-dispatch-controller.yml` was NOT FOUND (HTTP 404) on the immutable default HEAD, PR #132 proof ref, or documentation branch. Therefore Gemini dispatch was NOT RUN; no Secrets/Variables were inspected.
 - PR #132 remains draft and unmerged.
 
 ## Result
