@@ -22,7 +22,7 @@ async function seed(overrides = {}) {
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number,
       target_sha, profile, executor_id, envelope_digest, expires_at, state, consumed_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     row.approvalId, row.ownerNumericId, row.repositoryId, row.issueNumber,
     row.targetSha, row.profile, row.executorId, row.envelopeDigest, row.expiresAt, row.state, row.consumedAt
@@ -263,6 +263,8 @@ describe("task identity conflict rollback and bounded delivery attempts", () => 
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
     const taskKey = [...new Uint8Array(digest)].map((v) => v.toString(16).padStart(2, "0")).join("");
 
+    await env.POOL_DB.prepare("UPDATE pool_approval_ledger SET task_key = ? WHERE approval_id = ?")
+      .bind(taskKey, item.approvalId).run();
     await env.POOL_DB.prepare(`
       INSERT INTO pool_tasks (
         task_key, repository_id, issue_number, target_sha, profile, executor_id,
@@ -506,7 +508,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     });
     expect(failed.decision).toBe("ATTEMPT_FINALIZED");
     const retry = await createTaskAttempt(env.POOL_DB, {
-      taskKey, attemptId: "attempt-2", attemptNumber: 2,
+      taskKey, executorId: approval.executorId, attemptId: "attempt-2", attemptNumber: 2,
       inputDigest: "3".repeat(64), executionIdempotencyKey: "exec-attempt-2",
       now: NOW + 4
     });
@@ -535,7 +537,7 @@ describe("immutable task attempts and fenced lease lifecycle", () => {
     );
     expect(deniedTakeover).toMatchObject({ decision: "DENY", reason: "ATTEMPT_NOT_LEASEABLE" });
     const deniedRetry = await createTaskAttempt(env.POOL_DB, {
-      taskKey, attemptId: "attempt-2", attemptNumber: 2,
+      taskKey, executorId: approval.executorId, attemptId: "attempt-2", attemptNumber: 2,
       inputDigest: "4".repeat(64), executionIdempotencyKey: "exec-attempt-2",
       now: NOW + 9
     });
