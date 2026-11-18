@@ -341,3 +341,18 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Report: [2026-11-18 runner environment admission guard](../reports/2026-11-18-next-runner-environment-admission-guard.md). Checkpoint: [runner environment admission guard](../checkpoints/2026-11-18-runner-environment-admission-guard.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: independent A3 review + meaningful governance gates, then production event adapter with actual runner env, event file and authenticated default-head API read, preserving dispatch=false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## /next — PR #125 production-boundary review — 2026-11-18
+- Fresh reconciliation: default `Основной` HEAD `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #114 OPEN/DRAFT/UNMERGED at `ab9461eb84b14fe230918391d5212f19ca25592c`; PR #125 OPEN/DRAFT/UNMERGED at `69398d497c8e9be3e9fe7241e4dc6d3bc2e4c973`, stacked on #114. Issue #96 OPEN.
+- PR #125 formal reviews: 0. PR #114 formal reviews: 0. Ruleset #26550182 ACTIVE but `required_approving_review_count=0`; no required status checks configured. Governance remains insufficient.
+- Re-fetched PR #125 adapter blob `89f28778dab1ee10c7e39bebeaaf0a6270b9c750`, admission blob `9b48400c4abd784c5db9d0f8d6dde1e05ddb160e`, proof workflow blob `88b58aae536bc946d1c66d15871db868400b775d`.
+- Positive controls: GitHub-hosted runner marker, fixed repository/owner numeric identities, exact new owner `/next` comment on Issue #96, workflow ref/SHA/run identity binding, and preserved `dispatch:false` / `executionAuthorized:false`.
+- Qualification blockers: adapter accepts injected `event` and `environment` rather than reading `GITHUB_EVENT_PATH` and actual `process.env`; no authenticated GitHub API re-read of current default-branch HEAD; approval ID/profile are injected with no qualified production issuer; production controller workflow absent from default branch; no hosted D1 or live event qualification.
+- Prior exact-head CI on PR #125 SHA: PR [44265881516](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44265881516) and push [44265877332](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44265877332) SUCCESS, 22/22 local Workers-runtime tests. CI does not prove production provenance or hosted D1.
+- Posted explicit NOT-APPROVAL review note: [PR #125 comment 6973437035](https://github.com/VlDMlNSh/developer-cloud-pool/pull/125#issuecomment-6973437035).
+- Report: [PR #125 production-boundary review](../reports/2026-11-18-next-pr125-production-boundary-review.md). Checkpoint: [PR #125 production-boundary checkpoint](../checkpoints/2026-11-18-pr125-production-boundary-review.md).
+- Issue #96 owner correction means Gemini is optional supplementary, not mandatory per-/next or first-release. Gemini NOT RUN; no bypass.
+- No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent A3 review + meaningful required-review/status-check governance, then production wrapper reading actual runner inputs and independently checking current default HEAD. Keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
