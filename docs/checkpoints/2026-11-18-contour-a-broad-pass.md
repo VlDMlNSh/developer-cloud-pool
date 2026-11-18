@@ -208,3 +208,13 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Exact-head CI query returned no runs at cutoff; requalification NOT VERIFIED. PR #116 remains OPEN/DRAFT/UNMERGED.
 - Next: inspect exact-head CI and artifact integrity on corrective commit before beginning actual synthetic CODE-in-container work.
 - No secrets, provider calls, real Claude session, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
+
+
+## Follow-up — independent PR #116 artifact integrity audit — 2026-11-18
+
+- Exact PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; Runner Qualification 44286955337 / job 134741981861 SUCCESS; Pool Contract Validation 44286955360 SUCCESS.
+- Artifact 14420066410: downloaded independently; GitHub digest matched local SHA-256 `17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; ZIP integrity PASS; 43/43 internal checksum entries PASS. FCC loopback/profile and synthetic mock bridge evidence confirmed.
+- Scope: Docker no-egress primitive passed, but actual CODE executor has not run inside it; host runner egress remains public/NOT VERIFIED; provider allowlist NOT IMPLEMENTED; no real Claude session/task/provider call; dispatch false.
+- Current PRs: #116 OPEN/DRAFT; #126 OPEN/DRAFT with exact-head contract CI 44275194245 SUCCESS; #120 OPEN/DRAFT with architecture/contract CI 44260483070/44260483194 SUCCESS. None merged.
+- Default `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845` unchanged. Ruleset 26550182 active, PR required, no bypass actors, thread resolution required. Issue #118 remains blocked on server #3, Zero Trust access and persistence/restore. Gemini controller missing on default; NOT RUN.
+- Next: actual synthetic executor-in-Docker qualification, no secrets/no provider egress. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
