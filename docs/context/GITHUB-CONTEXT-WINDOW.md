@@ -3223,3 +3223,12 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - PR #116 HEAD `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
 - Pool Contract Validation run #44286730365: COMPLETED / SUCCESS.
 - Runner Qualification run #44286730410: IN_PROGRESS; job #134741199311 currently installing signed Claude Code APT package; downstream qualification stages pending. Result NOT VERIFIED.
+
+### Exact-head qualification update — 2026-11-18
+- PR #116 current HEAD: `2e944f13818f434cf135602c1c0e82051f1d3fa8`; OPEN / DRAFT / UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Pool Contract Validation run #44286955360: SUCCESS exact-head.
+- Runner Qualification run #44286955337: SUCCESS exact-head; job #134741981861, all 18 steps succeeded. Artifact #14420066410, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`. Artifact extraction/content audit still pending (NOT VERIFIED).
+- Scope: signed install and manifest, Docker no-egress capability probe, FCC runtime lifecycle, synthetic wrapper-to-mock invocation and selected ECC skills. Not a real Claude agent task or provider-routing test.
+- Still blocked: hosted-runner egress control, provider egress allowlist, real isolated agent execution, authorized server #3, Access/Tunnel, persistent workspace and backup/restore. Issue #118 OPEN.
+- Gemini NOT RUN (approved controller unavailable); production dispatch disabled. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independently inspect artifact #14420066410 and its SHA256SUMS, then proceed to workspace/security qualification only when host/access evidence is present.
