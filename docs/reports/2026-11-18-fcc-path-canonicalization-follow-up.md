@@ -52,3 +52,13 @@ Runner qualification: RUNNING / NOT VERIFIED at cutoff. Contract validation: VER
 - Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281): COMPLETED/SUCCESS. Exact-head Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244): IN_PROGRESS at cutoff; NOT VERIFIED.
 - Current PR #116 head at this update: `570d78b7d3f7972b7458de9e69f6117ae642896a`; OPEN/DRAFT/UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Next: inspect run 44284859244 and captured signal/wait/listener diagnostics. Do not treat FCC qualification as passed until the entire runner job and artifact are verified.
+
+
+## Explicit diagnostic stdout and latest exact-head run — 2026-11-18
+
+- Exact-head Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) completed FAILURE on `570d78b7d3f7972b7458de9e69f6117ae642896a`. FCC loopback passed; synthetic bridge still failed. The artifact [14418074350](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244/artifacts/14418074350) is 31,271 bytes with GitHub digest `sha256:3c94c889560b7a3c8e40a1d88d10fbdf6a5ad94977331ef9bc2c5ad0865a910f`; artifact contents not independently inspected.
+- Exact job log did not show runtime values for SIGINT status, wait status or listener state, even though the diagnostic code wrote them to the artifact. No precise shutdown root cause is claimed.
+- Commit `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; workflow blob `34a3f73909d2b637112b77cc5fb0e54580d84417` adds an explicit `cat` of the shutdown diagnostics file to stdout before fail-closed assertions. Source read-back confirmed the change.
+- Current PR #116 head `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; OPEN/DRAFT/UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Exact-head Runner Qualification [44285187440](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187440) and Pool Contract Validation [44285187389](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187389) were IN_PROGRESS at cutoff; NOT VERIFIED.
+- Next: inspect the explicit diagnostic output and artifact from run 44285187440. Keep the clean shutdown criteria and all security boundaries unchanged.
