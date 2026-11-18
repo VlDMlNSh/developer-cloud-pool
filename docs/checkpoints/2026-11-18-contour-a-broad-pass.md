@@ -158,3 +158,16 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Current PR #116 head `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`. Read-back confirms bridge now sets `+e` before SIGINT, captures signal and wait statuses, then restores strict mode; diagnostics are printed.
 - Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): SUCCESS. Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416): IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: inspect current run's bridge diagnostic values and complete artifact; no provider calls or production dispatch. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next checkpoint — 2026-11-18 (FCC bridge shutdown)
+- PR #116 exact current head: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`, OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation run `44285275314`: SUCCESS.
+- Exact-head Runner Qualification run `44285275416`: IN_PROGRESS at cutoff; job `134736343006` had passed checkout, environment allowlist, runner baseline and sandbox capability probe. No install/runtime result available yet; log download returned NOT_FOUND while running.
+- Prior full runtime run `44284859244`: FCC loopback and primary shutdown passed, synthetic bridge shutdown strict check failed. Artifact `14418074350`, 31,271 bytes, digest `sha256:3c94c889560b7a3c8e40a1d88d10fbdf6a5ad94977331ef9bc2c5ad0865a910f`; archive not independently inspected.
+- Commit `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1` separately captures SIGINT delivery and wait exit statuses without weakening fail-closed checks. Superseded run `44285187440` cancelled before install; NOT a result.
+- Gemini controller path returned 404 on default branch; Gemini NOT RUN. No secrets/provider calls/real Claude task/production dispatch/merge/deployment. `POOL_DISPATCH_ENABLED=false`.
+- Issue #118 remains OPEN/BLOCKED; PR #126/#120 remain OPEN/DRAFT/UNMERGED. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+- Detailed report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
+- Context Window updated in the same docs branch; always re-read live refs before continuing.
+- Next: inspect run `44285275416` after completion and verify signal, process exit, process liveness, listener absence, plus provenance artifact. Do not enable provider calls or relax shutdown assertions.
