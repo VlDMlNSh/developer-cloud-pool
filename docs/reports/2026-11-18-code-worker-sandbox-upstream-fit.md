@@ -86,3 +86,14 @@ After run 44284859244 reaches a terminal state, inspect its exact-head job logs 
 - PR #116 remains OPEN/DRAFT/UNMERGED; latest runner CI NOT VERIFIED at cutoff.
 - PR #126 remains OPEN/DRAFT/UNMERGED; exact-head contract CI SUCCESS.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+## Follow-up — FCC synthetic bridge shutdown diagnostic correction — 2026-11-18
+
+- PR #116 Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) completed FAILURE on exact head `570d78b7d3f7972b7458de9e69f6117ae642896a`; job `134734780467`.
+- Exact job logs prove Claude Code signed APT install, signed release-manifest/binary verification, Docker no-egress primitive, FCC install/profile tests, and FCC loopback health/shutdown all passed. Synthetic bridge failure occurred after the mock handoff and argument-preservation checks.
+- Root cause in the workflow source: bridge shutdown diagnostics referenced `signal_status` but never assigned it. With `set -u`, expansion aborted before diagnostics; additionally SIGINT delivery was not captured under non-errexit mode. This was a test harness defect, not evidence of FCC runtime failure.
+- Corrective commit: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`. The bridge now enters non-errexit mode before SIGINT, records `signal_status=$?`, waits and records `shutdown_status=$?`, then restores strict mode before assertions.
+- Read-back verified the exact source block contains the status capture. PR #116 current head is the corrective commit, OPEN/DRAFT/UNMERGED. Commit-associated workflow lookup returned no runs at observation time; exact-head requalification is NOT RUN / NOT VERIFIED.
+- No provider calls, secrets read, real Claude session, agent task, Gemini dispatch, production dispatch, deployment or merge.
+- Next: wait for/inspect exact-head CI on `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; do not start the actual CODE-in-container slice until the complete no-secret qualification is green and artifact integrity is checked.
