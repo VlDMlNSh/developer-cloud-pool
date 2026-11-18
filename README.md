@@ -76,3 +76,13 @@ The task issue template is an intake mechanism only. A valid task must bind an e
 - [Pool Worker workflow](.github/workflows/pool-worker.yml)
 
 **Status vocabulary:** PLANNED, IMPLEMENTED, NOT RUN, NOT VERIFIED, VERIFIED, QUALIFIED, ACCEPTED, BLOCKED. Never promote a component's status without exact, independently inspectable evidence.
+
+
+## Unified realization baseline
+
+- [Cloud Pool Unified Realization Map 1.0](docs/architecture/CLOUD-POOL-UNIFIED-REALIZATION-MAP-1.0.md)
+- [Independent audit integration report](docs/reports/2026-11-17-independent-audit-integration-pass.md)
+- [Continuation checkpoint](docs/checkpoints/2026-11-17-independent-audit-integration-pass.md)
+
+- [Architecture Assurance Addendum](docs/architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md)
+- [Independent 10/10 Scorecard](docs/architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md)

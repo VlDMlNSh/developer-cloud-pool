@@ -10,6 +10,9 @@ import path from "node:path";
 const files = [
   "README.md",
   "docs/architecture/CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md",
+  "docs/architecture/CLOUD-POOL-UNIFIED-REALIZATION-MAP-1.0.md",
+  "docs/architecture/CLOUD-POOL-ARCHITECTURE-ASSURANCE-ADDENDUM-2026-11-17.md",
+  "docs/architecture/CLOUD-POOL-10-10-INDEPENDENT-SCORECARD.md",
   "docs/decisions/2026-11-17-cloud-pool-architecture-consolidation-adr.md",
   "docs/reports/2026-11-17-cloud-pool-architecture-consolidation.md",
   "docs/checkpoints/2026-11-17-cloud-pool-architecture-consolidation.md",

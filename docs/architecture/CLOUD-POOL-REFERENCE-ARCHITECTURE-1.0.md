@@ -632,3 +632,8 @@ It does **not** authenticate the GitHub `issue_comment` webhook or the supplied 
 The normative extension in [Jarvis Operating Model 1.0](CLOUD-POOL-JARVIS-OPERATING-MODEL-1.0.md) formalizes Jarvis as the governed operating system for the platform. It adds Control/Execution/Data planes, Task Orchestrator, Agent Registry, Resource Manager, independent Quality Gate, dynamic logical agent roles, common executor adapter contract, four-layer memory, Agent Observability, six UI work areas and bounded autonomy/approval matrix.
 
 This does not create new authorities: A0 remains admission authority; one transactional store remains task/lease/quota authority; the approved controller remains the only Gemini dispatch path; workers remain bounded executors; independent acceptance remains separate from Jarvis and CI. All capabilities are target design until individually qualified. No runtime, provider, deployment or dispatch status is promoted by this documentation.
+
+
+## 24. Unified realization and integration baseline — 2026-11-17
+
+The [Unified Realization Map 1.0](CLOUD-POOL-UNIFIED-REALIZATION-MAP-1.0.md) is the single subordinate implementation sequence for Contour A. It defines the modular-monolith Control Plane, canonical task route, three state domains, capability-based scheduling, separate persistent Workspace, component adoption gates, PR integration discipline, Context Window freshness and evidence-first delivery. It does not create competing authorities or claim runtime qualification.
