@@ -92,11 +92,11 @@ describe("trusted R2 artifact ingest proof", () => {
 
   it("detects overwrite/substitution before an idempotent retry is accepted", async () => {
     const id = uploadId();
-    const first = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]) });
+    const first = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]), declaredSize: 8 });
     await env.ARTIFACTS.put(first.artifact.objectKey, "tampered", {
       customMetadata: { uploadId: id }
     });
-    const retry = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]) });
+    const retry = await ingestArtifact(env.ARTIFACTS, { uploadId: id, body: stream(["original"]), declaredSize: 8 });
     expect(retry).toMatchObject({ decision: "DENY", reason: "ARTIFACT_CONTENT_CONFLICT", dispatch: false });
   });
 
