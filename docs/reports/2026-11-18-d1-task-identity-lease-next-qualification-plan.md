@@ -95,7 +95,7 @@ A lease is a time-bounded coordination primitive, not exactly-once execution and
 
 ## Governance and status
 
-- PR #40: OPEN / DRAFT; do not infer acceptance.
+- PR #40: OPEN / DRAFT / UNMERGED; 0 formal reviews and 0 review threads at latest readback. Successful merge-context CI is not PR acceptance.
 - PR #130: OPEN / DRAFT / UNMERGED at prior verified readback; recheck before any future action.
 - Gemini: NOT RUN; controller/governance gates not freshly established in this pass.
 - No secrets read, hosted D1 writes, provider calls, production dispatch, deployment, merge or Contour B work.
