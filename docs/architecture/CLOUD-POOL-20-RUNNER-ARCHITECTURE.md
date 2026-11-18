@@ -1,3 +1,5 @@
+> **System-level authority update (2026-11-17):** This document is a bounded runner-capacity/profile design, not the system architecture. [Cloud Pool Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) governs current trust boundaries, dispatch authorization, state ownership, capacity caveats and qualification. The 20-slot figure is a planning ceiling only; do not infer guaranteed concurrency, persistent machines, or free-tier entitlement without a fresh GitHub policy/account check. Profiles remain PLANNED until individually qualified.
+
 # Developer Cloud Pool — 20 Runner Architecture
 
 **Status:** DESIGN / NOT DEPLOYED  

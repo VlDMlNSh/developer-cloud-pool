@@ -1,3 +1,5 @@
+> **System-level authority update (2026-11-17):** This document is an evaluation record for DeepSeek Harness, not an unconditional runtime selection or production approval. [Cloud Pool Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) governs worker isolation, task envelopes, secret policy, profile qualification and acceptance. DSH remains a candidate/developer-preview component until its current upstream revision, license, security posture, sandbox, egress, provenance and representative task are independently qualified. No model route, provider credential, deployment or dispatch is authorized by this plan.
+
 # DeepSeek Harness adoption and cloud-first build plan
 
 **Date:** 2026-11-04  

@@ -1,3 +1,5 @@
+> **System-level authority update (2026-11-17):** This 2026-11-04 proposal is retained as design history and candidate inventory. [Cloud Pool Reference Architecture 1.0](CLOUD-POOL-REFERENCE-ARCHITECTURE-1.0.md) supersedes it where system decisions differ. In particular, three local nodes are not assumed available; PostgreSQL is not a co-equal state authority; LangGraph is optional evaluation only; Jarvis is the single user-facing console but not an authorization authority; and persistent Engineering Workspace is separate from ephemeral GitHub workers. No deployment or qualification is implied by this document.
+
 # Jarvis Hybrid Platform — Reference Architecture
 
 **Status:** PROPOSED / NOT DEPLOYED / NOT QUALIFIED  
