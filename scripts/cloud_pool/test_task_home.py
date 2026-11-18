@@ -120,6 +120,39 @@ class TaskHomeTests(unittest.TestCase):
 
         self.assertEqual(list(self.root.iterdir()), [])
 
+    def test_same_task_id_descriptors_are_bound_to_their_own_directory_instance(self):
+        first = create_task_home(self.root, "reused-id")
+        second = create_task_home(self.root, "reused-id")
+        self.addCleanup(lambda: destroy_task_home(first, self.root) if first.path.exists() else None)
+        self.addCleanup(lambda: destroy_task_home(second, self.root) if second.path.exists() else None)
+
+        mismatched = type(first)(
+            task_id=first.task_id,
+            path=second.path,
+            environment=first.environment,
+            instance_id=first.instance_id,
+        )
+        with self.assertRaisesRegex(TaskHomeError, "does not match this directory instance"):
+            destroy_task_home(mismatched, self.root)
+        self.assertTrue(first.path.is_dir())
+        self.assertTrue(second.path.is_dir())
+
+        destroy_task_home(first, self.root)
+        destroy_task_home(second, self.root)
+
+    def test_rejects_modified_or_symlinked_ownership_marker(self):
+        task = create_task_home(self.root, "marker-check")
+        marker = task.path / ".cloud-pool-task-home-owner.json"
+        marker.write_text('{"task_id":"marker-check","instance_id":"0000000000000000000000000000000000000000000000000000000000000000"}\\n', encoding="utf-8")
+        with self.assertRaisesRegex(TaskHomeError, "does not match this directory instance"):
+            destroy_task_home(task, self.root)
+        marker.unlink()
+        marker.symlink_to(self.root / "missing-marker")
+        with self.assertRaisesRegex(TaskHomeError, "ownership marker is unsafe"):
+            destroy_task_home(task, self.root)
+        marker.unlink()
+        destroy_task_home(task, self.root)
+
     def test_refuses_insecure_root(self):
         os.chmod(self.root, 0o777)
         with self.assertRaises(TaskHomeError):
