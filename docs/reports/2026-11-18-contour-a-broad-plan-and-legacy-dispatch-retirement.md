@@ -33,7 +33,7 @@ This pass retires that path in a proposed PR:
 - Ensure the legacy DSH label queue cannot dispatch even if an old variable is accidentally enabled.
 - Remove unnecessary write permissions and credential exposure from the retired supervisor.
 - Make the old DSH worker inert.
-- Exact-head Pool Contract Validation run [44274773431](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44274773431) completed SUCCESS on PR head `c3cd927bae82f6ba9c630567dcf6adcf25ad7c0c`; YAML syntax, pinned-action and pool contract checks passed. The PR remains OPEN/DRAFT/UNMERGED.
+- Initial Pool Contract Validation run [44274773431](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44274773431) passed on code head `c3cd927bae82f6ba9c630567dcf6adcf25ad7c0c`. After updating this report and making the report itself trigger contract validation, final PR head `93a0b861369d7db2e50f7bdf4d472542a9dca62d` passed exact-head Pool Contract Validation [44275000015](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275000015): COMPLETED/SUCCESS. YAML syntax, pinned-action checks and pool security contract checks passed. PR remains OPEN/DRAFT/UNMERGED.
 **Exit:** code-level legacy label-driven dispatch and manual DSH execution are blocked by the proposed PR; they are not yet removed from the default branch until integration.
 
 ### P1 — Qualify the first CODE executor
