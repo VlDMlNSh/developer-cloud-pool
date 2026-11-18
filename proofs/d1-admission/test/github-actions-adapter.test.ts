@@ -175,4 +175,50 @@ describe("GitHub Actions environment -> atomic D1 admission composition", () => 
       approvalId: "gha-approval-9", profile: "unbounded"
     })).toMatchObject({ decision: "DENY", reason: "PROFILE_NOT_ALLOWED" });
   });
+  it("replays the same source comment across workflow attempts and preserves the first receipt", async () => {
+    const { event, environment } = valid(6912000110);
+    const approval = { approvalId: "gha-approval-run-attempt-replay", profile: "dsh-headless-probe" };
+    const binding = await seedApproval(event, environment, approval);
+
+    const first = await admitGitHubActionsEvent(env.POOL_DB, event, environment, approval, NOW);
+    expect(first).toMatchObject({
+      decision: "ADMITTED",
+      taskKey: binding.taskKey,
+      dispatch: false,
+      executionAuthorized: false
+    });
+
+    // GitHub reruns retain run_id and increment run_attempt. The original
+    // source-comment admission must remain the single durable task identity.
+    environment.GITHUB_RUN_ATTEMPT = "2";
+    const replay = await admitGitHubActionsEvent(env.POOL_DB, event, environment, approval, NOW + 1);
+    expect(replay).toMatchObject({
+      decision: "ADMISSION_REPLAY",
+      admissionId: first.admissionId,
+      taskKey: first.taskKey,
+      dispatch: false,
+      executionAuthorized: false
+    });
+
+    const [receipt, task, taskApproval, outbox] = await Promise.all([
+      env.POOL_DB.prepare(
+        "SELECT controller_run_id, controller_run_attempt FROM pool_admission_receipts WHERE source_comment_id = ?"
+      ).bind(String(event.comment.id)).first(),
+      env.POOL_DB.prepare(
+        "SELECT COUNT(*) AS n FROM pool_tasks WHERE task_key = ?"
+      ).bind(first.taskKey).first(),
+      env.POOL_DB.prepare(
+        "SELECT COUNT(*) AS n FROM pool_task_approvals WHERE task_key = ?"
+      ).bind(first.taskKey).first(),
+      env.POOL_DB.prepare(
+        "SELECT COUNT(*) AS n FROM pool_task_outbox WHERE task_key = ?"
+      ).bind(first.taskKey).first()
+    ]);
+
+    expect(receipt).toEqual({ controller_run_id: "44170001001", controller_run_attempt: 1 });
+    expect(task.n).toBe(1);
+    expect(taskApproval.n).toBe(1);
+    expect(outbox.n).toBe(1);
+  });
+
 });
