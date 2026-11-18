@@ -3273,3 +3273,14 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Artifact [14422202598](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475/artifacts/14422202598), lockfile package, SHA-256 `94de3feff7ff859748c60c8049c71805c2c066412eba351e4206be9d005cd83f`.
 - Source/test readback confirms initial-state guard requires MAX(epoch) and regression rejects epoch 1001 when 1003 exists before bootstrap, then accepts 1003 and advances to 1004. PR #128 remains OPEN/DRAFT/UNMERGED; zero PR reviews so far. CI is verified, independent review is not.
 - Default branch unchanged `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No hosted D1, provider calls, secrets, deployment or dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
+
+## PR #128 watermark advance consistency — 2026-11-18
+
+- Follow-up source review found a second stale-watermark case: after a state row exists, two snapshots could be appended (e.g. epochs 1004 and 1005) and the state UPDATE trigger previously allowed advancing only to 1004. This leaves active state behind the newest persisted snapshot.
+- PR #128 now requires both initial INSERT and every state UPDATE to select `MAX(registry_epoch)`. The regression rejects bootstrap at 1001 when 1003 exists, accepts 1003, then persists 1004 and 1005 before attempting state advance; 1004 is rejected and 1005 accepted. Snapshot append-only and monotonic protections remain.
+- Updated exact HEAD: `c17a6026323e5ba1be7a2ae3345f387df6d12f25`; base `e63f1dda4c046d485ae9c2f08392a1943a06553d`; PR #128 OPEN/DRAFT/UNMERGED, mergeable true.
+- Exact-head CI [run 44294913103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103) COMPLETED/SUCCESS; job `134769331002`, all steps SUCCESS. Workers runtime 10 files / 115 tests passed; isolated D1 upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed.
+- Artifact [14423147696](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103/artifacts/14423147696), SHA-256 `3b31135452722f8cee874dcfff2743046273cf3bab2ba806aee5af10ccb3f111`.
+- PR #128 has zero formal reviews. Comments explaining the second finding and CI evidence were added to PR #128 and parent PR #77 (comment IDs 6977256358 and 6977257530). Independent review remains NOT RUN.
+- No hosted D1, root key configuration, provider calls, secret reads, deployment or dispatch. Default branch remains unchanged; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain independent review of PR #128 and its parent stack; then continue atomic registry-to-admission integration and single-use task-claim qualification. Do not merge stacked proof branches without checking ancestry and exact-head gates.
