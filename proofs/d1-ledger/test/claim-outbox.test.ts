@@ -678,7 +678,13 @@ describe("immutable executor identity binding", () => {
     });
     expect(wrongAttempt.decision).toBe("DENY");
 
-    await createAttempt(claimed.taskKey, 1, "attempt-executor-immutable");
+    const immutableAttempt = await createTaskAttempt(env.POOL_DB, {
+      taskKey: claimed.taskKey, executorId: approval.executorId,
+      attemptId: "attempt-executor-immutable", attemptNumber: 1,
+      inputDigest: "5".repeat(64), executionIdempotencyKey: "exec-attempt-executor-immutable",
+      now: NOW + 2
+    });
+    expect(immutableAttempt.decision).toBe("ATTEMPT_CREATED");
     await expect(env.POOL_DB.prepare(
       "UPDATE pool_attempts SET executor_id = ? WHERE attempt_id = ?"
     ).bind("codex-1", "attempt-executor-immutable").run()).rejects.toThrow("ATTEMPT_EXECUTOR_ID_IMMUTABLE");
