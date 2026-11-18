@@ -4,7 +4,9 @@ const DEFAULT_MAX_BYTES = 10 * 1024 * 1024;
 function deny(reason) {
   return { decision: "DENY", dispatch: false, reason };
 }
-function streamFailureReason(error) {
+function streamFailureReason(error, measured, input, maxBytes) {
+  if (measured.byteLength > maxBytes) return "ARTIFACT_SIZE_LIMIT_EXCEEDED";
+  if (measured.byteLength !== input.declaredSize) return "ARTIFACT_DECLARED_SIZE_MISMATCH";
   const message = String(error?.message ?? "");
   if (message.includes("ARTIFACT_SIZE_LIMIT_EXCEEDED")) return "ARTIFACT_SIZE_LIMIT_EXCEEDED";
   if (message.includes("ARTIFACT_DECLARED_SIZE_MISMATCH")) return "ARTIFACT_DECLARED_SIZE_MISMATCH";
@@ -115,7 +117,7 @@ export async function ingestArtifact(bucket, input) {
     const fixed = new FixedLengthStream(input.declaredSize);
     const pumping = measured.stream.pipeTo(fixed.writable);
     const storing = bucket.put(key, fixed.readable, {
-      onlyIf: { etagDoesNotMatch: [{ type: "wildcard" }] },
+      onlyIf: { etagDoesNotMatch: "*" },
       customMetadata: { uploadId: input.uploadId }
     });
     const [stored] = await Promise.all([storing, pumping]);
@@ -146,7 +148,7 @@ export async function ingestArtifact(bucket, input) {
       dispatch: false
     };
   } catch (error) {
-    if (!measured.completed) return deny(streamFailureReason(error));
+    if (!measured.completed) return deny(streamFailureReason(error, measured, input, maxBytes));
     try {
       const sha256 = await measured.digest();
       return await reconcileExisting(bucket, key, input.uploadId, sha256, measured.byteLength, maxBytes);
