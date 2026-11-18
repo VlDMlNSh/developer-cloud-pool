@@ -1,5 +1,6 @@
 const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
+const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function deny(reason) {
   return { decision: "DENY", dispatch: false, reason };
@@ -11,19 +12,19 @@ function validCommon(db, taskKey, now) {
 }
 
 export async function createTaskAttempt(db, {
-  taskKey, attemptId, attemptNumber, inputDigest, executionIdempotencyKey, now
+  taskKey, executorId, attemptId, attemptNumber, inputDigest, executionIdempotencyKey, now
 }) {
-  if (!validCommon(db, taskKey, now) || !SAFE_ID.test(attemptId || "") ||
+  if (!validCommon(db, taskKey, now) || !EXECUTOR_ID.test(executorId || "") || !SAFE_ID.test(attemptId || "") ||
       !Number.isSafeInteger(attemptNumber) || attemptNumber < 1 ||
       !SHA256.test(inputDigest || "") || !SAFE_ID.test(executionIdempotencyKey || "")) {
     return deny("INVALID_ATTEMPT_REQUEST");
   }
   try {
     const prior = await db.prepare(
-      "SELECT task_key, attempt_number, input_digest, execution_idempotency_key FROM pool_attempts WHERE attempt_id = ?"
+      "SELECT task_key, executor_id, attempt_number, input_digest, execution_idempotency_key FROM pool_attempts WHERE attempt_id = ?"
     ).bind(attemptId).first();
     if (prior) {
-      const same = prior.task_key === taskKey &&
+      const same = prior.task_key === taskKey && prior.executor_id === executorId &&
         prior.attempt_number === attemptNumber &&
         prior.input_digest === inputDigest &&
         prior.execution_idempotency_key === executionIdempotencyKey;
@@ -34,20 +35,20 @@ export async function createTaskAttempt(db, {
 
     await db.prepare(`
       INSERT INTO pool_attempts (
-        attempt_id, task_key, attempt_number, status, input_digest,
+        attempt_id, task_key, executor_id, attempt_number, status, input_digest,
         execution_idempotency_key, created_at
       )
-      VALUES (?, ?, ?, 'prepared', ?, ?, ?)
-    `).bind(attemptId, taskKey, attemptNumber, inputDigest, executionIdempotencyKey, now).run();
+      VALUES (?, ?, ?, ?, 'prepared', ?, ?, ?)
+    `).bind(attemptId, taskKey, executorId, attemptNumber, inputDigest, executionIdempotencyKey, now).run();
 
     const row = await db.prepare(`
-      SELECT task_key, attempt_number, input_digest, execution_idempotency_key, status
+      SELECT task_key, executor_id, attempt_number, input_digest, execution_idempotency_key, status
         FROM pool_attempts WHERE attempt_id = ?
     `).bind(attemptId).first();
     const current = await db.prepare(
       "SELECT current_attempt_id, attempt_number FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
-    if (!row || row.task_key !== taskKey || row.attempt_number !== attemptNumber ||
+    if (!row || row.task_key !== taskKey || row.executor_id !== executorId || row.attempt_number !== attemptNumber ||
         row.input_digest !== inputDigest || row.execution_idempotency_key !== executionIdempotencyKey ||
         row.status !== "prepared") return deny("ATTEMPT_INSERT_READBACK_MISMATCH");
     if (current?.current_attempt_id !== attemptId || current?.attempt_number !== attemptNumber) {
