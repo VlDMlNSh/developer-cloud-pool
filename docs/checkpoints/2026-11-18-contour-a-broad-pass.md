@@ -230,3 +230,20 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Artifact 14424053695 SHA-256 `0473cc1032079c90d4cc3332d58bc3898ad5245b785585e880a2b0eb813a5377`.
 - PR #129 OPEN/DRAFT, no independent review. PR #86 and #128 OPEN/DRAFT. Default branch `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; active ruleset 26550182. No hosted D1, root key, provider call, secret read, deployment or dispatch.
 - Next: obtain independent review of PR #129 and validate full ancestry/integration order across PRs #84, #86, #128 and #77. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## Follow-up — PR #129 source and ancestry audit — 2026-11-18
+
+- Audit report: [PR #129 source and ancestry audit](../reports/2026-11-18-pr129-source-ancestry-audit.md).
+- PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`; base PR #86 HEAD `a218f92274eca5491700d8f72a21172f8ce689dc`; OPEN/DRAFT/UNMERGED.
+- Source readback confirms max-persisted-epoch check in migration 0014 assertion guard and exact-replay trust query. Adversarial tests cover stale active pointer on new admission and exact replay. No source defect established in bounded review.
+- Compare PR #84 HEAD `390ef0a09af2585c79f7e15d789343eb23fa370f`..PR #129 HEAD: 9 ahead / 0 behind. Stack order: #84 -> #86 -> #129; #84 is based on #81.
+- PR #128 is sibling to that stack, based on PR #77; compare #77 base `e63f1dda4c046d485ae9c2f08392a1943a06553d`..#128 HEAD `c17a6026323e5ba1be7a2ae3345f387df6d12f25`: 8 ahead / 0 behind. Do not combine without ancestry/schema reconciliation.
+- Exact-head CI [44298085395](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44298085395): SUCCESS; job 134780267666; 11/11 test files, 120/120 tests, second D1 binding smoke PASS, frozen schema fixture 2/2 PASS. Artifact 14424053695 SHA-256 `0473cc1032079c90d4cc3332d58bc3898ad5245b785585e880a2b0eb813a5377`.
+- PR #129 reviews 0 / threads 0; PR #86 reviews 0. Default branch unchanged at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No merge.
+- Gemini controller path returned 404 on default; Gemini NOT RUN. No secrets/provider calls/hosted D1/deployment/production dispatch.
+- Next: investigate revocation/admission race and durable single-use task claim/fencing; first determine whether #128's bootstrap correction must be integrated before #84 -> #86 -> #129.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
