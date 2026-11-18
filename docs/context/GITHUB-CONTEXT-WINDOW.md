@@ -1,3 +1,21 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18 12:15 Europe/Moscow
+
+**Latest pass report:** [2026-11-18-fcc-fallback-hardening-and-pr116-review.md](../reports/2026-11-18-fcc-fallback-hardening-and-pr116-review.md)
+
+- Default branch `Основной` HEAD remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 current head: `754f42b0b7fa84c73e90cececc6f3d8a65877fab`, OPEN / DRAFT / UNMERGED.
+- Added no-secret regression tests: reject numbered fallback key 2 with only one configured key; reject process-level `MODEL_FALLBACKS`, `FCC_CUSTOM_PROVIDERS`, and `ANTHROPIC_AUTH_TOKEN` overrides. Workflow assertion now requires 15 FCC guard tests.
+- Exact-head Runner Qualification [44273710771](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44273710771): COMPLETED / SUCCESS; job 134696398899, 16/16 steps SUCCESS. Pool Contract Validation [44273710870](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44273710870): COMPLETED / SUCCESS.
+- Artifact [14412609174](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44273710771/artifacts/14412609174), 28,061 bytes, SHA-256 `840c11c473077a2e819b5cf1b1d41cffe2512a856deed9c9fa074d163ed74eb`.
+- Source review COMMENT [5953625731](https://github.com/VlDMlNSh/developer-cloud-pool/pull/116#pullrequestreview-5953625731) anchored to current exact head. Not an independent third-party approval.
+- Issue #115 progress comment [6974149153](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6974149153).
+- This closes the tested managed-profile configuration path for cross-account key cycling, not provider account/quota identity. Keep one account per isolated profile and separate quota ledgers.
+- Outstanding NOT VERIFIED: installer/binary signature provenance; hosted Claude Code permission; FCC AGPL network-use review; real free provider route/account/quota; independent security approval; persistent web console and production state.
+- No secrets, provider calls, real Claude session, paid fallback, Gemini dispatch, production dispatch, deployment, merge, or Contour B work. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: qualify upstream installer cryptographic provenance and hosted-use/legal boundaries, then continue only with permitted free provider-route qualification after gates.
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18 12:06 Europe/Moscow
 
 **Latest reconciliation report:** [2026-11-18-contour-a-reconciliation.md](../reports/2026-11-18-contour-a-reconciliation.md)
