@@ -3092,3 +3092,15 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - PR #126 and PR #120 remain OPEN/DRAFT/UNMERGED. Issue #118 remains OPEN; no authorized workspace host #3, Cloudflare Access/Tunnel or backup/restore proof.
 - No secrets read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: inspect exact-head run 44284614737 diagnostics and determine shutdown exit status vs lingering listener. Then perform only evidence-based correction. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Latest execution — FCC bridge SIGINT status capture — 2026-11-18
+
+- Latest report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md); latest checkpoint: [2026-11-18 Contour A broad pass](../checkpoints/2026-11-18-contour-a-broad-pass.md).
+- PR #116 latest observed head `570d78b7d3f7972b7458de9e69f6117ae642896a`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED. Workflow blob `cde20dddcb9687d0797df7e099693a713ce71c31` read back and confirmed.
+- Previous exact-head run [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) FAILED in synthetic bridge shutdown after FCC loopback passed. Logs stopped immediately after `kill -INT` with no emitted diagnostic. This is consistent with `set -e` exiting on a nonzero signal command before the script enabled `set +e`; exact signal result was not captured. Artifact [14419215372](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737/artifacts/14419215372), 31,127 bytes, digest `sha256:3406b3d043829991a406455b1b94cd4c7da2533d1231d92ef320f934d33b9c5d`; archive not independently inspected.
+- Diagnostic correction commit `570d78b7d3f7972b7458de9e69f6117ae642896a` moves `set +e` before SIGINT and records signal exit status, wait exit status, process liveness and listener state before fail-closed assertions. No policy was weakened.
+- Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281): COMPLETED/SUCCESS. Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244): IN_PROGRESS at last check; NOT VERIFIED.
+- PR #126 and #120 remain OPEN/DRAFT/UNMERGED; Issue #118 remains OPEN/BLOCKED (workspace host #3, Cloudflare Access/Tunnel and backup/restore unverified).
+- No secret values read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: inspect run 44284859244 and determine signal status vs wait status vs listener state. Only after full Runner Qualification and artifact verification proceed to actual CODE-in-container and provider-specific egress qualification. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
