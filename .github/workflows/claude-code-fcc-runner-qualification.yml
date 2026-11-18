@@ -411,6 +411,7 @@ jobs:
           trap - EXIT
 
       - name: Qualify synthetic FCC-to-Claude CLI handoff without provider access
+        id: fcc_bridge_qualification
         shell: bash
         env:
           UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
@@ -424,6 +425,9 @@ jobs:
           port=18766
           mkdir -p "$bridge_home" "$mock_bin"
           chmod 700 "$bridge_home" "$mock_bin"
+          # Pre-create bounded evidence so even an early failure is represented in the artifact.
+          printf '%s\n' 'bridge_result_state=STARTED' > "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+          printf '%s\n' 'bridge_shutdown_state=NOT_REACHED' > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
           test ! -e "$marker"
           test ! -e "$args_file"
 
@@ -535,15 +539,38 @@ jobs:
           signal_status=$?
           wait "$server_pid"
           shutdown_status=$?
-          set -e
-          remaining_listener="$(ss -H -ltn "sport = :$port")"
-          printf '%s\\n' \
-            "fcc_bridge_signal_exit_status=$signal_status" \
-            "fcc_bridge_shutdown_exit_status=$shutdown_status" \
-            "fcc_bridge_process_alive_after_wait=$(kill -0 "$server_pid" 2>/dev/null && echo true || echo false)" \
-            "fcc_bridge_listener_after_signal=${remaining_listener:-absent}" \
-            > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+
+          # Capture every diagnostic command while errexit is disabled. A failed
+          # listener probe must be recorded, not silently erase the evidence file.
+          remaining_listener="$(ss -H -ltn "sport = :$port" 2>/dev/null)"
+          listener_probe_status=$?
+          if kill -0 "$server_pid" 2>/dev/null; then
+            process_alive_after_wait=true
+          else
+            process_alive_after_wait=false
+          fi
+          if [ "$listener_probe_status" -eq 0 ] && [ -z "$remaining_listener" ]; then
+            listener_absent_after_wait=true
+          else
+            listener_absent_after_wait=false
+          fi
+
+          {
+            printf '%s\n' "fcc_bridge_signal_exit_status=$signal_status"
+            printf '%s\n' "fcc_bridge_shutdown_exit_status=$shutdown_status"
+            printf '%s\n' "fcc_bridge_process_alive_after_wait=$process_alive_after_wait"
+            printf '%s\n' "fcc_bridge_listener_probe_exit_status=$listener_probe_status"
+            printf '%s\n' "fcc_bridge_listener_absent_after_wait=$listener_absent_after_wait"
+          } > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          {
+            printf '%s\n' "fcc_bridge_signal_exit_status=$signal_status"
+            printf '%s\n' "fcc_bridge_shutdown_exit_status=$shutdown_status"
+            printf '%s\n' "fcc_bridge_process_alive_after_wait=$process_alive_after_wait"
+            printf '%s\n' "fcc_bridge_listener_probe_exit_status=$listener_probe_status"
+            printf '%s\n' "fcc_bridge_listener_absent_after_wait=$listener_absent_after_wait"
+          } >> "$GITHUB_OUTPUT"
           cat "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          set -e
           if [ "$signal_status" -ne 0 ]; then
             echo "::error::FCC bridge SIGINT delivery returned exit=$signal_status."
             ps -o pid,ppid,state,cmd -p "$server_pid" || true
@@ -563,9 +590,14 @@ jobs:
             exit 1
           fi
           server_pid=""
-          if [ -n "$remaining_listener" ]; then
+          if [ "$listener_probe_status" -ne 0 ]; then
+            echo "::error::FCC bridge listener probe failed (exit=$listener_probe_status)."
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
+          if [ "$listener_absent_after_wait" != true ]; then
             echo "::error::FCC bridge listener remained after shutdown."
-            printf '%s\\n' "$remaining_listener"
+            printf '%s\n' "$remaining_listener"
             cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
             exit 1
           fi
