@@ -10,6 +10,7 @@ const approval = {
   issueNumber: 42,
   targetSha: "a".repeat(40),
   profile: "dsh-headless-probe",
+  executorId: "claude-code-1",
   envelopeDigest: "b".repeat(64)
 };
 
@@ -18,7 +19,7 @@ async function seed(overrides = {}) {
   await env.POOL_DB.prepare(`
     INSERT INTO pool_approval_ledger (
       approval_id, owner_numeric_id, repository_id, issue_number,
-      target_sha, profile, envelope_digest, expires_at, state
+      target_sha, profile, executor_id, envelope_digest, expires_at, state
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'ready')
   `).bind(
     row.approvalId,
@@ -27,6 +28,7 @@ async function seed(overrides = {}) {
     row.issueNumber,
     row.targetSha,
     row.profile,
+    row.executorId,
     row.envelopeDigest,
     row.expiresAt
   ).run();
