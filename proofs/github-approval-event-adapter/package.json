@@ -1,0 +1,7 @@
+{
+  "name": "pool-github-approval-event-adapter-proof",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=20" }
+}
