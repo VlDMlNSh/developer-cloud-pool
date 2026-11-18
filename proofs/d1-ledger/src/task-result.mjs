@@ -15,7 +15,7 @@ export async function commitTaskResult(db, bucket, input) {
   if (typeof input.taskKey !== "string" || !/^[a-f0-9]{64}$/.test(input.taskKey)) return deny("INVALID_TASK_KEY");
   if (typeof input.workerId !== "string" || !SAFE_ID.test(input.workerId)) return deny("INVALID_WORKER_ID");
   if (!Number.isSafeInteger(input.generation) || input.generation < 1) return deny("INVALID_LEASE_GENERATION");
-  if (typeof input.leaseAttemptId !== "string" || !UUID.test(input.leaseAttemptId)) return deny("INVALID_LEASE_ATTEMPT");
+  if (typeof input.leaseAttemptId !== "string" || !SAFE_ID.test(input.leaseAttemptId)) return deny("INVALID_LEASE_ATTEMPT");
   if (!input.artifact || typeof input.artifact !== "object") return deny("INVALID_ARTIFACT_REFERENCE");
 
   if (!bucket || typeof bucket.head !== "function" || typeof bucket.get !== "function") {
