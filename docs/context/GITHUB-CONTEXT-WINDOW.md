@@ -3117,3 +3117,14 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: after 44284859244 is terminal, inspect exact-head logs/artifact, then build a no-secret qualification that runs a synthetic CODE executor inside the actual restricted container and proves task envelope, no token visibility, read-only FS/capability restrictions, no direct egress, termination and artifact integrity. Provider egress remains disabled.
 - No secret values read, provider calls, real Claude session/task, Gemini dispatch, production dispatch, deployment, merge or Contour B. `POOL_DISPATCH_ENABLED=false`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 FCC bridge harness correction
+
+- PR #116 Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) FAILED on `570d78b7d3f7972b7458de9e69f6117ae642896a`; job `134734780467`. Job logs show signed Claude Code package/manifest/binary checks, Docker no-egress capability, FCC profile tests and FCC loopback lifecycle passed; synthetic bridge failed because the script read unset `signal_status` under `set -u` after never capturing the SIGINT command status.
+- Corrective PR #116 commit `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b`. Read-back confirms `set +e` precedes SIGINT and both signal/wait exit statuses are captured before strict assertions. This is a test harness correction; no security policy weakened.
+- Commit-associated CI query returned no run at observation time. Exact-head Runner Qualification and contract validation on `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1` are NOT VERIFIED until GitHub reports exact-head terminal results.
+- PR #126 remains OPEN/DRAFT/UNMERGED with exact-head contract validation SUCCESS; default-branch legacy DSH dispatch is not yet retired.
+- Next: verify CI/artifact for PR #116 corrective head. Only after complete pass proceed to synthetic CODE worker execution inside actual isolated container. No provider credentials or egress.
+- Report: [CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md). Documentation branch `docs/next-2026-11-18-worker-sandbox-fit`.
+- No secret reads, provider calls, real agent task, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
