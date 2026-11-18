@@ -192,3 +192,11 @@ The previous overlay incorrectly described workflow step 12 (FCC loopback readin
 - Updated D1 workflow push allowlist to include the fix branch so its own branch push can trigger proof. Available workflow-run lookup only exposes PR-triggered runs; exact push-run ID/status is not available through this integration in this pass. Therefore PR #128 CI is **NOT VERIFIED**. No local runner was available to execute Workers D1 tests.
 - PR #128 remains OPEN / DRAFT / UNMERGED. No merge, hosted D1, provider calls, secrets, deployment or dispatch. Default branch remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Next: obtain exact-head D1 workflow result for `5548314818f8899290aaf322ea720c4bdfc42459`; inspect all test steps/artifacts; request independent review. Only after proof and review should this stack be integrated. A0 and Contour A remain BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### PR #128 exact-head D1 CI — SUCCESS — 2026-11-18
+
+- Candidate SHA `5548314818f8899290aaf322ea720c4bdfc42459`; workflow run [44294225475](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475) COMPLETED / SUCCESS; job `134766938542`, all 12 steps SUCCESS.
+- Workers runtime suite: 10 test files / 115 tests passed, including durable registry ledger regression (1 test). Isolated D1 upgrade binding smoke: 1 passed. Frozen schema-0010 fixture reproduction: 2 passed. Adapter syntax and exact dependency install passed.
+- Artifact [14422202598](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475/artifacts/14422202598), SHA-256 `94de3feff7ff859748c60c8049c71805c2c066412eba351e4206be9d005cd83f`.
+- Exact-head source readback confirms guard requires initial epoch = MAX(persisted epoch) plus snapshot digest/version/accepted_at binding. Regression reproduces N=1001 and N+1=1003 before bootstrap, rejects N, accepts N+1, then advances to 1004.
+- PR #128 remains OPEN/DRAFT/UNMERGED; no reviews yet. CI is VERIFIED; independent review remains NOT RUN. Default branch unchanged `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No hosted D1, provider calls, secrets, deployment or dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
