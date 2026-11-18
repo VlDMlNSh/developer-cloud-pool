@@ -200,3 +200,13 @@ The previous overlay incorrectly described workflow step 12 (FCC loopback readin
 - Artifact [14422202598](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294225475/artifacts/14422202598), SHA-256 `94de3feff7ff859748c60c8049c71805c2c066412eba351e4206be9d005cd83f`.
 - Exact-head source readback confirms guard requires initial epoch = MAX(persisted epoch) plus snapshot digest/version/accepted_at binding. Regression reproduces N=1001 and N+1=1003 before bootstrap, rejects N, accepts N+1, then advances to 1004.
 - PR #128 remains OPEN/DRAFT/UNMERGED; no reviews yet. CI is VERIFIED; independent review remains NOT RUN. Default branch unchanged `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. No hosted D1, provider calls, secrets, deployment or dispatch. Contour A remains BLOCKED / NOT ACCEPTED.
+
+## PR #128 watermark advance consistency — 2026-11-18
+
+- Second source-review finding: state UPDATE previously allowed a valid intermediate snapshot to become current while a higher epoch was already persisted. The update trigger now requires `NEW.current_epoch = MAX(registry_epoch)`, matching the bootstrap guard.
+- Regression inserts epochs 1004 and 1005 before advancing from 1003, rejects 1004 and accepts 1005. Existing stale-bootstrap, snapshot-order, append-only and stale-state tests remain.
+- Exact HEAD `c17a6026323e5ba1be7a2ae3345f387df6d12f25`; base `e63f1dda4c046d485ae9c2f08392a1943a06553d`; PR #128 OPEN/DRAFT/UNMERGED.
+- Exact-head CI [44294913103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103) COMPLETED/SUCCESS; all job steps succeeded. 10 Workers-runtime files / 115 tests passed; D1 upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed.
+- Artifact [14423147696](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103/artifacts/14423147696), SHA-256 `3b31135452722f8cee874dcfff2743046273cf3bab2ba806aee5af10ccb3f111`.
+- PR formal review count remains zero. Findings and evidence commented on PR #128 and parent #77. No hosted D1, production key configuration, provider calls, secret reads, deployment or dispatch. Contour A BLOCKED / NOT ACCEPTED.
+- Next: independent review, then carefully integrate the route-registry stack and qualify atomic D1 admission/revocation behavior.
