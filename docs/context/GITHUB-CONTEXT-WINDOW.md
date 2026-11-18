@@ -3648,3 +3648,27 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 ### Base-ref drift note (verified 2026-11-18)
 
 The live default branch `Основной` is at `68183828cf7934e89109310c8f99281be4eb7ed8`, while GitHub's PR #135 API currently reports `base.sha` as `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (base ref remains `Основной`). Treat this as an unresolved base-ref snapshot discrepancy. PR #135 is still Draft and must not be merged until the base relationship is refreshed/revalidated against the live default head and the complete diff/CI are rechecked. PR #136 is the separate corrective documentation PR based on `68183828cf7934e89109310c8f99281be4eb7ed8`.
+
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, cross-store reconciliation epoch/fence design
+
+**Latest report:** [Issue #133 cross-store epoch/fence protocol design](../reports/2026-11-18-issue133-cross-store-epoch-fence-design.md)  
+**Latest checkpoint:** [Issue #133 cross-store epoch/fence checkpoint](../checkpoints/2026-11-18-issue133-cross-store-epoch-fence-checkpoint.md)
+
+- Default branch `Основной` HEAD: `68183828cf7934e89109310c8f99281be4eb7ed8`.
+- PR #132 OPEN/DRAFT/UNMERGED; head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- PR #134 OPEN/DRAFT/UNMERGED; head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #135 OPEN/DRAFT/UNMERGED; current exact proof head `5554c3f27dd9f23b341224d6c00ccbf74642f289`; base-ref SHA discrepancy remains unresolved and is a merge blocker.
+- PR #136 OPEN/DRAFT/UNMERGED; corrective docs-only removal of the two misplaced files; head `032fe0548ce5c8549976a9806ebc9e7f86cd8e4f`.
+- Issue #133 OPEN. Latest inventory update comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6984004368
+- PR #135 exact-head CI: Workers PR run [44342212033](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342212033) SUCCESS (4 files / 38 tests); push run [44342193230](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342193230) SUCCESS (4 files / 38 tests); Pool Contract Validation [44342211911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342211911) SUCCESS.
+- PR #135 formal reviews 0; inline review threads 0; independent review NOT VERIFIED.
+- Latest design is D1-owned OPEN/CLOSING/SEALED epoch + durable upload reservations. Close admission, drain every IN_FLIGHT/IN_DOUBT write, freeze D1 reference mutations, then paginate stable R2 and persist D1/R2 manifest hashes in a durable scan-run. Single trusted ingress must be the only R2 writer; no executor credentials.
+- R2 strong consistency applies per list operation, not a multi-page snapshot if writers remain active. A negative read does not settle an earlier in-flight PUT. Ambiguous writes require same conditional request/write-id reconciliation; unresolved reservation blocks sealing.
+- Design status DOCUMENTED / NOT IMPLEMENTED / NOT QUALIFIED. Current inventory adapter must keep `crossStoreSnapshotConsistent: false`; deletion remains disabled.
+- No source/schema changes in this pass, no new dependencies or services, no production R2/D1 writes, secrets, provider calls, dispatch, deployment, merge, deletion or Contour B work.
+- Active ruleset ID `26550182` on `Основной`: PR required, review-thread resolution required, 0 required approving reviews, deletion/non-fast-forward prohibited, no bypass actors. Branch-protection endpoint unavailable to integration (403).
+- Gemini NOT RUN: controller workflow unavailable on checked default ref; no Secrets/Variables inspected.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: audit all R2 write paths and D1 artifact-reference mutation paths. Implement an epoch/reservation gate only if every writer can be forced through the trusted boundary; keep deletion disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
