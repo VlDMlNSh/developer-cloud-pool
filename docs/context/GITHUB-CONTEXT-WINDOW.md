@@ -205,3 +205,11 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Independent A3 review outstanding; ruleset #26550182 still has zero required approvals and zero required status checks. Owner /next controller and Gemini dispatch controller absent on default; Gemini dispatch NOT RUN. No secrets/provider calls/deployment/merge.
 - Contour A **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
 - Next: await exact-head runs 44262959665 and 44262959651. If green, obtain independent A3 review; then separately qualify production worker, OS/container/egress, credential lifecycle and provider route/quota under approved scope.
+
+
+### CURRENT RECONCILIATION — dangling credential-store symlink regression — 2026-11-18
+- Code branch PR #116 advanced to `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f` (one commit beyond XDG fix). New test creates a dangling `.aws` symlink in a synthetic fresh HOME and verifies fail-closed rejection plus cleanup of partial HOME.
+- XDG parent permission fix at `ad8b120...` passed exact-head Runner Qualification [44262843742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843742) and Pool Contract Validation [44262843688](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843688), both SUCCESS.
+- Latest head `58a8cd5...`: Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) SUCCESS; Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) still IN_PROGRESS at last poll.
+- Updated report: [task HOME symlink and XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md).
+- Production worker still DSH-only; no launcher integration, OS/container sandbox, egress policy, external credential isolation, host recovery or Claude vendor/free-tier compliance qualification. PR #116 OPEN/DRAFT/UNMERGED; independent A3 review outstanding. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
