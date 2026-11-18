@@ -1,3 +1,22 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18 19:33 Europe/Vilnius — current-base admission and governance revalidation
+
+**Latest report:** [Current-base admission/governance audit](../reports/2026-11-18-1933-current-base-admission-governance-audit.md)  
+**Latest checkpoint:** [Current-base admission/governance checkpoint](../checkpoints/2026-11-18-current-base-admission-governance-checkpoint.md)
+
+- Live default branch `Основной` HEAD: `68183828cf7934e89109310c8f99281be4eb7ed8`; open Issues 14; open PRs 104.
+- Default HEAD includes two documentation-only commits after source baseline `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`. PR #136 deletes exactly the two misplaced report/checkpoint files; it is OPEN/DRAFT, 2 ahead / 0 behind, exact-head CI 0, reviews 0.
+- Active Ruleset #26550182: PR required, deletion/non-fast-forward blocked, review-thread resolution required, 0 required approvals, no required status checks, no CODEOWNERS/extra approval, no bypass actors. Current `POOL_DISPATCH_ENABLED` NOT VERIFIED; classic branch-protection endpoint NOT VERIFIED.
+- Default branch still has Supervisor `workflow_dispatch`/issue/workflow_run triggers and write permissions; Worker still exposes DSH `workflow_dispatch`. PR #139 proposes clean-base retirement, head `4b35f949fa9bd0f924582f9eb47008c191c061ee`, 6 ahead / 0 behind, exact-head Pool Contract run 44349941243 SUCCESS, reviews 0. Worker in the candidate has `permissions: {}` and immediately fails; the candidate is not merged.
+- PR #143 current-base local D1 ledger head `2cc68ee9d12916405aeee16436a20921fd5770d2`, 40 ahead / 0 behind; exact-head D1 run 44359547368 and Pool Contract run 44359547723 SUCCESS; reviews/threads 0. It adds immutable executor IDs (`claude-code-1`, etc.) but retains `profile=dsh-headless-probe` in migration 0001 and fixtures. PR #142 treats this as a separate capability profile; Issue #140/PR #141 still require a reconciled CODE capability-profile contract. Do not change the SQL profile by guess.
+- PR #141 head `8c88a384a5a2af831051846a5522b912ce2e27c3` and PR #142 head `02514ebe2cdf5456faaae270951d190041496ccf` are docs/planning only, each 4 ahead / 0 behind; exact-head CI and reviews 0.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 145 behind current default, reviews 0. Path-segment branch `dee17350864cb49e8c5dd41cf61859d77d3affca` is 38 ahead / 145 behind, exact-head CI/status NOT VERIFIED; reconstruct only the minimal guard on a fresh base.
+- Issues #1/#22/#26/#96/#140 remain OPEN. #22 GitHub-hosted-only read-only web boundary is not deployed; #26 provider/account/quota routing is not qualified; #96 is PLANNED and dispatch-disabled.
+- SentinelX: 0 connected hosts; Mac mini offline; mh-dev-01/02 disabled; 0 integrations. Cloudflare: 0 Worker scripts, 0 D1 databases; Access apps endpoint 403/not enabled.
+- No secrets, tokens or API keys were read. No dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge, variable/ruleset mutation, hosted D1/R2 writes, deletion or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: resolve executor identity vs capability-profile semantics, reconcile PR #143 with one canonical D1 receipt/outbox chain, and independently review PR #139 before any runtime action.
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, recovery proof and documentation correction
 
 **Latest report:** [Issue #133 R2-to-D1 recovery qualification](../reports/2026-11-18-issue133-d1-r2-recovery-qualification.md)  
