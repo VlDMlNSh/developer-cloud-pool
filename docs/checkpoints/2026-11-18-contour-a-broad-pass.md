@@ -13,11 +13,11 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 
 ## Work executed
 - Created [PR #126](https://github.com/VlDMlNSh/developer-cloud-pool/pull/126), branch `fix/retire-legacy-label-dispatch-2026-11-18`, base SHA `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR head: `c3cd927bae82f6ba9c630567dcf6adcf25ad7c0c`.
+- PR final head: `f69f286b5b5a3de8dfdd80ed581859851ce271e5`.
 - Supervisor is reduced to scheduled heartbeat; if the old dispatch variable is `true`, it fails closed. Removed Issues/Actions write permissions, GitHub token injection and old issue/workflow-run/manual triggers.
 - Legacy DSH Worker now only emits an explicit retirement error; no task inputs, checkout, external action, token, runtime installation or execution.
 - Pool Contract Validation now asserts these retirement invariants.
-- Exact-head Pool Contract Validation [44274773431](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44274773431): COMPLETED / SUCCESS. YAML syntax, pinned-action checks and security contract validation passed.
+- Exact-head Pool Contract Validation [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245): COMPLETED / SUCCESS on final PR head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`; YAML syntax, pinned-action checks and security contract validation passed.
 - PR #126 remains OPEN / DRAFT / UNMERGED. No merge, production dispatch, provider call, secret read, paid fallback, Gemini dispatch, deployment or Contour B work.
 
 ## Existing implementation evidence and gaps
