@@ -2,52 +2,65 @@
 
 ## CURRENT RECONCILED SNAPSHOT — 2026-11-18
 
-This is the primary cross-chat recovery record for Cloud Development Pool. Always re-read live refs, exact-head CI, issues, PRs, rulesets and contracts before each engineering pass. A draft PR or passing local test is not production acceptance.
+GitHub is the persistent source of truth for Cloud Pool. Before each /next pass, re-read live refs, current issue comments, PR heads/bases/reviews, exact-head CI, governance and active blockers. Historical reports are evidence only; they do not supersede live GitHub state.
 
-### Repository and immutable refs
-- Repository: `VlDMlNSh/developer-cloud-pool`, public; default branch: `Основной`.
-- Default HEAD at this pass: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
-- PR #120: OPEN / DRAFT / UNMERGED; architecture parent branch head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`.
-- PR #124: OPEN / DRAFT / UNMERGED; branch `docs/unified-realization-integration-2026-11-17`; head immediately before this Context Window refresh `721f23757dbff8d943c2e0a7c78917e8277b2248`; base PR #120 head above. This branch contains the Unified Realization Map 1.0, Architecture Assurance Addendum, Independent Scorecard and dated reports/checkpoints. All are proposals until review/merge.
-- PR #114: OPEN / DRAFT / UNMERGED; head `ab9461eb84b14fe230918391d5212f19ca25592c`; base default HEAD. Local Workers-runtime D1 atomic admission proof, 12/12 tests in its qualification run; not hosted D1 or live webhook qualification.
-- PR #125: OPEN / DRAFT / UNMERGED; branch `proof/d1-github-actions-context-adapter-2026-11-18`; exact head `c58494e730df0dd83620a085f870c811f9e1b0e0`; base PR #114 exact head above; compare 17 ahead / 0 behind; mergeable=true at read-back; formal reviews 0.
-- PR #125 changes: runner-provided GitHub Actions context binding; strict repository/owner numeric identity and Issue #96 owner-comment predicate; default-ref and fixed workflow-ref validation; derives target/default SHA from `GITHUB_SHA`, code SHA from `GITHUB_WORKFLOW_SHA`, run ID/attempt from their matching runner variables; persists `controller_run_attempt` into the D1 receipt and envelope digest; preserves `dispatch:false` / `executionAuthorized:false`.
+### Repository and canonical refs
+- Repository: `VlDMlNSh/developer-cloud-pool`, public.
+- Default branch: `Основной`; observed HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #120 — Reference Architecture 1.0 parent: OPEN / DRAFT / UNMERGED; head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; base default HEAD above.
+- PR #124 — Unified Realization Integration: OPEN / DRAFT / UNMERGED; head immediately before this context/checkpoint refresh was `401d1a13166eca581ff8e0b59bf6e2f77c8a74fb`; base PR #120 head above; mergeable=true. Contains Unified Realization Map, Architecture Assurance Addendum, independent scorecard and reports/checkpoints. All remain proposed until reviewed/merged.
+- PR #114 — Atomic D1 Owner /next Admission parent: OPEN / DRAFT / UNMERGED; head `ab9461eb84b14fe230918391d5212f19ca25592c`; base default HEAD; mergeable=true. Local Workers-runtime D1 atomic admission proof, 12/12 tests on its verified head; not hosted DB or live webhook qualification.
+- PR #125 — GitHub Actions Context Adapter: OPEN / DRAFT / UNMERGED; branch `proof/d1-github-actions-context-adapter-2026-11-18`; exact latest code head `edfeaef277fe709a9acc37d99b7bd3cda3003774`; base PR #114 head above; 18 ahead / 0 behind; mergeable=true; formal reviews 0.
+- Issue #96 is the only intended Cloud Pool owner-only `/next` control surface. Latest owner instruction reiterates that four Gemini roles are requested per /next but do not override gates; controller must be the approved Cloud Pool default-branch workflow. Four live dispatches are NOT RUN while controller/security gates remain unqualified.
 
-### Exact-head verification for PR #125
-- PR workflow [44252929666](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252929666), job [134627714836](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252929666/job/134627714836): COMPLETED / SUCCESS on exact head `c58494e730df0dd83620a085f870c811f9e1b0e0`.
-- The job log proves `git checkout` and `git log -1` both returned the exact PR head, not the PR merge commit.
-- Tests: 2 files, 20/20 PASS (12 original D1 admission tests + 8 Actions context tests). `npm ci`, syntax check and `npm run check` succeeded.
-- Push validation [44252926012](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44252926012): COMPLETED / SUCCESS on the same exact SHA.
-- Earlier intermediate CI failures were corrected; only these final successful exact-head runs are evidence for the current code head.
+### PR #125 implementation and evidence
+- `bindGitHubActionsContext` composes the existing D1 admission predicate with runner-provided `GITHUB_*` context values.
+- Validates GitHub Actions marker/server, repository and owner IDs against the event payload, exact `issue_comment.created`, exact open Issue #96 URL, owner numeric ID/login/OWNER association and exact body `/next`.
+- Requires default ref `refs/heads/Основной`, the fixed future controller workflow reference `.github/workflows/cloud-pool-next-controller.yml@refs/heads/Основной`, valid `GITHUB_SHA` / `GITHUB_WORKFLOW_SHA`, positive `GITHUB_RUN_ID` and `GITHUB_RUN_ATTEMPT`.
+- Derives target/default-head SHA only from `GITHUB_SHA`, controller code SHA from `GITHUB_WORKFLOW_SHA`, and run identity from `GITHUB_RUN_ID` + `GITHUB_RUN_ATTEMPT`. Persists run attempt in the D1 receipt and binds it into the envelope digest.
+- Regression test covers one source comment admitted at run attempt 1 and replayed at attempt 2 with the same run ID. It verifies the original immutable receipt/task/approval/outbox remain singletons and receipt retains attempt 1.
+- All outcomes preserve `dispatch:false` and `executionAuthorized:false`.
+- Exact-head PR CI [44253572758](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758), job [134629803561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758/job/134629803561): COMPLETED / SUCCESS on exact head `edfeaef277fe709a9acc37d99b7bd3cda3003774`. Job log proves checkout and `git log -1` both returned that SHA, not the PR merge commit.
+- Workers-runtime suite: **21/21 PASS** across 2 files (12 D1 transaction tests + 9 GitHub Actions context tests). `npm ci --ignore-scripts --no-audit --no-fund` and `npm run check` passed.
+- Exact-head push validation [44253567272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253567272): COMPLETED / SUCCESS on the same SHA.
+- PR #125 has 0 formal reviews. A top-level verification comment was added: [PR #125 evidence comment](https://github.com/VlDMlNSh/developer-cloud-pool/pull/125#issuecomment-6971317677).
 - Report: [2026-11-18 GitHub Actions context adapter proof](../reports/2026-11-18-next-github-actions-context-adapter.md).
 - Checkpoint: [2026-11-17 independent audit integration checkpoint, appended 2026-11-18](../checkpoints/2026-11-17-independent-audit-integration-pass.md).
 
+### GitHub Actions event semantics (verified against official docs)
+- For `issue_comment`, GitHub documents `GITHUB_SHA` as the last commit on the default branch and `GITHUB_REF` as the default branch.
+- The `issue_comment` workflow triggers only when its workflow file exists on the default branch. Therefore the current PR #125 context adapter is synthetic composition evidence, not a deployed controller.
+- Official references: [Events that trigger workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows); [Default environment variables](https://docs.github.com/en/actions/reference/workflows-and-actions/variables).
+
+### Governance, security and runtime blockers
+- Active ruleset #26550182 targets `refs/heads/Основной`; enforcement active; requires PR and review-thread resolution; deletion and non-fast-forward prohibited. It still requires **0 approving reviews and 0 status checks**; no bypass actors. Classic branch protection API reports `protected=false`. Governance is insufficient for critical acceptance.
+- PR #125 and PR #114 formal independent reviews remain 0. No independent A3 review is complete; do not merge.
+- The future controller path `.github/workflows/cloud-pool-next-controller.yml` is **not present on default branch**. PR #112 is read-only event validation; PR #114/#125 are local proof proposals, not a deployed owner-event controller.
+- Synthetic event/context tests do not authenticate live webhook signatures, re-read the default branch via GitHub API, or prove hosted workflow provenance. No live /next webhook path is enabled.
+- D1 tests use local Workers-runtime emulation only. Hosted D1 persistence, backups/restore and hosted contention remain NOT VERIFIED.
+- Production approval issuer, Supervisor claim/lease/fencing/recovery, outbox delivery, worker identity, end-to-end execution and real free provider route/account/quota remain NOT QUALIFIED.
+- Issue #118 persistent Workspace remains deferred; latest recorded evidence has no active authorized host, Cloudflare zone/Tunnel/Access or restore proof. Do not install/deploy until its gates pass.
+- Default-branch `.github/workflows/gemini-batch-dispatch-controller.yml` is absent (404). Four Gemini assignments are NOT RUN; do not substitute MediaHub's controller, call Gemini APIs directly, read secrets or bypass gates.
+- No secrets read, provider calls, dispatch, hosted resources, deployment, merge or Contour A acceptance occurred in the latest pass.
+
 ### Architecture invariants and priority
-- Cloud Pool is Contour A only. Contour B / MediaHub OS is prohibited until Contour A is formally ACCEPTED.
-- One user-facing Jarvis surface; modular-monolith Control Plane; one canonical Jarvis-to-evidence path; exactly one transactional operational-state authority; separate ephemeral Actions execution and persistent Engineering Workspace planes.
-- Immutable task target SHA, least-privilege execution profiles, separate issuer/provider/account/quota identities, durable idempotent admission, fenced leases, outbox/inbox and ambiguity reconciliation.
-- No paid fallback, no cross-account key cycling, no provider secrets in generic workers. Gemini is controller-only and supplementary, not a launch prerequisite.
-- Reuse mature upstream components when requirements fit; no duplicate framework, router, database or workspace manager without a demonstrated gap.
-- GitHub-hosted Actions runners are ephemeral, not persistent web hosts or workspace storage.
+- Contour A is the absolute priority; Contour B / MediaHub OS remains DEFERRED until Contour A is formally ACCEPTED.
+- One Jarvis user surface; modular-monolith Control Plane; one canonical Jarvis-to-evidence path; exactly one transactional operational-state authority.
+- Separate ephemeral GitHub Actions execution from persistent Engineering Workspace.
+- Immutable task SHA/evidence, single-use admission, owner-issued approval, idempotent outbox, fenced leases, recovery, least privilege and provenance.
+- Isolate provider accounts, quotas and capabilities; no paid fallback or credential cycling. Gemini is controller-only/supplementary and may run only through an approved, qualified controller.
+- Reuse mature upstream tools after license/provenance/security/free-tier qualification; avoid premature microservices and duplicate frameworks.
+- GitHub-hosted Actions runners are ephemeral, not persistent web hosting or workspace storage.
 
-### Governance and open blockers
-- Active ruleset #26550182 targets `refs/heads/Основной`; enforcement active; requires PR and review-thread resolution; deletion and non-fast-forward prohibited. It still requires **0 approving reviews and 0 status checks**; no bypass actors; current user cannot bypass. Governance remains insufficient for critical acceptance.
-- Classic branch protection API reports `protected=false`; active ruleset is the effective control observed.
-- PR #125 formal review submissions: 0. Do not merge without independent A3 security/contract review. PR #114 parent remains Draft/unmerged.
-- Issue #96 is the only intended Cloud Pool owner-only `/next` admission control issue.
-- The allowlisted `.github/workflows/cloud-pool-next-controller.yml` reference in the adapter is a planned controller path and is **not present on default branch**. PR #112's workflow is read-only; PR #114/125 are proof code, not production controller integration.
-- GitHub Actions `issue_comment` is documented to run on the last commit of the default branch and only when the workflow file exists on the default branch. The current tests use synthetic event/environment fixtures; no live event/signature/API provenance or independent default-ref API read has been proven.
-- Hosted D1 entitlement, persistent state, backup/restore and hosted contention remain NOT VERIFIED. No production approval issuer, Supervisor lease/claim/fencing/recovery, outbox delivery or worker identity qualification.
-- Authenticated Jarvis deployment NOT VERIFIED; real free provider route/account/quota NOT QUALIFIED; persistent Workspace remains BLOCKED by Issue #118 (no active authorized host, Cloudflare zone/Tunnel/Access or restore proof in its latest recorded evidence).
-- The default-branch `.github/workflows/gemini-batch-dispatch-controller.yml` is absent (404). Four Gemini tasks for the requested wave are **NOT RUN**. Do not substitute MediaHub's controller, call Gemini directly or bypass gates.
-- No secrets read, provider calls, dispatch enablement, hosted resources, deployment, merge or acceptance occurred in this pass.
-
-### Current status and next step
-- GitHub Actions context binding + local D1 composition tests: VERIFIED on PR #125 exact head only.
+### Current statuses and next step
+- PR #125 GitHub Actions context composition + local D1 tests: **VERIFIED on exact PR head only**.
+- PR #125 independent A3 review: NOT COMPLETE.
 - Production webhook/controller: NOT IMPLEMENTED / NOT QUALIFIED.
-- Hosted D1, live owner-event authenticity, durable Supervisor/recovery, worker identity and real provider route: NOT QUALIFIED.
-- Contour A: BLOCKED / NOT ACCEPTED.
-- Contour B: DEFERRED.
-- Next: independent A3 architecture/security review of PR #125 and parent PR #114; only afterward plan hosted D1 and trusted default-branch controller qualification. Keep all dispatch disabled.
+- Hosted D1 and end-to-end task execution: NOT QUALIFIED.
+- Authenticated Jarvis remote web UI, persistent Workspace and real provider route: NOT VERIFIED / BLOCKED.
+- Gemini child dispatch: NOT RUN.
+- Contour A: **BLOCKED / NOT ACCEPTED**.
+- Contour B: **DEFERRED**.
+- Next bounded step: independent security/contract review of stacked PRs #125 and #114; do not enable dispatch or merge. Then continue trusted live-event provenance and hosted transactional authority qualification only after governance review.
 
 Canonical MediaHub map (separate repository/control plane): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
