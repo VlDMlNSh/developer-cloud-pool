@@ -213,3 +213,13 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Latest head `58a8cd5...`: Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) SUCCESS; Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) still IN_PROGRESS at last poll.
 - Updated report: [task HOME symlink and XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md).
 - Production worker still DSH-only; no launcher integration, OS/container sandbox, egress policy, external credential isolation, host recovery or Claude vendor/free-tier compliance qualification. PR #116 OPEN/DRAFT/UNMERGED; independent A3 review outstanding. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### FINAL VERIFICATION — task HOME hardening exact-head CI — 2026-11-18
+- Current PR #116 code head verified from live branch ref: `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`; PR OPEN/DRAFT/UNMERGED, base `Основной`, mergeable=true. This is still a qualification candidate, not an approval.
+- Exact-head Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665), job [134660515082](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665/job/134660515082): COMPLETED/SUCCESS; all 15 steps succeeded, including child env tests, task HOME + symlink + XDG permissions + dangling credential-store symlink regression tests, FCC profile synthetic tests, loopback lifecycle and synthetic bridge.
+- Exact-head Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651): COMPLETED/SUCCESS; production dispatch remains disabled.
+- Documentation validation on docs branch head `711146a1a5a26ce4b916ef4278909475b827e466`: [44263132106](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263132106) COMPLETED/SUCCESS.
+- Final report: [task HOME symlink and XDG permission hardening](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md). Context/checkpoint refreshed after CI.
+- This verifies only a filesystem provisioning primitive in ephemeral CI. It is not production launcher integration, OS/container sandbox, network egress, credential isolation outside HOME, host recovery, vendor hosted-use permission, real Claude task or free provider route/quota. PR #116 remains Draft; independent A3 review and governance approvals/status requirements remain missing. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent A3 review of HOME + child env boundary, followed by a separate production launcher integration and host isolation qualification; keep dispatch disabled.
