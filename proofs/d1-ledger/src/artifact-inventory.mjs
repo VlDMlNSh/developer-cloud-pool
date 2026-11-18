@@ -221,7 +221,7 @@ export async function collectArtifactInventory(bucket, db, options = {}) {
       resultReferences: resultReferences.length,
       outboxReferences: outboxReferences.length,
       tasks: tasks.length,
-      pagesRequested: seenCursors.size + (objectListingComplete || objects.length > 0 ? 1 : 0)
+      pagesRequested
     }
   };
 }

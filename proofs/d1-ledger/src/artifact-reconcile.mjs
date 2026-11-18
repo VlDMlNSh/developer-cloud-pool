@@ -16,7 +16,8 @@ export function planArtifactOrphanReconciliation(input) {
       !Number.isSafeInteger(input.cutoffEpochMs) || input.cutoffEpochMs <= 0 ||
       !Number.isSafeInteger(input.retentionMs) || input.retentionMs < 1 ||
       typeof input.objectListingComplete !== "boolean" ||
-      typeof input.referenceSnapshotComplete !== "boolean") {
+      typeof input.referenceSnapshotComplete !== "boolean" ||
+      typeof input.crossStoreSnapshotConsistent !== "boolean") {
     return { decision: "DENY", reason: "INVALID_RECONCILIATION_INPUT", mode: "DRY_RUN_ONLY", deletionPerformed: false };
   }
 
@@ -72,6 +73,10 @@ export function planArtifactOrphanReconciliation(input) {
     }
     if (taskState !== "dead") {
       retained.push({ key, reason: "TASK_NOT_TERMINAL_DEAD" });
+      continue;
+    }
+    if (!input.crossStoreSnapshotConsistent) {
+      retained.push({ key, reason: "CROSS_STORE_SNAPSHOT_NOT_ATTESTED" });
       continue;
     }
     if (uploadedAt > retentionBoundary) {
