@@ -3163,3 +3163,13 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
 - Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Evidence correction — 2026-11-18 artifact 14418937574
+
+- Corrected prior interpretation: FCC loopback step 12 PASSED. Artifact `14418937574` (SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`) proves HTTP 200 at `127.0.0.1:18765/admin/api/status`, exact loopback listener, clean shutdown, exit 0, and listener absent after shutdown. Runtime log corroborates.
+- Actual failing step 13 is synthetic FCC-to-Claude CLI handoff. Bridge server itself served `GET /health` with HTTP 200 on port 18766 and logged clean shutdown. But synthetic mock handoff result/marker was not recorded; manifest says `fcc_client_launcher_invoked=false`. Exact failed assertion/root cause NOT DETERMINED because bridge-home diagnostics were not included in uploaded artifact and stderr artifact is empty.
+- Steps 3–12 SUCCESS; 13 FAILURE; 14 ECC install SKIPPED; 15–16 SUCCESS. Prior claim that step 12 failed is explicitly superseded.
+- Next: amend step 13 to persist redacted failure diagnostics (cli exit status, marker/args existence, sanitized wrapper stderr category, HOME/XDG ownership/modes, shutdown state) to qualification artifact before assertions; keep synthetic credentials ephemeral and redact. Rerun exact-head qualification. Do not change FCC server code.
+- No live provider call, real Claude session/task, production dispatch, Gemini dispatch or Contour B. Contour A BLOCKED / NOT ACCEPTED.
+- Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
