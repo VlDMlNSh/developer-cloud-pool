@@ -93,6 +93,11 @@ export async function resolveTrustedExecutorAssignment({
     if (!Array.isArray(entry.profiles) || !entry.profiles.includes(profile)) {
       return deny("EXECUTOR_PROFILE_NOT_APPROVED");
     }
+    const oidc = entry.oidcBinding;
+    if (!oidc || typeof oidc.audience !== "string" || typeof oidc.subject !== "string" ||
+        typeof oidc.workflowRef !== "string" || typeof oidc.jobWorkflowRef !== "string") {
+      return deny("EXECUTOR_OIDC_BINDING_MISSING");
+    }
 
     return Object.freeze({
       decision: "TRUSTED_ASSIGNMENT",
@@ -102,6 +107,15 @@ export async function resolveTrustedExecutorAssignment({
       registryBlobSha: typeof file.sha === "string" ? file.sha : null,
       trustedDefaultHeadSha,
       source: "GITHUB_DEFAULT_BRANCH_CONTENTS_AT_VERIFIED_HEAD",
+      oidcBinding: Object.freeze({
+        audience: oidc.audience,
+        subject: oidc.subject,
+        repository: OWNER_REPO,
+        repositoryId: REPOSITORY_ID,
+        repositoryOwnerId: OWNER_ID,
+        workflowRef: oidc.workflowRef,
+        jobWorkflowRef: oidc.jobWorkflowRef
+      }),
       executionAuthorized: false,
       dispatch: false
     });
