@@ -1,3 +1,15 @@
+# CURRENT UPDATE — 2026-11-18, PR #116 advanced to 37d7b4d
+
+- PR #116 head `37d7b4de7b885d278a35d9311a38bc15fac961dc`, OPEN/DRAFT/UNMERGED.
+- Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): SUCCESS.
+- Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS at last observation, job 134741199311.
+- Superseded head `59514f6d1119ca113745f5da861a1195c66da2e5` failed Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561); artifact [14418489783](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561/artifacts/14418489783), digest `sha256:cb50a586a895f91a773b43e2c8f26caea606972e7ef55ff492a8e3538c946267`.
+- Failure occurred in synthetic bridge handoff/shutdown; exact diagnostic values NOT VERIFIED from text logs. `exec_allowlist.py` uses `os.execvpe`; signal exit status must be interpreted alongside process death and listener absence.
+- Latest change removes incorrect mock expectations for ambient provider credentials and proxy overrides.
+- No secrets/provider calls/real task/production dispatch/deployment/merge. Gemini NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify 44286730410 and its artifact; then proceed with a no-egress container mock execution proof.
+
+---
 # CURRENT UPDATE — 2026-11-18, PR #116 exact-head recheck
 
 - Default branch `Основной`: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
