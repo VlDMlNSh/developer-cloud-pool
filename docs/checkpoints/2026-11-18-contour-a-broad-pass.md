@@ -171,3 +171,12 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Detailed report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
 - Context Window updated in the same docs branch; always re-read live refs before continuing.
 - Next: inspect run `44285275416` after completion and verify signal, process exit, process liveness, listener absence, plus provenance artifact. Do not enable provider calls or relax shutdown assertions.
+
+
+### Run 44285275416 artifact inspection — 2026-11-18
+- Runner Qualification completed FAILURE at synthetic bridge step; Pool Contract Validation `44285275314` SUCCESS.
+- Artifact `14418937574`, 31,263 bytes, digest `sha256:ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`; downloaded, SHA256SUMS all 33 entries verified.
+- Primary FCC runtime proof is PASS: HTTP 200, loopback-only `127.0.0.1:18765`, exit 0, listener absent after shutdown. No provider/completion calls.
+- Bridge log shows HTTP 200 and graceful shutdown; stderr empty. However diagnostic/result files are missing from artifact. Exact signal/wait status, post-wait process liveness and listener state are NOT VERIFIED; failure assertion remains unidentified.
+- Next bounded action: include `fcc-bridge-shutdown-diagnostics.txt` and `fcc-bridge-result.txt` in the artifact allowlist and surface non-secret numeric/boolean diagnostics as step outputs. Keep acceptance checks unchanged; rerun exact-head qualification.
+- Report: [FCC bridge shutdown diagnostics follow-up](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
