@@ -1,3 +1,25 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, D1 verifier-side artifact binding
+
+**Latest report:** [Issue #133 D1 verifier-side artifact binding](../reports/2026-11-18-issue133-d1-verifier-artifact-binding.md)  
+**Latest checkpoint:** [Issue #133 D1 verifier-side artifact binding checkpoint](../checkpoints/2026-11-18-issue133-d1-verifier-artifact-binding-checkpoint.md)
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (re-verified, unchanged).
+- PR #132: OPEN / DRAFT / UNMERGED; head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- PR #134: OPEN / DRAFT / UNMERGED; local R2 proof head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #135: OPEN / DRAFT / UNMERGED; cumulative head `796dfede0d6be20d0385571516ddb6156d66b7bd`, base `Основной`.
+- Issue #133: OPEN. Latest update comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6982148694
+- PR #135 exact-head CI [44329210953](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44329210953): COMPLETED / SUCCESS; job `134888709080` SUCCESS; 15 tests passed across 2 files; dependency installation, syntax checks and lockfile artifact upload SUCCESS.
+- D1 result commit now independently re-reads the task-bound R2 object, verifies task/upload metadata, key, version and size, hashes actual stored bytes, and checks object version again after streaming. No in-process WeakSet capability remains.
+- Migration 0006 persists object key/version/byte length in both result and outbox rows; SQL triggers reject missing identity and atomically copy identity into outbox.
+- Important limitations: local Miniflare only; real R2/IAM/distributed consistency, trusted-ingress authorization, post-publication no-overwrite/no-delete, cross-store crash recovery/orphan cleanup and independent security review NOT VERIFIED.
+- No production bucket, hosted D1 write, provider call, secret read, deployment, production dispatch or merge.
+- Gemini NOT RUN: required controller workflow was not found on checked refs; no Secrets/Variables were inspected.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded step: test object-write / D1-metadata recovery: a stale-lease D1 failure leaves no result/outbox; a new lease reuses the same verified object and commits once; ambiguous caller retry is idempotent.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, local R2 artifact-ingest proof
 
 **Latest report:** [Issue #133 local R2 artifact-ingest proof](../reports/2026-11-18-issue133-local-r2-artifact-ingest-proof.md)  
