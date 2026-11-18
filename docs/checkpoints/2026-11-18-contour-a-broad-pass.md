@@ -140,3 +140,12 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Approved Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` returned 404 on default branch `Основной`; Gemini agents NOT RUN. No bypass or direct provider calls.
 - PR #126 OPEN/DRAFT/UNMERGED (`f69f286b5b5a3de8dfdd80ed581859851ce271e5`); PR #120 OPEN/DRAFT/UNMERGED (`e93fb34a1f3430ca2db32fbf2e631903aac9570f`); Issue #115 OPEN; Issue #118 OPEN.
 - At latest poll, Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) remained IN_PROGRESS and Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS. Exact-head runner result NOT VERIFIED.
+
+
+## Follow-up — explicit FCC shutdown diagnostics and current run — 2026-11-18
+
+- Report: [FCC PATH canonicalization follow-up](../reports/2026-11-18-fcc-path-canonicalization-follow-up.md).
+- Exact-head Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) failed on `570d78b7d3f7972b7458de9e69f6117ae642896a`; FCC loopback passed; bridge shutdown failed. Artifact [14418074350](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244/artifacts/14418074350), 31,271 bytes, digest `sha256:3c94c889560b7a3c8e40a1d88d10fbdf6a5ad94977331ef9bc2c5ad0865a910f`; contents not independently inspected.
+- The diagnostics file was written but not visible in job logs. Commit `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; workflow blob `34a3f73909d2b637112b77cc5fb0e54580d84417` now prints it to stdout before fail-closed checks.
+- Current-head Runner Qualification [44285187440](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187440) and Pool Contract Validation [44285187389](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187389) were IN_PROGRESS at cutoff; NOT VERIFIED.
+- Next: read diagnostic output from 44285187440 and isolate signal status, wait status and listener state. Do not relax shutdown requirements or enable provider calls. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
