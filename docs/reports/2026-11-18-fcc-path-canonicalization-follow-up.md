@@ -62,3 +62,13 @@ Runner qualification: RUNNING / NOT VERIFIED at cutoff. Contract validation: VER
 - Current PR #116 head `c4839850a5b015a56a8ca2f591c11e0aeee7c950`; OPEN/DRAFT/UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
 - Exact-head Runner Qualification [44285187440](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187440) and Pool Contract Validation [44285187389](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285187389) were IN_PROGRESS at cutoff; NOT VERIFIED.
 - Next: inspect the explicit diagnostic output and artifact from run 44285187440. Keep the clean shutdown criteria and all security boundaries unchanged.
+
+
+## Correct bridge shutdown patch landed on current PR head — 2026-11-18
+
+- Reconciliation found that commit `570d78b7d3f7972b7458de9e69f6117ae642896a` had moved `set +e` before the SIGINT in the first FCC lifecycle block, not the later synthetic bridge block. The bridge's own `kill -INT` remained before `set +e`; this explains why the repeated bridge failure was not fixed by that commit. This was a patch-targeting error; no policy was weakened.
+- PR #116 then advanced to commit `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1` (`fix: capture FCC bridge SIGINT status before strict assertions`). Read-back of workflow blob `ad29cdf7ac6e5e2597af538f3ebb49abfa89f59b` confirms the bridge block now executes `set +e` before `kill -INT`, captures `signal_status`, waits, captures `shutdown_status`, and restores `set -e` before evaluating both statuses. The bridge diagnostics file is also printed to job stdout.
+- PR #116 current head: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; OPEN/DRAFT/UNMERGED; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): COMPLETED/SUCCESS.
+- Exact-head Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416), job `134736343006`: IN_PROGRESS at cutoff; setup, checkout, focused child-environment tests, runner baseline and sandbox capability probe passed; install/FCC/bridge stages not yet verified.
+- Next: inspect run 44285275416. If the bridge reaches cleanup, read the emitted SIGINT/wait/listener values and artifact. Do not claim qualification until the entire run is SUCCESS and evidence is inspected.
