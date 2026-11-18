@@ -3605,7 +3605,7 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Exact-head Pool Contract Validation [44339239961](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44339239961), job `134924320263`: SUCCESS; dispatch disabled, YAML and security contracts passed.
 - Local clone/npm install NOT COMPLETED because DNS resolution for github.com failed. Local Node syntax check and 9 direct planner assertions passed.
 - R2 native lifecycle expiry was evaluated and rejected for this namespace because prefix/age policy cannot consult D1 references or task state. No lifecycle rules were changed. [Cloudflare R2 lifecycle docs](https://developers.cloudflare.com/r2/buckets/object-lifecycles/).
-- PR #132 head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`, PR #134 head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9), PR #136 head `032fe0548ce5c8549976a9806ebc9e7f86cd8e4f`; all remain OPEN/DRAFT/UNMERGED. PR #136 exact-head CI NOT VERIFIED.
+- PR #132 head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`, PR #134 head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`, PR #136 head `032fe0548ce5c8549976a9806ebc9e7f86cd8e4f`; all remain OPEN/DRAFT/UNMERGED. PR #136 exact-head CI NOT VERIFIED.
 - Issue #133 remains OPEN. Independent reviews for PR #132/#134/#135 remain absent; independent security review NOT VERIFIED.
 - Real R2 listing and D1 reference snapshot integration, completeness attestation, retention policy, compare-and-delete, IAM no-overwrite/no-delete and orphan cleanup remain NOT VERIFIED. No deletion code exists in this pass.
 - Gemini NOT RUN: approved controller workflow 404 on checked default ref; no secrets/variables inspected.
@@ -3614,4 +3614,32 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: implement bounded read-only R2 list pagination + D1 result/outbox reference inventory adapter and prove snapshot completeness; keep deletion disabled.
 - Report: [2026-11-18 Issue #133 R2 orphan reconciliation dry-run](../reports/2026-11-18-issue133-r2-orphan-reconciliation-dry-run.md).
 - Checkpoint: [2026-11-18 R2 orphan reconciliation checkpoint](../checkpoints/2026-11-18-issue133-r2-orphan-reconciliation-checkpoint.md).
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## CURRENT VERIFIED OVERLAY — 2026-11-18 R2/D1 read-only inventory
+
+- Default branch `Основной` current HEAD verified from branch API: `68183828cf7934e89109310c8f99281be4eb7ed8`.
+- Active branch ruleset ID `26550182` (`Основной — verified`) applies to `refs/heads/Основной`: PR required, review-thread resolution required, 0 mandatory approving reviews, deletion and non-fast-forward prohibited, no bypass actors. Branch-protection endpoint itself returned 403 to the integration; ruleset details were readable. Standard CODEOWNERS paths absent.
+- PR #132 OPEN/DRAFT/UNMERGED head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- PR #134 OPEN/DRAFT/UNMERGED head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #135 OPEN/DRAFT/UNMERGED final head `5554c3f27dd9f23b341224d6c00ccbf74642f289`, base `Основной`. PR #135 reviews and inline review threads remain empty.
+- PR #136 OPEN/DRAFT/UNMERGED head `032fe0548ce5c8549976a9806ebc9e7f86cd8e4f`; corrective removal of two documentation-only files accidentally committed to default branch.
+- Issue #133 OPEN.
+- Added `proofs/d1-ledger/src/artifact-inventory.mjs` and `test/artifact-inventory.test.ts`: bounded read-only R2 pagination by opaque cursor/`truncated`, D1 result/outbox/task-state records via one bounded SQL statement. Fails closed on cursor gaps/repeats, duplicate keys, malformed rows, limits and query errors. No write/delete capability.
+- Adapter explicitly returns `crossStoreSnapshotConsistent: false` and `deletionPermitted: false`. R2 pages and D1 statement are not a shared atomic cross-store snapshot.
+- Tightened orphan planner to require a cross-store consistency attestation before it can classify a candidate. This flag is an internal assertion, not cryptographic proof; no deletion is implemented.
+- Exact-head PR Workers runtime [44342212033](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342212033), job `134934958634`: SUCCESS; 4 files / 38 tests.
+- Exact-head push Workers runtime [44342193230](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342193230), job `134934886722`: SUCCESS; 4 files / 38 tests.
+- Exact-head Pool Contract Validation [44342211911](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44342211911), job `134934950815`: SUCCESS.
+- Failed intermediate head `c6f53d42a390347d6c83d51eac20ca14bf07acb0` is superseded by `5554c3f27dd9f23b341224d6c00ccbf74642f289`; final exact-head CI passes.
+- Gemini NOT RUN: approved controller workflow 404 on default branch; no secrets or variables inspected.
+- Production R2/D1, shared snapshot, trusted cross-store attestation, retention, compare-and-delete, IAM, trusted ingress task/upload authorization, orphan cleanup and independent review remain NOT VERIFIED.
+- No production resources, provider calls, secrets, dispatch, deployment, merge, object deletion, lifecycle changes or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [R2/D1 read-only inventory qualification](../reports/2026-11-18-issue133-r2-d1-readonly-inventory.md).
+- Checkpoint: [R2/D1 read-only inventory checkpoint](../checkpoints/2026-11-18-issue133-r2-d1-readonly-inventory-checkpoint.md).
+- Next: design and test a D1-owned reconciliation epoch/fence or durable scan-run protocol to prove how R2 object versions and D1 result/outbox commits are fenced under concurrency; keep deletion disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
