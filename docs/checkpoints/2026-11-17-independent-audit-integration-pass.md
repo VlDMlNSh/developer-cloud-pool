@@ -114,3 +114,17 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Gemini controller workflow absent on default; four Gemini assignments NOT RUN. No secret reads, provider calls, live webhook, hosted D1, dispatch, deployment or merge.
 - Report updated: [2026-11-18 GitHub Actions context adapter proof](../reports/2026-11-18-next-github-actions-context-adapter.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## /next — scoped PR #125 admission-boundary read-through — 2026-11-18
+
+- Immutable review target: PR #125 head `edfeaef277fe709a9acc37d99b7bd3cda3003774`; stacked base / PR #114 head `ab9461eb84b14fe230918391d5212f19ca25592c`. Both PRs remain OPEN / DRAFT / UNMERGED; both have 0 formal reviews.
+- Read back the adapter, pure admission function, D1 migration, adapter tests, README and CI workflow from the PR #125 branch. The bounded static read-through checked owner/repository/event binding, exact Issue #96 and comment, allowlisted profile/workflow ref, runner-derived target/run identity, atomic approval consume/task/outbox creation, append-only records and workflow rerun idempotency.
+- No code-level defect was confirmed within this narrow static scope. This is maintainer-side inspection only, **not independent A3 review**, security qualification or merge approval. Findings and limits are recorded in [the admission-boundary read-through report](../reports/2026-11-18-next-pr125-admission-boundary-readthrough.md) and [PR #125 comment 6971481706](https://github.com/VlDMlNSh/developer-cloud-pool/pull/125#issuecomment-6971481706).
+- Exact PR workflow [44253572758](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758), job [134629803561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253572758/job/134629803561): COMPLETED / SUCCESS on exact head; 21/21 Workers-runtime tests PASS. Exact-head push validation [44253567272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44253567272): SUCCESS, carried forward from the exact-head evidence record.
+- Fresh refs: default branch `Основной` remains at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; PR #120 head `67a0cb1b84f7829bb3fc95e8e9f88b509c401bc8`; PR #124 head before this update `84e543cf42ddded8a9aa2d59fc88a5591e22578a`; PR #125 head unchanged at `edfeaef277fe709a9acc37d99b7bd3cda3003774`.
+- Ruleset #26550182 is active for default branch, requires PR and review-thread resolution, but 0 approvals and 0 required status checks; classic branch protection endpoint reports disabled. PR #114/#125 independent reviews remain 0.
+- The production owner-event controller `.github/workflows/cloud-pool-next-controller.yml` and approved Gemini batch controller `.github/workflows/gemini-batch-dispatch-controller.yml` both remain absent from default (404). Four owner-requested Gemini roles: NOT RUN; no bypass or direct provider calls.
+- Hosted D1, live event provenance, approval issuer, lease/fencing/recovery, outbox delivery, worker identity, provider route/quota, authenticated Jarvis UI, persistent workspace/restore remain NOT VERIFIED / NOT QUALIFIED. No secrets, deployment, dispatch or merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain genuinely independent A3 review and resolve governance; only then progress to trusted live event provenance and hosted transactional state.
