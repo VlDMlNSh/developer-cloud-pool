@@ -305,3 +305,16 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - No production code change, no hosted D1, secrets, provider calls, dispatch, deployment or merge. Gemini NOT RUN.
 - Next: recover exact proof branch tree and tests, run exact-head CI in separate proof stack; do not alter PR #130 chain.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## Follow-up — Issue #38 exact-head CI reconciliation — 2026-11-18
+
+- Proof branch exact HEAD: `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`; default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Historical run [42489887940](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/42489887940) checked out PR #40 merge ref `23e06138ddee46934c8cb137d04dd1585d390ea6`, not the current proof HEAD. It passed syntax + 27 consume/claim-outbox tests; task-lease tests were not included.
+- Current proof-head status has no checks; exact-head CI NOT VERIFIED. Exact migration/test paths remain unrecovered. Source confirms lease conditional update and owner/generation/expiry fencing for renewal/finalization only.
+- Task identity derivation, simultaneous D1 lease contention, stale-generation result/outbox rejection, crash recovery and dead-letter atomicity remain NOT VERIFIED.
+- PR #130 OPEN/DRAFT/UNMERGED; reviews 0; threads 0. Ruleset/current dispatch variable NOT VERIFIED. Gemini NOT RUN. Dispatch remains fail-closed.
+- Report: [Issue #38 exact-head reconciliation](../reports/2026-11-18-issue38-d1-claim-lease-exact-head-reconciliation.md).
+- Next: recover actual branch tree, then exact-head CI with adversarial lease tests. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
