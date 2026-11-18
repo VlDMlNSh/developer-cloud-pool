@@ -2212,7 +2212,7 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 
 ### Pass 6 publication follow-up — PR #144
 
-- Documentation PR #144: https://github.com/VlDMlNSh/developer-cloud-pool/pull/144; OPEN / DRAFT / UNMERGED at creation; head `033d484c551cd7ac73cd958eac83b00dcacc7eb2`, base `Основной` @ `68183828cf7934e89109310c8f99281be4eb7ed8`.
+- Documentation PR #144: https://github.com/VlDMlNSh/developer-cloud-pool/pull/144; OPEN / DRAFT / UNMERGED at creation; initial head `033d484c551cd7ac73cd958eac83b00dcacc7eb2`, then Context Window follow-up commit `610290c1fb3b3c3e89fb951ef00beae266aef32f`; base `Основной` @ `68183828cf7934e89109310c8f99281be4eb7ed8`.
 - Compare API: 3 commits ahead / 0 behind; changed files are the Pass 6 report, checkpoint and this Context Window update. Exact-head workflow-run lookup returned an empty list; CI is NOT VERIFIED, not passed. Formal review submissions: 0.
 - PR create response initially reported `mergeable:false`; no mergeability or merge readiness is inferred from that response. Re-read before any future integration.
 - Read-back verified report blob `e8550ad2d65b2f02c534285dbd25c56d7e346404`, checkpoint blob `da5191bf97d4ec7793da5278e4099d9e6e9df0ae`, Context Window blob `9aad39e4167689c643c508f6e2838ae8e7282e48`.
