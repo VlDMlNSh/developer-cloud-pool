@@ -1,3 +1,25 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, recovery proof and documentation correction
+
+**Latest report:** [Issue #133 R2-to-D1 recovery qualification](../reports/2026-11-18-issue133-d1-r2-recovery-qualification.md)  
+**Latest checkpoint:** [Issue #133 R2-to-D1 recovery checkpoint](../checkpoints/2026-11-18-issue133-d1-r2-recovery-checkpoint.md)
+
+- Default branch `Основной` current HEAD: `68183828cf7934e89109310c8f99281be4eb7ed8`. This is two documentation-only commits beyond source baseline `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; those commits added only the latest report/checkpoint to the wrong branch. Corrective PR #136 removes exactly those two files; no force-push or merge has occurred.
+- PR #136: OPEN / DRAFT / UNMERGED; branch `revert/misplaced-issue133-docs-2026-11-18`; deletes only the two misplaced docs paths. Awaiting governance review/merge.
+- PR #132 OPEN / DRAFT / UNMERGED; head `4b3cd7e3d7a1ac6fd47775ab50f54b78e3a02f6f`.
+- PR #134 OPEN / DRAFT / UNMERGED; local R2 proof head `4f2e1b94710c1fe6270700be82f9556bfe18e0c9`.
+- PR #135 OPEN / DRAFT / UNMERGED; cumulative proof head `f47b62462ed73e57e85f558e5178bdeea2d28332`, base `Основной`.
+- Issue #133 OPEN. Latest recovery comment: https://github.com/VlDMlNSh/developer-cloud-pool/issues/133#issuecomment-6982199611
+- PR #135 D1 Workers CI [44329550935](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44329550935): SUCCESS; 16 tests passed. Pool Contract Validation [44329550986](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44329550986): SUCCESS on same head.
+- Recovery test: local R2 object survives stale-lease D1 rejection; no result/outbox row is written; next lease generation re-verifies and commits same object once. Exact caller retry covered separately.
+- Local R2/D1 proof VERIFIED only in Miniflare. Real R2/IAM/distributed consistency, trusted ingress authorization, post-publication overwrite/delete prevention, orphan GC and independent review NOT VERIFIED.
+- No production bucket, hosted D1 write, provider call, secret read, deployment, production dispatch or merge.
+- Gemini NOT RUN; required controller workflow not found on checked refs; no Secrets/Variables inspected.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: bounded orphan reconciliation/GC state machine; prove active/referenced objects are retained and only expired/unreferenced objects are eligible. Keep deletion disabled until independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
 # CURRENT VERIFIED OVERLAY — 2026-11-18, R2-to-D1 recovery qualification
 
 **Latest report:** [Issue #133 R2-to-D1 recovery qualification](../reports/2026-11-18-issue133-d1-r2-recovery-qualification.md)  
