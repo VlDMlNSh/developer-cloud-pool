@@ -247,3 +247,19 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - Next: investigate revocation/admission race and durable single-use task claim/fencing; first determine whether #128's bootstrap correction must be integrated before #84 -> #86 -> #129.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+## Follow-up — PR #130 bootstrap watermark integration — 2026-11-18
+
+- Created Draft PR #130 from exact PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`; latest child HEAD `6175eed8812fe52aad929523caab6b942cd01dd7`.
+- Ported PR #128 migration 0012 guards and D1 test from source HEAD `c17a6026323e5ba1be7a2ae3345f387df6d12f25`. Initial state insert and subsequent state update now require MAX persisted epoch; tests cover stale bootstrap (1001 vs 1003) and intermediate advance (1004 vs 1005).
+- Workflow updated to include PR #130 push branch and PR #129 as pull_request base filter.
+- Readback blobs: migration `75c2ac5f879ec0ec7356a6309f8c95ba3996f588`; test `6d8ef46d3b01035b4216dc97e38a2971824c5ae7`; workflow `f111bec6f3cd02837937cd7026afdea84b31db07`.
+- PR #128 source exact-head CI [44294913103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103) SUCCESS, 115 Workers-runtime tests, both smoke suites PASS, artifact digest `3b31135452722f8cee874dcfff2743046273cf3bab2ba806aee5af10ccb3f111`.
+- PR #130 exact-head CI lookup empty: NOT VERIFIED. Local clone/test NOT RUN due github.com DNS resolution failure in execution environment. PR #130 remains OPEN/DRAFT/UNMERGED; no default-branch mutation.
+- Detailed report: [PR #130 bootstrap watermark integration](../reports/2026-11-18-pr130-bootstrap-watermark-integration.md).
+- Next: secure exact-head CI and independent review before revocation/admission race and durable single-use claim/fencing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
