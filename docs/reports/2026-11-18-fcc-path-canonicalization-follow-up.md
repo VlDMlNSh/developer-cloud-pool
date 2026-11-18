@@ -30,3 +30,14 @@ Re-read run 44284216030 against immutable target `a07cc438237e5c9d5f276e2f42ea97
 
 ## Status
 Runner qualification: RUNNING / NOT VERIFIED at cutoff. Contract validation: VERIFIED for the exact current PR head. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+## Subsequent exact-head result and diagnostic change — 2026-11-18
+
+- Current PR #116 head advanced to `52339ee70e00b9905710d411404b55778f68c70a`; base remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN/DRAFT/UNMERGED.
+- Exact-head run [44284216030](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030) on prior target `a07cc438237e5c9d5f276e2f42ea9774ee333a56): COMPLETED/FAILURE. Runner qualification stages through FCC loopback lifecycle passed, including startup/readiness/shutdown. Signed Claude APT/release manifest/binary checks, Docker no-egress primitive and FCC 15/15 synthetic profile guard passed.
+- Synthetic FCC-to-mock-CLI step failed after the mock had returned expected exit code 37, written marker and arguments, and passed argument comparison plus synthetic-string log checks. Failure occurred in bridge server shutdown validation. The process-liveness check did not emit its explicit failure message; available log therefore narrows the failure to shutdown exit status or listener-absence assertion, but does not yet distinguish them.
+- Artifact [14418332371](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284216030/artifacts/14418332371), 31,250 bytes, GitHub digest `sha256:951c8017003f59e4d0125ae17c0c79cb9fed1498cc4e5e01edbc6349698194e0`. Artifact contents have not been independently inspected; digest is metadata from GitHub.
+- Diagnostic-only workflow update commit `52339ee70e00b9905710d411404b55778f68c70a`; workflow blob `5b18bdbe59ca52022a74b072fdd5674e0b11b497`. It records bridge shutdown exit status, process liveness and listener state, and prints server/stderr logs on failure. It does not weaken environment policy or relax the clean-shutdown requirement. Source read-back confirmed the change.
+- New exact-head Runner Qualification [44284614737](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614737) and Pool Contract Validation [44284614733](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284614733) were IN_PROGRESS at this report update; results NOT VERIFIED.
+- Next: inspect run 44284614737 diagnostics, determine whether nonzero SIGINT exit or lingering listener caused failure, then apply only evidence-based correction. No provider calls or real Claude task.
