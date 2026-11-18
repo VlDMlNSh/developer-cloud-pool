@@ -3128,3 +3128,20 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: verify CI/artifact for PR #116 corrective head. Only after complete pass proceed to synthetic CODE worker execution inside actual isolated container. No provider credentials or egress.
 - Report: [CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md). Documentation branch `docs/next-2026-11-18-worker-sandbox-fit`.
 - No secret reads, provider calls, real agent task, Gemini/production dispatch, deployment, merge or Contour B. Contour A BLOCKED/NOT ACCEPTED.
+
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, exact-head FCC runtime qualification result
+
+- Active documentation continuation branch: `docs/next-2026-11-18-worker-sandbox-fit`; PR #127 remains OPEN / DRAFT / UNMERGED. This is not the default branch and is not an accepted production baseline.
+- PR #116 head: `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; base `Основной@35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+- Exact-head Pool Contract Validation [44285275314](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275314): SUCCESS. Exact-head Runner Qualification [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416): FAILURE, job `134736343006`.
+- Failure detail: FCC loopback lifecycle step failed to obtain HTTP 200 on `127.0.0.1:18765/admin/api/status` (connection refused); synthetic FCC-to-mock-Claude bridge also failed. The earlier diagnosis of unset `signal_status` was a separate harness bug corrected in this HEAD, but that correction did not make the complete workflow pass. FCC runtime failure cause remains NOT DETERMINED.
+- Passed substeps: child environment tests; runner baseline and sandbox capability probe; signed Claude package/manifest/binary verification; Docker no-egress capability; pinned uv; FCC install/metadata and synthetic single-account profile guard. ECC install skipped. These do not qualify an executor or provider route.
+- Artifact [14418937574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416/artifacts/14418937574), SHA-256 `ccd3afbade1d3bc6f61f3a3c79bcaa0b02617c66c368a98398e3d286336a5446`, uploaded; runtime logs need artifact inspection before root-cause attribution.
+- PR #126 remains OPEN/DRAFT/UNMERGED; legacy DSH dispatch path remains on default branch. Contract Validation [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245) SUCCESS.
+- Upstream selection remains: Anthropic defending-code-reference-harness as isolation topology reference only; no component imported/deployed. Actual CODE executor has not run inside a restricted container; provider allowlist gateway absent; host egress public.
+- No secret reads, provider calls, live Claude task, Gemini dispatch, production dispatch, deployment, merge or Contour B. Keep dispatch disabled.
+- Next: inspect artifact 14418937574 runtime logs, determine why FCC server does not bind/readiness-check, add a focused regression and rerun exact-head Runner Qualification. Only after all no-secret steps pass, begin synthetic CODE-in-container qualification.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [2026-11-18 CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
+- Canonical MediaHub map (separate repository): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
