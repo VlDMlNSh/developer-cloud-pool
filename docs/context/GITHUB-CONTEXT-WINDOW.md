@@ -3035,3 +3035,15 @@ Next: verify exact-head run `44076256742`; correct any remaining issue with evid
 ## Corrected final PR #113 comparison — 2026-11-17
 
 Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee168f002418b6057ccf5948` is **159 commits ahead, 0 behind** default `Основной` at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, with 31 files in the diff. The prior 150-commit count in the earlier restoration note is superseded. PR #113 remains OPEN/DRAFT/UNMERGED; exact-head status reports zero statuses, check-runs zero, formal reviews zero. Candidate architecture is preserved but not mainline accepted.
+
+
+## Latest execution — root-owned executable PATH hardening — 2026-11-18
+
+- PR #116 remains OPEN/DRAFT/UNMERGED; head `6088a5d1e52191004c3228ed4cf6f3b72dabd116`; base/default `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Finding: previous PATH validation accepted private directories owned by the runner UID, permitting same-UID replacement of an executable after path validation.
+- Fix: `exec_allowlist.py` now requires root ownership for every resolved PATH directory; adversarial test rejects a private runner-owned directory. Source blob `5ac9f7613d9e11cd803fe8ef5143b7fde0496605`; test blob `8ac32634e5e6374866a710b7aad5c2221a2409ed`.
+- Exact-head child-environment test step PASS; Pool Contract Validation [44278168854](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168854) SUCCESS. Runner Qualification [44278168889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889) was RUNNING at the last read; full result/artifact NOT VERIFIED.
+- Dated report: [2026-11-18 runner PATH ownership hardening](../reports/2026-11-18-runner-path-root-owned-hardening.md).
+- No secret values read, no provider calls, no real Claude session, no dispatch, no merge/deployment. Keep `POOL_DISPATCH_ENABLED=false`.
+- Next: verify exact-head run and artifact; then qualify actual worker execution inside the sandbox and provider-specific default-deny egress before any route call.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
