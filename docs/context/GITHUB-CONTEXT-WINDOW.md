@@ -1,3 +1,21 @@
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #116 exact-head recheck
+
+**Latest report:** [2026-11-18-pr116-exact-head-reconciliation.md](../reports/2026-11-18-pr116-exact-head-reconciliation.md)
+
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 current head: `59514f6d1119ca113745f5da861a1195c66da2e5`, OPEN/DRAFT/UNMERGED.
+- Exact-head Pool Contract Validation [44286461574](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461574): COMPLETED/SUCCESS.
+- Exact-head Runner Qualification [44286461561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286461561): IN_PROGRESS at last observation; job 134740287165. Checkout, child env tests, sandbox capability, signed APT installation, signed manifest/binary verification and Docker no-egress passed; uv install was running. FCC/bridge/remaining steps and artifact NOT VERIFIED.
+- Historical failure [44285275416](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44285275416) belongs to superseded SHA `3cdfd2801f0a78c22b698dc82c0a668b9c9662c1`; do not attribute it to current head.
+- Current workflow blob `a218c738e640c43f003cd4f24a348ab4b4aa996e` preserves bridge diagnostics on early failure.
+- PR #126 head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`, OPEN/DRAFT/UNMERGED; default branch still contains legacy DSH path until merge.
+- PR #127 docs branch before this update: `3dc5ef35d99457a73046b561bcc416e56c462f81`, OPEN/DRAFT/UNMERGED; mergeable false.
+- Gemini controller workflow path on default branch returned 404; Gemini NOT RUN.
+- No secrets, provider calls, real agent task, production dispatch, deployment, merge or Contour B work.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify exact-head run 44286461561 and artifact, then qualify actual CODE execution inside Docker no-egress using a local synthetic mock.
+
+---
 # CURRENT VERIFIED OVERLAY — 2026-11-18, P1 Claude Code provenance and Docker isolation
 
 **Latest checkpoint:** [2026-11-18-contour-a-broad-pass.md](../checkpoints/2026-11-18-contour-a-broad-pass.md)  
