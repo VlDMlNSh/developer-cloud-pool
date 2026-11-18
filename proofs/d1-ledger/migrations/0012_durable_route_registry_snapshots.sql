@@ -74,6 +74,9 @@ BEFORE UPDATE ON pool_route_registry_state
 WHEN OLD.state_id <> 1
   OR NEW.state_id <> OLD.state_id
   OR NEW.current_epoch <= OLD.current_epoch
+  OR NEW.current_epoch <> (
+    SELECT MAX(registry_epoch) FROM pool_route_registry_snapshots
+  )
   OR NEW.updated_at <= OLD.updated_at
   OR NOT EXISTS (
     SELECT 1 FROM pool_route_registry_snapshots s
