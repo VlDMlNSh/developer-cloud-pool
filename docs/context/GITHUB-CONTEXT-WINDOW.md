@@ -234,3 +234,17 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - This was maintainer-side source inspection, **not independent A3 review**. PR #116 remains OPEN / DRAFT / UNMERGED. No merge, provider call, dispatch or secret access.
 - Exact-head CI is VERIFIED; descriptor binding GAP IDENTIFIED / NOT VERIFIED; independent A3 review NOT COMPLETE. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: repair descriptor-instance binding and add regression tests on a new immutable PR head, then rerun both exact-head workflows and request independent A3 review.
+
+
+
+## Current checkpoint — Task HOME descriptor-instance binding — 2026-11-18
+- PR #116 head `a95700c0bf562aa3b0a142720892cff118dfeb9f`; base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+- Added 256-bit per-instance identifier to `TaskHome`, private mode-0600 ownership marker, and destroy-time descriptor/marker match checks. Added regressions for same-task-id cross-directory forged descriptors and altered/symlinked markers.
+- Blobs: `task_home.py` `362d9a98f0e85784a7470d44ab318cca3c849171`; `test_task_home.py` `e413cf1b0b03550b3818863f45c6e773eb400e0f`.
+- Exact-head test attempts surfaced a test-fixture cleanup bug, corrected in current head. Prior run [44263548591](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263548591) FAILED in test fixture; its job logs are [134662437064](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263548591/job/134662437064). Pool Contract Validation [44263548680](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263548591) SUCCESS on earlier head `0070b5dde32d38d63e42c61509b24e21c392be22`. A later attempt [44263636820](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263636820) also exposed fixture restoration mode issue; corrected by restoring mode 0600. Latest head's exact-head workflows were NOT VERIFIED at checkpoint.
+- Historical reviews are COMMENTED, not approval for current head. Independent A3 review required.
+- Marker is an accidental descriptor-mismatch guard only, not a same-UID hostile-code boundary or sandbox. Production process/container isolation remains unproven.
+- Additional unresolved gates: installer signature/binary provenance, Anthropic hosted-use terms and account entitlement, FCC AGPL-3.0-only obligations, provider/account/quota route proof, network egress controls, and production worker integration.
+- Report: [Task HOME descriptor-instance binding](../reports/2026-11-18-next-task-home-descriptor-instance-binding.md).
+- No secrets, provider calls, Gemini dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify both workflows on exact head `a95700c0bf562aa3b0a142720892cff118dfeb9f`, fix any concrete failures, then obtain independent A3 review and resolve legal/provenance gates.
