@@ -67,3 +67,18 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 - [PR #126](https://github.com/VlDMlNSh/developer-cloud-pool/pull/126)
 - [Owner Architecture Freeze](../architecture/CLOUD-POOL-OWNER-ARCHITECTURE-FREEZE-2026-11-17.md)
 - [Canonical architecture PR #120](https://github.com/VlDMlNSh/developer-cloud-pool/pull/120)
+
+
+---
+
+## Follow-up — root-owned executable PATH hardening — 2026-11-18
+
+- Report: [runner PATH ownership hardening](../reports/2026-11-18-runner-path-root-owned-hardening.md).
+- PR #116 branch head advanced to `6088a5d1e52191004c3228ed4cf6f3b72dabd116`; default branch remains unchanged at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Child-process PATH policy now requires root-owned canonical directories; private runner-owned directories are rejected to prevent same-UID executable replacement after validation.
+- Focused child-environment test step passed on exact head. Pool Contract Validation [44278168854](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168854) COMPLETED/SUCCESS.
+- Runner Qualification [44278168889](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44278168889) was RUNNING when this checkpoint was written; final result and artifact digest remain NOT VERIFIED.
+- PR #116 OPEN/DRAFT/UNMERGED. No secret reads, provider calls, real Claude session, dispatch, merge or deployment.
+- Remaining P1 gates: actual CODE worker inside sandbox; provider-specific default-deny egress gateway; Claude hosted-use entitlement; free provider account/quota proof; FCC AGPL legal assessment.
+- Next step: re-read exact-head run 44278168889, inspect job logs/artifact/digests, then implement the worker-container + egress boundary without enabling provider calls.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
