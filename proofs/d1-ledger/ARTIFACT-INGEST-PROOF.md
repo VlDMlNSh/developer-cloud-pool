@@ -22,3 +22,11 @@ This directory is an isolated, local Workers-runtime proof. It is not a deployed
 ## Local CI
 
 The existing pinned Workers Vitest plugin and its Miniflare runtime run the proof. The workflow executes dependency installation, syntax checks, Workers-runtime tests and preserves the resolved lockfile as a short-lived CI artifact.
+
+## Orphan reconciliation — dry-run only
+
+`planArtifactOrphanReconciliation` produces a bounded, read-only inventory classification for objects under `ingest/<taskKey>/<uploadId>`. It requires complete object-list and D1 reference snapshots, preserves every object referenced by either result or outbox (including key/version disagreements), preserves objects with unknown or non-dead task state, and applies a caller-supplied retention boundary that must be derived from trusted runtime/storage time by the future orchestrator.
+
+The planner is deliberately incapable of deleting objects. A candidate is only a review item when its task is terminal `dead`, the object is older than the retention boundary, and neither D1 result nor outbox references its key. Even then `deletionEligible` is always false and independent approval is required. Missing or incomplete snapshots fail closed. This is a local proof of classification logic, not a production R2 listing/D1 query integration or a deletion qualification.
+
+Do not apply a blanket R2 lifecycle expiry rule to the `ingest/` prefix: lifecycle rules match prefixes and age, not D1 result/outbox references or task state. Keep automatic deletion disabled until a separately reviewed retention policy and compare-and-delete strategy exist.
