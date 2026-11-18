@@ -11,7 +11,7 @@
 - Exact-head PR #132 CI remains VERIFIED / SUCCESS: D1 Workers run [44316452561](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452561); Pool Contract Validation [44316452049](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44316452049), both on `4b3cd7e...`.
 - PR #132 independent review NOT VERIFIED (0 formal reviews, 0 inline review comments).
 - R2 conditional writes and Workers `crypto.DigestStream` researched as candidate only. No bucket/account was accessed; no adapter exists; no runtime semantics were qualified.
-- No source-code changes, no local tests, no production dispatch, hosted D1 writes, provider calls, secret reads, deployment or merge. Gemini NOT RUN; expected controller path was not found on the inspected docs branch.
+- No source-code changes, no local tests, no production dispatch, hosted D1 writes, provider calls, secret reads, deployment or merge. Gemini NOT RUN: required controller workflow path returned HTTP 404 on default HEAD, PR #132 proof ref and documentation branch.
 - Artifact ingest implementation NOT IMPLEMENTED; storage behavior NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: implement and test a local-only R2 adapter proof in an exact Workers-compatible runtime; adversarially verify bounded streaming digest, conditional create, ambiguous-write reconciliation, object identity binding, retry and orphan recovery. Keep production dispatch disabled and do not grant worker credentials.
 
