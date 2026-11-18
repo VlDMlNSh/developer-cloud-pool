@@ -30,3 +30,10 @@ The existing pinned Workers Vitest plugin and its Miniflare runtime run the proo
 The planner is deliberately incapable of deleting objects. A candidate is only a review item when its task is terminal `dead`, the object is older than the retention boundary, and neither D1 result nor outbox references its key. Even then `deletionEligible` is always false and independent approval is required. Missing or incomplete snapshots fail closed. This is a local proof of classification logic, not a production R2 listing/D1 query integration or a deletion qualification.
 
 Do not apply a blanket R2 lifecycle expiry rule to the `ingest/` prefix: lifecycle rules match prefixes and age, not D1 result/outbox references or task state. Keep automatic deletion disabled until a separately reviewed retention policy and compare-and-delete strategy exist.
+
+
+## Read-only inventory adapter
+
+`collectArtifactInventory(bucket, db)` performs bounded R2 listing under the fixed `ingest/` prefix and reads D1 result, outbox, and requested task-state records in one bounded SQL statement. It uses R2's opaque cursor and `truncated` flag (not page length) to continue listing, carries the same prefix/limit/custom-metadata options on each page, and fails closed on missing/repeated cursors, duplicate keys, malformed objects, page/object/row limits, and D1 query errors.
+
+The D1 references and task states are read by one SQL statement, so those rows share one statement-level database view. R2 pagination and D1 are separate stores and are **not** a shared cross-store snapshot; the returned `crossStoreSnapshotConsistent` is always false. The adapter is read-only and always returns `deletionPermitted: false`. A complete inventory means only that the bounded R2 listing reached its end and the bounded D1 statement returned completely; it is not deletion authorization or proof of a transactionally consistent cross-store point-in-time view.
