@@ -15,7 +15,7 @@ const EXPECTED = {
 const b64url = (bytes) => {
   let binary = "";
   for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replace(/=/g, "").replace(/\\+/g, "-").replace(/\\//g, "_");
+  return btoa(binary).replace(/=/g, "").replaceAll("+", "-").replaceAll("/", "_");
 };
 const encode = (value) => b64url(new TextEncoder().encode(JSON.stringify(value)));
 
