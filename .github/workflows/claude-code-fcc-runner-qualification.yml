@@ -73,6 +73,58 @@ jobs:
             exit 2
           fi
 
+      - name: Probe sandbox runtime capabilities without secrets or installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/qualification/sandbox-capabilities.txt"
+          mkdir -p "$(dirname "$out")"
+          {
+            echo "probe_version=1"
+            echo "target_sha=$PR_HEAD_SHA"
+            echo "runner_os=$RUNNER_OS"
+            echo "runner_arch=$RUNNER_ARCH"
+            echo "kernel_release=$(uname -r)"
+            echo "kernel_version=$(uname -v | tr ' ' '_')"
+            echo "effective_uid=$(id -u)"
+            echo "userns_clone=$(cat /proc/sys/kernel/unprivileged_userns_clone 2>/dev/null || echo unavailable)"
+            echo "max_user_namespaces=$(cat /proc/sys/user/max_user_namespaces 2>/dev/null || echo unavailable)"
+            echo "seccomp_status=$(awk '/^Seccomp:/ {print $2}' /proc/self/status)"
+            echo "no_new_privs=$(awk '/^NoNewPrivs:/ {print $2}' /proc/self/status)"
+            echo "cgroup_v2=$([ -f /sys/fs/cgroup/cgroup.controllers ] && echo present || echo absent)"
+            echo "cgroup_controllers=$(tr ' ' ',' < /sys/fs/cgroup/cgroup.controllers 2>/dev/null || echo unavailable)"
+            echo "dev_kvm_exists=$([ -e /dev/kvm ] && echo yes || echo no)"
+            echo "dev_kvm_readable=$([ -r /dev/kvm ] && echo yes || echo no)"
+            echo "dev_kvm_writable=$([ -w /dev/kvm ] && echo yes || echo no)"
+            echo "docker_cli=$(command -v docker || echo absent)"
+            if command -v docker >/dev/null 2>&1; then
+              docker version --format 'docker_client={{.Client.Version}} docker_server={{if .Server}}{{.Server.Version}}{{else}}unavailable{{end}}' 2>/dev/null || echo "docker_daemon=unavailable"
+              docker info --format 'docker_security_options={{json .SecurityOptions}}' 2>/dev/null || echo "docker_info=unavailable"
+            else
+              echo "docker_daemon=unavailable"
+            fi
+            for runtime in runsc nsjail bwrap; do
+              if command -v "$runtime" >/dev/null 2>&1; then
+                echo "${runtime}_path=$(command -v "$runtime")"
+                "$runtime" --version 2>&1 | head -n 1 | tr ' ' '_' || true
+              else
+                echo "${runtime}_path=absent"
+              fi
+            done
+            for probe in user mount pid net; do
+              case "$probe" in
+                user) timeout 5s unshare --user --map-root-user true >/dev/null 2>&1 ;;
+                mount) timeout 5s unshare --user --map-root-user --mount true >/dev/null 2>&1 ;;
+                pid) timeout 5s unshare --user --map-root-user --pid --fork true >/dev/null 2>&1 ;;
+                net) timeout 5s unshare --user --map-root-user --net true >/dev/null 2>&1 ;;
+              esac
+              status=$?
+              echo "unshare_${probe}_namespace_exit=$status"
+            done
+          } > "$out"
+          chmod 600 "$out"
+          cat "$out"
+
       - name: Install pinned Claude Code with official native installer
         shell: bash
         run: |
