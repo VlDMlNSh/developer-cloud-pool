@@ -3323,3 +3323,22 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: test revocation/admission race and durable single-use task claim/fencing; first reconcile whether PR #128 bootstrap correction must be integrated before the PR #84 -> #86 -> #129 chain.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, PR #130 bootstrap watermark integration
+
+- Created stacked Draft PR #130: https://github.com/VlDMlNSh/developer-cloud-pool/pull/130
+- Branch `fix/admission-bootstrap-watermark-integration-2026-11-18`; latest HEAD `6175eed8812fe52aad929523caab6b942cd01dd7`; base PR #129 HEAD `70265bbb21a8419312bc0cfe684d32184cffc497`.
+- Preserves ancestry #81 -> #84 -> #86 -> #129 -> #130. PR #128 remains a sibling on PR #77; its branch ancestry was not merged/rebased.
+- Ported PR #128 exact-head source `c17a6026323e5ba1be7a2ae3345f387df6d12f25`: migration 0012 now requires initial INSERT and every state UPDATE to target MAX(persisted registry_epoch). Ported adversarial test rejects stale initial epoch 1001 when 1003 exists and stale intermediate advance 1004 when 1005 exists.
+- Readback blobs: migration `75c2ac5f879ec0ec7356a6309f8c95ba3996f588`; test `6d8ef46d3b01035b4216dc97e38a2971824c5ae7`; workflow `f111bec6f3cd02837937cd7026afdea84b31db07`.
+- Workflow branch filters include PR #130 push branch and PR #129 as target base.
+- Source PR #128 exact-head CI [44294913103](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44294913103) SUCCESS: 115 Workers-runtime tests, both smoke suites PASS; artifact 14423147696 SHA-256 `3b31135452722f8cee874dcfff2743046273cf3bab2ba806aee5af10ccb3f111`.
+- PR #130 integrated exact-head CI lookup returned no runs: NOT VERIFIED. Independent clone/test NOT RUN because github.com DNS resolution failed in execution environment. Do not infer #130 is verified from #128.
+- PR #130 OPEN/DRAFT/UNMERGED. No merge/default branch changes. Comment 6977914171 documents the verification boundary.
+- Detailed report: [PR #130 bootstrap watermark integration](../reports/2026-11-18-pr130-bootstrap-watermark-integration.md).
+- Next: obtain exact-head CI for #130; diagnose trigger/filter without weakening controls; independent review combined stack; then revocation/admission race and durable single-use claim/fencing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
