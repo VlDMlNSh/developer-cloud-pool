@@ -4,6 +4,7 @@ const SHA40 = /^[a-f0-9]{40}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const NUMERIC_ID = /^[0-9]+$/;
 const ALLOWED_PROFILES = new Set(["dsh-headless-probe"]);
+const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function deny(reason) {
   return { decision: "DENY", state: "needs-review", dispatch: false, reason };
@@ -20,6 +21,7 @@ function validInput(binding, now) {
     Number.isSafeInteger(binding.issueNumber) && binding.issueNumber > 0 &&
     typeof binding.targetSha === "string" && SHA40.test(binding.targetSha) &&
     typeof binding.profile === "string" && ALLOWED_PROFILES.has(binding.profile) &&
+    typeof binding.executorId === "string" && EXECUTOR_ID.test(binding.executorId) &&
     typeof binding.envelopeDigest === "string" && SHA256.test(binding.envelopeDigest) &&
     Number.isSafeInteger(now) && now > 0
   );
@@ -32,6 +34,7 @@ async function logicalTaskKey(binding) {
     binding.issueNumber,
     binding.targetSha,
     binding.profile,
+    binding.executorId,
     1
   ]);
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
@@ -51,14 +54,15 @@ export async function claimLogicalTask(db, binding, now) {
   try {
     const taskKey = await logicalTaskKey(binding);
     const prior = await db.prepare(
-      "SELECT repository_id, issue_number, target_sha, profile FROM pool_tasks WHERE task_key = ?"
+      "SELECT repository_id, issue_number, target_sha, profile, executor_id FROM pool_tasks WHERE task_key = ?"
     ).bind(taskKey).first();
 
     if (prior && (
       prior.repository_id !== binding.repositoryId ||
       prior.issue_number !== binding.issueNumber ||
       prior.target_sha !== binding.targetSha ||
-      prior.profile !== binding.profile
+      prior.profile !== binding.profile ||
+      prior.executor_id !== binding.executorId
     )) return deny("TASK_KEY_BINDING_CONFLICT");
 
     const changed = await db.prepare(`
@@ -70,6 +74,7 @@ export async function claimLogicalTask(db, binding, now) {
          AND issue_number = ?
          AND target_sha = ?
          AND profile = ?
+         AND executor_id = ?
          AND envelope_digest = ?
          AND state = 'ready'
          AND consumed_at IS NULL
@@ -83,14 +88,15 @@ export async function claimLogicalTask(db, binding, now) {
     const attached = await db.prepare(`
       SELECT t.task_key, t.state, t.lease_generation,
              o.outbox_id, o.status AS outbox_status,
-             a.envelope_digest
+             a.envelope_digest, a.executor_id AS approval_executor_id
         FROM pool_tasks t
         JOIN pool_task_approvals a ON a.task_key = t.task_key
         JOIN pool_task_delivery_outbox o ON o.task_key = t.task_key
        WHERE t.task_key = ? AND a.approval_id = ?
     `).bind(taskKey, binding.approvalId).first();
 
-    if (!attached || attached.envelope_digest !== binding.envelopeDigest) {
+    if (!attached || attached.envelope_digest !== binding.envelopeDigest ||
+        attached.approval_executor_id !== binding.executorId) {
       return deny(changed?.success && changed?.meta?.changes > 0
         ? "TASK_ATTACH_OR_OUTBOX_INCOMPLETE"
         : "APPROVAL_NOT_CONSUMED_OR_ALREADY_ATTACHED");
@@ -126,11 +132,11 @@ export async function claimAndEnqueue(db, binding, now) {
          SET state = 'consumed', consumed_at = ?
        WHERE approval_id = ? AND owner_numeric_id = ? AND repository_id = ?
          AND issue_number = ? AND target_sha = ? AND profile = ?
-         AND envelope_digest = ? AND state = 'ready'
+         AND executor_id = ? AND envelope_digest = ? AND state = 'ready'
          AND consumed_at IS NULL AND expires_at > ?
     `).bind(
       now, binding.approvalId, binding.ownerNumericId, binding.repositoryId,
-      binding.issueNumber, binding.targetSha, binding.profile, binding.envelopeDigest, now
+      binding.issueNumber, binding.targetSha, binding.profile, binding.executorId, binding.envelopeDigest, now
     ).run();
 
     const existing = await db.prepare(`
