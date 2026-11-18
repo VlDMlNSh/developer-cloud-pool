@@ -223,3 +223,13 @@ Scheduled Supervisor run [44272871545](https://github.com/VlDMlNSh/developer-clo
 ### Latest exact-head CI poll
 - Pool Contract Validation [44286730365](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730365): COMPLETED / SUCCESS on `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
 - Runner Qualification [44286730410](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286730410): IN_PROGRESS on same HEAD; job #134741199311 is at signed APT installation. Later steps pending; NOT VERIFIED.
+
+### Exact-head qualification update — 2026-11-18
+- PR #116 HEAD `2e944f13818f434cf135602c1c0e82051f1d3fa8`, OPEN / DRAFT / UNMERGED.
+- Pool Contract Validation [44286955360](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955360): SUCCESS exact-head.
+- Runner Qualification [44286955337](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44286955337): SUCCESS exact-head; job #134741981861, all 18 steps succeeded.
+- Artifact #14420066410, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; content/SHA256SUMS audit pending (NOT VERIFIED).
+- This verifies hosted-runner installation/runtime/synthetic wrapper qualification only; no real Claude task, provider calls, provider egress allowlist, production dispatch or persistent workspace.
+- Issue #118 OPEN: server #3 and Zero Trust/persistence evidence absent. Gemini NOT RUN; `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: artifact integrity/content audit, then re-evaluate workspace/access gates.
