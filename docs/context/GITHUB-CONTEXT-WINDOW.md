@@ -3104,3 +3104,16 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - PR #126 and #120 remain OPEN/DRAFT/UNMERGED; Issue #118 remains OPEN/BLOCKED (workspace host #3, Cloudflare Access/Tunnel and backup/restore unverified).
 - No secret values read, provider calls, real Claude task, Gemini dispatch, production dispatch, merge or deployment. Keep `POOL_DISPATCH_ENABLED=false`.
 - Next: inspect run 44284859244 and determine signal status vs wait status vs listener state. Only after full Runner Qualification and artifact verification proceed to actual CODE-in-container and provider-specific egress qualification. Contour A BLOCKED/NOT ACCEPTED; Contour B DEFERRED.
+
+
+# CURRENT VERIFIED OVERLAY — 2026-11-18, CODE worker sandbox upstream fit
+
+- Documentation branch: `docs/next-2026-11-18-worker-sandbox-fit`; report commit: `bab5b2cd5cdd6f10eef476eeb7bdd299745f2daa`.
+- Report: [CODE worker sandbox upstream fit](../reports/2026-11-18-code-worker-sandbox-upstream-fit.md).
+- Default branch `Основной` remains at `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; no default-branch change.
+- PR #116 current head `570d78b7d3f7972b7458de9e69f6117ae642896a`, OPEN/DRAFT/UNMERGED. Exact-head Pool Contract Validation [44284859281](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859281) SUCCESS. Runner Qualification [44284859244](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44284859244) was IN_PROGRESS at inspection; NOT VERIFIED.
+- PR #126 head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`, OPEN/DRAFT/UNMERGED. Exact-head Pool Contract Validation [44275194245](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44275194245) SUCCESS. Legacy dispatch retirement is not effective on default branch until merge.
+- Upstream fit: Eclipse Enclave README blob `36b937f0206068b988079783bc78ba20cfe9582e`, MIT license blob `09ea0c61d381fba5fe0bea1815e2d9d670d7e665`; promising later persistent workspace candidate, not adopted. Anthropic defending-code-reference-harness sandbox doc blob `51aa087742a6337bc9d3743348def9e18be6fdee`, Apache-2.0 license blob `84b83dc8f7700461f3d1917234a03b84cedc63ac`; selected as primary isolation-topology reference (trusted orchestrator outside, agent in gVisor/container, internal network plus allowlist proxy). Docker Agent README blob `d3daeb8ead7e59d1acc0b453d034429d5e0449a7`, Apache-2.0 license blob `7a4a3ea2424c09fbe48d455aed1eaa94d9124835`; use sandbox policy concepts only, not its multi-agent orchestration framework.
+- Next: after 44284859244 is terminal, inspect exact-head logs/artifact, then build a no-secret qualification that runs a synthetic CODE executor inside the actual restricted container and proves task envelope, no token visibility, read-only FS/capability restrictions, no direct egress, termination and artifact integrity. Provider egress remains disabled.
+- No secret values read, provider calls, real Claude session/task, Gemini dispatch, production dispatch, deployment, merge or Contour B. `POOL_DISPATCH_ENABLED=false`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
