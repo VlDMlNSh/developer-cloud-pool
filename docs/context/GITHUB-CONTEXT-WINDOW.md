@@ -88,3 +88,20 @@ Canonical MediaHub map (separate repository/control plane): https://github.com/V
 - Production owner-event controller and approved Gemini controller are absent from default (404). Gemini dispatch: NOT RUN; no substitution or bypass. Hosted D1, live provenance, approval issuer, lease/fencing/recovery, outbox delivery, worker identity, provider route/quota, remote UI and persistent workspace/restore remain NOT VERIFIED / NOT QUALIFIED.
 - No secrets read, provider calls, dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next bounded step: independent A3 review and meaningful governance remediation before implementing live controller provenance. Keep dispatch fail-closed.
+
+
+### CURRENT RECONCILIATION — first executor FCC account/fallback isolation — 2026-11-18
+- Default branch `Основной` remains `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- PR #116 first executor runner qualification: OPEN/DRAFT/UNMERGED; exact head `a956129f6cf426c887e755c563740fe1813161d9`; base default SHA above; mergeable=true. Added child-environment regression test blob `dcf6000f9475a0bef598f175663475a12a787927`.
+- The test rejects inherited FCC provider-key aliases, `MODEL_FALLBACKS`, `FCC_CUSTOM_PROVIDERS` and `ANTHROPIC_AUTH_TOKEN` from the allowlisted child environment. Synthetic sentinels only; no credential values accessed.
+- Exact-head Claude Code + ECC + FCC no-secret runner qualification [44257088134](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134), job [134641259169](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134/job/134641259169): COMPLETED / SUCCESS; Python suite **9/9 PASS**, full runner/lifecycle/mocked handoff steps passed.
+- Exact-head Pool Contract Validation [44257088139](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088139), job 134641259701: SUCCESS. Dispatch-disabled invariant retained.
+- Evidence artifact [14406183728](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44257088134/artifacts/14406183728), 26,805 bytes; SHA-256 `17e510f0d5c8b45862bc0f34e9bf7e33cf82ccfa5f9bf292c07bd70900dafad8`; expires 2026-11-25T07:13:22Z.
+- Upstream FCC pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5` supports ordered key arrays, numbered selection and model fallback sequences after 403/429. One-account-per-FCC-profile, no fallback/key cycling remains mandatory. The new test covers inherited environment only; persisted FCC settings remain NOT VERIFIED.
+- Issue #115 remains OPEN because actual permitted free route, account identity and quota behavior are not qualified. FCC AGPL-3.0-only deployment obligations remain unresolved; keep FCC loopback-only, no network exposure.
+- Issue #94 latest owner scope correction makes Gemini supplementary/optional, not a mandatory per-/next or first-release gate. Cloud Pool Gemini controller is absent on default; no Gemini dispatch performed.
+- PR #116 review submissions remain COMMENTED, not independent approval. PR #114/#125 review and ruleset governance blockers remain unchanged; no independent A3 acceptance.
+- Authenticated Jarvis remote UI, hosted D1, production owner controller, approval issuer, Supervisor lease/fencing/recovery, worker identity, production provider routing/quota, persistent Engineering Workspace/restore remain NOT VERIFIED / NOT QUALIFIED.
+- No secret values read, provider calls, dispatch, deployment or merge. Contour A: **BLOCKED / NOT ACCEPTED**. Contour B: **DEFERRED**.
+- Next bounded step: define/test a persisted FCC single-account configuration boundary without revealing credential values; then separately qualify a real permitted free route and quota accounting. Resolve AGPL exposure obligations before remote FCC service.
+- Reports: [FCC provider key/fallback isolation regression](../reports/2026-11-18-next-fcc-provider-key-isolation-regression.md); [Issue #115 evidence](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115#issuecomment-6971842639).
