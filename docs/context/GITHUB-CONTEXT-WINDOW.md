@@ -3428,3 +3428,12 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Next: define canonical execution envelope and separate approval evidence; add lease contention (2/12/50), same-worker, expiry-boundary, stale result/outbox fencing, crash recovery, ambiguous-storage, clock and overflow tests on a fresh proof branch; run exact-head Workers Vitest/workerd CI and inspect artifacts.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI evidence correction — 2026-11-18
+
+- PR #40 run `42489887940` is confirmed `COMPLETED / SUCCESS`, event head `2b7e30aeb8c404d84b2fe8bc36320aaa783520fb`, base `ecc7193cdc7b1e58fdba6c27c1a9fdb51f2bb833`, checked-out merge SHA `23e06138ddee46934c8cb137d04dd1585d390ea6`.
+- Job `128759748692`: `npm ci`, `npm run check`, Workers Vitest `2 files / 27 tests passed`. Artifact `13620723665`, ZIP SHA-256 `a79f822dd3acf44b22237d1fe164b8d446a0b269e6b40046987f2a3fda64d66b`.
+- Evidence classification: PR merge-context CI VERIFIED; standalone exact-head CI NOT VERIFIED; lease contention and stale durable side-effect fencing NOT VERIFIED.
+- PR #40 remains OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads. PR #130 remains OPEN/DRAFT/UNMERGED; its latest readback showed exact-head merge-context CI success at run `44299536170` (120/120 tests), but that is separate work and does not qualify this lease proof.
+- Updated report: `docs/reports/2026-11-18-d1-task-identity-lease-next-qualification-plan.md` (commit `a41cd72de54178a5f1e67a5d69868c94e8437d4c`).
