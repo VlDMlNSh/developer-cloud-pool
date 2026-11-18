@@ -485,7 +485,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY="synthetic-aws-secret"
           export HTTP_PROXY="http://untrusted-proxy.invalid:8080"
           export HTTPS_PROXY="http://untrusted-proxy.invalid:8080"
-          export PATH="/usr/bin:/bin"
+          export PATH="/usr/bin"
 
           python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
           server_pid=$!
