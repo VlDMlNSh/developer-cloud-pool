@@ -3410,3 +3410,24 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Ruleset and current dispatch variable NOT VERIFIED. Gemini NOT RUN. No secrets, hosted D1 writes, provider calls, dispatch, deployment, merge or Contour B work.
 - Next: recover exact proof tree and actual lease tests/migrations, then run exact-head CI with adversarial concurrency, stale-generation output/outbox and recovery tests. Keep dispatch disabled.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+---
+
+## D1 result/outbox source audit — 2026-11-18
+
+- Report: [D1 result/outbox source audit](../reports/2026-11-18-d1-result-outbox-source-audit.md); checkpoint: [D1 result/outbox audit checkpoint](../checkpoints/2026-11-18-d1-result-outbox-audit.md).
+- Default branch `Основной` HEAD: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Result/outbox proof branch `proof/d1-result-outbox-fencing-2026-11-18` HEAD: `ce2cfbab661ec489e7f1c21ffb3f99413df5fd6b`; compare to default: 89 ahead / 141 behind; merge base `197ba98d0dc7d8437d759dd25bee8750d02e59ae`. Do not merge directly or assume it is based on current default.
+- PR #131 is a separate lease acquisition-attempt proof branch `proof/d1-lease-attempt-fencing-2026-11-18` @ `2cefe8d62b99012ff23d45f33e3251996747fb7b`; OPEN/DRAFT; formal reviews 0; inline threads 0.
+- Re-read migration 0001–0005, `task-result.mjs`, `task-lease.mjs`, result tests, package/lockfile, Vitest config, migration setup, Wrangler config and proof workflow. Actual migration names are 0001_create_pool_approval_ledger, 0002_create_task_claim_outbox, 0003_create_logical_task_identity, 0004_add_lease_attempt_identity, 0005_create_fenced_task_result_outbox.
+- F1: `commitTaskResult` currently checks `inserted.meta.changes === 1`. Cloudflare documents D1 `meta.changes` as based on SQLite `sqlite3_total_changes()`; the result INSERT trigger also updates the task and inserts an outbox row. Exact equality to one is therefore invalid. Likely first-success classification bug: the adapter may return RESULT_ALREADY_COMMITTED instead of RESULT_COMMITTED. Must verify with exact Workers runtime and fix by immutable result/task/outbox readback rather than total_changes equality.
+- F2: `commitTaskResult`, `acquireTaskLease`, `renewTaskLease`, and `finalizeTaskLease` accept a caller-supplied timestamp. Trusted clock provenance/composition boundary is not proven. Treat as NOT QUALIFIED; production needs a trusted server-side clock or database time and boundary tests.
+- Local Python SQLite micro-test showed total_changes includes trigger writes. This is SQLite semantics evidence only, not a D1/Workers test.
+- Exact-head CI for result/outbox HEAD `ce2cfbab...` NOT VERIFIED. The commit-workflow lookup returned no PR-triggered run for this SHA. Recent D1 run 44299536170 checked out PR #130 merge commit `3272389...`, not this proof. Do not attribute PR #130's 120-test pass to this branch.
+- Local `npm ci` / Workers Vitest tests NOT RUN because container could not resolve github.com during clone. No tests claimed as passed for this proof.
+- Upstream fit reviewed: pg-boss and Graphile Worker are PostgreSQL-backed; BullMQ primarily Redis-based (current upstream also exposes PostgreSQL support); Temporal requires its persistence/server operational footprint; `provos/tasklease` is a directly relevant Workers + Durable Objects pattern for rotating task IDs/fencing, but not adopted. Keep D1 proof isolated and reuse invariants; no new infra/dependencies.
+- No production dispatch, hosted D1 mutation, secrets, provider/model calls, deployment, or external dispatcher. Gemini NOT RUN; browser agent not tested. Ruleset and live dispatch variable NOT VERIFIED.
+- Next: create a clean proof branch from current default HEAD; port minimal result/outbox proof; fix F1 with verified readback; establish trusted clock for F2; run exact-head Workers Vitest/migration smoke and adversarial stale-worker, same-worker reclaim, expiry-equality, idempotency/conflict, and rollback tests; then independent review.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
