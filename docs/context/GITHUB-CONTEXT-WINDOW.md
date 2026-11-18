@@ -3218,3 +3218,8 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Exact-head checks queued at latest poll: Runner Qualification check `134741199311`; Pool Contract Validation check `134741199298`. Results NOT VERIFIED.
 - Latest detailed report: [2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md](../reports/2026-11-18-fcc-bridge-shutdown-diagnostics-follow-up.md).
 - Next: poll exact-head checks and inspect the next artifact/result. Do not describe this synthetic test as real FCC-to-Claude provider routing.
+
+### Exact-head CI poll — 2026-11-18
+- PR #116 HEAD `37d7b4de7b885d278a35d9311a38bc15fac961dc`.
+- Pool Contract Validation run #44286730365: COMPLETED / SUCCESS.
+- Runner Qualification run #44286730410: IN_PROGRESS; job #134741199311 currently installing signed Claude Code APT package; downstream qualification stages pending. Result NOT VERIFIED.
