@@ -3643,3 +3643,8 @@ Rechecked after all documentation commits: PR #113 docs head `c30a4300acddee11ee
 - Checkpoint: [R2/D1 read-only inventory checkpoint](../checkpoints/2026-11-18-issue133-r2-d1-readonly-inventory-checkpoint.md).
 - Next: design and test a D1-owned reconciliation epoch/fence or durable scan-run protocol to prove how R2 object versions and D1 result/outbox commits are fenced under concurrency; keep deletion disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Base-ref drift note (verified 2026-11-18)
+
+The live default branch `Основной` is at `68183828cf7934e89109310c8f99281be4eb7ed8`, while GitHub's PR #135 API currently reports `base.sha` as `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (base ref remains `Основной`). Treat this as an unresolved base-ref snapshot discrepancy. PR #135 is still Draft and must not be merged until the base relationship is refreshed/revalidated against the live default head and the complete diff/CI are rechecked. PR #136 is the separate corrective documentation PR based on `68183828cf7934e89109310c8f99281be4eb7ed8`.
