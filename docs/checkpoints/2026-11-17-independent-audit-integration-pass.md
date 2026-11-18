@@ -204,3 +204,14 @@ Run exact-head documentation validation and Pool Contract Validation on the new 
 - Latest PR #116 head: `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`. Contract CI [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651) SUCCESS; runner CI [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665) pending at update.
 - Previous head `ad8b120...` passed Runner [44262843742](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843742) and Contract [44262843688](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262843688).
 - See [task HOME XDG hardening report](../reports/2026-11-18-next-task-home-xdg-permission-hardening.md). Production integration remains unqualified; Contour A BLOCKED / NOT ACCEPTED.
+
+
+## Final verification — task HOME hardening exact-head CI — 2026-11-18
+
+- PR #116 exact code head `58a8cd5fd5a39fd47916b534fb63f744b5f25d5f`, OPEN/DRAFT/UNMERGED.
+- Runner Qualification [44262959665](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665), job [134660515082](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959665/job/134660515082): SUCCESS, all 15 steps succeeded.
+- Pool Contract Validation [44262959651](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44262959651): SUCCESS.
+- Documentation validation [44263132106](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44263132106) on docs head `711146a...`: SUCCESS.
+- The checks qualify synthetic task HOME path/symlink/XDG/dangling-store behavior and ephemeral no-secret runner workflow only. Production launcher, OS/container, egress, external credential stores, host recovery, hosted-use vendor terms, real provider/account/free-quota remain NOT VERIFIED.
+- No secrets, provider calls, production dispatch, deployment or merge. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent A3 review; then separately implement/qualify production launcher and host isolation.
