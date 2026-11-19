@@ -11,6 +11,7 @@ Controlling governance: Issue #140 OPEN; local no-secret qualification only.
 - Default branch remains `Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
 - PR #145 remains OPEN / DRAFT / UNMERGED; docs-only, base is default, head `bbec30424ecf2c59152ac96b8daefd176715c0b9`.
 - PR #146 remains OPEN / DRAFT / UNMERGED; base is default, head branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`, reported head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`.
+- PR #146 metadata/body are inconsistent: the PR metadata reports head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, while its body claims latest branch head `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` after documentation-only updates. The branch ref was not independently reconciled in this pass; effective PR head/CI linkage is NOT VERIFIED.
 - PR #147 remains OPEN / DRAFT / UNMERGED; docs-only, stacked on #146, reported head `0ea6dcd589b914399a66e289190e00addbf6d9a1`.
 - Formal review lists for PR #146 and #147 returned zero reviews.
 - Issue #140 remains OPEN. It prohibits hosted D1 provisioning/writes, secrets/variables inspection, provider calls, dispatch, deployment, merge and production actions.
