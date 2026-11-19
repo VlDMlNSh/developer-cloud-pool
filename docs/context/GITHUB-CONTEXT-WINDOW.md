@@ -2,13 +2,13 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-19 — A1 CODE profile, D1 executor identity binding audit and test extension
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (verified from refs/heads/Основной at 2026-11-19 09:29 UTC)
+Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `d0399fcdc57401efa4e6752984d330c7eb18f9c5`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
-This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+This Context Window refresh is carried on PR #146's A1 working branch and is NOT merged into the default branch. It is a working recovery snapshot, not a claim that the A1 branch is accepted production code.
 
 ---
 
@@ -2205,3 +2205,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: exhaustive tree/blob inventory; selectively transplant D1 source onto this clean base; enforce profile ID/version in SQL and adapters; add positive/negative tests; run exact-head CI and inspect job logs/artifacts; update checkpoint. Dispatch remains disabled.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 - Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 A1 restoration and executor identity verification
+
+- Live repository metadata: default branch `Основной`; verified default HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Repository is public. Current connected GitHub permission read-back: admin/maintain/push.
+- PR #146 is OPEN / DRAFT / UNMERGED, base `Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, active branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`. Latest A1 code/test commit at this checkpoint: `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. No PR reviews or review threads recorded.
+- Exact-head CI for prior PR head `b8138d64629f961127888ff12b653dd0522a1d89`: Pool Contract Validation run `44500818497` SUCCESS; Isolated D1 Ledger Proof run `44500818735` SUCCESS. Both are tied to that exact prior head, not the subsequent test commit.
+- New negative test added to `proofs/d1-ledger/test/consume.test.ts`: persisted approval executor is `claude-code-1`, supplied consume binding is `codex-2`; expected result is DENY. New blob `7ccbc093ba59b124be35ee8c233e4611c843adb3`; commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
+- Exact-head push workflow for `d0399fcdc57401efa4e6752984d330c7eb18f9c5`: Isolated D1 Ledger Proof run `44501709601`, job `135482879448`. At checkpoint creation, workflow was RUNNING; install and syntax-check steps succeeded; Workers-runtime D1 tests were still running. Final result MUST be re-read before claiming success.
+- Migration-chain review: `0001_create_pool_approval_ledger.sql` creates approval ledger without executor_id; `0007_bind_executor_identity.sql` adds executor_id to approval, task and attempt tables and installs required/immutable/cross-entity binding triggers. The suspected missing-column defect is therefore NOT CONFIRMED when all migrations 0001–0007 are applied. The existing D1 workflow applies the migration set via `applyD1Migrations`.
+- `consume.mjs` remains proof-only: no Worker entrypoint, GitHub client, dispatch capability, provider client or secret access; every return has `dispatch:false`. Do not mount it as a production worker.
+- D1 migration blob SHAs: 0001 `c14951239dfd6f93e20184f46373a8d13b62a69f`; 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; 0006 `0610c4ee63f338e9b4d4db30ffe6fdffbaf6d854`; 0007 `47c2f0f7db6379e6760317fe3903214f6f31ffee`.
+- Governance: active repository ruleset #26550182 applies to `refs/heads/Основной`, requires PR, zero approvals, required review-thread resolution, no bypass actors; classic branch endpoint reports protected=false. Independent review remains a project gate and is not satisfied.
+- PR #143 remains OPEN / DRAFT / UNMERGED and is based on older default SHA `68183828cf7934e89109310c8f99281be4eb7ed8`; its historical CI is not evidence for PR #146 or current default.
+- Contour A remains BLOCKED / NOT ACCEPTED. Dispatch, provider calls, deployment and runtime execution remain prohibited/not qualified. Contour B remains DEFERRED.
+- Next: re-read run `44501709601` and its job logs for exact-head outcome; then update this Context Window and the dated report/checkpoint with final status. Do not merge PR #146 without independent review and full acceptance evidence.
