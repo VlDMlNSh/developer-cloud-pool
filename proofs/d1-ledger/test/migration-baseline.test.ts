@@ -81,7 +81,9 @@ describe("canonical D1 migration baseline", () => {
       "SELECT COUNT(*) AS count FROM pool_attempt_projection_outbox"
     ).first<{ count: number }>();
 
-    expect(taskReady?.count).toBe(0);
+    // The preceding test committed one task-ready row in this shared local D1 fixture.
+    // The projection queue remains empty and independently addressable.
+    expect(taskReady?.count).toBe(1);
     expect(projection?.count).toBe(0);
     const projectionSchema = await env.POOL_DB.prepare(
       "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'pool_attempt_projection_outbox'"
