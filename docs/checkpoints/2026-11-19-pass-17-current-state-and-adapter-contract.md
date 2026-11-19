@@ -14,7 +14,7 @@
 ## Current critical evidence
 - #139 merged; legacy DSH dispatch retired on default, but merged with zero formal reviews.
 - #146 exact-head CI: `44522152749` and `44522152799` SUCCESS; 0 reviews; executor registry empty; profile remains proposed/not qualified/not enabled.
-- #146 adapter source gap confirmed in four blobs: `7b30f9fa315d7996854688dbd9e82b3bbf8bc825` [correct source blobs are recorded in the Pass 17 report]; adapters expose `dispatch:false` without explicit `executionAuthorized:false`.
+- #146 adapter source gap confirmed in four blobs: `7b30f9fa315d7996854685cbe634bd8097677518` [correct source blobs are recorded in the Pass 17 report]; adapters expose `dispatch:false` without explicit `executionAuthorized:false`.
 - #147 docs-only research: exact head `0ea6dcd589b914399a66e289190e00addbf6d9a1`; 0 CI, 0 reviews; additive candidates not adopted.
 - #143 remains open/draft and old-base; exact-head historical CI success does not establish integration.
 - #24/#25/#30/#31 remain open/draft, 146 behind current default; historical exact-head CI passed, independent reviews not verified.
