@@ -39,8 +39,8 @@ describe("canonical D1 migration baseline", () => {
       await env.POOL_DB.prepare(`
         INSERT INTO pool_approval_ledger
           (approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
-           profile, envelope_digest, expires_at)
-        VALUES (?, '10001', '20002', 42, ?, 'jarvis-code-sandbox-v1', ?, ?)
+           profile, envelope_digest, expires_at, executor_id)
+        VALUES (?, '10001', '20002', 42, ?, 'jarvis-code-sandbox-v1', ?, ?, 'executor-alpha')
       `).bind(approvalId, targetSha, digest, now + 3600).run();
 
       await env.POOL_DB.prepare(`
@@ -66,7 +66,7 @@ describe("canonical D1 migration baseline", () => {
       "SELECT COUNT(*) AS count FROM pool_task_outbox"
     ).first<{ count: number }>();
 
-    expect(taskCount?.count).toBe(1);
+    const taskExecutor = await env.POOL_DB.prepare(\n      "SELECT executor_id FROM pool_tasks WHERE task_key = ?"\n    ).bind(taskKey).first<{ executor_id: string }>();\n\n    expect(taskCount?.count).toBe(1);\n    expect(taskExecutor?.executor_id).toBe("executor-alpha");
     expect(approvalCount?.count).toBe(2);
     expect(readyCount?.count).toBe(1);
     expect(legacyClaims?.count).toBe(0);
@@ -89,5 +89,65 @@ describe("canonical D1 migration baseline", () => {
       "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'pool_attempt_projection_outbox'"
     ).first<{ sql: string }>();
     expect(projectionSchema?.sql).toContain("terminal_status");
+  });
+
+  it("rejects approvals without an executor identity", async () => {
+    await expect(env.POOL_DB.prepare(`
+      INSERT INTO pool_approval_ledger
+        (approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+         profile, envelope_digest, expires_at)
+      VALUES ('missing-executor', '10001', '20002', 43, ?, 'jarvis-code-sandbox-v1', ?, 1900003600)
+    `).bind("d".repeat(40), "e".repeat(64)).run()).rejects.toThrow("EXECUTOR_ID_REQUIRED");
+  });
+
+  it("keeps approval executor identity immutable", async () => {
+    const now = 1_900_000_000;
+    await env.POOL_DB.prepare(`
+      INSERT INTO pool_approval_ledger
+        (approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+         profile, envelope_digest, expires_at, executor_id)
+      VALUES ('immutable-executor', '10001', '20002', 44, ?, 'jarvis-code-sandbox-v1', ?, ?, 'executor-immutable')
+    `).bind("f".repeat(40), "a".repeat(64), now + 3600).run();
+
+    await expect(env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger SET executor_id = 'executor-replaced'
+      WHERE approval_id = 'immutable-executor'
+    `).run()).rejects.toThrow("EXECUTOR_ID_IMMUTABLE");
+  });
+
+  it("rejects cross-executor attachment to an existing logical task key", async () => {
+    const taskKey = "9".repeat(64);
+    const targetSha = "8".repeat(40);
+    const digest = "7".repeat(64);
+    const now = 1_900_000_000;
+
+    for (const [approvalId, executorId] of [
+      ["executor-task-a", "executor-alpha"],
+      ["executor-task-b", "executor-beta"]
+    ]) {
+      await env.POOL_DB.prepare(`
+        INSERT INTO pool_approval_ledger
+          (approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+           profile, envelope_digest, expires_at, executor_id)
+        VALUES (?, '10001', '20002', 45, ?, 'jarvis-code-sandbox-v1', ?, ?, ?)
+      `).bind(approvalId, targetSha, digest, now + 3600, executorId).run();
+    }
+
+    await env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = 'executor-task-a'
+    `).bind(now, taskKey).run();
+
+    await expect(env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = 'executor-task-b'
+    `).bind(now + 1, taskKey).run()).rejects.toThrow("TASK_KEY_BINDING_CONFLICT");
+
+    const attached = await env.POOL_DB.prepare(`
+      SELECT COUNT(*) AS count FROM pool_task_approvals WHERE task_key = ?
+    `).bind(taskKey).first<{ count: number }>();
+    expect(attached?.count).toBe(1);
   });
 });
