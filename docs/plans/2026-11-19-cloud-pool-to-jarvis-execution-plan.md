@@ -208,3 +208,21 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - All ten Stage 1 prompts VERIFIED; Prompt 6 remains explicitly scope-limited. Stage 1 baseline/recovery stage is closed; this is not Contour A acceptance.
 - Next: Stage 2 Executor Identity and Admission Security, beginning with mature GitHub component research and a read-only trust/revocation design pass.
 - No secrets, provider calls, dispatch, hosted resources, deployment, merge or governance changes. Actual elapsed time NOT MEASURED.
+
+
+## Stage 2 — Prompt 1 completed (2026-11-19)
+- Status: VERIFIED for architecture/research design only; no implementation, executor activation or production authority change.
+- Target reviewed: PR #146 code/documentation head `e10f675dbb55b7a10a97b111d1fa994e55b5431e`; PR base metadata `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (default ref HEAD not independently re-resolved in this pass).
+- Deliverables:
+  - `docs/architecture/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`
+  - `docs/reports/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`
+- Defined five independent identity layers: workflow, runner, process, host and logical executor; OIDC workflow principal is not process/host attestation.
+- Defined PENDING / ACTIVE / SUSPENDED / REVOKED / EXPIRED lifecycle, owner-controlled transitions, terminal revocation/expiry, identity epoch, registry revision, evidence replay protection and lease/fencing binding.
+- Evaluated Sigstore/Cosign, SPIFFE/SPIRE, in-toto, SLSA, OpenSSF Scorecard, OPA and Cedar. No additional runtime dependency selected for this pass.
+- Negative test matrix published for issuer/audience/subject, token time/signature, registry lifecycle, replay, identity substitution, host/process mismatch, stale lease/fencing, capability escalation and secret-scope isolation.
+- PR #146 remains OPEN/DRAFT/UNMERGED. Documentation updates advanced its head; latest re-read after this pass: `e79d8fb33bb5fbc13272255d21219dc0d30e4e6f`.
+- Current-head CI NOT VERIFIED; combined status lookup for prior code head returned no entries. No workflow dispatch or CI rerun was initiated.
+- Issue #140 remains OPEN; all local-only/no-secret restrictions preserved.
+- No source, workflow, tests, registry state, production authority, governance or branch protection changed. No secrets, provider calls, hosted D1, dispatch, deployment or merge.
+- Actual active duration, end time, waiting time and Stage 2 cumulative time NOT MEASURED.
+- Next: Stage 2 Prompt 2 — inspect exact registry schema, OIDC verifier, identity contracts and admission policy at a freshly resolved immutable SHA; map gaps and propose minimal local negative tests.
