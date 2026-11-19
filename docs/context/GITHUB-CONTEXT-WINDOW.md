@@ -2434,3 +2434,12 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Start/end/active/elapsed/wait time NOT MEASURED. Stage 2 cumulative time NOT MEASURED; Stage 1 actual time NOT MEASURED.
 - Next: Stage 2 Prompt 3 — implement the minimal no-secret registry v2 lifecycle contract and OIDC verifier hardening with negative-first tests, keeping executors empty and D1 migrations untouched until canonical lineage is reconciled.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## Final reconciliation after Stage 2 Prompt 2 documentation publication
+- PR #146 remains OPEN / DRAFT / UNMERGED; base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Branch HEAD after report, Context Window, checkpoint and execution-plan updates: `8c54d860783b008faf8f8debae1bae209028c363`.
+- Prompt 2 report blob: `5291e8eb8c1f6753eefd5df23f600c368dc82c87`.
+- Context Window blob: `58e2a8352562bc7975a4a4020e859a46f2349278`.
+- Checkpoint blob: `9b4d2e22ee481f32000d9808ac2015b42b1bf36a`.
+- Execution Plan blob: `d62e3b11082a332632a4e9ce156eed567bc05df3`.
+- CI evidence applies to code audit target `5eb07732a32e22694fcb47880d1dc29f0859020c`; later commits in this pass changed documentation only. No new exact-head CI was run for the final documentation-only branch HEAD.
