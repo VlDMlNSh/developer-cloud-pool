@@ -2478,3 +2478,15 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - No code/config/workflow/runtime/provider/secret/hosted-resource change; no tests run in this documentation refresh; no dispatch/deployment/merge.
 - Owner decision remains ADDITIVE ONLY: preserve Claude Code and all existing identities, routes, profiles, permissions, quota domains, workspaces and secret scopes. Candidate components remain NOT QUALIFIED / NOT DEPLOYED.
 - Contour A NOT ACCEPTED; Contour B DEFERRED. Next engineering priority remains Stage 2 executor identity/admission hardening and Issue #140 local-only proof; do not activate candidate integrations before applicable gates.
+
+
+## 2026-11-19 — OpenJarvis / isair-Jarvis additive candidate decision
+
+- Evaluation report: `docs/reports/2026-11-19-openjarvis-isair-jarvis-additive-evaluation.md`.
+- Stanford OpenJarvis upstream: `open-jarvis/OpenJarvis`, main SHA `427c2dd11d180ac254a03e92c5fb01189fb4b23b`, repository metadata/license file Apache-2.0, pushed 2026-11-19T10:14:40Z. Preliminary ADAPT/EVALUATE; NOT QUALIFIED. Candidate role is a separately isolated local AI/agent runtime and evaluation substrate, not Cloud Pool authority, scheduler, sandbox or admission system.
+- isair/Jarvis upstream: `isair/jarvis`, main SHA `9d902577fd7c8d4fe05df7e19c81aaec36c79902`, latest observed release `v2.9.0` (2026-11-12), repository license metadata NOASSERTION; checked-in custom license limits use to personal/educational/research/non-commercial unless separate commercial license is obtained. Commercial adoption BLOCKED pending written license and review. Candidate role is research-only desktop voice UI, not a privileged control plane; no mobile app according to README.
+- The two projects are distinct and must not be conflated. Their potential roles are hypotheses; no direct compatibility or production suitability is verified.
+- Owner decision remains ADDITIVE ONLY: Claude Code and all existing executor/provider routes, identities, profiles, permissions, quota domains, secret scopes, workspaces and runtime paths remain untouched. New candidates require new isolated identities/resources and independent qualification.
+- MCP is not authorization or sandboxing. No installs, code execution, MCP connections, model downloads, provider calls, secret access, dispatch, hosted resource or deployment occurred. No tests run; source-level desk review only.
+- Issue #140 remains OPEN and prohibits hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next engineering priority remains Contour A admission/identity hardening. Candidate qualification is deferred until governance allows it; OpenJarvis should be reviewed first for API/sandbox/isolation, while isair/Jarvis remains blocked for commercial use until a written commercial license is obtained and reviewed.
