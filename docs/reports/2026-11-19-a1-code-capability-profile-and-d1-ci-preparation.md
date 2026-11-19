@@ -42,3 +42,15 @@
 ## Next bounded step
 
 Complete an exhaustive profile-reference inventory, then transplant the D1 ledger substrate onto this branch without re-enabling legacy dispatch. Add database-level positive and negative profile tests, connect the proof workflow to the branch, run exact-head CI, inspect job logs and artifacts, and update the context window/checkpoint. Keep production dispatch disabled.
+
+
+## Live restoration and executor identity test extension — 2026-11-19
+
+- Revalidated default branch `Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; PR #146 is OPEN/DRAFT/UNMERGED with head `b8138d64629f961127888ff12b653dd0522a1d89` before the test extension.
+- Exact-head CI on that head passed: Pool Contract Validation run `44500818497`; Isolated D1 Ledger Proof run `44500818735`.
+- Reviewed migrations 0001–0007. The apparent `executor_id` omission in migration 0001 is addressed by migration 0007, which adds the column to approval/task/attempt tables and installs required, immutable and cross-entity binding triggers. The suspected schema defect is NOT CONFIRMED for the complete migration chain.
+- Extended `proofs/d1-ledger/test/consume.test.ts` with a negative case: stored executor `claude-code-1` versus submitted `codex-2` must be denied by the conditional D1 update. Blob `7ccbc093ba59b124be35ee8c233e4611c843adb3`; commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
+- Exact-head push run `44501709601`, job `135482879448`, was RUNNING at report update; install and syntax-check succeeded; D1 test step had not yet completed. Final outcome remains NOT VERIFIED until reread.
+- No secrets read, provider calls, dispatch, runtime launch, deployment, merge or paid resource use.
+- Independent PR review remains absent. Ruleset #26550182 active on default branch but requires zero approvals; project review policy remains stricter.
+- Contour A: BLOCKED / NOT ACCEPTED. Next: verify exact-head D1 run, record final logs/status and continue admission/lease/profile negative-test qualification.
