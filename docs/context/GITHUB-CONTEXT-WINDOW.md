@@ -2449,3 +2449,19 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Branch HEAD before this Context Window update: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`.
 - Prompt 2 report remains blob `5291e8eb8c1f6753eefd5df23f600c368dc82c87`; execution plan blob `d62e3b11082a332632a4e9ce156eed567bc05df3`.
 - Code audit/CI target `5eb07732a32e22694fcb47880d1dc29f0859020c`; all later branch commits in this pass are documentation-only.
+
+
+## 2026-11-19 — Additive OpenChamber / DeepSeek / CUA / llama-modchip research decision
+
+- Status: RESEARCH RECORDED; no integration, runtime deployment, dispatch, provider calls, secret access or model download.
+- Owner decision: ADDITIVE ONLY. Claude Code remains unchanged as an existing executor. Existing Claude Code/Gemini identities, routes, profiles, credentials, permissions, quota domains, workspaces and configuration must not be replaced, disabled, migrated or modified.
+- Candidate components receive new distinct identities and isolated resources only. Rollback may remove only new candidate resources. No historical task/identity migration.
+- Evaluation report: `docs/reports/2026-11-19-additive-openchamber-deepseek-cua-llama-modchip-evaluation.md`.
+- OpenChamber upstream README blob `183c364fa7b85a398b90a90f7a6d6ae619e76da9`: workspace UI for Desktop/Web/PWA/VS Code/iOS/Android; CLI/Web and VS Code use OpenCode CLI. Direct DSH integration NOT VERIFIED.
+- DeepSeek Harness README blob `7941e30f7bdca9391befe39b9115d211157fa42d`: plugin-oriented agent runtime, Developer Preview. Safety notice blob `2b76f00e0619ee69553afdc507df361080f4d3ac` says unaudited and not production-ready; code/command/plugin/file/process/network access risks.
+- CUA Driver MCP package blob `cb31a5d490bf55e7f9f2d0b9ff7097be9a8b042c`: experimental MCP bridge to installed local driver; one shared desktop, no built-in Session serialization. Separate CUA MCP profile blob `a4c7b4e6cb0477e38da30e8348e6108db55e703a`; unattended allow-consent is not an acceptable default.
+- llama-modchip README blob `b237355965107a2f39f2969a78d2327d2dfc9bbf`: upstream v3.0 local inference/server claims; benchmarks and DeepSeek model fit are NOT independently verified. Repository license blob `d4a273041cabd59f1cbd3f12b9f89bfd3c922937` is Apache-2.0; model-weight/dependency licenses require separate review.
+- Preliminary dispositions: OpenChamber ADAPT/EVALUATE; DeepSeek Harness LAB-ONLY/NOT QUALIFIED; CUA Driver MCP isolated desktop candidate/NOT QUALIFIED; llama-modchip optional local inference candidate/NOT QUALIFIED; Tor NOT REQUIRED/NOT IN SCOPE.
+- MCP is not authorization or sandboxing. Any future candidate must use independent identity, capability, quota, secret scope, workspace, network policy, audit and revocation; Cloud Pool Gateway/Registry/Policy remain authority.
+- Next: inspect provider/API compatibility, immutable releases, dependency/model licenses, provenance, CUA platform permissions and isolation; prepare additive-only ADR and non-regression tests.
+- PR #146 remains the A1 working base; this research is a documentation-only stacked proposal, not merged into default branch. Contour A NOT ACCEPTED; Contour B DEFERRED.
