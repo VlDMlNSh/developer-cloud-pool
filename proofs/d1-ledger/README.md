@@ -69,7 +69,7 @@ This is a local SQLite/D1 integrity guard, not worker authentication or producti
 
 ## Executor identity binding (migration 0007)
 
-Migration `0007_bind_executor_identity.sql` adds an explicit executor instance identity to approval, logical task, and immutable attempt records. Accepted IDs are `claude-code-N`, `codex-N`, and `gemini-N` with a positive numeric suffix. `profile` remains the independent capability profile (`dsh-headless-probe`); it is not an executor identity. The canonical logical task key includes `executor_id`, so separate executor instances cannot silently coalesce into one task. Database triggers reject missing/mismatched identities and prevent reassignment after insertion. Existing historical proof rows are left NULL rather than guessed or backfilled to a particular executor. New inserts must supply an explicit executor ID. All of this remains local-only and `dispatch: false`.
+Migration `0007_bind_executor_identity.sql` adds an explicit executor instance identity to approval, logical task, and immutable attempt records. Accepted IDs are `claude-code-N`, `codex-N`, and `gemini-N` with a positive numeric suffix. `profile` remains the independent capability profile (`jarvis-code-sandbox-v1`); it is not an executor identity. The canonical logical task key includes `executor_id`, so separate executor instances cannot silently coalesce into one task. Database triggers reject missing/mismatched identities and prevent reassignment after insertion. Existing historical proof rows are left NULL rather than guessed or backfilled to a particular executor. New inserts must supply an explicit executor ID. All of this remains local-only and `dispatch: false`.
 
 
 ## Trusted executor registry lookup (local-only boundary proof)
