@@ -146,3 +146,12 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Report: docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md.
 - Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
 - Next: Stage 1 Prompt 8 — evidence-backed component readiness map.
+## 2026-11-19 — Stage 1 Master Prompt 8: component readiness map
+- Status: VERIFIED as read-only, evidence-backed inventory. Report: docs/reports/2026-11-19-stage-01-prompt-08-component-readiness-map.md.
+- Legacy dispatch safety: VERIFIED at code/config level; supervisor is heartbeat-only, legacy worker inert/fail-closed, contract workflow asserts dispatch disabled.
+- D1: VERIFIED only as isolated local Workers-runtime proof with historical named CI evidence; hosted D1 and production recovery remain NOT QUALIFIED.
+- Executor/OIDC: PARTIAL; registry empty; synthetic OIDC verifies workflow principal, not process/host; revoked executor/profile negative test absent.
+- CODE sandbox and provider route/quota: NOT QUALIFIED. Remote console: NOT VERIFIED/NOT DEPLOYED. Persistent workspace/host #3: BLOCKED. Multi-agent current-target dispatch provenance: NOT VERIFIED.
+- Latest PR documentation head is not claimed CI-tested; historical CI stays bound to its recorded test SHA.
+- No code, workflow, governance, dispatch, provider, secret, hosted resource or deployment changes. Actual time NOT MEASURED.
+- Next: Stage 1 Prompt 9 — classify material claims and evidence boundaries.
