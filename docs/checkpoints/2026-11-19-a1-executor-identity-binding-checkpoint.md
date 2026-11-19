@@ -45,3 +45,6 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Artifact ID `14518125674`; SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`.
 - Test target commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; documentation-only branch head at this checkpoint `67f00adb4b700d5e2d1cd69f79863a5523a017eb`.
 - Independent review: NOT RUN. PR #146 remains OPEN/DRAFT/UNMERGED. Contour A remains NOT ACCEPTED.
+
+- Additional exact code/test-head PR runs: Pool Contract Validation `44501720404` SUCCESS; Isolated D1 Ledger Proof `44501720431` SUCCESS; both target `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
+- Latest branch/PR head after docs-only updates: `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a`.
