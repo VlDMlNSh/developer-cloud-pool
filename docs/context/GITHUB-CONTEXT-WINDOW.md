@@ -2465,3 +2465,16 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - MCP is not authorization or sandboxing. Any future candidate must use independent identity, capability, quota, secret scope, workspace, network policy, audit and revocation; Cloud Pool Gateway/Registry/Policy remain authority.
 - Next: inspect provider/API compatibility, immutable releases, dependency/model licenses, provenance, CUA platform permissions and isolation; prepare additive-only ADR and non-regression tests.
 - PR #146 remains the A1 working base; this research is a documentation-only stacked proposal, not merged into default branch. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-19 — Follow-up live state refresh after additive runtime research
+
+- Verified default ref `refs/heads/Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #146 OPEN/DRAFT/UNMERGED; head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; base default HEAD; formal reviews 0.
+- PR #147 OPEN/DRAFT/UNMERGED; head `447ed051926eea32deb754b0e2387ef345611a38`; base PR #146 head; 3 documentation files; formal reviews 0. Stacked proposal only.
+- Exact-head CI on PR #146 SHA `9d32c4943ae87f5855ab05d42a4ba12d1c205211`: Pool Contract Validation run `44522152749` SUCCESS; Isolated D1 Ledger Proof run `44522152799` SUCCESS. These runs do not establish live/hosted execution.
+- Issue #140 remains OPEN. Prohibitions remain: hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge.
+- Active ruleset #26550182 on `refs/heads/Основной`: PR required, review-thread resolution required, 0 required approvals, code-owner review disabled, no bypass actors. Classic branch protection details NOT VERIFIED.
+- No code/config/workflow/runtime/provider/secret/hosted-resource change; no tests run in this documentation refresh; no dispatch/deployment/merge.
+- Owner decision remains ADDITIVE ONLY: preserve Claude Code and all existing identities, routes, profiles, permissions, quota domains, workspaces and secret scopes. Candidate components remain NOT QUALIFIED / NOT DEPLOYED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next engineering priority remains Stage 2 executor identity/admission hardening and Issue #140 local-only proof; do not activate candidate integrations before applicable gates.
