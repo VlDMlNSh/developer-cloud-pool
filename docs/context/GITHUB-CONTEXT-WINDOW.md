@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-19 — Pass 10 exact-head CI and governance revalidation
+Last refreshed: 2026-11-19 — Pass 11 D1 migration transplant inventory
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
@@ -24,6 +24,21 @@ This document is maintained on the documentation branch and is NOT merged into t
 - Pass 10 report: `docs/reports/2026-11-19-pass-10-exact-head-ci-governance-revalidation.md`. Documentation branch `docs/next-2026-11-19-integrated-contour-pass`, PR #145 remains OPEN/DRAFT/UNMERGED and is not the default branch.
 - No tests run in Pass 10; no secrets, hosted D1, providers, executor launch, dispatch, deployment, merge, or production mutation. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: clean-base read-only migration/trigger transplant manifest for #67/#72 plus lease guard, before any schema implementation.
+
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 11 (append-only refresh)
+
+- Re-read current default: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, signature verified. Active ruleset #26550182 still targets only this branch; PR required, thread resolution required, zero approving reviews, no bypass actors. Branch API's `protected=false` does not negate active ruleset.
+- Issue #140 remains OPEN; local no-secret proof only. Its explicit acceptance contract also requires integration of #112/#114/#125 on a current-base chain; this pass inventories only requested #67/#72/#111 lineage and does not satisfy the full issue.
+- PR #67 base `221f216c00ca7e5596bcc682ba185ad155a10603`, head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: migrations 0001–0010; exact-head Pool Contract Validation run `43600901063` SUCCESS and Isolated D1 Ledger Proof run `43600901068` SUCCESS.
+- PR #72 stacked on #67 head `a53f623...`, head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`: migration 0011 atomic qualified admission. Exact-head workflow lookup empty; NOT VERIFIED.
+- PR #111 base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, head `687196738782432797bf394f1342cb9df19f478f`: migrations 0001–0005 have identical Git blob SHAs to #67; its 0006 is a different trigger (`pool_attempts_running_requires_current_lease`) from #67's 0006 projection outbox. Exact-head Pool Contract Validation run `43881396272` SUCCESS and Isolated D1 Ledger Proof run `43881396386` SUCCESS.
+- Proposed transplant map: #67 0001–0010 → #72 0011 → #111 running-lease guard selectively re-authored as 0012. Do not duplicate #111 0001–0005; do not copy #111 adapters wholesale. Trigger interaction and timestamp semantics require combined runtime tests before claiming compatibility.
+- Pass 11 report: `docs/reports/2026-11-19-pass-11-d1-migration-transplant-inventory.md`. No implementation, test run, hosted D1, secrets, provider calls, dispatch, deployment or merge in Pass 11.
+- Next: inspect current default for existing D1 files/objects, then create a clean current-base integration branch and apply the selected chain only after path/object collision checks. Issue #140 also requires #112/#114/#125 reconciliation; do not claim complete issue acceptance from this three-PR inventory.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
 
 ---
 
