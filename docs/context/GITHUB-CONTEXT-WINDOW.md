@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-19 — Pass 11 D1 migration transplant inventory
+Last refreshed: 2026-11-19 — Pass 16 default dispatch retirement and A1 adapter output-contract audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
 Documentation continuation branch: `docs/next-2026-11-19-integrated-contour-pass` (PR #145; OPEN/DRAFT/UNMERGED)
-Latest reconciliation report commit: `9ed9682e129cb325b78331880f7c6411516b7472` (voice-chat decision record; branch remains unmerged)
+Latest daily audit report commit: `959d22aeb582384416dab6a219576fbd0da4b4bf` (blob `a1232002d1ecdb4321acf90c876ba470c52743d7`); latest checkpoint commit: `106441cc9209996478fe78149d39e90fb602607c` (blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`). Latest reconciliation/voice-chat record remains historical and unmerged.
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 
@@ -2336,3 +2336,22 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: freeze exact source manifest/blob SHAs and one task-ready outbox design, then implement selective clean-base composition and negative-first local Workers-runtime tests on `integration/d1-current-base-2026-11-19`.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-19 — Pass 16 default dispatch retirement and A1 adapter output-contract audit
+
+- Live default `Основной` HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, tree `c8c78a26a6359ec868922e4040c2870eec873b66`; commit signature verified. Open Issues 14; open PRs 107.
+- PR #139 merged at 2026-11-19 09:29:03 UTC. Exact-head Pool Contract Validation `44349941243` SUCCESS; formal reviews 0 and inline threads 0. Default Supervisor is scheduled heartbeat-only with contents:read; Worker remains a manual `workflow_dispatch` stub with no permissions and immediate fail-closed exit. No Worker-named run appears in the returned 89-run current-default collection.
+- Current default exact-head Pool Contract `44496825995` and retired Supervisor heartbeat `44559878913` both SUCCESS. `POOL_DISPATCH_ENABLED` current value remains NOT VERIFIED; no variables/secrets were changed.
+- Active ruleset #26550182 still requires PR and review-thread resolution but zero approving reviews, no CODEOWNERS/extra approval and no bypass. Classic branch-protection endpoint 403; branch object `protected=false`. Governance acceptance remains BLOCKED.
+- PR #146 head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, 84 ahead / 0 behind; exact-head Pool Contract `44522152749` and Isolated D1 Ledger `44522152799` SUCCESS; reviews/threads 0. CODE profile `jarvis-code-sandbox-v1` is PROPOSED / NOT QUALIFIED / NOT ENABLED; registry remains empty; no live Worker/host/process/provider qualification.
+- New source finding: PR #146 `consume.mjs`, `claim-outbox.mjs`, `task-lease.mjs`, `task-attempts.mjs` include `dispatch:false` but omit explicit `executionAuthorized:false` on success and deny outputs. Consume/claim tests assert dispatch false but do not assert executionAuthorized false. OIDC/auth/registry modules do include both flags. Exact blob SHAs are in the Pass 16 report.
+- PR #143 remains old-base, 55 ahead / 1 behind, OPEN/DRAFT/UNMERGED. Its successful exact-head CI is not integrated current-base qualification.
+- PRs #24/#25/#30/#31 remain 146 behind default with zero formal reviews. Path-segment branch `dee17350864cb49e8c5dd41cf61859d77d3affca` is 38 ahead / 146 behind, 19 files, exact-head CI/status NOT VERIFIED.
+- Frozen integration branch `integration/d1-current-base-2026-11-19` remains identical to default; no D1 package exists on default. Pass 15 source matrix still has migration ordinal/outbox/profile conflicts; canonical source manifest and single task-ready outbox are not frozen.
+- SentinelX: 0 connected hosts; Mac mini offline; mh-dev-01/02 disabled; 0 saved integrations. Cloudflare connector: 1 accessible account, 0 Worker scripts, 0 D1 databases; Access endpoint 403 (not enabled).
+- Issues #1/#22/#26/#140 remain OPEN. Secure web console, provider/account quota routing, hosted D1, real executor and independent acceptance remain NOT VERIFIED / BLOCKED.
+- Pass 16 report: `docs/reports/2026-11-19-1910-daily-revalidation.md`, commit `959d22aeb582384416dab6a219576fbd0da4b4bf`, blob `a1232002d1ecdb4321acf90c876ba470c52743d7`.
+- Pass 16 checkpoint: `docs/checkpoints/2026-11-19-pass-16-default-and-a1-output-contract.md`, commit `106441cc9209996478fe78149d39e90fb602607c`, blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`.
+- No source/schema/workflow changes, local tests, dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge, hosted D1 writes, secret reads, or governance changes in this pass.
+- Next: freeze one D1 source manifest and task-ready outbox authority; add explicit false authorization fields to all exported adapter outputs and negative-first tests; reconcile CODE profile, lease, trigger and provenance semantics. Run exact-head CI only when permitted. Keep Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
