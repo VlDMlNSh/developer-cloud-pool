@@ -2332,3 +2332,9 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - No rerun, dispatch, merge, deployment, secrets, provider calls or hosted D1 access.
 - Actual elapsed time: NOT MEASURED.
 - Next: Master Prompt 6 — inspect active rulesets and branch protection.
+
+
+### Post-write provenance clarification — 2026-11-19
+- After recording Prompt 5, the documentation branch advanced from tested PR head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae` to `373d600d816784624799b30dbada7cb14b8364cc` through exactly four documentation-only commits.
+- GitHub Compare API verified 4 ahead / 0 behind and exactly these four paths changed: Context Window, checkpoint, plan, and the Prompt 5 report. No source, workflow, test, or configuration files changed in that delta.
+- Therefore the two SUCCESS workflow runs validate the code/workflow tree at `8ebd5ff...`; the latest branch head is docs-only later and has not itself been rerun. Do not label the latest SHA as directly CI-tested.
