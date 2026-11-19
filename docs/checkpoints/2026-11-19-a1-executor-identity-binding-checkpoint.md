@@ -1,7 +1,7 @@
 # 2026-11-19 — A1 executor identity binding checkpoint
 
 **Contour:** A only  
-**Status:** IN PROGRESS / NOT ACCEPTED  
+**Status:** D1 executor identity negative test VERIFIED; PR OPEN/DRAFT; Contour A NOT ACCEPTED  
 **Default branch:** `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`  
 **Working branch:** `feat/a1-jarvis-code-sandbox-profile-2026-11-19`  
 **Latest code/test commit:** `d0399fcdc57401efa4e6752984d330c7eb18f9c5`  
@@ -35,3 +35,13 @@
 Re-read run #44501709601 and job logs, record exact-head test result, then proceed with the next narrowly scoped profile/admission negative-test gap. Do not merge PR #146 until independent review and full Contour A gates pass.
 
 Canonical MediaHub map (separate project, Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final exact-head CI result
+
+- Run `44501709601` completed SUCCESS on test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; job `135482879448` SUCCESS.
+- Commands: `npm ci --ignore-scripts --no-audit --no-fund`; `npm run check`; `npm test`.
+- Result: 4 Vitest files passed; 63 tests passed; `consume.test.ts` 14/14 passed, including executor mismatch negative test.
+- Artifact ID `14518125674`; SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`.
+- Test target commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; documentation-only branch head at this checkpoint `67f00adb4b700d5e2d1cd69f79863a5523a017eb`.
+- Independent review: NOT RUN. PR #146 remains OPEN/DRAFT/UNMERGED. Contour A remains NOT ACCEPTED.
