@@ -54,3 +54,11 @@ Complete an exhaustive profile-reference inventory, then transplant the D1 ledge
 - No secrets read, provider calls, dispatch, runtime launch, deployment, merge or paid resource use.
 - Independent PR review remains absent. Ruleset #26550182 active on default branch but requires zero approvals; project review policy remains stricter.
 - Contour A: BLOCKED / NOT ACCEPTED. Next: verify exact-head D1 run, record final logs/status and continue admission/lease/profile negative-test qualification.
+
+
+## Final CI result — 2026-11-19
+
+- Run `44501709601` completed SUCCESS for test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; job `135482879448` SUCCESS.
+- `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test` all passed. Vitest summary: 4 files passed, 63 tests passed; `consume.test.ts` reports 14 tests passed, including executor identity mismatch denial.
+- Artifact `d1-ledger-proof-package-lock`, ID `14518125674`, SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`.
+- This CI run validates the code/test commit. Subsequent branch commits are documentation-only. Current PR remains OPEN/DRAFT/UNMERGED; independent review is absent.
