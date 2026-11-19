@@ -2371,3 +2371,17 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Historical CI evidence is tied to recorded immutable test SHAs; latest documentation-only PR head is not claimed to have fresh CI.
 - No code/workflow/governance settings changed; no dispatch, provider calls, secret reads, hosted resource creation, deployment or merge. Actual elapsed time NOT MEASURED.
 - Next: Master Prompt 9 — classify material claims as VERIFIED / NOT VERIFIED / BLOCKED.
+
+## Stage 1 — Master Prompt 9 evidence classification (2026-11-19)
+- Current default branch HEAD reverified: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Working branch / PR #146 head at classification: `9743b603ac8a41a89c37d3c1b450076665f1b472`; PR OPEN/DRAFT/UNMERGED, base equals default HEAD.
+- Current exact-head Pool Contract Validation run `44511792224`: SUCCESS.
+- D1 4-file / 63-test result remains tied to historical code/test SHA `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; it is not re-attributed to the latest docs-only head.
+- Executor registry is empty; OIDC authenticates workflow principal rather than process/host; CODE profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota NOT QUALIFIED.
+- Remote web console NOT VERIFIED; persistent workspace/host #3 BLOCKED; current-target multi-agent dispatch provenance NOT VERIFIED.
+- Active ruleset #26550182: PR required, review-thread resolution required, zero required approving reviews, no bypass actors. PR #146 has zero reviews.
+- Issue #140 remains OPEN and local-only; it explicitly prohibits hosted D1, secrets inspection, provider calls, dispatch, deployment and merge.
+- Prompt 9 report: `docs/reports/2026-11-19-stage-01-prompt-09-claims-evidence-classification.md`.
+- No code/runtime change, test execution, secret access, dispatch, provider call, hosted resource creation, deployment, merge or governance mutation.
+- Actual elapsed time NOT MEASURED. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Next: Stage 1 Master Prompt 10 — freeze the baseline and reconcile all ten prompt statuses.
