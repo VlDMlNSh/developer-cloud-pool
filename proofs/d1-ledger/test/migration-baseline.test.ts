@@ -66,7 +66,12 @@ describe("canonical D1 migration baseline", () => {
       "SELECT COUNT(*) AS count FROM pool_task_outbox"
     ).first<{ count: number }>();
 
-    const taskExecutor = await env.POOL_DB.prepare(\n      "SELECT executor_id FROM pool_tasks WHERE task_key = ?"\n    ).bind(taskKey).first<{ executor_id: string }>();\n\n    expect(taskCount?.count).toBe(1);\n    expect(taskExecutor?.executor_id).toBe("executor-alpha");
+    const taskExecutor = await env.POOL_DB.prepare(
+      "SELECT executor_id FROM pool_tasks WHERE task_key = ?"
+    ).bind(taskKey).first<{ executor_id: string }>();
+
+    expect(taskCount?.count).toBe(1);
+    expect(taskExecutor?.executor_id).toBe("executor-alpha");
     expect(approvalCount?.count).toBe(2);
     expect(readyCount?.count).toBe(1);
     expect(legacyClaims?.count).toBe(0);
