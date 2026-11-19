@@ -47,7 +47,7 @@ Documentation and evidence capture are continuous across all stages, not deferre
 |---:|---|---:|---|
 | 1 | Verify repository identity and default branch | 5 min | VERIFIED |
 | 2 | Verify default HEAD and enumerate working branches | 5 min | VERIFIED |
-| 3 | Refresh relevant Issues and Pull Requests | 15 min | PLANNED |
+| 3 | Refresh relevant Issues and Pull Requests | 15 min | VERIFIED |
 | 4 | Compare active PR base/head against current default HEAD | 10 min | PLANNED |
 | 5 | Inspect Actions runs and exact-head CI evidence | 15 min | PLANNED |
 | 6 | Inspect active rulesets and branch protection | 10 min | PLANNED |
@@ -105,3 +105,15 @@ Run Master Prompt 2: independently record default HEAD and enumerate branch name
 
 ## Next
 Master Prompt 3 — refresh repository Issues and Pull Requests, with focus on Issue #140 and PRs #146/#143.
+
+
+## Master Prompt 3 — completed
+- Status: VERIFIED for repository-wide issue/PR inventory and targeted metadata/history read.
+- Open Issues: 10.
+- Open Pull Requests: 106 (100 on first page, 6 on second).
+- Issue #140 remains OPEN and is the controlling D1 admission/lease integration task.
+- PR #146 is OPEN/DRAFT/UNMERGED on current base `b81d2b5...`; PR #143 and #142 are OPEN/DRAFT/UNMERGED on stale base `6818382...`.
+- Full findings and decision: `docs/reports/2026-11-19-stage-01-prompt-03-issues-pr-inventory.md`.
+- Actual elapsed duration: NOT MEASURED.
+- No GitHub state was mutated.
+- Next: Master Prompt 4 — compare active PR base/head against current default HEAD and classify ancestry.
