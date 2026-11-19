@@ -166,3 +166,16 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Ruleset #26550182 requires PR and review-thread resolution but has zero required approvals; PR #146 has zero reviews. Issue #140 remains OPEN.
 - No code/tests/secret/dispatch/provider/hosted resource/deployment/merge/governance changes. Actual time NOT MEASURED.
 - Next: Master Prompt 10 — freeze Stage 1 baseline, reconcile all ten statuses, publish consolidated baseline record.
+
+
+## 2026-11-19 — Stage 1 Master Prompt 10: baseline freeze
+- Status: VERIFIED; all ten Stage 1 prompts are VERIFIED. Prompt 6 is scope-limited.
+- Frozen baseline target SHA: `c383023a764599a5fa09d41663356e7a5c395365`; default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Compare API: 68 ahead / 0 behind; no merge.
+- PR #146 OPEN/DRAFT/UNMERGED; zero submitted reviews.
+- Exact-head CI at frozen SHA: D1 proof run `44512999972` SUCCESS (job `135521724572`); Pool Contract Validation `44512999829` SUCCESS (job `135521751561`).
+- Consolidated baseline report: `docs/reports/2026-11-19-stage-01-prompt-10-baseline-freeze.md`.
+- Stage 1 is closed as baseline/recovery exercise only. Contour A remains NOT ACCEPTED.
+- Next: Stage 2 Executor Identity and Admission Security; research mature GitHub components and reconcile trust/revocation requirements before implementation.
+- No secrets, dispatch, provider, hosted resources, deployment, merge or governance mutation. Actual time NOT MEASURED.
+- Contour B DEFERRED.
