@@ -2376,3 +2376,18 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next bounded step: repair the four PR #146 adapter response contracts and tests on a separately authorized code pass; first freeze D1 migration/outbox lineage from #67/#72/#111/#146 and current-base Issue #140 candidate. Keep all dispatch/execution flags false. Rebuild only the path-segment guard on a clean current-default branch after revalidating its exact source.
 
 **Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.**
+
+
+## CURRENT SNAPSHOT — PASS 18 (2026-11-19 20:50 Europe/Vilnius)
+
+- Fresh default revalidation: `Основной` HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`; signature verified. No default source change.
+- Default combined status remains `pending` with 0 contexts — NOT VERIFIED.
+- Issue #140 remains OPEN. PR #146 remains OPEN/DRAFT/UNMERGED; exact-head Pool Contract Validation `44522152749` and Isolated D1 Ledger Proof `44522152799` remain SUCCESS on candidate head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`. These are not integrated-default or executor qualification.
+- Documentation branch HEAD before Pass18: `86a52376d7dbde661f31302bd336d720daccb846`. Pass17 report/checkpoint re-read; four PR #146 adapters still omit explicit `executionAuthorized:false` in returned results. No code changes or local tests in Pass18.
+- Time accounting: the earlier 45-hour figure is a planning baseline, not a measured timer. Active engineering time cannot be reconstructed from chat timestamps, PRs or CI duration. Deliverable-based planning credit since that baseline is estimated at 12–15 engineering-equivalent hours; remaining estimate is 30–33 hours (central estimate ~30h) for non-production qualification candidate. This is NOT a measured burn-down.
+- Remaining estimate by package: A1 1–2h; A2 canonical D1/outbox 5–6h; A3 admission/lease/fencing 4–5h; A4 sandbox/executor/provenance 5–6h; A5 E2E/recovery 4–5h; A6 authenticated remote UI/persistence 4–5h; A7 independent review/acceptance 3–4h. Range is planning-only and assumes no new blockers; calendar time can be longer.
+- Report: `docs/reports/2026-11-19-pass-18-launch-effort-recalibration.md`; publication commit `d39f41e079c7eddbb98762d6c8c9c35ad00d5630`.
+- Next bounded step: repair four PR #146 adapter outputs to explicitly include both `dispatch:false` and `executionAuthorized:false` for every success/deny result, add negative-first tests for success/invalid/replay/storage unavailable/ambiguous writes, then exact-head CI and independent review. Keep dispatch disabled. D1 source manifest/outbox ownership must be frozen before SQL integration.
+- No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge or governance change.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
