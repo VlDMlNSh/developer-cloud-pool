@@ -3,7 +3,8 @@ const SHA256 = /^[a-f0-9]{64}$/;
 const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function deny(reason) {
-  return { decision: "DENY", dispatch: false, reason };
+  return { decision: "DENY", dispatch: false,
+        executionAuthorized: false, reason };
 }
 
 function validCommon(db, taskKey, now) {
@@ -29,7 +30,8 @@ export async function createTaskAttempt(db, {
         prior.input_digest === inputDigest &&
         prior.execution_idempotency_key === executionIdempotencyKey;
       return same
-        ? { decision: "ATTEMPT_ALREADY_CREATED", attemptId, attemptNumber, dispatch: false }
+        ? { decision: "ATTEMPT_ALREADY_CREATED", attemptId, attemptNumber, dispatch: false,
+        executionAuthorized: false }
         : deny("ATTEMPT_IDENTITY_CONFLICT");
     }
 
@@ -54,7 +56,8 @@ export async function createTaskAttempt(db, {
     if (current?.current_attempt_id !== attemptId || current?.attempt_number !== attemptNumber) {
       return deny("ATTEMPT_POINTER_READBACK_MISMATCH");
     }
-    return { decision: "ATTEMPT_CREATED", attemptId, attemptNumber, dispatch: false };
+    return { decision: "ATTEMPT_CREATED", attemptId, attemptNumber, dispatch: false,
+        executionAuthorized: false };
   } catch {
     return deny("ATTEMPT_CREATE_AMBIGUOUS");
   }
@@ -108,7 +111,8 @@ export async function acquireAttemptLease(db, taskKey, workerId, now, leaseSecon
       decision: "ATTEMPT_LEASE_ACQUIRED",
       taskKey, attemptId: row.current_attempt_id, workerId,
       generation: row.lease_generation, expiresAt: row.lease_expires_at,
-      dispatch: false
+      dispatch: false,
+        executionAuthorized: false
     };
   } catch {
     return deny("ATTEMPT_LEASE_ACQUIRE_AMBIGUOUS");
@@ -131,7 +135,8 @@ export async function renewAttemptLease(db, taskKey, attemptId, workerId, genera
          AND lease_expires_at > ?
     `).bind(now + leaseSeconds, now, taskKey, attemptId, attemptId, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
-      ? { decision: "ATTEMPT_LEASE_RENEWED", attemptId, generation, expiresAt: now + leaseSeconds, dispatch: false }
+      ? { decision: "ATTEMPT_LEASE_RENEWED", attemptId, generation, expiresAt: now + leaseSeconds, dispatch: false,
+        executionAuthorized: false }
       : deny("STALE_OR_EXPIRED_ATTEMPT_LEASE");
   } catch {
     return deny("ATTEMPT_LEASE_RENEWAL_AMBIGUOUS");
@@ -195,7 +200,8 @@ export async function finalizeTaskAttempt(db, {
           event?.event_digest === (resultDigest || provenanceDigest)) {
         return {
           decision: "ATTEMPT_ALREADY_FINALIZED", taskKey, attemptId, status,
-          completedAt: prior.completed_at, dispatch: false
+          completedAt: prior.completed_at, dispatch: false,
+        executionAuthorized: false
         };
       }
       return deny("STALE_OR_EXPIRED_ATTEMPT_FINALIZER");
@@ -211,7 +217,8 @@ export async function finalizeTaskAttempt(db, {
         task?.state !== (status === "succeeded" ? "completed" : "pending")) {
       return deny("ATTEMPT_FINALIZATION_READBACK_MISMATCH");
     }
-    return { decision: "ATTEMPT_FINALIZED", taskKey, attemptId, status, dispatch: false };
+    return { decision: "ATTEMPT_FINALIZED", taskKey, attemptId, status, dispatch: false,
+        executionAuthorized: false };
   } catch {
     return deny("ATTEMPT_FINALIZATION_AMBIGUOUS");
   }
@@ -235,7 +242,8 @@ export async function markAttemptIndeterminate(db, taskKey, attemptId, now) {
          )
     `).bind(now, attemptId, taskKey, now).run();
     return result?.success === true && result?.meta?.changes >= 1
-      ? { decision: "ATTEMPT_INDETERMINATE", taskKey, attemptId, dispatch: false }
+      ? { decision: "ATTEMPT_INDETERMINATE", taskKey, attemptId, dispatch: false,
+        executionAuthorized: false }
       : deny("ATTEMPT_NOT_EXPIRED_OR_NOT_CURRENT");
   } catch {
     return deny("ATTEMPT_INDETERMINATE_AMBIGUOUS");
