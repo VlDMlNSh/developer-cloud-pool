@@ -2211,3 +2211,14 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: resolve owner-authored immutable CODE capability profile, then current-base D1 integration under Issue #140; qualify actual CODE execution inside sandbox; connect authenticated read-only web console after backend contract.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Voice-chat reconciliation — Visual Studio and Jarvis stages — 2026-11-19
+
+- Decision record: `docs/reports/2026-11-19-voice-chat-reconciliation-visual-studio.md` (commit `9ed9682e129cb325b78331880f7c6411516b7472` on the unmerged documentation branch).
+- Microsoft Visual Studio (full IDE) is explicitly included as an optional developer workstation/tooling layer for editing, build, debugging, tests and diagnostics. It is not Jarvis runtime, Model Gateway, cloud host or authority plane.
+- Keep Microsoft Visual Studio distinct from Visual Studio Code. Anthropic's official Claude Code IDE extension targets VS Code and supported forks, not full Visual Studio. The conservative Visual Studio path is the Claude Code CLI in the IDE's integrated terminal. Third-party Visual Studio extensions are research candidates only and require source/publisher/license/provenance/permissions/MCP/loopback/version review before any installation or access grant.
+- The voice discussion's ChatGPT/Claude/Gemini/Codex list is a technology lead, not a change to the frozen launch scope. Initial Contour A remains one Claude Code + selected ECC + FCC CODE executor candidate subject to qualification. Codex/Gemini are optional/deferred; Gemini remains behind the approved controller. ChatGPT is not assumed to be a runtime API dependency. Provider credentials, identities and quotas remain isolated.
+- The conversational nine-stage overview (body, brain, memory, hands, orchestration, security, remote interface, monitoring, acceptance) is subordinate to normative A0–A7 dependency order in `docs/acceptance/CONTOUR-A-INTEGRATED-ACCEPTANCE-RUNBOOK.md`; it cannot bypass acceptance gates.
+- Time accounting correction: the previous 45-hour number is a planning estimate, not a measured timer. Actual completed engineering hours and remaining hours are NOT MEASURED from chat timestamps/PRs. Do not claim a numeric burn-down without start/end time records. Record active engineering time separately from voice-session duration, tool execution and CI duration.
+- No Visual Studio install, extension install, provider sign-in/call, runtime modification, deployment or dispatch occurred in this pass.
+- Current baseline remains default `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR #145 remains OPEN/DRAFT/UNMERGED; the decision record is documentation-branch-only. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
