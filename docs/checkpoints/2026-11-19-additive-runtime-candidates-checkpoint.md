@@ -32,3 +32,15 @@ Detailed source evidence and acceptance gates: [evaluation report](../reports/20
 Inspect OpenChamber's OpenCode/provider contracts, DSH model adapters/plugin permissions, CUA Driver platform permissions, llama-modchip API/build/release provenance and model-weight licenses. Produce additive-only ADR and old-route non-regression test plan. Do not begin integration until Contour A gates and applicable governance allow it.
 
 Contour A remains NOT ACCEPTED. Contour B remains DEFERRED.
+
+
+## 2026-11-19 — Live GitHub state refresh (follow-up)
+
+- Default branch `Основной` was independently re-read from `refs/heads/Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #146 is OPEN / DRAFT / UNMERGED; head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; formal reviews: 0.
+- PR #147 is OPEN / DRAFT / UNMERGED; head `447ed051926eea32deb754b0e2387ef345611a38`, base branch PR #146 head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; formal reviews: 0. It remains a stacked documentation proposal.
+- Exact-head CI for PR #146 head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`: Pool Contract Validation run [44522152749](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44522152749) SUCCESS; Isolated D1 Ledger Proof run [44522152799](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44522152799) SUCCESS.
+- Issue #140 remains OPEN and continues to prohibit hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge. No relaxation inferred.
+- Active ruleset #26550182 targets `refs/heads/Основной`; PR required, review-thread resolution required, required approving reviews = 0, code-owner review disabled, bypass actors empty. Classic branch protection remains NOT VERIFIED in this refresh.
+- No source/config/workflow/secret/provider/runtime/hosted-resource change; no tests run in this docs-only refresh; no dispatch, deployment or merge.
+- Contour A remains NOT ACCEPTED; Contour B remains DEFERRED. Next Contour A work remains the Stage 2 executor identity/admission hardening and Issue #140's local-only canonical proof requirements. Candidate integrations remain research-only until governance permits qualification.
