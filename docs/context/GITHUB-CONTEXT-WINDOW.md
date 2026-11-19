@@ -2338,3 +2338,15 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - After recording Prompt 5, the documentation branch advanced from tested PR head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae` to `373d600d816784624799b30dbada7cb14b8364cc` through exactly four documentation-only commits.
 - GitHub Compare API verified 4 ahead / 0 behind and exactly these four paths changed: Context Window, checkpoint, plan, and the Prompt 5 report. No source, workflow, test, or configuration files changed in that delta.
 - Therefore the two SUCCESS workflow runs validate the code/workflow tree at `8ebd5ff...`; the latest branch head is docs-only later and has not itself been rerun. Do not label the latest SHA as directly CI-tested.
+
+### Stage 1 — Master Prompt 6: governance audit (2026-11-19)
+- Status: VERIFIED for repository ruleset and branch metadata; classic branch-protection details and ruleset history NOT VERIFIED (HTTP 403 from integration).
+- Default branch Основной HEAD: b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5.
+- Active repository ruleset #26550182, Основной — verified, targets refs/heads/Основной.
+- Enforced: require PR, prevent deletion, prevent non-fast-forward; require review-thread resolution; dismiss stale approvals on push; bypass actors empty and current_user_can_bypass=never.
+- Required approving review count is ZERO; code-owner review and last-push approval disabled.
+- Branch metadata: protected=false, protection.enabled=false, required status checks enforcement off with no contexts/checks. Direct classic protection endpoint and ruleset history returned 403, so detailed configuration/history unavailable.
+- Assessment: governance PARTIAL; CI success is not shown to be a merge gate. Recommend later owner-approved change to require independent approval and selected required status checks; no settings changed in this pass.
+- Report: docs/reports/2026-11-19-stage-01-prompt-06-governance-audit.md (report commit 9fb7d79bd3a270664c0a27be4b9767dc44e0fea1).
+- PR #146 remains OPEN/DRAFT/UNMERGED. No merge, deployment, dispatch, ruleset mutation or secret access.
+- Actual elapsed time NOT MEASURED. Next: Master Prompt 7 — reconcile Context Window and checkpoint.
