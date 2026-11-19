@@ -497,8 +497,7 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 
 
 ## 24. Comparative authorization implementation audit — 2026-11-06
-- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.
-- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.
+- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.
 - PR #18 provides fail-closed recovery and dispatch-failure policy (needs-review, no replay) with exact-head static tests SUCCESS; it does not implement owner approval or caller authorization.
 - PR #15 removes workflow_run but retains unsafe stale-claim requeue; PR #18 later proposes fail-closed recovery. Neither is merged.
 - PR #12 tests a fixture reusable workflow, not production Worker caller boundary.
@@ -997,8 +996,7 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - PR #36 head remains `9815da8fd316d8263b59f3493d076d4623c4c925`; OPEN / DRAFT; 33 ahead / 0 behind.
 - Exact-head D1 run `42274484200` / job `128087166113`: SUCCESS; 13/13 Workers-runtime tests. Pool Contract Validation `42274484234` / job `128087177754`: SUCCESS.
 - Lock artifact `13532667030`, ZIP digest `sha256:60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`. The downloaded file at `/mnt/data/package-lock.json` was rechecked this turn: 87,979 bytes; SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 packages.
-- GitHub PR body refreshed with the current exact-head evidence and the accurate lockfile-transfer blocker. PR remains draft and unmerged.
-- Proof report updated at commit `7571f82b1d8015a40939151deded0a165b27b742` (report blob `496e4a19cf1988c851c59cc616c92991b72afe3d`). Report-only path is not a D1 workflow trigger; no source/workflow changes made in this pass.
+- GitHub PR body refreshed with the current exact-head evidence and the accurate lockfile-transfer blocker. PR remains draft and unmerged.- Proof report updated at commit `7571f82b1d8015a40939151deded0a165b27b742` (report blob `496e4a19cf1988c851c59cc616c92991b72afe3d`). Report-only path is not a D1 workflow trigger; no source/workflow changes made in this pass.
 - No supported GitHub connector action accepts a local execution-workspace file path; Contents API requires UTF-8 text. No file-content transfer bridge was exposed. Did not add write permissions to CI, invent a lockfile, or modify trust boundaries.
 - Reviews: 0; inline threads: 0; independent security review NOT RUN. Workers Free/card-free eligibility NOT VERIFIED.
 - Production gaps remain: authenticated caller/owner identity, issuer and signed approval provenance, trusted clock, issuance/revocation/audit, quota accounting, backup/restore, account entitlement and approved production executor.
@@ -1497,8 +1495,7 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Inspected actual patch files at immutable head: migration `proofs/d1-ledger/migrations/0003_create_logical_task_identity.sql`; adapter `proofs/d1-ledger/src/claim-outbox.mjs`; lease adapter `proofs/d1-ledger/src/task-lease.mjs`; tests `proofs/d1-ledger/test/claim-outbox.test.ts`.
 - Confirmed schema has one mutable lease slot in `pool_tasks` (`attempt_count`, `lease_generation`, owner, expiry) and no immutable `pool_attempts` table, `attempt_id`, `attempt_number` or `attempt_nonce`.
 - `acquireTaskLease` increments both generation and attempt_count on every successful acquisition; expiry reclaim updates the same task row. The five-attempt cap therefore counts acquisitions/reclaims, while no per-attempt durable history exists. Generation fencing rejects the stale worker, but is not the same as immutable attempt records.
-- `finalizeTaskLease` directly marks the task completed and clears the lease; it does not bind result digest, Supervisor/Worker run IDs/attempts, workflow SHAs, attempt ID or append-only terminal audit. No terminal finalization idempotency/outbox is implemented.
-- Existing tests prove generation fencing and five-acquisition dead-letter, but not immutable attempt history, restart recovery or transactional terminal audit.
+- `finalizeTaskLease` directly marks the task completed and clears the lease; it does not bind result digest, Supervisor/Worker run IDs/attempts, workflow SHAs, attempt ID or append-only terminal audit. No terminal finalization idempotency/outbox is implemented.- Existing tests prove generation fencing and five-acquisition dead-letter, but not immutable attempt history, restart recovery or transactional terminal audit.
 - Contract proposal `docs/contracts/2026-11-08-task-attempt-finalization-contract-proposal.md` blob `7ba7b5285d564c43eb8d97e5901265d405aa75d5` specifies immutable attempt per retry and separate generation fencing. This is NOT the model implemented by PR #40. Compatibility remains INCOMPLETE; do not treat the two as equivalent.
 - Recommended next implementation direction, NOT YET ACCEPTED: immutable `pool_attempts` rows, new attempt on retry after old attempt is marked abandoned, generation fencing retained for stale-worker denial, plus transactional terminal result + append-only audit/outbox. First explicitly define expiry takeover vs retry semantics, then migration/tests.
 - Report: `docs/reports/2026-11-08-pr40-lease-lifecycle-reconciliation.md` (created in this pass; see commit below).
@@ -1997,7 +1994,6 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 
 
 ## Atomic A0 -> D1 implementation — 2026-11-15 (isolated proof only)
-
 - Report: [Atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md); report commit `5e7c65a3cda6decef444cb1fe7bc3f8252e678fb`.
 - Implementation branch `proof/atomic-a0-d1-admission-2026-11-15`, exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`; stacked Draft PR #72 https://github.com/VlDMlNSh/developer-cloud-pool/pull/72.
 - PR #72 base is `impl/receipt-bound-projection-2026-11-11` @ PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`. PR #72 OPEN/DRAFT/UNMERGED. Default → PR #72 head DIVERGED 53 ahead / 20 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge or transplant the stack wholesale.
@@ -2528,3 +2524,16 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Current append-only snapshot: PASS-26-CURRENT-SNAPSHOT.md.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Multi-account Jarvis and shared GPU platform — architecture requirement recorded — 2026-11-19
+
+- Owner confirmed Cloud Pool must support multiple independent accounts/Jarvis instances, initially 2–3, with room to scale.
+- Architecture decision recorded in `docs/architecture/MULTI_ACCOUNT_JARVIS_SHARED_GPU_TARGET.md` (blob `acf84dad8ce6fcf36fa56baa33a80ed58bb8a2be`): independent control planes per account; optional shared GPU compute plane only behind authenticated tenant-aware gateway and scheduler.
+- Isolation invariants: independent profile, memory/history, credentials, storage namespace, quota ledger, audit and permissions; no cross-tenant data or authority sharing by default. Every job/approval/lease/attempt/receipt/artifact must bind tenant identity separately from repository ID, user, executor ID and capability profile.
+- Shared compute requirements: bounded per-tenant queues, global weighted fairness, concurrency/GPU-time/storage quotas, VRAM-aware model admission, explicit model residency/load cost, cancellation/recovery and immutable result provenance.
+- Portability target after Contour A acceptance: Golden Deployment Kit for reproducible independent deployments. Never clone secrets, personal memory/history or account-bound IDs; each new instance receives fresh credentials, identity and quota mapping.
+- Tracking issue #151 OPEN / PLANNED: https://github.com/VlDMlNSh/developer-cloud-pool/issues/151.
+- No GPU server, gateway, multi-tenant schema/scheduler, second Jarvis or provider route was provisioned or implemented. This is architecture documentation only; no tests/CI run for this documentation pass.
+- Contour A remains sole active priority and is NOT ACCEPTED; Contour B remains DEFERRED.
+- Current documentation branch is `docs/next-2026-11-19-integrated-contour-pass`, PR #145 OPEN/DRAFT/UNMERGED. This branch is not default/accepted production code.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
