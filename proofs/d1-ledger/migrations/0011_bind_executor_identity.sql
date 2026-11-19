@@ -48,9 +48,9 @@ END;
 
 -- Replace the pre-identity trigger. The executor ID is part of the immutable
 -- logical task binding and must match across approval, task and replay.
-DROP TRIGGER IF EXISTS pool_approval_consumed_creates_task_delivery_outbox;
+DROP TRIGGER IF EXISTS pool_approval_consumed_creates_claim_outbox;
 
-CREATE TRIGGER pool_approval_consumed_creates_task_delivery_outbox
+CREATE TRIGGER pool_approval_consumed_creates_claim_outbox
 AFTER UPDATE OF state ON pool_approval_ledger
 WHEN OLD.state = 'ready'
  AND NEW.state = 'consumed'
