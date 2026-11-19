@@ -96,3 +96,13 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Actual time: NOT MEASURED.
 - No GitHub mutations or production actions.
 - Next: Master Prompt 4 — exact base/head ancestry comparison.
+
+
+## 2026-11-19 — Stage 1 Master Prompt 4
+- Status: VERIFIED for 13 priority PR ancestry comparisons; not exhaustive across all open PRs.
+- Frozen default SHA: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Direct current-base candidates: #146 and #145 only (among selected 13).
+- Stale/diverged: #143/#142/#141 (1 behind); #135/#116/#114/#112/#111/#125 (3 behind); #67/#72 (82 behind).
+- Detailed report: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
+- No mutations. Actual elapsed time NOT MEASURED.
+- Next: Master Prompt 5 — verify exact-head CI.
