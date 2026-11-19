@@ -2317,3 +2317,18 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Actual elapsed time: NOT MEASURED.
 - No branch/PR state mutation, merge, dispatch, secrets, provider calls, hosted D1 or deployment.
 - Next: Master Prompt 5 — exact-head CI verification.
+
+
+### Stage 1 — Master Prompt 5 completed (2026-11-19)
+- Status: VERIFIED for two inspected exact-PR-head workflow checks; repository-wide required-check completeness NOT VERIFIED.
+- PR #146 re-read OPEN/DRAFT/UNMERGED; head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae`; base/default HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pool Contract Validation run `44505922169`, job `135497419708`: SUCCESS. Six workflow YAML files parsed; security/contract checks passed; dispatch gate false.
+- Isolated D1 Ledger Proof run `44505922254`, job `135497396027`: SUCCESS. `npm ci`, `npm run check`, and Vitest passed; 4 files / 63 tests.
+- CI checked out PR merge commit `ddf6a9fae1c574321635231bdb48d86f66d608f2` (head merged into base), while run/check metadata is tied to PR head SHA above. Treat as successful PR-head checks, not direct-head-only checkout.
+- Legacy commit-status endpoint for head returned PENDING with zero status contexts; it is not a green status suite. Workflow inventory and repository-wide required-check completeness remain NOT VERIFIED.
+- Node.js 20 deprecation warning for pinned Actions surfaced; runner forced Node.js 24. Maintenance item, not test failure.
+- Artifact `d1-ledger-proof-package-lock`, ID `14518894284`, SHA-256 `759b22bdb8798d9e46c57ed08d2d59e2eb4005491c4233cfe0d2ec1621dddfaf`.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-05-actions-ci-audit.md`.
+- No rerun, dispatch, merge, deployment, secrets, provider calls or hosted D1 access.
+- Actual elapsed time: NOT MEASURED.
+- Next: Master Prompt 6 — inspect active rulesets and branch protection.
