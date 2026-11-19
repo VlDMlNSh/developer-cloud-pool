@@ -2318,3 +2318,21 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: line-by-line migration/object ownership matrix across #67/#72/#111/#146/Pass13 registry; inspect adapters/tests for duplicate outbox, DSH literals, identity binding, trusted ref provenance and false authorization outputs; freeze source manifest before editing.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 — Pass 15 D1 migration/object ownership audit
+
+- Report: `docs/reports/2026-11-19-pass-15-d1-migration-object-ownership-matrix.md`; publication commit `4e2b45f66f72859765a136baa46895a1a81a300c`.
+- Default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`. Frozen implementation branch `integration/d1-current-base-2026-11-19` remains exactly the same SHA/tree.
+- PR #145 OPEN/DRAFT/UNMERGED head `9e1500e589ed632d43a23fd898c460c7d722f8dd`; PR #146 OPEN/DRAFT/UNMERGED head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; PR #147 OPEN/DRAFT/UNMERGED head `0ea6dcd589b914399a66e289190e00addbf6d9a1` (based on #146).
+- Active ruleset #26550182 confirmed on default: PR required, thread resolution required, zero required approvals, no bypass actors, deletion/non-fast-forward denied.
+- PR #146 exact-head CI rechecked: Pool Contract Validation `44522152749` SUCCESS; Isolated D1 Ledger Proof `44522152799` SUCCESS. Candidate-only; no integrated target CI.
+- Source matrix: #67 0001–0010 ledger/attempt/reconciliation/projection/comment protocol; #72 0011 admission/route qualification/receipts; #111 0006 lease guard; #146 0001 CODE-profile root, 0002–0005 reused ledger substrate, 0006 lease guard, 0007 executor-ID binding/OIDC/registry adapters; Pass13 0012–0014 registry snapshot/issuer/active assertion research-only.
+- Critical conflicts: #67 0001 hardcodes retired `dsh-headless-probe`; #72 adapter and route admission also require that profile. #146 0001 fixes profile to `jarvis-code-sandbox-v1`, but remains a competing root. #67 0002 and #67/#146 0003/#146 adapter preserve approval-keyed `pool_task_claims`/`pool_task_outbox` alongside task-keyed `pool_task_delivery_outbox`. #67 0006 projection outbox and #111/#146 0006 lease guard collide by ordinal. #146 does not include #67 projection 0006–0010 or #72 admission 0011.
+- #146 OIDC verifier and registry resolver return `executionAuthorized:false` and `dispatch:false`; registry resolver independently reads default branch ref to obtain trusted head SHA. This is a useful candidate but does not qualify executor host/process or provider route/account/quota.
+- Decision: no canonical migration order/source manifest frozen. Do not transplant any candidate wholesale. Select one approval/admission authority, one logical task authority and exactly one task-ready outbox; keep projection outbox distinct; port admission to CODE profile; reconcile lease guard and executor/profile/host/route/issuer/account/quota bindings.
+- Pass 15 was read-only source audit. No source/schema/workflow edits, local tests, hosted D1, secret access, provider calls, agent dispatch, deployment, merge or governance changes.
+- Gemini NOT RUN; Claude Code qualification NOT RUN. CODE profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED. Dispatch/execution authorization remain false.
+- Next: freeze exact source manifest/blob SHAs and one task-ready outbox design, then implement selective clean-base composition and negative-first local Workers-runtime tests on `integration/d1-current-base-2026-11-19`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
