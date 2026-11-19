@@ -9,7 +9,7 @@ const approval = {
   repositoryId: "20002",
   issueNumber: 42,
   targetSha: "a".repeat(40),
-  profile: "dsh-headless-probe",
+  profile: "jarvis-code-sandbox-v1",
   executorId: "claude-code-1",
   envelopeDigest: "b".repeat(64)
 };
