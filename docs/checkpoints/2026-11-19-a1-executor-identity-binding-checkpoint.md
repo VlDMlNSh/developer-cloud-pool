@@ -196,3 +196,19 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Actual start: 2026-11-19 14:31 +03:00; exact end/active/wait durations NOT MEASURED. Stage 2 cumulative time NOT MEASURED.
 - Next: Stage 2 Prompt 2 — exact contract/verifier/schema inspection and minimal revocation/identity-epoch negative-test proposal.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## 2026-11-19 — Stage 2 Prompt 2 — Executor Registry & OIDC Contract Audit
+- Status: VERIFIED for source-level audit and remediation specification; no code/schema/test changes.
+- Target PR head: `5eb07732a32e22694fcb47880d1dc29f0859020c`; default `Основной` HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (fresh branch API read).
+- Report: `docs/reports/2026-11-19-stage-02-prompt-02-executor-registry-oidc-contract-audit.md`.
+- Registry schema v1 is empty. Resolver pins registry content to current default branch HEAD and rejects invalid/unregistered/disabled/profile mismatch.
+- OIDC verifier checks issuer, RS256 signature, JWKS, exact subject, repository/owner IDs and workflow refs. It does not bind workflow SHA/ref/SHA/event/run/attempt; no maximum token age relative to verifier time; NumericDate typing is permissive; audience array may contain additional audiences; no one-time nonce/PoP.
+- Lifecycle states, identity epoch, validity, revocation propagation, session/process/host evidence and end-to-end D1 authorization composition are NOT IMPLEMENTED.
+- Migration 0007 immutably binds executor_id to approval/task/attempt but does not prove registry admission or persist identity epoch/registry revision/session evidence.
+- Exact-head-associated CI SUCCESS: Pool Contract Validation run 44515922163; D1 Ledger Proof run 44515922122. D1 test job checked out merge SHA `d1de9785afd505400cfe781b95144a15bd647d5d` (PR head `5eb0773...` + base `b81d2b5...`); 4 files / 63 tests passed, including OIDC 8 and registry 11.
+- Ruleset #26550182 active; 0 required approvals; no code-owner review. Branch protection endpoint reports disabled. PR #146 has zero formal reviews.
+- Adapter outputs in consume/task-lease/task-attempt do not uniformly include explicit executionAuthorized:false; Issue #140 invariant still outstanding.
+- No executor activation, secrets/variables, provider, hosted D1, dispatch, deployment, merge, governance changes or Gemini dispatch. Expected Gemini controller path absent at this target.
+- Time accounting: start/end/active/wait/Stage 2 cumulative NOT MEASURED. Stage 1 actual time NOT MEASURED.
+- Next: Prompt 3 — no-secret registry schema v2 + OIDC hardening + negative-first tests; keep registry empty and D1 migrations unchanged.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
