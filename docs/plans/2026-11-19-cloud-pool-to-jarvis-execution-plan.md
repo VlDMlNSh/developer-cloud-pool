@@ -104,7 +104,7 @@ Run Master Prompt 2: independently record default HEAD and enumerate branch name
 **Safety:** Read-only; no branch was modified or deleted.
 
 ## Next
-Master Prompt 3 — refresh repository Issues and Pull Requests, with focus on Issue #140 and PRs #146/#143.
+Master Prompt 4 — compare active PR base/head against current default HEAD and classify ancestry.
 
 
 ## Master Prompt 3 — completed
@@ -117,3 +117,15 @@ Master Prompt 3 — refresh repository Issues and Pull Requests, with focus on I
 - Actual elapsed duration: NOT MEASURED.
 - No GitHub state was mutated.
 - Next: Master Prompt 4 — compare active PR base/head against current default HEAD and classify ancestry.
+
+
+## Master Prompt 4 — completed
+- Status: VERIFIED for 13 high-priority integration PRs; not exhaustive for all 106 open PRs.
+- Frozen default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- #146 and #145 are directly based on current default (behind 0).
+- #143/#142/#141 are 1 commit behind and diverged from current default.
+- #135/#116/#114/#112/#111/#125 are 3 commits behind and diverged.
+- #67/#72 are 82 commits behind from their merge base and diverged.
+- Detailed report: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
+- No branch or PR mutation. Actual elapsed time: NOT MEASURED.
+- Next: Master Prompt 5 — inspect exact-head CI evidence for the relevant PRs.
