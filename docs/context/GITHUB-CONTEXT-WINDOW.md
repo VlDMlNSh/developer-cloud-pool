@@ -2503,3 +2503,28 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: continue on PR #148 clean-base branch with CODE/executor-bound admission migration 0011, lease guard 0012, executor identity 0013, then legacy retirement 0014; add schema-0010 upgrade and adversarial tests.
 - Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
 
+
+
+## Pass 25 — executor identity migration 0011 — 2026-11-19
+
+- Implementation PR #149 OPEN/DRAFT/UNMERGED, stacked on PR #148 clean-base branch; head `3a64c045a6cdd5890846dbd75bc53952ed1ba718`.
+- Migration 0011 adds immutable executor identity to approval and logical task rows; rejects missing executor IDs, prevents mutation and blocks cross-executor task-key collision. Historical rows are not backfilled because identity cannot be inferred.
+- Exact-head D1 run 44592122672 SUCCESS (6/6 Workers-runtime tests); Pool Contract Validation run 44592122775 SUCCESS.
+- Adapter canonical task-key serialization still omitted executor ID; atomic admission not yet integrated.
+- Report: ../reports/2026-11-19-pass-25-executor-identity-binding.md; checkpoint: ../checkpoints/2026-11-19-pass-25-executor-identity-binding.md.
+
+## Pass 26 — executor-bound canonical task identity v2 — 2026-11-19
+
+- Implementation PR #150 OPEN/DRAFT/UNMERGED, stacked on PR #149; head `8b02ea8d120bdcd56bbb9233de5906f02e67a2cb`.
+- New isolated module `proofs/d1-ledger/src/task-identity.mjs` derives a versioned SHA-256 task key from repository ID, issue number, target SHA, capability profile, executor ID and schema version. Executor identity is independent from capability profile.
+- New tests cover deterministic identity, different executor separation, profile separation, stable v2 serialization and malformed input.
+- Exact-head CI lookup returned no workflow runs; tests authored but execution NOT VERIFIED.
+- Historical PR #72 adapter still uses legacy DSH profile and v1 task key; do not transplant unchanged. Next step is end-to-end adaptation of adapter + SQL identity bindings, followed by replay/concurrency/rollback/revocation tests.
+- PR #148 clean-base foundation remains OPEN/DRAFT/UNMERGED at `613790e739aece5028dca54ae82b2d853fa95642`; PR #149 migration 0011 remains OPEN/DRAFT/UNMERGED at `3a64c045a6cdd5890846dbd75bc53952ed1ba718`.
+- Issue #140 remains OPEN. No hosted D1, secret reads, provider calls, dispatch, deployment, merge or governance changes. Gemini and Claude NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Reports: ../reports/2026-11-19-pass-25-executor-identity-binding.md and ../reports/2026-11-19-pass-26-executor-bound-task-identity-v2.md.
+- Checkpoints: ../checkpoints/2026-11-19-pass-25-executor-identity-binding.md and ../checkpoints/2026-11-19-pass-26-executor-bound-task-identity-v2.md.
+- Current append-only snapshot: PASS-26-CURRENT-SNAPSHOT.md.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
