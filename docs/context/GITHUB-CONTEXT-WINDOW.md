@@ -2191,3 +2191,17 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## A1 CODE capability profile and D1/CI preparation — 2026-11-19
+
+- Current default baseline re-read: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Working branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19` was created directly from this immutable SHA.
+- Owner-confirmed immutable CODE profile identifier: `jarvis-code-sandbox-v1`. Confirmation applies to the ID only; resource ceilings and network exceptions remain proposed pending owner review.
+- New proposal: `docs/contracts/CODE-CAPABILITY-PROFILE-JARVIS-CODE-SANDBOX-V1.md`; commit `53ad46704e283b4e010d0276c9437ae9e16ebfb8` (profile contract file). It defines identity separation (executor/profile/route/account/quota/host/lease/issuer), allowed and denied operations, ephemeral sandbox requirements, proposed CPU/memory/disk/time ceilings, deny-by-default networking, artifact controls, revocation/lease fencing and qualification tests.
+- Report: `docs/reports/2026-11-19-a1-code-capability-profile-and-d1-ci-preparation.md`; commit `437500a7afa4f71fea70a9d37273dbe8a85685a9`.
+- D1 substrate candidate PR #143 historical head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd` has historical isolated D1 and pool contract CI success, but is based on an older SHA and is not merge-ready. No direct merge.
+- Initial inspected legacy profile references exist in historical D1 README, migration 0001, claim-outbox adapter, consume adapter and trusted-executor registry. GitHub code search returned zero with incomplete_results=true, so repository-wide absence is NOT VERIFIED.
+- No tests or exact-head CI have run on this new branch yet. Historical PR #143 CI is not evidence for this branch. No provider calls, secret reads, runtime launch, deployment, merge or dispatch.
+- Next: exhaustive tree/blob inventory; selectively transplant D1 source onto this clean base; enforce profile ID/version in SQL and adapters; add positive/negative tests; run exact-head CI and inspect job logs/artifacts; update checkpoint. Dispatch remains disabled.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
