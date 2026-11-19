@@ -47,4 +47,4 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Independent review: NOT RUN. PR #146 remains OPEN/DRAFT/UNMERGED. Contour A remains NOT ACCEPTED.
 
 - Additional exact code/test-head PR runs: Pool Contract Validation `44501720404` SUCCESS; Isolated D1 Ledger Proof `44501720431` SUCCESS; both target `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
-- Latest branch/PR head after docs-only updates: `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a`.
+- Branch/PR head re-read after docs-only updates: `5289212e083edc3e522de0377bf66be39875162b`; subsequent context/checkpoint bookkeeping commits are documentation-only.
