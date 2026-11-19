@@ -13,3 +13,15 @@
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: owner-authored exact CODE profile ID, then clean-base selective port and negative-first requalification.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 7 — integrated Contour A acceptance plan (2026-11-19)
+
+- Added [Contour A integrated implementation and acceptance runbook](../acceptance/CONTOUR-A-INTEGRATED-ACCEPTANCE-RUNBOOK.md). It defines the dependency-ordered A0–A7 path: baseline/governance; immutable CODE profile; one canonical D1 lineage; trusted admission and lease fencing; sandbox/provenance; end-to-end composition; authenticated persistent web preview; independent qualification and acceptance.
+- The plan explicitly distinguishes isolated proofs from an integrated system. PR #143 is a local D1 proof only; PR #144 is docs-only. Neither establishes production execution or acceptance.
+- Current immediate blocker remains the owner-authored immutable CODE capability/profile ID. No value was guessed; no profile-bound SQL/code was changed.
+- PR #144 latest known commit at audit: `610290c1fb3b3c3e89fb951ef00beae266aef32f`. Exact-head workflow runs and combined statuses returned empty; CI NOT VERIFIED.
+- Runbook created on the existing documentation branch; creation commit: `0bf6d2ab11f75cd843d1cd57ece2cc6fef592033`.
+- No runtime/schema/workflow changes, hosted D1, secrets, provider calls, dispatch, deployment, merge or independent review. Dispatch/execution authorization remain false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next implementation gate: obtain owner-authored profile contract, re-read current default HEAD and PR #141–#144 exact heads, then create one clean-base integrated D1 branch and execute negative-first tests.
