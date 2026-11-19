@@ -2579,3 +2579,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; Issue #151 PLANNED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 30 — integrated D1 CI and replay projection correction — 2026-11-19
+
+- Default branch remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #152 remains OPEN/DRAFT/UNMERGED, base Pass 26 feature branch; final implementation head `d56d334d2045d08fd7aa71feb9749aab08d96840`.
+- Created validation-only draft PR #153 from the same head to `Основной`, because existing D1 workflow is pull_request-only, targets `Основной`, and is path-filtered to D1 files. No workflow, permissions or governance changes. PR #153 must remain unmerged and is retained as the exact-head validation surface.
+- First integrated D1 run `44603988834` failed 1/29; Pool Contract run `44603989590` succeeded. Failure showed replay guard compared receipt/outbox/task attempt IDs to `prior.attempt_id`, but SELECT only exposed `a.attempt_id AS requested_attempt_id`. The unprojected property was undefined, denying valid exact replay.
+- Fixed adapter by projecting `a.attempt_id AS admission_attempt_id` and using it for receipt/outbox/task attempt identity comparisons. Adapter blob `78c0906f26f7eb54ca3a489eba3eeca5c3f55cae`.
+- Final exact-head D1 run `44604194767` / job `135843386415` SUCCESS: 3 test files, 29 tests passed; npm ci, inert Worker syntax check and local Workers/D1 tests passed. Tested merge checkout `4edaf599cd9c005f8a4e5b51c2244685e3fbb2d4` combines final head `d56d334d2045d08fd7aa71feb9749aab08d96840` with frozen default SHA.
+- Final Pool Contract Validation run `44604194769` / job `135843386357` SUCCESS: `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, `POOL_CONTRACT_VALIDATION=PASS`.
+- Combined status endpoint returned empty list; evidence is completed workflow run/job details and logs.
+- Fresh local D1 0001–0012 suite VERIFIED. Frozen schema-0010 upgrade fixture NOT VERIFIED. Hosted D1, secrets, provider calls, dispatch, executor, deployment, merge and production changes NOT RUN. Independent review and ruleset readback NOT VERIFIED.
+- Pass 30 report/checkpoint/snapshot: `docs/reports/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/checkpoints/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/context/PASS-30-CURRENT-SNAPSHOT.md`.
+- Issue #140 OPEN; Issue #151 multi-account Jarvis/shared GPU PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
