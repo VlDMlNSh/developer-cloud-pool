@@ -2490,3 +2490,18 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - MCP is not authorization or sandboxing. No installs, code execution, MCP connections, model downloads, provider calls, secret access, dispatch, hosted resource or deployment occurred. No tests run; source-level desk review only.
 - Issue #140 remains OPEN and prohibits hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next engineering priority remains Contour A admission/identity hardening. Candidate qualification is deferred until governance allows it; OpenJarvis should be reviewed first for API/sandbox/isolation, while isair/Jarvis remains blocked for commercial use until a written commercial license is obtained and reviewed.
+
+
+## 2026-11-19 — Full chat continuity and new-chat handoff record
+
+- Owner requested that this conversation, all candidate projects and the proposed additive architecture scheme be preserved in GitHub, plus a ready master prompt for the next chat.
+- Chat continuity record: `docs/reports/2026-11-19-chat-continuity-and-owner-proposals-record.md`.
+- New-chat master prompt: `docs/prompts/MASTER-PROMPT-CONTINUE-CLOUD-POOL-AND-RESEARCH-REGISTER-2026-11-19.md`.
+- Candidate reports retained: `docs/reports/2026-11-19-additive-openchamber-deepseek-cua-llama-modchip-evaluation.md` and `docs/reports/2026-11-19-openjarvis-isair-jarvis-additive-evaluation.md`.
+- Complete candidate register: OpenChamber; DeepSeek Harness; CUA Driver MCP; CUA MCP profile; llama-modchip; Stanford OpenJarvis; isair/Jarvis. Their distinct roles, source links/revisions, license/security concerns, preliminary dispositions and qualification gates are preserved in the master prompt and reports.
+- User's earlier phrase “DeepSeek-Ilama-modchip” is retained as original wording; current interpretation is two distinct researched repositories (DeepSeek Harness and llama-modchip), not a fabricated third repository.
+- Proposed topology remains conceptual and ADDITIVE ONLY: Cloud Pool is the sole admission/identity/capability/routing/quota/lease/revocation/audit/dispatch authority; existing Claude Code, Gemini and provider routes remain unchanged; optional candidates attach only through separately authorized, least-privilege adapters and isolated resources. MCP is not authorization or sandboxing.
+- Preserve all existing executor IDs, profiles, routes, credentials/secrets scopes, quota domains, permissions, workspaces, runtime paths and historical task IDs. New candidates need distinct identity/resources and independent qualification; rollback must remove only candidate resources.
+- No candidate was installed, executed, downloaded, connected, admitted, dispatched or deployed. No tests run; no secrets inspected; no provider calls; no hosted D1 or merge. This was documentation-only.
+- Issue #140 governance and PR #147 status must be refreshed live in the next chat. PR #147 is a working documentation branch, not canonical default branch and not merged.
+- Current disposition remains Contour A NOT ACCEPTED; Contour B DEFERRED. Next step: refresh GitHub state and continue one bounded local/no-secret Contour A admission/identity/lease proof task.
