@@ -2246,6 +2246,7 @@ Checkpoint: [Pass 10 checkpoint](../checkpoints/2026-11-19-pass10-canonical-d1-i
 - Default branch remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
 - PR #145 OPEN/DRAFT/UNMERGED, docs-only, base default, reported head `bbec30424ecf2c59152ac96b8daefd176715c0b9`.
 - PR #146 OPEN/DRAFT/UNMERGED, base default, reported head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; formal reviews 0.
+- PR #146 metadata/body discrepancy: metadata reports `9d32c494...`, while the PR body claims latest branch head `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a`; branch-ref reconciliation and exact-head CI linkage are NOT VERIFIED.
 - PR #147 OPEN/DRAFT/UNMERGED, docs-only and stacked on #146, reported head `0ea6dcd589b914399a66e289190e00addbf6d9a1`; formal reviews 0.
 - Issue #140 remains OPEN and permits local no-secret qualification only. Hosted D1, secrets/variables inspection, provider calls, dispatch, deployment, merge and production actions remain prohibited.
 - Active ruleset 26550182 targets `refs/heads/Основной`: PR required, review-thread resolution required, 0 required approving reviews, no bypass actors. Classic branch-protection endpoint reports disabled; active ruleset is operative governance evidence.
