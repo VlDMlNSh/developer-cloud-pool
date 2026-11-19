@@ -52,7 +52,7 @@ Documentation and evidence capture are continuous across all stages, not deferre
 | 5 | Inspect Actions runs and exact-head CI evidence | 15 min | VERIFIED |
 | 6 | Inspect active rulesets and branch protection | 10 min | VERIFIED (scope-limited) |
 | 7 | Read current Context Window and controlling checkpoint | 15 min | VERIFIED (reconciliation recorded) |
-| 8 | Build evidence-backed component readiness map | 15 min | PLANNED |
+| 8 | Build evidence-backed component readiness map | 15 min | VERIFIED |
 | 9 | Classify claims as VERIFIED / NOT VERIFIED / BLOCKED | 5 min | PLANNED |
 | 10 | Freeze baseline target SHA and publish baseline record | 5 min | PLANNED |
 | | **Total** | **100 min** | |
@@ -172,3 +172,14 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - Actual elapsed time: NOT MEASURED.
 - Report: `docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md`.
 - Next: Master Prompt 8 — evidence-backed component readiness map.
+## Master Prompt 8 — evidence-backed component readiness map (2026-11-19)
+- Status: VERIFIED as a read-only inventory of current working-branch evidence.
+- Report: docs/reports/2026-11-19-stage-01-prompt-08-component-readiness-map.md.
+- Verified at code/config level: legacy dispatch retirement guards; contract-validation workflow; isolated local D1 approval/task/attempt/outbox/lease proof and named historical CI runs.
+- Partial: executor registry/OIDC proof exists, but registry is empty, OIDC authenticates workflow principal rather than process/host, and explicit revoked executor/profile negative test is missing.
+- Not qualified: CODE sandbox profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota not qualified.
+- Not verified/deployed: authenticated remote web console and current-target multi-agent dispatch provenance.
+- Blocked: persistent engineering workspace / authorized host #3, Access/Tunnel and backup/restore evidence.
+- Latest docs head is not claimed to have fresh CI. Historical CI is tied to recorded immutable test SHAs.
+- No code/workflow/governance settings changed; no dispatch, provider calls, secret reads, hosted resource creation, deployment or merge. Actual elapsed time NOT MEASURED.
+- Next: Master Prompt 9 — classify material claims as VERIFIED / NOT VERIFIED / BLOCKED.
