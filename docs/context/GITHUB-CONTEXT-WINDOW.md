@@ -2564,3 +2564,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #140 OPEN. Issue #151 multi-account Jarvis/shared GPU remains PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 29 — admission receipt identity binding — 2026-11-19
+
+- PR #152 head advanced to `31de5a3dc1d06c83611ebc10565fa134a4c9eded`, base remains Pass 26 feature branch; OPEN/DRAFT/UNMERGED.
+- Audit finding: replay receipt validation did not compare receipt attempt ID, qualification ID or evidence digest with admission row. Migration receipt trigger enforces admission/approval/task/executor but does not itself enforce those remaining fields.
+- Adapter now projects and compares receipt approval ID, task key, attempt ID, qualification ID and evidence digest with the admission record before returning already committed.
+- Added adversarial test replacing receipt with forged attempt/evidence identity after initial admission; replay must deny with `ADMISSION_COMMIT_RECEIPT_MISMATCH`.
+- Adapter blob `59978808b0b1210ef5d9e5012a8814b58c7f18c7`; test blob `014425f4e51123bd13340d3580d870e68245c7bf`.
+- Static source readback VERIFIED. Tests authored NOT RUN. Exact-head CI NOT VERIFIED: zero PR-triggered workflow runs and empty combined status. No workflow/governance weakening.
+- No hosted D1, secrets, providers, dispatch, executor, deployment, merge, production writes or governance changes.
+- Report/checkpoint/snapshot: `docs/reports/2026-11-19-pass-29-admission-receipt-identity-binding.md`, `docs/checkpoints/2026-11-19-pass-29-admission-receipt-identity-binding.md`, `docs/context/PASS-29-CURRENT-SNAPSHOT.md`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; Issue #151 PLANNED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
