@@ -2391,3 +2391,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge or governance change.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 19 (2026-11-19; final candidate HEAD 4aeb9bd)
+
+- Revalidated default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, signed/verified; integration branch still equals default. Default combined status remains pending / 0 contexts — NOT VERIFIED.
+- Issue #140 OPEN. PR #146 OPEN/DRAFT/UNMERGED; head updated to `4aeb9bddecd747ca533ba5619be83fc4809e2a95`, base remains default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pass19 bounded code correction on PR #146: four adapters now explicitly include `executionAuthorized:false` beside `dispatch:false` on all result objects. Source read-back counts match: consume 2/2; claim-outbox 3/3; task-lease 4/4; task-attempts 8/8.
+- Updated tests assert both false flags for consume success/denials, claim concurrency/retry/identity mismatch, lease acquire/renew/finalize and attempt creation/lease. Test blobs: consume `699a698e8ab4f2672312c87c58ec4aedca6edb49`; claim-outbox final `5f5f613d60b6ecb570b785ffd9a29d41dbc25fdd`.
+- Final candidate SHA/tree: `4aeb9bddecd747ca533ba5619be83fc4809e2a95` / `aa35d2fd3c61848b0606ef66a1e02a4a8478b27b`; candidate commit is not GitHub-signature verified.
+- Exact-head CI all SUCCESS: D1 PR run `44582839780`; Pool Contract PR run `44582839702`; D1 push run `44582828669`. D1 run job confirms pinned Node, npm ci, syntax check, Workers-runtime tests and artifact upload succeeded.
+- PR #146 remains unmerged and draft. No formal independent review established. Candidate CI is not integrated-default or live-executor qualification.
+- Pass19 report: `docs/reports/2026-11-19-pass-19-adapter-fail-closed-contract.md`; publication commit `e69e6171e8dd6ba670e9595a764bdfbb5a034d5e`.
+- Next: freeze the exact ordered D1 migration source manifest and select exactly one authoritative task-ready outbox; reconcile approval-keyed `pool_task_outbox` vs task-keyed `pool_task_delivery_outbox` before SQL integration. Maintain all false authorization flags.
+- No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge, production mutation or governance change.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
