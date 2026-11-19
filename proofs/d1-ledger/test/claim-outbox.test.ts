@@ -78,7 +78,8 @@ describe("atomic D1 claim and transactional outbox", () => {
       decision: "ALREADY_ENQUEUED",
       claimId: approval.approvalId,
       outboxId: `pool-task:${approval.approvalId}`,
-      dispatch: false
+      dispatch: false,
+      executionAuthorized: false
     });
   });
 
@@ -675,7 +676,7 @@ describe("immutable executor identity binding", () => {
     const item = { ...approval, approvalId: "approval-executor-mismatch", envelopeDigest: "3".repeat(64) };
     await seed(item);
     const mismatch = await claimLogicalTask(env.POOL_DB, { ...item, executorId: "gemini-1" }, NOW);
-    expect(mismatch).toMatchObject({ decision: "DENY", dispatch: false });
+    expect(mismatch).toMatchObject({ decision: "DENY", dispatch: false, executionAuthorized: false });
 
     const claimed = await claimLogicalTask(env.POOL_DB, item, NOW);
     const wrongAttempt = await createTaskAttempt(env.POOL_DB, {
