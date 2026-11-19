@@ -2,13 +2,30 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-19 — Pass 8 Contour A safety integration and Visual Studio voice-chat reconciliation
+Last refreshed: 2026-11-19 — Pass 10 exact-head CI and governance revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
 Documentation continuation branch: `docs/next-2026-11-19-integrated-contour-pass` (PR #145; OPEN/DRAFT/UNMERGED)
 Latest reconciliation report commit: `9ed9682e129cb325b78331880f7c6411516b7472` (voice-chat decision record; branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 10 (append-only refresh)
+
+- Refreshed directly from GitHub after Pass 9. Default branch `Основной` remains at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; GitHub reports its commit signature verified.
+- Active ruleset #26550182 targets exactly `refs/heads/Основной`: PR required; review-thread resolution required; zero required approvals; no bypass actors; deletion/non-fast-forward prohibited. Branch API says `protected=false`; do not confuse that with ruleset status. Formal independent review is still outstanding.
+- Issue #140 remains OPEN and limits work to local no-secret qualification.
+- PR #143 current head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`: exact-head Isolated D1 Ledger Proof run `44367978517` SUCCESS; Pool Contract Validation run `44367978376` SUCCESS.
+- PR #146 current head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`: exact-head Pool Contract Validation run `44522152749` SUCCESS; Isolated D1 Ledger Proof run `44522152799` SUCCESS. These remain isolated proof evidence, not canonical D1 integration or hosted qualification.
+- PR #145 current head `bbec30424ecf2c59152ac96b8daefd176715c0b9`: workflow-run lookup empty; exact-head CI NOT VERIFIED.
+- Default HEAD combined-status lookup empty; CI NOT VERIFIED, not green.
+- Pass 9 lineage decision unchanged: #67/#72 is the historical selected substrate for selective transplant; #111 lease guard needs collision-aware reconciliation as a later migration; #114/#125 competing schema is excluded; #146 D1 variant is not yet canonical.
+- Pass 10 report: `docs/reports/2026-11-19-pass-10-exact-head-ci-governance-revalidation.md`. Documentation branch `docs/next-2026-11-19-integrated-contour-pass`, PR #145 remains OPEN/DRAFT/UNMERGED and is not the default branch.
+- No tests run in Pass 10; no secrets, hosted D1, providers, executor launch, dispatch, deployment, merge, or production mutation. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean-base read-only migration/trigger transplant manifest for #67/#72 plus lease guard, before any schema implementation.
+
+---
 
 ---
 
