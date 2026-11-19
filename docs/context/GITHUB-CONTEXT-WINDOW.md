@@ -38,6 +38,21 @@ This document is maintained on the documentation branch and is NOT merged into t
 - Next: inspect current default for existing D1 files/objects, then create a clean current-base integration branch and apply the selected chain only after path/object collision checks. Issue #140 also requires #112/#114/#125 reconciliation; do not claim complete issue acceptance from this three-PR inventory.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
 
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 12 (append-only refresh)
+
+- Current default remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Recursive tree is complete (`truncated=false`) and contains no `proofs/d1-ledger/` or `proofs/d1-admission/` package/migration paths. This establishes path absence on default only.
+- PR #143 head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`, base `68183828cf7934e89109310c8f99281be4eb7ed8`; compare to current default is 55 ahead / 1 behind, merge base old default. Its 0001–0005 blobs match #67, 0006 is lease guard, 0007 executor identity; it omits #67 projection migrations 0006–0010 and #72 admission 0011, and retains legacy `dsh-headless-probe`. Exact-head runs `44367978517` and `44367978376` succeeded, but PR #143 is not canonical qualified admission.
+- Existing branch `integration/d1-current-base-2026-11-18` has no `proofs/d1-ledger/`; `integration/d1-ledger-clean-main-2026-11-15` has a complete package directory (migrations/fixtures/src/test/manifests) and must be inventoried before any new branch or transplant.
+- Reconciled prior Issue #140/PR #141 findings: #114/#125 are a separate admission authority with conflicting approval/task/outbox schemas; do not stack them with #67/#72 or #111. #67/#72 remains intended proof substrate, but needs semantic corrections: one authoritative task-ready outbox, legacy approval-keyed path non-authorizing, immutable approval/route/admission bindings, suspended/revoked qualification, safe reconciliation (no caller boolean), and corrected independent target-ref provenance.
+- #72 has 16 literal legacy DSH profile occurrences across 14 files per prior audit; exact-head CI remains NOT VERIFIED. #111 lease guard may be selectively considered as 0012 only after combined schema/trigger tests; do not port its independent ledger/adapter.
+- Owner-authored clarification says executor instance ID `claude-code-1`; this is not the capability-profile ID. Keep executor ID separate from A1 capability profile `jarvis-code-sandbox-v1` and verify the explicit mapping/contract before SQL/profile edits.
+- Pass 12 report: `docs/reports/2026-11-19-pass-12-clean-base-d1-integration-preparation.md`. No branch created, code/schema changed, tests run, hosted D1, secrets, provider calls, dispatch, deployment or merge.
+- Next: immutable inventory of `integration/d1-ledger-clean-main-2026-11-15` and comparison to #67/#72 and A1 profile contract; only then freeze source manifest and create a clean current-base implementation branch.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 ---
 
 ---
