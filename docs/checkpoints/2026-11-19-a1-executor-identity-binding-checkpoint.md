@@ -106,3 +106,15 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Detailed report: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
 - No mutations. Actual elapsed time NOT MEASURED.
 - Next: Master Prompt 5 — verify exact-head CI.
+
+
+## 2026-11-19 — Stage 1 Master Prompt 5: Actions and CI
+- VERIFIED for the two inspected exact-PR-head checks on PR #146 head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae`.
+- Pool Contract Validation `44505922169` / job `135497419708`: SUCCESS; six workflow YAML files parsed and security-contract checks passed; dispatch disabled.
+- Isolated D1 Ledger Proof `44505922254` / job `135497396027`: SUCCESS; install, syntax check, 4 Vitest files / 63 tests passed.
+- Workflow jobs checked out merge commit `ddf6a9fae1c574321635231bdb48d86f66d608f2`, not the standalone head tree; metadata/check runs are tied to the PR head SHA. Legacy commit-status endpoint is PENDING with no contexts. Repository-wide required-check completeness NOT VERIFIED.
+- Artifact ID `14518894284`, SHA-256 `759b22bdb8798d9e46c57ed08d2d59e2eb4005491c4233cfe0d2ec1621dddfaf`.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-05-actions-ci-audit.md`.
+- PR #146 remains OPEN/DRAFT/UNMERGED; no dispatch, merge, deployment, secret access or provider call.
+- Actual elapsed time NOT MEASURED. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: Master Prompt 6 — inspect active rulesets and branch protection.
