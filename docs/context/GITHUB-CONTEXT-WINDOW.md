@@ -2285,3 +2285,18 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pass result: VERIFIED source-level overlap map; canonical implementation BLOCKED pending clean-base selective integration and negative-first local Workers-runtime tests. Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: clean implementation branch from frozen current default; one migration lineage, one task authority/outbox, reconciled lease fencing and CODE identity/profile binding; adversarial local tests with `dispatch:false` and `executionAuthorized:false`.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 — Pass 13 immutable audit of clean-main D1 candidate
+
+- Audit report: `docs/reports/2026-11-19-pass-13-clean-main-d1-candidate-audit.md`; final report blob SHA `0f41e48f440fc20748b2d806b5ae9936de705fda`; report publication/correction commits `fa99f2f9e4ff7fc347b683313392bb241f350156` and `44a555004f54b92720a1615e7f540cb169a36cf1`.
+- Audited branch `integration/d1-ledger-clean-main-2026-11-15` at immutable HEAD `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, parent `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`, tree `74760280cf48f072386a3b7c9243bf22420522e6`. Recursive inventory complete, not truncated; 48 blobs under `proofs/d1-ledger/`, including migrations 0001–0014, 13 source-path entries, package/lock, fixtures, tests and configs.
+- Compare with current default `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`: diverged, 6 ahead / 18 behind, merge base `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. This branch is not a current-default-base integration candidate.
+- Migration object-token inventory: 19 CREATE TABLE, 12 CREATE INDEX, 57 CREATE TRIGGER, 21 ALTER TABLE, 2 DROP TRIGGER statements. These are lexical source counts, not live SQLite introspection.
+- 0001–0010 blobs match #67 lineage; 0011 retains legacy `dsh-headless-probe` in admission profile contract; 0012–0014 add durable root-signed registry snapshot, issuer-key persistence and admission-time active-registry assertion. Valuable reference artifacts, but not a safe wholesale transplant.
+- Package exact-pins `@cloudflare/vitest-plugin@1.4.7` and `vitest@4.1.12`. README explicitly scopes this as local-only, unmounted proof and says dispatch remains false.
+- Exact SHA workflow runs: Pool Contract Validation `43712647615` SUCCESS; Isolated D1 Ledger Proof `43712647597` SUCCESS. Combined status endpoint empty. HEAD signature `verified=false`, reason unsigned. These do not prove current-base integration or hosted runtime.
+- Decision: candidate `REJECTED_AS_DIRECT_BASE`; `RESEARCH_REFERENCE_ONLY`. No branch, schema, code, tests, hosted D1, secrets, provider calls, agent dispatch, deployment or merge.
+- Next: create/freeze one new implementation target from then-current default HEAD; publish source manifest/object ownership; selectively reconcile one ledger/outbox with A1 profile `jarvis-code-sandbox-v1`, keeping executor/profile/host/route identities separate; then add negative-first local Workers-runtime tests.
+- Issue #140 remains OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
