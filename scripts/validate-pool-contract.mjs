@@ -49,23 +49,34 @@ if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s
   pass("all external Actions references are pinned to 40-character commit SHAs");
 }
 
-if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Worker must default to permissions: {}");
-if (!/  validate:[\s\S]*?permissions:\s*\n\s+issues:\s*read/.test(worker)) fail("Worker validation job must have issues: read");
-if (!/  probe:[\s\S]*?permissions:\s*\n\s+contents:\s*read/.test(worker)) fail("Worker probe job must have contents: read");
-if (!/  report:[\s\S]*?permissions:\s*\n\s+issues:\s*write/.test(worker)) fail("Worker report job must have issues: write");
-const probeJob = worker.split(/^  probe:\s*$/m)[1]?.split(/^  report:\s*$/m)[0] || "";
-if (!probeJob) fail("Worker probe job block cannot be isolated");
-if (/secrets\./.test(probeJob)) fail("Worker probe job must not receive repository secrets");
-if (!worker.includes("persist-credentials: false")) fail("Worker checkout must not persist Git credentials");
-if (!/options:\s*\n\s+- dsh-headless-probe/.test(worker)) fail("Worker profile allowlist must include the exact DSH probe profile");
-if (!/TASK_ISSUE:\s*\$\{\{\s*inputs\.task_issue\s*\}\}/.test(worker)) fail("Worker must pass task_issue through an environment variable");
-if (!/\$TASK_ISSUE/.test(probeJob)) fail("Worker probe summary must use TASK_ISSUE environment variable");
-if (failures.length === 0) pass("Worker permissions, profile allowlist, checkout and no-secret probe invariants");
+if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Retired worker must default to permissions: {}");
+if (!/^  retired:\s*$/m.test(worker)) fail("Legacy worker must contain only the retired guard job");
+if (!/Legacy DSH worker is retired/.test(worker) || !/exit 1/.test(worker)) {
+  fail("Legacy DSH workflow must fail closed with an explicit retirement message");
+}
+if (/^\s*uses:\s*/m.test(worker)) fail("Retired DSH workflow must not install or invoke external actions");
+if (/secrets\.|GITHUB_TOKEN|npm install|dsh --/i.test(worker)) {
+  fail("Retired DSH workflow must not access credentials or execute the legacy runtime");
+}
+if (/^\s*inputs:/m.test(worker)) fail("Retired DSH workflow must not accept task-controlled inputs");
+if (failures.length === 0) pass("legacy DSH worker is inert, credential-free and fail-closed");
 
-if (!supervisor.includes('vars.POOL_DISPATCH_ENABLED')) fail("Supervisor workflow must read the repository dispatch variable");
-if (!/process\.env\.POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) fail("Supervisor must fail closed unless dispatch variable is literal true");
-if (!/if\s*\(!dispatchEnabled\)[\s\S]*?process\.exit\(0\)/.test(supervisorScript)) fail("Supervisor must exit heartbeat-only when dispatch is disabled");
-if (failures.length === 0) pass("Supervisor dispatch is fail-closed and variable-controlled");
+if (!supervisor.includes("vars.POOL_DISPATCH_ENABLED")) fail("Supervisor must observe the legacy dispatch variable for fail-closed detection");
+if (!/^permissions:\s*\n\s+contents:\s*read\s*$/m.test(supervisor)) {
+  fail("Retired Supervisor must have contents: read only at workflow scope");
+}
+if (/issues:\s*write|actions:\s*write|secrets\.GITHUB_TOKEN|workflow_run:|workflow_dispatch:|^  issues:/m.test(supervisor)) {
+  fail("Retired Supervisor must not retain mutation permissions or legacy event triggers");
+}
+if (!/LEGACY_LABEL_DISPATCH_RETIRED/.test(supervisorScript) ||
+    !/POOL_DISPATCH_ENABLED\s*===\s*"true"/.test(supervisorScript)) {
+  fail("Supervisor must explicitly reject an attempt to re-enable legacy label dispatch");
+}
+if (/fetch\s*\(|dispatches|pool:ready|pool:claimed|ensureLabel|replaceIssueLabels|GITHUB_TOKEN/.test(supervisorScript)) {
+  fail("Retired Supervisor must contain no API, label mutation, token or worker-dispatch path");
+}
+if (!/heartbeat only/.test(supervisorScript)) fail("Supervisor must report its heartbeat-only state");
+if (failures.length === 0) pass("legacy Supervisor is read-only and cannot dispatch even if the old variable is true");
 
 for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resource]]) {
   if (!/workflow_dispatch:/.test(source)) fail(name + " must remain manually dispatched");
@@ -73,7 +84,7 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
   if (/secrets\./.test(source)) fail(name + " must not reference repository secrets");
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
-if (failures.length === 0) pass("DSH and Resource Probe remain manual, read-only and secret-free");
+if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
