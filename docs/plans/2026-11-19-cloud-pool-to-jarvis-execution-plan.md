@@ -54,7 +54,7 @@ Documentation and evidence capture are continuous across all stages, not deferre
 | 7 | Read current Context Window and controlling checkpoint | 15 min | VERIFIED (reconciliation recorded) |
 | 8 | Build evidence-backed component readiness map | 15 min | VERIFIED |
 | 9 | Classify claims as VERIFIED / NOT VERIFIED / BLOCKED | 5 min | VERIFIED |
-| 10 | Freeze baseline target SHA and publish baseline record | 5 min | PLANNED |
+| 10 | Freeze baseline target SHA and publish baseline record | 5 min | VERIFIED |
 | | **Total** | **100 min** | |
 
 ## Master Prompt 1 — completed
@@ -196,3 +196,15 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - No tests run by this read-only pass; no code, secrets, dispatch, provider, hosted resource, deployment, merge or governance changes.
 - Actual elapsed time: NOT MEASURED.
 - Next: Master Prompt 10 — freeze Stage 1 baseline and publish consolidated baseline record.
+
+
+## Master Prompt 10 — Stage 1 baseline freeze and closure (2026-11-19)
+- Status: VERIFIED.
+- Baseline report: `docs/reports/2026-11-19-stage-01-prompt-10-baseline-freeze.md`.
+- Frozen Stage 1 target SHA: `c383023a764599a5fa09d41663356e7a5c395365`; default branch SHA: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Compare API at freeze: 68 commits ahead / 0 behind; branch changes remain unmerged.
+- PR #146 OPEN/DRAFT/UNMERGED; no submitted reviews.
+- Exact frozen-head CI: Isolated D1 Ledger Proof run `44512999972` SUCCESS (job `135521724572`); Pool Contract Validation run `44512999829` SUCCESS (job `135521751561`).
+- All ten Stage 1 prompts VERIFIED; Prompt 6 remains explicitly scope-limited. Stage 1 baseline/recovery stage is closed; this is not Contour A acceptance.
+- Next: Stage 2 Executor Identity and Admission Security, beginning with mature GitHub component research and a read-only trust/revocation design pass.
+- No secrets, provider calls, dispatch, hosted resources, deployment, merge or governance changes. Actual elapsed time NOT MEASURED.
