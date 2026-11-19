@@ -231,6 +231,9 @@ export async function admitQualifiedTask(db, input) {
              q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version,
              a.attempt_number AS admission_attempt_number, a.dispatch_enabled,
              c.assertion AS receipt_assertion, c.executor_id AS receipt_executor_id,
+             c.approval_id AS receipt_approval_id, c.task_key AS receipt_task_key,
+             c.attempt_id AS receipt_attempt_id, c.qualification_id AS receipt_qualification_id,
+             c.evidence_digest AS receipt_evidence_digest,
              c.dispatch_enabled AS receipt_dispatch_enabled,
              o.status AS outbox_status, o.event_type AS outbox_event_type,
              o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
@@ -249,6 +252,10 @@ export async function admitQualifiedTask(db, input) {
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       if (prior.receipt_assertion !== 1 || prior.receipt_executor_id !== input.executorId ||
+          prior.receipt_approval_id !== prior.approval_id || prior.receipt_task_key !== prior.task_key ||
+          prior.receipt_attempt_id !== prior.attempt_id ||
+          prior.receipt_qualification_id !== prior.qualification_id ||
+          prior.receipt_evidence_digest !== prior.evidence_digest ||
           prior.receipt_dispatch_enabled !== 0 || prior.dispatch_enabled !== 0 ||
           prior.outbox_status !== "pending" || prior.outbox_event_type !== "pool.task.ready" ||
           prior.outbox_admission_id !== prior.admission_id ||
