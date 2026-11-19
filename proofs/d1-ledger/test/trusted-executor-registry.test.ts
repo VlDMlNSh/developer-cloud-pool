@@ -7,8 +7,8 @@ const registry = {
   repositoryId: "1445644538",
   defaultBranch: "Основной",
   executors: [
-    { executorId: "claude-code-1", status: "enabled", profiles: ["dsh-headless-probe"], oidcBinding: { audience: "https://github.com/VlDMlNSh/developer-cloud-pool", subject: "repo:VlDMlNSh/developer-cloud-pool:environment:pool-executor-claude-code-1", workflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной", jobWorkflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной" } },
-    { executorId: "codex-1", status: "disabled", profiles: ["dsh-headless-probe"] }
+    { executorId: "claude-code-1", status: "enabled", profiles: ["jarvis-code-sandbox-v1"], oidcBinding: { audience: "https://github.com/VlDMlNSh/developer-cloud-pool", subject: "repo:VlDMlNSh/developer-cloud-pool:environment:pool-executor-claude-code-1", workflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной", jobWorkflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/pool-executor.yml@refs/heads/Основной" } },
+    { executorId: "codex-1", status: "disabled", profiles: ["jarvis-code-sandbox-v1"] }
   ]
 };
 
@@ -35,12 +35,12 @@ describe("trusted GitHub executor registry resolver", () => {
   it("pins the registry read to an independently fetched default-branch HEAD", async () => {
     const { fetchImpl, calls } = fakeFetch();
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "claude-code-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "claude-code-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({
       decision: "TRUSTED_ASSIGNMENT",
       executorId: "claude-code-1",
-      profile: "dsh-headless-probe",
+      profile: "jarvis-code-sandbox-v1",
       trustedDefaultHeadSha: HEAD,
       source: "GITHUB_DEFAULT_BRANCH_CONTENTS_AT_VERIFIED_HEAD",
       executionAuthorized: false,
@@ -53,7 +53,7 @@ describe("trusted GitHub executor registry resolver", () => {
   it("rejects a caller-selected executor absent from the owner registry", async () => {
     const { fetchImpl } = fakeFetch();
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "gemini-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "gemini-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_NOT_REGISTERED", dispatch: false });
   });
@@ -61,7 +61,7 @@ describe("trusted GitHub executor registry resolver", () => {
   it("rejects a registered but disabled executor", async () => {
     const { fetchImpl } = fakeFetch();
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "codex-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "codex-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_NOT_ENABLED" });
   });
@@ -74,7 +74,7 @@ describe("trusted GitHub executor registry resolver", () => {
       fileBody: { path: ".github/pool-executor-registry.json", encoding: "base64", content: base64Json(altered) }
     });
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "claude-code-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "claude-code-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_PROFILE_NOT_APPROVED" });
   });
@@ -82,7 +82,7 @@ describe("trusted GitHub executor registry resolver", () => {
   it("rejects malformed or non-default-branch provenance", async () => {
     const { fetchImpl } = fakeFetch({ branchBody: { name: "feature", commit: { sha: HEAD } } });
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "claude-code-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "claude-code-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "UNTRUSTED_DEFAULT_BRANCH_RESPONSE" });
   });
@@ -93,7 +93,7 @@ describe("trusted GitHub executor registry resolver", () => {
       fileBody: { path: ".github/pool-executor-registry.json", encoding: "base64", content: base64Json(altered) }
     });
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "claude-code-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "claude-code-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_REGISTRY_IDENTITY_MISMATCH" });
   });
@@ -101,7 +101,7 @@ describe("trusted GitHub executor registry resolver", () => {
   it("fails closed when GitHub API lookup fails", async () => {
     const { fetchImpl } = fakeFetch({ fileStatus: 404 });
     const result = await resolveTrustedExecutorAssignment({
-      executorId: "claude-code-1", profile: "dsh-headless-probe", fetchImpl
+      executorId: "claude-code-1", profile: "jarvis-code-sandbox-v1", fetchImpl
     });
     expect(result).toMatchObject({ decision: "DENY", reason: "TRUSTED_EXECUTOR_LOOKUP_FAILED" });
   });
@@ -110,7 +110,7 @@ describe("trusted GitHub executor registry resolver", () => {
     "rejects invalid executor ID %s before network access", async (executorId) => {
       const { fetchImpl, calls } = fakeFetch();
       const result = await resolveTrustedExecutorAssignment({
-        executorId, profile: "dsh-headless-probe", fetchImpl
+        executorId, profile: "jarvis-code-sandbox-v1", fetchImpl
       });
       expect(result).toMatchObject({ decision: "DENY", reason: "INVALID_EXECUTOR_ID" });
       expect(calls).toHaveLength(0);
