@@ -6,7 +6,7 @@ Last refreshed: 2026-11-19 — A1 CODE profile, D1 executor identity binding aud
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (verified from refs/heads/Основной at 2026-11-19 09:29 UTC)
-Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `d0399fcdc57401efa4e6752984d330c7eb18f9c5`
+Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `67f00adb4b700d5e2d1cd69f79863a5523a017eb` (latest docs/checkpoint head; code/test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This Context Window refresh is carried on PR #146's A1 working branch and is NOT merged into the default branch. It is a working recovery snapshot, not a claim that the A1 branch is accepted production code.
 
@@ -2221,3 +2221,12 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - PR #143 remains OPEN / DRAFT / UNMERGED and is based on older default SHA `68183828cf7934e89109310c8f99281be4eb7ed8`; its historical CI is not evidence for PR #146 or current default.
 - Contour A remains BLOCKED / NOT ACCEPTED. Dispatch, provider calls, deployment and runtime execution remain prohibited/not qualified. Contour B remains DEFERRED.
 - Next: re-read run `44501709601` and its job logs for exact-head outcome; then update this Context Window and the dated report/checkpoint with final status. Do not merge PR #146 without independent review and full acceptance evidence.
+
+
+### Final exact-head D1 verification — 2026-11-19
+
+- Run `44501709601` completed SUCCESS for immutable code/test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; job `135482879448` completed SUCCESS. This is a push-triggered exact-head D1 proof run; latest branch HEAD subsequently advanced through documentation-only commits to `67f00adb4b700d5e2d1cd69f79863a5523a017eb`.
+- Job log confirms `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test` succeeded. Vitest: 4 test files passed, 63 tests passed. `test/consume.test.ts` passed 14 tests including the new mismatched-executor denial case.
+- Uploaded artifact `d1-ledger-proof-package-lock`, artifact ID `14518125674`, SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`; retention 7 days.
+- Exact-head CI evidence URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44501709601
+- Remaining: PR #146 is still OPEN/DRAFT/UNMERGED with zero reviews; current PR head after docs commits is not the same SHA as the test-run target. Re-read PR head and checks before any merge/review decision.
