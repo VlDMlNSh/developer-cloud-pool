@@ -2300,3 +2300,6 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: create/freeze one new implementation target from then-current default HEAD; publish source manifest/object ownership; selectively reconcile one ledger/outbox with A1 profile `jarvis-code-sandbox-v1`, keeping executor/profile/host/route identities separate; then add negative-first local Workers-runtime tests.
 - Issue #140 remains OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Pass 13 checkpoint read-back verified: `docs/checkpoints/2026-11-19-pass-13-clean-main-d1-candidate-audit.md`, blob SHA `7600b61d661e8de3931d7f1cc33843695cc89523`; checkpoint publication commit `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`.
+- Docs branch head at checkpoint read-back: `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`; unsigned. Exact-head workflow lookup for this documentation-only head returned no runs: NOT VERIFIED.
