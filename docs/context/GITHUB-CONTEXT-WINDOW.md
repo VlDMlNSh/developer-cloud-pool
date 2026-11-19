@@ -2427,3 +2427,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: construct a clean-base migration composition fixture with adversarial tests for one task-ready writer/reader, inert legacy path, independent projection outbox, executor-inclusive task identity, lease guard, and CODE admission/revocation. Exact-head CI + independent review before hosted D1.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 20 (2026-11-19; D1 lineage/outbox authority audit)
+
+- Revalidated default `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, tree `c8c78a26a6359ec868922e4040c2870eec873b66`, signature verified. Issue #140 OPEN. PR #145/#146/#147 and source PRs #67/#72/#111 remain OPEN/DRAFT/UNMERGED. Ruleset #26550182 active; PR/review-thread resolution required, no bypass.
+- PR source heads audited: #67 `a53f6232bd5b50d3e150addf528b8e722002f9dd`; #72 `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; #111 `687196738782432797bf394f1342cb9df19f478f`; #146 `4aeb9bddecd747ca533ba5619be83fc4809e2a95`.
+- Exact migration SHA inventory recorded in `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority-audit.md`.
+- Decisive defect: #146 0007 replaces `pool_approval_consumed_creates_claim_outbox` but leaves #67/#146 0003 legacy trigger `pool_approval_consumed_legacy_claim_outbox` active. Schema and adapter still support both approval-keyed `pool_task_outbox` and task-keyed `pool_task_delivery_outbox`. Two task-ready producers/queues remain; one authoritative queue is NOT established.
+- Recommendation (not yet implemented): task-keyed `pool_task_delivery_outbox` is sole task-ready authority; `pool_attempt_projection_outbox` remains separate downstream projection delivery; retire legacy approval-keyed tables as write targets via forward-only migration and remove legacy adapter positive path. Port #72 admission to CODE profile only after binding executor identity and route/issuer/account/quota evidence.
+- Migration numbering conflict: #67 projection outbox 0006 and #111/#146 lease guard 0006 are different blobs. The lease guard must be renumbered in a composed manifest. #72 0011 hardcodes retired `dsh-headless-probe`; do not transplant unchanged. #146 CODE profile root is `c14951239dfd6f93e20184f46373a8d13b62a69f`; #146 executor identity migration 0007 blob `47c2f0f7db6379e6760317fe3903214f6f31ffee`.
+- Pass20 was read-only: no SQL or adapter changes, no local SQLite/Workers simulation. Manifest NOT APPROVED.
+- Pass20 report: `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority-audit.md`; publication commit `34df8e7bdb7304150a3afda3e758ce64b0bee304`.
+- Effort estimate against yesterday's 45h planning baseline: prior deliverable credit 12–15h (from Pass18); this chat's Pass19 + Pass20 estimated 3.5–5.5 engineering-equivalent hours; cumulative 15.5–20.5h completed; remaining 24.5–29.5h (central estimate 27h). These are planning-equivalent estimates, not measured active time. Actual elapsed/active hours NOT MEASURED.
+- Next: clean-base migration-composition candidate; remove legacy approval-keyed trigger/writer path, assert one task-ready outbox, test task uniqueness and independent projection outbox, then port admission. Keep all dispatch/execution authorization flags false.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+- Canonical MediaHub OS map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
