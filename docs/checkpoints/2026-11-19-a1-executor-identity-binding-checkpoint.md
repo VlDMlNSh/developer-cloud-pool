@@ -155,3 +155,14 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Latest PR documentation head is not claimed CI-tested; historical CI stays bound to its recorded test SHA.
 - No code, workflow, governance, dispatch, provider, secret, hosted resource or deployment changes. Actual time NOT MEASURED.
 - Next: Stage 1 Prompt 9 — classify material claims and evidence boundaries.
+
+## 2026-11-19 — Stage 1 Master Prompt 9: claims/evidence classification
+- Status: VERIFIED as a read-only classification pass.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-09-claims-evidence-classification.md`.
+- Frozen target reviewed: PR #146 head `9743b603ac8a41a89c37d3c1b450076665f1b472`; base/default HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Current-head Pool Contract Validation run `44511792224`: SUCCESS.
+- D1 63-test evidence remains historical and tied to `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; no fresh D1 run claimed on current docs-only head.
+- Registry empty; CODE sandbox NOT QUALIFIED; route/quota NOT QUALIFIED; remote UI NOT VERIFIED; persistent host/workspace BLOCKED; multi-agent dispatch NOT VERIFIED.
+- Ruleset #26550182 requires PR and review-thread resolution but has zero required approvals; PR #146 has zero reviews. Issue #140 remains OPEN.
+- No code/tests/secret/dispatch/provider/hosted resource/deployment/merge/governance changes. Actual time NOT MEASURED.
+- Next: Master Prompt 10 — freeze Stage 1 baseline, reconcile all ten statuses, publish consolidated baseline record.
