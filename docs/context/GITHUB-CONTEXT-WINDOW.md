@@ -2191,3 +2191,22 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+---
+
+## Pass 10 — 2026-11-19 current-base D1 source-selection gate
+
+- Immutable target/default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Work branch: `feat/issue140-canonical-admission-lease-2026-11-19`.
+- Issue #140 remains OPEN; local no-secret qualification only.
+- Fresh compare evidence: current-base ledger proof branch 55 ahead / 1 behind; Actions-context admission branch 57 ahead / 3 behind; historical lease branch 82 ahead / 144 behind; integration-plan branch 4 ahead / 1 behind; atomic-admission branch 36 ahead / 3 behind.
+- The work branch is 2 commits ahead of the immutable target, 0 behind; changes are documentation-only (Pass 10 report and checkpoint).
+- Decision: no whole-branch transplant, no second admission authority, and no migration 0012 until SQL/trigger/table ownership and uniqueness semantics are reconciled.
+- Runtime/schema/workflow changes: none. Tests: NOT RUN. CI for this branch: NOT VERIFIED.
+- No secrets, hosted D1, provider calls, dispatch, deployment or merge.
+- Next: pin immutable candidate heads, inspect full SQL/trigger/adapters, produce compatibility matrix, then port one minimal additive ledger proof and run negative-first Workers-runtime tests.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+
+Report: [Pass 10 current-base D1 source selection](../reports/2026-11-19-pass10-current-base-d1-source-selection.md)
+Checkpoint: [Pass 10 checkpoint](../checkpoints/2026-11-19-pass10-canonical-d1-integration-checkpoint.md)
