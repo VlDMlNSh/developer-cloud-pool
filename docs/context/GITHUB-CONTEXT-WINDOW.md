@@ -2303,3 +2303,18 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 
 - Pass 13 checkpoint read-back verified: `docs/checkpoints/2026-11-19-pass-13-clean-main-d1-candidate-audit.md`, blob SHA `7600b61d661e8de3931d7f1cc33843695cc89523`; checkpoint publication commit `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`.
 - Docs branch head at checkpoint read-back: `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`; unsigned. Exact-head workflow lookup for this documentation-only head returned no runs: NOT VERIFIED.
+
+
+## 2026-11-19 — Pass 14 current-base D1 integration target freeze
+
+- Fresh default ref `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`; recursive tree complete. Baseline commit signature verified valid.
+- Created `integration/d1-current-base-2026-11-19` from exactly that immutable SHA. Read-back confirmed branch HEAD equals baseline SHA, parent `68183828cf7934e89109310c8f99281be4eb7ed8`, tree identical; no code/schema changes. This is a frozen target only.
+- Issue #140 remains OPEN and local no-secret proof only. Owner authorization comment #7014947185 permits a separate bounded non-production qualification stage with synthetic data/free-tier resources; it does not authorize production, paid fallback, route changes, governance bypass or merge.
+- PR #146 OPEN/DRAFT/UNMERGED, head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, base current default. Owner-confirmed profile ID `jarvis-code-sandbox-v1`; contract blob `21b04b125349441f6296694a6f780d44c33ef896`; status PROPOSED / NOT QUALIFIED / NOT ENABLED. Executor/profile/provider route/account/quota/host/lease/issuer identities remain distinct. Resource ceilings are proposals, not approved runtime enforcement.
+- PR #146 exact-head CI: Pool Contract Validation `44522152749` SUCCESS; Isolated D1 Ledger Proof `44522152799` SUCCESS on `9d32c4943ae87f5855ab05d42a4ba12d1c205211`. This is isolated candidate evidence only.
+- Source composition remains NOT FROZEN: #67 0001–0010 projection lineage; #72 0011 atomic admission with legacy DSH and outstanding semantic gaps; #111 lease guard ordinal conflict; #146 CODE profile/OIDC/executor identity with its own 0006/0007; Pass 13 registry migrations 0012–0014 useful but from stale ancestry. Do not guess final migration ordering or transplant wholesale.
+- Report: `docs/reports/2026-11-19-pass-14-current-base-d1-target-freeze.md`; publication commit `42a5e67be24df5aaa4bc548ac8d4698f42cd723b`.
+- No code/schema/workflow edits, local tests, hosted D1, secrets, provider calls, agent dispatch, deployment or merge. Gemini and Claude Code qualification NOT RUN.
+- Next: line-by-line migration/object ownership matrix across #67/#72/#111/#146/Pass13 registry; inspect adapters/tests for duplicate outbox, DSH literals, identity binding, trusted ref provenance and false authorization outputs; freeze source manifest before editing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
