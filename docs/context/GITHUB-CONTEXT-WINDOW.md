@@ -2250,3 +2250,33 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Issue #140 remains the controlling integration task. PR #143 is still a separate old-base proof and must not be implicitly merged/composed with #146.
 - No secrets, provider calls, hosted D1, deployment, dispatch or production writes were used. Contour A remains NOT ACCEPTED; Contour B remains deferred.
 - Detailed evidence: `docs/reports/2026-11-19-d1-admission-lease-chain-audit.md`.
+
+
+---
+
+## 2026-11-19 — Operating plan and time-accounting agreement
+
+The owner requested that the relevant project decisions from the ongoing conversation be normalized into GitHub as durable project context. This is an engineering summary, not a verbatim transcript. GitHub remains the recovery source of truth.
+
+- The working sequence is the 14-stage Cloud Pool → first Jarvis launch plan in `docs/plans/2026-11-19-cloud-pool-to-jarvis-execution-plan.md`.
+- Correct arithmetic: the listed stage subtotals sum to **237** sub-items, not 140. The former 140 figure was erroneous and is superseded.
+- Stage 1 is split into 10 bounded master prompts. Their latest estimates sum to **100 minutes**. Earlier 110-minute figures used a different estimate breakdown and are superseded for this schedule.
+- Execute one master prompt per bounded engineering pass; each prompt must state objective, target SHA, allowed actions, prohibitions, acceptance criteria, evidence and estimate.
+- Record actual time only when reliably measurable. Otherwise record `NOT MEASURED`; do not infer elapsed time from the number of tool calls.
+- Documentation, checkpointing and evidence capture are continuous in every stage.
+- Contour B remains DEFERRED until Contour A reaches formally evidenced `ACCEPTED`.
+- Continue free-tier-only and fail-closed operation. No paid fallback, secret-value inspection, provider calls, live dispatch or deployment without the required gates.
+
+### Stage 1 prompt progress
+- Prompt 1 — repository identity/default branch: VERIFIED.
+- Observed repository: `VlDMlNSh/developer-cloud-pool`, public.
+- Default branch: `Основной`.
+- Independently observed default ref: `refs/heads/Основной`.
+- Default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Actual elapsed duration: NOT MEASURED.
+- Evidence/report: `docs/reports/2026-11-19-stage-01-prompt-01-repository-default-branch.md`.
+- Full execution plan: `docs/plans/2026-11-19-cloud-pool-to-jarvis-execution-plan.md`.
+- Next: Stage 1 Prompt 2 — verify HEAD and enumerate branches.
+
+### Documentation provenance
+This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`, associated with PR #146. It is not merged into default branch and does not imply Contour A acceptance.
