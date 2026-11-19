@@ -44,3 +44,15 @@ Contour A remains NOT ACCEPTED. Contour B remains DEFERRED.
 - Active ruleset #26550182 targets `refs/heads/Основной`; PR required, review-thread resolution required, required approving reviews = 0, code-owner review disabled, bypass actors empty. Classic branch protection remains NOT VERIFIED in this refresh.
 - No source/config/workflow/secret/provider/runtime/hosted-resource change; no tests run in this docs-only refresh; no dispatch, deployment or merge.
 - Contour A remains NOT ACCEPTED; Contour B remains DEFERRED. Next Contour A work remains the Stage 2 executor identity/admission hardening and Issue #140's local-only canonical proof requirements. Candidate integrations remain research-only until governance permits qualification.
+
+
+## 2026-11-19 — OpenJarvis / isair-Jarvis candidates recorded
+
+- New report: [OpenJarvis and isair/Jarvis additive evaluation](../reports/2026-11-19-openjarvis-isair-jarvis-additive-evaluation.md).
+- Owner decision remains ADDITIVE ONLY; Claude Code and all existing executor/provider routes, identities, permissions, quota domains, secrets scopes, workspaces and runtime paths remain unchanged.
+- Stanford OpenJarvis: `open-jarvis/OpenJarvis`, observed upstream main SHA `427c2dd11d180ac254a03e92c5fb01189fb4b23b`, Apache-2.0; preliminary ADAPT/EVALUATE, NOT QUALIFIED.
+- isair/Jarvis: `isair/jarvis`, observed upstream main SHA `9d902577fd7c8d4fe05df7e19c81aaec36c79902`; checked-in custom license permits non-commercial use and requires a separate commercial license. Commercial adoption BLOCKED pending written license review; candidate remains RESEARCH ONLY / NOT QUALIFIED.
+- No candidate is an authority, sandbox or executor admission mechanism. No registry entries, profiles, deployments, installs, model downloads, MCP connections, provider calls, secrets, dispatch or hosted resources were created or used.
+- Evidence is source-level desk review only; no runtime/security/license qualification and no tests run.
+- Issue #140 remains OPEN and controlling; Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: continue Contour A admission/identity hardening. If later authorized, evaluate OpenJarvis API/sandbox first in an isolated no-secret harness; do not commercially adopt isair/Jarvis without separate written commercial license.
