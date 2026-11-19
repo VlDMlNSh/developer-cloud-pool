@@ -218,10 +218,12 @@ describe("generation-fenced logical task leases", () => {
     const taskKey = await createTask();
     const first = await acquireTaskLease(env.POOL_DB, taskKey, "worker-a", NOW, 30);
     expect(first.decision).toBe("LEASE_ACQUIRED");
+    expect(first).toMatchObject({ dispatch: false, executionAuthorized: false });
     expect(first.generation).toBe(1);
 
     const second = await acquireTaskLease(env.POOL_DB, taskKey, "worker-b", NOW + 31, 30);
     expect(second.decision).toBe("LEASE_ACQUIRED");
+    expect(second).toMatchObject({ dispatch: false, executionAuthorized: false });
     expect(second.generation).toBe(2);
 
     const staleRenew = await renewTaskLease(env.POOL_DB, taskKey, "worker-a", 1, NOW + 32, 30);
@@ -231,8 +233,10 @@ describe("generation-fenced logical task leases", () => {
 
     const currentRenew = await renewTaskLease(env.POOL_DB, taskKey, "worker-b", 2, NOW + 32, 30);
     expect(currentRenew.decision).toBe("LEASE_RENEWED");
+    expect(currentRenew).toMatchObject({ dispatch: false, executionAuthorized: false });
     const currentFinish = await finalizeTaskLease(env.POOL_DB, taskKey, "worker-b", 2, NOW + 33);
     expect(currentFinish.decision).toBe("TASK_COMPLETED");
+    expect(currentFinish).toMatchObject({ dispatch: false, executionAuthorized: false });
     const row = await env.POOL_DB.prepare("SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?")
       .bind(taskKey).first();
     expect(row).toMatchObject({ state: "completed", lease_generation: 2 });
@@ -617,6 +621,7 @@ describe("attempt transition integrity guard", () => {
       now: NOW + 1
     });
     expect(created.decision).toBe("ATTEMPT_CREATED");
+    expect(created).toMatchObject({ dispatch: false, executionAuthorized: false });
 
     await expect(env.POOL_DB.prepare(`
       UPDATE pool_attempts
