@@ -37,3 +37,9 @@ Both workflow runs explicitly identify PR #146 and head SHA `8ebd5ff26e0f144616b
 Master Prompt 5 is VERIFIED for the two inspected exact-PR-head workflow checks. It does not qualify the live executor, hosted D1, production dispatch, web console, or Contour A acceptance. Continue with Master Prompt 6: inspect active rulesets and branch protection; then prompt 7 will reconcile current context/checkpoint and prompt 8 readiness evidence.
 
 Actual elapsed duration: NOT MEASURED (no reliable wall-clock telemetry).
+
+
+### Post-write provenance clarification — 2026-11-19
+- After recording Prompt 5, the documentation branch advanced from tested PR head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae` to `373d600d816784624799b30dbada7cb14b8364cc` through exactly four documentation-only commits.
+- GitHub Compare API verified 4 ahead / 0 behind and exactly these four paths changed: Context Window, checkpoint, plan, and the Prompt 5 report. No source, workflow, test, or configuration files changed in that delta.
+- Therefore the two SUCCESS workflow runs validate the code/workflow tree at `8ebd5ff...`; the latest branch head is docs-only later and has not itself been rerun. Do not label the latest SHA as directly CI-tested.
