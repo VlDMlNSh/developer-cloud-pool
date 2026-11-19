@@ -21,8 +21,8 @@ Compare URL: https://github.com/VlDMlNSh/developer-cloud-pool/compare/b81d2b5203
 48 blobs total:
 - 14 SQL migrations (0001–0014)
 - 1 package manifest + 1 lockfile
-- 12 source modules
-- 13 test/configuration files
+- 13 source-path entries
+- 17 test/configuration/support files
 - 1 README
 - 1 frozen schema fixture
 - 5 other package/test support files are included in the above counts only as enumerated by the tree; no files were omitted from the recursive inventory.
