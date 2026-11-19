@@ -11,7 +11,7 @@ The clean-base candidate starts from the owner-approved CODE capability root and
 - 0006–0010: independent terminal-attempt projection outbox, bounded delivery retries, identity immutability and at-most-once comment-post state.
 - 0011: immutable executor identity on approvals and logical tasks; replaces the task-keyed trigger to require executor match and disables the legacy approval-keyed claim/outbox trigger.
 
-Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. The canonical task-key algorithm must include executor ID in its serialized input before atomic admission is integrated. Atomic qualified admission, lease guard and the full legacy-table write-denial migration remain outstanding.
+Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Lease guard and the full legacy-table write-denial migration remain outstanding.
 
 ## Runtime and test boundary
 
@@ -32,7 +32,13 @@ npm run check
 npm test
 ```
 
-The tests apply migrations 0001–0010 to a fresh local D1 database and verify the CODE profile constraint, one logical task for multiple approvals, exactly one task-ready outbox row, zero writes to the legacy tables for the task-keyed path, and the independent projection outbox schema.
+The tests apply migrations 0001–0012 to a fresh local D1 database and verify the CODE profile constraint, one logical task for multiple approvals, exactly one task-ready outbox row, zero writes to the legacy tables for the task-keyed path, and the independent projection outbox schema.
+
+## Atomic admission v2
+
+- Migration 0012 is adapted from the historical atomic-admission proof, not copied unchanged. It uses the CODE profile and adds executor identity to admission and receipt rows.
+- The adapter derives the task key through `canonicalTaskKey` (v2), checks executor identity on input, replay, approval consumption and final readback, and never dispatches.
+- The tests use synthetic local rows and include an executor-substitution denial case.
 
 ## Status
 
