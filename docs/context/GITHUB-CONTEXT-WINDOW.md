@@ -2400,3 +2400,20 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Next: Stage 2 Executor Identity and Admission Security; first pass is mature component research plus read-only trust/revocation model reconciliation.
 - No secret reads, provider calls, dispatch, hosted resource creation, deployment, merge or governance mutation. Actual elapsed time NOT MEASURED.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-19 — Stage 2 Prompt 1: Executor Identity & Admission Security
+- Status: VERIFIED for bounded architecture/research deliverable only; no runtime implementation or executor activation.
+- Reviewed PR #146 head: `e10f675dbb55b7a10a97b111d1fa994e55b5431e`; base metadata: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR remains OPEN/DRAFT/UNMERGED.
+- Re-read Issue #140: OPEN; local no-secret proof only; hosted D1, secret inspection, provider calls, dispatch, deployment and merge remain prohibited.
+- Published design: `docs/architecture/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Published report: `docs/reports/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Layered trust model separates workflow, runner, process, host and logical executor identities. Existing GitHub OIDC scope is workflow principal only; it does not attest a runner/process/physical host.
+- Registry remains empty. Lifecycle design: PENDING, ACTIVE, SUSPENDED, REVOKED, EXPIRED; REVOKED/EXPIRED terminal. Admission binds registry revision, identity epoch, capability digest, evidence, lease and monotonic fencing generation.
+- Research selection: Cosign/SLSA/in-toto for future artifact provenance; SPIRE is too operationally heavy for ephemeral hosted runners; OPA/Cedar not introduced absent demonstrated policy complexity; Scorecard is dependency posture evidence, not executor identity.
+- Combined commit-status lookup for PR head `e10f675...` returned an empty status list; current-head CI NOT VERIFIED by that endpoint.
+- Current default ref HEAD was not independently resolved in this pass; `b81d2b5...` is last-known PR base metadata, not fresh default-ref proof.
+- No source/workflow/test/registry/authority/governance change, secret inspection, provider call, dispatch, hosted D1, deployment, merge or tool installation.
+- Start timestamp: 2026-11-19 14:31 +03:00. End and active duration NOT MEASURED; CI wait NOT MEASURED; Stage 2 cumulative elapsed/active time NOT MEASURED. Stage 1 actual duration remains NOT MEASURED.
+- Next: Stage 2 Prompt 2 — inspect exact registry/OIDC/admission contracts at a freshly frozen immutable SHA; map revocation/epoch gaps and define minimal local negative tests.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
