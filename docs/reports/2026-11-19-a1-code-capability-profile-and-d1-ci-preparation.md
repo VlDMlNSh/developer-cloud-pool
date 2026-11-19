@@ -62,3 +62,5 @@ Complete an exhaustive profile-reference inventory, then transplant the D1 ledge
 - `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test` all passed. Vitest summary: 4 files passed, 63 tests passed; `consume.test.ts` reports 14 tests passed, including executor identity mismatch denial.
 - Artifact `d1-ledger-proof-package-lock`, ID `14518125674`, SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`.
 - This CI run validates the code/test commit. Subsequent branch commits are documentation-only. Current PR remains OPEN/DRAFT/UNMERGED; independent review is absent.
+
+- Additional PR-triggered exact code/test-head runs: Pool Contract Validation `44501720404` SUCCESS and Isolated D1 Ledger Proof `44501720431` SUCCESS, both for `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. Current branch head later advanced to `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` through docs-only commits.
