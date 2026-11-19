@@ -46,7 +46,7 @@ Documentation and evidence capture are continuous across all stages, not deferre
 | Prompt | Bounded task | Estimate | Status |
 |---:|---|---:|---|
 | 1 | Verify repository identity and default branch | 5 min | VERIFIED |
-| 2 | Verify default HEAD and enumerate working branches | 5 min | PLANNED |
+| 2 | Verify default HEAD and enumerate working branches | 5 min | VERIFIED |
 | 3 | Refresh relevant Issues and Pull Requests | 15 min | PLANNED |
 | 4 | Compare active PR base/head against current default HEAD | 10 min | PLANNED |
 | 5 | Inspect Actions runs and exact-head CI evidence | 15 min | PLANNED |
@@ -87,3 +87,21 @@ Evidence:
 
 ## Next
 Run Master Prompt 2: independently record default HEAD and enumerate branch names/heads; do not yet treat branch protection, CI or PR alignment as checked. Continue with one prompt per bounded pass.
+
+
+## Master Prompt 2 — completed
+**Objective:** Verify the default branch HEAD and enumerate all repository branches with current heads.
+
+**Observed result (2026-11-19):**
+- Branches returned: 154.
+- API pagination: two pages.
+- Default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Documentation branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`: `d1ae38d5bfab3a67d66f34eca297d0155352ee9b`.
+- Full inventory: `docs/reports/2026-11-19-stage-01-prompt-02-branch-inventory.md`.
+- Status: VERIFIED.
+- Actual elapsed duration: NOT MEASURED.
+
+**Safety:** Read-only; no branch was modified or deleted.
+
+## Next
+Master Prompt 3 — refresh repository Issues and Pull Requests, with focus on Issue #140 and PRs #146/#143.
