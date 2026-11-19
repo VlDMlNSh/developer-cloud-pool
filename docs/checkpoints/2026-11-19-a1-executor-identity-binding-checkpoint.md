@@ -136,3 +136,13 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Report: docs/reports/2026-11-19-stage-01-prompt-06-governance-audit.md (report commit 9fb7d79bd3a270664c0a27be4b9767dc44e0fea1).
 - PR #146 remains OPEN/DRAFT/UNMERGED. No merge, deployment, dispatch, ruleset mutation or secret access.
 - Actual elapsed time NOT MEASURED. Next: Master Prompt 7 — reconcile Context Window and checkpoint.
+## 2026-11-19 — Stage 1 Prompts 6–7 closure
+- Prompt 6 governance report: docs/reports/2026-11-19-stage-01-prompt-06-governance-audit.md.
+- Active ruleset #26550182 applies to refs/heads/Основной; PR required, deletion and non-fast-forward blocked, review-thread resolution required, approvals=0, no bypass actors.
+- Branch metadata reports protected=false and required status checks enforcement off. Detailed classic protection and ruleset history are NOT VERIFIED due HTTP 403.
+- Prompt 7 VERIFIED: reconciled Context Window, checkpoint and plan. Corrected stale plan statuses for prompts 4–6 and recorded prompt 7.
+- Rechecked default HEAD b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5. PR #146 OPEN/DRAFT/UNMERGED, head 2b81492263e9a11ea9e86c686b25f25796119ac3, base b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5.
+- No source/workflow/governance/PR state changes, dispatch, deployment or secret access. Actual time NOT MEASURED.
+- Report: docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md.
+- Next: Stage 1 Prompt 8 — evidence-backed component readiness map.
