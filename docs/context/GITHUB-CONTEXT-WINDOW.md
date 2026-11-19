@@ -2417,3 +2417,20 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Start timestamp: 2026-11-19 14:31 +03:00. End and active duration NOT MEASURED; CI wait NOT MEASURED; Stage 2 cumulative elapsed/active time NOT MEASURED. Stage 1 actual duration remains NOT MEASURED.
 - Next: Stage 2 Prompt 2 — inspect exact registry/OIDC/admission contracts at a freshly frozen immutable SHA; map revocation/epoch gaps and define minimal local negative tests.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## 2026-11-19 — Stage 2 Prompt 2: Executor Registry & OIDC Contract Audit
+- Immutable audit target: PR #146 head `5eb07732a32e22694fcb47880d1dc29f0859020c`; default branch `Основной` independently resolved to `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR #146 base SHA matches default HEAD.
+- PR #146 remains OPEN / DRAFT / UNMERGED; Issue #140 remains OPEN.
+- Published report: `docs/reports/2026-11-19-stage-02-prompt-02-executor-registry-oidc-contract-audit.md`.
+- Registry `.github/pool-executor-registry.json` schema v1 has `executors: []`; no executor can be admitted. Resolver pins registry content to independently fetched default-branch SHA and validates repository identity, profile and executor ID.
+- OIDC verifier hard-pins issuer/JWKS/RS256, checks signature, subject, repository/owner IDs, workflow refs and token times; it authenticates workflow principal only and correctly emits process-attested=false, executionAuthorized=false, dispatch=false.
+- Gaps: no lifecycle enum (PENDING/ACTIVE/SUSPENDED/REVOKED/EXPIRED), identity epoch, validity window, revocation propagation, run/attempt/ref/SHA/event/workflow SHA binding, max age relative to now, strict NumericDate typing, single exact audience policy, challenge/PoP anti-replay, runner/process/host attestation, or full registry->OIDC->D1 admission composition.
+- Migration 0007 binds executor_id across approval/task/attempt and makes it immutable, but it is syntactic/equality consistency, not registry identity authorization; no identity epoch or session evidence persisted.
+- OIDC and registry tests: 8 + 11. Full D1 run on merge commit `d1de9785afd505400cfe781b95144a15bd647d5d` for PR head `5eb0773...`: 4 files / 63 tests passed. Pool Contract Validation also SUCCESS. Runs: 44515922122 and 44515922163.
+- Artifact 14526330421 SHA-256 `eabb4f8d682fe0c2a7d2344edb8bbb4cb5309dac2f3b1c101eb5646e7cbc3a18` (package-lock only).
+- Ruleset #26550182 active on default branch; PR and review-thread resolution required, 0 approvals required, no code-owner review. Branch protection API reports protected=false / required checks off. PR #146 has zero formal reviews and zero review threads.
+- Adapter invariant gap: consume/task-lease/task-attempt responses do not uniformly emit explicit `executionAuthorized:false`, despite Issue #140 requiring both false flags.
+- No source/schema/test/workflow/governance change; no secret/variable inspection, provider calls, hosted D1, dispatch, deployment, merge or executor activation. Gemini controller workflow path was not found at audit target; dispatch also prohibited by Issue #140.
+- Start/end/active/elapsed/wait time NOT MEASURED. Stage 2 cumulative time NOT MEASURED; Stage 1 actual time NOT MEASURED.
+- Next: Stage 2 Prompt 3 — implement the minimal no-secret registry v2 lifecycle contract and OIDC verifier hardening with negative-first tests, keeping executors empty and D1 migrations untouched until canonical lineage is reconciled.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
