@@ -2210,3 +2210,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 
 Report: [Pass 10 current-base D1 source selection](../reports/2026-11-19-pass10-current-base-d1-source-selection.md)
 Checkpoint: [Pass 10 checkpoint](../checkpoints/2026-11-19-pass10-canonical-d1-integration-checkpoint.md)
+
+## Pass 11 — PR #146 D1 source audit (2026-11-19)
+
+- Status: VERIFIED source-level audit only; implementation NOT RUN.
+- Work branch: `feat/issue140-canonical-admission-lease-2026-11-19`.
+- Immutable base: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Current comparison: 5 commits ahead, 0 behind; changes are documentation-only (Pass 10/11 reports, checkpoints and this Context Window).
+- Issue #140 remains OPEN and limits work to local no-secret qualification. No hosted D1, secrets/variables inspection, provider calls, dispatch, deployment, merge or production actions.
+- PR #146 source audit found two parallel claim/outbox models (`pool_task_claims` + approval-keyed `pool_task_outbox`; logical `pool_tasks` + task-keyed `pool_task_delivery_outbox`), plus both task-level and attempt-bound lease APIs.
+- The inspected adapter modules do not consistently return explicit `executionAuthorized:false`; `dispatch:false` alone is insufficient for the Issue #140 two-flag contract.
+- `jarvis-code-sandbox-v1` is the frozen profile identifier, but runtime/profile remains proposed and unqualified; executor registry remains empty. No executor or route was enabled.
+- Decision: no wholesale transplant of PR #146 and no new migration root. Canonicalize one logical-task/attempt authority, isolate the legacy approval-keyed path, select attempt-bound lease authority, and enforce both authorization flags on every adapter result before runtime integration.
+- Pass 11 report: `docs/reports/2026-11-19-pass11-pr146-d1-source-audit.md` (blob `e7d5a46b0ca12e541a38a148034cec8f69684fbb`).
+- Pass 11 checkpoint: `docs/checkpoints/2026-11-19-pass11-pr146-d1-source-audit-checkpoint.md` (blob `f82db0a559feba8b2056a6220ed4d68a69cfd235`).
+- Pass 11 tests: NOT RUN. Exact-head CI: NOT VERIFIED. Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+- Next: implement a minimal no-secret adapter-contract test pass on the clean current-base branch, covering both flags, legacy-path isolation and attempt-bound lease enforcement; then run local Workers-runtime tests and exact-head CI.
