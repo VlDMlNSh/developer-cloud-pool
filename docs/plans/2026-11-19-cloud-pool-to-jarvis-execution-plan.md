@@ -48,10 +48,10 @@ Documentation and evidence capture are continuous across all stages, not deferre
 | 1 | Verify repository identity and default branch | 5 min | VERIFIED |
 | 2 | Verify default HEAD and enumerate working branches | 5 min | VERIFIED |
 | 3 | Refresh relevant Issues and Pull Requests | 15 min | VERIFIED |
-| 4 | Compare active PR base/head against current default HEAD | 10 min | PLANNED |
-| 5 | Inspect Actions runs and exact-head CI evidence | 15 min | PLANNED |
-| 6 | Inspect active rulesets and branch protection | 10 min | PLANNED |
-| 7 | Read current Context Window and controlling checkpoint | 15 min | PLANNED |
+| 4 | Compare active PR base/head against current default HEAD | 10 min | VERIFIED |
+| 5 | Inspect Actions runs and exact-head CI evidence | 15 min | VERIFIED |
+| 6 | Inspect active rulesets and branch protection | 10 min | VERIFIED (scope-limited) |
+| 7 | Read current Context Window and controlling checkpoint | 15 min | VERIFIED (reconciliation recorded) |
 | 8 | Build evidence-backed component readiness map | 15 min | PLANNED |
 | 9 | Classify claims as VERIFIED / NOT VERIFIED / BLOCKED | 5 min | PLANNED |
 | 10 | Freeze baseline target SHA and publish baseline record | 5 min | PLANNED |
@@ -159,3 +159,16 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - Report: docs/reports/2026-11-19-stage-01-prompt-06-governance-audit.md (report commit 9fb7d79bd3a270664c0a27be4b9767dc44e0fea1).
 - PR #146 remains OPEN/DRAFT/UNMERGED. No merge, deployment, dispatch, ruleset mutation or secret access.
 - Actual elapsed time NOT MEASURED. Next: Master Prompt 7 — reconcile Context Window and checkpoint.
+## Master Prompt 7 — Context Window and checkpoint reconciliation (2026-11-19)
+- Status: VERIFIED for the current working-branch copies and the reconciliation performed in this pass.
+- Re-read Context Window blob `50bc04351d0a02d525d586748540300ce32e58ca`, checkpoint blob `0fdc85682a5366ca33c31a0293572c2f64555633`, and plan blob `b5259198207223b7c34b4709bd4fa81277b40490` before editing.
+- Found stale plan statuses: prompts 4–6 still showed PLANNED although their reports and Context Window recorded results. Updated plan rows 4–7.
+- Found checkpoint had no Stage 1 Prompt 6/7 closure entry. Added current governance result and this reconciliation outcome.
+- Current default branch HEAD remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #146 remains OPEN/DRAFT/UNMERGED; head `2b81492263e9a11ea9e86c686b25f25796119ac3`, base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- The PR head is documentation-only bookkeeping after the previously tested code SHA; do not claim this current SHA has fresh CI evidence.
+- Stage 1 prompts 1–7 are now recorded as completed; Prompt 6 governance qualification remains PARTIAL because approvals=0, required status checks are off, and classic protection/ruleset history endpoints returned 403.
+- No code, workflow, ruleset, branch protection, PR state, dispatch, deployment, or secrets were changed.
+- Actual elapsed time: NOT MEASURED.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md`.
+- Next: Master Prompt 8 — evidence-backed component readiness map.
