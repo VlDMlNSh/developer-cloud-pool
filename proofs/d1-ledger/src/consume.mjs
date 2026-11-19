@@ -33,6 +33,7 @@ function deny(reason) {
     decision: "DENY",
     state: "needs-review",
     dispatch: false,
+        executionAuthorized: false,
     reason
   };
 }
@@ -82,6 +83,7 @@ export async function consumeApproval(db, binding, now) {
         decision: "ALLOW_ONCE",
         state: "consumed",
         dispatch: false,
+        executionAuthorized: false,
         reason: "FIRST_CONSUME_CONFIRMED"
       };
     }
