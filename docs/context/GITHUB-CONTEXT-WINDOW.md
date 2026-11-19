@@ -6,7 +6,7 @@ Last refreshed: 2026-11-19 — A1 CODE profile, D1 executor identity binding aud
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (verified from refs/heads/Основной at 2026-11-19 09:29 UTC)
-Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `67f00adb4b700d5e2d1cd69f79863a5523a017eb` (latest docs/checkpoint head; code/test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`)
+Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` (latest docs/checkpoint head; code/test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This Context Window refresh is carried on PR #146's A1 working branch and is NOT merged into the default branch. It is a working recovery snapshot, not a claim that the A1 branch is accepted production code.
 
@@ -2230,3 +2230,6 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Uploaded artifact `d1-ledger-proof-package-lock`, artifact ID `14518125674`, SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`; retention 7 days.
 - Exact-head CI evidence URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44501709601
 - Remaining: PR #146 is still OPEN/DRAFT/UNMERGED with zero reviews; current PR head after docs commits is not the same SHA as the test-run target. Re-read PR head and checks before any merge/review decision.
+
+
+- Additional PR-triggered exact code/test-head checks were subsequently observed: Pool Contract Validation run `44501720404` SUCCESS and Isolated D1 Ledger Proof run `44501720431` SUCCESS, both on `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. The branch later advanced to `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` through documentation-only commits; no code/test changes followed the validated test commit.
