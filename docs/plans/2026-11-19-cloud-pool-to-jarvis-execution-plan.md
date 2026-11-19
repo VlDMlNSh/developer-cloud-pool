@@ -53,7 +53,7 @@ Documentation and evidence capture are continuous across all stages, not deferre
 | 6 | Inspect active rulesets and branch protection | 10 min | VERIFIED (scope-limited) |
 | 7 | Read current Context Window and controlling checkpoint | 15 min | VERIFIED (reconciliation recorded) |
 | 8 | Build evidence-backed component readiness map | 15 min | VERIFIED |
-| 9 | Classify claims as VERIFIED / NOT VERIFIED / BLOCKED | 5 min | PLANNED |
+| 9 | Classify claims as VERIFIED / NOT VERIFIED / BLOCKED | 5 min | VERIFIED |
 | 10 | Freeze baseline target SHA and publish baseline record | 5 min | PLANNED |
 | | **Total** | **100 min** | |
 
@@ -183,3 +183,16 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - Latest docs head is not claimed to have fresh CI. Historical CI is tied to recorded immutable test SHAs.
 - No code/workflow/governance settings changed; no dispatch, provider calls, secret reads, hosted resource creation, deployment or merge. Actual elapsed time NOT MEASURED.
 - Next: Master Prompt 9 — classify material claims as VERIFIED / NOT VERIFIED / BLOCKED.
+
+## Master Prompt 9 — claims/evidence classification (2026-11-19)
+- Status: VERIFIED as a read-only evidence-classification pass.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-09-claims-evidence-classification.md`.
+- Immutable target reviewed: PR #146 head `9743b603ac8a41a89c37d3c1b450076665f1b472`; default base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Current-head Pool Contract Validation run `44511792224`: SUCCESS on exact PR head.
+- D1 4-file / 63-test success remains historical evidence for code/test SHA `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; no new D1 run is claimed for the current docs-only head.
+- Reconfirmed: executor registry is empty; CODE profile is PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota NOT QUALIFIED; remote web console NOT VERIFIED; persistent host/workspace BLOCKED; multi-agent current-target dispatch NOT VERIFIED.
+- Active ruleset #26550182 requires PR and review-thread resolution but has zero required approvals; PR #146 has zero reviews.
+- Issue #140 remains OPEN; local-only current-base integration is the next technical dependency.
+- No tests run by this read-only pass; no code, secrets, dispatch, provider, hosted resource, deployment, merge or governance changes.
+- Actual elapsed time: NOT MEASURED.
+- Next: Master Prompt 10 — freeze Stage 1 baseline and publish consolidated baseline record.
