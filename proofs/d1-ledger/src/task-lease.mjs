@@ -2,7 +2,8 @@ const SAFE_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const MAX_ATTEMPTS = 5;
 
 function deny(reason) {
-  return { decision: "DENY", dispatch: false, reason };
+  return { decision: "DENY", dispatch: false,
+        executionAuthorized: false, reason };
 }
 
 /**
@@ -57,7 +58,8 @@ export async function acquireTaskLease(db, taskKey, workerId, now, leaseSeconds)
     return {
       decision: "LEASE_ACQUIRED", taskKey, workerId,
       generation: row.lease_generation, expiresAt: row.lease_expires_at,
-      dispatch: false
+      dispatch: false,
+        executionAuthorized: false
     };
   } catch {
     return deny("LEASE_ACQUIRE_AMBIGUOUS");
@@ -80,7 +82,8 @@ export async function renewTaskLease(db, taskKey, workerId, generation, now, lea
          AND lease_expires_at > ?
     `).bind(now + leaseSeconds, now, taskKey, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
-      ? { decision: "LEASE_RENEWED", taskKey, generation, expiresAt: now + leaseSeconds, dispatch: false }
+      ? { decision: "LEASE_RENEWED", taskKey, generation, expiresAt: now + leaseSeconds, dispatch: false,
+        executionAuthorized: false }
       : deny("STALE_OR_EXPIRED_LEASE");
   } catch {
     return deny("LEASE_RENEWAL_AMBIGUOUS");
@@ -102,7 +105,8 @@ export async function finalizeTaskLease(db, taskKey, workerId, generation, now) 
          AND lease_expires_at > ?
     `).bind(now, taskKey, workerId, generation, now).run();
     return result?.success === true && result?.meta?.changes === 1
-      ? { decision: "TASK_COMPLETED", taskKey, generation, dispatch: false }
+      ? { decision: "TASK_COMPLETED", taskKey, generation, dispatch: false,
+        executionAuthorized: false }
       : deny("STALE_OR_EXPIRED_FINALIZER");
   } catch {
     return deny("FINALIZATION_AMBIGUOUS");
