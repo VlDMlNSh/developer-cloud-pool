@@ -149,6 +149,18 @@ describe("atomic qualified A0 -> D1 admission", () => {
       .toMatchObject({ n: 1 });
   });
 
+  it("denies replay when the durable commit receipt is missing", async () => {
+    const first = await admitQualifiedTask(env.POOL_DB, input);
+    expect(first.decision).toBe("ADMITTED_QUEUED");
+    await env.POOL_DB.prepare("DROP TRIGGER pool_admission_receipts_no_delete").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts WHERE admission_id = ?")
+      .bind(input.admissionId).run();
+    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    expect(replay).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
+    });
+  });
+
   it("rejects revoked route evidence before consuming approval", async () => {
     await env.POOL_DB.prepare(`
       UPDATE pool_route_qualifications
