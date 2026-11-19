@@ -2548,3 +2548,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 28 — admission replay receipt verification — 2026-11-19
+
+- Refreshed repository state: default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; PR #148/#149/#150/#152 and docs PR #145 remain OPEN/DRAFT/UNMERGED. PR #152 base is Pass 26 feature branch; head after Pass 28 is `81c1c001f61b29305126ff28500eb47843f6fe1b`.
+- Source audit found that the Pass 27 replay path could return `ADMISSION_ALREADY_COMMITTED` without checking that the durable commit receipt and task-ready outbox binding still existed and matched.
+- Updated `proofs/d1-ledger/src/admit-qualified-task.mjs`: replay readback now requires matching receipt assertion, executor, dispatch-disabled flags, pending task-ready event, admission/attempt/evidence identity and task current-attempt tuple. Mismatch returns `ADMISSION_COMMIT_RECEIPT_MISMATCH`.
+- Added an adversarial test deleting the receipt after initial admission and requiring replay denial.
+- Adapter blob: `f00720cf1bedaf46ee9ba79f5bcfb0b38bf0de89`; test blob: `49333aaaa7ee89c0ff8952e91e16d08e165aa091`.
+- Static source readback VERIFIED. Tests authored but NOT RUN. Exact-head CI NOT VERIFIED: no PR-triggered workflow runs and combined status empty. Workflow `d1-ledger-proof-validation.yml` has a `pull_request` base filter for `Основной`; #152 targets Pass 26 feature branch. Do not weaken governance to force a check.
+- Independent review NOT VERIFIED. No hosted D1, secrets, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes.
+- Migration review note: `schema_version` is absent from the identity trigger column list, but the table CHECK fixes it to 1 and rejects any changed value; no redundant migration was added.
+- Report: `docs/reports/2026-11-19-pass-28-admission-replay-receipt-verification.md`; checkpoint: `docs/checkpoints/2026-11-19-pass-28-admission-replay-receipt-verification.md`; snapshot: `docs/context/PASS-28-CURRENT-SNAPSHOT.md`.
+- Issue #140 OPEN. Issue #151 multi-account Jarvis/shared GPU remains PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
