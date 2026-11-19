@@ -2361,3 +2361,13 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Report: docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md.
 - No code, workflow, governance settings, PR state, dispatch, deployment or secret access changed.
 - Actual elapsed time NOT MEASURED. Next: Master Prompt 8 — evidence-backed component readiness map.
+### Stage 1 — Master Prompt 8: component readiness map (2026-11-19)
+- Status: VERIFIED as evidence-backed read-only inventory; report docs/reports/2026-11-19-stage-01-prompt-08-component-readiness-map.md.
+- VERIFIED at code/config level: legacy dispatch retirement guards; contract validation workflow; isolated local D1 approval/task/attempt/outbox/lease proof and named historical CI runs.
+- PARTIAL: executor registry/OIDC proof exists, but registry is empty; OIDC authenticates the GitHub Actions workflow principal, not the process/host; explicit revoked executor/profile negative test is missing.
+- NOT QUALIFIED: CODE sandbox profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota not qualified.
+- NOT VERIFIED / NOT DEPLOYED: authenticated remote web console; current-target multi-agent dispatch provenance.
+- BLOCKED: persistent engineering workspace / authorized host #3, Access/Tunnel and backup/restore evidence.
+- Historical CI evidence is tied to recorded immutable test SHAs; latest documentation-only PR head is not claimed to have fresh CI.
+- No code/workflow/governance settings changed; no dispatch, provider calls, secret reads, hosted resource creation, deployment or merge. Actual elapsed time NOT MEASURED.
+- Next: Master Prompt 9 — classify material claims as VERIFIED / NOT VERIFIED / BLOCKED.
