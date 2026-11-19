@@ -2,13 +2,13 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-19 — A1 CODE profile, D1 executor identity binding audit and test extension
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (verified from refs/heads/Основной at 2026-11-19 09:29 UTC)
+Active A1 engineering branch: `feat/a1-jarvis-code-sandbox-profile-2026-11-19` (validated code/test target `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; documentation commits follow this target)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
-This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+This Context Window refresh is carried on PR #146's A1 working branch and is NOT merged into the default branch. It is a working recovery snapshot, not a claim that the A1 branch is accepted production code.
 
 ---
 
@@ -2191,3 +2191,261 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## A1 CODE capability profile and D1/CI preparation — 2026-11-19
+
+- Current default baseline re-read: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Working branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19` was created directly from this immutable SHA.
+- Owner-confirmed immutable CODE profile identifier: `jarvis-code-sandbox-v1`. Confirmation applies to the ID only; resource ceilings and network exceptions remain proposed pending owner review.
+- New proposal: `docs/contracts/CODE-CAPABILITY-PROFILE-JARVIS-CODE-SANDBOX-V1.md`; commit `53ad46704e283b4e010d0276c9437ae9e16ebfb8` (profile contract file). It defines identity separation (executor/profile/route/account/quota/host/lease/issuer), allowed and denied operations, ephemeral sandbox requirements, proposed CPU/memory/disk/time ceilings, deny-by-default networking, artifact controls, revocation/lease fencing and qualification tests.
+- Report: `docs/reports/2026-11-19-a1-code-capability-profile-and-d1-ci-preparation.md`; commit `437500a7afa4f71fea70a9d37273dbe8a85685a9`.
+- D1 substrate candidate PR #143 historical head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd` has historical isolated D1 and pool contract CI success, but is based on an older SHA and is not merge-ready. No direct merge.
+- Initial inspected legacy profile references exist in historical D1 README, migration 0001, claim-outbox adapter, consume adapter and trusted-executor registry. GitHub code search returned zero with incomplete_results=true, so repository-wide absence is NOT VERIFIED.
+- No tests or exact-head CI have run on this new branch yet. Historical PR #143 CI is not evidence for this branch. No provider calls, secret reads, runtime launch, deployment, merge or dispatch.
+- Next: exhaustive tree/blob inventory; selectively transplant D1 source onto this clean base; enforce profile ID/version in SQL and adapters; add positive/negative tests; run exact-head CI and inspect job logs/artifacts; update checkpoint. Dispatch remains disabled.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 A1 restoration and executor identity verification
+
+- Live repository metadata: default branch `Основной`; verified default HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Repository is public. Current connected GitHub permission read-back: admin/maintain/push.
+- PR #146 is OPEN / DRAFT / UNMERGED, base `Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, active branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`. Latest A1 code/test commit at this checkpoint: `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. No PR reviews or review threads recorded.
+- Exact-head CI for prior PR head `b8138d64629f961127888ff12b653dd0522a1d89`: Pool Contract Validation run `44500818497` SUCCESS; Isolated D1 Ledger Proof run `44500818735` SUCCESS. Both are tied to that exact prior head, not the subsequent test commit.
+- New negative test added to `proofs/d1-ledger/test/consume.test.ts`: persisted approval executor is `claude-code-1`, supplied consume binding is `codex-2`; expected result is DENY. New blob `7ccbc093ba59b124be35ee8c233e4611c843adb3`; commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
+- Exact-head push workflow for `d0399fcdc57401efa4e6752984d330c7eb18f9c5`: Isolated D1 Ledger Proof run `44501709601`, job `135482879448`. At checkpoint creation, workflow was RUNNING; install and syntax-check steps succeeded; Workers-runtime D1 tests were still running. Final result MUST be re-read before claiming success.
+- Migration-chain review: `0001_create_pool_approval_ledger.sql` creates approval ledger without executor_id; `0007_bind_executor_identity.sql` adds executor_id to approval, task and attempt tables and installs required/immutable/cross-entity binding triggers. The suspected missing-column defect is therefore NOT CONFIRMED when all migrations 0001–0007 are applied. The existing D1 workflow applies the migration set via `applyD1Migrations`.
+- `consume.mjs` remains proof-only: no Worker entrypoint, GitHub client, dispatch capability, provider client or secret access; every return has `dispatch:false`. Do not mount it as a production worker.
+- D1 migration blob SHAs: 0001 `c14951239dfd6f93e20184f46373a8d13b62a69f`; 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; 0006 `0610c4ee63f338e9b4d4db30ffe6fdffbaf6d854`; 0007 `47c2f0f7db6379e6760317fe3903214f6f31ffee`.
+- Governance: active repository ruleset #26550182 applies to `refs/heads/Основной`, requires PR, zero approvals, required review-thread resolution, no bypass actors; classic branch endpoint reports protected=false. Independent review remains a project gate and is not satisfied.
+- PR #143 remains OPEN / DRAFT / UNMERGED and is based on older default SHA `68183828cf7934e89109310c8f99281be4eb7ed8`; its historical CI is not evidence for PR #146 or current default.
+- Contour A remains BLOCKED / NOT ACCEPTED. Dispatch, provider calls, deployment and runtime execution remain prohibited/not qualified. Contour B remains DEFERRED.
+- Next: re-read run `44501709601` and its job logs for exact-head outcome; then update this Context Window and the dated report/checkpoint with final status. Do not merge PR #146 without independent review and full acceptance evidence.
+
+
+### Final exact-head D1 verification — 2026-11-19
+
+- Run `44501709601` completed SUCCESS for immutable code/test commit `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; job `135482879448` completed SUCCESS. This is a push-triggered exact-head D1 proof run; latest branch HEAD subsequently advanced through documentation-only commits to `67f00adb4b700d5e2d1cd69f79863a5523a017eb`.
+- Job log confirms `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test` succeeded. Vitest: 4 test files passed, 63 tests passed. `test/consume.test.ts` passed 14 tests including the new mismatched-executor denial case.
+- Uploaded artifact `d1-ledger-proof-package-lock`, artifact ID `14518125674`, SHA-256 `4f6a3495370ef9725667dd119fa16666b55f8eafaedcec0aca320311a06865ad`; retention 7 days.
+- Exact-head CI evidence URL: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44501709601
+- Remaining: PR #146 is still OPEN/DRAFT/UNMERGED with zero reviews; current PR head after docs commits is not the same SHA as the test-run target. Re-read PR head and checks before any merge/review decision.
+
+
+- Additional PR-triggered exact code/test-head checks were subsequently observed: Pool Contract Validation run `44501720404` SUCCESS and Isolated D1 Ledger Proof run `44501720431` SUCCESS, both on `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. The branch later advanced to `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` through documentation-only commits; no code/test changes followed the validated test commit.
+
+- Re-read after documentation updates: PR #146 current head was `5289212e083edc3e522de0377bf66be39875162b`; the code/test target remains `d0399fcdc57401efa4e6752984d330c7eb18f9c5`, and no code/test changes followed it.
+
+
+## 2026-11-19 — D1 admission/lease audit read-back
+
+- Current default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (commit message retires legacy DSH dispatch; dispatch remains fail-closed).
+- PR #146 current head: `9c0cb7ea73f1ad3413fddeb119b8cab4fcfcc714`; OPEN / DRAFT / UNMERGED; base is current default SHA above. Reviews: 0; review threads: 0.
+- Exact-head Pool Contract Validation run `44502134638`, job `135484343884`: SUCCESS. Exact-head Isolated D1 Ledger Proof run `44502134762`, job `135484344351`: SUCCESS. Combined status contexts list is empty; do not describe that endpoint as a green check suite.
+- Ruleset `26550182` is active for `refs/heads/Основной`; PR required, zero approvals required, review-thread resolution required, no bypass actors. Classic branch endpoint reports `protected=false`.
+- Migration 0007 adds executor_id after migration 0001 and enforces required/immutable bindings across approvals, tasks and attempts. The missing-column concern is not a defect for the complete 0001–0007 chain.
+- D1 test inventory covers concurrency, replay, expired approval/lease, outbox rollback, ambiguous storage, stale lease generations, immutable attempt identity, indeterminate attempts, executor substitution, disabled/unregistered executor, profile mismatch and synthetic OIDC negative paths.
+- Explicit revoked executor/profile negative test was not found in the inspected test inventory. Executor registry remains empty. Add a defined revocation state/source and negative test before claiming revocation qualification.
+- OIDC tests are synthetic and authenticate the Actions workflow/job principal only; they do not attest a process/host. Local Workers-runtime D1 tests do not qualify hosted D1, production lock semantics, provider quota, live execution or web console.
+- Issue #140 remains the controlling integration task. PR #143 is still a separate old-base proof and must not be implicitly merged/composed with #146.
+- No secrets, provider calls, hosted D1, deployment, dispatch or production writes were used. Contour A remains NOT ACCEPTED; Contour B remains deferred.
+- Detailed evidence: `docs/reports/2026-11-19-d1-admission-lease-chain-audit.md`.
+
+
+---
+
+## 2026-11-19 — Operating plan and time-accounting agreement
+
+The owner requested that the relevant project decisions from the ongoing conversation be normalized into GitHub as durable project context. This is an engineering summary, not a verbatim transcript. GitHub remains the recovery source of truth.
+
+- The working sequence is the 14-stage Cloud Pool → first Jarvis launch plan in `docs/plans/2026-11-19-cloud-pool-to-jarvis-execution-plan.md`.
+- Correct arithmetic: the listed stage subtotals sum to **237** sub-items, not 140. The former 140 figure was erroneous and is superseded.
+- Stage 1 is split into 10 bounded master prompts. Their latest estimates sum to **100 minutes**. Earlier 110-minute figures used a different estimate breakdown and are superseded for this schedule.
+- Execute one master prompt per bounded engineering pass; each prompt must state objective, target SHA, allowed actions, prohibitions, acceptance criteria, evidence and estimate.
+- Record actual time only when reliably measurable. Otherwise record `NOT MEASURED`; do not infer elapsed time from the number of tool calls.
+- Documentation, checkpointing and evidence capture are continuous in every stage.
+- Contour B remains DEFERRED until Contour A reaches formally evidenced `ACCEPTED`.
+- Continue free-tier-only and fail-closed operation. No paid fallback, secret-value inspection, provider calls, live dispatch or deployment without the required gates.
+
+### Stage 1 prompt progress
+- Prompt 1 — repository identity/default branch: VERIFIED.
+- Observed repository: `VlDMlNSh/developer-cloud-pool`, public.
+- Default branch: `Основной`.
+- Independently observed default ref: `refs/heads/Основной`.
+- Default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Actual elapsed duration: NOT MEASURED.
+- Evidence/report: `docs/reports/2026-11-19-stage-01-prompt-01-repository-default-branch.md`.
+- Full execution plan: `docs/plans/2026-11-19-cloud-pool-to-jarvis-execution-plan.md`.
+- Next: Stage 1 Prompt 2 — verify HEAD and enumerate branches.
+
+### Documentation provenance
+This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19`, associated with PR #146. It is not merged into default branch and does not imply Contour A acceptance.
+
+
+### Stage 1 — Master Prompt 2 completed (2026-11-19)
+- Status: VERIFIED.
+- GitHub branches API returned 154 branches across two pages.
+- Default branch `Основной` HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (consistent with Prompt 1).
+- Current working documentation branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19` HEAD: `d1ae38d5bfab3a67d66f34eca297d0155352ee9b`.
+- Full branch name/HEAD inventory: `docs/reports/2026-11-19-stage-01-prompt-02-branch-inventory.md`.
+- Actual elapsed duration: NOT MEASURED.
+- Operation was read-only; no refs changed.
+- Next: Stage 1 Master Prompt 3 — Issues and Pull Requests inventory.
+
+
+### Stage 1 — Master Prompt 3 completed (2026-11-19)
+- Status: VERIFIED for Issues/PR inventory and targeted metadata/history.
+- Open Issues: 10; open PRs: 106 (100 + 6 across two pages).
+- Issue #140 remains OPEN, 7 comments, updated 2026-11-19 09:30:24 UTC. It requires one current-base canonical D1 admission/lease proof chain; local no-secret qualification only; dispatch and execution authorization remain false.
+- Material blocker: #111 and #114/#125 have incompatible migration/outbox/ledger semantics; #67/#72 were identified as a candidate lineage but require clean-base transplant and migration reconciliation; DSH legacy profile references were found across many SQL/source/test files.
+- PR #146 OPEN/DRAFT/UNMERGED; base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; head `99acd0a9bbea295328b8bf3f1ff0aa50c5bedf37`. Capability contract only; no live executor or dispatch.
+- PR #143 OPEN/DRAFT/UNMERGED; base `68183828cf7934e89109310c8f99281be4eb7ed8`; head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`. Stale-base local proof; not qualified for canonical executor admission.
+- PR #142 is also on stale base `6818382...`; PR #145 is current-base documentation-only.
+- Full evidence: `docs/reports/2026-11-19-stage-01-prompt-03-issues-pr-inventory.md`.
+- Actual elapsed duration: NOT MEASURED.
+- No comments, labels, state changes, merge, dispatch, secrets, provider calls, deployment or production writes were made.
+- Next: Master Prompt 4 — compare active PR base/head against current default HEAD and classify ancestry.
+
+
+### Stage 1 — Master Prompt 4 completed (2026-11-19)
+- Status: VERIFIED for 13 high-priority integration PRs; ancestry of remaining open PRs NOT VERIFIED.
+- Frozen default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Current-base candidates among selected PRs: #146 (40 ahead, 0 behind) and #145 (7 ahead, 0 behind), merge base equals current default.
+- #143/#142/#141 diverged, 1 behind; #135/#116/#114/#112/#111/#125 diverged, 3 behind; #67/#72 diverged, 82 behind from older merge base.
+- Do not merge stale/diverged proof branches as-is. Selective transplant/requalification only after source and migration ownership review.
+- Full compare matrix: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
+- Actual elapsed time: NOT MEASURED.
+- No branch/PR state mutation, merge, dispatch, secrets, provider calls, hosted D1 or deployment.
+- Next: Master Prompt 5 — exact-head CI verification.
+
+
+### Stage 1 — Master Prompt 5 completed (2026-11-19)
+- Status: VERIFIED for two inspected exact-PR-head workflow checks; repository-wide required-check completeness NOT VERIFIED.
+- PR #146 re-read OPEN/DRAFT/UNMERGED; head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae`; base/default HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pool Contract Validation run `44505922169`, job `135497419708`: SUCCESS. Six workflow YAML files parsed; security/contract checks passed; dispatch gate false.
+- Isolated D1 Ledger Proof run `44505922254`, job `135497396027`: SUCCESS. `npm ci`, `npm run check`, and Vitest passed; 4 files / 63 tests.
+- CI checked out PR merge commit `ddf6a9fae1c574321635231bdb48d86f66d608f2` (head merged into base), while run/check metadata is tied to PR head SHA above. Treat as successful PR-head checks, not direct-head-only checkout.
+- Legacy commit-status endpoint for head returned PENDING with zero status contexts; it is not a green status suite. Workflow inventory and repository-wide required-check completeness remain NOT VERIFIED.
+- Node.js 20 deprecation warning for pinned Actions surfaced; runner forced Node.js 24. Maintenance item, not test failure.
+- Artifact `d1-ledger-proof-package-lock`, ID `14518894284`, SHA-256 `759b22bdb8798d9e46c57ed08d2d59e2eb4005491c4233cfe0d2ec1621dddfaf`.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-05-actions-ci-audit.md`.
+- No rerun, dispatch, merge, deployment, secrets, provider calls or hosted D1 access.
+- Actual elapsed time: NOT MEASURED.
+- Next: Master Prompt 6 — inspect active rulesets and branch protection.
+
+
+### Post-write provenance clarification — 2026-11-19
+- After recording Prompt 5, the documentation branch advanced from tested PR head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae` to `373d600d816784624799b30dbada7cb14b8364cc` through exactly four documentation-only commits.
+- GitHub Compare API verified 4 ahead / 0 behind and exactly these four paths changed: Context Window, checkpoint, plan, and the Prompt 5 report. No source, workflow, test, or configuration files changed in that delta.
+- Therefore the two SUCCESS workflow runs validate the code/workflow tree at `8ebd5ff...`; the latest branch head is docs-only later and has not itself been rerun. Do not label the latest SHA as directly CI-tested.
+
+### Stage 1 — Master Prompt 6: governance audit (2026-11-19)
+- Status: VERIFIED for repository ruleset and branch metadata; classic branch-protection details and ruleset history NOT VERIFIED (HTTP 403 from integration).
+- Default branch Основной HEAD: b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5.
+- Active repository ruleset #26550182, Основной — verified, targets refs/heads/Основной.
+- Enforced: require PR, prevent deletion, prevent non-fast-forward; require review-thread resolution; dismiss stale approvals on push; bypass actors empty and current_user_can_bypass=never.
+- Required approving review count is ZERO; code-owner review and last-push approval disabled.
+- Branch metadata: protected=false, protection.enabled=false, required status checks enforcement off with no contexts/checks. Direct classic protection endpoint and ruleset history returned 403, so detailed configuration/history unavailable.
+- Assessment: governance PARTIAL; CI success is not shown to be a merge gate. Recommend later owner-approved change to require independent approval and selected required status checks; no settings changed in this pass.
+- Report: docs/reports/2026-11-19-stage-01-prompt-06-governance-audit.md (report commit 9fb7d79bd3a270664c0a27be4b9767dc44e0fea1).
+- PR #146 remains OPEN/DRAFT/UNMERGED. No merge, deployment, dispatch, ruleset mutation or secret access.
+- Actual elapsed time NOT MEASURED. Next: Master Prompt 7 — reconcile Context Window and checkpoint.
+### Stage 1 — Master Prompt 7: Context Window/checkpoint reconciliation (2026-11-19)
+- Status: VERIFIED for current working-branch document reconciliation.
+- Re-read prior Context Window, checkpoint and plan; found plan rows 4–6 still PLANNED despite reports/results recorded. Corrected plan rows 4–7.
+- Added the Prompt 6 governance result and Prompt 7 reconciliation to the checkpoint; preserved older dated entries as historical snapshots.
+- Default branch Основной HEAD remains b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5.
+- PR #146 remains OPEN/DRAFT/UNMERGED; head 2b81492263e9a11ea9e86c686b25f25796119ac3; base b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5.
+- Latest PR head is documentation-only and has no fresh CI assertion. Prior CI evidence remains tied to its recorded tested SHA.
+- Prompt 6 governance qualification remains PARTIAL: approvals=0; required status checks off; classic protection and ruleset history NOT VERIFIED due HTTP 403.
+- Report: docs/reports/2026-11-19-stage-01-prompt-07-context-checkpoint-reconciliation.md.
+- No code, workflow, governance settings, PR state, dispatch, deployment or secret access changed.
+- Actual elapsed time NOT MEASURED. Next: Master Prompt 8 — evidence-backed component readiness map.
+### Stage 1 — Master Prompt 8: component readiness map (2026-11-19)
+- Status: VERIFIED as evidence-backed read-only inventory; report docs/reports/2026-11-19-stage-01-prompt-08-component-readiness-map.md.
+- VERIFIED at code/config level: legacy dispatch retirement guards; contract validation workflow; isolated local D1 approval/task/attempt/outbox/lease proof and named historical CI runs.
+- PARTIAL: executor registry/OIDC proof exists, but registry is empty; OIDC authenticates the GitHub Actions workflow principal, not the process/host; explicit revoked executor/profile negative test is missing.
+- NOT QUALIFIED: CODE sandbox profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota not qualified.
+- NOT VERIFIED / NOT DEPLOYED: authenticated remote web console; current-target multi-agent dispatch provenance.
+- BLOCKED: persistent engineering workspace / authorized host #3, Access/Tunnel and backup/restore evidence.
+- Historical CI evidence is tied to recorded immutable test SHAs; latest documentation-only PR head is not claimed to have fresh CI.
+- No code/workflow/governance settings changed; no dispatch, provider calls, secret reads, hosted resource creation, deployment or merge. Actual elapsed time NOT MEASURED.
+- Next: Master Prompt 9 — classify material claims as VERIFIED / NOT VERIFIED / BLOCKED.
+
+## Stage 1 — Master Prompt 9 evidence classification (2026-11-19)
+- Current default branch HEAD reverified: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Working branch / PR #146 head at classification: `9743b603ac8a41a89c37d3c1b450076665f1b472`; PR OPEN/DRAFT/UNMERGED, base equals default HEAD.
+- Current exact-head Pool Contract Validation run `44511792224`: SUCCESS.
+- D1 4-file / 63-test result remains tied to historical code/test SHA `d0399fcdc57401efa4e6752984d330c7eb18f9c5`; it is not re-attributed to the latest docs-only head.
+- Executor registry is empty; OIDC authenticates workflow principal rather than process/host; CODE profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED; provider route/quota NOT QUALIFIED.
+- Remote web console NOT VERIFIED; persistent workspace/host #3 BLOCKED; current-target multi-agent dispatch provenance NOT VERIFIED.
+- Active ruleset #26550182: PR required, review-thread resolution required, zero required approving reviews, no bypass actors. PR #146 has zero reviews.
+- Issue #140 remains OPEN and local-only; it explicitly prohibits hosted D1, secrets inspection, provider calls, dispatch, deployment and merge.
+- Prompt 9 report: `docs/reports/2026-11-19-stage-01-prompt-09-claims-evidence-classification.md`.
+- No code/runtime change, test execution, secret access, dispatch, provider call, hosted resource creation, deployment, merge or governance mutation.
+- Actual elapsed time NOT MEASURED. Contour A remains NOT ACCEPTED; Contour B DEFERRED.
+- Next: Stage 1 Master Prompt 10 — freeze the baseline and reconcile all ten prompt statuses.
+
+
+## Stage 1 closure — Master Prompt 10 (2026-11-19)
+- Stage 1 ten-prompt baseline/recovery sequence: all 10 prompts VERIFIED; Prompt 6 remains scope-limited due unavailable classic protection details.
+- Frozen Stage 1 evidence target: working branch `feat/a1-jarvis-code-sandbox-profile-2026-11-19` @ `c383023a764599a5fa09d41663356e7a5c395365`.
+- Default branch `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Compare at freeze: 68 ahead / 0 behind. Changes remain unmerged.
+- PR #146 OPEN/DRAFT/UNMERGED; zero submitted reviews.
+- Exact frozen-head CI: D1 proof run `44512999972` SUCCESS, job `135521724572`; contract validation run `44512999829` SUCCESS, job `135521751561`.
+- Baseline report: `docs/reports/2026-11-19-stage-01-prompt-10-baseline-freeze.md`.
+- Stage 1 closure is not Contour A acceptance. Executor registry empty; CODE sandbox NOT QUALIFIED; provider route/quota NOT QUALIFIED; remote UI NOT VERIFIED; persistent workspace/host #3 BLOCKED; multi-agent dispatch provenance NOT VERIFIED.
+- Issue #140 remains OPEN and constrains current-base D1 integration to local proof; no hosted D1, secrets inspection, provider calls, dispatch, deployment or merge.
+- Next: Stage 2 Executor Identity and Admission Security; first pass is mature component research plus read-only trust/revocation model reconciliation.
+- No secret reads, provider calls, dispatch, hosted resource creation, deployment, merge or governance mutation. Actual elapsed time NOT MEASURED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-19 — Stage 2 Prompt 1: Executor Identity & Admission Security
+- Status: VERIFIED for bounded architecture/research deliverable only; no runtime implementation or executor activation.
+- Reviewed PR #146 head: `e10f675dbb55b7a10a97b111d1fa994e55b5431e`; base metadata: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR remains OPEN/DRAFT/UNMERGED.
+- Re-read Issue #140: OPEN; local no-secret proof only; hosted D1, secret inspection, provider calls, dispatch, deployment and merge remain prohibited.
+- Published design: `docs/architecture/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Published report: `docs/reports/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Layered trust model separates workflow, runner, process, host and logical executor identities. Existing GitHub OIDC scope is workflow principal only; it does not attest a runner/process/physical host.
+- Registry remains empty. Lifecycle design: PENDING, ACTIVE, SUSPENDED, REVOKED, EXPIRED; REVOKED/EXPIRED terminal. Admission binds registry revision, identity epoch, capability digest, evidence, lease and monotonic fencing generation.
+- Research selection: Cosign/SLSA/in-toto for future artifact provenance; SPIRE is too operationally heavy for ephemeral hosted runners; OPA/Cedar not introduced absent demonstrated policy complexity; Scorecard is dependency posture evidence, not executor identity.
+- Combined commit-status lookup for PR head `e10f675...` returned an empty status list; current-head CI NOT VERIFIED by that endpoint.
+- Current default ref HEAD was not independently resolved in this pass; `b81d2b5...` is last-known PR base metadata, not fresh default-ref proof.
+- No source/workflow/test/registry/authority/governance change, secret inspection, provider call, dispatch, hosted D1, deployment, merge or tool installation.
+- Start timestamp: 2026-11-19 14:31 +03:00. End and active duration NOT MEASURED; CI wait NOT MEASURED; Stage 2 cumulative elapsed/active time NOT MEASURED. Stage 1 actual duration remains NOT MEASURED.
+- Next: Stage 2 Prompt 2 — inspect exact registry/OIDC/admission contracts at a freshly frozen immutable SHA; map revocation/epoch gaps and define minimal local negative tests.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## 2026-11-19 — Stage 2 Prompt 2: Executor Registry & OIDC Contract Audit
+- Immutable audit target: PR #146 head `5eb07732a32e22694fcb47880d1dc29f0859020c`; default branch `Основной` independently resolved to `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR #146 base SHA matches default HEAD.
+- PR #146 remains OPEN / DRAFT / UNMERGED; Issue #140 remains OPEN.
+- Published report: `docs/reports/2026-11-19-stage-02-prompt-02-executor-registry-oidc-contract-audit.md`.
+- Registry `.github/pool-executor-registry.json` schema v1 has `executors: []`; no executor can be admitted. Resolver pins registry content to independently fetched default-branch SHA and validates repository identity, profile and executor ID.
+- OIDC verifier hard-pins issuer/JWKS/RS256, checks signature, subject, repository/owner IDs, workflow refs and token times; it authenticates workflow principal only and correctly emits process-attested=false, executionAuthorized=false, dispatch=false.
+- Gaps: no lifecycle enum (PENDING/ACTIVE/SUSPENDED/REVOKED/EXPIRED), identity epoch, validity window, revocation propagation, run/attempt/ref/SHA/event/workflow SHA binding, max age relative to now, strict NumericDate typing, single exact audience policy, challenge/PoP anti-replay, runner/process/host attestation, or full registry->OIDC->D1 admission composition.
+- Migration 0007 binds executor_id across approval/task/attempt and makes it immutable, but it is syntactic/equality consistency, not registry identity authorization; no identity epoch or session evidence persisted.
+- OIDC and registry tests: 8 + 11. Full D1 run on merge commit `d1de9785afd505400cfe781b95144a15bd647d5d` for PR head `5eb0773...`: 4 files / 63 tests passed. Pool Contract Validation also SUCCESS. Runs: 44515922122 and 44515922163.
+- Artifact 14526330421 SHA-256 `eabb4f8d682fe0c2a7d2344edb8bbb4cb5309dac2f3b1c101eb5646e7cbc3a18` (package-lock only).
+- Ruleset #26550182 active on default branch; PR and review-thread resolution required, 0 approvals required, no code-owner review. Branch protection API reports protected=false / required checks off. PR #146 has zero formal reviews and zero review threads.
+- Adapter invariant gap: consume/task-lease/task-attempt responses do not uniformly emit explicit `executionAuthorized:false`, despite Issue #140 requiring both false flags.
+- No source/schema/test/workflow/governance change; no secret/variable inspection, provider calls, hosted D1, dispatch, deployment, merge or executor activation. Gemini controller workflow path was not found at audit target; dispatch also prohibited by Issue #140.
+- Start/end/active/elapsed/wait time NOT MEASURED. Stage 2 cumulative time NOT MEASURED; Stage 1 actual time NOT MEASURED.
+- Next: Stage 2 Prompt 3 — implement the minimal no-secret registry v2 lifecycle contract and OIDC verifier hardening with negative-first tests, keeping executors empty and D1 migrations untouched until canonical lineage is reconciled.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+## Final reconciliation after Stage 2 Prompt 2 documentation publication
+- PR #146 remains OPEN / DRAFT / UNMERGED; base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Branch HEAD after report, Context Window, checkpoint and execution-plan updates: `8c54d860783b008faf8f8debae1bae209028c363`.
+- Prompt 2 report blob: `5291e8eb8c1f6753eefd5df23f600c368dc82c87`.
+- Context Window blob: `58e2a8352562bc7975a4a4020e859a46f2349278`.
+- Checkpoint blob: `9b4d2e22ee481f32000d9808ac2015b42b1bf36a`.
+- Execution Plan blob: `d62e3b11082a332632a4e9ce156eed567bc05df3`.
+- CI evidence applies to code audit target `5eb07732a32e22694fcb47880d1dc29f0859020c`; later commits in this pass changed documentation only. No new exact-head CI was run for the final documentation-only branch HEAD.
+
+### Final checkpoint publication reconciliation
+- Checkpoint update commit: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`; checkpoint blob: `f4a9b66d146a9cb9ea5ab2377e734be84358984e`.
+- Branch HEAD before this Context Window update: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`.
+- Prompt 2 report remains blob `5291e8eb8c1f6753eefd5df23f600c368dc82c87`; execution plan blob `d62e3b11082a332632a4e9ce156eed567bc05df3`.
+- Code audit/CI target `5eb07732a32e22694fcb47880d1dc29f0859020c`; all later branch commits in this pass are documentation-only.
