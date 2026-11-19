@@ -79,6 +79,7 @@ describe("D1 single-use approval ledger", () => {
     ["issue", { issueNumber: 99 }],
     ["target SHA", { targetSha: "c".repeat(40) }],
     ["profile", { profile: "unapproved-profile" }],
+    ["executor identity", { executorId: "codex-2" }],
     ["envelope digest", { envelopeDigest: "d".repeat(64) }]
   ])("rejects a mismatched %s", async (_name, override) => {
     const result = await consumeApproval(env.POOL_DB, { ...approval, ...override }, NOW);
