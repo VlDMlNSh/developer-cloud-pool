@@ -2443,3 +2443,23 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: clean-base migration-composition candidate; remove legacy approval-keyed trigger/writer path, assert one task-ready outbox, test task uniqueness and independent projection outbox, then port admission. Keep all dispatch/execution authorization flags false.
 - Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
 - Canonical MediaHub OS map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 21 (clean-base D1 retirement precondition audit)
+
+- Default branch `Основной` remains at immutable HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pass 21 confirmed the D1 proof subsystem is absent from the default tree: `proofs/d1-ledger/README.md` and `proofs/d1-ledger/migrations/0003_create_logical_task_identity.sql` both return 404 on the default ref.
+- PR #146 remains OPEN/DRAFT/UNMERGED at `4aeb9bddecd747ca533ba5619be83fc4809e2a95`. Its exact-head Isolated D1 Ledger Proof run `44582839780` and Pool Contract Validation run `44582839702` both completed SUCCESS; jobs `135767804070` and `135767804751` completed SUCCESS. This is isolated PR proof, not default integration or hosted qualification.
+- Exact source blobs re-read: #146 migration 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; migration 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; migration 0007 `47c2f0f7db6379e6760317fe3903214f6f31ffee`; adapter `08c186dc0b709db985beba9c7cd9e73167c9e657`; tests `5f5f613d60b6ecb570b785ffd9a29d41dbc25fdd`.
+- Migration 0003 still creates `pool_approval_consumed_legacy_claim_outbox`; migration 0007 does not drop it. The adapter still exposes positive `claimAndEnqueue()` beside `claimLogicalTask()`.
+- #67 migration 0006 creates `pool_attempt_projection_outbox`; #111/#146 migration 0006 is the lease guard. PR #146 alone does not preserve the projection outbox. A single clean-base manifest must reconcile this collision before a forward-only retirement migration can be valid.
+- Pass 21 code implementation is BLOCKED by absent default D1 substrate and unapproved composed migration lineage. No code/test/deployment/dispatch/secret changes were made.
+- Current default combined status returned zero contexts; exact-head PR workflow lookup for #145 returned no runs. Treat both as NOT VERIFIED. Current detailed ruleset read-back was unavailable; historical ruleset evidence is not promoted to current.
+- Issue #140 remains OPEN. PR #145 documentation continuation and PR #146 implementation candidate remain OPEN/DRAFT/UNMERGED; no merge.
+- Pass 21 report: `docs/reports/2026-11-19-pass-21-current-base-d1-retirement-precondition-audit.md`.
+- Pass 21 checkpoint: `docs/checkpoints/2026-11-19-pass-21-current-base-d1-retirement-precondition.md`.
+- Effort estimate unchanged: 24.5–29.5 engineering-equivalent hours remaining from the earlier 45-hour plan; no new implementation-hour credit claimed; actual active time NOT MEASURED.
+- Next: approve and freeze a clean-base source-blob migration manifest for #67/#72/#111/#146, preserving projection outbox and renumbering the lease guard; only then implement retirement and adversarial tests.
+
