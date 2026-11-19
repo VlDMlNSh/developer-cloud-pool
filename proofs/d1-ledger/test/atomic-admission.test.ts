@@ -161,6 +161,27 @@ describe("atomic qualified A0 -> D1 admission", () => {
     });
   });
 
+  it("denies replay when receipt identity fields do not match admission", async () => {
+    const first = await admitQualifiedTask(env.POOL_DB, input);
+    expect(first.decision).toBe("ADMITTED_QUEUED");
+    await env.POOL_DB.prepare("DROP TRIGGER pool_admission_receipts_no_delete").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts WHERE admission_id = ?")
+      .bind(input.admissionId).run();
+    await env.POOL_DB.prepare(`
+      INSERT INTO pool_admission_commit_receipts (
+        admission_id, approval_id, task_key, executor_id, attempt_id, qualification_id,
+        evidence_digest, committed_at, assertion, dispatch_enabled
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 0)
+    `).bind(
+      input.admissionId, input.approval.approvalId, input.taskKey, input.executorId,
+      "forged-attempt-identity", input.route.qualificationId, "f".repeat(64), NOW
+    ).run();
+    const replay = await admitQualifiedTask(env.POOL_DB, input);
+    expect(replay).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
+    });
+  });
+
   it("rejects revoked route evidence before consuming approval", async () => {
     await env.POOL_DB.prepare(`
       UPDATE pool_route_qualifications
