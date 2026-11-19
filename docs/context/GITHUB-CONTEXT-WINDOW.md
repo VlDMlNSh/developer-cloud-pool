@@ -2259,3 +2259,14 @@ Checkpoint: [Pass 10 checkpoint](../checkpoints/2026-11-19-pass10-canonical-d1-i
 - Report: [Pass 13 launch critical path and estimate](../reports/2026-11-19-pass13-contour-a-launch-estimate.md).
 - Checkpoint: [Pass 13 checkpoint](../checkpoints/2026-11-19-pass13-contour-a-launch-estimate-checkpoint.md).
 - Contour A: NOT ACCEPTED. Contour B: DEFERRED.
+
+
+## Cross-chat continuation master prompt — 2026-11-19
+
+- Added the reusable cross-chat continuation instruction at `docs/prompts/MASTER-PROMPT-CLOUD-POOL-CONTINUATION-2026-11-19.md`.
+- GitHub commit creating the prompt: `648166d04913fd54d76bae32bfeff5f2a44eba2b`.
+- Verified read-back: blob SHA `12dc6609b7e0fa825682d5ff72d0f79d54e64cbd`; file content was retrieved and checked for opening and closing sections.
+- Prompt records the current Contour A priority, Issue #140's local/no-secret boundary, live-state refresh requirements, PR #146 head discrepancy, next bounded D1 lineage audit, test invariants, executor restrictions, candidate-project inventory, and required evidence/status reporting.
+- This is a documentation-only update. No runtime code, workflow, schema, registry, secret, hosted resource, dispatch, deployment or production state changed. Tests NOT RUN; exact-head CI NOT VERIFIED.
+- Contour A remains NOT ACCEPTED / BLOCKED for hosted qualification; Contour B remains DEFERRED.
+- Next: in a new chat, paste `/next` after opening the master prompt; first refresh all live GitHub refs and continue the exact PR #67/#72 migration/table/trigger/API lineage audit under Issue #140.
