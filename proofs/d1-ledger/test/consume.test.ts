@@ -51,6 +51,7 @@ describe("D1 single-use approval ledger", () => {
 
     expect(results.filter((result) => result.decision === "ALLOW_ONCE")).toHaveLength(1);
     expect(results.filter((result) => result.decision === "DENY")).toHaveLength(11);
+    expect(results.every((result) => result.dispatch === false && result.executionAuthorized === false)).toBe(true);
 
     const stored = await env.POOL_DB.prepare(
       "SELECT state, consumed_at FROM pool_approval_ledger WHERE approval_id = ?"
@@ -69,6 +70,7 @@ describe("D1 single-use approval ledger", () => {
       decision: "DENY",
       state: "needs-review",
       dispatch: false,
+      executionAuthorized: false,
       reason: "NO_MATCH_OR_ALREADY_CONSUMED"
     });
   });
@@ -108,6 +110,7 @@ describe("D1 single-use approval ledger", () => {
       decision: "DENY",
       state: "needs-review",
       dispatch: false,
+      executionAuthorized: false,
       reason: "INVALID_APPROVAL_BINDING"
     });
   });
@@ -118,6 +121,7 @@ describe("D1 single-use approval ledger", () => {
       decision: "DENY",
       state: "needs-review",
       dispatch: false,
+      executionAuthorized: false,
       reason: "STORAGE_UNAVAILABLE"
     });
   });
@@ -140,6 +144,7 @@ describe("D1 single-use approval ledger", () => {
       decision: "DENY",
       state: "needs-review",
       dispatch: false,
+      executionAuthorized: false,
       reason: "STORAGE_OUTCOME_AMBIGUOUS"
     });
   });
