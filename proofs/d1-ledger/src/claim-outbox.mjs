@@ -3,7 +3,7 @@ import { consumeApproval } from "./consume.mjs";
 const SHA40 = /^[a-f0-9]{40}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const NUMERIC_ID = /^[0-9]+$/;
-const ALLOWED_PROFILES = new Set(["dsh-headless-probe"]);
+const ALLOWED_PROFILES = new Set(["jarvis-code-sandbox-v1"]);
 const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function deny(reason) {
