@@ -2226,3 +2226,17 @@ Checkpoint: [Pass 10 checkpoint](../checkpoints/2026-11-19-pass10-canonical-d1-i
 - Pass 11 checkpoint: `docs/checkpoints/2026-11-19-pass11-pr146-d1-source-audit-checkpoint.md` (blob `f82db0a559feba8b2056a6220ed4d68a69cfd235`).
 - Pass 11 tests: NOT RUN. Exact-head CI: NOT VERIFIED. Contour A: NOT ACCEPTED. Contour B: DEFERRED.
 - Next: implement a minimal no-secret adapter-contract test pass on the clean current-base branch, covering both flags, legacy-path isolation and attempt-bound lease enforcement; then run local Workers-runtime tests and exact-head CI.
+
+## Pass 12 — current-base integration gate (2026-11-19)
+
+- Status: VERIFIED repository-state and source-lineage audit; implementation NOT RUN.
+- Current default baseline remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; Issue #140 OPEN and local no-secret only.
+- PR #145/#146/#147 remain OPEN, DRAFT, unmerged. PR #146 old exact-head `9d32c4943ae87f5855ab05d42a4ba12d1c205211` had Pool Contract Validation `44522152749` SUCCESS and Isolated D1 Ledger Proof `44522152799` SUCCESS; these are isolated old-head proof, not current-base integration.
+- Current default `.github/pool-executor-registry.json` is absent (Contents API 404); no executor registry activation is present on baseline.
+- Five candidate branches remain diverged from current default: ledger 55/1, Actions adapter 57/3, lease/fencing 82/144, integration plan 4/1, atomic admission 36/3 ahead/behind. No wholesale transplant approved.
+- Profile ID `jarvis-code-sandbox-v1` is recorded in PR #146 contract as conversation-confirmed and immutable, but profile status remains PROPOSED / NOT QUALIFIED / NOT ENABLED. This does not approve runtime activation.
+- No code, SQL, workflow, registry, route or secret changed. Tests NOT RUN. No new CI initiated.
+- Pass 12 report: `docs/reports/2026-11-19-pass12-current-base-integration-gate.md`.
+- Pass 12 checkpoint: `docs/checkpoints/2026-11-19-pass12-current-base-integration-gate-checkpoint.md`.
+- Next: pin exact PR #67/#72 lineage commits, map table/trigger/API ownership, then selectively port a coherent minimal adapter/lease slice with explicit two-flag fail-closed tests.
+- Contour A: NOT ACCEPTED. Contour B: DEFERRED.
