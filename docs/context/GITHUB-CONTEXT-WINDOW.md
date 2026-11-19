@@ -2407,3 +2407,23 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge, production mutation or governance change.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 20 (2026-11-19; D1 lineage/outbox audit)
+
+- Revalidated refs: default `Основной` `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (signature verified); integration branch equals default; PR #146 candidate `4aeb9bddecd747ca533ba5619be83fc4809e2a95` (unsigned/unverified); docs branch was `3281717fba765a7d127c221ce6e85f5debf3988c`.
+- PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; PR #72 head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31` stacked on #67; PR #111 head `687196738782432797bf394f1342cb9df19f478f`; PR #146 remains OPEN/DRAFT/UNMERGED. Issue #140 OPEN; owner bounded non-production authorization comment #7014947185 remains present. PR #146 reviews 0, inline threads 0.
+- Pass20 source audit confirms #67/#72 migrations 0001–0010, #72 0011 admission, #111 0006 lease guard, and #146 CODE-profile 0001 + 0006 lease guard + 0007 executor identity are competing/stacked lineages, not one manifest.
+- Migration 0001 from #67/#72/#111 hardcodes retired `dsh-headless-probe`; #146 0001 uses `jarvis-code-sandbox-v1`. Do not mix root versions.
+- #67 0006–0010 are projection outbox, retry/dead-letter, monotonic retry, immutable projection identity and comment ACK migrations. #111/#146 0006 is a lease guard, an ordinal collision; #146 0007 executor identity also collides with #67 projection 0007.
+- #72 0011/admit adapter hardcode retired profile. Its task-key digest omits executor ID while #146 logical task key includes executor ID. Requires semantic adaptation; no mass replacement.
+- Two task-ready paths remain active in the #146 candidate: approval-keyed `pool_task_outbox` via legacy trigger/claimAndEnqueue and task-keyed `pool_task_delivery_outbox` via claimLogicalTask. #146 0007 replaces the task-keyed trigger but does not drop `pool_approval_consumed_legacy_claim_outbox`. Decision: `pool_task_delivery_outbox` is the only candidate authoritative task-ready outbox; retire legacy writer/adapter additively and keep old tables inert pending retention review.
+- `pool_attempt_projection_outbox` is a distinct terminal-attempt projection queue, not a competing task-ready queue.
+- Proposed (NOT APPROVED/APPLIED) additive manifest: retain canonical #67 0001–0010 with CODE-profile 0001 variant; append new unique ordinals for legacy route retirement, executor identity, lease guard, and adapted CODE/executor-bound admission. Example ordinals 0011–0014 in Pass20 report. Do not edit already-applied migrations.
+- External component research: official Cloudflare D1 migrations docs and Cloudflare Actors monotonic SQL migration runner support sequential immutable migrations; transactional outbox references support atomic domain+outbox write and at-least-once/dedup semantics. No external code imported.
+- Pass20 report: `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority.md`.
+- No SQL source change, local tests, hosted D1, secret reads, provider calls, executor launch, dispatch, agents, deployment, merge or governance changes.
+- Default status pending/0 contexts — NOT VERIFIED. PR #146 candidate exact-head CI remains SUCCESS: D1 PR `44582839780`, Pool Contract PR `44582839702`, D1 push `44582828669`; does not test proposed composed manifest.
+- Next: construct a clean-base migration composition fixture with adversarial tests for one task-ready writer/reader, inert legacy path, independent projection outbox, executor-inclusive task identity, lease guard, and CODE admission/revocation. Exact-head CI + independent review before hosted D1.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
