@@ -7,7 +7,8 @@ const ALLOWED_PROFILES = new Set(["jarvis-code-sandbox-v1"]);
 const EXECUTOR_ID = /^(claude-code|codex|gemini)-[1-9][0-9]*$/;
 
 function deny(reason) {
-  return { decision: "DENY", state: "needs-review", dispatch: false, reason };
+  return { decision: "DENY", state: "needs-review", dispatch: false,
+        executionAuthorized: false, reason };
 }
 
 function validInput(binding, now) {
@@ -112,6 +113,7 @@ export async function claimLogicalTask(db, binding, now) {
       outboxId: attached.outbox_id,
       outboxState: attached.outbox_status,
       dispatch: false,
+        executionAuthorized: false,
       reason: first ? "APPROVAL_CONSUMED_AND_TASK_ATTACHED" : "IDEMPOTENT_TASK_ATTACHMENT"
     };
   } catch {
@@ -164,7 +166,8 @@ export async function claimAndEnqueue(db, binding, now) {
     return {
       decision: result?.success === true && result?.meta?.changes > 0 ? "CLAIMED_ONCE" : "ALREADY_ENQUEUED",
       state: existing.status, claimId, outboxId, outboxState: existing.outbox_status,
-      dispatch: false, reason: "LOCAL_PER_APPROVAL_PROOF"
+      dispatch: false,
+        executionAuthorized: false, reason: "LOCAL_PER_APPROVAL_PROOF"
     };
   } catch {
     return deny("CLAIM_TRANSACTION_AMBIGUOUS");
