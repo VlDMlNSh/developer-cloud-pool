@@ -2305,3 +2305,15 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Actual elapsed duration: NOT MEASURED.
 - No comments, labels, state changes, merge, dispatch, secrets, provider calls, deployment or production writes were made.
 - Next: Master Prompt 4 — compare active PR base/head against current default HEAD and classify ancestry.
+
+
+### Stage 1 — Master Prompt 4 completed (2026-11-19)
+- Status: VERIFIED for 13 high-priority integration PRs; ancestry of remaining open PRs NOT VERIFIED.
+- Frozen default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Current-base candidates among selected PRs: #146 (40 ahead, 0 behind) and #145 (7 ahead, 0 behind), merge base equals current default.
+- #143/#142/#141 diverged, 1 behind; #135/#116/#114/#112/#111/#125 diverged, 3 behind; #67/#72 diverged, 82 behind from older merge base.
+- Do not merge stale/diverged proof branches as-is. Selective transplant/requalification only after source and migration ownership review.
+- Full compare matrix: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
+- Actual elapsed time: NOT MEASURED.
+- No branch/PR state mutation, merge, dispatch, secrets, provider calls, hosted D1 or deployment.
+- Next: Master Prompt 5 — exact-head CI verification.
