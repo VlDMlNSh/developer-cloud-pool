@@ -36,7 +36,7 @@ All four expose `dispatch:false` but omit explicit `executionAuthorized:false` i
 
 ## Branch and path-fix findings
 - Branch `feat/issue140-canonical-admission-lease-2026-11-19` at `ee9265dfad98e098c8646dee0ea0da1af4789a87`: 22 ahead / 0 behind; 10 changed files are documentation-only. Not a code implementation; no CI/review verified.
-- GitHub Read Adapter path-segment branch exact current tip not independently revalidated. Historical SHA `dee17350864cb49e8c5dd41cf61859d77d3affca` only; exact-head CI NOT VERIFIED. Rebuild minimal dot-segment guard on fresh default base, not the 19-file old stack.
+- GitHub Read Adapter path-segment branch exact ref re-read: `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`; 38 ahead / 146 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`, 19 files. Exact-head Actions runs: 0; combined status pending / 0 contexts — NOT VERIFIED. Rebuild minimal dot-segment guard on fresh default base.
 
 ## Runtime and safety
 No deployed authenticated web console, hosted D1, enrolled executor, production provider route, durable worker execution or independent acceptance was established in this pass. No secret values or tokens were read. No dispatch, workflow invocation, agents, DSH, Resource Probe, provider/model calls, deployment, merge, hosted resource creation, variable/ruleset changes or Contour B work occurred.
