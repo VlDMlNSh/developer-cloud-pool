@@ -56,3 +56,15 @@ Contour A remains NOT ACCEPTED. Contour B remains DEFERRED.
 - Evidence is source-level desk review only; no runtime/security/license qualification and no tests run.
 - Issue #140 remains OPEN and controlling; Contour A NOT ACCEPTED; Contour B DEFERRED.
 - Next: continue Contour A admission/identity hardening. If later authorized, evaluate OpenJarvis API/sandbox first in an isolated no-secret harness; do not commercially adopt isair/Jarvis without separate written commercial license.
+
+
+## 2026-11-19 — Chat continuity and new-chat handoff
+
+- Owner explicitly requested preservation of the current chat, all proposed candidate projects/schemes and a master continuation prompt.
+- Continuity record: [2026-11-19 chat continuity and owner proposals](../reports/2026-11-19-chat-continuity-and-owner-proposals-record.md).
+- New-chat master prompt: [Continue Cloud Pool and restore full project context](../prompts/MASTER-PROMPT-CONTINUE-CLOUD-POOL-AND-RESEARCH-REGISTER-2026-11-19.md).
+- Candidate register includes OpenChamber, DeepSeek Harness, CUA Driver MCP, CUA MCP profile, llama-modchip, Stanford OpenJarvis and isair/Jarvis. Candidate roles, constraints, licenses, statuses and additive topology are retained. “DeepSeek-Ilama-modchip” is preserved as the user's earlier wording and interpreted only as the two researched projects unless a different exact repository is supplied.
+- ADDITIVE ONLY remains mandatory. Existing Claude Code/Gemini/provider routes and their identities, permissions, quotas, secrets scopes, workspaces and runtime paths must remain unchanged.
+- No implementation, tests, provider calls, secret access, dispatch, deployment, hosted D1 or merge occurred in this documentation-only handoff.
+- PR #147 remains a documentation working branch and must not be represented as canonical mainline or merged. Refresh live GitHub state in the next chat.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next action: restore live state, inspect Issue #140 and continue one bounded local/no-secret Contour A pass.
