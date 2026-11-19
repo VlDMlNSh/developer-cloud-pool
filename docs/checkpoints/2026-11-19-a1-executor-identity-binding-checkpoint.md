@@ -212,3 +212,10 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Time accounting: start/end/active/wait/Stage 2 cumulative NOT MEASURED. Stage 1 actual time NOT MEASURED.
 - Next: Prompt 3 — no-secret registry schema v2 + OIDC hardening + negative-first tests; keep registry empty and D1 migrations unchanged.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+### Final documentation reconciliation
+- Prompt 2 report blob: `5291e8eb8c1f6753eefd5df23f600c368dc82c87`.
+- Context Window blob after final reconciliation: `7ba85578fda10a852c53338e476f516127c99678`.
+- Execution Plan blob: `d62e3b11082a332632a4e9ce156eed567bc05df3`.
+- Branch HEAD before this checkpoint update: `58197b7ea01c75f7cf58e7a80a019f12d29cfe53`; the checkpoint update itself will advance the branch.
+- CI remains attached to code target `5eb07732a32e22694fcb47880d1dc29f0859020c`; subsequent commits are documentation-only, so latest docs HEAD has no new exact-head run.
