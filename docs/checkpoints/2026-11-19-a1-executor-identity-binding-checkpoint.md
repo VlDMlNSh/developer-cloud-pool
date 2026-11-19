@@ -179,3 +179,20 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 - Next: Stage 2 Executor Identity and Admission Security; research mature GitHub components and reconcile trust/revocation requirements before implementation.
 - No secrets, dispatch, provider, hosted resources, deployment, merge or governance mutation. Actual time NOT MEASURED.
 - Contour B DEFERRED.
+
+
+## 2026-11-19 — Stage 2 Prompt 1 — Executor Identity & Admission Security
+- Status: VERIFIED for research/design documentation only; no runtime implementation, executor activation or production authority change.
+- PR #146 was OPEN/DRAFT/UNMERGED at head `e10f675dbb55b7a10a97b111d1fa994e55b5431e`, base metadata `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; after documentation publication it advanced to `e67ba72164f6257ec5a50864a516813450d76a8b`.
+- Issue #140 remains OPEN and retains all local-only/no-secret restrictions.
+- Design: `docs/architecture/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Report: `docs/reports/2026-11-19-stage-02-prompt-01-executor-identity-admission-security.md`.
+- Design explicitly distinguishes workflow, runner, process, host and logical executor identity; OIDC proves workflow principal only.
+- Lifecycle: PENDING -> ACTIVE only with owner authorization and complete evidence; ACTIVE may be SUSPENDED/REVOKED; ACTIVE may EXPIRE; REVOKED/EXPIRED terminal; reactivation requires fresh evidence/new epoch where allowed.
+- Admission binding includes executor_id, identity_epoch, registry_revision, capability digest, issuer/audience/subject, workflow SHA/run/attempt, evidence digests, lease expiry and monotonic fencing generation.
+- Negative matrix includes wrong issuer/audience/subject, expired token, unknown/pending/suspended/revoked/expired executor, replay, ID substitution, runner/host/process mismatch, stale lease/fence, capability escalation and cross-executor secret-scope access.
+- CI combined status query for prior code head returned no entries; CI NOT VERIFIED for that query. Current default HEAD not independently re-resolved; old base SHA is last-known only.
+- No source/workflow/test/registry/governance change; no secrets, provider calls, dispatch, hosted D1, deployment or merge.
+- Actual start: 2026-11-19 14:31 +03:00; exact end/active/wait durations NOT MEASURED. Stage 2 cumulative time NOT MEASURED.
+- Next: Stage 2 Prompt 2 — exact contract/verifier/schema inspection and minimal revocation/identity-epoch negative-test proposal.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
