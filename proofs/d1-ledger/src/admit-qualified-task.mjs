@@ -228,16 +228,36 @@ export async function admitQualifiedTask(db, input) {
              q.route_id, q.provider_id, q.model_id, q.issuer_id, q.account_ref,
              q.credential_handle_ref, q.quota_domain_id, q.cost_class,
              q.capability_id, q.capability_profile, q.registry_version, q.schema_version,
-             q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version
+             q.evidence_ref, q.observed_at, q.valid_until, q.revocation_version,
+             a.attempt_number AS admission_attempt_number, a.dispatch_enabled,
+             c.assertion AS receipt_assertion, c.executor_id AS receipt_executor_id,
+             c.dispatch_enabled AS receipt_dispatch_enabled,
+             o.status AS outbox_status, o.event_type AS outbox_event_type,
+             o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
+             o.evidence_digest AS outbox_evidence_digest,
+             t.current_attempt_id AS task_current_attempt_id,
+             t.attempt_number AS task_attempt_number
         FROM pool_admissions a
-        JOIN pool_attempts p ON p.attempt_id = a.attempt_id
+        JOIN pool_attempts p ON p.attempt_id = a.attempt_id AND p.task_key = a.task_key
         JOIN pool_approval_ledger l ON l.approval_id = a.approval_id
         JOIN pool_tasks t ON t.task_key = a.task_key
         JOIN pool_route_qualifications q ON q.qualification_id = a.qualification_id
+        LEFT JOIN pool_admission_commit_receipts c ON c.admission_id = a.admission_id
+        LEFT JOIN pool_task_delivery_outbox o ON o.task_key = a.task_key
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
+      if (prior.receipt_assertion !== 1 || prior.receipt_executor_id !== input.executorId ||
+          prior.receipt_dispatch_enabled !== 0 || prior.dispatch_enabled !== 0 ||
+          prior.outbox_status !== "pending" || prior.outbox_event_type !== "pool.task.ready" ||
+          prior.outbox_admission_id !== prior.admission_id ||
+          prior.outbox_attempt_id !== prior.attempt_id ||
+          prior.outbox_evidence_digest !== prior.evidence_digest ||
+          prior.task_current_attempt_id !== prior.attempt_id ||
+          prior.task_attempt_number !== prior.admission_attempt_number) {
+        return deny("ADMISSION_COMMIT_RECEIPT_MISMATCH");
+      }
       const active = await db.prepare(`
         SELECT 1 AS ok FROM pool_route_qualifications
          WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
