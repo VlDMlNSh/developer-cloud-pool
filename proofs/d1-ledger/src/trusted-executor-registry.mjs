@@ -45,7 +45,7 @@ export async function resolveTrustedExecutorAssignment({
   if (typeof executorId !== "string" || !EXECUTOR_ID.test(executorId)) {
     return deny("INVALID_EXECUTOR_ID");
   }
-  if (profile !== "dsh-headless-probe") return deny("PROFILE_NOT_ALLOWED");
+  if (profile !== "jarvis-code-sandbox-v1") return deny("PROFILE_NOT_ALLOWED");
   if (typeof fetchImpl !== "function") return deny("FETCH_UNAVAILABLE");
   if (apiRoot !== API_ROOT) return deny("UNTRUSTED_GITHUB_API_ROOT");
 
