@@ -2449,3 +2449,59 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Branch HEAD before this Context Window update: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`.
 - Prompt 2 report remains blob `5291e8eb8c1f6753eefd5df23f600c368dc82c87`; execution plan blob `d62e3b11082a332632a4e9ce156eed567bc05df3`.
 - Code audit/CI target `5eb07732a32e22694fcb47880d1dc29f0859020c`; all later branch commits in this pass are documentation-only.
+
+
+## 2026-11-19 — Additive OpenChamber / DeepSeek / CUA / llama-modchip research decision
+
+- Status: RESEARCH RECORDED; no integration, runtime deployment, dispatch, provider calls, secret access or model download.
+- Owner decision: ADDITIVE ONLY. Claude Code remains unchanged as an existing executor. Existing Claude Code/Gemini identities, routes, profiles, credentials, permissions, quota domains, workspaces and configuration must not be replaced, disabled, migrated or modified.
+- Candidate components receive new distinct identities and isolated resources only. Rollback may remove only new candidate resources. No historical task/identity migration.
+- Evaluation report: `docs/reports/2026-11-19-additive-openchamber-deepseek-cua-llama-modchip-evaluation.md`.
+- OpenChamber upstream README blob `183c364fa7b85a398b90a90f7a6d6ae619e76da9`: workspace UI for Desktop/Web/PWA/VS Code/iOS/Android; CLI/Web and VS Code use OpenCode CLI. Direct DSH integration NOT VERIFIED.
+- DeepSeek Harness README blob `7941e30f7bdca9391befe39b9115d211157fa42d`: plugin-oriented agent runtime, Developer Preview. Safety notice blob `2b76f00e0619ee69553afdc507df361080f4d3ac` says unaudited and not production-ready; code/command/plugin/file/process/network access risks.
+- CUA Driver MCP package blob `cb31a5d490bf55e7f9f2d0b9ff7097be9a8b042c`: experimental MCP bridge to installed local driver; one shared desktop, no built-in Session serialization. Separate CUA MCP profile blob `a4c7b4e6cb0477e38da30e8348e6108db55e703a`; unattended allow-consent is not an acceptable default.
+- llama-modchip README blob `b237355965107a2f39f2969a78d2327d2dfc9bbf`: upstream v3.0 local inference/server claims; benchmarks and DeepSeek model fit are NOT independently verified. Repository license blob `d4a273041cabd59f1cbd3f12b9f89bfd3c922937` is Apache-2.0; model-weight/dependency licenses require separate review.
+- Preliminary dispositions: OpenChamber ADAPT/EVALUATE; DeepSeek Harness LAB-ONLY/NOT QUALIFIED; CUA Driver MCP isolated desktop candidate/NOT QUALIFIED; llama-modchip optional local inference candidate/NOT QUALIFIED; Tor NOT REQUIRED/NOT IN SCOPE.
+- MCP is not authorization or sandboxing. Any future candidate must use independent identity, capability, quota, secret scope, workspace, network policy, audit and revocation; Cloud Pool Gateway/Registry/Policy remain authority.
+- Next: inspect provider/API compatibility, immutable releases, dependency/model licenses, provenance, CUA platform permissions and isolation; prepare additive-only ADR and non-regression tests.
+- PR #146 remains the A1 working base; this research is a documentation-only stacked proposal, not merged into default branch. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-19 — Follow-up live state refresh after additive runtime research
+
+- Verified default ref `refs/heads/Основной` at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #146 OPEN/DRAFT/UNMERGED; head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; base default HEAD; formal reviews 0.
+- PR #147 OPEN/DRAFT/UNMERGED; head `447ed051926eea32deb754b0e2387ef345611a38`; base PR #146 head; 3 documentation files; formal reviews 0. Stacked proposal only.
+- Exact-head CI on PR #146 SHA `9d32c4943ae87f5855ab05d42a4ba12d1c205211`: Pool Contract Validation run `44522152749` SUCCESS; Isolated D1 Ledger Proof run `44522152799` SUCCESS. These runs do not establish live/hosted execution.
+- Issue #140 remains OPEN. Prohibitions remain: hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge.
+- Active ruleset #26550182 on `refs/heads/Основной`: PR required, review-thread resolution required, 0 required approvals, code-owner review disabled, no bypass actors. Classic branch protection details NOT VERIFIED.
+- No code/config/workflow/runtime/provider/secret/hosted-resource change; no tests run in this documentation refresh; no dispatch/deployment/merge.
+- Owner decision remains ADDITIVE ONLY: preserve Claude Code and all existing identities, routes, profiles, permissions, quota domains, workspaces and secret scopes. Candidate components remain NOT QUALIFIED / NOT DEPLOYED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED. Next engineering priority remains Stage 2 executor identity/admission hardening and Issue #140 local-only proof; do not activate candidate integrations before applicable gates.
+
+
+## 2026-11-19 — OpenJarvis / isair-Jarvis additive candidate decision
+
+- Evaluation report: `docs/reports/2026-11-19-openjarvis-isair-jarvis-additive-evaluation.md`.
+- Stanford OpenJarvis upstream: `open-jarvis/OpenJarvis`, main SHA `427c2dd11d180ac254a03e92c5fb01189fb4b23b`, repository metadata/license file Apache-2.0, pushed 2026-11-19T10:14:40Z. Preliminary ADAPT/EVALUATE; NOT QUALIFIED. Candidate role is a separately isolated local AI/agent runtime and evaluation substrate, not Cloud Pool authority, scheduler, sandbox or admission system.
+- isair/Jarvis upstream: `isair/jarvis`, main SHA `9d902577fd7c8d4fe05df7e19c81aaec36c79902`, latest observed release `v2.9.0` (2026-11-12), repository license metadata NOASSERTION; checked-in custom license limits use to personal/educational/research/non-commercial unless separate commercial license is obtained. Commercial adoption BLOCKED pending written license and review. Candidate role is research-only desktop voice UI, not a privileged control plane; no mobile app according to README.
+- The two projects are distinct and must not be conflated. Their potential roles are hypotheses; no direct compatibility or production suitability is verified.
+- Owner decision remains ADDITIVE ONLY: Claude Code and all existing executor/provider routes, identities, profiles, permissions, quota domains, secret scopes, workspaces and runtime paths remain untouched. New candidates require new isolated identities/resources and independent qualification.
+- MCP is not authorization or sandboxing. No installs, code execution, MCP connections, model downloads, provider calls, secret access, dispatch, hosted resource or deployment occurred. No tests run; source-level desk review only.
+- Issue #140 remains OPEN and prohibits hosted D1, secrets/variables inspection, provider calls, dispatch, deployment and merge. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next engineering priority remains Contour A admission/identity hardening. Candidate qualification is deferred until governance allows it; OpenJarvis should be reviewed first for API/sandbox/isolation, while isair/Jarvis remains blocked for commercial use until a written commercial license is obtained and reviewed.
+
+
+## 2026-11-19 — Full chat continuity and new-chat handoff record
+
+- Owner requested that this conversation, all candidate projects and the proposed additive architecture scheme be preserved in GitHub, plus a ready master prompt for the next chat.
+- Chat continuity record: `docs/reports/2026-11-19-chat-continuity-and-owner-proposals-record.md`.
+- New-chat master prompt: `docs/prompts/MASTER-PROMPT-CONTINUE-CLOUD-POOL-AND-RESEARCH-REGISTER-2026-11-19.md`.
+- Candidate reports retained: `docs/reports/2026-11-19-additive-openchamber-deepseek-cua-llama-modchip-evaluation.md` and `docs/reports/2026-11-19-openjarvis-isair-jarvis-additive-evaluation.md`.
+- Complete candidate register: OpenChamber; DeepSeek Harness; CUA Driver MCP; CUA MCP profile; llama-modchip; Stanford OpenJarvis; isair/Jarvis. Their distinct roles, source links/revisions, license/security concerns, preliminary dispositions and qualification gates are preserved in the master prompt and reports.
+- User's earlier phrase “DeepSeek-Ilama-modchip” is retained as original wording; current interpretation is two distinct researched repositories (DeepSeek Harness and llama-modchip), not a fabricated third repository.
+- Proposed topology remains conceptual and ADDITIVE ONLY: Cloud Pool is the sole admission/identity/capability/routing/quota/lease/revocation/audit/dispatch authority; existing Claude Code, Gemini and provider routes remain unchanged; optional candidates attach only through separately authorized, least-privilege adapters and isolated resources. MCP is not authorization or sandboxing.
+- Preserve all existing executor IDs, profiles, routes, credentials/secrets scopes, quota domains, permissions, workspaces, runtime paths and historical task IDs. New candidates need distinct identity/resources and independent qualification; rollback must remove only candidate resources.
+- No candidate was installed, executed, downloaded, connected, admitted, dispatched or deployed. No tests run; no secrets inspected; no provider calls; no hosted D1 or merge. This was documentation-only.
+- Issue #140 governance and PR #147 status must be refreshed live in the next chat. PR #147 is a working documentation branch, not canonical default branch and not merged.
+- Current disposition remains Contour A NOT ACCEPTED; Contour B DEFERRED. Next step: refresh GitHub state and continue one bounded local/no-secret Contour A admission/identity/lease proof task.
