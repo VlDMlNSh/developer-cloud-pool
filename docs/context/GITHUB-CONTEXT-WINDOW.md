@@ -2216,3 +2216,17 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Compare API: 3 commits ahead / 0 behind; changed files are the Pass 6 report, checkpoint and this Context Window update. Exact-head workflow-run lookup returned an empty list; CI is NOT VERIFIED, not passed. Formal review submissions: 0.
 - PR create response initially reported `mergeable:false`; no mergeability or merge readiness is inferred from that response. Re-read before any future integration.
 - Read-back verified report blob `e8550ad2d65b2f02c534285dbd25c56d7e346404`, checkpoint blob `da5191bf97d4ec7793da5278e4099d9e6e9df0ae`, Context Window blob `9aad39e4167689c643c508f6e2838ae8e7282e48`.
+
+
+## Pass 7 — Contour A integrated acceptance runbook — 2026-11-19
+
+- Current default branch remains observed as `Основной` @ `68183828cf7934e89109310c8f99281be4eb7ed8`; no newer default commit was seen in the latest-commit search. Documentation branch `docs/next-2026-11-19-profile-boundary-blocker` is 5 commits ahead / 0 behind that baseline before this runbook update; it is not canonical default history.
+- Added `docs/acceptance/CONTOUR-A-INTEGRATED-ACCEPTANCE-RUNBOOK.md`, commit `0bf6d2ab11f75cd843d1cd57ece2cc6fef592033`. The runbook defines A0–A7 with ordered dependencies and an acceptance matrix.
+- A0 baseline/governance; A1 owner-authored CODE profile identity; A2 one D1 migration lineage; A3 trusted /next admission and lease fencing; A4 sandbox and provenance; A5 end-to-end control-plane composition; A6 authenticated persistent web preview; A7 independent qualification and owner acceptance.
+- Critical blocker unchanged: exact immutable CODE profile ID/contract not found in owner-authored evidence. `.fcc` is a filesystem path, not an identifier; legacy `dsh-headless-probe` is not reusable. No profile-bound SQL/code changed.
+- Canonical D1 decision remains PR #67 migrations 0001–0010 + PR #72 migration 0011/composite adapter, selectively transplanted to clean current base; reconcile PR #111 lease guard as migration 0012. Do not stack competing PR #111/#114/#125 migration roots.
+- PR #143 isolated proof exact head `d35185f95c96f9e53c3cb8fca269ed4bd435129c`, reported D1 62/62 and contract CI success; not production-integrated. PR #144 latest known head `610290c1fb3b3c3e89fb951ef00beae266aef32f`; workflow-run and combined-status readbacks empty, therefore CI NOT VERIFIED.
+- Documentation branch only; no runtime/schema/workflow change, hosted D1 write, secret read, provider call, dispatch, deployment, merge or independent review. Dispatch and execution authorization remain false.
+- Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: owner-authored immutable CODE profile contract; then fresh baseline and clean-base D1 integration under Issue #140 with negative-first tests.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
