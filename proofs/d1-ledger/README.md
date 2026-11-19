@@ -9,8 +9,9 @@ The clean-base candidate starts from the owner-approved CODE capability root and
 - 0001: CODE approval ledger with exact `jarvis-code-sandbox-v1` profile constraint.
 - 0002–0005: historical per-approval tables, logical task identity, immutable attempts and non-authorizing reconciliation.
 - 0006–0010: independent terminal-attempt projection outbox, bounded delivery retries, identity immutability and at-most-once comment-post state.
+- 0011: immutable executor identity on approvals and logical tasks; replaces the task-keyed trigger to require executor match and disables the legacy approval-keyed claim/outbox trigger.
 
-The next forward-only integration stage will retire the legacy per-approval claim/outbox writer and add atomic qualified admission, lease fencing and executor identity binding. Do not infer that those later migrations have been applied.
+Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. The canonical task-key algorithm must include executor ID in its serialized input before atomic admission is integrated. Atomic qualified admission, lease guard and the full legacy-table write-denial migration remain outstanding.
 
 ## Runtime and test boundary
 
