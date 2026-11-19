@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS pool_approval_ledger (
   repository_id TEXT NOT NULL CHECK (length(repository_id) > 0 AND repository_id NOT GLOB '*[^0-9]*'),
   issue_number INTEGER NOT NULL CHECK (issue_number > 0),
   target_sha TEXT NOT NULL CHECK (length(target_sha) = 40 AND target_sha NOT GLOB '*[^0-9a-f]*'),
-  profile TEXT NOT NULL CHECK (profile = 'dsh-headless-probe'),
+  profile TEXT NOT NULL CHECK (profile = 'jarvis-code-sandbox-v1'),
   envelope_digest TEXT NOT NULL CHECK (length(envelope_digest) = 64 AND envelope_digest NOT GLOB '*[^0-9a-f]*'),
   expires_at INTEGER NOT NULL CHECK (expires_at > 0),
   consumed_at INTEGER,
