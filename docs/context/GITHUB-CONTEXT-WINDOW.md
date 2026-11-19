@@ -2482,3 +2482,24 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: create implementation branch from frozen default SHA, transplant selected blobs 0001–0013, author 0014, then run fresh-database and frozen-upgrade Workers-runtime adversarial tests.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
+
+
+---
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 23 (clean-base D1 migration foundation)
+
+- Default branch `Основной` re-read: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; this is the immutable parent of implementation PR #148.
+- Issue #140 OPEN. PR #148 is OPEN / DRAFT / UNMERGED, base SHA `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, branch `feat/pass23-d1-clean-base-foundation-2026-11-19`, final tested head `613790e739aece5028dca54ae82b2d853fa95642`, 19 added files, 20 commits ahead and 0 behind.
+- Clean-base migrations 0001–0010 transplanted: 0001 CODE root blob `c14951239dfd6f93e20184f46373a8d13b62a69f`; 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; 0006 `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`; 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; 0008 `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; 0009 `86919425f498dc634329bb783a3ca6ae7a0ff6a1`; 0010 `30ac9d0ed0cbede9586c365578c606b47bcce1a7`.
+- Added pinned Workers Vitest harness, lockfile, inert 404 Worker, README and fresh-D1 test. Exact-head D1 run `44589681768` COMPLETED/SUCCESS, job `135791975727`; npm ci, syntax check, and Workers runtime test passed, 1 test file / 3 tests. Exact-head Pool Contract Validation run `44589681751` COMPLETED/SUCCESS, job `135791980028`.
+- First D1 run `44589517309` failed only because test expected empty task-ready queue after an earlier test had inserted one row into the shared fixture; assertion was corrected and rerun passed.
+- Projection outbox independence in Pass 23 is schema-level only. No projection lifecycle/retry tests yet.
+- Not implemented: migration 0011 CODE/executor-bound atomic admission; 0012 lease guard; 0013 executor identity binding; 0014 forward-only retirement; adapter changes; full replay/storage ambiguity/lease/projection adversarial matrix.
+- No hosted D1, secrets, provider calls, workflow dispatch, executor launch, deployment, merge or governance change. Detailed current ruleset read-back remains NOT VERIFIED.
+- Implementation PR #148: https://github.com/VlDMlNSh/developer-cloud-pool/pull/148
+- Pass 23 report: `docs/reports/2026-11-19-pass-23-clean-base-d1-migration-foundation.md`; checkpoint: `docs/checkpoints/2026-11-19-pass-23-clean-base-d1-migration-foundation.md`.
+- Docs continuation PR #145 remains OPEN / DRAFT / UNMERGED; current head before this Context Window update: `05417d3b252141a85385f95c9688a7a8317a8ceb`.
+- Effort estimate: previous 15.5–20.5h equivalent plus Pass 23 estimated 2.5–3.5h = 18–24h deliverable-equivalent complete; 21–27h estimated remaining (central 24h). Actual active time NOT MEASURED.
+- Next: continue on PR #148 clean-base branch with CODE/executor-bound admission migration 0011, lease guard 0012, executor identity 0013, then legacy retirement 0014; add schema-0010 upgrade and adversarial tests.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
