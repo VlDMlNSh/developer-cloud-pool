@@ -226,3 +226,15 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - No source, workflow, tests, registry state, production authority, governance or branch protection changed. No secrets, provider calls, hosted D1, dispatch, deployment or merge.
 - Actual active duration, end time, waiting time and Stage 2 cumulative time NOT MEASURED.
 - Next: Stage 2 Prompt 2 — inspect exact registry schema, OIDC verifier, identity contracts and admission policy at a freshly resolved immutable SHA; map gaps and propose minimal local negative tests.
+
+## Stage 2 — Prompt 2 completed (2026-11-19)
+- Status: VERIFIED for source audit/remediation specification only.
+- Audit target PR #146 head `5eb07732a32e22694fcb47880d1dc29f0859020c`; default branch HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Report: `docs/reports/2026-11-19-stage-02-prompt-02-executor-registry-oidc-contract-audit.md`.
+- Confirmed empty executor registry, fail-closed default-branch-pinned registry resolver, RS256 GitHub OIDC workflow-principal verification, immutable executor_id equality binding in migration 0007.
+- Missing: lifecycle/epoch/revocation, workflow run-attempt/ref/SHA/event claims, strict token age/NumericDate, nonce/PoP, runner/process/host attestation, full auth-to-D1 composition, explicit executionAuthorized:false across every adapter.
+- Exact-head-associated Pool Contract Validation 44515922163 and D1 Ledger Proof 44515922122 SUCCESS; D1 suite 4 files / 63 tests passed on PR merge commit `d1de9785afd505400cfe781b95144a15bd647d5d` for PR head `5eb0773...`.
+- No code/schema/test changes or prohibited operations. Issue #140 remains OPEN and all restrictions preserved.
+- Ruleset #26550182 active but requires zero approvals; no independent review on PR #146.
+- Actual time NOT MEASURED.
+- Next: Stage 2 Prompt 3 — implement minimal registry lifecycle v2 and OIDC verifier hardening with synthetic negative tests; registry remains empty, no D1 migration or runtime activation.
