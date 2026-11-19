@@ -129,3 +129,15 @@ Master Prompt 4 — compare active PR base/head against current default HEAD and
 - Detailed report: `docs/reports/2026-11-19-stage-01-prompt-04-pr-ancestry.md`.
 - No branch or PR mutation. Actual elapsed time: NOT MEASURED.
 - Next: Master Prompt 5 — inspect exact-head CI evidence for the relevant PRs.
+
+
+## Master Prompt 5 — completed
+- Status: VERIFIED for two inspected exact-PR-head workflow checks; not exhaustive for all workflows or required checks.
+- PR #146 head `8ebd5ff26e0f144616b6ed5d6fe48ca51d18c7ae`, base/default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pool Contract Validation run `44505922169` SUCCESS; six workflow YAML files parsed; security/contract invariants passed; dispatch gate false.
+- Isolated D1 Ledger Proof run `44505922254` SUCCESS; 4 test files and 63 tests passed after dependency install and syntax check.
+- Both jobs checked out PR merge commit `ddf6a9fae1c574321635231bdb48d86f66d608f2`; metadata/checks identify PR head SHA. Legacy commit status remains PENDING with zero contexts; global required-check completeness NOT VERIFIED.
+- Artifact ID `14518894284`; SHA-256 `759b22bdb8798d9e46c57ed08d2d59e2eb4005491c4233cfe0d2ec1621dddfaf`.
+- Report: `docs/reports/2026-11-19-stage-01-prompt-05-actions-ci-audit.md`.
+- No dispatch, rerun, merge, deployment, secret inspection, provider calls or hosted D1 use. Actual time NOT MEASURED.
+- Next: Master Prompt 6 — inspect rulesets and branch protection.
