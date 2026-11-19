@@ -54,7 +54,7 @@ describe("atomic D1 claim and transactional outbox", () => {
     );
     expect(results.filter((r) => r.decision === "CLAIMED_ONCE")).toHaveLength(1);
     expect(results.filter((r) => r.decision === "ALREADY_ENQUEUED")).toHaveLength(11);
-    expect(results.every((r) => r.dispatch === false)).toBe(true);
+    expect(results.every((r) => r.dispatch === false && r.executionAuthorized === false)).toBe(true);
 
     const claims = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims").first();
     const outbox = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_outbox").first();
@@ -92,6 +92,7 @@ describe("atomic D1 claim and transactional outbox", () => {
     expect(mismatchedRetry).toMatchObject({
       decision: "DENY",
       dispatch: false,
+      executionAuthorized: false,
       reason: "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED"
     });
   });
@@ -113,6 +114,7 @@ describe("atomic D1 claim and transactional outbox", () => {
     expect(result).toMatchObject({
       decision: "DENY",
       dispatch: false,
+      executionAuthorized: false,
       reason: "CLAIM_NOT_CREATED_OR_ALREADY_CONSUMED"
     });
     const count = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_claims WHERE approval_id = ?")
@@ -131,6 +133,7 @@ describe("atomic D1 claim and transactional outbox", () => {
     expect(result).toMatchObject({
       decision: "DENY",
       dispatch: false,
+      executionAuthorized: false,
       reason: "CLAIM_TRANSACTION_AMBIGUOUS"
     });
 
@@ -164,7 +167,7 @@ describe("canonical task identity across independent approvals", () => {
     expect(results.every((r) => r.decision === "TASK_CREATED_OR_ATTACHED")).toBe(true);
     expect(results[0].taskKey).toBe(results[1].taskKey);
     expect(results[0].outboxId).toBe(results[1].outboxId);
-    expect(results.every((r) => r.dispatch === false)).toBe(true);
+    expect(results.every((r) => r.dispatch === false && r.executionAuthorized === false)).toBe(true);
 
     const tasks = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_tasks").first();
     const approvals = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_task_approvals").first();
