@@ -2443,3 +2443,9 @@ This update is being recorded on working branch `feat/a1-jarvis-code-sandbox-pro
 - Checkpoint blob: `9b4d2e22ee481f32000d9808ac2015b42b1bf36a`.
 - Execution Plan blob: `d62e3b11082a332632a4e9ce156eed567bc05df3`.
 - CI evidence applies to code audit target `5eb07732a32e22694fcb47880d1dc29f0859020c`; later commits in this pass changed documentation only. No new exact-head CI was run for the final documentation-only branch HEAD.
+
+### Final checkpoint publication reconciliation
+- Checkpoint update commit: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`; checkpoint blob: `f4a9b66d146a9cb9ea5ab2377e734be84358984e`.
+- Branch HEAD before this Context Window update: `eee1d2e0dd0e24d3efb77c37a933f3b7d5aaec4c`.
+- Prompt 2 report remains blob `5291e8eb8c1f6753eefd5df23f600c368dc82c87`; execution plan blob `d62e3b11082a332632a4e9ce156eed567bc05df3`.
+- Code audit/CI target `5eb07732a32e22694fcb47880d1dc29f0859020c`; all later branch commits in this pass are documentation-only.
