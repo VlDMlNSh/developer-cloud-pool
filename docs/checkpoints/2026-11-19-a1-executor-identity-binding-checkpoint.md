@@ -48,3 +48,17 @@ Canonical MediaHub map (separate project, Contour B deferred): https://github.co
 
 - Additional exact code/test-head PR runs: Pool Contract Validation `44501720404` SUCCESS; Isolated D1 Ledger Proof `44501720431` SUCCESS; both target `d0399fcdc57401efa4e6752984d330c7eb18f9c5`.
 - Branch/PR head re-read after docs-only updates: `5289212e083edc3e522de0377bf66be39875162b`; subsequent context/checkpoint bookkeeping commits are documentation-only.
+
+
+## 2026-11-19 — Follow-up admission/lease audit
+
+- PR #146 head re-read: `9c0cb7ea73f1ad3413fddeb119b8cab4fcfcc714`, OPEN/DRAFT/UNMERGED, base `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; zero reviews and zero review threads.
+- Exact-head Pool Contract Validation run `44502134638` SUCCESS (job `135484343884`); exact-head Isolated D1 Ledger Proof run `44502134762` SUCCESS (job `135484344351`).
+- Ruleset #26550182 active on default branch; PR required, approvals=0, review-thread resolution required, no bypass actors.
+- Migration 0007 supplies executor_id columns and immutable cross-entity binding triggers after migration 0001. Full migration chain resolves the earlier column concern.
+- Test inventory includes concurrency, replay, expiry, rollback, ambiguous storage, stale fencing, immutable attempt, executor substitution and synthetic OIDC negative paths.
+- Gap: no explicit revoked executor/profile negative test found. Registry is empty; revocation semantics/source must be defined before qualification.
+- Synthetic OIDC is workflow/job identity proof, not process/host attestation. Local D1 is not hosted D1 or production qualification.
+- No code or production state changed; no secret/provider/dispatch/deployment action. Contour A NOT ACCEPTED.
+- Detailed report: `docs/reports/2026-11-19-d1-admission-lease-chain-audit.md`.
+- Next: define revocation state/source and add negative test; then plan Issue #140 canonical current-base integration.
