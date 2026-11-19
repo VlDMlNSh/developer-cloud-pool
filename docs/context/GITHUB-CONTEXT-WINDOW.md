@@ -2235,3 +2235,18 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Additional PR-triggered exact code/test-head checks were subsequently observed: Pool Contract Validation run `44501720404` SUCCESS and Isolated D1 Ledger Proof run `44501720431` SUCCESS, both on `d0399fcdc57401efa4e6752984d330c7eb18f9c5`. The branch later advanced to `e1fe084744a9fad7d2d5c4d0a43ba09a2f7b9f1a` through documentation-only commits; no code/test changes followed the validated test commit.
 
 - Re-read after documentation updates: PR #146 current head was `5289212e083edc3e522de0377bf66be39875162b`; the code/test target remains `d0399fcdc57401efa4e6752984d330c7eb18f9c5`, and no code/test changes followed it.
+
+
+## 2026-11-19 — D1 admission/lease audit read-back
+
+- Current default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (commit message retires legacy DSH dispatch; dispatch remains fail-closed).
+- PR #146 current head: `9c0cb7ea73f1ad3413fddeb119b8cab4fcfcc714`; OPEN / DRAFT / UNMERGED; base is current default SHA above. Reviews: 0; review threads: 0.
+- Exact-head Pool Contract Validation run `44502134638`, job `135484343884`: SUCCESS. Exact-head Isolated D1 Ledger Proof run `44502134762`, job `135484344351`: SUCCESS. Combined status contexts list is empty; do not describe that endpoint as a green check suite.
+- Ruleset `26550182` is active for `refs/heads/Основной`; PR required, zero approvals required, review-thread resolution required, no bypass actors. Classic branch endpoint reports `protected=false`.
+- Migration 0007 adds executor_id after migration 0001 and enforces required/immutable bindings across approvals, tasks and attempts. The missing-column concern is not a defect for the complete 0001–0007 chain.
+- D1 test inventory covers concurrency, replay, expired approval/lease, outbox rollback, ambiguous storage, stale lease generations, immutable attempt identity, indeterminate attempts, executor substitution, disabled/unregistered executor, profile mismatch and synthetic OIDC negative paths.
+- Explicit revoked executor/profile negative test was not found in the inspected test inventory. Executor registry remains empty. Add a defined revocation state/source and negative test before claiming revocation qualification.
+- OIDC tests are synthetic and authenticate the Actions workflow/job principal only; they do not attest a process/host. Local Workers-runtime D1 tests do not qualify hosted D1, production lock semantics, provider quota, live execution or web console.
+- Issue #140 remains the controlling integration task. PR #143 is still a separate old-base proof and must not be implicitly merged/composed with #146.
+- No secrets, provider calls, hosted D1, deployment, dispatch or production writes were used. Contour A remains NOT ACCEPTED; Contour B remains deferred.
+- Detailed evidence: `docs/reports/2026-11-19-d1-admission-lease-chain-audit.md`.
