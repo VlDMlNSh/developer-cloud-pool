@@ -318,6 +318,22 @@ describe("atomic qualified A0 -> D1 admission", () => {
     });
   });
 
+  it("does not allow late admission binding after legacy task consumption", async () => {
+    await env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = ?
+    `).bind(NOW, input.taskKey, input.approval.approvalId).run();
+    await expect(env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger SET admission_id = ?
+       WHERE approval_id = ?
+    `).bind(input.admissionId, input.approval.approvalId).run()).rejects.toThrow();
+    const row = await env.POOL_DB.prepare(
+      "SELECT state, admission_id FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first();
+    expect(row).toMatchObject({ state: "consumed", admission_id: null });
+  });
+
   it("rejects direct SQL admission against revoked route evidence", async () => {
     await env.POOL_DB.prepare(`
       UPDATE pool_route_qualifications
