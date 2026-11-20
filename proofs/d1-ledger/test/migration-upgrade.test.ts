@@ -86,7 +86,7 @@ beforeAll(async () => {
       1, 'failed', ?, 'pending', ?, ?)
   `).bind(legacyTaskKey, legacyAttemptId, "a".repeat(40), "d".repeat(64), now - 560, now - 560).run();
 
-  // Apply only the two forward migrations under test, never 0001-0012 to this DB.
+  // Apply only the four forward migrations under test, never 0001-0010 to this DB.
   await applyD1Migrations(db, migrations.slice(10));
 });
 
@@ -114,7 +114,7 @@ async function seedAdmission() {
     r.observedAt, r.validUntil, r.revocationVersion, r.registryVersion).run();
 }
 
-describe("frozen schema-0010 upgrade through migrations 0011-0013", () => {
+describe("frozen schema-0010 upgrade through migrations 0011-0014", () => {
   it("preserves historical identifiers, task links, attempts and schema-0010 comment defaults", async () => {
     const approval = await db.prepare(
       "SELECT approval_id, task_key, executor_id FROM pool_approval_ledger WHERE approval_id = ?"
