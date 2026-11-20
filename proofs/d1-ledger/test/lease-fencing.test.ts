@@ -39,6 +39,7 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_admissions").run();
+  await env.POOL_DB.prepare("DELETE FROM pool_attempt_reconciliations").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempts").run();
   await env.POOL_DB.prepare("DELETE FROM pool_task_delivery_outbox").run();
