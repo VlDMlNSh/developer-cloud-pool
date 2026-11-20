@@ -202,24 +202,10 @@ function statements(db, input) {
   ];
 }
 
-/**
- * Local-only composite D1 admission proof. Route rows must already have been
- * written by a trusted qualification authority. This adapter verifies exact
- * binding/freshness/revocation and atomically consumes approval, creates the
- * existing task/outbox, records admission, creates/reuses one immutable attempt,
- * and writes a constraint-backed commit receipt. It never dispatches.
- */
-export async function admitQualifiedTask(db, input) {
-  if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
-  const expectedTaskKey = await canonicalTaskKey({ repositoryId: input.approval.repositoryId, issueNumber: input.approval.issueNumber, targetSha: input.approval.targetSha, profile: input.approval.profile, executorId: input.executorId });
-  if (input.taskKey !== expectedTaskKey) return deny("TASK_KEY_BINDING_MISMATCH");
-  if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
-    return deny("STORAGE_UNAVAILABLE");
-  }
-
-  try {
-    const prior = await db.prepare(`
+async function readPrior(readDb, input) {
+  return readDb.prepare(`
       SELECT a.admission_id, a.approval_id, a.task_key, a.executor_id,
+             l.state AS approval_state, p.status AS attempt_status,
              l.executor_id AS approval_executor_id, t.executor_id AS task_executor_id,
              a.qualification_id, a.evidence_digest, a.attempt_id AS requested_attempt_id,
              a.attempt_id AS admission_attempt_id,
@@ -250,6 +236,28 @@ export async function admitQualifiedTask(db, input) {
         LEFT JOIN pool_task_delivery_outbox o ON o.task_key = a.task_key
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
+}
+
+/**
+ * Local-only composite D1 admission proof. Route rows must already have been
+ * written by a trusted qualification authority. This adapter verifies exact
+ * binding/freshness/revocation and atomically consumes approval, creates the
+ * existing task/outbox, records admission, creates/reuses one immutable attempt,
+ * and writes a constraint-backed commit receipt. It never dispatches.
+ */
+export async function admitQualifiedTask(db, input) {
+  if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
+  const expectedTaskKey = await canonicalTaskKey({ repositoryId: input.approval.repositoryId, issueNumber: input.approval.issueNumber, targetSha: input.approval.targetSha, profile: input.approval.profile, executorId: input.executorId });
+  if (input.taskKey !== expectedTaskKey) return deny("TASK_KEY_BINDING_MISMATCH");
+  if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
+    return deny("STORAGE_UNAVAILABLE");
+  }
+
+  let batchAttempted = false;
+  try {
+    const priorReadDb = db.withSession("first-primary");
+    if (!priorReadDb || typeof priorReadDb.prepare !== "function") return deny("CONSISTENT_READBACK_UNAVAILABLE");
+    const prior = await readPrior(priorReadDb, input);
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       if (prior.receipt_assertion !== 1 || prior.receipt_executor_id !== input.executorId ||
@@ -266,7 +274,7 @@ export async function admitQualifiedTask(db, input) {
           prior.task_attempt_number !== prior.admission_attempt_number) {
         return deny("ADMISSION_COMMIT_RECEIPT_MISMATCH");
       }
-      const active = await db.prepare(`
+      const active = await priorReadDb.prepare(`
         SELECT 1 AS ok FROM pool_route_qualifications
          WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
            AND model_id = ? AND issuer_id = ? AND account_ref = ?
@@ -292,13 +300,16 @@ export async function admitQualifiedTask(db, input) {
       };
     }
 
+    batchAttempted = true;
     await db.batch(statements(db, input));
-    const committed = await db.prepare(`
+    const committedReadDb = db.withSession("first-primary");
+    const committed = await committedReadDb.prepare(`
       SELECT a.admission_id, a.approval_id, a.task_key, a.executor_id,
              l.executor_id AS approval_executor_id, t.executor_id AS task_executor_id,
              a.attempt_id, a.attempt_number, a.qualification_id, a.evidence_digest,
              a.dispatch_enabled, r.assertion, r.committed_at,
-             l.state AS approval_state, o.status AS outbox_status, o.event_type AS outbox_event_type,
+             l.state AS approval_state, p.status AS attempt_status,
+             o.status AS outbox_status, o.event_type AS outbox_event_type,
              o.admission_id AS outbox_admission_id, o.attempt_id AS outbox_attempt_id,
              o.evidence_digest AS outbox_evidence_digest,
              t.current_attempt_id AS task_current_attempt_id, t.attempt_number AS task_attempt_number,
@@ -312,7 +323,7 @@ export async function admitQualifiedTask(db, input) {
        WHERE a.admission_id = ?
     `).bind(input.admissionId).first();
     if (!committed || committed.assertion !== 1 ||
-        committed.approval_state !== "consumed" || committed.outbox_status !== "pending" ||
+        committed.approval_state !== "consumed" || committed.attempt_status !== "prepared" || committed.outbox_status !== "pending" ||
         committed.outbox_event_type !== "pool.task.ready" ||
         committed.task_current_attempt_id !== committed.attempt_id ||
         committed.task_attempt_number !== committed.attempt_number ||
@@ -329,6 +340,58 @@ export async function admitQualifiedTask(db, input) {
       reason: "ATOMIC_A0_D1_COMMIT_CONFIRMED"
     };
   } catch {
-    return deny("ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS");
+    if (!batchAttempted) return deny("D1_PRE_ADMISSION_READ_FAILED");
+    try {
+      // A failed batch acknowledgement is ambiguous: read the primary before
+      // allowing the caller to retry with the same immutable admission identity.
+      const recoveryReadDb = db.withSession("first-primary");
+      const recovered = await readPrior(recoveryReadDb, input);
+      if (!recovered) return deny("ADMISSION_OUTCOME_UNCONFIRMED");
+      if (!same(recovered, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
+      if (recovered.approval_state !== "consumed" || recovered.attempt_status !== "prepared" ||
+          recovered.receipt_assertion !== 1 || recovered.receipt_executor_id !== input.executorId ||
+          recovered.receipt_approval_id !== recovered.approval_id ||
+          recovered.receipt_task_key !== recovered.task_key ||
+          recovered.receipt_attempt_id !== recovered.admission_attempt_id ||
+          recovered.receipt_qualification_id !== recovered.qualification_id ||
+          recovered.receipt_evidence_digest !== recovered.evidence_digest ||
+          recovered.receipt_dispatch_enabled !== 0 || recovered.dispatch_enabled !== 0 ||
+          recovered.outbox_status !== "pending" || recovered.outbox_event_type !== "pool.task.ready" ||
+          recovered.outbox_admission_id !== recovered.admission_id ||
+          recovered.outbox_attempt_id !== recovered.admission_attempt_id ||
+          recovered.outbox_evidence_digest !== recovered.evidence_digest ||
+          recovered.task_current_attempt_id !== recovered.admission_attempt_id ||
+          recovered.task_attempt_number !== recovered.admission_attempt_number) {
+        return deny("ADMISSION_COMMIT_RECEIPT_MISMATCH");
+      }
+      const active = await recoveryReadDb.prepare(`
+        SELECT 1 AS ok FROM pool_route_qualifications
+         WHERE qualification_id = ? AND route_id = ? AND provider_id = ?
+           AND model_id = ? AND issuer_id = ? AND account_ref = ?
+           AND credential_handle_ref = ? AND quota_domain_id IS ?
+           AND cost_class = ? AND capability_id = ? AND capability_profile = ? AND evidence_digest = ?
+           AND registry_version = ? AND schema_version = ? AND evidence_ref = ?
+           AND observed_at = ? AND valid_until = ? AND revocation_version = ?
+           AND qualification_status = 'qualified' AND revoked_at IS NULL
+           AND observed_at <= ? AND observed_at >= ? AND valid_until > ?
+      `).bind(
+        input.route.qualificationId, input.route.routeId, input.route.providerId,
+        input.route.modelId, input.route.issuerId, input.route.accountRef,
+        input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
+        input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
+        input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
+        input.route.observedAt, input.route.validUntil, input.route.revocationVersion,
+        input.now, input.now - 300, input.now
+      ).first();
+      if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
+      return {
+        decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
+        taskKey: input.taskKey, executorId: input.executorId,
+        attemptId: recovered.requested_attempt_id, dispatch: false,
+        reason: "AMBIGUOUS_BATCH_RESOLVED_BY_PRIMARY_READBACK"
+      };
+    } catch {
+      return deny("ADMISSION_OUTCOME_UNCONFIRMED");
+    }
   }
 }

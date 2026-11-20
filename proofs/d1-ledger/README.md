@@ -46,3 +46,12 @@ This is an isolated synthetic upgrade fixture, not a dump of any hosted or produ
 ## Status
 
 This is a candidate proof foundation on a clean branch from a frozen default SHA. It is not a hosted deployment, executor qualification, or Contour A acceptance.
+
+
+## Pass 32 — ambiguous D1 batch acknowledgement and durable readback
+
+- Admission pre-read and post-write verification use D1 `withSession("first-primary")` so the first read is routed to the primary and later reads in the same session remain sequentially consistent.
+- A rejected/ambiguous `batch()` is not reported as a rollback. The adapter performs a new primary-first readback and returns `ADMISSION_ALREADY_COMMITTED` only when the immutable admission, approval, executor, attempt, route evidence, receipt, task-ready outbox and current task-attempt tuple all match.
+- If no complete durable record can be observed, the result is `ADMISSION_OUTCOME_UNCONFIRMED`; callers must retain the same admission identity for retry/reconciliation and must not mint a new one.
+- Fault injection covers: commit then lost acknowledgement; failure before commit followed by exact same-key retry; and unavailable primary readback after commit. Dispatch remains disabled.
+- D1 batch atomicity and D1 Sessions API semantics are based on Cloudflare's documented binding behavior. No external orchestration dependency is added.
