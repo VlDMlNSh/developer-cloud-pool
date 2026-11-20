@@ -1,0 +1,755 @@
+name: Claude Code + ECC + FCC Runner Qualification
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/claude-code-fcc-runner-qualification.yml"
+      - "scripts/cloud_pool/exec_allowlist.py"
+      - "scripts/cloud_pool/test_exec_allowlist.py"
+      - "scripts/cloud_pool/fcc_profile_guard.py"
+      - "scripts/cloud_pool/test_fcc_profile_guard.py"
+      - "scripts/cloud_pool/task_home.py"
+      - "scripts/cloud_pool/test_task_home.py"
+      - "scripts/cloud_pool/verify_claude_release.py"
+      - "scripts/cloud_pool/test_verify_claude_release.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: claude-code-fcc-runner-qualification-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install-proof:
+    name: No-secret install and resource proof
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+    steps:
+      - name: Checkout pool source without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Test Cloud Pool child environment allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/cloud_pool/test_exec_allowlist.py
+          python3 scripts/cloud_pool/test_task_home.py
+          python3 scripts/cloud_pool/test_verify_claude_release.py
+
+      - name: Create evidence directory and record runner baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qualification"
+          {
+            echo "Repository: $GITHUB_REPOSITORY"
+            echo "Ref: $GITHUB_REF"
+            echo "GitHub event SHA: $GITHUB_SHA"
+            echo "PR head SHA: $PR_HEAD_SHA"
+            echo "PR base SHA: $PR_BASE_SHA"
+            echo "Checked out SHA: $(git rev-parse HEAD)"
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Run attempt: $GITHUB_RUN_ATTEMPT"
+            echo "Runner: $RUNNER_OS / $RUNNER_ARCH"
+            echo
+            lscpu
+            free -h
+            df -hT
+            cat /etc/os-release
+            node --version || true
+            npm --version || true
+            python3 --version
+          } > "$RUNNER_TEMP/qualification/runner-baseline.txt"
+          available_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$available_kib" -lt $((6 * 1024 * 1024)) ]; then
+            echo "::error::Less than 6 GiB free before installation; refusing the profile proof."
+            exit 2
+          fi
+
+      - name: Probe sandbox runtime capabilities without secrets or installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/qualification/sandbox-capabilities.txt"
+          mkdir -p "$(dirname "$out")"
+          {
+            echo "probe_version=1"
+            echo "target_sha=$PR_HEAD_SHA"
+            echo "runner_os=$RUNNER_OS"
+            echo "runner_arch=$RUNNER_ARCH"
+            echo "kernel_release=$(uname -r)"
+            echo "kernel_version=$(uname -v | tr ' ' '_')"
+            echo "effective_uid=$(id -u)"
+            echo "userns_clone=$(cat /proc/sys/kernel/unprivileged_userns_clone 2>/dev/null || echo unavailable)"
+            echo "max_user_namespaces=$(cat /proc/sys/user/max_user_namespaces 2>/dev/null || echo unavailable)"
+            echo "seccomp_status=$(awk '/^Seccomp:/ {print $2}' /proc/self/status)"
+            echo "no_new_privs=$(awk '/^NoNewPrivs:/ {print $2}' /proc/self/status)"
+            echo "cgroup_v2=$([ -f /sys/fs/cgroup/cgroup.controllers ] && echo present || echo absent)"
+            echo "cgroup_controllers=$(tr ' ' ',' < /sys/fs/cgroup/cgroup.controllers 2>/dev/null || echo unavailable)"
+            echo "dev_kvm_exists=$([ -e /dev/kvm ] && echo yes || echo no)"
+            echo "dev_kvm_readable=$([ -r /dev/kvm ] && echo yes || echo no)"
+            echo "dev_kvm_writable=$([ -w /dev/kvm ] && echo yes || echo no)"
+            echo "docker_cli=$(command -v docker || echo absent)"
+            if command -v docker >/dev/null 2>&1; then
+              docker version --format 'docker_client={{.Client.Version}} docker_server={{if .Server}}{{.Server.Version}}{{else}}unavailable{{end}}' 2>/dev/null || echo "docker_daemon=unavailable"
+              docker info --format 'docker_security_options={{json .SecurityOptions}}' 2>/dev/null || echo "docker_info=unavailable"
+            else
+              echo "docker_daemon=unavailable"
+            fi
+            for runtime in runsc nsjail bwrap; do
+              if command -v "$runtime" >/dev/null 2>&1; then
+                echo "${runtime}_path=$(command -v "$runtime")"
+                "$runtime" --version 2>&1 | head -n 1 | tr ' ' '_' || true
+              else
+                echo "${runtime}_path=absent"
+              fi
+            done
+            for probe in user mount pid net; do
+              if case "$probe" in
+                user) timeout 5s unshare --user --map-root-user true >/dev/null 2>&1 ;;
+                mount) timeout 5s unshare --user --map-root-user --mount true >/dev/null 2>&1 ;;
+                pid) timeout 5s unshare --user --map-root-user --pid --fork true >/dev/null 2>&1 ;;
+                net) timeout 5s unshare --user --map-root-user --net true >/dev/null 2>&1 ;;
+              esac; then
+                status=0
+              else
+                status=$?
+              fi
+              echo "unshare_${probe}_namespace_exit=$status"
+            done
+          } > "$out"
+          chmod 600 "$out"
+          cat "$out"
+
+      - name: Install Claude Code from Anthropic's signed APT repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_fingerprint="31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+          key_file="$RUNNER_TEMP/claude-code-release.asc"
+          curl -fsSL https://downloads.claude.ai/keys/claude-code.asc -o "$key_file"
+          key_fingerprints="$(gpg --show-keys --with-colons "$key_file" | awk -F: '$1 == "pub" { primary=1; next } primary && $1 == "fpr" { print toupper($10); primary=0 }')"
+          test "$key_fingerprints" = "$expected_fingerprint"
+          sudo install -D -m 0644 "$key_file" /usr/share/keyrings/claude-code.asc
+          echo "deb [signed-by=/usr/share/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-code.list >/dev/null
+          sudo apt-get update
+          apt-cache madison claude-code | tee "$RUNNER_TEMP/qualification/claude-apt-versions.txt"
+          package_version="$(apt-cache policy claude-code | awk '/Candidate:/ { print $2; exit }')"
+          if [ -z "$package_version" ] || [ "$package_version" = "(none)" ]; then
+            echo "::error::No Claude Code package candidate is available from the signed official APT repository."
+            exit 2
+          fi
+          sudo apt-get install -y --no-install-recommends "claude-code=$package_version"
+          printf '%s\n' "$package_version" > "$RUNNER_TEMP/qualification/claude-apt-package-version.txt"
+          claude_bin="$(command -v claude)"
+          test -n "$claude_bin"
+          test -x "$claude_bin"
+          resolved_claude_bin="$(readlink -f "$claude_bin")"
+          test -f "$resolved_claude_bin"
+          printf '%s\n' "$claude_bin" > "$RUNNER_TEMP/qualification/claude-launcher-path.txt"
+          printf '%s\n' "$resolved_claude_bin" > "$RUNNER_TEMP/qualification/claude-binary-path.txt"
+          printf '%s\n' "$key_fingerprints" > "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt"
+          installed_version="$(claude --version)"
+          printf '%s\n' "$installed_version" | tee "$RUNNER_TEMP/qualification/claude-version.txt"
+          version="$(printf '%s' "$installed_version" | awk '{print $1}')"
+          test -n "$version"
+          printf '%s\n' "$version" > "$RUNNER_TEMP/qualification/claude-release-version.txt"
+          claude --help > "$RUNNER_TEMP/qualification/claude-help.txt"
+        env:
+          DISABLE_AUTOUPDATER: "1"
+          DISABLE_UPDATES: "1"
+
+      - name: Verify Claude Code binary against Anthropic signed release manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(cat "$RUNNER_TEMP/qualification/claude-release-version.txt")"
+          platform="linux-x64"
+          release_dir="$RUNNER_TEMP/claude-release"
+          gnupg_home="$RUNNER_TEMP/claude-release-gnupg"
+          mkdir -m 0700 -p "$release_dir" "$gnupg_home"
+          curl -fsSLo "$release_dir/manifest.json" "https://downloads.claude.ai/claude-code-releases/$version/manifest.json"
+          curl -fsSLo "$release_dir/manifest.json.sig" "https://downloads.claude.ai/claude-code-releases/$version/manifest.json.sig"
+          gpg --homedir "$gnupg_home" --batch --import "$RUNNER_TEMP/claude-code-release.asc" > "$RUNNER_TEMP/qualification/claude-gpg-import.txt" 2>&1
+          gpg --homedir "$gnupg_home" --batch --status-fd 1 --verify "$release_dir/manifest.json.sig" "$release_dir/manifest.json" > "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" 2> "$RUNNER_TEMP/qualification/claude-manifest-signature-verification.txt"
+          valid_signature_count="$(grep -c '^\[GNUPG:\] VALIDSIG ' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt")"
+          test "$valid_signature_count" -eq 1
+          grep '^\[GNUPG:\] VALIDSIG ' "$RUNNER_TEMP/qualification/claude-manifest-signature-status.txt" | grep -Fq "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+          resolved_claude_bin="$(cat "$RUNNER_TEMP/qualification/claude-binary-path.txt")"
+          python3 scripts/cloud_pool/verify_claude_release.py \
+            --manifest "$release_dir/manifest.json" \
+            --binary "$resolved_claude_bin" \
+            --version "$version" \
+            --platform "$platform" | tee "$RUNNER_TEMP/qualification/claude-binary-integrity.json"
+          sha256sum "$release_dir/manifest.json" "$release_dir/manifest.json.sig" "$resolved_claude_bin" > "$RUNNER_TEMP/qualification/claude-release-sha256.txt"
+          cp "$release_dir/manifest.json" "$RUNNER_TEMP/qualification/claude-release-manifest.json"
+
+      - name: Qualify Docker no-egress sandbox capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          image_tag="ubuntu:24.04"
+          docker pull "$image_tag"
+          image_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "$image_tag")"
+          test -n "$image_digest"
+          printf '%s\n' "$image_digest" > "$RUNNER_TEMP/qualification/docker-sandbox-image-digest.txt"
+          docker run --rm \
+            --network none \
+            --read-only \
+            --cap-drop ALL \
+            --security-opt no-new-privileges \
+            --pids-limit 64 \
+            --memory 512m \
+            --cpus 1 \
+            --tmpfs /tmp:rw,noexec,nosuid,nodev,size=32m \
+            --user 65532:65532 \
+            "$image_digest" \
+            bash -c '
+              set -euo pipefail
+              if timeout 3 bash -c "echo >/dev/tcp/1.1.1.1/443" >/dev/null 2>&1; then
+                echo "docker_network_none_external_tcp=UNEXPECTEDLY_REACHABLE"
+                exit 9
+              fi
+              if grep -q "^00000000" /proc/net/route; then exit 8; fi
+              test ! -w /etc
+              echo "docker_network_none_external_tcp=BLOCKED"
+              echo "docker_network_none_default_route=ABSENT"
+              echo "docker_network_none_rootfs=READ_ONLY"
+              echo "docker_network_none_capabilities=DROPPED"
+            ' | tee "$RUNNER_TEMP/qualification/docker-no-egress-result.txt"
+
+      - name: Install pinned uv bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/uv-bootstrap"
+          "$RUNNER_TEMP/uv-bootstrap/bin/python" -m pip install --disable-pip-version-check "uv==0.13.7"
+          echo "$RUNNER_TEMP/uv-bootstrap/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/uv-bootstrap/bin/uv" --version | tee "$RUNNER_TEMP/qualification/uv-version.txt"
+
+      - name: Install and metadata-check FCC without starting its server
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+          UV_CACHE_DIR: ${{ runner.temp }}/uv-cache
+          UV_NO_PROGRESS: "1"
+        run: |
+          set -euo pipefail
+          fcc_commit="eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
+          git clone --filter=blob:none https://github.com/Alishahryar1/free-claude-code.git "$RUNNER_TEMP/fcc-src"
+          git -C "$RUNNER_TEMP/fcc-src" checkout --detach "$fcc_commit"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" rev-parse HEAD)" = "$fcc_commit"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" hash-object pyproject.toml)" = "5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b"
+          test "$(git -C "$RUNNER_TEMP/fcc-src" hash-object uv.lock)" = "ee8490c29a36f8302f5c1f1d42b465f6271c10f2"
+          test -f "$RUNNER_TEMP/fcc-src/LICENSE"
+          grep -Fxq "SPDX-License-Identifier: AGPL-3.0-only" "$RUNNER_TEMP/fcc-src/LICENSE"
+          cp "$RUNNER_TEMP/fcc-src/LICENSE" "$RUNNER_TEMP/qualification/fcc-LICENSE-AGPL-3.0-only.txt"
+          sha256sum "$RUNNER_TEMP/qualification/fcc-LICENSE-AGPL-3.0-only.txt" > "$RUNNER_TEMP/qualification/fcc-license-sha256.txt"
+          uv python install 3.14.10
+          cd "$RUNNER_TEMP/fcc-src"
+          /usr/bin/time -v -o "$RUNNER_TEMP/qualification/fcc-install-time.txt" uv sync --frozen --no-dev --python 3.14.10
+          "$UV_PROJECT_ENVIRONMENT/bin/python" --version | tee "$RUNNER_TEMP/qualification/fcc-python-version.txt"
+          test "$("$UV_PROJECT_ENVIRONMENT/bin/python" --version)" = "Python 3.14.10"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" --version | tee "$RUNNER_TEMP/qualification/fcc-server-version.txt"
+          "$UV_PROJECT_ENVIRONMENT/bin/fcc-doctor" --version | tee "$RUNNER_TEMP/qualification/fcc-doctor-version.txt"
+
+      - name: Test persisted FCC single-credential profile guard with synthetic data
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+        run: |
+          set -euo pipefail
+          "$UV_PROJECT_ENVIRONMENT/bin/python" scripts/cloud_pool/test_fcc_profile_guard.py 2>&1 | tee "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+          grep -Eq "^Ran 15 tests in " "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+          grep -Fxq "OK" "$RUNNER_TEMP/qualification/fcc-profile-guard-tests.txt"
+
+      - name: Start FCC on loopback and verify local readiness and shutdown
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+          HOST: "127.0.0.1"
+          PORT: "18765"
+          FCC_OPEN_BROWSER: "false"
+          PROVIDER_MAX_ATTEMPTS: "1"
+          PROVIDER_MAX_CONCURRENCY: "1"
+        run: |
+          set -euo pipefail
+          state_file="$RUNNER_TEMP/qualification/fcc-runtime-state.txt"
+          log_file="$RUNNER_TEMP/qualification/fcc-server-runtime.log"
+          listener_file="$RUNNER_TEMP/qualification/fcc-listener.txt"
+          printf '%s\n' \
+            'fcc_server_started=false' \
+            'fcc_health_endpoint=NOT_RUN' \
+            'fcc_listener=NOT_VERIFIED' \
+            'fcc_shutdown=NOT_RUN' \
+            > "$state_file"
+
+          server_pid=""
+          cleanup() {
+            original_status=$?
+            trap - EXIT
+            if [ -n "$server_pid" ] && kill -0 "$server_pid" 2>/dev/null; then
+              kill -INT "$server_pid" 2>/dev/null || true
+              for attempt in $(seq 1 10); do
+                if ! kill -0 "$server_pid" 2>/dev/null; then
+                  break
+                fi
+                sleep 1
+              done
+              if kill -0 "$server_pid" 2>/dev/null; then
+                kill -TERM "$server_pid" 2>/dev/null || true
+                for attempt in $(seq 1 5); do
+                  if ! kill -0 "$server_pid" 2>/dev/null; then break; fi
+                  sleep 1
+                done
+              fi
+              if kill -0 "$server_pid" 2>/dev/null; then
+                kill -KILL "$server_pid" 2>/dev/null || true
+              fi
+              wait "$server_pid" 2>/dev/null || true
+              server_pid=""
+              printf '%s\\n' \
+                'fcc_server_started=true' \
+                'fcc_health_endpoint=NOT_VERIFIED' \
+                'fcc_listener=NOT_VERIFIED' \
+                'fcc_shutdown=cleanup_after_failure' \
+                'fcc_process_cleanup_attempted=true' \
+                > "$state_file"
+            fi
+            preserve_bridge_diagnostics
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+
+          runtime_home="$RUNNER_TEMP/fcc-runtime-home"
+          mkdir -p "$runtime_home/.config" "$runtime_home/.local/share" "$runtime_home/.cache"
+          chmod 700 "$runtime_home" "$runtime_home/.config" "$runtime_home/.local" "$runtime_home/.local/share" "$runtime_home/.cache"
+          export HOME="$runtime_home"
+          export XDG_CONFIG_HOME="$runtime_home/.config"
+          export XDG_DATA_HOME="$runtime_home/.local/share"
+          export XDG_CACHE_HOME="$runtime_home/.cache"
+          export PATH="/usr/bin"
+          cd "$RUNNER_TEMP/fcc-src"
+          python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$log_file" 2>&1 &
+          server_pid=$!
+          printf '%s\n' \
+            'fcc_server_started=true' \
+            'fcc_health_endpoint=GET /admin/api/status (loopback-only)' \
+            'fcc_listener=127.0.0.1:18765' \
+            'fcc_shutdown=IN_PROGRESS' \
+            > "$state_file"
+
+          http_status="000"
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo "::error::FCC exited before readiness."
+              cat "$log_file"
+              exit 1
+            fi
+            http_status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-time 2 http://127.0.0.1:18765/admin/api/status || true)"
+            if [ "$http_status" = "200" ]; then
+              break
+            fi
+            sleep 1
+          done
+          if [ "$http_status" != "200" ]; then
+            echo "::error::Source-verified loopback readiness endpoint did not return HTTP 200."
+            cat "$log_file"
+            exit 1
+          fi
+
+          listener_output="$(ss -H -ltn 'sport = :18765')"
+          printf '%s\n' "$listener_output" > "$listener_file"
+          listener_address="$(printf '%s\n' "$listener_output" | awk 'NF {print $4}')"
+          if [ "$listener_address" != "127.0.0.1:18765" ] || [ "$(printf '%s\n' "$listener_output" | awk 'NF {count++} END {print count+0}')" -ne 1 ]; then
+            echo "::error::FCC listener was not exactly 127.0.0.1:18765."
+            cat "$listener_file"
+            exit 1
+          fi
+
+          set +e
+          kill -INT "$server_pid"
+          signal_status=$?
+          wait "$server_pid"
+          shutdown_status=$?
+          set -e
+          server_pid=""
+          if [ "$shutdown_status" -ne 0 ]; then
+            echo "::error::FCC did not exit cleanly after SIGINT (exit=$shutdown_status)."
+            cat "$log_file"
+            exit 1
+          fi
+
+          remaining_listener="$(ss -H -ltn 'sport = :18765')"
+          if [ -n "$remaining_listener" ]; then
+            echo "::error::FCC listener remained after shutdown."
+            printf '%s\n' "$remaining_listener"
+            exit 1
+          fi
+
+          printf '%s\n' \
+            'fcc_server_started=true' \
+            "fcc_health_http_status=$http_status" \
+            'fcc_health_endpoint=GET /admin/api/status' \
+            'fcc_listener=127.0.0.1:18765' \
+            'fcc_shutdown=clean' \
+            "fcc_process_exit_code=$shutdown_status" \
+            'fcc_listener_after_shutdown=absent' \
+            'provider_calls=false' \
+            'completion_endpoints_called=false' \
+            'fcc_client_launcher_invoked=false' \
+            > "$state_file"
+          trap - EXIT
+
+      - name: Qualify synthetic wrapper-to-mock CLI invocation without provider access
+        id: fcc_bridge_qualification
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+        run: |
+          set -euo pipefail
+          bridge_home="$RUNNER_TEMP/fcc-bridge-home"
+          mock_bin="$RUNNER_TEMP/fcc-bridge-mock-bin"
+          marker="$RUNNER_TEMP/fcc-bridge-home/bridge-result.txt"
+          args_file="$RUNNER_TEMP/fcc-bridge-home/bridge-args.txt"
+          stderr_file="$RUNNER_TEMP/qualification/fcc-bridge-stderr.txt"
+          port=18766
+          cli_status=NOT_RUN
+          preserve_bridge_diagnostics() {
+            {
+              printf '%s\n' "cli_status=$cli_status"
+              for item in marker args_file stderr_file; do
+                case "$item" in
+                  marker) source_path="$marker" ;;
+                  args_file) source_path="$args_file" ;;
+                  stderr_file) source_path="$stderr_file" ;;
+                esac
+                if [ -f "$source_path" ]; then
+                  printf '%s\n' "$item=present"
+                  case "$item" in
+                    marker) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-result.txt" ;;
+                    args_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-args.txt" ;;
+                    stderr_file) cp "$source_path" "$RUNNER_TEMP/qualification/fcc-bridge-mock-stderr.txt" ;;
+                  esac
+                else
+                  printf '%s\n' "$item=absent"
+                fi
+              done
+              for directory in "$bridge_home" "$bridge_home/.config" "$bridge_home/.local" "$bridge_home/.local/share" "$bridge_home/.cache"; do
+                if [ -d "$directory" ]; then
+                  printf 'directory_mode=%s\n' "$(stat -c '%a:%u' "$directory")"
+                fi
+              done
+            } > "$RUNNER_TEMP/qualification/fcc-bridge-failure-diagnostics.txt"
+          }
+          mkdir -p "$bridge_home" "$mock_bin"
+          chmod 700 "$bridge_home" "$mock_bin"
+          # Pre-create bounded evidence so even an early failure is represented in the artifact.
+          printf '%s\n' 'bridge_result_state=STARTED' > "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+          printf '%s\n' 'bridge_shutdown_state=NOT_REACHED' > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          test ! -e "$marker"
+          test ! -e "$args_file"
+
+          cat > "$mock_bin/claude" <<'MOCK'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          # The wrapper deliberately strips ambient provider routing and credentials.
+          # This mock qualifies only the allowlisted child-process boundary, not a live proxy route.
+          test -z "${ANTHROPIC_BASE_URL:-}"
+          test -z "${ANTHROPIC_AUTH_TOKEN:-}"
+          if env | cut -d= -f1 | grep -Eq '(^GITHUB_TOKEN$|^GH_TOKEN$|_API_KEY$|_API_TOKEN$|_SECRET$|^AWS_|^HTTP_PROXY$|^HTTPS_PROXY$)'; then
+            echo "credential-like environment variable reached mock" >&2
+            exit 81
+          fi
+          {
+            echo "ambient_provider_credentials_forwarded=false"
+            echo "ambient_proxy_routing_overrides_forwarded=false"
+            echo "mock_executable=true"
+          } > "$HOME/bridge-result.txt"
+          printf '%s\n' "$@" > "$HOME/bridge-args.txt"
+          exit 37
+          MOCK
+          chmod 700 "$mock_bin/claude"
+
+          server_pid=""
+          cleanup() {
+            original_status=$?
+            trap - EXIT
+            if [ -n "$server_pid" ] && kill -0 "$server_pid" 2>/dev/null; then
+              kill -INT "$server_pid" 2>/dev/null || true
+              for attempt in $(seq 1 10); do
+                kill -0 "$server_pid" 2>/dev/null || break
+                sleep 1
+              done
+              if kill -0 "$server_pid" 2>/dev/null; then
+                kill -TERM "$server_pid" 2>/dev/null || true
+                wait "$server_pid" 2>/dev/null || true
+              else
+                wait "$server_pid" 2>/dev/null || true
+              fi
+            fi
+            exit "$original_status"
+          }
+          trap cleanup EXIT
+
+          mkdir -p "$bridge_home/.config" "$bridge_home/.local/share" "$bridge_home/.cache"
+          chmod 700 "$bridge_home/.config" "$bridge_home/.local" "$bridge_home/.local/share" "$bridge_home/.cache"
+          export HOME="$bridge_home"
+          export XDG_CONFIG_HOME="$bridge_home/.config"
+          export XDG_DATA_HOME="$bridge_home/.local/share"
+          export XDG_CACHE_HOME="$bridge_home/.cache"
+          export HOST=127.0.0.1
+          export PORT="$port"
+          export FCC_OPEN_BROWSER=false
+          # Inject only synthetic ambient credentials; the wrapper must drop them.
+          export GITHUB_TOKEN="synthetic-github-token"
+          export GH_TOKEN="synthetic-gh-token"
+          export ANTHROPIC_API_KEY="synthetic-anthropic-key"
+          export OPENAI_API_KEY="synthetic-openai-key"
+          export GOOGLE_API_KEY="synthetic-google-key"
+          export AWS_SECRET_ACCESS_KEY="synthetic-aws-secret"
+          export HTTP_PROXY="http://untrusted-proxy.invalid:8080"
+          export HTTPS_PROXY="http://untrusted-proxy.invalid:8080"
+          export PATH="/usr/bin"
+
+          python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$UV_PROJECT_ENVIRONMENT/bin/fcc-server" > "$RUNNER_TEMP/qualification/fcc-bridge-server.log" 2>&1 &
+          server_pid=$!
+          http_status=000
+          for attempt in $(seq 1 30); do
+            kill -0 "$server_pid" 2>/dev/null || {
+              echo "::error::FCC bridge server exited before readiness."
+              exit 1
+            }
+            http_status="$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 2 "http://127.0.0.1:$port/health" || true)"
+            [ "$http_status" = 200 ] && break
+            sleep 1
+          done
+          test "$http_status" = 200
+
+          listener="$(ss -H -ltn "sport = :$port")"
+          listener_address="$(printf '%s\n' "$listener" | awk 'NF {print $4}')"
+          listener_count="$(printf '%s\n' "$listener" | awk 'NF {n++} END {print n+0}')"
+          test "$listener_address" = "127.0.0.1:$port"
+          test "$listener_count" -eq 1
+
+          set +e
+          python3 "$GITHUB_WORKSPACE/scripts/cloud_pool/exec_allowlist.py" -- "$mock_bin/claude" --version --synthetic-bridge-probe "argument with spaces" 2> "$stderr_file"
+          cli_status=$?
+          set -e
+          preserve_bridge_diagnostics
+          test "$cli_status" -eq 37
+          test -s "$marker"
+          test -s "$args_file"
+          printf '%s\n' "--version" "--synthetic-bridge-probe" "argument with spaces" > "$RUNNER_TEMP/qualification/fcc-bridge-expected-args.txt"
+          cmp "$RUNNER_TEMP/qualification/fcc-bridge-expected-args.txt" "$args_file"
+          ! grep -Fq "synthetic-" "$stderr_file"
+          ! grep -Fq "synthetic-" "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+
+          printf '%s\n' \
+            "fcc_bridge_health_http_status=$http_status" \
+            "fcc_bridge_listener=127.0.0.1:$port" \
+            "fcc_bridge_cli_exit_status=$cli_status" \
+            "fcc_bridge_arguments_preserved=true" \
+            "fcc_bridge_provider_calls=false" \
+            "fcc_bridge_completion_endpoints_called=false" \
+            "fcc_bridge_auth_token_value_persisted=false" \
+            >> "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+
+          set +e
+          kill -INT "$server_pid"
+          signal_status=$?
+          wait "$server_pid"
+          shutdown_status=$?
+
+          # Capture every diagnostic command while errexit is disabled. A failed
+          # listener probe must be recorded, not silently erase the evidence file.
+          remaining_listener="$(ss -H -ltn "sport = :$port" 2>/dev/null)"
+          listener_probe_status=$?
+          if kill -0 "$server_pid" 2>/dev/null; then
+            process_alive_after_wait=true
+          else
+            process_alive_after_wait=false
+          fi
+          if [ "$listener_probe_status" -eq 0 ] && [ -z "$remaining_listener" ]; then
+            listener_absent_after_wait=true
+          else
+            listener_absent_after_wait=false
+          fi
+
+          {
+            printf '%s\n' "fcc_bridge_signal_exit_status=$signal_status"
+            printf '%s\n' "fcc_bridge_shutdown_exit_status=$shutdown_status"
+            printf '%s\n' "fcc_bridge_process_alive_after_wait=$process_alive_after_wait"
+            printf '%s\n' "fcc_bridge_listener_probe_exit_status=$listener_probe_status"
+            printf '%s\n' "fcc_bridge_listener_absent_after_wait=$listener_absent_after_wait"
+          } > "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          {
+            printf '%s\n' "fcc_bridge_signal_exit_status=$signal_status"
+            printf '%s\n' "fcc_bridge_shutdown_exit_status=$shutdown_status"
+            printf '%s\n' "fcc_bridge_process_alive_after_wait=$process_alive_after_wait"
+            printf '%s\n' "fcc_bridge_listener_probe_exit_status=$listener_probe_status"
+            printf '%s\n' "fcc_bridge_listener_absent_after_wait=$listener_absent_after_wait"
+          } >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/qualification/fcc-bridge-shutdown-diagnostics.txt"
+          set -e
+          if [ "$signal_status" -ne 0 ]; then
+            echo "::error::FCC bridge SIGINT delivery returned exit=$signal_status."
+            ps -o pid,ppid,state,cmd -p "$server_pid" || true
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
+          if [ "$shutdown_status" -ne 0 ]; then
+            echo "::error::FCC bridge shutdown returned exit=$shutdown_status."
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            cat "$stderr_file"
+            exit 1
+          fi
+          if kill -0 "$server_pid" 2>/dev/null; then
+            echo "::error::FCC bridge server process remained after wait."
+            ps -o pid,ppid,state,cmd -p "$server_pid" || true
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
+          server_pid=""
+          if [ "$listener_probe_status" -ne 0 ]; then
+            echo "::error::FCC bridge listener probe failed (exit=$listener_probe_status)."
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
+          if [ "$listener_absent_after_wait" != true ]; then
+            echo "::error::FCC bridge listener remained after shutdown."
+            printf '%s\n' "$remaining_listener"
+            cat "$RUNNER_TEMP/qualification/fcc-bridge-server.log"
+            exit 1
+          fi
+          printf '%s\n' \
+            "fcc_bridge_shutdown=clean" \
+            "fcc_bridge_process_exit_code=$shutdown_status" \
+            "fcc_bridge_listener_after_shutdown=absent" \
+            >> "$RUNNER_TEMP/qualification/fcc-bridge-result.txt"
+          trap - EXIT
+
+      - name: Install only selected ECC skills at immutable upstream commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          ecc_commit="e413166c50e85fb205b988b5e78874b5a88ea4d2"
+          git clone --filter=blob:none https://github.com/affaan-m/ECC.git "$RUNNER_TEMP/ecc"
+          git -C "$RUNNER_TEMP/ecc" checkout --detach "$ecc_commit"
+          test "$(git -C "$RUNNER_TEMP/ecc" rev-parse HEAD)" = "$ecc_commit"
+          test -f "$RUNNER_TEMP/ecc/LICENSE"
+          grep -Fq "MIT License" "$RUNNER_TEMP/ecc/LICENSE"
+          cp "$RUNNER_TEMP/ecc/LICENSE" "$RUNNER_TEMP/qualification/ecc-LICENSE-MIT.txt"
+          sha256sum "$RUNNER_TEMP/qualification/ecc-LICENSE-MIT.txt" > "$RUNNER_TEMP/qualification/ecc-license-sha256.txt"
+          mkdir -p "$HOME/.claude/skills"
+          for skill in search-first tdd-workflow security-review; do
+            test -f "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md"
+            mkdir -p "$HOME/.claude/skills/$skill"
+            cp "$RUNNER_TEMP/ecc/skills/$skill/SKILL.md" "$HOME/.claude/skills/$skill/SKILL.md"
+          done
+          find "$HOME/.claude/skills" -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/ecc-skill-sha256.txt"
+
+      - name: Verify profile footprint and write provenance manifest
+        if: always()
+        shell: bash
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/fcc-venv
+          UV_CACHE_DIR: ${{ runner.temp }}/uv-cache
+        run: |
+          set -euo pipefail
+          {
+            echo "## Final resource snapshot"
+            free -h
+            df -hT "$RUNNER_TEMP"
+            echo
+            echo "## Installed sizes"
+            du -sh "$HOME/.local/share/claude" "$UV_PROJECT_ENVIRONMENT" "$UV_CACHE_DIR" "$HOME/.claude/skills" 2>/dev/null || true
+          } > "$RUNNER_TEMP/qualification/runner-final.txt"
+          available_kib="$(df -Pk "$RUNNER_TEMP" | awk 'NR==2 {print $4}')"
+          if [ "$available_kib" -lt $((2 * 1024 * 1024)) ]; then
+            echo "::error::Less than 2 GiB remain after installation; profile is not resource-qualified."
+            exit 3
+          fi
+          claude_version="NOT_INSTALLED"
+          if command -v claude >/dev/null 2>&1; then
+            claude_version="$(claude --version)"
+          fi
+          {
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "target_sha=$PR_HEAD_SHA"
+            echo "github_event_sha=$GITHUB_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            echo "base_sha=$PR_BASE_SHA"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "runner=$RUNNER_OS/$RUNNER_ARCH"
+            echo "claude_code_version=$claude_version"
+            echo "claude_code_install_method=official_signed_apt_repository"
+            echo "claude_code_apt_package_version=$(cat "$RUNNER_TEMP/qualification/claude-apt-package-version.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            echo "claude_code_apt_key_fingerprint=$(cat "$RUNNER_TEMP/qualification/claude-apt-key-fingerprint.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            if [ -s "$RUNNER_TEMP/qualification/claude-binary-integrity.json" ]; then
+              echo "claude_code_release_manifest_signature=verified"
+            else
+              echo "claude_code_release_manifest_signature=NOT_VERIFIED"
+            fi
+            echo "claude_code_release_manifest_sha256=$(awk 'NR==1 {print $1}' "$RUNNER_TEMP/qualification/claude-release-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            echo "claude_code_binary_sha256=$(awk 'NR==3 {print $1}' "$RUNNER_TEMP/qualification/claude-release-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            echo "claude_code_installer_script_executed=false"
+            echo "claude_code_distribution_license=vendor_terms_review_required"
+            echo "runner_network_egress=NOT_VERIFIED_github_hosted_runner_has_public_internet_by_default"
+            echo "docker_no_egress_sandbox=$(grep -F 'docker_network_none_external_tcp=BLOCKED' "$RUNNER_TEMP/qualification/docker-no-egress-result.txt" 2>/dev/null | cut -d= -f2 || echo NOT_VERIFIED)"
+            echo "provider_egress_allowlist=NOT_IMPLEMENTED"
+            echo "real_agent_container_execution=false"
+            echo "fcc_repository=https://github.com/Alishahryar1/free-claude-code"
+            echo "fcc_commit=eb92e4c07af0d6ad8881dce1cd958c3d072c27c5"
+            echo "fcc_pyproject_git_blob=5eed9ea28040cf54ca87e8f48b8ef38c5b33d80b"
+            echo "fcc_uv_lock_git_blob=ee8490c29a36f8302f5c1f1d42b465f6271c10f2"
+            echo "fcc_license=AGPL-3.0-only"
+            echo "fcc_license_sha256=$(awk '{print $1}' "$RUNNER_TEMP/qualification/fcc-license-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            echo "fcc_python=3.14.10"
+            echo "ecc_repository=https://github.com/affaan-m/ECC"
+            echo "ecc_commit=e413166c50e85fb205b988b5e78874b5a88ea4d2"
+            echo "ecc_license=MIT"
+            echo "ecc_license_sha256=$(awk '{print $1}' "$RUNNER_TEMP/qualification/ecc-license-sha256.txt" 2>/dev/null || echo NOT_VERIFIED)"
+            echo "ecc_skills=search-first,tdd-workflow,security-review"
+            echo "provider_calls=false"
+            echo "github_secret_values_read=false"
+            if [ -s "$RUNNER_TEMP/fcc-bridge-home/bridge-result.txt" ]; then
+              echo "synthetic_bridge_claude_mock_invoked=true"
+              echo "claude_executable=synthetic_mock"
+            else
+              echo "fcc_client_launcher_invoked=false"
+              echo "claude_executable=NOT_INVOKED"
+            fi
+            echo "real_claude_session=false"
+            echo "agent_task_executed=false"
+            echo "production_dispatch=false"
+          } > "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          if [ -f "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" ]; then
+            awk -F= '{ print "fcc_runtime_" $1 "=" substr($0, index($0, "=") + 1) }' "$RUNNER_TEMP/qualification/fcc-runtime-state.txt" >> "$RUNNER_TEMP/qualification/provenance-manifest.txt"
+          fi
+          duplicate_keys="$(cut -d= -f1 "$RUNNER_TEMP/qualification/provenance-manifest.txt" | sort | uniq -d)"
+          if [ -n "$duplicate_keys" ]; then
+            echo "::error::Duplicate provenance manifest keys: $duplicate_keys"
+            exit 1
+          fi
+          find "$RUNNER_TEMP/qualification" -maxdepth 1 -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/qualification/SHA256SUMS.txt"
+
+      - name: Publish bounded no-secret qualification evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: claude-code-fcc-ecc-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qualification/
+          if-no-files-found: warn
+          retention-days: 7

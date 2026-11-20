@@ -2191,3 +2191,41 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## /next current-state addendum — 2026-11-18 (PR #126 retirement + PR #116 FCC PATH remediation)
+
+This addendum supersedes earlier runtime/authorization statements in this historical Context Window where they conflict. Re-read live refs and exact-head CI before relying on any later status.
+
+### Repository and governance snapshot
+- Repository: `VlDMlNSh/developer-cloud-pool`; default branch: `Основной`.
+- Current PR base observed: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Active repository ruleset `26550182` (`Основной — verified`): enforcement active on `refs/heads/Основной`; PR required; required approvals = 0; review-thread resolution required; no bypass actors; deletion/non-fast-forward blocked. This does not enforce independent review.
+- README at the default-branch base still describes the older Supervisor/Worker scaffold. Treat PR-only changes below as proposals, not deployed default-branch behavior.
+
+### Legacy dispatch retirement — PR #126
+- PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/126
+- Branch `fix/retire-legacy-label-dispatch-2026-11-18`, head `f69f286b5b5a3de8dfdd80ed581859851ce271e5`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+- Changes: scheduled read-only heartbeat only; fail loudly if legacy `POOL_DISPATCH_ENABLED=true`; remove issue/workflow-run/manual triggers and `issues:write`/`actions:write` plus job-scoped `GITHUB_TOKEN`; old DSH Worker becomes a credential-free failure guard with `permissions: {}`.
+- Exact-head Pool Contract Validation run `44275194245`: COMPLETED / SUCCESS; job `134701422622`; YAML parse, dispatch-disabled assertion and pool security contract steps passed.
+- This retirement is not active on default branch until PR integration. Keep dispatch disabled.
+
+### Claude Code + ECC + FCC runner qualification — PR #116
+- PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/116
+- Branch `feat/claude-code-fcc-runner-qualification-2026-11-17`, current head at this addendum `4f2b9581b75dab5424a4dbda8f78b6430007783e`, base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; OPEN / DRAFT / UNMERGED.
+- Previous exact-head Runner Qualification run `44283688950` failed at FCC loopback startup. Log evidence: `exec_allowlist.py` rejected `PATH` because `/usr/bin:/bin` resolves to duplicate canonical directories on Ubuntu; FCC exited before readiness and no loopback listener was established.
+- Corrected both FCC startup/handoff PATH assignments in `.github/workflows/claude-code-fcc-runner-qualification.yml` to `PATH=/usr/bin` (no alias duplicate). Current workflow blob `7ff0846e7957dba27210a04e29233f3af06be70f`; read-back confirmed both assignments are normalized.
+- Exact-head Pool Contract Validation run `44284080852` on `4f2b9581b75dab5424a4dbda8f78b6430007783e`: COMPLETED / SUCCESS.
+- Exact-head Runner Qualification run `44284080903` on the same SHA: PENDING at addendum time; do not claim FCC runtime qualification until it completes and job logs verify loopback HTTP 200, exact listener binding and clean shutdown.
+- Earlier steps on run `44283688950` passed signed Claude APT key/release manifest/binary integrity, Docker `--network none` capability proof, FCC installation metadata, 15 synthetic profile tests and provenance publication; FCC loopback startup failed. No provider credentials/calls or live Claude session were used.
+- The PATH correction fixes a deterministic test-harness/runtime configuration mismatch; it does not establish provider-specific egress allowlisting, Claude hosted-use entitlement, free API route/account/quota, production worker execution or Contour A acceptance.
+
+### Admission, provider and workspace boundaries
+- Issue #96 remains the only intended Cloud Pool-native owner-only `/next` control surface. It is PLANNED; no deployed default-branch trusted controller, hosted D1, live admission, outbox delivery, lease/fencing/recovery or production dispatch is verified.
+- Gemini is optional supplementary capacity, not a launch blocker; no Gemini dispatch was run in this pass. Do not call provider agents outside the approved controller.
+- Issue #118 remains blocked: no active authorized persistent Engineering Workspace host #3, no verified Cloudflare Access/Tunnel, no backup/restore evidence.
+- No secrets were read, no provider calls, no paid fallback, no deployment, no merge, no production dispatch.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B / MediaHub OS remains DEFERRED.
+
+### Next bounded action
+- Re-read run `44284080903` and inspect its job log. If FCC loopback now passes, verify the synthetic FCC-to-mock-Claude handoff and artifact manifest on the same immutable head. If it fails, isolate the next exact failing step; do not enable provider access or dispatch.
