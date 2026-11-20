@@ -34,6 +34,10 @@ async function acquireLease(expiresAt = NOW + 60) {
 }
 
 beforeEach(async () => {
+  // Temporarily remove only the append-only UPDATE/DELETE guards for fixture
+  // teardown. Restore them before each test; INSERT provenance guard stays on.
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_comment_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_events").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_outbox").run();
@@ -49,6 +53,16 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
   await env.POOL_DB.prepare("DELETE FROM pool_route_qualifications").run();
+  await env.POOL_DB.prepare(`
+    CREATE TRIGGER pool_attempt_events_no_update
+    BEFORE UPDATE ON pool_attempt_events
+    BEGIN SELECT RAISE(ABORT, 'ATTEMPT_EVENTS_APPEND_ONLY'); END
+  `).run();
+  await env.POOL_DB.prepare(`
+    CREATE TRIGGER pool_attempt_events_no_delete
+    BEFORE DELETE ON pool_attempt_events
+    BEGIN SELECT RAISE(ABORT, 'ATTEMPT_EVENTS_APPEND_ONLY'); END
+  `).run();
 });
 
 describe("D1 lease and fencing SQL guards", () => {
