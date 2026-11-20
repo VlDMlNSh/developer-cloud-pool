@@ -2686,3 +2686,25 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 35 — authenticated D1 attempt-lease adapter seam — 2026-11-20
+
+- Re-read default `Основной` @ `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`; Pass 34 parent `13cf7d43b7bdf645b1336498f32f449035994e7f`.
+- Pass 35 branch `feat/pass35-authenticated-d1-lease-adapter-2026-11-20`, final HEAD `83b8e9d3b0bdeeb201e24a7a9d2fe042fb00694a`.
+- PR #163 implementation OPEN/DRAFT/UNMERGED, base Pass 34 branch. PR #164 validation-only OPEN/DRAFT/UNMERGED, base default; do not merge validation PR. CI checkout merge SHA `a8c98b873a91f7f28dcb66ee5842c7520c7ab47a`.
+- Added `proofs/d1-ledger/src/acquire-attempt-lease.mjs`, blob `1b6232137dc53998d3efda36a32c809916e9d316`. Requires injected `authenticateExecutor`, binds principal executor and CODE profile to persisted task/current prepared attempt, performs conditional pending -> leased update, and verifies the exact lease/attempt/audit tuple through `withSession("first-primary")`. Ambiguous acknowledgement resolves only by matching primary readback. All outcomes keep dispatch=false and executionAuthorized=false.
+- Added four tests in `proofs/d1-ledger/test/lease-fencing.test.ts`, blob `22a3c0050f2a93969efb981a450a1027c92de7f6`: successful acquisition; principal executor mismatch; missing authenticator; task/executor mismatch.
+- Updated D1 README blob `e88e020bcbd52695f64fc358b259db5e26db5f06`; corrected current migration sequence and documented Pass 35.
+- Reuse: existing pinned `@cloudflare/vitest-plugin@1.4.7`, Vitest 4.1.12, Workers/Miniflare D1 and D1 primary-first sessions. No new dependencies or second coordination service.
+- Exact-head D1 run [44718354234](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44718354234), job `136227400079`: COMPLETED/SUCCESS; Node 24.9.0; npm ci; inert Worker syntax check; 5 test files / 54 tests passed.
+- Exact-head Pool Contract run [44718354072](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44718354072), job `136227400255`: COMPLETED/SUCCESS; six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; dispatch disabled or unset.
+- Important limitation: authenticator is injected; tests use a synthetic authenticator. No production OIDC/GitHub Actions issuer proof. Adapter remains local proof code and is not wired to deployed Hono/Worker/Supervisor runtime. Hosted D1 and executor sandbox remain NOT VERIFIED.
+- Lease renewal and explicit indeterminate reconciliation remain unimplemented; indeterminate attempts stay quarantined and automatic takeover remains prohibited.
+- PR #159/#161/#163 independent review submissions: none observed; review NOT VERIFIED. Default combined status lookup returned no status contexts; default CI NOT VERIFIED. Ruleset #26550182 last observed active on `refs/heads/Основной`, PR/thread-resolution required, zero required approvals, no bypass; full current detail not re-read in Pass 35.
+- Gemini controller absent from default; Gemini and Claude NOT RUN. No secret values read. No hosted D1, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes.
+- Report: `docs/reports/2026-11-20-pass-35-authenticated-d1-attempt-lease-adapter.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-35-authenticated-d1-attempt-lease-adapter.md`; snapshot: `docs/context/PASS-35-CURRENT-SNAPSHOT.md`.
+- Next: Pass 36 issuer-bound, evidence-backed reconciliation protocol for indeterminate attempts; keep automatic takeover disabled; obtain independent review of #159/#161/#163.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
