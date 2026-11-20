@@ -63,7 +63,6 @@ AND NOT (
   AND (OLD.task_key IS NULL OR OLD.task_key IS NEW.task_key)
   AND (OLD.admission_id IS NULL OR OLD.admission_id IS NEW.admission_id)
   AND NEW.task_key IS NOT NULL
-  AND NEW.task_key IS NOT NULL
   AND (NEW.admission_id IS NULL OR (OLD.admission_id IS NULL AND NEW.admission_id IS NOT NULL))
 )
 BEGIN
