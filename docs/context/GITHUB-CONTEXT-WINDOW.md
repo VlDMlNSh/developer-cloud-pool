@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-20 — Pass 31 frozen schema-0010 upgrade proof
+Last refreshed: 2026-11-20 — Pass 33 D1 SQL trigger hardening
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
@@ -2638,5 +2638,27 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Issue #140 OPEN; Issue #151 OPEN/PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: `docs/reports/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; snapshot: `docs/context/PASS-32-CURRENT-SNAPSHOT.md`.
 - Next: Pass 33 full SQL/trigger audit, with independent review outstanding; no hosted D1 mutations or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 33 — D1 SQL trigger and admission binding hardening — 2026-11-20
+
+- Revalidated default branch `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; Pass 32 parent `ae0bf4fce7e4fb3a2482603bad2c940eff0a555a`.
+- Pass 33 implementation branch `feat/pass33-d1-sql-trigger-hardening-2026-11-20`; final HEAD `deb14d34ce7387dec217cd79fc29403a91542c44`.
+- PR #159 implementation OPEN/DRAFT/UNMERGED, stacked on Pass 32; PR #160 validation-only OPEN/DRAFT/UNMERGED targeting `Основной`. Neither is merged; do not merge the validation PR.
+- Added forward-only migration `0013_harden_admission_sql_bindings.sql` (blob `ba68819f4526e316e8d8972daddfaadb027a3ab5`).
+- SQL hardening: approval ID and authorization identity immutable; approval state only ready -> consumed/revoked; consumed timestamp/task key/admission ID bound at consumption (legacy task-key-only rows remain non-authorizing and cannot receive late admission binding); admission INSERT now requires exact consumed approval/task/executor and active matching route qualification/evidence/freshness; receipt INSERT now requires exact admission/attempt/current task pointer/pending outbox/qualification binding.
+- Tests: atomic admission suite blob `3d9b54b2a695261e3c6857710af837575f522af8`; schema upgrade test blob `ee6aed4ad1c90982ee9290d9933c4e32fdf29ef6`; README blob `44032e3d6f7231dc49f0988f42c6b412d81b4561`.
+- Initial exact-head D1 run `44709234906` failed 5/41. The first guard was over-restrictive for historical task-key-only consumption; the dedicated executor immutable trigger error contract was shadowed; and upgrade test expected forged receipt insertion. These were corrected; failure remains recorded.
+- Final exact-head D1 run https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44709527918, job `136197384963`: COMPLETED/SUCCESS, 4 test files / 42 tests passed, Node 24.9.0, npm ci and inert Worker syntax check.
+- Exact-head Pool Contract Validation https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44709527912, job `136197385216`: COMPLETED/SUCCESS; `POOL_DISPATCH_ENABLED=false`; six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`.
+- Validation checkout merge SHA `62d08db5317c5b89bccf177c7b9e7bfacb23c62d` combines final Pass 33 head with frozen default SHA.
+- Reuse: existing official Cloudflare Workers Vitest/D1 harness retained; no new dependencies or alternative SQL engine.
+- No hosted D1, secret reads, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes.
+- Independent review NOT VERIFIED. Detailed current ruleset read-back NOT VERIFIED in this pass. Hosted D1 behavior, lease/fencing, trusted GitHub event provenance and actual executor qualification remain outstanding.
+- Report: `docs/reports/2026-11-20-pass-33-d1-sql-trigger-hardening.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-33-d1-sql-trigger-hardening.md`; snapshot: `docs/context/PASS-33-CURRENT-SNAPSHOT.md`.
+- Issue #140 OPEN; Issue #151 OPEN/PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: lease/fencing SQL and trigger audit, while obtaining independent review of PR #159.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
