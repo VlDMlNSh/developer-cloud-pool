@@ -2191,3 +2191,80 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+## Engineering pass — 2026-11-16 — Issue #96 trusted controller scope audit
+
+- Immutable default-branch target: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (`Основной`). Working documentation branch: `docs/next-2026-11-16-issue96-controller-bridge`; this branch is not the default branch and its changes are not accepted/merged.
+- Issue #96 remains the Cloud Pool /next control issue. PR #97 is a pure fail-closed admission predicate without durable idempotency or dispatch. PR #102 is a Cloud Pool-native read-only admission probe for Issue #96 without durable ledger/lock or child dispatch. PR #107 contains the four-slot Gemini client/task candidate but no production caller integration, live provider calls, durable recovery, SDK runtime qualification or proof of distinct upstream quota domains. PR #108 adds client bounds; PR #109 adds 11 fake-client tests but does not qualify SDK/runtime or live dispatch.
+- MediaHub Gemini controller blob `7799f0fc713c5bd772ce6820df40a926a83445c8` is tied to MediaHub Issue #301 and three child roles. It is a separate control plane, not a Cloud Pool /next bridge. Do not reuse its credentials or dispatch route for Issue #96.
+- Decision: keep Cloud Pool Issue #96 as the only Cloud Pool intake; reconcile #97/#102 admission with #107 four-role client only after a Cloud Pool-native durable single-use claim, lease expiry, fencing generation, owner/SHA binding and ambiguous-outcome recovery to NEEDS_REVIEW exist.
+- No code/workflow changed; no tests run in this pass; no secret values read; no Gemini API calls, workflow dispatches, child jobs, merge, deployment or paid resources. Integrated four-agent dispatch NOT RUN. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Issue #96 controller bridge audit](../reports/2026-11-16-cloudpool-issue96-controller-bridge-audit.md). Checkpoint: [2026-11-16 Issue #96 controller bridge](../checkpoints/2026-11-16-issue96-controller-bridge.md).
+- Next: implement and adversarially test the durable single-use admission/lease/fencing layer in Cloud Pool, then integrate the four-agent candidate behind the trusted controller. Require exact-head CI, independent security review and governance read-back before dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Durable lease integration audit — 2026-11-16
+
+- Immutable current default target rechecked: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (`Основной`). Documentation work remains on `docs/next-2026-11-16-issue96-controller-bridge`, PR #110, unmerged.
+- PR #98 head `f23cdb5484d5923e02242b3ea142397f9e1f0270` compares 9 ahead / 13 behind current default; do not integrate from this stale branch.
+- PR #100 head `cb952a915093a4aaafb8f878954503d2460c4008`, based on PR #98, exact-head run `43826793313` / job `133162447332` SUCCESS. It correctly removes caller-asserted `lockHeld` and keeps runtime blocked with `DURABLE_LOCK_NOT_IMPLEMENTED`; this is not a live controller.
+- PR #56 exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`, run `42825872826` / job `129862892371` SUCCESS. D1 local proof denies expired-running takeover absent trusted reconciliation. Production binding/integration NOT VERIFIED.
+- PR #107 exact head `027492668e7721a5371b38997bc76a6cd6a50cd4`, run `43868830501` / job `133304274884` SUCCESS for fake-client contract tests only. Live Gemini calls, four account identities/quota ownership, production caller and independent review NOT VERIFIED.
+- PR #110 exact head `119f201ce2d3861667e025e28ab05a8db23e1c12`: no PR-triggered runs returned; CI NOT VERIFIED. Formal reviews not observed on #56/#98/#100/#107.
+- Integration decision: reuse the isolated D1 single-use/immutable-attempt model as the candidate, but first port a minimal atomic repository-wide lease/claim to a clean base from current default, with owner/source-comment/SHA/wave binding, monotonic fencing and fail-closed indeterminate recovery. Do not dispatch from GitHub comment ledger or caller Boolean. Verify free-tier binding/hosting constraints before any hosted D1 action.
+- Report: [durable lease integration audit](../reports/2026-11-16-cloudpool-durable-lease-integration-audit.md). Checkpoint: [Issue #96 bridge checkpoint](../checkpoints/2026-11-16-issue96-controller-bridge.md).
+- No secrets read, provider/model calls, dispatch, merge, deployment, hosted database provisioning or paid resources. No tests run in this documentation/audit pass.
+- Status: isolated D1 lease proof VERIFIED only within its local test scope; production lease/controller NOT VERIFIED; four live Gemini agents NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean-base implementation proof of durable admission/lease/fencing with adversarial no-secret tests; then exact-head CI and independent review before connecting PR #107 candidate.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Clean-base D1 lease proof port — 2026-11-16
+
+- Default immutable base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845` (`Основной`).
+- New isolated branch: `proof/d1-lease-clean-base-2026-11-16`.
+- PR #111: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111 — OPEN / DRAFT / UNMERGED.
+- Exact head: `62e203e0c35eed1e71ab25f67ae45c3d33d7578c`; tree `6590d5be958540e919c6ff4099ac42e5000d159c`.
+- Clean-base compare: 1 commit ahead / 0 behind; merge base exactly equals the default target.
+- Ported the isolated D1 ledger package from PR #56 exact head `0769b6b5d5eda9c7821804b93db21ded6e0985ef`: migrations 0001–0005, claim/outbox and attempt adapters, hardened lease denial, pinned package/lockfile, local Workers-runtime tests, and a PR validation workflow. No production Supervisor/Worker integration.
+- Exact-head D1 workflow run `43880577392`, job `133345051895`: COMPLETED / SUCCESS. Node 24.9.0; `npm ci --ignore-scripts --no-audit --no-fund`; syntax check passed; 36/36 Workers-runtime D1 tests passed (13 consume + 23 claim/outbox). Lockfile artifact `14232860410`, SHA-256 `81925793bc92b1f214666a61b2817eb327127bfba92168358cc32b85b2c0bd4f`.
+- Exact-head Pool Contract Validation run `43880577430`: COMPLETED / SUCCESS.
+- Read-back confirmed the hardening: lease acquisition accepts only a prepared attempt on a pending task; expired/running/indeterminate attempts are not reclaimed by caller metadata. This is still a local test proof, not a qualified hosted durable lock.
+- No secrets read, provider/model calls, Gemini dispatch, hosted D1 provisioning, merge, deployment or paid resources.
+- Formal independent security review: NOT RUN. Production caller integration and hosted persistence: NOT VERIFIED. Four live agents: NOT RUN. Contour A: NOT ACCEPTED.
+- Next: audit PR #111 migration and transaction semantics; then build a narrowly scoped trusted Issue #96 adapter that atomically binds owner actor, source comment ID, immutable SHA, wave/task IDs, lease generation and one-shot dispatch intent. Keep ambiguous outcomes in NEEDS_REVIEW and dispatch disabled until review/governance pass.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## SQL attempt-state integrity pass — 2026-11-16
+
+- D1 proof PR #111: https://github.com/VlDMlNSh/developer-cloud-pool/pull/111 (OPEN / DRAFT / UNMERGED).
+- Immutable target base: `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`; latest PR head: `687196738782432797bf394f1342cb9df19f478f`; compare: 4 commits ahead / 0 behind.
+- Added migration `0006_guard_running_attempt_requires_lease.sql`: SQL rejects prepared -> running unless the task already has the matching current attempt pointer, lease attempt pointer, non-empty owner, positive fencing generation and unexpired lease.
+- Added adversarial regression in `test/claim-outbox.test.ts`: direct unleased transition is rejected and leaves attempt prepared; normal `acquireAttemptLease` path transitions to running with generation 1.
+- Exact-head D1 workflow [43881396386](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396386): COMPLETED / SUCCESS; Node 24.9.0; syntax check passed; 37/37 Workers-runtime tests passed (13 consume + 24 claim/outbox). Job `133347908331`.
+- Exact-head Pool Contract Validation [43881396272](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43881396272): COMPLETED / SUCCESS.
+- Lockfile artifact `14232471651`; SHA-256 `08329cbcb0bb479760af4a9dbb7682472180e4bd4431ca2ffaa0cc18612c99d3`.
+- Read-back: PR #111 latest head equals `687196738782432797bf394f1342cb9df19f478f`; base remains exact default SHA; PR remains Draft and mergeable. Default branch unchanged.
+- No secrets read, provider/model calls, Gemini dispatch, hosted D1 provisioning, merge or deployment.
+- Scope remains local Workers-runtime proof. Independent security review, hosted persistence, trusted Issue #96 controller integration, and four-agent live dispatch remain NOT VERIFIED / NOT RUN. Contour A NOT ACCEPTED.
+- Next bounded step: implement a narrow trusted Issue #96 admission adapter that binds owner actor + source comment ID + repository/issue + immutable target SHA + wave/task IDs to a single-use approval/outbox, then prove replay, cross-owner, cross-comment, stale-SHA and ambiguous-commit cases. Do not enable dispatch before security/governance review.
+- Canonical MediaHub map (separate project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Read-only Issue #96 event controller clean-base pass — 2026-11-16
+
+- Default branch HEAD remains 35208f0ef28f0ac031a7acdf35fc90ccc9b16845.
+- Found prior reusable read-only event controller in PR #102 exact head e6613c152c5334db04f520cfe069f3bbd1c57772; ported to clean-base branch proof/next-event-controller-clean-base-2026-11-16.
+- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112 — OPEN / DRAFT / UNMERGED; head c9a4c0ab2001f01a09632795283071c521e1c99d; base exact default SHA.
+- Controller validates only new exact /next issue_comment on open Issue #96; repository ID 1445644538, owner ID 157891068, owner login, issue repository API URL, OWNER association, trusted default ref and immutable 40-hex event SHA. Event identity is SHA-256(repository + issue + source comment ID).
+- Exact-head read-only controller run [43882090833](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090833), job 133350342861: COMPLETED / SUCCESS; 21/21 adversarial tests passed. Push run [43882041071](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882041071) also SUCCESS.
+- Exact-head Pool Contract Validation [43882090867](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/43882090867): COMPLETED / SUCCESS; workflow YAML and security contracts passed.
+- Workflow permissions are contents: read; no secrets, API writes, D1, provider calls, child dispatch or side effects. The issue_comment admission job was NOT RUN in CI (expected for push/PR event); no live owner-comment event was synthesized.
+- Important existing-path finding: default pool-supervisor.yml listens to schedule, workflow_dispatch, issues opened/reopened/labeled, and workflow_run, not Issue #96 issue_comment. If POOL_DISPATCH_ENABLED=true, it consumes pool:ready labels and dispatches the legacy DSH probe. Current contract validation refuses when the variable is true, but effective runtime variable value was not inspected. Keep dispatch disabled; this legacy supervisor is not the Issue #96 owner /next controller.
+- Issue #96 explicitly amends the desired child count to exactly four isolated task executions (researcher, implementation designer, tester, security auditor). This pass does not dispatch any of them.
+- No secret values read, provider/model calls, Gemini dispatch, hosted D1, merge or deployment.
+- Status: event envelope validator VERIFIED in local CI only; durable admission, D1 binding, controller lease/fencing, live issue_comment run and dispatch NOT VERIFIED / NOT RUN. PR #112 remains Draft. PR #111 D1 proof remains separate Draft. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement the durable admission binding of repository/owner numeric IDs + Issue #96 + source comment ID + target SHA + four fixed task IDs/wave ID into the D1 single-use approval/outbox, with cross-event replay, stale-SHA and ambiguous-write reconciliation tests. Do not connect to dispatch before independent review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
