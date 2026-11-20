@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
+import { acquireAttemptLease } from "../src/acquire-attempt-lease.mjs";
 
 const NOW = 1_800_000_000;
 const TASK_KEY = "a".repeat(64);
@@ -208,5 +209,73 @@ describe("D1 lease and fencing SQL guards", () => {
     await expect(env.POOL_DB.prepare(
       "UPDATE pool_tasks SET attempt_number = 0 WHERE task_key = ?"
     ).bind(TASK_KEY).run()).rejects.toThrow(/TASK_ATTEMPT_POINTER_NOT_MONOTONIC/);
+  });
+});
+
+
+describe("authenticated D1 attempt lease adapter", () => {
+  const request = {
+    taskKey: TASK_KEY,
+    attemptId: ATTEMPT_ID,
+    executorId: "executor-alpha",
+    authContext: { syntheticSubject: "worker-alpha" },
+    now: NOW,
+    ttlSeconds: 60
+  };
+  const authenticate = async (context, expected) => ({
+    authenticated: true,
+    subject: context.syntheticSubject,
+    executorId: expected.executorId,
+    capabilityProfile: expected.capabilityProfile
+  });
+
+  it("acquires the prepared attempt only after trusted principal binding and primary readback", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate);
+    expect(result).toMatchObject({
+      decision: "LEASE_ACQUIRED",
+      taskKey: TASK_KEY,
+      attemptId: ATTEMPT_ID,
+      executorId: "executor-alpha",
+      leaseOwner: "worker-alpha",
+      leaseGeneration: 1,
+      leaseExpiresAt: NOW + 60,
+      dispatch: false,
+      executionAuthorized: false
+    });
+  });
+
+  it("rejects an authenticated principal for a different executor before writing", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request, async () => ({
+      authenticated: true,
+      subject: "worker-alpha",
+      executorId: "executor-other",
+      capabilityProfile: "jarvis-code-sandbox-v1"
+    }));
+    expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_PRINCIPAL_BINDING_INVALID", dispatch: false });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(TASK_KEY).first();
+    expect(task).toMatchObject({ state: "pending", lease_generation: 0 });
+  });
+
+  it("fails closed when no trusted authenticator is supplied", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request);
+    expect(result).toMatchObject({ decision: "DENY", reason: "LEASE_AUTHORITY_UNAVAILABLE", dispatch: false });
+  });
+
+  it("does not acquire a lease for a mismatched task executor", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, {
+      ...request,
+      executorId: "executor-other"
+    }, authenticate);
+    expect(result).toMatchObject({ decision: "DENY", reason: "TASK_EXECUTOR_OR_ATTEMPT_MISMATCH", dispatch: false });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(TASK_KEY).first();
+    expect(task).toMatchObject({ state: "pending", lease_generation: 0 });
   });
 });
