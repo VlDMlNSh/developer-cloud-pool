@@ -4,8 +4,9 @@
 
 - Default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
 - Pass 30 implementation target: `d56d334d2045d08fd7aa71feb9749aab08d96840`.
-- Validation surface PR #153 remains OPEN/DRAFT/UNMERGED and must not be merged.
-- Implementation lineage remains PR #152, stacked on PR #150; PR #145 is the separate documentation branch.
+- Pass 31 implementation/test head: `07de06e4f48984d5130d4e4a3bc8ae81750be4bf`.
+- Exact integrated CI checkout: `b87ea5ea4121729762d80b305981052d98b966f4`, parents default `b81d2b52...` and Pass 31 head `07de06e4...`.
+- PR #154 implementation and PR #156 validation-only remain OPEN/DRAFT/UNMERGED. PR #156 must not be merged.
 - Issue #140 remains OPEN; Issue #151 remains PLANNED and deferred.
 
 ## Research and design
@@ -15,30 +16,40 @@ Reviewed Cloudflare's official Workers Vitest integration guidance for `readD1Mi
 ## Implementation
 
 - Added an isolated `UPGRADE_DB` binding with a separate synthetic database ID.
-- Added `test/migration-upgrade.test.ts`: freezes the schema boundary at 0010, seeds legacy approval/task/approval-link/task-ready-outbox/attempt/projection-outbox records, then applies only 0011–0012.
-- The suite checks historical ID and relationship preservation; legacy executor identity remains NULL and cannot be consumed; new executor-bound admission, receipt and task-ready outbox binding; exact replay; cross-executor logical task-key collision; idempotent migration reapplication; invalid foreign references; and replay denial after receipt loss.
-- Updated the D1 proof README to distinguish clean-install tests from the staged upgrade proof.
-- No dependency added. No hosted D1, secret, provider, dispatch, execution, deployment or production write is used.
+- Added `test/migration-upgrade.test.ts`: applies only 0001–0010, seeds historical synthetic approval/task/approval-link/task-ready-outbox/attempt/projection-outbox records at the schema-0010 boundary, then applies only 0011–0012.
+- Tests cover historical ID and relationship preservation; default comment-post state; intentionally-null legacy executor identity and fail-closed consumption; new executor-bound admission, receipt and task-ready outbox linkage; exact replay; cross-executor task-key collision; idempotent migration reapplication; invalid foreign reference; missing and forged receipt replay denial; malformed outbox event rejection.
+- Updated the D1 proof README. No new dependencies.
+- First CI attempt at the initial draft found a test assertion that passed a prepared statement rather than its `.run()` promise to Vitest `.rejects`. Corrected it and added the additional adversarial cases. The initial failure is retained as evidence, not hidden.
 
-## Validation
+## Exact-head validation
 
-- Implementation and test source are committed on the Pass 31 feature branch.
-- Exact-head CI evidence: PENDING / NOT VERIFIED until PR #153 runs on the new implementation HEAD and job logs are inspected.
-- Local execution in this session: NOT RUN.
+Final exact source HEAD: `07de06e4f48984d5130d4e4a3bc8ae81750be4bf`.
+
+- D1 run [44701738713](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701738713), job `136171500229`: COMPLETED / SUCCESS.
+- Job log confirms checkout merge `b87ea5ea4121729762d80b305981052d98b966f4`, Node.js 24.9.0, `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test`.
+- Test summary: 4 files passed; 36 tests passed; 0 failed. Upgrade suite: 7 tests passed.
+- Pool Contract Validation [44701738592](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701738592), job `136171500702`: COMPLETED / SUCCESS.
+- Contract log confirms `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, and `POOL_CONTRACT_VALIDATION=PASS`.
+- Earlier run [44701503787](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701503787) failed 1/35 due the test harness assertion issue; the correction was followed by the successful final exact-head runs above.
+- Source files and blob SHAs are recorded in the Pass 31 checkpoint and repository tree; the test file blob at the final code commit is `bfe955f52398d13311f1a85d9402b1604b1721cc`.
+
+## Validation boundary
+
+- Frozen synthetic schema-0010 staged upgrade through 0011–0012: VERIFIED by final exact-head CI.
+- Fresh install 0001–0012: VERIFIED as part of the same full test suite.
+- Hosted D1, credentials/secrets, provider calls, dispatch, executor launch, deployment, merge and production writes: NOT RUN.
 - Independent review: NOT VERIFIED.
-- The fixture is synthetic and migration-driven at a pinned schema boundary; it is not a production database export.
+- Gemini/Claude dispatch: NOT RUN. No secrets or secret values were read.
+- Detailed ruleset conditions were not changed; no workflow filters, permissions, branch protection or governance controls were modified.
 
-## Governance and status
+## Status
 
-No workflow filters, permissions, branch protection, rulesets, secrets or governance controls were changed. Dispatch remains disabled and adapter responses remain non-dispatching. Gemini/Claude dispatch NOT RUN.
-
-Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+Pass 31 migration-upgrade proof: VERIFIED / SUCCEEDED. PR #154 and #156 remain OPEN/DRAFT/UNMERGED. Contour A remains BLOCKED / NOT ACCEPTED because runtime deployment, real executor, model routing, quotas, account isolation, recovery and independent acceptance remain outstanding. Contour B remains DEFERRED.
 
 ## Next
 
-1. Inspect the exact-head CI run and logs for the Pass 31 feature HEAD.
-2. Fix only demonstrated test/runtime failures without weakening governance.
-3. Re-read all changed files and record blob/commit SHAs in the canonical Context Window, checkpoint and snapshot.
-4. Continue to transaction ambiguity/readback only after the schema-0010 upgrade proof is verified.
+1. Preserve the Pass 31 evidence and review the full PR diff independently.
+2. Continue with bounded transaction ambiguity, retry safety and durable readback proof (candidate Pass 32), without hosted D1 mutations or enabling dispatch.
+3. Continue full SQL/trigger and lease fencing review only after exact-head source reconciliation.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
