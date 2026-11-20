@@ -260,7 +260,8 @@ export async function admitQualifiedTask(db, input) {
     const prior = await readPrior(priorReadDb, input);
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
-      if (prior.receipt_assertion !== 1 || prior.receipt_executor_id !== input.executorId ||
+      if (prior.approval_state !== "consumed" || prior.attempt_status !== "prepared" ||
+          prior.receipt_assertion !== 1 || prior.receipt_executor_id !== input.executorId ||
           prior.receipt_approval_id !== prior.approval_id || prior.receipt_task_key !== prior.task_key ||
           prior.receipt_attempt_id !== prior.admission_attempt_id ||
           prior.receipt_qualification_id !== prior.qualification_id ||
