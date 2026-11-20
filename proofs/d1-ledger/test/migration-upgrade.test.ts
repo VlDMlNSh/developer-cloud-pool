@@ -272,13 +272,13 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     expect(replay).toMatchObject({ decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false });
 
     // A present but forged receipt must fail the same durable identity readback.
-    await db.prepare(`
+    await expect(db.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, executor_id, attempt_id,
         qualification_id, evidence_digest, committed_at, assertion, dispatch_enabled
       ) VALUES (?, ?, ?, ?, 'forged-attempt-id', ?, ?, ?, 1, 0)
     `).bind(input.admissionId, input.approval.approvalId, input.taskKey,
-      input.executorId, input.route.qualificationId, input.route.evidenceDigest, now).run();
+      input.executorId, input.route.qualificationId, input.route.evidenceDigest, now).run()).rejects.toThrow();
     const forgedReplay = await admitQualifiedTask(db, input);
     expect(forgedReplay).toMatchObject({
       decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
