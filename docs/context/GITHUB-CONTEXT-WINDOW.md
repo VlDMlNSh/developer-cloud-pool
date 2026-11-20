@@ -2619,3 +2619,24 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: independent review of Pass 31 PR diff, then bounded transaction ambiguity/retry/readback proof. No hosted D1 writes or dispatch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 32 — D1 ambiguous batch outcome and primary-first readback — 2026-11-20
+
+- Default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; Pass 31 parent `b90f386814436552f9e4b0c2b54050731cb9859e`.
+- Pass 32 implementation branch `feat/pass32-d1-ambiguous-batch-readback-2026-11-20` final HEAD `ae0bf4fce7e4fb3a2482603bad2c940eff0a555a`.
+- PR #157 implementation OPEN/DRAFT/UNMERGED, stacked on `feat/pass27-atomic-admission-executor-v2-2026-11-19`; PR #158 validation-only OPEN/DRAFT/UNMERGED targeting `Основной`; do not merge either.
+- Reuse assessment: official `cloudflare/workers-sdk` (Apache-2.0, active) D1 Vitest fixture is the appropriate maintained testing substrate; repository already uses `@cloudflare/vitest-plugin@1.4.7` and D1 migration APIs. No new testing dependency. Temporal TypeScript SDK/docs reviewed for idempotent retry concepts only; no Temporal runtime/dependency integrated.
+- D1 adapter now uses `withSession("first-primary")` for prior/replay and post-batch readback. On ambiguous batch error or failed success-readback, it starts a fresh primary-first session and verifies the full admission/approval/task/executor/attempt/qualification/receipt/outbox tuple. Returns already committed only for a fully consistent record. Otherwise `ADMISSION_OUTCOME_UNCONFIRMED`; never claims rollback or generates a new identity.
+- Added fault injection: commit-then-lost-ack; fail-before-commit plus exact same-key retry; primary-readback unavailable after commit. Dispatch remains disabled.
+- Final source blobs: adapter `9943d6dc8ba5602eec48bc9edf121c1db9d189d2`; atomic tests `4a8184a5fd08fd3bcbb43920aa7a57270d301524`; README `08a67c701dc07ee89e2416401bf526bdc68503b1`.
+- Final D1 run [44703757450](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703757450), job `136178133556`: COMPLETED/SUCCESS, exact head `ae0bf4f...`, 4 files / 39 tests passed. Final contract run [44703757544](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703757544), job `136178133732`: COMPLETED/SUCCESS, `POOL_DISPATCH_ENABLED=false`, six workflow YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`.
+- Initial D1 run [44703493347](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703493347) failed 1/39 due a stale expected reason in the revoked-route test; assertion corrected to the new fail-closed `ADMISSION_OUTCOME_UNCONFIRMED`. Intermediate run [44703595383](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703595383) passed 39/39; final amended head passed again.
+- Active ruleset #26550182 unchanged: targets only `refs/heads/Основной`; PR and review-thread resolution required; deletion/non-fast-forward prohibited; zero required approvals; no bypass actors. Default HEAD unchanged.
+- Gemini controller `.github/workflows/gemini-batch-dispatch-controller.yml` absent from default branch; Gemini/Claude NOT RUN. No secret values read.
+- Local Miniflare fault injection and D1 primary-first session API use VERIFIED by exact-head CI. Live Cloudflare D1 with read replication and real network acknowledgement loss NOT VERIFIED. Hosted D1 writes, secrets, provider calls, dispatch, executor, deployment, merge and production writes NOT RUN. Independent review NOT VERIFIED.
+- Issue #140 OPEN; Issue #151 OPEN/PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; snapshot: `docs/context/PASS-32-CURRENT-SNAPSHOT.md`.
+- Next: Pass 33 full SQL/trigger audit, with independent review outstanding; no hosted D1 mutations or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
