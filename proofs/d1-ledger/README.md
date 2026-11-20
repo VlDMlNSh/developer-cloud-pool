@@ -65,3 +65,20 @@ This is a candidate proof foundation on a clean branch from a frozen default SHA
 - Adversarial tests cover direct SQL mutation of consumed approval identity, direct admission against revoked route evidence, and forged receipt attempt identity.
 - Migration upgrade tests now exercise 0013 as part of the forward-only 0011–0013 upgrade sequence.
 - This remains local synthetic D1 proof. Lease fencing, trusted event provenance, hosted D1, executor qualification and independent review are separate gates.
+
+
+## Pass 34 — database-enforced lease and fencing
+
+Migration `0014_d1_lease_fencing_guards.sql` closes SQL-level bypasses in the immutable-attempt lease lifecycle:
+
+- A lease acquisition is a single pending → leased transition for the current prepared attempt, with exactly one positive monotonic generation increment and a bounded expiry.
+- A live lease can only be renewed by preserving owner, attempt and generation while extending expiry; an expired lease cannot be renewed.
+- A running attempt cannot be created by direct SQL without a matching current, unexpired task lease.
+- Task lease release is permitted only as the transactional projection of a fenced terminal attempt transition.
+- Indeterminate is a quarantine state for an expired running attempt; it is not automatically reclaimed.
+- Attempt start/indeterminate/terminal metadata and audit-event identities are bound to the corresponding SQL transitions; terminal metadata and audit events cannot be rewritten.
+- Task attempt pointers are monotonic and can advance only to the next prepared attempt after the prior attempt is failed or abandoned.
+
+The new `test/lease-fencing.test.ts` exercises direct-SQL bypass attempts, valid acquisition/renewal/finalization, expired lease handling, indeterminate quarantine, forged event insertion and pointer regression. The frozen schema-0010 upgrade suite now applies migrations 0011–0014.
+
+This is still a local synthetic Workers/D1 proof. The lease API is not yet wired into the admission adapter or an executor. No hosted D1, dispatch, worker launch or production write is performed.
