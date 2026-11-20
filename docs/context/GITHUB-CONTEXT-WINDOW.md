@@ -2,13 +2,60 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-20 — Pass 31 frozen schema-0010 upgrade proof
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
+Documentation continuation branch: `docs/next-2026-11-19-integrated-contour-pass` (PR #145; OPEN/DRAFT/UNMERGED)
+Latest daily audit report commit: `959d22aeb582384416dab6a219576fbd0da4b4bf` (blob `a1232002d1ecdb4321acf90c876ba470c52743d7`); latest checkpoint commit: `106441cc9209996478fe78149d39e90fb602607c` (blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`). Latest reconciliation/voice-chat record remains historical and unmerged.
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 10 (append-only refresh)
+
+- Refreshed directly from GitHub after Pass 9. Default branch `Основной` remains at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; GitHub reports its commit signature verified.
+- Active ruleset #26550182 targets exactly `refs/heads/Основной`: PR required; review-thread resolution required; zero required approvals; no bypass actors; deletion/non-fast-forward prohibited. Branch API says `protected=false`; do not confuse that with ruleset status. Formal independent review is still outstanding.
+- Issue #140 remains OPEN and limits work to local no-secret qualification.
+- PR #143 current head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`: exact-head Isolated D1 Ledger Proof run `44367978517` SUCCESS; Pool Contract Validation run `44367978376` SUCCESS.
+- PR #146 current head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`: exact-head Pool Contract Validation run `44522152749` SUCCESS; Isolated D1 Ledger Proof run `44522152799` SUCCESS. These remain isolated proof evidence, not canonical D1 integration or hosted qualification.
+- PR #145 current head `bbec30424ecf2c59152ac96b8daefd176715c0b9`: workflow-run lookup empty; exact-head CI NOT VERIFIED.
+- Default HEAD combined-status lookup empty; CI NOT VERIFIED, not green.
+- Pass 9 lineage decision unchanged: #67/#72 is the historical selected substrate for selective transplant; #111 lease guard needs collision-aware reconciliation as a later migration; #114/#125 competing schema is excluded; #146 D1 variant is not yet canonical.
+- Pass 10 report: `docs/reports/2026-11-19-pass-10-exact-head-ci-governance-revalidation.md`. Documentation branch `docs/next-2026-11-19-integrated-contour-pass`, PR #145 remains OPEN/DRAFT/UNMERGED and is not the default branch.
+- No tests run in Pass 10; no secrets, hosted D1, providers, executor launch, dispatch, deployment, merge, or production mutation. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean-base read-only migration/trigger transplant manifest for #67/#72 plus lease guard, before any schema implementation.
+
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 11 (append-only refresh)
+
+- Re-read current default: `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, signature verified. Active ruleset #26550182 still targets only this branch; PR required, thread resolution required, zero approving reviews, no bypass actors. Branch API's `protected=false` does not negate active ruleset.
+- Issue #140 remains OPEN; local no-secret proof only. Its explicit acceptance contract also requires integration of #112/#114/#125 on a current-base chain; this pass inventories only requested #67/#72/#111 lineage and does not satisfy the full issue.
+- PR #67 base `221f216c00ca7e5596bcc682ba185ad155a10603`, head `a53f6232bd5b50d3e150addf528b8e722002f9dd`: migrations 0001–0010; exact-head Pool Contract Validation run `43600901063` SUCCESS and Isolated D1 Ledger Proof run `43600901068` SUCCESS.
+- PR #72 stacked on #67 head `a53f623...`, head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`: migration 0011 atomic qualified admission. Exact-head workflow lookup empty; NOT VERIFIED.
+- PR #111 base `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`, head `687196738782432797bf394f1342cb9df19f478f`: migrations 0001–0005 have identical Git blob SHAs to #67; its 0006 is a different trigger (`pool_attempts_running_requires_current_lease`) from #67's 0006 projection outbox. Exact-head Pool Contract Validation run `43881396272` SUCCESS and Isolated D1 Ledger Proof run `43881396386` SUCCESS.
+- Proposed transplant map: #67 0001–0010 → #72 0011 → #111 running-lease guard selectively re-authored as 0012. Do not duplicate #111 0001–0005; do not copy #111 adapters wholesale. Trigger interaction and timestamp semantics require combined runtime tests before claiming compatibility.
+- Pass 11 report: `docs/reports/2026-11-19-pass-11-d1-migration-transplant-inventory.md`. No implementation, test run, hosted D1, secrets, provider calls, dispatch, deployment or merge in Pass 11.
+- Next: inspect current default for existing D1 files/objects, then create a clean current-base integration branch and apply the selected chain only after path/object collision checks. Issue #140 also requires #112/#114/#125 reconciliation; do not claim complete issue acceptance from this three-PR inventory.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 12 (append-only refresh)
+
+- Current default remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Recursive tree is complete (`truncated=false`) and contains no `proofs/d1-ledger/` or `proofs/d1-admission/` package/migration paths. This establishes path absence on default only.
+- PR #143 head `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`, base `68183828cf7934e89109310c8f99281be4eb7ed8`; compare to current default is 55 ahead / 1 behind, merge base old default. Its 0001–0005 blobs match #67, 0006 is lease guard, 0007 executor identity; it omits #67 projection migrations 0006–0010 and #72 admission 0011, and retains legacy `dsh-headless-probe`. Exact-head runs `44367978517` and `44367978376` succeeded, but PR #143 is not canonical qualified admission.
+- Existing branch `integration/d1-current-base-2026-11-18` has no `proofs/d1-ledger/`; `integration/d1-ledger-clean-main-2026-11-15` has a complete package directory (migrations/fixtures/src/test/manifests) and must be inventoried before any new branch or transplant.
+- Reconciled prior Issue #140/PR #141 findings: #114/#125 are a separate admission authority with conflicting approval/task/outbox schemas; do not stack them with #67/#72 or #111. #67/#72 remains intended proof substrate, but needs semantic corrections: one authoritative task-ready outbox, legacy approval-keyed path non-authorizing, immutable approval/route/admission bindings, suspended/revoked qualification, safe reconciliation (no caller boolean), and corrected independent target-ref provenance.
+- #72 has 16 literal legacy DSH profile occurrences across 14 files per prior audit; exact-head CI remains NOT VERIFIED. #111 lease guard may be selectively considered as 0012 only after combined schema/trigger tests; do not port its independent ledger/adapter.
+- Owner-authored clarification says executor instance ID `claude-code-1`; this is not the capability-profile ID. Keep executor ID separate from A1 capability profile `jarvis-code-sandbox-v1` and verify the explicit mapping/contract before SQL/profile edits.
+- Pass 12 report: `docs/reports/2026-11-19-pass-12-clean-base-d1-integration-preparation.md`. No branch created, code/schema changed, tests run, hosted D1, secrets, provider calls, dispatch, deployment or merge.
+- Next: immutable inventory of `integration/d1-ledger-clean-main-2026-11-15` and comparison to #67/#72 and A1 profile contract; only then freeze source manifest and create a clean current-base implementation branch.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
+---
+
+---
 
 ---
 
@@ -450,9 +497,7 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 
 
 ## 24. Comparative authorization implementation audit — 2026-11-06
-- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.
-- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.
-- PR #18 provides fail-closed recovery and dispatch-failure policy (needs-review, no replay) with exact-head static tests SUCCESS; it does not implement owner approval or caller authorization.
+- Refreshed PRs #7/#12/#15/#18/#27 and exact-head CI/reviews. PR #7 head effda14e286ebe276fee2b3ead96c4ed2122a45e, base 692025e4a039aaf94c6683bb95da38b4f324fce8 (stale); one owner COMMENTED review, no independent approval; exact-head contract 42193485309/job 127810907038 SUCCESS. PR #18 head 9a9f9f750ac2f0e12767991a5e624e8dc806d2f6, current base; exact-head contract 42043826776/job 127301328381 SUCCESS; reviews empty. PR #12/#15 remain OPEN/DRAFT with exact-head contract/fixture successes and no reviews. PR #27 head 33484b9e9c29d9ef6ba1a6bf19c9c0feeb9f3cb2, exact-head PR CI lookup empty => NOT VERIFIED; reviews empty.- PR #7 has useful owner-event/approval/consumption comments and Supervisor run checks, but Worker remains workflow_dispatch, Worker report issues:write remains, principal is login not numeric ID, comment ledger is mutable/non-atomic, historical ready event is not strictly bound, history scan/concurrency is not a durable consume primitive. Do not merge as-is.- PR #18 provides fail-closed recovery and dispatch-failure policy (needs-review, no replay) with exact-head static tests SUCCESS; it does not implement owner approval or caller authorization.
 - PR #15 removes workflow_run but retains unsafe stale-claim requeue; PR #18 later proposes fail-closed recovery. Neither is merged.
 - PR #12 tests a fixture reusable workflow, not production Worker caller boundary.
 - GitHub reusable workflow contract: workflow_call + static local uses; concurrency is not durable nonce storage. Sources: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows and https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax.
@@ -950,10 +995,8 @@ Evidence report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/cros
 - PR #36 head remains `9815da8fd316d8263b59f3493d076d4623c4c925`; OPEN / DRAFT; 33 ahead / 0 behind.
 - Exact-head D1 run `42274484200` / job `128087166113`: SUCCESS; 13/13 Workers-runtime tests. Pool Contract Validation `42274484234` / job `128087177754`: SUCCESS.
 - Lock artifact `13532667030`, ZIP digest `sha256:60a47c539bdaff87d8f13fd2732b964d7d8e5d6c9fdc159cafa96c15a781de71`. The downloaded file at `/mnt/data/package-lock.json` was rechecked this turn: 87,979 bytes; SHA-256 `73381e38dbec1ce06c8dcc79dc74b7b6c2008269713b632f6edb0ad18c8f31b0`; lockfileVersion 3; 160 packages.
-- GitHub PR body refreshed with the current exact-head evidence and the accurate lockfile-transfer blocker. PR remains draft and unmerged.
-- Proof report updated at commit `7571f82b1d8015a40939151deded0a165b27b742` (report blob `496e4a19cf1988c851c59cc616c92991b72afe3d`). Report-only path is not a D1 workflow trigger; no source/workflow changes made in this pass.
-- No supported GitHub connector action accepts a local execution-workspace file path; Contents API requires UTF-8 text. No file-content transfer bridge was exposed. Did not add write permissions to CI, invent a lockfile, or modify trust boundaries.
-- Reviews: 0; inline threads: 0; independent security review NOT RUN. Workers Free/card-free eligibility NOT VERIFIED.
+- GitHub PR body refreshed with the current exact-head evidence and the accurate lockfile-transfer blocker. PR remains draft and unmerged.- Proof report updated at commit `7571f82b1d8015a40939151deded0a165b27b742` (report blob `496e4a19cf1988c851c59cc616c92991b72afe3d`). Report-only path is not a D1 workflow trigger; no source/workflow changes made in this pass.
+- No supported GitHub connector action accepts a local execution-workspace file path; Contents API requires UTF-8 text. No file-content transfer bridge was exposed. Did not add write permissions to CI, invent a lockfile, or modify trust boundaries.- Reviews: 0; inline threads: 0; independent security review NOT RUN. Workers Free/card-free eligibility NOT VERIFIED.
 - Production gaps remain: authenticated caller/owner identity, issuer and signed approval provenance, trusted clock, issuance/revocation/audit, quota accounting, backup/restore, account entitlement and approved production executor.
 - No cloud D1 resource, deployment, billing change, secret access, provider call, GitHub dispatch or production integration. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: add the verified file to `proofs/d1-ledger/package-lock.json` on PR branch, then run exact-head CI and obtain independent security review. Afterward qualify the card-free Cloudflare deployment route.
@@ -1450,11 +1493,9 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 - Inspected actual patch files at immutable head: migration `proofs/d1-ledger/migrations/0003_create_logical_task_identity.sql`; adapter `proofs/d1-ledger/src/claim-outbox.mjs`; lease adapter `proofs/d1-ledger/src/task-lease.mjs`; tests `proofs/d1-ledger/test/claim-outbox.test.ts`.
 - Confirmed schema has one mutable lease slot in `pool_tasks` (`attempt_count`, `lease_generation`, owner, expiry) and no immutable `pool_attempts` table, `attempt_id`, `attempt_number` or `attempt_nonce`.
 - `acquireTaskLease` increments both generation and attempt_count on every successful acquisition; expiry reclaim updates the same task row. The five-attempt cap therefore counts acquisitions/reclaims, while no per-attempt durable history exists. Generation fencing rejects the stale worker, but is not the same as immutable attempt records.
-- `finalizeTaskLease` directly marks the task completed and clears the lease; it does not bind result digest, Supervisor/Worker run IDs/attempts, workflow SHAs, attempt ID or append-only terminal audit. No terminal finalization idempotency/outbox is implemented.
-- Existing tests prove generation fencing and five-acquisition dead-letter, but not immutable attempt history, restart recovery or transactional terminal audit.
+- `finalizeTaskLease` directly marks the task completed and clears the lease; it does not bind result digest, Supervisor/Worker run IDs/attempts, workflow SHAs, attempt ID or append-only terminal audit. No terminal finalization idempotency/outbox is implemented.- Existing tests prove generation fencing and five-acquisition dead-letter, but not immutable attempt history, restart recovery or transactional terminal audit.
 - Contract proposal `docs/contracts/2026-11-08-task-attempt-finalization-contract-proposal.md` blob `7ba7b5285d564c43eb8d97e5901265d405aa75d5` specifies immutable attempt per retry and separate generation fencing. This is NOT the model implemented by PR #40. Compatibility remains INCOMPLETE; do not treat the two as equivalent.
-- Recommended next implementation direction, NOT YET ACCEPTED: immutable `pool_attempts` rows, new attempt on retry after old attempt is marked abandoned, generation fencing retained for stale-worker denial, plus transactional terminal result + append-only audit/outbox. First explicitly define expiry takeover vs retry semantics, then migration/tests.
-- Report: `docs/reports/2026-11-08-pr40-lease-lifecycle-reconciliation.md` (created in this pass; see commit below).
+- Recommended next implementation direction, NOT YET ACCEPTED: immutable `pool_attempts` rows, new attempt on retry after old attempt is marked abandoned, generation fencing retained for stale-worker denial, plus transactional terminal result + append-only audit/outbox. First explicitly define expiry takeover vs retry semantics, then migration/tests.- Report: `docs/reports/2026-11-08-pr40-lease-lifecycle-reconciliation.md` (created in this pass; see commit below).
 - No PR #40 source change, remote D1, dispatch, Worker execution, secret access, provider call or deployment. Independent review NOT RUN.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: design/accept exact attempt-vs-reclaim state machine and adversarial matrix before changing PR #40. Keep dispatch disabled.
@@ -1950,12 +1991,10 @@ PR #71 head remains `40a49acabd12aa178d3aa136244fb4f42231fbde`; compare to curre
 
 
 ## Atomic A0 -> D1 implementation — 2026-11-15 (isolated proof only)
-
 - Report: [Atomic A0 -> D1 admission implementation](../reports/2026-11-15-atomic-a0-d1-admission-implementation.md); report commit `5e7c65a3cda6decef444cb1fe7bc3f8252e678fb`.
 - Implementation branch `proof/atomic-a0-d1-admission-2026-11-15`, exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`; stacked Draft PR #72 https://github.com/VlDMlNSh/developer-cloud-pool/pull/72.
 - PR #72 base is `impl/receipt-bound-projection-2026-11-11` @ PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`. PR #72 OPEN/DRAFT/UNMERGED. Default → PR #72 head DIVERGED 53 ahead / 20 behind, merge base `221f216c00ca7e5596bcc682ba185ad155a10603`. Do not merge or transplant the stack wholesale.
-- Migration 0011 adds typed append-only route qualification evidence, immutable admission + CHECK-backed commit receipt, one admission per logical task, and one-way admission/attempt/evidence binding on the existing task outbox. Composite `admitQualifiedTask()` D1 batch: conditional approval consume -> existing 0003 task/approval/outbox trigger -> admission -> existing 0004 immutable attempt -> outbox binding -> constraint-backed receipt. Durable read-back follows commit.
-- Route binding covers schema version, route/provider/model/issuer/account/credential-handle/quota-domain, capability profile, evidence ref/digest, observedAt/validUntil, registry and revocation version; max evidence age 300s. Canonical task key is recomputed. Dispatch is hard-coded false.
+- Migration 0011 adds typed append-only route qualification evidence, immutable admission + CHECK-backed commit receipt, one admission per logical task, and one-way admission/attempt/evidence binding on the existing task outbox. Composite `admitQualifiedTask()` D1 batch: conditional approval consume -> existing 0003 task/approval/outbox trigger -> admission -> existing 0004 immutable attempt -> outbox binding -> constraint-backed receipt. Durable read-back follows commit.- Route binding covers schema version, route/provider/model/issuer/account/credential-handle/quota-domain, capability profile, evidence ref/digest, observedAt/validUntil, registry and revocation version; max evidence age 300s. Canonical task key is recomputed. Dispatch is hard-coded false.
 - Exact-head workflow run `43689591339`, job `132737204218`, SUCCESS at exact HEAD `16aa4cc2d3265bd4d7a10e4581a57cfe0baf5875`: 7 files / 91 Workers-runtime tests passed (7 atomic admission tests); upgrade-binding smoke 1 passed; frozen schema-0010 fixture smoke 2 passed. Artifact `14152175385`, SHA-256 `8f7b384af448bd58210cddb60843d3a01e83b402bef141e091a53a8cdfd8d236`.
 - Combined commit-status array empty; required status contexts NOT VERIFIED. Active ruleset `26550182` applies only to default `Основной`; it requires PR/thread resolution, but required approvals = 0 and no required status-check contexts. Branch-protection endpoint 403; further branch policy NOT VERIFIED. PR #72 is stacked on a non-default branch and is not covered by that default-only ruleset.
 - Trust boundary: qualification rows are assumed to be pre-qualified by a trusted authority. This adapter validates stored bindings/freshness/revocation but does NOT authenticate issuer cryptographically or prove provider/account/quota truth. Trusted qualification writer is not implemented.
@@ -2191,3 +2230,413 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## Pass 8 — Contour A safety integration and Jarvis leads — 2026-11-19
+
+# Checkpoint — 2026-11-19 Pass 8: Contour A safety integration and Jarvis leads
+
+- Default branch: `Основной`; latest observed HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #139 merged by squash at `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. It retires legacy label-driven DSH dispatch, removes Supervisor mutation permissions/triggers, and makes the legacy Worker inert/fail-closed.
+- PR #139 exact head `4b35f949fa9bd0f924582f9eb47008c191c061ee`; compare was 6 ahead / 0 behind; six changed files. Exact-head Pool Contract Validation run `44349941243`, job `134962504024`, SUCCESS; workflow syntax, security invariants and pool contract steps completed.
+- PR #116 exact head `2e944f13818f434cf135602c1c0e82051f1d3fa8`: Runner Qualification run `44286955337` SUCCESS; Pool Contract Validation run `44286955360` SUCCESS. Actual executor inside the tested container, provider egress allowlist, account/quota and persistent worker remain NOT VERIFIED. FCC `.fcc` is a path, not immutable capability profile ID.
+- PR #143 D1 isolated proof head `d35185f95c96f9e53c3cb8fca269ed4bd435129c`: D1 run `44361564243` and contract run `44361564253` SUCCESS (62/62 reported tests); no production wiring.
+- Issue #140 remains OPEN. PR #141–#144 remain unmerged at latest checked state. PR #142 distinguishes executor IDs (`claude-code-1`, `codex-1`, `gemini-1`) from capability profile identity.
+- Owner's spoken Jarvis leads recorded in Pass 8 report: Hermes Agent/Engine, DeepSeek, “Open Charger” (uncertain transcription), “QADrive” (uncertain), “Strata”, “Flash Next”, private MCP service, Tor routing and claimed low refusal count. Only Hermes Agent's provider/MCP integration capabilities are verified from official documentation; the other names and performance/privacy claims remain NOT VERIFIED.
+- Existing Jarvis UI in PR #25 is a static DEMO shell, not an authenticated working console or live API.
+- Added integrated acceptance runbook to this current-baseline docs branch: `docs/acceptance/CONTOUR-A-INTEGRATED-ACCEPTANCE-RUNBOOK.md`.
+- Pass 8 report: `docs/reports/2026-11-19-pass8-contour-a-safety-and-jarvis-leads.md`.
+- No secrets read, provider calls, live dispatch, hosted D1 writes or deployment. Dispatch/execution authorization remain false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: resolve owner-authored immutable CODE capability profile, then current-base D1 integration under Issue #140; qualify actual CODE execution inside sandbox; connect authenticated read-only web console after backend contract.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Voice-chat reconciliation — Visual Studio and Jarvis stages — 2026-11-19
+
+- Decision record: `docs/reports/2026-11-19-voice-chat-reconciliation-visual-studio.md` (commit `9ed9682e129cb325b78331880f7c6411516b7472` on the unmerged documentation branch).
+- Microsoft Visual Studio (full IDE) is explicitly included as an optional developer workstation/tooling layer for editing, build, debugging, tests and diagnostics. It is not Jarvis runtime, Model Gateway, cloud host or authority plane.
+- Keep Microsoft Visual Studio distinct from Visual Studio Code. Anthropic's official Claude Code IDE extension targets VS Code and supported forks, not full Visual Studio. The conservative Visual Studio path is the Claude Code CLI in the IDE's integrated terminal. Third-party Visual Studio extensions are research candidates only and require source/publisher/license/provenance/permissions/MCP/loopback/version review before any installation or access grant.
+- The voice discussion's ChatGPT/Claude/Gemini/Codex list is a technology lead, not a change to the frozen launch scope. Initial Contour A remains one Claude Code + selected ECC + FCC CODE executor candidate subject to qualification. Codex/Gemini are optional/deferred; Gemini remains behind the approved controller. ChatGPT is not assumed to be a runtime API dependency. Provider credentials, identities and quotas remain isolated.
+- The conversational nine-stage overview (body, brain, memory, hands, orchestration, security, remote interface, monitoring, acceptance) is subordinate to normative A0–A7 dependency order in `docs/acceptance/CONTOUR-A-INTEGRATED-ACCEPTANCE-RUNBOOK.md`; it cannot bypass acceptance gates.
+- Time accounting correction: the previous 45-hour number is a planning estimate, not a measured timer. Actual completed engineering hours and remaining hours are NOT MEASURED from chat timestamps/PRs. Do not claim a numeric burn-down without start/end time records. Record active engineering time separately from voice-session duration, tool execution and CI duration.
+- No Visual Studio install, extension install, provider sign-in/call, runtime modification, deployment or dispatch occurred in this pass.
+- Current baseline remains default `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. PR #145 remains OPEN/DRAFT/UNMERGED; the decision record is documentation-branch-only. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## 2026-11-19 — Issue #140 current-base D1 lineage and PR overlap audit
+
+- Source-level audit report: `docs/reports/2026-11-19-issue140-current-base-d1-lineage-overlap-audit.md` (created on this documentation branch; report publication commit `10427d8388350f35e98cc66d3eb7090b718358b4`).
+- Default ref was re-read directly: `refs/heads/Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Live PR refresh: #146 OPEN/DRAFT/UNMERGED, head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, base current default; #147 OPEN/DRAFT/UNMERGED, head `0ea6dcd589b914399a66e289190e00addbf6d9a1`, base #146 head; #145 OPEN/DRAFT/UNMERGED, docs branch head `dced5419e9611bdefdec1dfaf314ff513d6d1a42`, base current default. Formal review lists returned zero for #145, #146 and #147. #147 head recorded in earlier checkpoint as `447ed051...` is stale.
+- PR #146 exact-head CI: Pool Contract Validation run `44522152749` SUCCESS; Isolated D1 Ledger Proof run `44522152799` SUCCESS. Combined status contexts empty. PR #147 and #145 exact-head workflow-run lookups returned no runs; CI NOT VERIFIED for those heads.
+- Ruleset #26550182 was read directly: active on `refs/heads/Основной`, PR required, review-thread resolution required, 0 required approvals, CODEOWNERS review disabled, no bypass actors, deletion and non-fast-forward prohibited. Classic branch-protection endpoint returned 403 to the integration and remains NOT VERIFIED.
+- Critical schema overlap: #67 migration 0006 creates attempt projection outbox; #111 migration 0006 creates running-attempt lease guard. #72 migration 0011 extends #67 with qualified admission but hardcodes retired `dsh-headless-probe`. #114/#125 create a competing `proofs/d1-admission` schema. #125 uses `GITHUB_SHA` as both target and trusted default head and accepts legacy profile. #146 is current-base but creates a third D1 variant: migration 0002 `pool_task_claims` + `pool_task_outbox`, migration 0003 `pool_tasks` + `pool_task_delivery_outbox`, migration 0006 lease guard, migration 0007 executor binding; it does not include #67 projection migrations 0006–0010 or #72 admission migration 0011.
+- Canonical direction remains one `proofs/d1-ledger` authority. Selectively port #67/#72 lineage after clean-base requalification; reconcile #111 lease guard as a later migration (Issue #140 discussion identifies 0012 in that lineage); adapt profile/registry/OIDC work from #146 separately after schema dependency review. Do not merge or stack the competing D1 roots.
+- No runtime/schema/workflow change, tests, secret/variable inspection, provider call, hosted D1 write, dispatch, agent launch, deployment or merge occurred. This was a documentation/source audit only.
+- Gemini NOT RUN due Issue #140. Claude Code host qualification NOT RUN. Candidate projects remain research-only/additive.
+- Pass result: VERIFIED source-level overlap map; canonical implementation BLOCKED pending clean-base selective integration and negative-first local Workers-runtime tests. Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Next: clean implementation branch from frozen current default; one migration lineage, one task authority/outbox, reconciled lease fencing and CODE identity/profile binding; adversarial local tests with `dispatch:false` and `executionAuthorized:false`.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 — Pass 13 immutable audit of clean-main D1 candidate
+
+- Audit report: `docs/reports/2026-11-19-pass-13-clean-main-d1-candidate-audit.md`; final report blob SHA `0f41e48f440fc20748b2d806b5ae9936de705fda`; report publication/correction commits `fa99f2f9e4ff7fc347b683313392bb241f350156` and `44a555004f54b92720a1615e7f540cb169a36cf1`.
+- Audited branch `integration/d1-ledger-clean-main-2026-11-15` at immutable HEAD `8cc7b12948865bb0e13ce099386c09f3ae32b4f5`, parent `8abfa5c48e82b50ef9cdbcc009caf03b90e9c82b`, tree `74760280cf48f072386a3b7c9243bf22420522e6`. Recursive inventory complete, not truncated; 48 blobs under `proofs/d1-ledger/`, including migrations 0001–0014, 13 source-path entries, package/lock, fixtures, tests and configs.
+- Compare with current default `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`: diverged, 6 ahead / 18 behind, merge base `9dbb7a37c3f8601d2b0d7eafd774d2b613bbaecc`. This branch is not a current-default-base integration candidate.
+- Migration object-token inventory: 19 CREATE TABLE, 12 CREATE INDEX, 57 CREATE TRIGGER, 21 ALTER TABLE, 2 DROP TRIGGER statements. These are lexical source counts, not live SQLite introspection.
+- 0001–0010 blobs match #67 lineage; 0011 retains legacy `dsh-headless-probe` in admission profile contract; 0012–0014 add durable root-signed registry snapshot, issuer-key persistence and admission-time active-registry assertion. Valuable reference artifacts, but not a safe wholesale transplant.
+- Package exact-pins `@cloudflare/vitest-plugin@1.4.7` and `vitest@4.1.12`. README explicitly scopes this as local-only, unmounted proof and says dispatch remains false.
+- Exact SHA workflow runs: Pool Contract Validation `43712647615` SUCCESS; Isolated D1 Ledger Proof `43712647597` SUCCESS. Combined status endpoint empty. HEAD signature `verified=false`, reason unsigned. These do not prove current-base integration or hosted runtime.
+- Decision: candidate `REJECTED_AS_DIRECT_BASE`; `RESEARCH_REFERENCE_ONLY`. No branch, schema, code, tests, hosted D1, secrets, provider calls, agent dispatch, deployment or merge.
+- Next: create/freeze one new implementation target from then-current default HEAD; publish source manifest/object ownership; selectively reconcile one ledger/outbox with A1 profile `jarvis-code-sandbox-v1`, keeping executor/profile/host/route identities separate; then add negative-first local Workers-runtime tests.
+- Issue #140 remains OPEN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Pass 13 checkpoint read-back verified: `docs/checkpoints/2026-11-19-pass-13-clean-main-d1-candidate-audit.md`, blob SHA `7600b61d661e8de3931d7f1cc33843695cc89523`; checkpoint publication commit `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`.
+- Docs branch head at checkpoint read-back: `e53a9f6cb70822aa125bc7e54c6aa5105de94f14`; unsigned. Exact-head workflow lookup for this documentation-only head returned no runs: NOT VERIFIED.
+
+
+## 2026-11-19 — Pass 14 current-base D1 integration target freeze
+
+- Fresh default ref `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`; recursive tree complete. Baseline commit signature verified valid.
+- Created `integration/d1-current-base-2026-11-19` from exactly that immutable SHA. Read-back confirmed branch HEAD equals baseline SHA, parent `68183828cf7934e89109310c8f99281be4eb7ed8`, tree identical; no code/schema changes. This is a frozen target only.
+- Issue #140 remains OPEN and local no-secret proof only. Owner authorization comment #7014947185 permits a separate bounded non-production qualification stage with synthetic data/free-tier resources; it does not authorize production, paid fallback, route changes, governance bypass or merge.
+- PR #146 OPEN/DRAFT/UNMERGED, head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, base current default. Owner-confirmed profile ID `jarvis-code-sandbox-v1`; contract blob `21b04b125349441f6296694a6f780d44c33ef896`; status PROPOSED / NOT QUALIFIED / NOT ENABLED. Executor/profile/provider route/account/quota/host/lease/issuer identities remain distinct. Resource ceilings are proposals, not approved runtime enforcement.
+- PR #146 exact-head CI: Pool Contract Validation `44522152749` SUCCESS; Isolated D1 Ledger Proof `44522152799` SUCCESS on `9d32c4943ae87f5855ab05d42a4ba12d1c205211`. This is isolated candidate evidence only.
+- Source composition remains NOT FROZEN: #67 0001–0010 projection lineage; #72 0011 atomic admission with legacy DSH and outstanding semantic gaps; #111 lease guard ordinal conflict; #146 CODE profile/OIDC/executor identity with its own 0006/0007; Pass 13 registry migrations 0012–0014 useful but from stale ancestry. Do not guess final migration ordering or transplant wholesale.
+- Report: `docs/reports/2026-11-19-pass-14-current-base-d1-target-freeze.md`; publication commit `42a5e67be24df5aaa4bc548ac8d4698f42cd723b`.
+- No code/schema/workflow edits, local tests, hosted D1, secrets, provider calls, agent dispatch, deployment or merge. Gemini and Claude Code qualification NOT RUN.
+- Next: line-by-line migration/object ownership matrix across #67/#72/#111/#146/Pass13 registry; inspect adapters/tests for duplicate outbox, DSH literals, identity binding, trusted ref provenance and false authorization outputs; freeze source manifest before editing.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 2026-11-19 — Pass 15 D1 migration/object ownership audit
+
+- Report: `docs/reports/2026-11-19-pass-15-d1-migration-object-ownership-matrix.md`; publication commit `4e2b45f66f72859765a136baa46895a1a81a300c`.
+- Default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`. Frozen implementation branch `integration/d1-current-base-2026-11-19` remains exactly the same SHA/tree.
+- PR #145 OPEN/DRAFT/UNMERGED head `9e1500e589ed632d43a23fd898c460c7d722f8dd`; PR #146 OPEN/DRAFT/UNMERGED head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`; PR #147 OPEN/DRAFT/UNMERGED head `0ea6dcd589b914399a66e289190e00addbf6d9a1` (based on #146).
+- Active ruleset #26550182 confirmed on default: PR required, thread resolution required, zero required approvals, no bypass actors, deletion/non-fast-forward denied.
+- PR #146 exact-head CI rechecked: Pool Contract Validation `44522152749` SUCCESS; Isolated D1 Ledger Proof `44522152799` SUCCESS. Candidate-only; no integrated target CI.
+- Source matrix: #67 0001–0010 ledger/attempt/reconciliation/projection/comment protocol; #72 0011 admission/route qualification/receipts; #111 0006 lease guard; #146 0001 CODE-profile root, 0002–0005 reused ledger substrate, 0006 lease guard, 0007 executor-ID binding/OIDC/registry adapters; Pass13 0012–0014 registry snapshot/issuer/active assertion research-only.
+- Critical conflicts: #67 0001 hardcodes retired `dsh-headless-probe`; #72 adapter and route admission also require that profile. #146 0001 fixes profile to `jarvis-code-sandbox-v1`, but remains a competing root. #67 0002 and #67/#146 0003/#146 adapter preserve approval-keyed `pool_task_claims`/`pool_task_outbox` alongside task-keyed `pool_task_delivery_outbox`. #67 0006 projection outbox and #111/#146 0006 lease guard collide by ordinal. #146 does not include #67 projection 0006–0010 or #72 admission 0011.
+- #146 OIDC verifier and registry resolver return `executionAuthorized:false` and `dispatch:false`; registry resolver independently reads default branch ref to obtain trusted head SHA. This is a useful candidate but does not qualify executor host/process or provider route/account/quota.
+- Decision: no canonical migration order/source manifest frozen. Do not transplant any candidate wholesale. Select one approval/admission authority, one logical task authority and exactly one task-ready outbox; keep projection outbox distinct; port admission to CODE profile; reconcile lease guard and executor/profile/host/route/issuer/account/quota bindings.
+- Pass 15 was read-only source audit. No source/schema/workflow edits, local tests, hosted D1, secret access, provider calls, agent dispatch, deployment, merge or governance changes.
+- Gemini NOT RUN; Claude Code qualification NOT RUN. CODE profile remains PROPOSED / NOT QUALIFIED / NOT ENABLED. Dispatch/execution authorization remain false.
+- Next: freeze exact source manifest/blob SHAs and one task-ready outbox design, then implement selective clean-base composition and negative-first local Workers-runtime tests on `integration/d1-current-base-2026-11-19`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 2026-11-19 — Pass 16 default dispatch retirement and A1 adapter output-contract audit
+
+- Live default `Основной` HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, tree `c8c78a26a6359ec868922e4040c2870eec873b66`; commit signature verified. Open Issues 14; open PRs 107.
+- PR #139 merged at 2026-11-19 09:29:03 UTC. Exact-head Pool Contract Validation `44349941243` SUCCESS; formal reviews 0 and inline threads 0. Default Supervisor is scheduled heartbeat-only with contents:read; Worker remains a manual `workflow_dispatch` stub with no permissions and immediate fail-closed exit. No Worker-named run appears in the returned 89-run current-default collection.
+- Current default exact-head Pool Contract `44496825995` and retired Supervisor heartbeat `44559878913` both SUCCESS. `POOL_DISPATCH_ENABLED` current value remains NOT VERIFIED; no variables/secrets were changed.
+- Active ruleset #26550182 still requires PR and review-thread resolution but zero approving reviews, no CODEOWNERS/extra approval and no bypass. Classic branch-protection endpoint 403; branch object `protected=false`. Governance acceptance remains BLOCKED.
+- PR #146 head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, 84 ahead / 0 behind; exact-head Pool Contract `44522152749` and Isolated D1 Ledger `44522152799` SUCCESS; reviews/threads 0. CODE profile `jarvis-code-sandbox-v1` is PROPOSED / NOT QUALIFIED / NOT ENABLED; registry remains empty; no live Worker/host/process/provider qualification.
+- New source finding: PR #146 `consume.mjs`, `claim-outbox.mjs`, `task-lease.mjs`, `task-attempts.mjs` include `dispatch:false` but omit explicit `executionAuthorized:false` on success and deny outputs. Consume/claim tests assert dispatch false but do not assert executionAuthorized false. OIDC/auth/registry modules do include both flags. Exact blob SHAs are in the Pass 16 report.
+- PR #143 remains old-base, 55 ahead / 1 behind, OPEN/DRAFT/UNMERGED. Its successful exact-head CI is not integrated current-base qualification.
+- PRs #24/#25/#30/#31 remain 146 behind default with zero formal reviews. Path-segment branch `dee17350864cb49e8c5dd41cf61859d77d3affca` is 38 ahead / 146 behind, 19 files, exact-head CI/status NOT VERIFIED.
+- Frozen integration branch `integration/d1-current-base-2026-11-19` remains identical to default; no D1 package exists on default. Pass 15 source matrix still has migration ordinal/outbox/profile conflicts; canonical source manifest and single task-ready outbox are not frozen.
+- SentinelX: 0 connected hosts; Mac mini offline; mh-dev-01/02 disabled; 0 saved integrations. Cloudflare connector: 1 accessible account, 0 Worker scripts, 0 D1 databases; Access endpoint 403 (not enabled).
+- Issues #1/#22/#26/#140 remain OPEN. Secure web console, provider/account quota routing, hosted D1, real executor and independent acceptance remain NOT VERIFIED / BLOCKED.
+- Pass 16 report: `docs/reports/2026-11-19-1910-daily-revalidation.md`, commit `959d22aeb582384416dab6a219576fbd0da4b4bf`, blob `a1232002d1ecdb4321acf90c876ba470c52743d7`.
+- Pass 16 checkpoint: `docs/checkpoints/2026-11-19-pass-16-default-and-a1-output-contract.md`, commit `106441cc9209996478fe78149d39e90fb602607c`, blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`.
+- No source/schema/workflow changes, local tests, dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge, hosted D1 writes, secret reads, or governance changes in this pass.
+- Next: freeze one D1 source manifest and task-ready outbox authority; add explicit false authorization fields to all exported adapter outputs and negative-first tests; reconcile CODE profile, lease, trigger and provenance semantics. Run exact-head CI only when permitted. Keep Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+
+## CURRENT SNAPSHOT — PASS 17 (2026-11-19 20:36 Europe/Vilnius)
+
+- Independent GitHub re-read confirms default branch `Основной` remains at immutable HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; latest commit message is `security: retire legacy DSH dispatch path`, authored 2026-11-19T09:29:02Z. No default code change since Pass 16.
+- Open Issues: 14; open PRs: 107 (GitHub Search API, separately filtered `is:issue` and `is:pr`). Issues #1/#22/#26/#140 remain OPEN.
+- Active ruleset #26550182 read directly: active on exactly `refs/heads/Основной`; PR required; approving review count 0; review-thread resolution required; CODEOWNERS review and extra approval disabled; deletion/non-fast-forward prohibited; bypass actors empty; current-user bypass never. Thus independent review is not enforced by this ruleset.
+- Current default combined commit status is `pending` with 0 contexts. Treat exact-default combined status as NOT VERIFIED; do not infer green from older PR runs.
+- PR #139 is merged (2026-11-19T09:29:03Z), with zero formal reviews. Default dispatch retirement remains present; it is not independent acceptance.
+- PR #143 remains OPEN/DRAFT/UNMERGED at `3d189df6a4242325ad6261fb38d6e03d7ac6eebd`, 55 ahead / 1 behind; its three exact-head runs are SUCCESS (two PR events and one push event). It is not the integrated canonical admission chain.
+- PR #146 remains OPEN/DRAFT/UNMERGED at `9d32c4943ae87f5855ab05d42a4ba12d1c205211`, 84 ahead / 0 behind, 47 files. Exact-head Pool Contract Validation `44522152749` and Isolated D1 Ledger Proof `44522152799` are SUCCESS. Formal reviews: 0; registry remains empty; capability profile remains proposed/not qualified/not enabled.
+- Source-level re-read of four PR #146 blobs confirms the Pass 16 output-contract finding: `consume.mjs` (`7b30f9fa315d7996854685cbe634bd8097677518`), `claim-outbox.mjs` (`9da0a05f007a4be26f7588dbd9e82b3bbf8bc825`), `task-lease.mjs` (`b41edf89cdf960b2c007f38ba16554dc179f021a`), and `task-attempts.mjs` (`f40582968a3b25e1a59522c19dd5bc11b007e6b2`) expose `dispatch:false` but do not explicitly expose `executionAuthorized:false` on their result objects. The registry/auth/OIDC adapters do expose both. This remains a contract/test gap, not evidence of a live execution path.
+- PR #147 is OPEN/DRAFT/UNMERGED at `0ea6dcd589b914399a66e289190e00addbf6d9a1`, stacked on #146. Exact-head Actions lookup returns 0 runs; reviews: 0. Its docs-only research states ADDITIVE ONLY and does not qualify OpenChamber, DeepSeek Harness, CUA Driver MCP or llama-modchip for execution.
+- PR #145 documentation branch current head is `ff51b93fbf570cb11a7b0453126e84fee8e9a303`; compare to default is 33 ahead / 0 behind and docs-only. It remains a working branch, not canonical. PR #145 reviews: 0; exact-head Actions lookup returned no run.
+- Branch `feat/issue140-canonical-admission-lease-2026-11-19` at `ee9265dfad98e098c8646dee0ea0da1af4789a87` compares 22 ahead / 0 behind default; all 10 changed paths are docs/checkpoints/context/prompts/reports. It is not a code implementation and no open PR currently references it in the open-PR listing. No CI/review evidence was established for this branch.
+- PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, old-base (base SHA `64d2636d4500127e635c214ccfb722c6b3fcda80`) and 146 commits behind current default. Exact-head runs are respectively: #24 `42982847600`, `42982847694` SUCCESS; #25 `42228269689`, `42228269676`, `42228263346` SUCCESS; #30 `42216422883` SUCCESS (push event only); #31 `42229917555` SUCCESS. These historical heads do not establish current-base integration or independent review.
+- GitHub Read Adapter path-segment branch exact ref re-read: `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`; compare is 38 ahead / 146 behind, merge base `64d2636d4500127e635c214ccfb722c6b3fcda80`, 19 changed files. Exact-head Actions runs: 0; combined status `pending` with 0 contexts — NOT VERIFIED. Do not transplant the 19-file stack.
+- No source/schema/workflow/runtime change was made. No workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, secret reads, variable/ruleset changes or merges were performed. No CI was started by this audit.
+- Next bounded step: repair the four PR #146 adapter response contracts and tests on a separately authorized code pass; first freeze D1 migration/outbox lineage from #67/#72/#111/#146 and current-base Issue #140 candidate. Keep all dispatch/execution flags false. Rebuild only the path-segment guard on a clean current-default branch after revalidating its exact source.
+
+**Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.**
+
+
+## CURRENT SNAPSHOT — PASS 18 (2026-11-19 20:50 Europe/Vilnius)
+
+- Fresh default revalidation: `Основной` HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; tree `c8c78a26a6359ec868922e4040c2870eec873b66`; signature verified. No default source change.
+- Default combined status remains `pending` with 0 contexts — NOT VERIFIED.
+- Issue #140 remains OPEN. PR #146 remains OPEN/DRAFT/UNMERGED; exact-head Pool Contract Validation `44522152749` and Isolated D1 Ledger Proof `44522152799` remain SUCCESS on candidate head `9d32c4943ae87f5855ab05d42a4ba12d1c205211`. These are not integrated-default or executor qualification.
+- Documentation branch HEAD before Pass18: `86a52376d7dbde661f31302bd336d720daccb846`. Pass17 report/checkpoint re-read; four PR #146 adapters still omit explicit `executionAuthorized:false` in returned results. No code changes or local tests in Pass18.
+- Time accounting: the earlier 45-hour figure is a planning baseline, not a measured timer. Active engineering time cannot be reconstructed from chat timestamps, PRs or CI duration. Deliverable-based planning credit since that baseline is estimated at 12–15 engineering-equivalent hours; remaining estimate is 30–33 hours (central estimate ~30h) for non-production qualification candidate. This is NOT a measured burn-down.
+- Remaining estimate by package: A1 1–2h; A2 canonical D1/outbox 5–6h; A3 admission/lease/fencing 4–5h; A4 sandbox/executor/provenance 5–6h; A5 E2E/recovery 4–5h; A6 authenticated remote UI/persistence 4–5h; A7 independent review/acceptance 3–4h. Range is planning-only and assumes no new blockers; calendar time can be longer.
+- Report: `docs/reports/2026-11-19-pass-18-launch-effort-recalibration.md`; publication commit `d39f41e079c7eddbb98762d6c8c9c35ad00d5630`.
+- Next bounded step: repair four PR #146 adapter outputs to explicitly include both `dispatch:false` and `executionAuthorized:false` for every success/deny result, add negative-first tests for success/invalid/replay/storage unavailable/ambiguous writes, then exact-head CI and independent review. Keep dispatch disabled. D1 source manifest/outbox ownership must be frozen before SQL integration.
+- No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge or governance change.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 19 (2026-11-19; final candidate HEAD 4aeb9bd)
+
+- Revalidated default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, signed/verified; integration branch still equals default. Default combined status remains pending / 0 contexts — NOT VERIFIED.
+- Issue #140 OPEN. PR #146 OPEN/DRAFT/UNMERGED; head updated to `4aeb9bddecd747ca533ba5619be83fc4809e2a95`, base remains default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pass19 bounded code correction on PR #146: four adapters now explicitly include `executionAuthorized:false` beside `dispatch:false` on all result objects. Source read-back counts match: consume 2/2; claim-outbox 3/3; task-lease 4/4; task-attempts 8/8.
+- Updated tests assert both false flags for consume success/denials, claim concurrency/retry/identity mismatch, lease acquire/renew/finalize and attempt creation/lease. Test blobs: consume `699a698e8ab4f2672312c87c58ec4aedca6edb49`; claim-outbox final `5f5f613d60b6ecb570b785ffd9a29d41dbc25fdd`.
+- Final candidate SHA/tree: `4aeb9bddecd747ca533ba5619be83fc4809e2a95` / `aa35d2fd3c61848b0606ef66a1e02a4a8478b27b`; candidate commit is not GitHub-signature verified.
+- Exact-head CI all SUCCESS: D1 PR run `44582839780`; Pool Contract PR run `44582839702`; D1 push run `44582828669`. D1 run job confirms pinned Node, npm ci, syntax check, Workers-runtime tests and artifact upload succeeded.
+- PR #146 remains unmerged and draft. No formal independent review established. Candidate CI is not integrated-default or live-executor qualification.
+- Pass19 report: `docs/reports/2026-11-19-pass-19-adapter-fail-closed-contract.md`; publication commit `e69e6171e8dd6ba670e9595a764bdfbb5a034d5e`.
+- Next: freeze the exact ordered D1 migration source manifest and select exactly one authoritative task-ready outbox; reconcile approval-keyed `pool_task_outbox` vs task-keyed `pool_task_delivery_outbox` before SQL integration. Maintain all false authorization flags.
+- No hosted D1, secret values, provider calls, executor launch, dispatch, Gemini/Claude, deployment, merge, production mutation or governance change.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 20 (2026-11-19; D1 lineage/outbox audit)
+
+- Revalidated refs: default `Основной` `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (signature verified); integration branch equals default; PR #146 candidate `4aeb9bddecd747ca533ba5619be83fc4809e2a95` (unsigned/unverified); docs branch was `3281717fba765a7d127c221ce6e85f5debf3988c`.
+- PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; PR #72 head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31` stacked on #67; PR #111 head `687196738782432797bf394f1342cb9df19f478f`; PR #146 remains OPEN/DRAFT/UNMERGED. Issue #140 OPEN; owner bounded non-production authorization comment #7014947185 remains present. PR #146 reviews 0, inline threads 0.
+- Pass20 source audit confirms #67/#72 migrations 0001–0010, #72 0011 admission, #111 0006 lease guard, and #146 CODE-profile 0001 + 0006 lease guard + 0007 executor identity are competing/stacked lineages, not one manifest.
+- Migration 0001 from #67/#72/#111 hardcodes retired `dsh-headless-probe`; #146 0001 uses `jarvis-code-sandbox-v1`. Do not mix root versions.
+- #67 0006–0010 are projection outbox, retry/dead-letter, monotonic retry, immutable projection identity and comment ACK migrations. #111/#146 0006 is a lease guard, an ordinal collision; #146 0007 executor identity also collides with #67 projection 0007.
+- #72 0011/admit adapter hardcode retired profile. Its task-key digest omits executor ID while #146 logical task key includes executor ID. Requires semantic adaptation; no mass replacement.
+- Two task-ready paths remain active in the #146 candidate: approval-keyed `pool_task_outbox` via legacy trigger/claimAndEnqueue and task-keyed `pool_task_delivery_outbox` via claimLogicalTask. #146 0007 replaces the task-keyed trigger but does not drop `pool_approval_consumed_legacy_claim_outbox`. Decision: `pool_task_delivery_outbox` is the only candidate authoritative task-ready outbox; retire legacy writer/adapter additively and keep old tables inert pending retention review.
+- `pool_attempt_projection_outbox` is a distinct terminal-attempt projection queue, not a competing task-ready queue.
+- Proposed (NOT APPROVED/APPLIED) additive manifest: retain canonical #67 0001–0010 with CODE-profile 0001 variant; append new unique ordinals for legacy route retirement, executor identity, lease guard, and adapted CODE/executor-bound admission. Example ordinals 0011–0014 in Pass20 report. Do not edit already-applied migrations.
+- External component research: official Cloudflare D1 migrations docs and Cloudflare Actors monotonic SQL migration runner support sequential immutable migrations; transactional outbox references support atomic domain+outbox write and at-least-once/dedup semantics. No external code imported.
+- Pass20 report: `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority.md`.
+- No SQL source change, local tests, hosted D1, secret reads, provider calls, executor launch, dispatch, agents, deployment, merge or governance changes.
+- Default status pending/0 contexts — NOT VERIFIED. PR #146 candidate exact-head CI remains SUCCESS: D1 PR `44582839780`, Pool Contract PR `44582839702`, D1 push `44582828669`; does not test proposed composed manifest.
+- Next: construct a clean-base migration composition fixture with adversarial tests for one task-ready writer/reader, inert legacy path, independent projection outbox, executor-inclusive task identity, lease guard, and CODE admission/revocation. Exact-head CI + independent review before hosted D1.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Canonical MediaHub map (deferred reference): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CURRENT SNAPSHOT — PASS 20 (2026-11-19; D1 lineage/outbox authority audit)
+
+- Revalidated default `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, tree `c8c78a26a6359ec868922e4040c2870eec873b66`, signature verified. Issue #140 OPEN. PR #145/#146/#147 and source PRs #67/#72/#111 remain OPEN/DRAFT/UNMERGED. Ruleset #26550182 active; PR/review-thread resolution required, no bypass.
+- PR source heads audited: #67 `a53f6232bd5b50d3e150addf528b8e722002f9dd`; #72 `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; #111 `687196738782432797bf394f1342cb9df19f478f`; #146 `4aeb9bddecd747ca533ba5619be83fc4809e2a95`.
+- Exact migration SHA inventory recorded in `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority-audit.md`.
+- Decisive defect: #146 0007 replaces `pool_approval_consumed_creates_claim_outbox` but leaves #67/#146 0003 legacy trigger `pool_approval_consumed_legacy_claim_outbox` active. Schema and adapter still support both approval-keyed `pool_task_outbox` and task-keyed `pool_task_delivery_outbox`. Two task-ready producers/queues remain; one authoritative queue is NOT established.
+- Recommendation (not yet implemented): task-keyed `pool_task_delivery_outbox` is sole task-ready authority; `pool_attempt_projection_outbox` remains separate downstream projection delivery; retire legacy approval-keyed tables as write targets via forward-only migration and remove legacy adapter positive path. Port #72 admission to CODE profile only after binding executor identity and route/issuer/account/quota evidence.
+- Migration numbering conflict: #67 projection outbox 0006 and #111/#146 lease guard 0006 are different blobs. The lease guard must be renumbered in a composed manifest. #72 0011 hardcodes retired `dsh-headless-probe`; do not transplant unchanged. #146 CODE profile root is `c14951239dfd6f93e20184f46373a8d13b62a69f`; #146 executor identity migration 0007 blob `47c2f0f7db6379e6760317fe3903214f6f31ffee`.
+- Pass20 was read-only: no SQL or adapter changes, no local SQLite/Workers simulation. Manifest NOT APPROVED.
+- Pass20 report: `docs/reports/2026-11-19-pass-20-d1-lineage-outbox-authority-audit.md`; publication commit `34df8e7bdb7304150a3afda3e758ce64b0bee304`.
+- Effort estimate against yesterday's 45h planning baseline: prior deliverable credit 12–15h (from Pass18); this chat's Pass19 + Pass20 estimated 3.5–5.5 engineering-equivalent hours; cumulative 15.5–20.5h completed; remaining 24.5–29.5h (central estimate 27h). These are planning-equivalent estimates, not measured active time. Actual elapsed/active hours NOT MEASURED.
+- Next: clean-base migration-composition candidate; remove legacy approval-keyed trigger/writer path, assert one task-ready outbox, test task uniqueness and independent projection outbox, then port admission. Keep all dispatch/execution authorization flags false.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+- Canonical MediaHub OS map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 21 (clean-base D1 retirement precondition audit)
+
+- Default branch `Основной` remains at immutable HEAD `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Pass 21 confirmed the D1 proof subsystem is absent from the default tree: `proofs/d1-ledger/README.md` and `proofs/d1-ledger/migrations/0003_create_logical_task_identity.sql` both return 404 on the default ref.
+- PR #146 remains OPEN/DRAFT/UNMERGED at `4aeb9bddecd747ca533ba5619be83fc4809e2a95`. Its exact-head Isolated D1 Ledger Proof run `44582839780` and Pool Contract Validation run `44582839702` both completed SUCCESS; jobs `135767804070` and `135767804751` completed SUCCESS. This is isolated PR proof, not default integration or hosted qualification.
+- Exact source blobs re-read: #146 migration 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; migration 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; migration 0007 `47c2f0f7db6379e6760317fe3903214f6f31ffee`; adapter `08c186dc0b709db985beba9c7cd9e73167c9e657`; tests `5f5f613d60b6ecb570b785ffd9a29d41dbc25fdd`.
+- Migration 0003 still creates `pool_approval_consumed_legacy_claim_outbox`; migration 0007 does not drop it. The adapter still exposes positive `claimAndEnqueue()` beside `claimLogicalTask()`.
+- #67 migration 0006 creates `pool_attempt_projection_outbox`; #111/#146 migration 0006 is the lease guard. PR #146 alone does not preserve the projection outbox. A single clean-base manifest must reconcile this collision before a forward-only retirement migration can be valid.
+- Pass 21 code implementation is BLOCKED by absent default D1 substrate and unapproved composed migration lineage. No code/test/deployment/dispatch/secret changes were made.
+- Current default combined status returned zero contexts; exact-head PR workflow lookup for #145 returned no runs. Treat both as NOT VERIFIED. Current detailed ruleset read-back was unavailable; historical ruleset evidence is not promoted to current.
+- Issue #140 remains OPEN. PR #145 documentation continuation and PR #146 implementation candidate remain OPEN/DRAFT/UNMERGED; no merge.
+- Pass 21 report: `docs/reports/2026-11-19-pass-21-current-base-d1-retirement-precondition-audit.md`.
+- Pass 21 checkpoint: `docs/checkpoints/2026-11-19-pass-21-current-base-d1-retirement-precondition.md`.
+- Effort estimate unchanged: 24.5–29.5 engineering-equivalent hours remaining from the earlier 45-hour plan; no new implementation-hour credit claimed; actual active time NOT MEASURED.
+- Next: approve and freeze a clean-base source-blob migration manifest for #67/#72/#111/#146, preserving projection outbox and renumbering the lease guard; only then implement retirement and adversarial tests.
+
+
+
+---
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 22 (clean-base D1 migration manifest)
+
+- Default branch `Основной` HEAD re-read and unchanged: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- Corrected source-lineage conclusion: PR #67's `proofs/d1-ledger` migrations 0001–0010 plus PR #72 migration 0011/composite admission are the selected canonical source lineage per Issue #140 comments and PR #141 follow-up audit. These are stale branches and must be selectively transplanted, not merged as-is.
+- PR #67 head `a53f6232bd5b50d3e150addf528b8e722002f9dd`; exact-head runs 43600901063 and 43600901068 SUCCESS. PR #72 head `a391f5c9b08c7ccfc12d966bf8e085c1966bfb31`; exact-head workflow lookup returned no runs (NOT VERIFIED). PR #111 head `687196738782432797bf394f1342cb9df19f478f`; exact-head runs 43881396272 and 43881396386 SUCCESS. PR #146 head `4aeb9bddecd747ca533ba5619be83fc4809e2a95`; exact-head runs 44582839702 and 44582839780 SUCCESS. None validates the new composition.
+- Manifest: 0001 #146 CODE profile root blob `c14951239dfd6f93e20184f46373a8d13b62a69f`; 0002–0005 shared #67/#146 blobs (`44b8f7...`, `49b079...`, `0ad590...`, `7a1989...`); 0006–0010 #67 projection chain (`660fa9...`, `767d95...`, `1d9385...`, `869194...`, `30ac9d...`); 0011 adapted #72 atomic admission blob `39e3da8ccf2f3e82cb7fd8fc858536aa8757b5bc`; 0012 #111 lease guard blob `0610c4ee63f338e9b4d4db30ffe6fdffbaf6d854`; 0013 #146 executor identity blob `47c2f0f7db6379e6760317fe3903214f6f31ffee`; 0014 new legacy retirement migration not yet authored.
+- #67/#146 migrations 0002–0005 verified byte-identical by matching blob SHAs. #67 migration 0006 projection outbox remains authoritative at that ordinal; lease guard must be 0012; executor identity must be 0013. No historical source migration file is modified.
+- Composition rules: exact profile `jarvis-code-sandbox-v1`; executor ID remains separate and must be included in logical task key; `pool_task_delivery_outbox` sole task-ready queue; `pool_attempt_projection_outbox` independent terminal projection queue; 0014 drops legacy trigger and adds write-denial guards to `pool_task_claims`/`pool_task_outbox` without deleting historical rows; remove/deprecate positive `claimAndEnqueue()`; all adapter outcomes explicitly set `dispatch:false` and `executionAuthorized:false`.
+- Pass 22 is manifest/documentation only. No implementation branch, code, SQL, tests, hosted D1, secrets, dispatch, provider calls, deployment, merge or governance change.
+- Current detailed ruleset read-back remains unavailable. PR #145 docs exact-head CI after Pass 22 is NOT VERIFIED.
+- Pass 22 report: `docs/reports/2026-11-19-pass-22-clean-base-d1-migration-manifest.md`; checkpoint: `docs/checkpoints/2026-11-19-pass-22-clean-base-d1-migration-manifest.md`.
+- Effort estimate unchanged: 24.5–29.5 engineering-equivalent hours remaining against the original 45-hour plan; no new implementation-hour credit; actual active time NOT MEASURED.
+- Next: create implementation branch from frozen default SHA, transplant selected blobs 0001–0013, author 0014, then run fresh-database and frozen-upgrade Workers-runtime adversarial tests.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+
+---
+
+## CURRENT SNAPSHOT — 2026-11-19 PASS 23 (clean-base D1 migration foundation)
+
+- Default branch `Основной` re-read: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; this is the immutable parent of implementation PR #148.
+- Issue #140 OPEN. PR #148 is OPEN / DRAFT / UNMERGED, base SHA `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`, branch `feat/pass23-d1-clean-base-foundation-2026-11-19`, final tested head `613790e739aece5028dca54ae82b2d853fa95642`, 19 added files, 20 commits ahead and 0 behind.
+- Clean-base migrations 0001–0010 transplanted: 0001 CODE root blob `c14951239dfd6f93e20184f46373a8d13b62a69f`; 0002 `44b8f7e0658296d287269770c5e91b1c3e25973c`; 0003 `49b0798871429d7961e81eb1d86ad892dba0b9b9`; 0004 `0ad590ffdd2589f857257739275c15ed2d54d729`; 0005 `7a19897f6197c79517170e101e4cbf1db233cac6`; 0006 `660fa9de99ed78fe083bb627d6a61dbf0bd65c25`; 0007 `767d95a30fa0a14c79e88c8c58392bfec9cdddc2`; 0008 `1d9385dd371f3404c52ec15fce03b0a14d384ab1`; 0009 `86919425f498dc634329bb783a3ca6ae7a0ff6a1`; 0010 `30ac9d0ed0cbede9586c365578c606b47bcce1a7`.
+- Added pinned Workers Vitest harness, lockfile, inert 404 Worker, README and fresh-D1 test. Exact-head D1 run `44589681768` COMPLETED/SUCCESS, job `135791975727`; npm ci, syntax check, and Workers runtime test passed, 1 test file / 3 tests. Exact-head Pool Contract Validation run `44589681751` COMPLETED/SUCCESS, job `135791980028`.
+- First D1 run `44589517309` failed only because test expected empty task-ready queue after an earlier test had inserted one row into the shared fixture; assertion was corrected and rerun passed.
+- Projection outbox independence in Pass 23 is schema-level only. No projection lifecycle/retry tests yet.
+- Not implemented: migration 0011 CODE/executor-bound atomic admission; 0012 lease guard; 0013 executor identity binding; 0014 forward-only retirement; adapter changes; full replay/storage ambiguity/lease/projection adversarial matrix.
+- No hosted D1, secrets, provider calls, workflow dispatch, executor launch, deployment, merge or governance change. Detailed current ruleset read-back remains NOT VERIFIED.
+- Implementation PR #148: https://github.com/VlDMlNSh/developer-cloud-pool/pull/148
+- Pass 23 report: `docs/reports/2026-11-19-pass-23-clean-base-d1-migration-foundation.md`; checkpoint: `docs/checkpoints/2026-11-19-pass-23-clean-base-d1-migration-foundation.md`.
+- Docs continuation PR #145 remains OPEN / DRAFT / UNMERGED; current head before this Context Window update: `05417d3b252141a85385f95c9688a7a8317a8ceb`.
+- Effort estimate: previous 15.5–20.5h equivalent plus Pass 23 estimated 2.5–3.5h = 18–24h deliverable-equivalent complete; 21–27h estimated remaining (central 24h). Actual active time NOT MEASURED.
+- Next: continue on PR #148 clean-base branch with CODE/executor-bound admission migration 0011, lease guard 0012, executor identity 0013, then legacy retirement 0014; add schema-0010 upgrade and adversarial tests.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+
+## Pass 25 — executor identity migration 0011 — 2026-11-19
+
+- Implementation PR #149 OPEN/DRAFT/UNMERGED, stacked on PR #148 clean-base branch; head `3a64c045a6cdd5890846dbd75bc53952ed1ba718`.
+- Migration 0011 adds immutable executor identity to approval and logical task rows; rejects missing executor IDs, prevents mutation and blocks cross-executor task-key collision. Historical rows are not backfilled because identity cannot be inferred.
+- Exact-head D1 run 44592122672 SUCCESS (6/6 Workers-runtime tests); Pool Contract Validation run 44592122775 SUCCESS.
+- Adapter canonical task-key serialization still omitted executor ID; atomic admission not yet integrated.
+- Report: ../reports/2026-11-19-pass-25-executor-identity-binding.md; checkpoint: ../checkpoints/2026-11-19-pass-25-executor-identity-binding.md.
+
+## Pass 26 — executor-bound canonical task identity v2 — 2026-11-19
+
+- Implementation PR #150 OPEN/DRAFT/UNMERGED, stacked on PR #149; head `8b02ea8d120bdcd56bbb9233de5906f02e67a2cb`.
+- New isolated module `proofs/d1-ledger/src/task-identity.mjs` derives a versioned SHA-256 task key from repository ID, issue number, target SHA, capability profile, executor ID and schema version. Executor identity is independent from capability profile.
+- New tests cover deterministic identity, different executor separation, profile separation, stable v2 serialization and malformed input.
+- Exact-head CI lookup returned no workflow runs; tests authored but execution NOT VERIFIED.
+- Historical PR #72 adapter still uses legacy DSH profile and v1 task key; do not transplant unchanged. Next step is end-to-end adaptation of adapter + SQL identity bindings, followed by replay/concurrency/rollback/revocation tests.
+- PR #148 clean-base foundation remains OPEN/DRAFT/UNMERGED at `613790e739aece5028dca54ae82b2d853fa95642`; PR #149 migration 0011 remains OPEN/DRAFT/UNMERGED at `3a64c045a6cdd5890846dbd75bc53952ed1ba718`.
+- Issue #140 remains OPEN. No hosted D1, secret reads, provider calls, dispatch, deployment, merge or governance changes. Gemini and Claude NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Reports: ../reports/2026-11-19-pass-25-executor-identity-binding.md and ../reports/2026-11-19-pass-26-executor-bound-task-identity-v2.md.
+- Checkpoints: ../checkpoints/2026-11-19-pass-25-executor-identity-binding.md and ../checkpoints/2026-11-19-pass-26-executor-bound-task-identity-v2.md.
+- Current append-only snapshot: PASS-26-CURRENT-SNAPSHOT.md.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Multi-account Jarvis and shared GPU platform — architecture requirement recorded — 2026-11-19
+
+- Owner confirmed Cloud Pool must support multiple independent accounts/Jarvis instances, initially 2–3, with room to scale.
+- Architecture decision recorded in `docs/architecture/MULTI_ACCOUNT_JARVIS_SHARED_GPU_TARGET.md` (blob `acf84dad8ce6fcf36fa56baa33a80ed58bb8a2be`): independent control planes per account; optional shared GPU compute plane only behind authenticated tenant-aware gateway and scheduler.
+- Isolation invariants: independent profile, memory/history, credentials, storage namespace, quota ledger, audit and permissions; no cross-tenant data or authority sharing by default. Every job/approval/lease/attempt/receipt/artifact must bind tenant identity separately from repository ID, user, executor ID and capability profile.
+- Shared compute requirements: bounded per-tenant queues, global weighted fairness, concurrency/GPU-time/storage quotas, VRAM-aware model admission, explicit model residency/load cost, cancellation/recovery and immutable result provenance.
+- Portability target after Contour A acceptance: Golden Deployment Kit for reproducible independent deployments. Never clone secrets, personal memory/history or account-bound IDs; each new instance receives fresh credentials, identity and quota mapping.
+- Tracking issue #151 OPEN / PLANNED: https://github.com/VlDMlNSh/developer-cloud-pool/issues/151.
+- No GPU server, gateway, multi-tenant schema/scheduler, second Jarvis or provider route was provisioned or implemented. This is architecture documentation only; no tests/CI run for this documentation pass.
+- Contour A remains sole active priority and is NOT ACCEPTED; Contour B remains DEFERRED.
+- Current documentation branch is `docs/next-2026-11-19-integrated-contour-pass`, PR #145 OPEN/DRAFT/UNMERGED. This branch is not default/accepted production code.
+- Canonical MediaHub map (reference only): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pass 27 — atomic admission integration with executor-bound task identity v2 — 2026-11-19
+
+- Implementation PR #152 OPEN/DRAFT/UNMERGED; branch `feat/pass27-atomic-admission-executor-v2-2026-11-19`; immutable head `4c3ca43aed448005fd5dd1b01a1bf62cd6243248`, parent Pass 26 `8b02ea8d120bdcd56bbb9233de5906f02e67a2cb`.
+- Added forward-only migration 0012 adapted from historical PR #72, not transplanted unchanged. It uses CODE profile `jarvis-code-sandbox-v1`, adds executor ID to admission and commit receipt, and guards equality across approval/task/admission/receipt and outbox binding.
+- Added atomic admission adapter importing Pass 26 `canonicalTaskKey` v2. It binds executor identity in input validation, approval consumption, admission write, replay identity and final receipt readback. Responses remain `dispatch:false`.
+- Added adapted synthetic Workers-runtime tests with executor-substitution denial and updated D1 proof README.
+- Re-read blobs: migration `f43ab9256238b0b11c45407ae4cc2664792e2130`; adapter `aa8e1157e78624d920c868b547e8c7ea619ddf9a`; tests `932f2efb70216a750ebbd55390b9cb7b05b1860e`; README `f8325e9b187bd528140f3b3158b61fda8a8b265e`.
+- Exact-head workflow lookup for `4c3ca43aed448005fd5dd1b01a1bf62cd6243248` returned no runs; combined commit status empty. The D1 workflow pull_request filter targets base `Основной`, but PR #152 targets Pass 26 branch. CI and test execution NOT VERIFIED. No independent review.
+- No hosted D1, secret reads, provider calls, dispatch, executor launch, deployment, merge, production mutation or governance changes.
+- Lease guard/fencing, full legacy-table write denial, trusted GitHub event provenance, executor qualification and independent acceptance remain outstanding.
+- Report: ../reports/2026-11-19-pass-27-atomic-admission-executor-v2.md; checkpoint: ../checkpoints/2026-11-19-pass-27-atomic-admission-executor-v2.md; snapshot: PASS-27-CURRENT-SNAPSHOT.md.
+- Multi-account Jarvis/shared GPU target remains PLANNED under Issue #151; implementation remains deferred until Contour A acceptance.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 28 — admission replay receipt verification — 2026-11-19
+
+- Refreshed repository state: default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; PR #148/#149/#150/#152 and docs PR #145 remain OPEN/DRAFT/UNMERGED. PR #152 base is Pass 26 feature branch; head after Pass 28 is `81c1c001f61b29305126ff28500eb47843f6fe1b`.
+- Source audit found that the Pass 27 replay path could return `ADMISSION_ALREADY_COMMITTED` without checking that the durable commit receipt and task-ready outbox binding still existed and matched.
+- Updated `proofs/d1-ledger/src/admit-qualified-task.mjs`: replay readback now requires matching receipt assertion, executor, dispatch-disabled flags, pending task-ready event, admission/attempt/evidence identity and task current-attempt tuple. Mismatch returns `ADMISSION_COMMIT_RECEIPT_MISMATCH`.
+- Added an adversarial test deleting the receipt after initial admission and requiring replay denial.
+- Adapter blob: `f00720cf1bedaf46ee9ba79f5bcfb0b38bf0de89`; test blob: `49333aaaa7ee89c0ff8952e91e16d08e165aa091`.
+- Static source readback VERIFIED. Tests authored but NOT RUN. Exact-head CI NOT VERIFIED: no PR-triggered workflow runs and combined status empty. Workflow `d1-ledger-proof-validation.yml` has a `pull_request` base filter for `Основной`; #152 targets Pass 26 feature branch. Do not weaken governance to force a check.
+- Independent review NOT VERIFIED. No hosted D1, secrets, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes.
+- Migration review note: `schema_version` is absent from the identity trigger column list, but the table CHECK fixes it to 1 and rejects any changed value; no redundant migration was added.
+- Report: `docs/reports/2026-11-19-pass-28-admission-replay-receipt-verification.md`; checkpoint: `docs/checkpoints/2026-11-19-pass-28-admission-replay-receipt-verification.md`; snapshot: `docs/context/PASS-28-CURRENT-SNAPSHOT.md`.
+- Issue #140 OPEN. Issue #151 multi-account Jarvis/shared GPU remains PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 29 — admission receipt identity binding — 2026-11-19
+
+- PR #152 head advanced to `31de5a3dc1d06c83611ebc10565fa134a4c9eded`, base remains Pass 26 feature branch; OPEN/DRAFT/UNMERGED.
+- Audit finding: replay receipt validation did not compare receipt attempt ID, qualification ID or evidence digest with admission row. Migration receipt trigger enforces admission/approval/task/executor but does not itself enforce those remaining fields.
+- Adapter now projects and compares receipt approval ID, task key, attempt ID, qualification ID and evidence digest with the admission record before returning already committed.
+- Added adversarial test replacing receipt with forged attempt/evidence identity after initial admission; replay must deny with `ADMISSION_COMMIT_RECEIPT_MISMATCH`.
+- Adapter blob `59978808b0b1210ef5d9e5012a8814b58c7f18c7`; test blob `014425f4e51123bd13340d3580d870e68245c7bf`.
+- Static source readback VERIFIED. Tests authored NOT RUN. Exact-head CI NOT VERIFIED: zero PR-triggered workflow runs and empty combined status. No workflow/governance weakening.
+- No hosted D1, secrets, providers, dispatch, executor, deployment, merge, production writes or governance changes.
+- Report/checkpoint/snapshot: `docs/reports/2026-11-19-pass-29-admission-receipt-identity-binding.md`, `docs/checkpoints/2026-11-19-pass-29-admission-receipt-identity-binding.md`, `docs/context/PASS-29-CURRENT-SNAPSHOT.md`.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; Issue #151 PLANNED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 30 — integrated D1 CI and replay projection correction — 2026-11-19
+
+- Default branch remains `Основной` @ `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
+- PR #152 remains OPEN/DRAFT/UNMERGED, base Pass 26 feature branch; final implementation head `d56d334d2045d08fd7aa71feb9749aab08d96840`.
+- Created validation-only draft PR #153 from the same head to `Основной`, because existing D1 workflow is pull_request-only, targets `Основной`, and is path-filtered to D1 files. No workflow, permissions or governance changes. PR #153 must remain unmerged and is retained as the exact-head validation surface.
+- First integrated D1 run `44603988834` failed 1/29; Pool Contract run `44603989590` succeeded. Failure showed replay guard compared receipt/outbox/task attempt IDs to `prior.attempt_id`, but SELECT only exposed `a.attempt_id AS requested_attempt_id`. The unprojected property was undefined, denying valid exact replay.
+- Fixed adapter by projecting `a.attempt_id AS admission_attempt_id` and using it for receipt/outbox/task attempt identity comparisons. Adapter blob `78c0906f26f7eb54ca3a489eba3eeca5c3f55cae`.
+- Final exact-head D1 run `44604194767` / job `135843386415` SUCCESS: 3 test files, 29 tests passed; npm ci, inert Worker syntax check and local Workers/D1 tests passed. Tested merge checkout `4edaf599cd9c005f8a4e5b51c2244685e3fbb2d4` combines final head `d56d334d2045d08fd7aa71feb9749aab08d96840` with frozen default SHA.
+- Final Pool Contract Validation run `44604194769` / job `135843386357` SUCCESS: `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, `POOL_CONTRACT_VALIDATION=PASS`.
+- Combined status endpoint returned empty list; evidence is completed workflow run/job details and logs.
+- Fresh local D1 0001–0012 suite VERIFIED. Frozen schema-0010 upgrade fixture NOT VERIFIED. Hosted D1, secrets, provider calls, dispatch, executor, deployment, merge and production changes NOT RUN. Independent review and ruleset readback NOT VERIFIED.
+- Pass 30 report/checkpoint/snapshot: `docs/reports/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/checkpoints/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/context/PASS-30-CURRENT-SNAPSHOT.md`.
+- Issue #140 OPEN; Issue #151 multi-account Jarvis/shared GPU PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 31 — frozen schema-0010 upgrade proof — 2026-11-20
+
+- Default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; Pass 30 implementation target: `d56d334d2045d08fd7aa71feb9749aab08d96840`.
+- Pass 31 implementation branch `feat/pass31-schema0010-upgrade-proof-2026-11-20` latest HEAD: `b90f386814436552f9e4b0c2b54050731cb9859e`. Code/test source commit: `f42baa320cdb3fb2ccf179b0e170aab79fd25a48`; final HEAD includes evidence-only report/checkpoint update.
+- PR #154 implementation OPEN/DRAFT/UNMERGED; base Pass 27 feature branch; head `b90f386814436552f9e4b0c2b54050731cb9859e`.
+- PR #156 validation-only OPEN/DRAFT/UNMERGED; base `Основной`; same head; do not merge. PR #155 superseded and CLOSED / UNMERGED. PR #153 remains historical Pass 30 validation-only and unmerged.
+- Added local-only `UPGRADE_DB` and `test/migration-upgrade.test.ts`: apply 0001–0010, seed historical synthetic approval/task/approval-link/task-ready-outbox/attempt/projection-outbox records at schema 0010, then apply only 0011–0012. Tests cover preservation, legacy executor NULL and fail-closed handling, new executor-bound admission/receipt/outbox, exact replay, explicit non-null executor collision, migration reapplication, invalid FK, missing/forged receipt and malformed outbox event.
+- Exact integrated checkout: `8d7d3b299874215e1dd010a493dc1a3240d7f4c4`, parents default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` and implementation HEAD `b90f386814436552f9e4b0c2b54050731cb9859e`.
+- D1 run [44702281388](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44702281388), job `136173286215`: COMPLETED / SUCCESS; Node.js 24.9.0, npm ci, Worker syntax check, 4 test files / 36 tests passed; upgrade suite 7/7.
+- Pool Contract run [44702281374](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44702281374), job `136173286267`: COMPLETED / SUCCESS; `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, `POOL_CONTRACT_VALIDATION=PASS`.
+- Initial test assertion failure (run 44701503787) was corrected and preserved in the audit trail.
+- Final test blob `fdc91ee658271cdbd0f897426e02797d44d3b22c`; Wrangler blob `65f5ed8b623b3f4c5304f7b40f6c186b7f4e14fe`; README blob `1445911a33fa1ed6e238d1ee8d09a4cc6b3ad008`.
+- Active ruleset #26550182 targets only `refs/heads/Основной`, requires PR and review-thread resolution, prohibits deletion/non-fast-forward, has zero required approvals and no bypass actors. No governance changes. Combined commit-status endpoint returned empty statuses; completed Actions check-runs/logs are evidence.
+- Gemini controller `.github/workflows/gemini-batch-dispatch-controller.yml` NOT FOUND on default branch; workflow tree lists only DSH runtime evaluation, pool contract validation, supervisor, worker and runner resource probe. Gemini dispatch NOT RUN. No secrets or secret values read. Claude/SentinelX dispatch NOT RUN.
+- Hosted D1, provider calls, dispatch, executor launch, deployment, merge and production writes NOT RUN. Independent review NOT VERIFIED.
+- Issue #140 OPEN; Issue #151 OPEN / PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Pass 31 migration-upgrade proof VERIFIED / SUCCEEDED. Contour A still requires live web UI/device verification, qualified executors/routing, quotas/account isolation, recovery and independent acceptance.
+- Report: ../reports/2026-11-20-pass-31-frozen-schema-0010-upgrade-proof.md. Checkpoint: ../checkpoints/2026-11-20-pass-31-frozen-schema-0010-upgrade-proof.md. Snapshot: PASS-31-CURRENT-SNAPSHOT.md.
+- Next: independent review of Pass 31 PR diff, then bounded transaction ambiguity/retry/readback proof. No hosted D1 writes or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 32 — D1 ambiguous batch outcome and primary-first readback — 2026-11-20
+
+- Default `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; Pass 31 parent `b90f386814436552f9e4b0c2b54050731cb9859e`.
+- Pass 32 implementation branch `feat/pass32-d1-ambiguous-batch-readback-2026-11-20` final HEAD `ae0bf4fce7e4fb3a2482603bad2c940eff0a555a`.
+- PR #157 implementation OPEN/DRAFT/UNMERGED, stacked on `feat/pass27-atomic-admission-executor-v2-2026-11-19`; PR #158 validation-only OPEN/DRAFT/UNMERGED targeting `Основной`; do not merge either.
+- Reuse assessment: official `cloudflare/workers-sdk` (Apache-2.0, active) D1 Vitest fixture is the appropriate maintained testing substrate; repository already uses `@cloudflare/vitest-plugin@1.4.7` and D1 migration APIs. No new testing dependency. Temporal TypeScript SDK/docs reviewed for idempotent retry concepts only; no Temporal runtime/dependency integrated.
+- D1 adapter now uses `withSession("first-primary")` for prior/replay and post-batch readback. On ambiguous batch error or failed success-readback, it starts a fresh primary-first session and verifies the full admission/approval/task/executor/attempt/qualification/receipt/outbox tuple. Returns already committed only for a fully consistent record. Otherwise `ADMISSION_OUTCOME_UNCONFIRMED`; never claims rollback or generates a new identity.
+- Added fault injection: commit-then-lost-ack; fail-before-commit plus exact same-key retry; primary-readback unavailable after commit. Dispatch remains disabled.
+- Final source blobs: adapter `9943d6dc8ba5602eec48bc9edf121c1db9d189d2`; atomic tests `4a8184a5fd08fd3bcbb43920aa7a57270d301524`; README `08a67c701dc07ee89e2416401bf526bdc68503b1`.
+- Final D1 run [44703757450](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703757450), job `136178133556`: COMPLETED/SUCCESS, exact head `ae0bf4f...`, 4 files / 39 tests passed. Final contract run [44703757544](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703757544), job `136178133732`: COMPLETED/SUCCESS, `POOL_DISPATCH_ENABLED=false`, six workflow YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`.
+- Initial D1 run [44703493347](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703493347) failed 1/39 due a stale expected reason in the revoked-route test; assertion corrected to the new fail-closed `ADMISSION_OUTCOME_UNCONFIRMED`. Intermediate run [44703595383](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44703595383) passed 39/39; final amended head passed again.
+- Active ruleset #26550182 unchanged: targets only `refs/heads/Основной`; PR and review-thread resolution required; deletion/non-fast-forward prohibited; zero required approvals; no bypass actors. Default HEAD unchanged.
+- Gemini controller `.github/workflows/gemini-batch-dispatch-controller.yml` absent from default branch; Gemini/Claude NOT RUN. No secret values read.
+- Local Miniflare fault injection and D1 primary-first session API use VERIFIED by exact-head CI. Live Cloudflare D1 with read replication and real network acknowledgement loss NOT VERIFIED. Hosted D1 writes, secrets, provider calls, dispatch, executor, deployment, merge and production writes NOT RUN. Independent review NOT VERIFIED.
+- Issue #140 OPEN; Issue #151 OPEN/PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-32-d1-ambiguous-batch-primary-readback.md`; snapshot: `docs/context/PASS-32-CURRENT-SNAPSHOT.md`.
+- Next: Pass 33 full SQL/trigger audit, with independent review outstanding; no hosted D1 mutations or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
