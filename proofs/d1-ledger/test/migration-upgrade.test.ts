@@ -194,14 +194,14 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     await insertApproval("executor-alpha-task-approval", "executor-alpha");
     await db.prepare(`
       UPDATE pool_approval_ledger
-         SET state = 'consumed', consumed_at = ?, task_key = ?
+         SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = 'executor-alpha-admission'
        WHERE approval_id = 'executor-alpha-task-approval'
     `).bind(now, conflictTaskKey).run();
 
     await insertApproval("executor-beta-task-approval", "executor-beta");
     await expect(db.prepare(`
       UPDATE pool_approval_ledger
-         SET state = 'consumed', consumed_at = ?, task_key = ?
+         SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = 'executor-beta-admission'
        WHERE approval_id = 'executor-beta-task-approval'
     `).bind(now, conflictTaskKey).run()).rejects.toThrow();
 
