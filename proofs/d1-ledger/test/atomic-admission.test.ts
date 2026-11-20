@@ -189,7 +189,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
        WHERE qualification_id = ?
     `).bind(NOW - 1, input.route.qualificationId).run();
     const result = await admitQualifiedTask(env.POOL_DB, input);
-    expect(result).toMatchObject({ decision: "DENY", reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS", dispatch: false });
+    expect(result).toMatchObject({ decision: "DENY", reason: "ADMISSION_OUTCOME_UNCONFIRMED", dispatch: false });
     const ledger = await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?")
       .bind(input.approval.approvalId).first();
     expect(ledger.state).toBe("ready");
