@@ -204,6 +204,48 @@ BEGIN
   ) THEN RAISE(ABORT, 'ATTEMPT_FINALIZATION_NOT_FENCED') END;
 END;
 
+CREATE TRIGGER pool_attempt_terminal_metadata_set_once
+BEFORE UPDATE OF started_at, indeterminate_at, completed_at, result_digest,
+  provenance_digest, terminal_reason ON pool_attempts
+WHEN (
+  NEW.started_at IS NOT OLD.started_at
+  OR NEW.indeterminate_at IS NOT OLD.indeterminate_at
+  OR NEW.completed_at IS NOT OLD.completed_at
+  OR NEW.result_digest IS NOT OLD.result_digest
+  OR NEW.provenance_digest IS NOT OLD.provenance_digest
+  OR NEW.terminal_reason IS NOT OLD.terminal_reason
+)
+AND NOT (
+  (OLD.status = 'prepared' AND NEW.status = 'running'
+    AND OLD.started_at IS NULL AND NEW.started_at IS NOT NULL
+    AND NEW.indeterminate_at IS OLD.indeterminate_at
+    AND NEW.completed_at IS OLD.completed_at
+    AND NEW.result_digest IS OLD.result_digest
+    AND NEW.provenance_digest IS OLD.provenance_digest
+    AND NEW.terminal_reason IS OLD.terminal_reason)
+  OR
+  (OLD.status = 'running' AND NEW.status = 'indeterminate'
+    AND OLD.indeterminate_at IS NULL AND NEW.indeterminate_at IS NOT NULL
+    AND NEW.started_at IS OLD.started_at
+    AND NEW.completed_at IS OLD.completed_at
+    AND NEW.result_digest IS OLD.result_digest
+    AND NEW.provenance_digest IS OLD.provenance_digest
+    AND NEW.terminal_reason IS OLD.terminal_reason)
+  OR
+  (OLD.status IN ('running', 'indeterminate')
+    AND NEW.status IN ('succeeded', 'failed', 'abandoned')
+    AND OLD.completed_at IS NULL AND NEW.completed_at IS NOT NULL
+    AND NEW.started_at IS OLD.started_at
+    AND NEW.indeterminate_at IS OLD.indeterminate_at
+    AND (NEW.result_digest IS NULL OR length(NEW.result_digest) = 64)
+    AND (NEW.provenance_digest IS NULL OR length(NEW.provenance_digest) = 64)
+    AND NEW.terminal_reason IS NOT NULL
+    AND length(NEW.terminal_reason) BETWEEN 1 AND 256)
+)
+BEGIN
+  SELECT RAISE(ABORT, 'ATTEMPT_METADATA_TRANSITION_INVALID');
+END;
+
 CREATE TRIGGER pool_attempt_terminal_metadata_immutable
 BEFORE UPDATE OF started_at, indeterminate_at, completed_at, result_digest,
   provenance_digest, terminal_reason ON pool_attempts
@@ -291,7 +333,7 @@ WHEN NOT (
          AND a.lease_generation = NEW.lease_generation
          AND t.lease_expires_at > NEW.created_at
          AND NEW.event_digest = COALESCE(a.result_digest, a.provenance_digest, a.input_digest)
-         AND a.completed_at = NEW.created_at
+         AND a.completed_at = NEW.created_at\n         AND NEW.event_id = 'attempt-finalized:' || a.attempt_id
     )
   )
 )
