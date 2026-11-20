@@ -5,7 +5,7 @@
 -- task key and admission ID may be bound once, but never rebound.
 CREATE TRIGGER pool_approval_authorization_identity_immutable
 BEFORE UPDATE OF approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
-  profile, envelope_digest, expires_at, executor_id
+  profile, envelope_digest, expires_at
 ON pool_approval_ledger
 WHEN NEW.approval_id IS NOT OLD.approval_id
   OR NEW.owner_numeric_id IS NOT OLD.owner_numeric_id
@@ -15,7 +15,6 @@ WHEN NEW.approval_id IS NOT OLD.approval_id
   OR NEW.profile IS NOT OLD.profile
   OR NEW.envelope_digest IS NOT OLD.envelope_digest
   OR NEW.expires_at IS NOT OLD.expires_at
-  OR NEW.executor_id IS NOT OLD.executor_id
 BEGIN
   SELECT RAISE(ABORT, 'APPROVAL_AUTHORIZATION_IDENTITY_IMMUTABLE');
 END;
@@ -64,7 +63,8 @@ AND NOT (
   AND (OLD.task_key IS NULL OR OLD.task_key IS NEW.task_key)
   AND (OLD.admission_id IS NULL OR OLD.admission_id IS NEW.admission_id)
   AND NEW.task_key IS NOT NULL
-  AND NEW.admission_id IS NOT NULL
+  AND NEW.task_key IS NOT NULL
+  AND (NEW.admission_id IS NULL OR (OLD.admission_id IS NULL AND NEW.admission_id IS NOT NULL))
 )
 BEGIN
   SELECT RAISE(ABORT, 'APPROVAL_CONSUMPTION_BINDING_INVALID');
