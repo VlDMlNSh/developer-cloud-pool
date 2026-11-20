@@ -206,7 +206,7 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     await expect(db.prepare(`
       INSERT INTO pool_task_approvals (task_key, approval_id, envelope_digest, attached_at)
       VALUES ('missing-task', 'missing-approval', ?, ?)
-    `).bind("a".repeat(64), now)).rejects.toThrow();
+    `).bind("a".repeat(64), now).run()).rejects.toThrow();
   });
 
   it("denies exact replay when the durable receipt is absent after upgrade", async () => {
