@@ -11,8 +11,10 @@ The clean-base candidate starts from the owner-approved CODE capability root and
 - 0006–0010: independent terminal-attempt projection outbox, bounded delivery retries, identity immutability and at-most-once comment-post state.
 - 0011: immutable executor identity on approvals and logical tasks; replaces the task-keyed trigger to require executor match and disables the legacy approval-keyed claim/outbox trigger.
 - 0012: additive qualified admission, route qualification, admission receipt and task-ready outbox binding.
+- 0013: immutable approval authorization, current route qualification and receipt/outbox binding guards.
+- 0014: database-enforced lease acquisition, renewal, fencing, terminal release and indeterminate quarantine.
 
-Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Lease guard and the full legacy-table write-denial migration remain outstanding.
+Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Pass 34 adds SQL lease/fencing guards; Pass 35 adds a local authenticated-principal lease adapter seam with primary-first readback. Full legacy-table write-denial migration remains outstanding.
 
 ## Runtime and test boundary
 
@@ -33,7 +35,7 @@ npm run check
 npm test
 ```
 
-The ordinary D1 suite applies migrations 0001–0012 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0012. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
+The ordinary D1 suite applies migrations 0001–0014 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0014. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
 
 This is an isolated synthetic upgrade fixture, not a dump of any hosted or production database. The upgrade path does not run all migrations on an empty database and call that an upgrade.
 
@@ -82,3 +84,13 @@ Migration `0014_d1_lease_fencing_guards.sql` closes SQL-level bypasses in the im
 The new `test/lease-fencing.test.ts` exercises direct-SQL bypass attempts, valid acquisition/renewal/finalization, expired lease handling, indeterminate quarantine, forged event insertion and pointer regression. The frozen schema-0010 upgrade suite now applies migrations 0011–0014.
 
 This is still a local synthetic Workers/D1 proof. The lease API is not yet wired into the admission adapter or an executor. No hosted D1, dispatch, worker launch or production write is performed.
+
+
+## Pass 35 — authenticated lease adapter seam
+
+- Added `src/acquire-attempt-lease.mjs`. It requires an injected trusted `authenticateExecutor` function, binds the authenticated principal's executor identity and capability profile to the current task/attempt, and uses a conditional lease update.
+- The adapter reads the precondition and verifies the post-write tuple through D1 `withSession("first-primary")`. If the write acknowledgement is ambiguous, it performs a fresh primary-first readback and reports success only for the exact owner/attempt/generation/expiry/running-attempt/audit-event tuple.
+- Every result remains `dispatch: false` and `executionAuthorized: false`. No dispatch, worker launch, lease renewal, or automatic takeover is implemented.
+- Added synthetic Workers/D1 tests for successful lease acquisition, mismatched authenticated executor, missing authenticator, and task/executor mismatch.
+- The injected authenticator is a trust-boundary dependency, not authentication implemented by this module. The test authenticator is synthetic and does not establish a production identity provider or trusted GitHub Actions context.
+- Explicit indeterminate-attempt reconciliation remains unimplemented; quarantined attempts remain blocked pending separately authorized reconciliation.
