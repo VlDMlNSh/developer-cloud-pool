@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
+import { acquireAttemptLease } from "../src/acquire-attempt-lease.mjs";
 
 const NOW = 1_800_000_000;
 const TASK_KEY = "a".repeat(64);
@@ -211,8 +212,6 @@ describe("D1 lease and fencing SQL guards", () => {
   });
 });
 
-
-import { acquireAttemptLease } from "../src/acquire-attempt-lease.mjs";
 
 describe("authenticated D1 attempt lease adapter", () => {
   const request = {
