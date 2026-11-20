@@ -4,10 +4,11 @@
 -- Approval authorization identity is immutable after insertion. The logical
 -- task key and admission ID may be bound once, but never rebound.
 CREATE TRIGGER pool_approval_authorization_identity_immutable
-BEFORE UPDATE OF owner_numeric_id, repository_id, issue_number, target_sha,
+BEFORE UPDATE OF approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
   profile, envelope_digest, expires_at, executor_id
 ON pool_approval_ledger
-WHEN NEW.owner_numeric_id IS NOT OLD.owner_numeric_id
+WHEN NEW.approval_id IS NOT OLD.approval_id
+  OR NEW.owner_numeric_id IS NOT OLD.owner_numeric_id
   OR NEW.repository_id IS NOT OLD.repository_id
   OR NEW.issue_number IS NOT OLD.issue_number
   OR NEW.target_sha IS NOT OLD.target_sha
