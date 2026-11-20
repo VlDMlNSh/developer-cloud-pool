@@ -249,5 +249,34 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
       .bind(input.admissionId).run();
     const replay = await admitQualifiedTask(db, input);
     expect(replay).toMatchObject({ decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false });
+
+    // A present but forged receipt must fail the same durable identity readback.
+    await db.prepare(`
+      INSERT INTO pool_admission_commit_receipts (
+        admission_id, approval_id, task_key, executor_id, attempt_id,
+        qualification_id, evidence_digest, committed_at, assertion, dispatch_enabled
+      ) VALUES (?, ?, ?, ?, 'forged-attempt-id', ?, ?, ?, 1, 0)
+    `).bind(input.admissionId, input.approval.approvalId, input.taskKey,
+      input.executorId, input.route.qualificationId, input.route.evidenceDigest, now).run();
+    const forgedReplay = await admitQualifiedTask(db, input);
+    expect(forgedReplay).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
+    });
+  });
+
+  it("rejects malformed task-ready outbox event types after upgrade", async () => {
+    const taskKey = "f".repeat(64);
+    await db.prepare(`
+      INSERT INTO pool_tasks (
+        task_key, repository_id, issue_number, target_sha, profile, executor_id,
+        state, created_at, updated_at
+      ) VALUES (?, '20002', 99, ?, 'jarvis-code-sandbox-v1', 'executor-outbox-test',
+        'pending', ?, ?)
+    `).bind(taskKey, "f".repeat(40), now, now).run();
+    await expect(db.prepare(`
+      INSERT INTO pool_task_delivery_outbox (
+        outbox_id, task_key, event_type, status, created_at
+      ) VALUES ('invalid-event-001', ?, 'pool.task.ready.invalid', 'pending', ?)
+    `).bind(taskKey, now).run()).rejects.toThrow();
   });
 });
