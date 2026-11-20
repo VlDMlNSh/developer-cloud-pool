@@ -2736,3 +2736,9 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Pass 35 report/checkpoint and source/test blob SHAs remain linked from the dated report.
 - Next bounded step: close the Pass 35 trusted-clock gap and define issuer-bound, evidence-backed reconciliation for indeterminate attempts in a no-secret Pass 36 proof; then exact-head CI and independent review. Dispatch remains fail-closed.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Documentation publication read-back
+
+- After publishing the report and checkpoint, the working documentation branch advanced to **1c84f0a0466730b31a49dfc708309a1aafb186de**. PR #145 remains OPEN/DRAFT/UNMERGED and mergeable=false.
+- Current compare of this final documentation branch head against default HEAD 7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250 is DIVERGED, **111 ahead / 3 behind**, merge base b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5. Do not merge wholesale or represent it as canonical.
