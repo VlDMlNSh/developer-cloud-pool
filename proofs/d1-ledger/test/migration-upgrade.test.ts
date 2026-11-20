@@ -2,6 +2,7 @@ import { applyD1Migrations } from "cloudflare:test";
 import { env } from "cloudflare:workers";
 import { beforeAll, describe, expect, it } from "vitest";
 import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
+import { canonicalTaskKey } from "../src/task-identity.mjs";
 
 const db = env.UPGRADE_DB;
 const legacyTaskKey = "1".repeat(64);
@@ -10,9 +11,10 @@ const legacyAttemptId = "legacy-attempt-001";
 const legacyDigest = "b".repeat(64);
 const now = 1_800_000_000;
 
+const admissionTaskKey = await canonicalTaskKey({ repositoryId: "20002", issueNumber: 43, targetSha: "c".repeat(40), profile: "jarvis-code-sandbox-v1", executorId: "executor-upgrade-alpha" });
 const admissionInput = {
   admissionId: "upgrade-admission-001",
-  taskKey: "57f7bbc19f483c2cb754a96ae71ca4d248d7ec455f6393086ba9da304c312ee5",
+  taskKey: admissionTaskKey,
   now,
   executorId: "executor-upgrade-alpha",
   approval: {
@@ -209,10 +211,12 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
 
   it("denies exact replay when the durable receipt is absent after upgrade", async () => {
     // A separate admission identity keeps this fault-injection case independent.
+    const missingReceiptTaskKey = await canonicalTaskKey({ repositoryId: "20002", issueNumber: 44, targetSha: "9".repeat(40), profile: "jarvis-code-sandbox-v1", executorId: "executor-upgrade-alpha" });
     const input = {
       ...admissionInput,
       admissionId: "upgrade-admission-missing-receipt",
-      approval: { ...admissionInput.approval, approvalId: "upgrade-approval-missing-receipt" },
+      taskKey: missingReceiptTaskKey,
+      approval: { ...admissionInput.approval, approvalId: "upgrade-approval-missing-receipt", issueNumber: 44, targetSha: "9".repeat(40) },
       route: { ...admissionInput.route, qualificationId: "upgrade-route-missing-receipt" },
       attempt: { ...admissionInput.attempt, attemptId: "upgrade-attempt-missing-receipt",
         executionIdempotencyKey: "upgrade-idem-missing-receipt" }
