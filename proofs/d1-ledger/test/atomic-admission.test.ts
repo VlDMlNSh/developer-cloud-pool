@@ -189,10 +189,61 @@ describe("atomic qualified A0 -> D1 admission", () => {
        WHERE qualification_id = ?
     `).bind(NOW - 1, input.route.qualificationId).run();
     const result = await admitQualifiedTask(env.POOL_DB, input);
-    expect(result).toMatchObject({ decision: "DENY", reason: "ADMISSION_TRANSACTION_ROLLED_BACK_OR_AMBIGUOUS", dispatch: false });
+    expect(result).toMatchObject({ decision: "DENY", reason: "ADMISSION_OUTCOME_UNCONFIRMED", dispatch: false });
     const ledger = await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?")
       .bind(input.approval.approvalId).first();
     expect(ledger.state).toBe("ready");
+  });
+
+  it("resolves a lost batch acknowledgement from a primary readback without creating a second attempt", async () => {
+    const ambiguousDb = {
+      prepare: (...args) => env.POOL_DB.prepare(...args),
+      withSession: (...args) => env.POOL_DB.withSession(...args),
+      batch: async statements => {
+        await env.POOL_DB.batch(statements);
+        throw new Error("synthetic lost batch acknowledgement after commit");
+      }
+    };
+    const result = await admitQualifiedTask(ambiguousDb, input);
+    expect(result).toMatchObject({ decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
+      attemptId: input.attempt.attemptId, dispatch: false, reason: "AMBIGUOUS_BATCH_RESOLVED_BY_PRIMARY_READBACK" });
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first()).toMatchObject({ n: 1 });
+  });
+
+  it("keeps an unacknowledged non-committed batch unresolved and permits only the same-key retry", async () => {
+    const noCommitDb = {
+      prepare: (...args) => env.POOL_DB.prepare(...args),
+      withSession: (...args) => env.POOL_DB.withSession(...args),
+      batch: async () => { throw new Error("synthetic failure before commit"); }
+    };
+    const uncertain = await admitQualifiedTask(noCommitDb, input);
+    expect(uncertain).toMatchObject({ decision: "DENY", reason: "ADMISSION_OUTCOME_UNCONFIRMED", dispatch: false });
+    expect(await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?")
+      .bind(input.approval.approvalId).first()).toMatchObject({ state: "ready" });
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first()).toMatchObject({ n: 0 });
+    expect(await admitQualifiedTask(env.POOL_DB, input)).toMatchObject({ decision: "ADMITTED_QUEUED", dispatch: false });
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first()).toMatchObject({ n: 1 });
+  });
+
+  it("fails closed when primary readback is unavailable after an ambiguous batch", async () => {
+    let sessions = 0;
+    const lostReadbackDb = {
+      prepare: (...args) => env.POOL_DB.prepare(...args),
+      withSession: (...args) => {
+        sessions += 1;
+        if (sessions > 1) throw new Error("synthetic primary readback unavailable");
+        return env.POOL_DB.withSession(...args);
+      },
+      batch: async statements => {
+        await env.POOL_DB.batch(statements);
+        throw new Error("synthetic lost batch acknowledgement");
+      }
+    };
+    expect(await admitQualifiedTask(lostReadbackDb, input)).toMatchObject({
+      decision: "DENY", reason: "ADMISSION_OUTCOME_UNCONFIRMED", dispatch: false
+    });
+    expect(await admitQualifiedTask(env.POOL_DB, input)).toMatchObject({ decision: "ADMISSION_ALREADY_COMMITTED", dispatch: false });
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first()).toMatchObject({ n: 1 });
   });
 
   it("rolls back approval, task, outbox and admission if immutable attempt insertion fails", async () => {
