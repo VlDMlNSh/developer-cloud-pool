@@ -114,7 +114,7 @@ async function seedAdmission() {
     r.observedAt, r.validUntil, r.revocationVersion, r.registryVersion).run();
 }
 
-describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
+describe("frozen schema-0010 upgrade through migrations 0011-0013", () => {
   it("preserves historical identifiers, task links, attempts and schema-0010 comment defaults", async () => {
     const approval = await db.prepare(
       "SELECT approval_id, task_key, executor_id FROM pool_approval_ledger WHERE approval_id = ?"
