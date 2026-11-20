@@ -4,8 +4,8 @@
 
 - Default branch `Основной`: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`.
 - Pass 30 implementation target: `d56d334d2045d08fd7aa71feb9749aab08d96840`.
-- Pass 31 implementation/test head: `07de06e4f48984d5130d4e4a3bc8ae81750be4bf`.
-- Exact integrated CI checkout: `b87ea5ea4121729762d80b305981052d98b966f4`, parents default `b81d2b52...` and Pass 31 head `07de06e4...`.
+- Pass 31 final code/test HEAD: `f42baa320cdb3fb2ccf179b0e170aab79fd25a48`.
+- Exact integrated CI checkout: `4cb28ce` (full merge SHA is recorded in the Context Window), parents default `b81d2b52...` and Pass 31 HEAD `f42baa32...`.
 - PR #154 implementation and PR #156 validation-only remain OPEN/DRAFT/UNMERGED. PR #156 must not be merged.
 - Issue #140 remains OPEN; Issue #151 remains PLANNED and deferred.
 
@@ -17,21 +17,21 @@ Reviewed Cloudflare's official Workers Vitest integration guidance for `readD1Mi
 
 - Added an isolated `UPGRADE_DB` binding with a separate synthetic database ID.
 - Added `test/migration-upgrade.test.ts`: applies only 0001–0010, seeds historical synthetic approval/task/approval-link/task-ready-outbox/attempt/projection-outbox records at the schema-0010 boundary, then applies only 0011–0012.
-- Tests cover historical ID and relationship preservation; default comment-post state; intentionally-null legacy executor identity and fail-closed consumption; new executor-bound admission, receipt and task-ready outbox linkage; exact replay; cross-executor task-key collision; idempotent migration reapplication; invalid foreign reference; missing and forged receipt replay denial; malformed outbox event rejection.
+- Tests cover historical ID and relationship preservation; default comment-post state; intentionally-null legacy executor identity and fail-closed consumption; new executor-bound admission, receipt and task-ready outbox linkage; exact replay; explicit collision between two non-null executor identities attempting to reuse one logical task key; idempotent migration reapplication; invalid foreign reference; missing and forged receipt replay denial; malformed outbox event rejection.
 - Updated the D1 proof README. No new dependencies.
 - First CI attempt at the initial draft found a test assertion that passed a prepared statement rather than its `.run()` promise to Vitest `.rejects`. Corrected it and added the additional adversarial cases. The initial failure is retained as evidence, not hidden.
 
 ## Exact-head validation
 
-Final exact source HEAD: `07de06e4f48984d5130d4e4a3bc8ae81750be4bf`.
+Final code/test source HEAD: `f42baa320cdb3fb2ccf179b0e170aab79fd25a48`.
 
-- D1 run [44701738713](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701738713), job `136171500229`: COMPLETED / SUCCESS.
-- Job log confirms checkout merge `b87ea5ea4121729762d80b305981052d98b966f4`, Node.js 24.9.0, `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test`.
+- D1 run [44702135932](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44702135932), job `136172805808`: COMPLETED / SUCCESS.
+- Job log confirms checkout of the integrated PR revision, Node.js 24.9.0, `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, and `npm test`.
 - Test summary: 4 files passed; 36 tests passed; 0 failed. Upgrade suite: 7 tests passed.
-- Pool Contract Validation [44701738592](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701738592), job `136171500702`: COMPLETED / SUCCESS.
+- Pool Contract Validation [44702135928](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44702135928), job `136172806370`: COMPLETED / SUCCESS.
 - Contract log confirms `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, and `POOL_CONTRACT_VALIDATION=PASS`.
-- Earlier run [44701503787](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701503787) failed 1/35 due the test harness assertion issue; the correction was followed by the successful final exact-head runs above.
-- Source files and blob SHAs are recorded in the Pass 31 checkpoint and repository tree; the test file blob at the final code commit is `bfe955f52398d13311f1a85d9402b1604b1721cc`.
+- Earlier failed run [44701503787](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701503787) exposed a malformed negative-test assertion; corrected and followed by the final exact-head success above.
+- Final upgrade test blob: `fdc91ee658271cdbd0f897426e02797d44d3b22c`.
 
 ## Validation boundary
 
