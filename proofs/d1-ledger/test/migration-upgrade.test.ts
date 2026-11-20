@@ -180,22 +180,43 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     });
   });
 
-  it("rejects cross-executor reuse of a historical logical task key", async () => {
-    const approvalId = "legacy-conflicting-executor-approval";
+  it("rejects reuse of one logical task key by two distinct executor identities", async () => {
+    const conflictTaskKey = "e".repeat(64);
+    const insertApproval = async (approvalId: string, executorId: string) => {
+      await db.prepare(`
+        INSERT INTO pool_approval_ledger (
+          approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+          profile, envelope_digest, expires_at, state, executor_id
+        ) VALUES (?, '10001', '20002', 77, ?, 'jarvis-code-sandbox-v1', ?, ?, 'ready', ?)
+      `).bind(approvalId, "e".repeat(40), "8".repeat(64), now + 3600, executorId).run();
+    };
+
+    await insertApproval("executor-alpha-task-approval", "executor-alpha");
     await db.prepare(`
-      INSERT INTO pool_approval_ledger (
-        approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
-        profile, envelope_digest, expires_at, state, task_key, executor_id
-      ) VALUES (?, '10001', '20002', 42, ?, 'jarvis-code-sandbox-v1', ?, ?, 'ready', ?, 'executor-beta')
-    `).bind(approvalId, "a".repeat(40), "9".repeat(64), now + 3600, legacyTaskKey).run();
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = 'executor-alpha-task-approval'
+    `).bind(now, conflictTaskKey).run();
+
+    await insertApproval("executor-beta-task-approval", "executor-beta");
     await expect(db.prepare(`
-      UPDATE pool_approval_ledger SET state = 'consumed', consumed_at = ?
-       WHERE approval_id = ?
-    `).bind(now, approvalId).run()).rejects.toThrow();
-    const row = await db.prepare(
-      "SELECT state FROM pool_approval_ledger WHERE approval_id = ?"
-    ).bind(approvalId).first();
-    expect(row.state).toBe("ready");
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?
+       WHERE approval_id = 'executor-beta-task-approval'
+    `).bind(now, conflictTaskKey).run()).rejects.toThrow();
+
+    const first = await db.prepare(
+      "SELECT state, executor_id FROM pool_approval_ledger WHERE approval_id = 'executor-alpha-task-approval'"
+    ).first();
+    const second = await db.prepare(
+      "SELECT state, executor_id FROM pool_approval_ledger WHERE approval_id = 'executor-beta-task-approval'"
+    ).first();
+    const task = await db.prepare(
+      "SELECT executor_id FROM pool_tasks WHERE task_key = ?"
+    ).bind(conflictTaskKey).first();
+    expect(first).toMatchObject({ state: "consumed", executor_id: "executor-alpha" });
+    expect(second).toMatchObject({ state: "ready", executor_id: "executor-beta" });
+    expect(task).toMatchObject({ executor_id: "executor-alpha" });
   });
 
   it("keeps migration reapplication idempotent and rejects invalid foreign references", async () => {
