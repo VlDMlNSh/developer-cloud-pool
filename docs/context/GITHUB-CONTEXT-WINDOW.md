@@ -2662,3 +2662,27 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: lease/fencing SQL and trigger audit, while obtaining independent review of PR #159.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 34 — D1 lease and attempt fencing SQL guards — 2026-11-20
+
+- Revalidated default `Основной` @ `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`. Compared with prior default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`: 3 commits ahead, all documentation-only Pass 33 report/checkpoint/snapshot; no intervening default code changes.
+- Pass 33 parent `deb14d34ce7387dec217cd79fc29403a91542c44`; Pass 34 branch `feat/pass34-d1-lease-fencing-sql-guards-2026-11-20`; final implementation HEAD `13cf7d43b7bdf645b1336498f32f449035994e7f`.
+- PR #161 implementation OPEN/DRAFT/UNMERGED, base Pass 33. PR #162 validation-only OPEN/DRAFT/UNMERGED, base current default; validation merge commit `647fa199128e0e55c3180b30c1c28d82f14c9704`. Do not merge either in this pass.
+- Migration `0014_d1_lease_fencing_guards.sql` blob `8504b2ae3150092493a2a7808d58a89a4ef9650e`; lease-fencing tests blob `9ac92318324179405249af3f3825c33b56922df3`; upgrade test blob `b5f66e84d56c2d1ee74912315190949a89a45e54`; README blob `ac9b277cb440c6c894b23ff1957608874535c59c`.
+- Finding: old lease proof contained `pool_attempts_running_requires_current_lease`, but current CODE-profile chain uses migration 0006 for projection outbox and had no corresponding direct-SQL guard. Migration 0004 provided partial lease lifecycle triggers only.
+- Migration 0014 now enforces prepared-attempt-only acquisition with exactly one monotonic generation increment and bounded expiry; same-owner/attempt/generation live renewal; matching lease before prepared -> running; terminal-only release; expired attempt quarantine; transition-bound immutable attempt metadata; deterministic event identity/actor/generation/digest/time; monotonic attempt pointers.
+- New `test/lease-fencing.test.ts` adds 8 direct-SQL adversarial tests. Frozen schema-0010 upgrade fixture now applies 0011–0014.
+- First D1 run `44711715024` FAILED 7/50 because test teardown attempted to delete append-only audit events while fixture guards were active. Corrected fixture now drops only UPDATE/DELETE guards during cleanup and restores them before each test; INSERT provenance guard remains enabled. Initial failure retained in report.
+- Final exact-head D1 run [44711819163](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44711819163), job `136205134465`: COMPLETED/SUCCESS; 5 test files / 50 tests passed; Node 24.9.0, npm ci, inert Worker syntax check.
+- Exact-head Pool Contract Validation [44711819175](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44711819175), job `136205134889`: COMPLETED/SUCCESS; six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; dispatch false.
+- Reuse: existing pinned Cloudflare Workers Vitest/D1 harness retained; no new dependencies. Official D1 docs state each D1 DB is single-threaded; a separate lock service/second coordination authority was not added. Durable Objects reviewed but not adopted for this D1-local invariant.
+- Current ruleset #26550182 active only on `refs/heads/Основной`; PR required; thread resolution required; deletion/non-fast-forward blocked; zero required approvals; no bypass actors.
+- PR #159 and #161 have no independent review submissions; review NOT VERIFIED. Issue #140 OPEN; Issue #151 OPEN/PLANNED.
+- No canonical lease adapter is wired into the current admission runtime yet. SQL `lease_owner` is not authenticated principal proof. Indeterminate attempts remain quarantined; explicit reconciliation is not implemented. Hosted D1, cross-region failure behavior, live GitHub event authenticity, executor sandbox qualification and production fencing remain NOT VERIFIED.
+- No hosted D1, secrets/secret values, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes. Gemini controller absent on default; Gemini/Claude NOT RUN.
+- Report: `docs/reports/2026-11-20-pass-34-d1-lease-fencing-sql-guards.md`; checkpoint: `docs/checkpoints/2026-11-20-pass-34-d1-lease-fencing-sql-guards.md`; snapshot: `docs/context/PASS-34-CURRENT-SNAPSHOT.md`.
+- Next: Pass 35 canonical attempt-lease adapter integration with trusted executor identity, primary-first readback for ambiguous writes, and explicit indeterminate reconciliation. Keep auto-takeover disabled pending proof. Obtain independent review of PRs #159/#161.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
