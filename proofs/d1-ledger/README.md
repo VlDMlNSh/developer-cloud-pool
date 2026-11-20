@@ -55,3 +55,13 @@ This is a candidate proof foundation on a clean branch from a frozen default SHA
 - If no complete durable record can be observed, the result is `ADMISSION_OUTCOME_UNCONFIRMED`; callers must retain the same admission identity for retry/reconciliation and must not mint a new one.
 - Fault injection covers: commit then lost acknowledgement; failure before commit followed by exact same-key retry; and unavailable primary readback after commit. Dispatch remains disabled.
 - D1 batch atomicity and D1 Sessions API semantics are based on Cloudflare's documented binding behavior. No external orchestration dependency is added.
+
+
+## Pass 33 — SQL-level authorization and receipt binding
+
+- Added forward-only migration 0013 to freeze approval authorization identity, make consumed/revoked states monotonic, and require consumed_at/task_key/admission_id to bind in one ready-to-consumed update.
+- Added database-level admission checks for the consumed approval, task/executor identity, active route qualification, evidence digest and qualification freshness.
+- Added a receipt INSERT guard that binds every receipt identity to the admission, prepared attempt, current task pointer, pending task-ready outbox and active qualification. Adapter checks remain defense in depth, not the only enforcement layer.
+- Adversarial tests cover direct SQL mutation of consumed approval identity, direct admission against revoked route evidence, and forged receipt attempt identity.
+- Migration upgrade tests now exercise 0013 as part of the forward-only 0011–0013 upgrade sequence.
+- This remains local synthetic D1 proof. Lease fencing, trusted event provenance, hosted D1, executor qualification and independent review are separate gates.

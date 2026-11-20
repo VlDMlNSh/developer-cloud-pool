@@ -114,7 +114,7 @@ async function seedAdmission() {
     r.observedAt, r.validUntil, r.revocationVersion, r.registryVersion).run();
 }
 
-describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
+describe("frozen schema-0010 upgrade through migrations 0011-0013", () => {
   it("preserves historical identifiers, task links, attempts and schema-0010 comment defaults", async () => {
     const approval = await db.prepare(
       "SELECT approval_id, task_key, executor_id FROM pool_approval_ledger WHERE approval_id = ?"
@@ -194,14 +194,14 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     await insertApproval("executor-alpha-task-approval", "executor-alpha");
     await db.prepare(`
       UPDATE pool_approval_ledger
-         SET state = 'consumed', consumed_at = ?, task_key = ?
+         SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = 'executor-alpha-admission'
        WHERE approval_id = 'executor-alpha-task-approval'
     `).bind(now, conflictTaskKey).run();
 
     await insertApproval("executor-beta-task-approval", "executor-beta");
     await expect(db.prepare(`
       UPDATE pool_approval_ledger
-         SET state = 'consumed', consumed_at = ?, task_key = ?
+         SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = 'executor-beta-admission'
        WHERE approval_id = 'executor-beta-task-approval'
     `).bind(now, conflictTaskKey).run()).rejects.toThrow();
 
@@ -272,13 +272,13 @@ describe("frozen schema-0010 upgrade through migrations 0011-0012", () => {
     expect(replay).toMatchObject({ decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false });
 
     // A present but forged receipt must fail the same durable identity readback.
-    await db.prepare(`
+    await expect(db.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, executor_id, attempt_id,
         qualification_id, evidence_digest, committed_at, assertion, dispatch_enabled
       ) VALUES (?, ?, ?, ?, 'forged-attempt-id', ?, ?, ?, 1, 0)
     `).bind(input.admissionId, input.approval.approvalId, input.taskKey,
-      input.executorId, input.route.qualificationId, input.route.evidenceDigest, now).run();
+      input.executorId, input.route.qualificationId, input.route.evidenceDigest, now).run()).rejects.toThrow();
     const forgedReplay = await admitQualifiedTask(db, input);
     expect(forgedReplay).toMatchObject({
       decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
