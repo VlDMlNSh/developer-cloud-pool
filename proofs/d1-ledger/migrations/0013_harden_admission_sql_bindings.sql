@@ -48,6 +48,27 @@ BEGIN
   SELECT RAISE(ABORT, 'APPROVAL_STATE_TRANSITION_INVALID');
 END;
 
+-- Bind consumed_at, task_key and admission_id only in the one atomic
+-- ready -> consumed transition. No post-consumption late binding is allowed.
+CREATE TRIGGER pool_approval_consumption_binding_guard
+BEFORE UPDATE OF consumed_at, task_key, admission_id ON pool_approval_ledger
+WHEN (
+  NEW.consumed_at IS NOT OLD.consumed_at OR
+  NEW.task_key IS NOT OLD.task_key OR
+  NEW.admission_id IS NOT OLD.admission_id
+)
+AND NOT (
+  OLD.state = 'ready' AND NEW.state = 'consumed'
+  AND OLD.consumed_at IS NULL AND NEW.consumed_at IS NOT NULL
+  AND (OLD.task_key IS NULL OR OLD.task_key IS NEW.task_key)
+  AND (OLD.admission_id IS NULL OR OLD.admission_id IS NEW.admission_id)
+  AND NEW.task_key IS NOT NULL
+  AND NEW.admission_id IS NOT NULL
+)
+BEGIN
+  SELECT RAISE(ABORT, 'APPROVAL_CONSUMPTION_BINDING_INVALID');
+END;
+
 -- Strengthen the existing INSERT guard: admission rows must reference the
 -- exact consumed approval, task and currently-qualified route evidence.
 CREATE TRIGGER pool_admissions_full_binding_guard
