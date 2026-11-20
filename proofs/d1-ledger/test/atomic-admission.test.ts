@@ -167,7 +167,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
     await env.POOL_DB.prepare("DROP TRIGGER pool_admission_receipts_no_delete").run();
     await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts WHERE admission_id = ?")
       .bind(input.admissionId).run();
-    await env.POOL_DB.prepare(`
+    await expect(env.POOL_DB.prepare(`
       INSERT INTO pool_admission_commit_receipts (
         admission_id, approval_id, task_key, executor_id, attempt_id, qualification_id,
         evidence_digest, committed_at, assertion, dispatch_enabled
@@ -175,7 +175,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
     `).bind(
       input.admissionId, input.approval.approvalId, input.taskKey, input.executorId,
       "forged-attempt-identity", input.route.qualificationId, "f".repeat(64), NOW
-    ).run();
+    ).run()).rejects.toThrow();
     const replay = await admitQualifiedTask(env.POOL_DB, input);
     expect(replay).toMatchObject({
       decision: "DENY", reason: "ADMISSION_COMMIT_RECEIPT_MISMATCH", dispatch: false
@@ -302,6 +302,43 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(result).toMatchObject({ decision: "DENY", reason: "INVALID_ADMISSION_BINDING", dispatch: false });
     const row = await env.POOL_DB.prepare("SELECT state FROM pool_approval_ledger WHERE approval_id = ?").bind(input.approval.approvalId).first();
     expect(row.state).toBe("ready");
+  });
+
+  it("prevents mutation of consumed approval authorization identity", async () => {
+    await admitQualifiedTask(env.POOL_DB, input);
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_approval_ledger SET owner_numeric_id = '99999' WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).run()).rejects.toThrow();
+    const row = await env.POOL_DB.prepare(
+      "SELECT owner_numeric_id, state, task_key, admission_id FROM pool_approval_ledger WHERE approval_id = ?"
+    ).bind(input.approval.approvalId).first();
+    expect(row).toMatchObject({
+      owner_numeric_id: input.approval.ownerNumericId,
+      state: "consumed", task_key: input.taskKey, admission_id: input.admissionId
+    });
+  });
+
+  it("rejects direct SQL admission against revoked route evidence", async () => {
+    await env.POOL_DB.prepare(`
+      UPDATE pool_route_qualifications
+         SET qualification_status = 'revoked', revoked_at = ?, revocation_version = revocation_version + 1
+       WHERE qualification_id = ?
+    `).bind(NOW - 1, input.route.qualificationId).run();
+    await env.POOL_DB.prepare(`
+      UPDATE pool_approval_ledger
+         SET state = 'consumed', consumed_at = ?, task_key = ?, admission_id = ?
+       WHERE approval_id = ?
+    `).bind(NOW, input.taskKey, input.admissionId, input.approval.approvalId).run();
+    await expect(env.POOL_DB.prepare(`
+      INSERT INTO pool_admissions (
+        admission_id, approval_id, task_key, executor_id, attempt_id, attempt_number,
+        qualification_id, evidence_digest, admitted_at, dispatch_enabled
+      ) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, 0)
+    `).bind(input.admissionId, input.approval.approvalId, input.taskKey,
+      input.executorId, input.attempt.attemptId, input.route.qualificationId,
+      input.route.evidenceDigest, NOW).run()).rejects.toThrow();
+    expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_admissions").first())
+      .toMatchObject({ n: 0 });
   });
 
   it("prevents mutation of an already-bound task outbox identity", async () => {
