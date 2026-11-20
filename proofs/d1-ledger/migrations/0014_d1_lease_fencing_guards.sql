@@ -278,6 +278,7 @@ WHEN NOT (
          AND a.status = 'prepared'
          AND t.current_attempt_id = a.attempt_id
          AND NEW.event_digest = a.input_digest
+         AND NEW.event_id = 'attempt-created:' || a.attempt_id
          AND NEW.created_at = a.created_at
     )
   )
@@ -297,6 +298,8 @@ WHEN NOT (
          AND a.lease_generation = NEW.lease_generation
          AND t.lease_expires_at > NEW.created_at
          AND NEW.event_digest = a.input_digest
+         AND NEW.event_id = 'lease-acquired:' || a.attempt_id || ':' || a.lease_generation
+         AND NEW.created_at = t.updated_at
     )
   )
   OR
@@ -315,6 +318,8 @@ WHEN NOT (
          AND a.lease_generation = NEW.lease_generation
          AND t.lease_expires_at <= NEW.created_at
          AND NEW.event_digest = a.input_digest
+         AND NEW.event_id = 'attempt-indeterminate:' || a.attempt_id
+         AND NEW.created_at = a.indeterminate_at
     )
   )
   OR
@@ -333,7 +338,8 @@ WHEN NOT (
          AND a.lease_generation = NEW.lease_generation
          AND t.lease_expires_at > NEW.created_at
          AND NEW.event_digest = COALESCE(a.result_digest, a.provenance_digest, a.input_digest)
-         AND a.completed_at = NEW.created_at\n         AND NEW.event_id = 'attempt-finalized:' || a.attempt_id
+         AND a.completed_at = NEW.created_at
+         AND NEW.event_id = 'attempt-finalized:' || a.attempt_id
     )
   )
 )
