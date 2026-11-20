@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-19 — Pass 16 default dispatch retirement and A1 adapter output-contract audit
+Last refreshed: 2026-11-20 — Pass 31 frozen schema-0010 upgrade proof
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
@@ -2594,5 +2594,28 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Fresh local D1 0001–0012 suite VERIFIED. Frozen schema-0010 upgrade fixture NOT VERIFIED. Hosted D1, secrets, provider calls, dispatch, executor, deployment, merge and production changes NOT RUN. Independent review and ruleset readback NOT VERIFIED.
 - Pass 30 report/checkpoint/snapshot: `docs/reports/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/checkpoints/2026-11-19-pass-30-integrated-d1-ci-replay-fix.md`, `docs/context/PASS-30-CURRENT-SNAPSHOT.md`.
 - Issue #140 OPEN; Issue #151 multi-account Jarvis/shared GPU PLANNED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 31 — frozen schema-0010 upgrade proof — 2026-11-20
+
+- Revalidated repository refs: default branch `Основной` remains `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`. Pass 30 implementation target was `d56d334d2045d08fd7aa71feb9749aab08d96840`.
+- Pass 31 implementation branch: `feat/pass31-schema0010-upgrade-proof-2026-11-20`; latest HEAD `39ef7016d1e3e932157f62299072390ec311b761`. Code/test HEAD `07de06e4f48984d5130d4e4a3bc8ae81750be4bf`; later commit only updated the Pass 31 report/checkpoint.
+- PR #154 implementation OPEN/DRAFT/UNMERGED; base Pass 27 feature branch; head `39ef7016d1e3e932157f62299072390ec311b761`.
+- PR #156 validation-only OPEN/DRAFT/UNMERGED; base `Основной`; same head; do not merge. PR #155 was superseded by #156 and is CLOSED / UNMERGED. PR #153 remains the historical Pass 30 validation-only PR and must remain unmerged.
+- Added local-only `UPGRADE_DB` binding and `test/migration-upgrade.test.ts`. Test stages migrations 0001–0010, seeds synthetic historical approval/task/approval-link/task-ready-outbox/attempt/projection-outbox records, then applies only 0011–0012. It verifies ID/link preservation, old executor NULL retention and fail-closed behavior, new executor-bound admission, durable receipt/outbox linkage, exact replay, cross-executor task-key collision, migration reapplication, invalid FK, missing/forged receipt and malformed outbox event.
+- Final exact-head integrated checkout: `c2d24409909dd1bb91211ee943b0dc8570689906`, parents default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` and Pass 31 implementation HEAD `39ef7016d1e3e932157f62299072390ec311b761`.
+- D1 run [44701904937](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701904937), job `136172054518`: COMPLETED / SUCCESS; Node.js 24.9.0, `npm ci`, Worker syntax check, 4 test files and 36 tests passed; upgrade suite 7/7.
+- Pool Contract run [44701904766](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44701904766), job `136172053259`: COMPLETED / SUCCESS; `POOL_DISPATCH_ENABLED=false`, all workflow YAML parsed, security contract validator `POOL_CONTRACT_VALIDATION=PASS`.
+- Initial Pass 31 CI failure (run 44701503787) was one malformed negative-test assertion. It was fixed, further negative cases were added, and the final exact-head run above passed. Retain this failure in the audit trail.
+- Final file blobs: upgrade test `bfe955f52398d13311f1a85d9402b1604b1721cc`; Wrangler config `65f5ed8b623b3f4c5304f7b40f6c186b7f4e14fe`; D1 README `1445911a33fa1ed6e238d1ee8d09a4cc6b3ad008`; report `eb7708ed9876117b5254eadb4a59f5182e8f7b08`; checkpoint `d79db0851af0481c2c2370bf0f34dd2f4de3aefb`.
+- Active ruleset #26550182 targets only `refs/heads/Основной`, requires PR and review-thread resolution, prohibits deletion/non-fast-forward, has zero required approvals and no bypass actors. No governance changes were made. Combined commit-status endpoint returned an empty statuses array; completed exact-head Actions check-runs and logs are the evidence.
+- Gemini controller path `.github/workflows/gemini-batch-dispatch-controller.yml` is NOT FOUND on the default branch; the workflow tree lists only DSH runtime evaluation, pool contract validation, supervisor, worker and runner resource probe. Gemini dispatch NOT RUN. No secret values or secret contents were read. Claude/SentinelX worker dispatch NOT RUN.
+- No hosted D1 mutations, provider calls, task dispatch, executor launch, deployment, merge or production writes. Independent review NOT VERIFIED.
+- Issue #140 remains OPEN. Issue #151 remains OPEN / PLANNED; multi-account Jarvis/shared GPU implementation deferred.
+- Pass 31 migration-upgrade proof: VERIFIED / SUCCEEDED. Contour A remains BLOCKED / NOT ACCEPTED because real web UI/device access, qualified live executors/routing, quotas/account isolation, recovery, independent acceptance and end-to-end deployment remain outstanding. Contour B DEFERRED.
+- Report: ../reports/2026-11-20-pass-31-frozen-schema-0010-upgrade-proof.md. Checkpoint: ../checkpoints/2026-11-20-pass-31-frozen-schema-0010-upgrade-proof.md. Snapshot: PASS-31-CURRENT-SNAPSHOT.md.
+- Next: independent review of the Pass 31 PR diff, then bounded transaction ambiguity/retry safety/durable readback proof. Do not enable dispatch or perform hosted D1 writes.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
