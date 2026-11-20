@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-20 — Pass 33 D1 SQL trigger hardening
+Last refreshed: 2026-11-20 — Pass 35 authenticated D1 attempt-lease adapter
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` (re-read 2026-11-19)
+Observed default HEAD: `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250` (re-read 2026-11-20)
 Documentation continuation branch: `docs/next-2026-11-19-integrated-contour-pass` (PR #145; OPEN/DRAFT/UNMERGED)
 Latest daily audit report commit: `959d22aeb582384416dab6a219576fbd0da4b4bf` (blob `a1232002d1ecdb4321acf90c876ba470c52743d7`); latest checkpoint commit: `106441cc9209996478fe78149d39e90fb602607c` (blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`). Latest reconciliation/voice-chat record remains historical and unmerged.
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
