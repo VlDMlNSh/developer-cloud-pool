@@ -123,6 +123,13 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       dispatch: false,
       executionAuthorized: false
     });
+    const wrongCapability = await recordAttemptReconciliation(
+      env.POOL_DB, input, verifier({ capability: "pool.execute" })
+    );
+    expect(wrongCapability).toMatchObject({
+      decision: "DENY",
+      reason: "RECONCILIATION_EVIDENCE_CLAIMS_INVALID"
+    });
   });
 
   it("rejects an unsafe safe_to_retry claim and expired evidence", async () => {
