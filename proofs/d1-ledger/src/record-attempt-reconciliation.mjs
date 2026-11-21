@@ -160,7 +160,7 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence) {
         issuer_id, audience, capability_id, principal_subject, evidence_jti, evidence_digest,
         decision, executor_stopped, external_effects, result_digest,
         provenance_digest, observed_at, verified_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       input.reconciliationId, input.taskKey, input.attemptId, input.leaseGeneration,
       evidence.issuerId, evidence.audience, evidence.capabilityId, evidence.principalSubject,
