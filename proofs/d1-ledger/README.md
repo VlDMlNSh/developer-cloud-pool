@@ -13,6 +13,7 @@ The clean-base candidate starts from the owner-approved CODE capability root and
 - 0012: additive qualified admission, route qualification, admission receipt and task-ready outbox binding.
 - 0013: immutable approval authorization, current route qualification and receipt/outbox binding guards.
 - 0014: database-enforced lease acquisition, renewal, fencing, terminal release and indeterminate quarantine.
+- 0015: append-only issuer-verified reconciliation decision evidence bound to the current quarantined attempt and lease generation.
 
 Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Pass 34 adds SQL lease/fencing guards; Pass 35 adds a local authenticated-principal lease adapter seam with primary-first readback. Full legacy-table write-denial migration remains outstanding.
 
@@ -35,7 +36,7 @@ npm run check
 npm test
 ```
 
-The ordinary D1 suite applies migrations 0001–0014 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0014. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
+The ordinary D1 suite applies migrations 0001–0015 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0015. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
 
 This is an isolated synthetic upgrade fixture, not a dump of any hosted or production database. The upgrade path does not run all migrations on an empty database and call that an upgrade.
 
@@ -94,3 +95,12 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - Added synthetic Workers/D1 tests for successful lease acquisition, mismatched authenticated executor, missing authenticator, and task/executor mismatch.
 - The injected authenticator is a trust-boundary dependency, not authentication implemented by this module. The test authenticator is synthetic and does not establish a production identity provider or trusted GitHub Actions context.
 - Explicit indeterminate-attempt reconciliation remains unimplemented; quarantined attempts remain blocked pending separately authorized reconciliation.
+
+
+## Pass 36 — issuer-bound indeterminate reconciliation evidence
+
+- Migration 0015 adds `pool_attempt_reconciliation_decisions`, an append-only evidence ledger unique by attempt/generation and issuer/JTI. SQL guards bind each decision to the existing pending reconciliation queue row, the exact indeterminate attempt, the current task pointer, expired lease owner and fencing generation.
+- `src/record-attempt-reconciliation.mjs` requires an injected evidence verifier. The verifier must cryptographically validate the evidence signature and enforce issuer, audience, token lifetime and claim integrity. The adapter independently checks exact task/attempt/generation, evidence digest, JTI, observation time and decision semantics.
+- Supported observations are `safe_to_retry` (executor stopped and external effects absent), `result_confirmed` (result and provenance digests supplied), and `effects_unknown` (explicit uncertainty). Unsafe or mismatched claims fail closed.
+- Successful recording does not modify the task, attempt, lease, queue or outbox. It does not release the lease, create another attempt, authorize retry, or dispatch. Every result retains `dispatch: false`, `executionAuthorized: false`, `stateChanged: false`, and `retryAuthorized: false`.
+- The verifier is only an injected trust boundary in this local proof. No production issuer/key registry, OIDC verifier integration, owner approval for retry, or execution transition is implemented. Synthetic tests do not qualify cryptographic trust or hosted D1 behavior.
