@@ -41,6 +41,7 @@ function evidence(target, overrides = {}) {
   return {
     issuer: ISSUER,
     audience: AUDIENCE,
+    capability: "pool.attempt.reconcile",
     subject: "reconciliation-authority:reviewer-1",
     jti: "evidence-jti-" + target.attemptId,
     taskKey: target.taskKey,
