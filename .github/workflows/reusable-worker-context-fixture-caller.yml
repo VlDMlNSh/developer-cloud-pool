@@ -1,0 +1,23 @@
+name: Reusable Worker Context Fixture Caller
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - ".github/workflows/reusable-worker-context-fixture-caller.yml"
+      - ".github/workflows/reusable-worker-context-fixture.yml"
+      - "scripts/pool-worker-caller.mjs"
+      - "scripts/pool-worker-caller.test.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reusable-worker-context-fixture-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inspect-reusable-context:
+    name: Inspect non-privileged reusable workflow context
+    uses: ./.github/workflows/reusable-worker-context-fixture.yml
