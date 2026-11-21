@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-21 — Pass 36 issuer-bound reconciliation evidence
+Last refreshed: 2026-11-21 — daily live revalidation after Pass 36
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250` (re-read 2026-11-20)
+Observed default HEAD: `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250` (re-read 2026-11-21)
 Documentation continuation branch: `docs/next-2026-11-19-integrated-contour-pass` (PR #145; OPEN/DRAFT/UNMERGED)
-Latest daily audit report commit: `959d22aeb582384416dab6a219576fbd0da4b4bf` (blob `a1232002d1ecdb4321acf90c876ba470c52743d7`); latest checkpoint commit: `106441cc9209996478fe78149d39e90fb602607c` (blob `cb14a9ebe4e9fdce579ee73f0b1eb717a1731880`). Latest reconciliation/voice-chat record remains historical and unmerged.
+Latest daily audit report commit: `3ee79b36cf8608040f21e9c9272e255e1b1eb465` (blob `03ffec35996ec7b48bb9c49ff74711e06ca6b73e`); latest checkpoint commit: `28731e6c11e3e5b124c99f9365f41e6db4d1550e` (blob `71ccba5d2f75386d851ed54066b2f825c75aea4e`). Latest reconciliation/voice-chat record remains historical and unmerged.
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
 
@@ -2766,3 +2766,23 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## 2026-11-21 19:55 Europe/Vilnius — daily live revalidation after Pass 36
+
+- Audit status: **SUCCEEDED** (read-only GitHub audit + documentation-only publication). Contour A **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
+- Default branch `Основной` remains at `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`. The three commits since `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5` are documentation-only Pass 33 report/checkpoint/snapshot. Default combined-status lookup empty; CI **NOT VERIFIED**.
+- Priority Issues #1/#22/#26 remain OPEN. Issue #1 last detailed ruleset evidence is the owner-authored 2026-11-18 comment: active ruleset #26550182, PR required, zero approvals, CODEOWNERS and extra approval disabled, review-thread resolution required, no bypass actors, deletion/non-fast-forward blocked. Current ruleset details and POOL_DISPATCH_ENABLED are **NOT VERIFIED**. #22 web console remains undeployed/unqualified. #26 account-isolated routing and quota ledger remain DESIGN REQUIRED / NOT IMPLEMENTED / NOT QUALIFIED; provider calls and secret reads were not performed.
+- PR #24 head `7d3a34a1956c6a793f0bcc05ffaaf76c65c416e3`, 62/149 ahead/behind; exact-head Contract and OpenAPI runs 42982847600/42982847694 SUCCESS. PR #25 head `8f0c0c57cf24d476a27d456e80ffd1d8ced7ab85`, 29/149; runs 42228269689/42228269676 SUCCESS. PR #30 head `ad9f9ac598a2414b5209b6923094b16be64630ae`, 35/149; current exact-head run lookup empty, **NOT VERIFIED**. PR #31 head `5470fccbc4a5fe80a750f402d70d703757fc4c1d`, 36/149; run 42229917555 SUCCESS. All four remain OPEN/DRAFT/UNMERGED with zero formal reviews and zero inline threads.
+- PRs #159/#161/#163/#165/#166 remain OPEN/DRAFT/UNMERGED with zero formal reviews/threads. Exact-head runs on #159 (`deb14d34...`), #161 (`13cf7d43...`) and #163 (`83b8e9d3...`) report Contract + D1 SUCCESS; job-detail endpoints returned 404, so job-level evidence **NOT VERIFIED**. Pass 36 #165 head `9bbf3fabf1f9284c58c1dc69cf696d8f3ef4ba79` has D1 run 44881132353/job 136776444525 SUCCESS (6 files/60 tests) and Contract run 44881132342/job 136776444551 SUCCESS. #166 validation merge SHA `4b98be179411163f57051df567f4b3b424816311` returned no associated PR runs. No independent review exists.
+- Pass 36 migration 0015 blob `442db58f7c6ff0463e9a391572a1e45ebccc7df3`, reconciliation adapter blob `3bf1302d5a773f9f3edf935ab869438f58f30123`, tests blob `8f689cb305c5830f855f2d147cdb7046c68a5254`; local synthetic proof only. Production OIDC/key registry, owner retry approval, hosted D1, runtime integration and actual executor effect evidence **NOT VERIFIED**.
+- Pass 37 preflight static review confirmed Pass 35 adapter blob `1b6232137dc53998d3efda36a32c809916e9d316` accepts caller-supplied `input.now`; migration 0014 blob `8504b2ae3150092493a2a7808d58a89a4ef9650e` bounds TTL relative to caller-supplied `updated_at`. Trusted-clock gap remains OPEN. No source/schema changes were made.
+- GitHub Read Adapter path-fix branch HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38/149 ahead/behind, 19 files, no PR. Source blob `9f4f9e5918e1c84fc8ad4b4f1369a92207394c63`; test blob `bd8ac8d97cdd673bb170a22d67ce08697cf46789`. Exact-head runs and combined status empty; CI/test execution **NOT VERIFIED**.
+- Expected Gemini controller workflow path is absent on default (404) and code search returned no results. Gemini/Claude **NOT RUN**. Supervisor/Worker runtime not exercised; prior context says heartbeat-only/inert scaffold, current qualification **NOT VERIFIED**.
+- Documentation branch before publication: `docs/next-2026-11-19-integrated-contour-pass`, PR #145 head `8c91629eb5b7e2e5659a8abd74a06eb9633c69f5`, 116 ahead / 3 behind default, 79 changed files, OPEN/DRAFT/UNMERGED, mergeable=false, zero reviews/threads, exact-head CI lookup empty. This is a working documentation branch, not canonical.
+- Actions: read Context Window and Pass 36 report/checkpoint; revalidated repo/Issues/PRs/branches/CI/reviews; statically inspected Pass 35 lease adapter/SQL/tests and path-fix adapter/tests; published this dated report/checkpoint and refreshed this Context Window. No tests or workflows run; no code/runtime/security-boundary changes, secrets, variables, rulesets, dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge or production writes.
+- Next: Pass 37 proof-only trusted-clock design for lease acquisition, enumerate call sites, add missing/invalid/stale/future/expiry-boundary negative tests on an isolated proof branch; keep runtime integration and execution authorization disabled. Do not trigger workflows under the current audit constraint.
+- Daily report: `docs/reports/2026-11-21-cloud-pool-daily-revalidation.md`; checkpoint: `docs/checkpoints/2026-11-21-daily-revalidation.md`.
+- Contour A **BLOCKED / NOT ACCEPTED**; Contour B **DEFERRED**.
