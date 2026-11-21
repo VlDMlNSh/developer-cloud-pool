@@ -110,7 +110,7 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       leaseGeneration: 1,
       evidence: { signedEnvelope: "synthetic-only" }
     };
-    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier());
+    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
     expect(result).toMatchObject({
       decision: "DENY",
       reason: "RECONCILIATION_AUTHORITY_UNAVAILABLE",
@@ -125,9 +125,6 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      expectedIssuer: ISSUER,
-      expectedAudience: AUDIENCE,
-      now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
     const result = await recordAttemptReconciliation(
@@ -154,9 +151,6 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      expectedIssuer: ISSUER,
-      expectedAudience: AUDIENCE,
-      now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
     const unsafe = await recordAttemptReconciliation(
@@ -175,13 +169,10 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      expectedIssuer: ISSUER,
-      expectedAudience: AUDIENCE,
-      now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
-    const first = await recordAttemptReconciliation(env.POOL_DB, input, verifier());
-    const replay = await recordAttemptReconciliation(env.POOL_DB, input, verifier());
+    const first = await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
+    const replay = await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
     expect(first.decision).toBe("RECONCILIATION_RECORDED");
     expect(replay).toMatchObject({
       decision: "RECONCILIATION_ALREADY_RECORDED",
@@ -201,12 +192,9 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      expectedIssuer: ISSUER,
-      expectedAudience: AUDIENCE,
-      now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
-    await recordAttemptReconciliation(env.POOL_DB, input, verifier());
+    await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
     await expect(env.POOL_DB.prepare(
       "UPDATE pool_attempt_reconciliation_decisions SET decision = 'effects_unknown' WHERE attempt_id = ?"
     ).bind(target.attemptId).run()).rejects.toThrow(/RECONCILIATION_DECISIONS_APPEND_ONLY/);
