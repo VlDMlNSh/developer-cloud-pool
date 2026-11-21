@@ -11,7 +11,6 @@ function valid(input) {
     input && SAFE_ID.test(input.reconciliationId || "") &&
     SHA256.test(input.taskKey || "") && SAFE_ID.test(input.attemptId || "") &&
     Number.isSafeInteger(input.leaseGeneration) && input.leaseGeneration > 0 &&
-    SAFE_AUTH.test(input.expectedIssuer || "") && SAFE_AUTH.test(input.expectedAudience || "") &&
     Number.isSafeInteger(input.now) && input.now > 0 &&
     input.evidence && typeof input.evidence === "object"
   );
@@ -19,8 +18,8 @@ function valid(input) {
 
 function normalize(claims, input) {
   if (!claims || claims.verified !== true ||
-      claims.issuer !== input.expectedIssuer ||
-      claims.audience !== input.expectedAudience ||
+      !SAFE_AUTH.test(claims.issuer || "") ||
+      !SAFE_AUTH.test(claims.audience || "") ||
       !SAFE_AUTH.test(claims.subject || "") ||
       !SAFE_ID.test(claims.jti || "") ||
       claims.taskKey !== input.taskKey ||
@@ -96,8 +95,10 @@ async function readDecision(db, reconciliationId) {
 
 /**
  * Records a cryptographically verified reconciliation observation.
- * The verifier is an injected trust-boundary dependency and must validate
- * signature, issuer, audience, expiry and claim integrity. This adapter does
+ * The verifier is an injected trust-boundary dependency with issuer and audience
+ * pinned in trusted runtime configuration; it must validate signature, issuer,
+ * audience, expiry and claim integrity. The caller cannot select that trust policy.
+ * This adapter does
  * not alter the attempt, task, lease, queue, or authorize a retry/dispatch.
  */
 export async function recordAttemptReconciliation(db, input, verifyEvidence) {
@@ -109,8 +110,6 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence) {
   let claims;
   try {
     claims = await verifyEvidence(input.evidence, {
-      expectedIssuer: input.expectedIssuer,
-      expectedAudience: input.expectedAudience,
       taskKey: input.taskKey,
       attemptId: input.attemptId,
       leaseGeneration: input.leaseGeneration,
