@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-20 — Pass 35 authenticated D1 attempt-lease adapter
+Last refreshed: 2026-11-21 — Pass 36 issuer-bound reconciliation evidence
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250` (re-read 2026-11-20)
@@ -2742,3 +2742,27 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 - After publishing the report and checkpoint, the working documentation branch advanced to **1c84f0a0466730b31a49dfc708309a1aafb186de**. PR #145 remains OPEN/DRAFT/UNMERGED and mergeable=false.
 - Current compare of this final documentation branch head against default HEAD 7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250 is DIVERGED, **111 ahead / 3 behind**, merge base b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5. Do not merge wholesale or represent it as canonical.
+
+
+## Pass 36 — issuer-bound indeterminate reconciliation evidence — 2026-11-21
+
+- Revalidated default `Основной` @ `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`; Pass 35 parent `83b8e9d3b0bdeeb201e24a7a9d2fe042fb00694a`.
+- Pass 36 implementation branch `feat/pass36-issuer-bound-attempt-reconciliation-2026-11-21`; final HEAD `9bbf3fabf1f9284c58c1dc69cf696d8f3ef4ba79`.
+- PR #165 implementation OPEN/DRAFT/UNMERGED; PR #166 validation-only OPEN/DRAFT/UNMERGED. Validation checkout merge SHA `4b98be179411163f57051df567f4b3b424816311`; do not merge #166.
+- Migration 0015 adds append-only `pool_attempt_reconciliation_decisions`, unique per attempt/generation and issuer/JTI, SQL-bound to the pending reconciliation queue, current indeterminate attempt, current task pointer, expired lease owner and exact fencing generation. Migration blob `442db58f7c6ff0463e9a391572a1e45ebccc7df3`.
+- Adapter `proofs/d1-ledger/src/record-attempt-reconciliation.mjs`, blob `3bf1302d5a773f9f3edf935ab869438f58f30123`, requires an injected verifier whose issuer/audience are pinned in trusted runtime configuration, fixed `pool.attempt.reconcile` capability and a separate injected trusted clock. Caller-supplied time is not accepted.
+- Decision evidence types: `safe_to_retry` (executor stopped + external effects absent), `result_confirmed` (result/provenance digests), `effects_unknown`. Evidence is immutable and primary-readback verified. Recording never changes task, attempt, lease, queue or outbox and never authorizes retry/dispatch/execution.
+- Six synthetic tests in `test/reconciliation.test.ts`, blob `8f689cb305c5830f855f2d147cdb7046c68a5254`. Migration-upgrade test blob `a4c4e461bdf17b3f896b92e48c1b77589dc7c448`. README blob `fba6251c0f25cfafa6dd1bf4106752feac1a3883`.
+- Reused the existing D1 reconciliation queue from migration 0005 and pinned Workers/Vitest/Miniflare harness. Reviewed DBOS transactional outbox and River transactional enqueue patterns; neither is a drop-in D1 authority, so no external queue/runtime/dependency was adopted.
+- Exact-head D1 run [44881132353](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44881132353), job `136776444525`: COMPLETED/SUCCESS; Node 24.9.0; 6 test files / 60 tests passed.
+- Exact-head Pool Contract run [44881132342](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44881132342), job `136776444551`: COMPLETED/SUCCESS; six workflow YAML files parsed; security contracts PASS; dispatch disabled.
+- Earlier run [44880921488](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/44880921488) failed 3 tests due a 16-placeholder/17-column INSERT mismatch. Corrected before final run; final exact-head passed 60/60.
+- Production OIDC/signature verifier, trusted issuer/key registry, capability provisioning and owner-approved retry transition remain NOT VERIFIED / not implemented. Verifier and clock are injected synthetic trust seams. Adapter is not wired into deployed runtime; hosted D1 and actual executor termination/effect evidence NOT VERIFIED.
+- Pass 35 `acquireAttemptLease` still accepts caller-supplied `input.now`; trusted-clock gap remains OPEN. Pass 36 only closes caller-time acceptance in the new reconciliation adapter.
+- PR #165 formal reviews: none; independent review NOT VERIFIED. PRs #159/#161/#163 also remain open with no independent review observed. Default combined status lookup empty; default CI NOT VERIFIED. Ruleset #26550182 not re-read in Pass 36; no governance changes.
+- Gemini controller absent from default; Gemini and Claude NOT RUN. No secret values read; no hosted D1, provider calls, dispatch, executor launch, deployment, merge, production writes or governance changes.
+- Report: `docs/reports/2026-11-21-pass-36-issuer-bound-reconciliation.md`; checkpoint: `docs/checkpoints/2026-11-21-pass-36-issuer-bound-reconciliation.md`; snapshot: `docs/context/PASS-36-CURRENT-SNAPSHOT.md`.
+- Next bounded pass: Pass 37 — inject trusted clock into Pass 35 lease acquisition; add stale/future/expiry boundary tests and run exact-head CI. Then qualify a production issuer verifier and separate owner approval before any retry can be authorized.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
