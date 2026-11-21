@@ -75,10 +75,9 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
-    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier());
+    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
     expect(result).toMatchObject({
       decision: "RECONCILIATION_RECORDED",
       outcome: "safe_to_retry",
@@ -115,7 +114,7 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       evidence: { signedEnvelope: "synthetic-only" }
     };
     const result = await recordAttemptReconciliation(
-      env.POOL_DB, input, verifier({ attemptId: "different-attempt" })
+      env.POOL_DB, input, verifier({ attemptId: "different-attempt" }), () => NOW)
     );
     expect(result).toMatchObject({
       decision: "DENY",
@@ -124,7 +123,7 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       executionAuthorized: false
     });
     const wrongCapability = await recordAttemptReconciliation(
-      env.POOL_DB, input, verifier({ capability: "pool.execute" })
+      env.POOL_DB, input, verifier({ capability: "pool.execute" }), () => NOW)
     );
     expect(wrongCapability).toMatchObject({
       decision: "DENY",
@@ -144,11 +143,11 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       evidence: { signedEnvelope: "synthetic-only" }
     };
     const unsafe = await recordAttemptReconciliation(
-      env.POOL_DB, input, verifier({ externalEffects: "unknown" })
+      env.POOL_DB, input, verifier({ externalEffects: "unknown" }), () => NOW)
     );
     expect(unsafe).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_EVIDENCE_CLAIMS_INVALID" });
     const expired = await recordAttemptReconciliation(
-      env.POOL_DB, input, verifier({ expiresAt: NOW - 1 })
+      env.POOL_DB, input, verifier({ expiresAt: NOW - 1 }), () => NOW)
     );
     expect(expired).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_EVIDENCE_CLAIMS_INVALID" });
   });
@@ -174,7 +173,7 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       retryAuthorized: false
     });
     const conflicting = await recordAttemptReconciliation(
-      env.POOL_DB, { ...input, reconciliationId: "reconcile:conflicting-id" }, verifier()
+      env.POOL_DB, { ...input, reconciliationId: "reconcile:conflicting-id" }, verifier(), () => NOW)
     );
     expect(conflicting).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_OUTCOME_UNCONFIRMED" });
   });
