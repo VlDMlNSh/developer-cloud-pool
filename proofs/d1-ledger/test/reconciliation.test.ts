@@ -74,8 +74,6 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       reconciliationId: "reconcile:" + target.attemptId,
       ...target,
       leaseGeneration: 1,
-      expectedIssuer: ISSUER,
-      expectedAudience: AUDIENCE,
       now: NOW,
       evidence: { signedEnvelope: "synthetic-only" }
     };
