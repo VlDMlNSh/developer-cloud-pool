@@ -20,6 +20,7 @@ function normalize(claims, input) {
   if (!claims || claims.verified !== true ||
       !SAFE_AUTH.test(claims.issuer || "") ||
       !SAFE_AUTH.test(claims.audience || "") ||
+      claims.capability !== "pool.attempt.reconcile" ||
       !SAFE_AUTH.test(claims.subject || "") ||
       !SAFE_ID.test(claims.jti || "") ||
       claims.taskKey !== input.taskKey ||
@@ -50,6 +51,7 @@ function normalize(claims, input) {
   return {
     issuerId: claims.issuer,
     audience: claims.audience,
+    capabilityId: claims.capability,
     principalSubject: claims.subject,
     evidenceJti: claims.jti,
     evidenceDigest: claims.evidenceDigest,
@@ -70,6 +72,7 @@ function same(row, input, evidence) {
     row.lease_generation === input.leaseGeneration &&
     row.issuer_id === evidence.issuerId &&
     row.audience === evidence.audience &&
+    row.capability_id === evidence.capabilityId &&
     row.principal_subject === evidence.principalSubject &&
     row.evidence_jti === evidence.evidenceJti &&
     row.evidence_digest === evidence.evidenceDigest &&
@@ -85,7 +88,7 @@ function same(row, input, evidence) {
 async function readDecision(db, reconciliationId) {
   return db.prepare(`
     SELECT reconciliation_id, task_key, attempt_id, lease_generation,
-           issuer_id, audience, principal_subject, evidence_jti, evidence_digest,
+           issuer_id, audience, capability_id, principal_subject, evidence_jti, evidence_digest,
            decision, executor_stopped, external_effects, result_digest,
            provenance_digest, observed_at, verified_at
       FROM pool_attempt_reconciliation_decisions
@@ -154,13 +157,13 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence) {
     await db.prepare(`
       INSERT INTO pool_attempt_reconciliation_decisions (
         reconciliation_id, task_key, attempt_id, lease_generation,
-        issuer_id, audience, principal_subject, evidence_jti, evidence_digest,
+        issuer_id, audience, capability_id, principal_subject, evidence_jti, evidence_digest,
         decision, executor_stopped, external_effects, result_digest,
         provenance_digest, observed_at, verified_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       input.reconciliationId, input.taskKey, input.attemptId, input.leaseGeneration,
-      evidence.issuerId, evidence.audience, evidence.principalSubject,
+      evidence.issuerId, evidence.audience, evidence.capabilityId, evidence.principalSubject,
       evidence.evidenceJti, evidence.evidenceDigest, evidence.decision,
       evidence.executorStopped, evidence.externalEffects, evidence.resultDigest,
       evidence.provenanceDigest, evidence.observedAt, input.now
