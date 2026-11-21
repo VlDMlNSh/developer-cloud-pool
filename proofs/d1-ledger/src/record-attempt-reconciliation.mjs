@@ -11,12 +11,11 @@ function valid(input) {
     input && SAFE_ID.test(input.reconciliationId || "") &&
     SHA256.test(input.taskKey || "") && SAFE_ID.test(input.attemptId || "") &&
     Number.isSafeInteger(input.leaseGeneration) && input.leaseGeneration > 0 &&
-    Number.isSafeInteger(input.now) && input.now > 0 &&
     input.evidence && typeof input.evidence === "object"
   );
 }
 
-function normalize(claims, input) {
+function normalize(claims, input, trustedNow) {
   if (!claims || claims.verified !== true ||
       !SAFE_AUTH.test(claims.issuer || "") ||
       !SAFE_AUTH.test(claims.audience || "") ||
@@ -30,11 +29,11 @@ function normalize(claims, input) {
       !Number.isSafeInteger(claims.issuedAt) ||
       !Number.isSafeInteger(claims.expiresAt) ||
       !Number.isSafeInteger(claims.observedAt) ||
-      claims.issuedAt > input.now || claims.expiresAt <= input.now ||
+      claims.issuedAt > trustedNow || claims.expiresAt <= trustedNow ||
       claims.expiresAt <= claims.issuedAt ||
       claims.expiresAt - claims.issuedAt > 300 ||
-      claims.observedAt <= 0 || claims.observedAt > input.now ||
-      input.now - claims.observedAt > 3600 ||
+      claims.observedAt <= 0 || claims.observedAt > trustedNow ||
+      trustedNow - claims.observedAt > 3600 ||
       !["safe_to_retry", "result_confirmed", "effects_unknown"].includes(claims.decision) ||
       typeof claims.executorStopped !== "boolean" ||
       !["absent", "present", "unknown"].includes(claims.externalEffects)) return null;
@@ -104,11 +103,19 @@ async function readDecision(db, reconciliationId) {
  * This adapter does
  * not alter the attempt, task, lease, queue, or authorize a retry/dispatch.
  */
-export async function recordAttemptReconciliation(db, input, verifyEvidence) {
+export async function recordAttemptReconciliation(db, input, verifyEvidence, trustedClock) {
   if (!valid(input)) return deny("INVALID_RECONCILIATION_REQUEST");
   if (!db || typeof db.prepare !== "function" ||
       typeof db.withSession !== "function" ||
-      typeof verifyEvidence !== "function") return deny("RECONCILIATION_AUTHORITY_UNAVAILABLE");
+      typeof verifyEvidence !== "function" || typeof trustedClock !== "function") return deny("RECONCILIATION_AUTHORITY_UNAVAILABLE");
+
+  let trustedNow;
+  try {
+    trustedNow = trustedClock();
+  } catch {
+    return deny("TRUSTED_CLOCK_UNAVAILABLE");
+  }
+  if (!Number.isSafeInteger(trustedNow) || trustedNow <= 0) return deny("TRUSTED_CLOCK_UNAVAILABLE");
 
   let claims;
   try {
@@ -116,12 +123,12 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence) {
       taskKey: input.taskKey,
       attemptId: input.attemptId,
       leaseGeneration: input.leaseGeneration,
-      now: input.now
+      now: trustedNow
     });
   } catch {
     return deny("RECONCILIATION_EVIDENCE_VERIFICATION_FAILED");
   }
-  const evidence = normalize(claims, input);
+  const evidence = normalize(claims, input, trustedNow);
   if (!evidence) return deny("RECONCILIATION_EVIDENCE_CLAIMS_INVALID");
 
   try {
@@ -166,11 +173,11 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence) {
       evidence.issuerId, evidence.audience, evidence.capabilityId, evidence.principalSubject,
       evidence.evidenceJti, evidence.evidenceDigest, evidence.decision,
       evidence.executorStopped, evidence.externalEffects, evidence.resultDigest,
-      evidence.provenanceDigest, evidence.observedAt, input.now
+      evidence.provenanceDigest, evidence.observedAt, trustedNow
     ).run();
 
     const committed = await readDecision(db.withSession("first-primary"), input.reconciliationId);
-    if (!same(committed, input, evidence) || committed.verified_at !== input.now) {
+    if (!same(committed, input, evidence) || committed.verified_at !== trustedNow) {
       return deny("RECONCILIATION_COMMIT_READBACK_MISMATCH");
     }
     return {
