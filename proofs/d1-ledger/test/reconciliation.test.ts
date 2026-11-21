@@ -102,6 +102,23 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
     expect(queue).toMatchObject({ status: "pending", lease_generation: 1, expired_lease_owner: "worker-alpha" });
   });
 
+  it("fails closed when the trusted clock dependency is absent", async () => {
+    const target = await seedIndeterminate("6");
+    const input = {
+      reconciliationId: "reconcile:" + target.attemptId,
+      ...target,
+      leaseGeneration: 1,
+      evidence: { signedEnvelope: "synthetic-only" }
+    };
+    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier());
+    expect(result).toMatchObject({
+      decision: "DENY",
+      reason: "RECONCILIATION_AUTHORITY_UNAVAILABLE",
+      dispatch: false,
+      executionAuthorized: false
+    });
+  });
+
   it("rejects a verifier result bound to a different task or attempt", async () => {
     const target = await seedIndeterminate("2");
     const input = {
