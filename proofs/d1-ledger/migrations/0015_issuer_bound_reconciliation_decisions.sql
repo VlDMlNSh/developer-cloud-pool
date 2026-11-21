@@ -38,6 +38,7 @@ WHEN NOT EXISTS (
     JOIN pool_attempts a ON a.attempt_id = r.attempt_id AND a.task_key = r.task_key
     JOIN pool_tasks t ON t.task_key = r.task_key
    WHERE r.reconciliation_id = 'reconcile:' || NEW.attempt_id
+     AND NEW.reconciliation_id = r.reconciliation_id
      AND r.status = 'pending'
      AND r.task_key = NEW.task_key
      AND r.attempt_id = NEW.attempt_id
