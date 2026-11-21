@@ -54,7 +54,7 @@ function evidence(target, overrides = {}) {
     provenanceDigest: null,
     issuedAt: NOW - 4,
     expiresAt: NOW + 120,
-    observedAt: target.indeterminateAt + 1,
+    observedAt: NOW - 4,
     verified: true,
     ...overrides
   };
