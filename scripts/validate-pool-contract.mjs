@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { spawnSync } from "node:child_process";
 
 const failures = [];
 const pass = (message) => console.log("PASS " + message);
@@ -85,6 +86,25 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
+
+const geminiTestFile = "scripts/gemini-four-agent-controller.test.mjs";
+if (!fs.existsSync(geminiTestFile)) {
+  fail("Gemini controller contract test file is missing: " + geminiTestFile);
+} else {
+  const testRun = spawnSync(process.execPath, ["--test", geminiTestFile], {
+    encoding: "utf8",
+    timeout: 30_000,
+    maxBuffer: 1_000_000,
+    env: { ...process.env }
+  });
+  if (testRun.status !== 0) {
+    fail("Gemini controller fake-client tests failed: " + String(testRun.stdout || "").slice(-3000) + String(testRun.stderr || "").slice(-3000));
+  } else {
+    process.stdout.write(String(testRun.stdout || ""));
+    pass("Gemini four-agent fake-client tests executed by Pool Contract Validation");
+  }
+}
+
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
