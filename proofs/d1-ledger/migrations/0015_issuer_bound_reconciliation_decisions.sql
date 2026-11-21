@@ -8,6 +8,7 @@ CREATE TABLE pool_attempt_reconciliation_decisions (
   lease_generation INTEGER NOT NULL CHECK (lease_generation > 0),
   issuer_id TEXT NOT NULL CHECK (length(issuer_id) BETWEEN 1 AND 256),
   audience TEXT NOT NULL CHECK (length(audience) BETWEEN 1 AND 256),
+  capability_id TEXT NOT NULL CHECK (capability_id = 'pool.attempt.reconcile'),
   principal_subject TEXT NOT NULL CHECK (length(principal_subject) BETWEEN 1 AND 256),
   evidence_jti TEXT NOT NULL CHECK (length(evidence_jti) BETWEEN 1 AND 128),
   evidence_digest TEXT NOT NULL CHECK (length(evidence_digest) = 64 AND evidence_digest NOT GLOB '*[^0-9a-f]*'),
