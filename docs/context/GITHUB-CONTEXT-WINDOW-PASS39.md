@@ -25,3 +25,16 @@ Contour A remains NOT ACCEPTED. Keep PR #165 Draft. Keep dispatch disabled. Cont
 Verify the production issuer/verifier/key-lifecycle contract and adversarially test stale issuer keys, wrong issuer/audience, signature tampering, expiry, replay, clock skew and key revocation. Then separately qualify hosted D1 persistence and owner-authorized state transition.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 40 — production JWT/JWKS verifier component research (2026-11-22)
+
+- Research verified `panva/jose@6.2.18` as the primary cryptographic verifier/JWKS candidate: MIT, zero dependencies, ESM, Cloudflare Workers support; upstream latest observed commit `d1e200f22d2bc66cd2ed6cc48fc622b6f1765cc5`.
+- `panva/oauth4webapi@3.8.9` is a complementary OAuth/OIDC protocol library, MIT and zero dependencies; latest observed commit `aa7e6e889fd64a325adbef651419326e8a3266e7`. It does not replace Pool-specific claim/capability enforcement.
+- No production dependency or code change was made. D1 package still has no JOSE dependency; reconciliation adapter still uses injected verifier and clock.
+- Critical caveat: remote JWKS URL trust, transport policy, cache invalidation/revocation and application authorization remain integrator responsibilities. Planned key lifecycle and adversarial test matrix are in the Pass 40 report.
+- PR #165 remains OPEN/DRAFT/UNMERGED; review count is one COMMENTED, no approval. Corrected merge-result CI runs `45032534259` and `45032534262` are SUCCESS; standalone head-only CI NOT VERIFIED.
+- Gemini dispatch NOT RUN; no secrets, providers, hosted D1, deployment or executor were used.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+Report: [Pass 40 JOSE/JWKS research](../reports/2026-11-22-pass40-jose-jwks-verifier-component-research.md)
