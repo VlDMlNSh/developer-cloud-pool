@@ -2269,3 +2269,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: locate canonical controller design and create a bounded owner-only controller proposal under Issue #96, with dispatch disabled; implement JOSE only in the isolated D1 package when exact lockfile/test execution is available.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 43 — Issue #140 current-base integration map — 2026-11-22
+
+- Default branch `Основной` HEAD re-read: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`. PR #165 remains OPEN / DRAFT / UNMERGED, head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`, based on PR #35 branch rather than default.
+- Located historical PR #112 read-only owner `/next` event predicate: exact repository/owner numeric IDs, exact Issue #96/body, OWNER association, trusted ref/SHA and deterministic source-comment digest; 21 adversarial tests. Runs `43882090833` and `43882090867` SUCCESS. It does not persist idempotency or dispatch; the event-admission job was SKIPPED in PR validation.
+- Mapped #111 local D1 lease/attempt proof (old base `35208f0...`, head `6871967...`, 37 tests); #114 atomic admission proof (old base, metadata head `ab9461e...`, runs `43935827714`/`43935827741`); #125 synthetic Actions-context adapter stacked on #114 (head `69398d4...`, run `44265881516`); #165 separate later attempt-reconciliation chain (head `80dcd60...`, D1 61 tests and contract success on merge-result). All remain unmerged candidates.
+- PR #114 body cites head `8e9e2e6...`, while live PR metadata reports `ab9461e...`; discrepancy recorded, body-only CI claims not accepted without reconciliation.
+- Issue #140 explicitly calls for a single current-base integrated proof; do not merge/cherry-pick old branches wholesale or duplicate migrations, task/outbox stores, or controller authority. Current-base target observed is `81baadbb...`.
+- Governance: ruleset #26550182 last documented active 2026-11-17; current ruleset readback NOT VERIFIED. Current `POOL_DISPATCH_ENABLED` value NOT VERIFIED; historical false is not current evidence. No secrets/variables read.
+- No code/SQL/workflow/dependency changes, hosted D1, provider calls, dispatch, merge, deployment or paid resources. All candidates remain non-dispatching.
+- Report: `docs/reports/2026-11-22-pass43-issue140-integration-map.md`; checkpoint: `docs/checkpoints/2026-11-22-pass43-continuation-checkpoint.md`.
+- Status: current-base integrated event/D1/lease proof PLANNED / NOT IMPLEMENTED; production controller NOT QUALIFIED; JOSE NOT IMPLEMENTED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create one clean branch from current default HEAD, reconcile migration/schema ownership, port event predicate + atomic admission, then lease/fencing; exact-head tests, dispatch remains false.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
