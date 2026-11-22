@@ -2207,3 +2207,17 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Next: poll both corrected-commit workflows, inspect D1 test totals/logs, then obtain independent security review of PR #165. Do not merge on CI alone.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 38 corrected-commit CI closure — 2026-11-22
+
+- Corrected commit `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0` completed both PR merge-result workflows successfully.
+- D1 run `45032534259`, job `137239043125`: SUCCESS; merge result `8ab5a07` contains corrected head plus frozen base `7e76bd2...`; 6/6 test files and 61/61 tests passed.
+- Pool Contract run `45032534262`, job `137239043235`: SUCCESS; all six workflow YAML files parsed; pool security contract passed; `POOL_CONTRACT_VALIDATION=PASS`; `POOL_DISPATCH_ENABLED=false`.
+- The available Actions read interface showed PR merge-ref validation, not a standalone head-only checkout. Describe the result precisely as corrected PR merge-result CI PASS.
+- PR #165 re-read: OPEN / DRAFT / UNMERGED, head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`; formal review submissions: 0. Independent security review remains NOT RUN / NOT VERIFIED.
+- Report updated: `docs/reports/2026-11-22-pass38-exact-head-ci-reconciliation-replay-correction.md`.
+- Pass 38 CI correction is VERIFIED at merge-result level. No merge, deployment, executor dispatch, live provider call, secret access, qualification, independent review, or Contour A acceptance.
+- Next: obtain an independent reviewer for PR #165 and conduct a focused audit of migration 0015, canonical identity, issuer/audience trust boundary, trusted clock, replay/JTI constraints, and fail-closed behavior. Keep Contour B deferred.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
