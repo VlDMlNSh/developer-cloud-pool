@@ -184,7 +184,7 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
     expect(expired).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_EVIDENCE_CLAIMS_INVALID" });
   });
 
-  it("accepts exact replay idempotently but rejects a conflicting decision ID", async () => {
+  it("accepts exact replay idempotently but rejects conflicting evidence for the canonical ID", async () => {
     const target = await seedIndeterminate("4");
     const input = {
       reconciliationId: "reconcile:" + target.attemptId,
@@ -202,9 +202,14 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
       retryAuthorized: false
     });
     const conflicting = await recordAttemptReconciliation(
-      env.POOL_DB, { ...input, reconciliationId: "reconcile:conflicting-id" }, verifier(), () => NOW
+      env.POOL_DB, input, verifier({ jti: "different-evidence-jti" }), () => NOW
     );
-    expect(conflicting).toMatchObject({ decision: "DENY", reason: "RECONCILIATION_OUTCOME_UNCONFIRMED" });
+    expect(conflicting).toMatchObject({
+      decision: "DENY",
+      reason: "RECONCILIATION_OUTCOME_UNCONFIRMED",
+      dispatch: false,
+      executionAuthorized: false
+    });
   });
 
   it("keeps reconciliation evidence append-only and SQL-bound to the current quarantined attempt", async () => {
