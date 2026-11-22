@@ -597,8 +597,7 @@ Inspect GitHub-native Environment and Git ref/ruleset API capabilities using rea
 
 ### PR #32 exact-head status
 - Target PR head: `75c83a288d865f1bbeda4905cf817e00084bcc2d`; authorization workflow blob `b6d1877c9452906d7350b90f98f69e628bc915fd`.
-- Exact-head PR-triggered runs: authorization negative-first run `42236017811` COMPLETED/FAILURE; pool contract validation run `42236017724` COMPLETED/SUCCESS. The former is an expected red baseline, not a passing authorization test; the latter does not qualify authorization.
-- Reviews: 0. Inline review threads: 0. Independent review NOT RUN.
+- Exact-head PR-triggered runs: authorization negative-first run `42236017811` COMPLETED/FAILURE; pool contract validation run `42236017724` COMPLETED/SUCCESS. The former is an expected red baseline, not a passing authorization test; the latter does not qualify authorization.- Reviews: 0. Inline review threads: 0. Independent review NOT RUN.
 
 ### Authenticated read-path assessment
 - Repository metadata confirms the linked GitHub connection has repository admin permission, but this is not proof of the Actions workflow token's effective permission or identity.
@@ -1200,7 +1199,6 @@ Latest bounded report: [branch provenance and stack synchronization audit](../re
 The earlier branch-provenance report correctly observed graph divergence (PR #39 is 17 ahead / 1 behind current PR #36), but over-prescribed child synchronization. [Correction report](../reports/2026-11-08-pr39-stack-graph-content-and-ci-correction.md) records that the D1 workflow file at both current branch heads is byte-identical (blob `cb31bda7588137baf84a8141aec11024461cf818`) and PR #39's combined merge-tree `77b3ce30a3c90ad564db892cae82076b5c0774c9` has successful exact PR run `42329993548` / job `128274072508`, plus push run `42329991471` / job `128274065481`. Do not rebase/synchronize child solely to eliminate graph divergence. Recheck combined merge-tree CI only after future source changes or retargeting. This does not authorize merge: independent review is NOT RUN; all three PRs have 0 reviews / 0 threads; remote D1 and integrated lease/outbox qualification remain NOT RUN. Contour A BLOCKED; dispatch stays fail-closed.
 
 
-
 ## 2026-11-08 integrated protocol author-side pre-review
 
 Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d759dd25bee8750d02e59ae`; PR #36 @ `e11fc90...` named CI runs `42329438308`/`42329438351` SUCCESS; PR #37 @ `5587a4e...` runs `42284051311`/`42284051309` SUCCESS; PR #39 @ `ecc7193...` run `42329993548` SUCCESS. Formal reviews remain 0 on each. Issue #38 remains OPEN (not a PR). Author-side threat-model pre-review is documented at [2026-11-08 integrated claim protocol pre-review gap analysis](../reports/2026-11-08-integrated-claim-protocol-pre-review-gap-analysis.md). This is NOT independent review. Blocking issues include issuer/human approval provenance, exact OIDC claim validation, crypto canonicalization/key lifecycle, remote D1 transaction/concurrency, lease/fencing implementation, outbox replay/recovery, token audience/expiry, least privilege and tamper-evident audit. Implementation and remote qualification NOT RUN; dispatch fail-closed; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
@@ -1797,7 +1795,6 @@ Read-only refresh reconfirmed default `Основной` @ `197ba98d0dc7d8437d75
 
 
 ## PR #64 hosted D1 documentation drift audit — 2026-11-11
-
 - Default `Основной` at audit start: `8c9a557189e9219304ae41e6d6615830d9e7a365`; PR #64 head `95d237c753bec96abe9add621140928511047599`; base recorded `6fdcedebeba62715122e43a75c6ad6d926321ce7`.
 - Compare current default...PR64: DIVERGED, 51 ahead / 33 behind; merge base `6fdcedebeba62715122e43a75c6ad6d926321ce7`. PR #64 OPEN/DRAFT, 16 documentation files, mergeability unknown, 0 formal reviews, 0 threads, no exact-head Actions run/status returned.
 - Good content: D1 selected as hosted qualification target; 50 genuinely concurrent independent HTTP requests through test-only Worker; sequential SQL batch explicitly not concurrency proof; isolated Worker excludes GitHub write, dispatch, provider credentials and production bindings; owner authorization, Free entitlement, exact source stack and CI are mandatory gates.
@@ -2239,3 +2236,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 Pass 40 research report: [2026-11-22-pass40-jose-jwks-verifier-component-research.md](../reports/2026-11-22-pass40-jose-jwks-verifier-component-research.md)
 Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoints/2026-11-22-pass40-continuation-checkpoint.md)
+
+## Pass 41 — JOSE verifier integration gate — 2026-11-22
+
+- Pass 41 report: `docs/reports/2026-11-22-pass41-jose-verifier-integration-gate.md`.
+- Pass 41 checkpoint: `docs/checkpoints/2026-11-22-pass41-continuation-checkpoint.md`.
+- Immutable default HEAD observed: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; PR #165 implementation head: `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
+- PR #165 remains OPEN / DRAFT / UNMERGED. One COMMENTED owner review exists; it is not an approval. Owner's Issue #96 sequencing note defers independent/external review until the pool can operate its own bounded review workflow.
+- Revalidated corrected PR merge-result CI: D1 run `45032534259` SUCCESS (6 test files / 61 tests per recorded job log); Pool Contract run `45032534262` SUCCESS; `POOL_CONTRACT_VALIDATION=PASS`. These are merge-result checks, not standalone head-only CI.
+- Re-read D1 manifest and lockfile: no jose runtime dependency. Reconciliation adapter still requires injected `verifyEvidence` and `trustedClock`; tests use synthetic verifier output.
+- Formalized a no-secret integration contract for `panva/jose@6.2.18`: immutable trusted issuer config, fixed HTTPS JWKS URL, explicit algorithms/type/claims, bounded cache and timeout, strict redirect/response controls, Pool-specific capability/resource binding after JWT verification, durable JTI replay protection, and fail-closed behavior.
+- Required synthetic JWT/JWKS adversarial matrix documented in Pass 41 report. No code or dependency changes were made.
+- A read-only git clone attempt failed before checkout because the execution environment could not resolve `github.com`; local tests and package-lock generation were NOT RUN. Do not claim implementation or test completion.
+- Gemini dispatch NOT RUN; controller/security gates were not requalified in this pass. No secret values, real issuer/JWKS, provider calls, hosted D1, dispatch, deployment or paid resources used.
+- JOSE verifier: PLANNED / NOT IMPLEMENTED. Production trust boundary: NOT QUALIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: when repository-connected writable/test execution is available, create a separate clean-base prototype, pin jose and lock integrity, implement the injected verifier adapter, add deterministic synthetic signed-JWT/JWKS tests, and inspect exact-head CI before integration. Keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
