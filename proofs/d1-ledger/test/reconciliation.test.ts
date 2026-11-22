@@ -69,6 +69,27 @@ function verifier(claimOverrides = {}) {
 }
 
 describe("issuer-bound indeterminate attempt reconciliation", () => {
+  it("rejects a non-canonical reconciliation ID before writing evidence", async () => {
+    const target = await seedIndeterminate("7");
+    const input = {
+      reconciliationId: "reconcile:caller-selected-id",
+      ...target,
+      leaseGeneration: 1,
+      evidence: { signedEnvelope: "synthetic-only" }
+    };
+    const result = await recordAttemptReconciliation(env.POOL_DB, input, verifier(), () => NOW);
+    expect(result).toMatchObject({
+      decision: "DENY",
+      reason: "INVALID_RECONCILIATION_REQUEST",
+      dispatch: false,
+      executionAuthorized: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT reconciliation_id FROM pool_attempt_reconciliation_decisions WHERE attempt_id = ?"
+    ).bind(target.attemptId).first();
+    expect(row).toBeNull();
+  });
+
   it("records a verified decision without changing task, attempt, lease, queue or execution authority", async () => {
     const target = await seedIndeterminate("1");
     const input = {
