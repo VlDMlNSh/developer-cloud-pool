@@ -65,3 +65,17 @@ Exact-head CI for the corrected commit is therefore NOT VERIFIED yet. The initia
 Poll both workflow runs for commit `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`, inspect D1 logs and contract results, then request/perform independent review of PR #165. Do not merge on CI alone.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final corrected-commit CI result — 2026-11-22
+
+Corrected commit `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0` has completed both required workflows successfully:
+
+- [D1 run #45032534259](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45032534259): SUCCESS. Job `137239043125` checked out merge result `8ab5a07` (corrected head merged into frozen base `7e76bd2...`); all 6 test files passed, 61/61 tests passed.
+- [Pool Contract run #45032534262](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45032534262): SUCCESS. Job `137239043235`; six workflow YAML files parsed; security contract checks passed; `POOL_CONTRACT_VALIDATION=PASS`; `POOL_DISPATCH_ENABLED=false`.
+
+Thus the corrected PR merge result passes the available D1 and pool-contract CI. A standalone head-only workflow run was not returned by the available commit-run interface; the observed runs validate GitHub's PR merge ref containing the corrected head and frozen base.
+
+PR #165 re-read after CI: OPEN / DRAFT / UNMERGED, head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`. Formal review submissions: 0. Independent security review remains NOT RUN / NOT VERIFIED.
+
+Decision: Pass 38 CI correction VERIFIED at the PR merge-result level. Do not merge; independent review and broader Contour A acceptance gates remain outstanding.
