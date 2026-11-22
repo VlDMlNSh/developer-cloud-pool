@@ -2191,3 +2191,19 @@ Canonical MediaHub map (separate project/control plane): https://github.com/VlDM
 - Pool dispatch gate was confirmed disabled or unset by the CI workflow. No merge, deployment, provider request, or production dispatch occurred.
 - Decision: contract test suite VERIFIED; four live Gemini agents NOT YET QUALIFIED. Do not add other providers/models until a bounded owner-authorized four-agent live qualification is safely possible after production/security gates.
 - Next step: implement and adversarially test durable lease/fencing/recovery and production caller provenance; then provide a separately permissioned, no-paid-fallback qualification path. Only then run four live, individually attributable test tasks.
+
+
+## Pass 38 — exact-head CI regression and canonical reconciliation replay correction — 2026-11-22
+
+- Report: [docs/reports/2026-11-22-pass38-exact-head-ci-reconciliation-replay-correction.md](../reports/2026-11-22-pass38-exact-head-ci-reconciliation-replay-correction.md).
+- PR #165 remains OPEN / DRAFT / UNMERGED; implementation branch `feat/pass36-issuer-bound-attempt-reconciliation-2026-11-21`; frozen base branch `feat/pass35-authenticated-d1-lease-adapter-2026-11-20`.
+- Initial workflow evidence for prior head `fb6c703808f8740f3d3631db3b265e59da8102b7`: D1 run `45032152385` FAILURE, Pool Contract run `45032152373` SUCCESS. D1 executed 61 tests: 60 passed, 1 failed. The added non-canonical reconciliation-ID negative test passed. The failure was an existing test supplying a deliberately non-canonical conflicting ID and expecting a later outcome; canonical request validation correctly denied it earlier.
+- The D1 job log shows PR #166 merge-ref checkout at `1817d86db7f003bf8e42037bada900db525d81ec`, combining target head `fb6c703...` with frozen base `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`. Treat this as PR merge-result CI, not a standalone checkout of the head SHA.
+- Bounded test-only correction published on the implementation branch: commit `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`; test blob `b6cb31bd7e33e5934c005b3268b44de8792e5597`. The conflict case now keeps the canonical reconciliation ID and varies the evidence JTI, preserving idempotent replay and testing conflicting evidence fail-closed. No runtime code, migration, dispatch, or authority behavior changed.
+- PR #165 head re-read as `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`; file content re-read and confirmed.
+- Corrected-commit workflows at last observation: D1 run `45032534259` IN_PROGRESS; Pool Contract run `45032534262` IN_PROGRESS. Exact-head CI for corrected commit NOT VERIFIED pending completion and log inspection.
+- No merge, deployment, live provider call, executor dispatch, secret access, formal review, independent audit, qualification, or acceptance. Gemini dispatch was not needed for this test-only pass.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: poll both corrected-commit workflows, inspect D1 test totals/logs, then obtain independent security review of PR #165. Do not merge on CI alone.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
