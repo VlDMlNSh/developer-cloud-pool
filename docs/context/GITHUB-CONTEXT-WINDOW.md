@@ -2300,3 +2300,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: re-read live default HEAD/governance, then create one clean integration branch from immutable current default SHA and implement the unified schema foundation with negative-first local Workers-runtime tests. Keep dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 45 — current D1 lineage and exact CI evidence audit — 2026-11-22
+
+- Default branch `Основной` HEAD re-read: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; head message `docs: close Pass 38 in GitHub Context Window`. Workflow-run query and combined status empty; exact-current-head CI NOT VERIFIED.
+- Discovered newer CODE lineage #148→#149→#150→#152→#157→#159→#161→#163→#165. These are stacked OPEN/DRAFT/UNMERGED PRs. PR #143 is a separate older-base ledger candidate with Supervisor/Worker workflow/script edits; do not combine it with the clean CODE lineage.
+- #148 starts at frozen default `b81d2b5203f98fd0a66ea4ce2eac77bd48adb6a5`; current default is 7 commits ahead with docs-only compare delta. #165 validation base `7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250`; current default is 4 commits ahead, also docs-only compare delta. This is not a substitute for exact-current-base CI.
+- Read #165 branch README, package manifest, migrations 0001, 0011, 0012, 0014, 0015 and reconciliation adapter. The candidate uses CODE profile `jarvis-code-sandbox-v1`; migrations 0001–0015 form one lineage. It includes executor identity, atomic admission, route qualification, primary-first ambiguity recovery, SQL receipt guards, lease/fencing and reconciliation evidence. README says local-only and full legacy-table write-denial migration remains outstanding.
+- Package manifest pins Workers/Vitest harness `@cloudflare/vitest-plugin@1.4.7`, `vitest@4.1.12`; no production JOSE dependency. Reconciliation adapter still requires injected `verifyEvidence` and `trustedClock`; not production JWT/JWKS trust.
+- Re-read merge-result D1 runs: #148 44589681768 (3 tests), #152 44604194767 (29), #157 44703757450 (39), #159 44709527918 (42), #161 44711819163 (50), #163 44718354234 (54), #165 45032534259 (61); all PASS. Corresponding Pool Contract runs also PASS. #165 job log checks out merge result `8ab5a07` (head `80dcd60...` into frozen `7e76bd2...`), not standalone exact head/current default. Its Pool Contract log records `POOL_DISPATCH_ENABLED=false` at that run only.
+- PR #165 has one COMMENTED owner review, not independent approval. Inspected #148/#152/#157/#159/#161/#163/#166 returned no reviews. Issue #1 governance notes are stale (last update Nov 18 / underlying details Nov 4); live ruleset NOT VERIFIED. Issue #96 remains OPEN/PLANNED; controller dispatch not authorized.
+- No code, SQL, workflow, dependency, governance or production change; no local tests run, secrets/variable values read, hosted D1, provider calls, dispatch, deployment, merge or paid resource.
+- Status: newer CODE lineage and merge-result CI evidence VERIFIED (read-only audit); exact-current-base CI NOT VERIFIED; JOSE trust/event provenance/hosted D1/executor qualification NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create one current-default validation/integration candidate from the #148→#165 lineage, compare tree/file deltas, run migration-upgrade and negative-first Workers tests on exact current base, then resolve production JOSE trust, legacy write denial, event provenance and executor authentication. Keep dispatch false.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
