@@ -1,20 +1,23 @@
-# Cloud Pool Continuation Checkpoint — 2026-11-22 / Pass 39
+# Cloud Pool Continuation Checkpoint — 2026-11-22 / Pass 40
 
-Current continuation branch: `docs/pass39-reconciliation-review-2026-11-22`
-Base: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`
+Current documentation branch: `docs/pass39-reconciliation-review-2026-11-22`  
+Default branch baseline: `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`
 
 Read first:
-- [Canonical Context Window (default branch)](https://github.com/VlDMlNSh/developer-cloud-pool/blob/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B9/docs/context/GITHUB-CONTEXT-WINDOW.md)
-- [Pass 39 Context Addendum](../context/GITHUB-CONTEXT-WINDOW-PASS39.md)
-- [Pass 39 Review Report](../reports/2026-11-22-pass39-pass36-reconciliation-proof-review.md)
+- [Canonical Context Window](../context/GITHUB-CONTEXT-WINDOW.md)
+- [Pass 39/40 Context Addendum](../context/GITHUB-CONTEXT-WINDOW-PASS39.md)
+- [Pass 40 Research Report](../reports/2026-11-22-pass40-jose-jwks-verifier-component-research.md)
 
-State:
-- PR #165 OPEN / DRAFT / UNMERGED at `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
-- Corrected PR merge-result CI: D1 61/61 PASS; Pool Contract Validation PASS; dispatch disabled.
-- Pass 39 source review comment posted (review ID `6012744917`), not an approval or independent review.
-- Production issuer/JWKS verifier and key lifecycle, hosted D1, owner-authorized retry transition and live executor recovery remain NOT VERIFIED.
+Current engineering state:
+- PR #165 OPEN / DRAFT / UNMERGED; head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
+- One COMMENTED review (Pass 39); no approval or independent review.
+- Corrected merge-result CI: D1 run `45032534259` SUCCESS; Pool Contract run `45032534262` SUCCESS. Standalone head-only CI NOT VERIFIED.
+- Production verifier remains NOT IMPLEMENTED. Existing adapter injects verifier and trusted clock.
+- Research recommendation: use `panva/jose@6.2.18` as the cryptographic/JWKS primitive; `panva/oauth4webapi@3.8.9` is complementary OAuth/OIDC protocol tooling.
+- No dependency or runtime implementation change in Pass 40.
+- Gemini dispatch NOT RUN; no secret values, real issuer/JWKS, hosted D1, provider calls, executor, deployment or paid resources used.
 - Contour A NOT ACCEPTED; Contour B DEFERRED.
 
-Next: independent authorized review of production issuer/verifier/key lifecycle, then hosted D1 and owner-authorized reconciliation qualification. No merge, dispatch, provider calls or deployment until gates pass.
+Next bounded step: build a no-secret deterministic verifier prototype around pinned `jose`, with synthetic keys/JWKS and adversarial tests for issuer/audience, algorithms, signature, time, replay, rollover, stale-cache revocation and JWKS failures. Keep PR #165 Draft and dispatch disabled until independent review and all gates pass.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
