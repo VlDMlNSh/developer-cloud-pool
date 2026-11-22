@@ -2239,3 +2239,29 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 Pass 40 research report: [2026-11-22-pass40-jose-jwks-verifier-component-research.md](../reports/2026-11-22-pass40-jose-jwks-verifier-component-research.md)
 Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoints/2026-11-22-pass40-continuation-checkpoint.md)
+
+
+---
+
+## Daily live revalidation — 2026-11-22 19:36 Europe/Vilnius / Pass 41 preflight
+
+- Audit status: SUCCEEDED (read-only GitHub revalidation, bounded static source review, documentation-only publication). Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Current default: Основной @ 81baadbb5944e11ed41a64bd0190bf2c8edd0c41. Compared with prior baseline 7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250: 4 commits ahead / 0 behind; only Context Window and Pass 38 report changed. Current HEAD commit is unsigned. Default combined status is empty; CI NOT VERIFIED.
+- Current complete default tree has 69 entries (truncated=false). No web application directory, no proofs/d1-ledger package and no Gemini controller are present on default.
+- Issues #1, #22, #26, #94, #96 and #140 remain OPEN; GitHub search returned 15 open Issues. Search returned 100 open-PR results on its first page; total beyond that page NOT VERIFIED.
+- Ruleset #26550182 is active for exactly refs/heads/Основной; PR required; deletion/non-fast-forward blocked; review-thread resolution required; bypass list empty. Required approvals remain 0, CODEOWNERS review false, last-push approval false and extra approval false. Therefore ruleset does not enforce independent approval. POOL_DISPATCH_ENABLED value NOT VERIFIED; no variable was read or changed.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED and 153 commits behind current default (ahead counts 62/29/35/36 respectively). Exact-head associated CI: #24 two SUCCESS, #25 two SUCCESS, #30 empty/NOT VERIFIED, #31 one SUCCESS. Formal reviews and inline threads: zero on all four.
+- PR #165 remains OPEN/DRAFT/UNMERGED at 80dcd602a86ab6df58fb144ecdffaa6266cb9cf0, 93 ahead / 7 behind current default. D1 run 45032534259/job 137239043125 and Pool Contract run 45032534262/job 137239043235 are SUCCESS; classify as PR merge-result CI, not standalone head-only qualification. One COMMENTED review by repository owner VlDMlNSh, no approval, no threads; independent review NOT VERIFIED. PR #166 is validation-only.
+- Current documentation PR #167 branch docs/pass39-reconciliation-review-2026-11-22 was at c3c48891982d4868f97c328369a9e244cf7b7146, 7 ahead / 0 behind before this daily publication. It remains OPEN/DRAFT/UNMERGED; exact-head CI and reviews absent. Older PR #145 branch is 119 ahead / 7 behind, no CI/reviews.
+- GitHub Read Adapter path-fix branch fix/github-read-adapter-path-segments-2026-11-06 remains dee17350864cb49e8c5dd41cf61859d77d3affca, 38 ahead / 153 behind; no PR, no exact-head CI, tests NOT VERIFIED.
+- Default Supervisor workflow is scheduled heartbeat-only; script refuses legacy dispatch if POOL_DISPATCH_ENABLED is true. Worker workflow_dispatch is an inert retired DSH worker that always fails closed. Live schedule-run freshness and runtime execution NOT VERIFIED because current run collection was unavailable. No controller/worker was launched.
+- Pass 41 static source review target: PR #165 head 80dcd602a86ab6df58fb144ecdffaa6266cb9cf0. Read blobs: package d970b887f52eb1011e3df74b560ad9a35bb25866; adapter fe4102eae2038b98be3220bb2961fa433bb9b4b0; migration 0015 442db58f7c6ff0463e9a391572a1e45ebccc7df3; tests b6cb31bd7e33e5934c005b3268b44de8792e5597.
+- New pre-integration finding: adapter samples trustedNow before awaiting verifyEvidence, then uses the same timestamp for claim expiry normalization and verified_at. If a production verifier performs asynchronous remote JWKS resolution and validates against that supplied timestamp, a token expiring during lookup may pass stale-time checks. Require a fresh trusted-clock read after verification, post-verification exp/iat/nbf checks, clock-rollback rejection and a deterministic delayed-verifier expiry test. This is a source-level risk in an unmounted proof package, not a deployed exploit.
+- panva/jose v6.2.18 release (2026-11-18) and upstream docs re-read. jwtVerify supports explicit algorithms, issuer/audience, clockTolerance, currentDate, maxTokenAge and typ; RemoteJWKSetOptions supports customFetch, cacheMaxAge, cooldownDuration and timeoutDuration. Remote JWKS selection/cooldown semantics require fixed server-owned JWKS URI, redirect/origin/size/timeout policy and emergency cache invalidation/revocation.
+- Pass 41 source review VERIFIED; code change NOT RUN; tests NOT RUN; production verifier NOT IMPLEMENTED. D1 package has no jose dependency; verifier and clock remain injected seams.
+- Documentation-only publication on docs/pass39-reconciliation-review-2026-11-22:
+  - Daily report commit d916dae9fa0728d888e2ded56398771ad06a3f69; blob d580d011eaf6cd9c32a83f30406de7c787b085bd.
+  - Daily checkpoint commit 262935de6a03566d7bd0aa63c0bbfa4813819221; checkpoint blob to be read back and recorded after publication.
+  - This working branch is not canonical and PR #167 remains Draft. No merge.
+- No source/schema/runtime/security-boundary changes, no tests/workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
+- Next bounded step: Pass 42 test-only, no-secret jose verifier prototype with synthetic keys/JWKS, including a delayed verifier that crosses exp; keep it unmounted and non-authorizing. Do not trigger GitHub workflows.
