@@ -2253,3 +2253,19 @@ Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoint
 - Next: when repository-connected writable/test execution is available, create a separate clean-base prototype, pin jose and lock integrity, implement the injected verifier adapter, add deterministic synthetic signed-JWT/JWKS tests, and inspect exact-head CI before integration. Keep dispatch disabled.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 42 — Gemini controller gate and reconciliation CI evidence audit — 2026-11-22
+
+- Default branch `Основной` HEAD re-read: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; PR #165 remains OPEN / DRAFT / UNMERGED at head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
+- Expected `.github/workflows/gemini-batch-dispatch-controller.yml` returned GitHub Contents API 404 on both default branch and PR #165 head. Controller is NOT FOUND / NOT VERIFIED; Gemini dispatch NOT RUN. Issue #96 remains OPEN / PLANNED and explicitly prohibits treating dispatch as qualified.
+- D1 package manifest blob `d970b887f52eb1011e3df74b560ad9a35bb25866` and lock blob `876c5d3de53bb12efaecdec939cbe8710cbd9e3c` show no JOSE runtime dependency. Adapter blob `fe4102eae2038b98be3220bb2961fa433bb9b4b0` still injects `verifyEvidence` and `trustedClock`; production JWT/JWKS verification is NOT IMPLEMENTED.
+- PR #165 has one COMMENTED review, not APPROVED. Reviewer explicitly states production OIDC/JWKS issuer/key lifecycle, hosted D1 and live executor recovery remain unproven.
+- D1 merge-result run `45032534259`, job `137239043125`: SUCCESS; log confirms `npm ci`, `npm run check`, `npm test`, 6 test files / 61 tests passed. Pool Contract merge-result run `45032534262`, job `137239043235`: SUCCESS; dispatch-disabled assertion, YAML parsing and security-contract validation passed. Do not claim standalone head-only CI.
+- Issues #96/#140/#151 remain OPEN; #151 is future architecture only and does not authorize Contour B.
+- Docs-only audit. No source, dependency, lock, workflow or governance changes; no secret/variable values, hosted D1, provider calls, dispatch, deployment, merge or paid resources.
+- Report: `docs/reports/2026-11-22-pass42-gemini-controller-gate-audit.md`; checkpoint: `docs/checkpoints/2026-11-22-pass42-continuation-checkpoint.md`.
+- Status: controller BLOCKED / NOT FOUND; Gemini NOT RUN; JOSE PLANNED / NOT IMPLEMENTED; production trust NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: locate canonical controller design and create a bounded owner-only controller proposal under Issue #96, with dispatch disabled; implement JOSE only in the isolated D1 package when exact lockfile/test execution is available.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
