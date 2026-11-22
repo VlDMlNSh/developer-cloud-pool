@@ -9,6 +9,7 @@ function deny(reason) {
 function valid(input) {
   return Boolean(
     input && SAFE_ID.test(input.reconciliationId || "") &&
+    input.reconciliationId === "reconcile:" + input.attemptId &&
     SHA256.test(input.taskKey || "") && SAFE_ID.test(input.attemptId || "") &&
     Number.isSafeInteger(input.leaseGeneration) && input.leaseGeneration > 0 &&
     input.evidence && typeof input.evidence === "object"
