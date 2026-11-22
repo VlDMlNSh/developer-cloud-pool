@@ -2285,3 +2285,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: create one clean branch from current default HEAD, reconcile migration/schema ownership, port event predicate + atomic admission, then lease/fencing; exact-head tests, dispatch remains false.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 44 — current-base D1 schema collision map — 2026-11-22
+
+- Default branch `Основной` HEAD re-read and fetched: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`. Default-head workflow-run query and combined status were empty; exact-head CI NOT VERIFIED.
+- Re-read Issue #96 and #140: both OPEN; #96 remains PLANNED and dispatch-disabled; #140 requests one current-base integrated admission/lease proof.
+- Re-read live PR metadata: #111 `6871967...` (base `35208f0...`), #112 `c9a4c0a...` (same base), #114 `ab9461e...` (same base), #125 `69398d4...` stacked on #114, #165 `80dcd60...` (base `83b8e9d...`); all OPEN/DRAFT/UNMERGED.
+- GitHub compare API returned exact changed-file inventories for all five candidates. SQL and adapter source was read from exact branch refs. #111 migration 0001 and #114 migration 0001 independently create `pool_approval_ledger`; both lineages also independently define `pool_tasks`, `pool_task_approvals`, and `pool_task_outbox` with incompatible semantics. #114 provides atomic source-comment receipt/approval/task/outbox but no lease/attempt schema. #111 supplies logical tasks, leases, attempts and reconciliation queue, but its approval profile is hardcoded to legacy `dsh-headless-probe`. #165 migration 0015 depends on #111 tables `pool_tasks`, `pool_attempts`, and `pool_attempt_reconciliations`. #125 is a stacked modification of #114; #112 is read-only event validation only.
+- Decision: do not merge/cherry-pick candidates wholesale or apply both migration roots. Build one canonical migration lineage from current default; port #112 event predicate, #114 durable admission, #111 lease/attempt, then #165 reconciliation. Remove legacy profile; keep dispatch/execution authorization false.
+- Pass 44 report: `docs/reports/2026-11-22-pass44-d1-schema-collision-map.md`; checkpoint: `docs/checkpoints/2026-11-22-pass44-continuation-checkpoint.md`.
+- No source/SQL/workflow/dependency changes and no tests run. No secrets/variables, hosted D1, provider calls, dispatch, merge, deployment or paid resources. Governance live readback NOT VERIFIED.
+- Status: schema collision map VERIFIED (read-only); integrated current-base proof PLANNED / NOT IMPLEMENTED; production controller NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: re-read live default HEAD/governance, then create one clean integration branch from immutable current default SHA and implement the unified schema foundation with negative-first local Workers-runtime tests. Keep dispatch disabled.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
