@@ -2262,6 +2262,6 @@ Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoint
 - Documentation-only publication on docs/pass39-reconciliation-review-2026-11-22:
   - Daily report commit d916dae9fa0728d888e2ded56398771ad06a3f69; blob d580d011eaf6cd9c32a83f30406de7c787b085bd.
   - Daily checkpoint commit 262935de6a03566d7bd0aa63c0bbfa4813819221; blob efb8875c6eacd514f630daa79969c8c68d2566cc.
-  - Final documentation branch HEAD after publication: 3afb9d19effc56e72a0c87349059cefa8f60bc53; 10 ahead / 0 behind current default. PR #167 remains OPEN/DRAFT/UNMERGED; its updated head has no exact-head CI and no reviews. This working branch is not canonical. No merge.
+  - Documentation branch HEAD before the final Context Window refresh: 3afb9d19effc56e72a0c87349059cefa8f60bc53; 10 ahead / 0 behind current default. PR #167 remains OPEN/DRAFT/UNMERGED; its updated head has no exact-head CI and no reviews. This working branch is not canonical. No merge.
 - No source/schema/runtime/security-boundary changes, no tests/workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
 - Next bounded step: Pass 42 test-only, no-secret jose verifier prototype with synthetic keys/JWKS, including a delayed verifier that crosses exp; keep it unmounted and non-authorizing. Do not trigger GitHub workflows.
