@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { env } from "cloudflare:workers";
 import { bindGitHubNextEvent } from "../src/github-next-event.mjs";
 
 const sha = "a".repeat(40);
@@ -61,5 +62,20 @@ describe("GitHub owner /next event context", () => {
     await expect(bindGitHubNextEvent({ ...valid, ...patch })).resolves.toMatchObject({
       decision: "DENY", dispatch: false, executionAuthorized: false
     });
+  });
+
+  it("creates one append-only receipt table with source-comment uniqueness", async () => {
+    const table = await env.POOL_DB.prepare(
+      "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'pool_source_comment_receipts'"
+    ).first();
+    expect(table?.sql).toContain("UNIQUE (repository_id, source_comment_id)");
+    const triggers = await env.POOL_DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name IN ('pool_source_comment_receipt_full_binding_guard', 'pool_source_comment_receipts_no_update', 'pool_source_comment_receipts_no_delete')"
+    ).all();
+    expect(new Set((triggers.results ?? []).map(row => row.name))).toEqual(new Set([
+      "pool_source_comment_receipt_full_binding_guard",
+      "pool_source_comment_receipts_no_update",
+      "pool_source_comment_receipts_no_delete"
+    ]));
   });
 });
