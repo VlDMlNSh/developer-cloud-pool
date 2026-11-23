@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-23 — Pass 50 persistent progress and launch-readiness measurement standard
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2351,5 +2351,26 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Gemini NOT RUN / NOT AUTHORIZED. No secret values read, hosted D1 writes, provider calls, deployment, merge or production action.
 - Status: Pass 49 code and exact-head CI VERIFIED; production trust NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement a no-secret JOSE verifier prototype with exact dependency pin, signed synthetic JWT/JWKS tests, issuer/audience/alg/typ/lifetime checks, bounded fetch and key rotation tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 50 — persistent progress and launch-readiness measurement system — 2026-11-23
+
+- Report: [Pass 50 measurement system](../reports/2026-11-23-pass50-progress-measurement-system.md).
+- Checkpoint: [Pass 50 continuation checkpoint](../checkpoints/2026-11-23-pass50-continuation-checkpoint.md).
+- Measurement standard: [Cloud Pool Progress & Launch Readiness Measurement Standard](../metrics/CLOUD-POOL-PROGRESS-MEASUREMENT-STANDARD.md).
+- Append-only ledger: [Cloud Pool Progress Ledger](../metrics/CLOUD-POOL-PROGRESS-LEDGER.md).
+- Immutable code state re-read: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration branch @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; PR #168 OPEN/DRAFT/UNMERGED.
+- Issue #140 remains OPEN and excludes external review requests for its bounded local D1 task. Active ruleset #26550182 requires PR/thread resolution but zero approving reviews; independent approval is not enforced.
+- Defined separate Engineering Progress (EP) and Launch Readiness (LR). EP uses approved effort points and verified work items; LR uses ten weighted domains, 0–4 maturity scores, caps and governance vetoes.
+- Per-pass telemetry distinguishes observed UTC elapsed time from directly measured active time; tracks immutable SHA, diff stats, tests, exact-head CI, blockers, rework and confidence. No historical message counts or durations are fabricated.
+- Previous 60% EP / 30% LR values are low-confidence conversational estimates only, not formal measured scores. EP is NOT COMPUTABLE until approved effort baseline exists; LR is NOT SCORED until domain-by-domain primary evidence scoring is completed.
+- Pass 50 was documentation-only. No application code/tests, dispatch, provider calls, hosted D1 writes, deployment, secrets access or merge.
+- Pass 49 evidence remains: D1 63/63 tests on exact PR merge-result; Pool Contract Validation SUCCESS with dispatch false. Production JOSE/JWKS, routing/quotas, authenticated UI, real executors, hosted persistence/recovery and independent review remain blockers.
+- Pass 51 next: no-secret `panva/jose` verifier prototype with exact dependency/lockfile pin, fixed trusted issuer/audience/JWKS policy, explicit algorithms/typ, bounded fetch/rotation, synthetic JWT/JWKS fixtures, negative-first tests and exact-head CI. Preserve `dispatch:false` and `executionAuthorized:false`.
+- Status: Pass 50 documentation publication SUCCEEDED; readback verification pending; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
