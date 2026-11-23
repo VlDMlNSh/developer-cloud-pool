@@ -36,3 +36,7 @@ PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
 Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140  
 Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96  
 MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## CI correction history
+- Intermediate D1 run `45273064784` failed 1/107 because the old stale-workflow-SHA negative test contradicted the new distinct-SHA contract. Replaced with malformed-SHA rejection and positive distinct-SHA coverage.
+- Final D1 `45273084680` passed 108/108; final Pool Contract `45273084714` passed. Intermediate Pool Contract run cancelled. Final target is green.
