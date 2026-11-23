@@ -1,7 +1,7 @@
 # Pass 50 — persistent progress and launch-readiness measurement system
 
 Date: 2026-11-23
-Status: DOCUMENTATION PUBLISHED TO WORKING BRANCH; READBACK PENDING; NO CONTOUR A ACCEPTANCE
+Status: DOCUMENTATION PUBLISHED TO WORKING BRANCH; READBACK VERIFIED; NO CONTOUR A ACCEPTANCE
 
 ## Immutable state rechecked
 - Default branch `Основной`: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
@@ -31,7 +31,7 @@ Historical 60% EP / 30% LR values are preserved as low-confidence conversational
 - All documentation is on a working documentation branch, not default. No code changes to PR #168.
 
 ## Tests and disposition
-No application/code tests were run because this pass changes documentation only. GitHub readback and blob SHA verification are required before marking documentation integrity VERIFIED. No independent review. Gemini NOT RUN / NOT AUTHORIZED; controller gates not requalified. No production deployment, provider calls, hosted D1, dispatch, secret access or merge.
+No application/code tests were run because this pass changes documentation only. GitHub readback completed for all five files. Blob SHAs: standard `af29fc7aba80b48704bf17966be0842318ea628e`; ledger `b0262aafb9230f2f867ab530f78a33159b049831`; report `28fe09accd6c24498529cc2ebaef8d6fbd3358e9`; checkpoint `ddc7a1b91867b5116e44e0af9b2eba959a75884d`; Context Window `060b6f0d53ec6cc096ce34eabcc9d268f9c4cf0f`. Documentation integrity VERIFIED. No independent review. Gemini NOT RUN / NOT AUTHORIZED; controller gates not requalified. No production deployment, provider calls, hosted D1, dispatch, secret access or merge.
 
 Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 
