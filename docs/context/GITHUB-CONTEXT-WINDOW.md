@@ -2,14 +2,14 @@
 
 > Operational `/next` recovery source. Historical sections below are retained; refresh live GitHub refs, PRs, Issues, exact-head CI and governance on every pass.
 
-Last refreshed: 2026-11-24 — Pass 59 owner /next event binder and source-comment receipt  
+Last refreshed: 2026-11-24 — Pass 60 local D1 integration for GitHub /next source-comment receipt  
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
 Default branch: `Основной`  
 Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
 Current D1 integration candidate: PR #170 OPEN / DRAFT / UNMERGED  
-PR #170 head: `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `e5f648fbc9bf036e8591914353ef3a14eebe7956`  
-PR #170 diff: 37 files, +7,398 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
-D1 exact-merge run #45270189346 SUCCESS (7 files, 100/100 tests); Pool Contract run #45270189385 SUCCESS. Both checked out the exact synthetic merge SHA above.  
+PR #170 head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `PENDING FINAL CI READBACK`  
+PR #170 diff: 38 files, +7,655 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
+Pass 60 final-head D1 run #45271784660 and Pool Contract run #45271784521 are being rechecked against the final README-updated PR head.  
 Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / DRAFT / UNMERGED; latest PR #169 head is tracked in live PR metadata.
 
 ## Current engineering state — 2026-11-24
@@ -23,14 +23,24 @@ Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / D
 - Migration 0017 adds an append-only, source-comment-unique receipt linked to the canonical admission and guarded against mismatch with the consumed approval, task, attempt, route, task-ready outbox and commit receipt. No legacy outbox or second ledger.
 - Receipt write follows the existing admission transaction in a second phase. The wrapper does not return success until primary-first receipt readback matches; ambiguous writes are reconciled by primary readback. All results remain `dispatch:false`, `executionAuthorized:false`.
 - Event digest is stable across run ID/attempt changes so a rerun can recover a committed admission if the source receipt was not yet written. Run ID/attempt remain persisted in the receipt; a mismatch against an existing receipt fails closed.
-- NOT VERIFIED: dedicated D1 integration tests for receipt insertion/replay/ambiguous-write recovery/full tuple mismatch are still missing. Pass 60 is to add those tests before any live controller work.
+- Pass 60 added 7 local D1 integration tests for receipt success/exact replay, conflicting admission, run provenance conflict, pre-commit failure/recovery, lost acknowledgement, partial readback, unavailable primary readback and incomplete task-ready outbox tuple. All paths preserve dispatch/execution authorization false.
 - No live default-branch `issue_comment` controller exists. The workflow ref in the binder is only the expected future identity, not proof the workflow is present or trusted.
 - No cryptographic webhook signature validation or independent GitHub API read of default HEAD. Runner-context binding alone does not establish live event authenticity.
 - PR #112 remains historical: owner/event predicate only, no durable receipt or workflow/run binding. PR #125 remains historical: competing schema, retired DSH profile, incomplete replay tuple; never copy its ledger or legacy outbox.
-- PR #170 remains OPEN/DRAFT/UNMERGED, head `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, synthetic merge `e5f648fbc9bf036e8591914353ef3a14eebe7956`; 37 files, +7,398/-0; reviews 0, threads 0.
+- PR #170 remains OPEN/DRAFT/UNMERGED, head `9a61572dca2a6621001a1bae770e8d85a5d93315`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 38 files, +7,655/-0; reviews 0, threads 0.
 - All adapters remain non-authorizing; worker entrypoint remains inert. No live routing, quota enforcement, hosted D1, worker execution or authenticated UI qualification.
 - Exact ruleset detail was not independently re-read in Pass 59; no merge was attempted. Prior recorded ruleset ID: `26550182`, active enforcement; recheck its full rules before any merge/dispatch.
 - No dispatch, secrets/variables inspection, provider calls, hosted D1, deployment, merge or production mutation. Active engineering time NOT MEASURED.
+
+## Pass 60 evidence
+
+- Report: [Pass 60 report](../reports/2026-11-24-pass60-next-event-receipt-d1-integration.md)
+- Checkpoint: [Pass 60 checkpoint](../checkpoints/2026-11-24-pass60-next-event-receipt-d1-integration.md)
+- PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
+- D1 run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45271784660
+- Pool Contract run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45271784521
+- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
+- Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
 
 ## Pass 59 evidence
 
@@ -46,7 +56,7 @@ Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / D
 
 1. Re-read this state block, latest report/checkpoint and refresh default HEAD, PR #170/#169, Issues #96/#140, exact-head/merge-result CI, reviews and rulesets.
 2. Freeze target SHA, scope, non-goals, Reuse First decision, risks and DoD before code changes.
-3. **Pass 60 next:** add direct synthetic D1 integration tests for `admitGitHubNextEvent` and receipt persistence: successful insert, exact replay, rerun, duplicate source comment, ambiguous write, partial/missing receipt, full tuple mismatch and unavailable primary readback.
+3. **Pass 61 next:** test duplicate source-comment key against a distinct admission envelope; forged receipt SQL bindings; missing route/commit receipt; receipt immutability; and verify future issue_comment workflow SHA/target-ref semantics before controller creation.
 4. Keep one canonical `proofs/d1-ledger` path, CODE profile only, no second ledger, no live controller, no dispatch.
 5. Run exact synthetic merge-result D1 and Pool Contract CI; update report/checkpoint/Context Window. No hosted D1, secrets, provider calls, deployment, merge or production mutation.
 6. Keep Contour B deferred until Contour A is formally ACCEPTED.
