@@ -14,7 +14,7 @@ CREATE TABLE pool_source_comment_receipts (
   ref TEXT NOT NULL CHECK (ref = 'refs/heads/Основной'),
   target_sha TEXT NOT NULL CHECK (length(target_sha) = 40 AND target_sha NOT GLOB '*[^0-9a-f]*'),
   workflow_ref TEXT NOT NULL CHECK (workflow_ref = 'VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной'),
-  workflow_sha TEXT NOT NULL CHECK (length(workflow_sha) = 40 AND workflow_sha NOT GLOB '*[^0-9a-f]*'),
+  workflow_sha TEXT NOT NULL CHECK (length(workflow_sha) = 40 AND workflow_sha NOT GLOB '*[^0-9a-f]*' AND workflow_sha = target_sha),
   run_id INTEGER NOT NULL CHECK (run_id > 0),
   run_attempt INTEGER NOT NULL CHECK (run_attempt > 0),
   profile TEXT NOT NULL CHECK (profile = 'jarvis-code-sandbox-v1'),
@@ -49,6 +49,7 @@ WHEN NOT EXISTS (
      AND t.current_attempt_id = a.attempt_id AND t.attempt_number = a.attempt_number
      AND a.qualification_id = q.qualification_id
      AND q.qualification_status = 'qualified' AND q.revoked_at IS NULL
+     AND q.capability_profile = NEW.profile
      AND q.evidence_digest = a.evidence_digest
      AND o.status = 'pending' AND o.event_type = 'pool.task.ready'
      AND o.admission_id = a.admission_id AND o.attempt_id = a.attempt_id
