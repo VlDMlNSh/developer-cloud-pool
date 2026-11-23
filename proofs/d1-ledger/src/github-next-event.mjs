@@ -102,7 +102,7 @@ async function verifyAdmissionChain(db, input) {
     row.receipt_dispatch_enabled === 0);
 }
 
-export async function recordGitHubNextReceipt(db, input, event, trustedClock) {
+async function recordGitHubNextReceipt(db, input, event, trustedClock) {
   if (!db || typeof db.prepare !== "function" || typeof db.withSession !== "function") return deny("SOURCE_COMMENT_STORAGE_UNAVAILABLE");
   const a = input?.approval;
   if (!a || a.ownerNumericId !== event.ownerNumericId || a.repositoryId !== event.repositoryId ||
