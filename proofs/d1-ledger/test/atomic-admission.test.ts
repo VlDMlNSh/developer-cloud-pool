@@ -62,7 +62,13 @@ beforeEach(async () => {
     "pool_route_qualification_no_delete", "pool_attempt_events_no_update",
     "pool_attempt_events_no_delete", "pool_attempt_projection_events_no_update",
     "pool_attempt_projection_events_no_delete", "pool_attempt_projection_comment_events_no_update",
-    "pool_attempt_projection_comment_events_no_delete"
+    "pool_attempt_projection_comment_events_no_delete",
+    "pool_task_claims_legacy_insert_block",
+    "pool_task_claims_legacy_update_block",
+    "pool_task_claims_legacy_delete_block",
+    "pool_task_outbox_legacy_insert_block",
+    "pool_task_outbox_legacy_update_block",
+    "pool_task_outbox_legacy_delete_block"
   ]) await env.POOL_DB.prepare(`DROP TRIGGER IF EXISTS ${name}`).run();
 
   await env.POOL_DB.prepare("DELETE FROM pool_admission_commit_receipts").run();
@@ -92,7 +98,13 @@ beforeEach(async () => {
     ["pool_attempt_projection_events_no_update", "BEFORE UPDATE ON pool_attempt_projection_events"],
     ["pool_attempt_projection_events_no_delete", "BEFORE DELETE ON pool_attempt_projection_events"],
     ["pool_attempt_projection_comment_events_no_update", "BEFORE UPDATE ON pool_attempt_projection_comment_events"],
-    ["pool_attempt_projection_comment_events_no_delete", "BEFORE DELETE ON pool_attempt_projection_comment_events"]
+    ["pool_attempt_projection_comment_events_no_delete", "BEFORE DELETE ON pool_attempt_projection_comment_events"],
+    ["pool_task_claims_legacy_insert_block", "BEFORE INSERT ON pool_task_claims"],
+    ["pool_task_claims_legacy_update_block", "BEFORE UPDATE ON pool_task_claims"],
+    ["pool_task_claims_legacy_delete_block", "BEFORE DELETE ON pool_task_claims"],
+    ["pool_task_outbox_legacy_insert_block", "BEFORE INSERT ON pool_task_outbox"],
+    ["pool_task_outbox_legacy_update_block", "BEFORE UPDATE ON pool_task_outbox"],
+    ["pool_task_outbox_legacy_delete_block", "BEFORE DELETE ON pool_task_outbox"]
   ];
   for (const [name, clause] of guards) {
     await env.POOL_DB.prepare(`CREATE TRIGGER ${name} ${clause} BEGIN SELECT RAISE(ABORT, '${name.toUpperCase()}'); END`).run();
