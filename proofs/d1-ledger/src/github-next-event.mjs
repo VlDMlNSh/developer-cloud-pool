@@ -38,7 +38,7 @@ export async function bindGitHubNextEvent(context) {
     bound.sourceCommentId, bound.repositoryId, bound.ownerNumericId, bound.issueNumber,
     bound.eventName, bound.eventAction, bound.actorNumericId, bound.actorLogin,
     bound.authorAssociation, bound.bodyDigest, bound.ref, bound.targetSha,
-    bound.workflowRef, bound.workflowSha, bound.runId, bound.profile
+    bound.workflowRef, bound.workflowSha, bound.profile
   ]);
   try {
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
