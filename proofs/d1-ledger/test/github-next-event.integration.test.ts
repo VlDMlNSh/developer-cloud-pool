@@ -146,6 +146,13 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 1 });
     expect(await env.POOL_DB.prepare("SELECT COUNT(*) AS count FROM pool_attempts WHERE attempt_id = ?")
       .bind(f.input.attempt.attemptId).first()).toMatchObject({ count: 1 });
+    const conflictingAdmission = await admitGitHubNextEvent(
+      env.POOL_DB, { ...f.input, admissionId: "admission-next-conflict" }, f.context, trustedClock
+    );
+    expect(conflictingAdmission).toMatchObject({
+      decision: "DENY", dispatch: false, executionAuthorized: false
+    });
+    expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 1 });
   });
 
   it("denies a rerun whose run provenance conflicts with the immutable receipt", async () => {
