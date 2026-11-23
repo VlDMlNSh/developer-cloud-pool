@@ -7,7 +7,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read in Pass 55)
 Working documentation branch: `docs/engineering-excellence-2026-11-23`
-PR #169: OPEN / DRAFT / UNMERGED; head after Pass 55 report/checkpoint writes: `74f09ffd2285d9abcd40ee49fa3aed85b364f5de`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
+PR #169: OPEN / DRAFT / UNMERGED; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact head is dynamic and MUST be re-read each pass. Pass 55 report/checkpoint are committed on this branch.
 PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 2 commits behind current default (compare 107 ahead / 2 behind)
 PR #169 before Pass 55: exact-head workflow runs empty; combined statuses empty; reviews 0; review threads 0. Recheck after this context update. No CI/review is implied by this documentation write.
 
