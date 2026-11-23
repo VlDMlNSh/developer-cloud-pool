@@ -2434,3 +2434,19 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 - Next recommended bounded pass: canonical D1 PR consolidation and actual runtime clock-source qualification, after fresh refs/governance/CI restore.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 52 — canonical D1 consolidation and executor priority correction (2026-11-23)
+
+- Report: [Pass 52 canonical D1 consolidation](../reports/2026-11-23-pass52-canonical-d1-consolidation.md); checkpoint: [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-canonical-d1-consolidation.md).
+- Default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- PR #168 is the canonical D1 candidate for Issue #140: OPEN/DRAFT/UNMERGED; head `ec1caca61caa453d4e0ce5405890e8791f6bfd29`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 33 files, +6,877; contains one migration lineage 0001–0015. Default is two commits ahead, and compare shows both commits are documentation-only (Context Window + Pass 50 report). No source/migration drift was observed.
+- PR #148 → #149 → #150 → #152 → #157 → #159 → #161 → #163 → #165 is the implementation lineage. #153/#154/#156/#158/#160/#162/#164/#166 are validation PRs. Do not merge the stacked implementation/validation PRs individually; preserve their provenance and continue on #168.
+- PR #168 CI exact head: D1 run `45227149858` SUCCESS, 6 files/68 tests; Pool Contract run `45227149883` SUCCESS. Merge-result CI NOT VERIFIED; formal reviews 0; independent review NOT RUN.
+- New HIGH blocker: `admitQualifiedTask` still uses caller-controlled `input.now`; its deny and success outputs omit explicit `executionAuthorized:false`. Issue #140 requires both `dispatch:false` and `executionAuthorized:false` on every adapter outcome. Worker remains inert; no runtime integration proven. Pass 53 must fix this before the adapter can qualify.
+- README confirms full legacy-table write-denial migration remains outstanding.
+- Corrected Issue #96: owner scope amendment 2026-11-17 states Claude Code + ECC + FCC is first CODE executor via separately verified free route; Gemini is optional and not a launch dependency. Previous three-vs-four conflict claim in the acceleration audit was incorrect and has been corrected in the report/checkpoint.
+- PR #169 remains OPEN/DRAFT/UNMERGED, current head before Context Window/README update `b6d79ffaf8e6e60e28d4aef9da6a2c6638f40792`; exact-head CI NOT VERIFIED; reviews 0. Re-read live head before next pass.
+- No secrets, provider calls, hosted D1, dispatch, Cloudflare mutation, deployment, merge or production action. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: Pass 53 trusted-clock + explicit authority flags remediation in admission adapter; add adversarial tests and run exact-head CI.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
