@@ -2306,3 +2306,27 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Status: Pass 47 audit VERIFIED; semantic replay NOT RUN; current exact-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 48 — current-base D1 integration and post-verification time fence — 2026-11-23
+
+- Report: [Pass 48 current-base D1 integration](../reports/2026-11-23-pass48-current-base-d1-integration.md).
+- Checkpoint: [Pass 48 continuation checkpoint](../checkpoints/2026-11-23-pass48-continuation-checkpoint.md).
+- Frozen default first parent: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- D1 lineage second parent: `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
+- Integration commit: `c248241f4cc64f703cfb62679a665a921504d3e3`; two parents preserve both current-base and source lineage provenance.
+- Draft PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168.
+- Source fix: trusted clock is sampled again after async verification; invalid/non-positive/backwards time fails closed; expiry claims, persisted verified_at and readback use post-verification time.
+- Added deterministic tests for expiry during async verification and trusted-clock rollback.
+- PR merge-result SHA: `f0c28a110653b735c349a7a635a6dc21663fffc0`.
+- D1 run 45210022504 / job 137816004227: SUCCESS; exact PR merge-result checkout; npm ci, check, tests passed; 6/6 files and 62/62 tests passed.
+- Pool Contract run 45210022494 / job 137815996812: SUCCESS; dispatch env false; six workflow YAML files parsed; all pool security contract checks passed; `POOL_CONTRACT_VALIDATION=PASS`.
+- PR #168 remains OPEN/DRAFT/UNMERGED; no formal reviews. Independent security review NOT RUN.
+- Production JOSE/JWKS verifier NOT IMPLEMENTED / NOT MOUNTED; hosted D1, live executor, provider quota and web UI remain NOT QUALIFIED.
+- Gemini NOT RUN / NOT AUTHORIZED. No secret values read, no provider calls, hosted D1 writes, deployment, merge or production action.
+- Status: integration/provenance VERIFIED; PR merge-result CI VERIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of PR #168, address findings, rerun exact-head CI. Do not merge or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
