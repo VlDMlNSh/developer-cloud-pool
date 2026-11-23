@@ -14,8 +14,9 @@ The clean-base candidate starts from the owner-approved CODE capability root and
 - 0013: immutable approval authorization, current route qualification and receipt/outbox binding guards.
 - 0014: database-enforced lease acquisition, renewal, fencing, terminal release and indeterminate quarantine.
 - 0015: append-only issuer-verified reconciliation decision evidence bound to the current quarantined attempt and lease generation.
+- 0016: disables INSERT/UPDATE/DELETE on retired per-approval claim and outbox tables; canonical task delivery remains in `pool_task_delivery_outbox`.
 
-Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Pass 34 adds SQL lease/fencing guards; Pass 35 adds a local authenticated-principal lease adapter seam with primary-first readback. Full legacy-table write-denial migration remains outstanding.
+Migration 0011 deliberately does not backfill historical rows because their executor identity cannot be inferred. Existing rows without an executor ID cannot be consumed through the canonical task-keyed trigger. Pass 27 adds a forward-only atomic qualified-admission migration (0012) and adapts the local admission adapter to canonical task identity v2. The adapter binds executor identity across approval, logical task, admission, outbox linkage and commit receipt. Pass 34 adds SQL lease/fencing guards; Pass 35 adds a local authenticated-principal lease adapter seam with primary-first readback. Migration 0016 seals both retired per-approval tables against direct SQL writes while preserving historical rows.
 
 ## Runtime and test boundary
 
@@ -36,7 +37,7 @@ npm run check
 npm test
 ```
 
-The ordinary D1 suite applies migrations 0001–0015 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0015. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
+The ordinary D1 suite applies migrations 0001–0016 to a fresh local D1 database. The separate `UPGRADE_DB` test binding exercises a staged upgrade: it applies only 0001–0010, seeds historical synthetic approval/task/attempt/outbox rows at that boundary, and then applies only 0011–0015. It checks preservation of historical IDs and relationships, the intentionally-null legacy executor identity, fail-closed handling of unidentifiable legacy approvals, executor-bound atomic admission, receipt/outbox linkage, exact replay, cross-executor task-key conflict, migration reapplication and missing-receipt denial.
 
 This is an isolated synthetic upgrade fixture, not a dump of any hosted or production database. The upgrade path does not run all migrations on an empty database and call that an upgrade.
 
@@ -115,3 +116,12 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - Every deny and success response explicitly includes `dispatch: false` and `executionAuthorized: false`.
 - Adversarial tests cover caller future/past timestamps, invalid/throwing/missing clock, time preceding route evidence, and the existing replay/concurrency/recovery paths.
 - This is a local adapter contract. It does not prove the real controller/runtime clock source or authorize execution; runtime clock provenance remains a separate gate.
+
+
+## Pass 57 — retired legacy claim path sealed
+
+- Forward-only migration 0016 adds database-level INSERT, UPDATE and DELETE denial triggers to historical `pool_task_claims` and `pool_task_outbox` tables.
+- Existing rows and migration history are preserved; no table drop, rename, backfill or migration rewrite.
+- Canonical task admission and delivery continue exclusively through `pool_tasks` and `pool_task_delivery_outbox`.
+- Baseline tests assert the six guards exist and reject direct INSERT. Atomic-admission and lease test fixtures temporarily drop and restore the six guards only during synthetic teardown.
+- This closes the documented direct-SQL legacy-write gap in the local proof. It does not establish hosted D1 permissions, live worker isolation, or execution authorization.
