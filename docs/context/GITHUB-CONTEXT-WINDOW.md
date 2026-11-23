@@ -8,9 +8,9 @@ Default branch: `Основной`
 Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
 Current D1 integration candidate: PR #170 OPEN / DRAFT / UNMERGED  
 PR #170 head: `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `e5f648fbc9bf036e8591914353ef3a14eebe7956`  
-PR #170 diff: 37 files, +7,399 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
+PR #170 diff: 37 files, +7,398 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
 D1 exact-merge run #45270189346 SUCCESS (7 files, 100/100 tests); Pool Contract run #45270189385 SUCCESS. Both checked out the exact synthetic merge SHA above.  
-Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / DRAFT / UNMERGED; latest docs commit `1764c0ed5a9b1f2fa1e52bca02b8eaea11332126`.
+Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / DRAFT / UNMERGED; latest PR #169 head is tracked in live PR metadata.
 
 ## Current engineering state — 2026-11-24
 
@@ -27,7 +27,7 @@ Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / D
 - No live default-branch `issue_comment` controller exists. The workflow ref in the binder is only the expected future identity, not proof the workflow is present or trusted.
 - No cryptographic webhook signature validation or independent GitHub API read of default HEAD. Runner-context binding alone does not establish live event authenticity.
 - PR #112 remains historical: owner/event predicate only, no durable receipt or workflow/run binding. PR #125 remains historical: competing schema, retired DSH profile, incomplete replay tuple; never copy its ledger or legacy outbox.
-- PR #170 remains OPEN/DRAFT/UNMERGED, head `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, synthetic merge `e5f648fbc9bf036e8591914353ef3a14eebe7956`; 37 files, +7,399/-0; reviews 0, threads 0.
+- PR #170 remains OPEN/DRAFT/UNMERGED, head `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, synthetic merge `e5f648fbc9bf036e8591914353ef3a14eebe7956`; 37 files, +7,398/-0; reviews 0, threads 0.
 - All adapters remain non-authorizing; worker entrypoint remains inert. No live routing, quota enforcement, hosted D1, worker execution or authenticated UI qualification.
 - Exact ruleset detail was not independently re-read in Pass 59; no merge was attempted. Prior recorded ruleset ID: `26550182`, active enforcement; recheck its full rules before any merge/dispatch.
 - No dispatch, secrets/variables inspection, provider calls, hosted D1, deployment, merge or production mutation. Active engineering time NOT MEASURED.
