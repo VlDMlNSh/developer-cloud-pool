@@ -44,7 +44,7 @@ WHEN NOT EXISTS (
      AND l.repository_id = NEW.repository_id AND l.issue_number = NEW.issue_number
      AND l.target_sha = NEW.target_sha AND l.profile = NEW.profile
      AND l.envelope_digest = NEW.event_digest AND l.state = 'consumed'
-     AND l.consumed_at = a.admitted_at AND a.admitted_at = NEW.recorded_at
+     AND l.consumed_at = a.admitted_at
      AND a.attempt_id = p.attempt_id AND p.status = 'prepared'
      AND t.current_attempt_id = a.attempt_id AND t.attempt_number = a.attempt_number
      AND a.qualification_id = q.qualification_id
