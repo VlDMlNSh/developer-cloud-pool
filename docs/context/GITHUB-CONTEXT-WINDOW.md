@@ -7,9 +7,9 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`  
 Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
 Current D1 integration candidate: PR #170 OPEN / DRAFT / UNMERGED  
-PR #170 head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `PENDING FINAL CI READBACK`  
+PR #170 head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`  
 PR #170 diff: 38 files, +7,655 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
-Pass 60 final-head D1 run #45271784660 and Pool Contract run #45271784521 are being rechecked against the final README-updated PR head.  
+Pass 60 final-head D1 run #45271784660 SUCCESS (8 files, 107/107 tests); Pool Contract run #45271784521 SUCCESS. Both checked out exact synthetic merge SHA `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`.  
 Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / DRAFT / UNMERGED; latest PR #169 head is tracked in live PR metadata.
 
 ## Current engineering state — 2026-11-24
