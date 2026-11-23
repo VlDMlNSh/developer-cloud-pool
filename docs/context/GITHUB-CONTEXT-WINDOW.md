@@ -2265,3 +2265,23 @@ Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoint
   - Documentation branch HEAD before the final Context Window refresh: 3afb9d19effc56e72a0c87349059cefa8f60bc53; 10 ahead / 0 behind current default. PR #167 remains OPEN/DRAFT/UNMERGED; its updated head has no exact-head CI and no reviews. This working branch is not canonical. No merge.
 - No source/schema/runtime/security-boundary changes, no tests/workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
 - Next bounded step: Pass 42 test-only, no-secret jose verifier prototype with synthetic keys/JWKS, including a delayed verifier that crosses exp; keep it unmounted and non-authorizing. Do not trigger GitHub workflows.
+
+
+---
+
+## Pass 46 — current-state reconciliation and integration gate audit — 2026-11-23
+
+- Report: [Pass 46 current-state reconciliation](../reports/2026-11-23-pass46-current-state-reconciliation.md).
+- Checkpoint: [Pass 46 continuation checkpoint](../checkpoints/2026-11-23-pass46-continuation-checkpoint.md).
+- Immutable default baseline re-read: `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- Repository metadata: public, non-archived; 140 open Issues. Current default combined status returned empty; exact-current-head CI NOT VERIFIED.
+- PR #167 OPEN/DRAFT/UNMERGED, head `b7ffa0fcbd710fccca6aaec0d4ad5ba00dc47315`, base current default HEAD. Formal reviews empty; status pending with zero contexts; exact-head CI NOT VERIFIED.
+- PR #165/#166 remain OPEN/DRAFT/UNMERGED. Previously recorded D1/Pool Contract runs passed on PR merge-result checkouts only; standalone head-only and current-default-base qualification NOT VERIFIED.
+- Issue #140 remains OPEN. Pass 45's #148→#165 clean CODE/D1 lineage remains the strongest existing local proof candidate, but is not integrated into default or production-mounted.
+- Production JOSE/JWKS verification remains NOT IMPLEMENTED. The adapter still has injected verifier/clock seams. Pass 41's asynchronous stale-time finding remains an integration blocker; require a fresh trusted-clock read after verification and a deterministic delayed-verifier expiry test.
+- Hosted D1, full legacy-table write denial, trusted live GitHub event binding, authenticated executor principal, independent security review and live worker qualification remain outstanding.
+- No source/SQL/workflow/dependency changes, no tests, no dispatch, no provider calls, no hosted D1, no secret reads, no deployment or merge occurred in Pass 46.
+- Decision: do not merge #165/#166 and do not create a parallel D1 lineage. Next bounded task is one current-default-based validation/integration candidate for #148→#165, preceded by immutable target freeze, file-overlap/migration-order/provenance review, and exact-base local Workers/Vitest execution.
+- Status: state restoration VERIFIED for the endpoints read; exact-current-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
