@@ -51,8 +51,8 @@ PR #168's recorded merge-result SHA is `76b0283e9904226cb485db0c40ea69da9f46d727
 ### Critical GitHub/governance observations
 
 - Issue [#140](https://github.com/VlDMlNSh/developer-cloud-pool/issues/140) is the correct current integration objective: one current-default-based D1 admission/lease proof chain, not parallel controllers or duplicate stores.
-- Issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) defines owner-only `/next` admission and currently specifies four child jobs for its qualification wave.
-- The new project instruction supplied in this chat says three independent Gemini agents. That conflicts with Issue #96's four-child contract. **Do not dispatch either topology until one is explicitly reconciled in the issue/controller contract.** The newer owner instruction should be treated as the proposed target, but it must be reflected in the authoritative GitHub contract before implementation or dispatch.
+- Issue [#96](https://github.com/VlDMlNSh/developer-cloud-pool/issues/96) defines owner-only `/next` admission. A fresh read of its 2026-11-17 owner scope correction confirms that the first CODE executor is Claude Code + ECC + FCC via a separately verified free route; Gemini agents are optional supplementary workers, and four Gemini children are not a mandatory launch requirement.
+- **Correction to this audit:** the earlier claimed three-vs-four Gemini topology conflict was incorrect. Do not make Gemini a launch dependency or spend critical-path time changing its child count. First qualify the owner-frozen CODE executor and preserve all existing controller/security gates.
 - Issue [#1](https://github.com/VlDMlNSh/developer-cloud-pool/issues/1) records an active ruleset and historical `POOL_DISPATCH_ENABLED=false` readback. Those details are historical; current effective ruleset conditions and current variable state were not re-read in this audit. Never inspect secret values.
 - PR #168 and #169 both have zero formal review submissions in the last review read. A successful CI run is not an independent review.
 - The Context Window is very large (default copy approximately 332k characters; documentation branch copy approximately 352k characters). This makes every context restoration and review more expensive and increases the chance that stale statements dominate current state.
@@ -229,16 +229,15 @@ A service can be open source and still require paid compute, model calls, storag
 - Add a second route only after the first route passes end-to-end tests and independent review.
 - No paid fallback, silent fallback, quota evasion or key rotation to bypass provider limits.
 
-### E6 — Agent topology conflict and premature parallelism
+### E6 — Optional supplementary agents; do not block first executor
 
-**Impact: HIGH.** New project instructions say three independent Gemini roles; Issue #96 still specifies four child jobs for its current qualification wave. Dispatch remains NOT RUN and should stay that way until this is reconciled.
+**Impact: MEDIUM.** Issue #96's 2026-11-17 owner correction makes Gemini optional and identifies Claude Code + ECC + FCC as the first CODE executor via a separately verified free route. The earlier three-vs-four conflict claim was incorrect.
 
 **Correction:**
-- Update the authoritative Issue #96/controller contract to the owner-approved topology.
-- Define a role envelope, read/write permission, branch ownership, artifact schema and exact target SHA per role.
-- Prefer parallel research/test/security review only when work is independent. Do not have multiple agents edit the same migration or state machine.
-- One agent may research, one may design/test, one may security-review; primary implementation remains under one canonical branch owner.
-- If gates are not passed, all agent runs remain NOT RUN with the exact blocker.
+- Keep Gemini supplementary and task-specific; do not require Gemini dispatch for Contour A's first executor milestone.
+- Preserve the approved controller, exact target SHA, least-privilege role envelopes, artifact provenance and no-secret constraints whenever supplementary agents are used.
+- Keep primary implementation under one canonical branch owner; do not have multiple agents edit the same migration/state machine.
+- If gates are not passed, agent runs remain NOT RUN with the exact blocker.
 
 ### E7 — Time/progress metrics measure activity rather than acceptance
 
@@ -254,7 +253,7 @@ A service can be open source and still require paid compute, model calls, storag
 
 | Order | Work package | Exit evidence | Priority |
 |---:|---|---|---|
-| 0 | Freeze scope and reconcile Gemini 3-vs-4 contract | Updated Issue #96/controller contract; no dispatch | BLOCKING |
+| 0 | Preserve Issue #96 owner scope: first CODE executor; Gemini optional | Verify free route, host/sandbox identity and quota; no dispatch | BLOCKING |
 | 1 | D1 branch/PR consolidation under Issue #140 | One canonical migration chain; overlap matrix; current default base | CRITICAL |
 | 2 | Trusted-clock runtime qualification | Real controller clock source, monotonicity/rollback behavior and adversarial tests | CRITICAL |
 | 3 | Exact integration CI and independent security review | Current-head and merge-result CI; review; ruleset/provenance evidence | CRITICAL |
@@ -336,3 +335,8 @@ This is a source-level and GitHub metadata audit. It did not inspect secret valu
 
 Canonical Context Window: ../context/GITHUB-CONTEXT-WINDOW.md  
 Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Correction addendum — Pass 52 (2026-11-23)
+
+A fresh read of Issue #96's 2026-11-17 owner scope correction disproves the earlier three-vs-four Gemini conflict statement. First executor is Claude Code + ECC + FCC using a separately verified free route; Gemini is optional and not a launch dependency. The canonical D1 candidate is PR #168; see [Pass 52 consolidation report](2026-11-23-pass52-canonical-d1-consolidation.md). A further HIGH blocker was found in `admitQualifiedTask`: it still accepts caller-controlled `input.now` and omits explicit `executionAuthorized:false` on deny/success results. Do not mount or enable this adapter before Pass 53 remediation.
