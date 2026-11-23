@@ -24,6 +24,10 @@ Make each engineering pass faster to resume, smaller to review, easier to verify
 
 Existing architecture, decision, contract, issue, PR, checkpoint and pass-report documents remain authoritative in their own domains. This package links to them and defines how to use them; it does not supersede them.
 
+## Control Center
+
+The operational control loop and dashboard minimum are defined in [ENGINEERING-MASTER-CONTROL.md](ENGINEERING-MASTER-CONTROL.md). This README is the package index and document-ownership map; the Master Control Center is the operating procedure. The [Context Window](../context/GITHUB-CONTEXT-WINDOW.md) remains the sole live recovery source.
+
 ## Operating model
 
 1. Restore live GitHub state first; historical context is a lead, never a substitute for current refs.
