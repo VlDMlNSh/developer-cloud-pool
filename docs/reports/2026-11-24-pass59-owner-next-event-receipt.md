@@ -51,7 +51,7 @@ Both workflows ran on the same exact synthetic merge SHA `e5f648fbc9bf036e859191
 - Pool Contract run [45270189385](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45270189385): **SUCCESS**, workflow syntax/security contracts passed, `POOL_CONTRACT_VALIDATION=PASS`.
 - Both logs explicitly checked out `e5f648fbc9bf036e8591914353ef3a14eebe7956`.
 - No new dependency or package-lock modification.
-- Diff added 3 files and modified README: 4 paths, +325 lines relative to Pass 58 candidate head.
+- Diff added 3 files and modified README: 4 paths, +324 lines relative to Pass 58 candidate head.
 - PR #170 remains OPEN / DRAFT / UNMERGED; formal reviews 0, review threads 0.
 
 ## Residual risks / NOT VERIFIED
