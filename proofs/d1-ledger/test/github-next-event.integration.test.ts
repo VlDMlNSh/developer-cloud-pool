@@ -8,7 +8,7 @@ const NOW = 1_800_000_000;
 const trustedClock = () => NOW;
 const workflowRef = "VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной";
 
-async function fixture(id) {
+async function fixture(id, commentIdOverride) {
   const targetSha = id.repeat(40);
   const context = {
     githubActions: "true", serverUrl: "https://github.com",
@@ -17,7 +17,7 @@ async function fixture(id) {
     ownerNumericId: "157891068", ownerLogin: "VlDMlNSh",
     ref: "refs/heads/Основной", sha: targetSha, workflowRef, workflowSha: "f".repeat(40),
     runId: 500000 + id.charCodeAt(0), runAttempt: 1,
-    issueNumber: 96, isPullRequest: false, commentId: 900000 + id.charCodeAt(0),
+    issueNumber: 96, isPullRequest: false, commentId: commentIdOverride ?? (900000 + id.charCodeAt(0)),
     commentBody: "/next", commentUserId: "157891068",
     commentUserLogin: "VlDMlNSh", commentAuthorAssociation: "OWNER"
   };
@@ -275,11 +275,9 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     const firstResult = await admitGitHubNextEvent(env.POOL_DB, first.input, first.context, trustedClock);
     expect(firstResult.decision).toBe("ADMITTED_QUEUED");
 
-    const second = await fixture("1");
-    const secondContext = { ...second.context, commentId: Number(first.event.sourceCommentId) };
-    const secondBound = await bindGitHubNextEvent(secondContext);
+    const second = await fixture("1", Number(first.event.sourceCommentId));
+    const secondBound = await bindGitHubNextEvent(second.context);
     expect(secondBound.decision).toBe("BOUND");
-    second.input.approval.envelopeDigest = secondBound.context.eventDigest;
     const secondAdmission = await admitQualifiedTask(env.POOL_DB, second.input, trustedClock);
     expect(secondAdmission.decision).toBe("ADMITTED_QUEUED");
 
