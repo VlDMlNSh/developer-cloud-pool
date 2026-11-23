@@ -78,6 +78,15 @@ No secrets/variables values read. No Gemini controller dispatch, Claude/server d
 - Active engineering time: **NOT MEASURED**; no timer/telemetry was available.
 - Defects found in this pass: no CI failures observed. The new tests establish local behavior for the listed cases; they do not close hosted runtime or event-authenticity gaps.
 
+
+## Additional trust-boundary finding — GitHub Actions SHA semantics
+
+Official GitHub documentation distinguishes the event SHA from the workflow-file SHA:
+- For `issue_comment`, `GITHUB_SHA` is the last commit on the default branch and `GITHUB_REF` is the default branch; the workflow file must exist on the default branch for the event to trigger: [GitHub event trigger reference](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#issue_comment).
+- `github.workflow_sha` is separately defined as the commit SHA for the workflow file: [GitHub contexts reference](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
+
+Therefore the current binder's strict `workflowSha === targetSha` equality is **not a generally valid GitHub invariant**. Pass 60 did not silently alter the implementation because this is a trust-contract change requiring a dedicated review. Treat this as a Pass 61 high-priority correction: bind the event target SHA and workflow-code SHA as separate provenance fields, then define and test the trusted relationship between them using the default-branch workflow identity and an independently verified ref/commit policy. Until corrected and tested, the binder is a local predicate proof only and is not ready to become a live controller.
+
 ## Next — Pass 61
 
 Audit the complete admission/receipt trust boundary and close remaining test gaps without enabling dispatch:
