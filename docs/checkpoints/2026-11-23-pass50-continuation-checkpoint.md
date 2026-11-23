@@ -23,7 +23,7 @@
 
 ## Disposition
 - Pass 49 code and exact-head CI: VERIFIED.
-- Pass 50 documentation integrity: pending readback at checkpoint creation.
+- Pass 50 documentation integrity: VERIFIED by GitHub readback; see Pass 50 report for blob SHAs.
 - Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
 - Gemini NOT RUN / NOT AUTHORIZED. No secrets, provider calls, hosted D1 writes, dispatch, deployment or merge.
 
