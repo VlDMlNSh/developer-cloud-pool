@@ -263,6 +263,57 @@ describe("issuer-bound indeterminate attempt reconciliation", () => {
     });
   });
 
+  it("rechecks expiry after the asynchronous primary precondition read and before insertion", async () => {
+    const target = await seedIndeterminate("a");
+    const input = {
+      reconciliationId: "reconcile:" + target.attemptId,
+      ...target,
+      leaseGeneration: 1,
+      evidence: { signedEnvelope: "synthetic-only" }
+    };
+    let clockReads = 0;
+    const delayedDb = {
+      prepare: (...args) => env.POOL_DB.prepare(...args),
+      withSession: (name) => {
+        const session = env.POOL_DB.withSession(name);
+        return {
+          prepare: (sql) => {
+            const statement = session.prepare(sql);
+            if (!sql.includes("FROM pool_attempt_reconciliations r")) return statement;
+            return {
+              bind: (...values) => {
+                const bound = statement.bind(...values);
+                return {
+                  first: async () => {
+                    await Promise.resolve();
+                    return bound.first();
+                  }
+                };
+              }
+            };
+          }
+        };
+      }
+    };
+    const result = await recordAttemptReconciliation(
+      delayedDb,
+      input,
+      verifier({ expiresAt: NOW + 2 }),
+      () => (++clockReads < 3 ? NOW : NOW + 2)
+    );
+    expect(clockReads).toBe(3);
+    expect(result).toMatchObject({
+      decision: "DENY",
+      reason: "RECONCILIATION_EVIDENCE_CLAIMS_INVALID",
+      dispatch: false,
+      executionAuthorized: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT reconciliation_id FROM pool_attempt_reconciliation_decisions WHERE attempt_id = ?"
+    ).bind(target.attemptId).first();
+    expect(row).toBeNull();
+  });
+
   it("keeps reconciliation evidence append-only and SQL-bound to the current quarantined attempt", async () => {
     const target = await seedIndeterminate("5");
     const input = {

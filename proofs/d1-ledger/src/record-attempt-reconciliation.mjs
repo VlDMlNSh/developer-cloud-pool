@@ -140,7 +140,7 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence, tru
   }
 
   // Revalidate time-sensitive claims after asynchronous signature/JWKS verification.
-  const evidence = normalize(claims, input, verifiedNow);
+  let evidence = normalize(claims, input, verifiedNow);
   if (!evidence) return deny("RECONCILIATION_EVIDENCE_CLAIMS_INVALID");
 
   try {
@@ -172,6 +172,21 @@ export async function recordAttemptReconciliation(db, input, verifyEvidence, tru
         evidence.observedAt < current.indeterminate_at) {
       return deny("RECONCILIATION_TARGET_NOT_CURRENT_OR_QUARANTINED");
     }
+
+    // The primary read is asynchronous too: re-check token lifetime immediately
+    // before the first durable mutation, not only after signature verification.
+    let writeNow;
+    try {
+      writeNow = trustedClock();
+    } catch {
+      return deny("TRUSTED_CLOCK_UNAVAILABLE");
+    }
+    if (!Number.isSafeInteger(writeNow) || writeNow <= 0 || writeNow < verifiedNow) {
+      return deny("TRUSTED_CLOCK_UNAVAILABLE");
+    }
+    evidence = normalize(claims, input, writeNow);
+    if (!evidence) return deny("RECONCILIATION_EVIDENCE_CLAIMS_INVALID");
+    verifiedNow = writeNow;
 
     await db.prepare(`
       INSERT INTO pool_attempt_reconciliation_decisions (
