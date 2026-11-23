@@ -23,7 +23,7 @@ export async function bindGitHubNextEvent(context) {
       context.commentAuthorAssociation !== "OWNER") return deny("GITHUB_OWNER_ISSUE_PREDICATE_FAILED");
   if (context.commentBody !== "/next") return deny("GITHUB_COMMAND_BODY_NOT_EXACT");
   if (context.ref !== DEFAULT_REF || !SHA40.test(context.sha || "") ||
-      context.workflowRef !== WORKFLOW_REF || context.workflowSha !== context.sha) return deny("GITHUB_WORKFLOW_PROVENANCE_MISMATCH");
+      context.workflowRef !== WORKFLOW_REF || !SHA40.test(context.workflowSha || "")) return deny("GITHUB_WORKFLOW_PROVENANCE_MISMATCH");
   if (!DECIMAL.test(String(context.commentId)) || !safeInt(context.runId) || !safeInt(context.runAttempt)) return deny("GITHUB_EVENT_ID_INVALID");
 
   const bound = {
