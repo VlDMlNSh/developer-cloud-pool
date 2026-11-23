@@ -37,6 +37,12 @@ async function acquireLease(expiresAt = NOW + 60) {
 beforeEach(async () => {
   // Temporarily remove only the append-only UPDATE/DELETE guards for fixture
   // teardown. Restore them before each test; INSERT provenance guard stays on.
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_claims_legacy_insert_block").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_claims_legacy_update_block").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_claims_legacy_delete_block").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_outbox_legacy_insert_block").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_outbox_legacy_update_block").run();
+  await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_task_outbox_legacy_delete_block").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_update").run();
   await env.POOL_DB.prepare("DROP TRIGGER IF EXISTS pool_attempt_events_no_delete").run();
   await env.POOL_DB.prepare("DELETE FROM pool_attempt_projection_comment_events").run();
@@ -54,6 +60,12 @@ beforeEach(async () => {
   await env.POOL_DB.prepare("DELETE FROM pool_task_claims").run();
   await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger").run();
   await env.POOL_DB.prepare("DELETE FROM pool_route_qualifications").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_claims_legacy_insert_block BEFORE INSERT ON pool_task_claims BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_claims_legacy_update_block BEFORE UPDATE ON pool_task_claims BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_claims_legacy_delete_block BEFORE DELETE ON pool_task_claims BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_outbox_legacy_insert_block BEFORE INSERT ON pool_task_outbox BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_outbox_legacy_update_block BEFORE UPDATE ON pool_task_outbox BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+  await env.POOL_DB.prepare("CREATE TRIGGER pool_task_outbox_legacy_delete_block BEFORE DELETE ON pool_task_outbox BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
   await env.POOL_DB.prepare(`
     CREATE TRIGGER pool_attempt_events_no_update
     BEFORE UPDATE ON pool_attempt_events
