@@ -10,7 +10,7 @@ Contour B: **DEFERRED**
 - Default branch `Основной` HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
 - PR #170 pre-pass head: `9a61572dca2a6621001a1bae770e8d85a5d93315`
 - PR #170 final head: `4b4055b4f2026db617f1e2f686f337ad85e9531e`
-- Exact synthetic merge SHA from D1 job log: `9171489` (full SHA is available in the run log; short SHA recorded here)
+- Exact synthetic merge SHA: `9171489be9232a3c3389fef215904f5ade25a5ea` (verified through GitHub commit lookup and both final job logs).
 - PR #170 remains OPEN / DRAFT / UNMERGED.
 - Scope: correct the invalid equality assumption between event target SHA and workflow-file SHA, preserve both values in immutable receipt provenance, and validate using the existing Workers/Vitest D1 harness.
 
