@@ -7,8 +7,8 @@ Contour A: NOT ACCEPTED; Contour B DEFERRED.
 ## Frozen refs
 - Default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
 - PR #170 pre-pass head: `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`
-- PR #170 final head: `11704d82023644c5846489515415fafb744a0ade`
-- Exact synthetic merge: `e05736b720599e56c30d3dcc46975029da2e6921`
+- PR #170 final head: `9a61572dca2a6621001a1bae770e8d85a5d93315`
+- Exact synthetic merge: `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`
 - PR #170: OPEN / DRAFT / UNMERGED; formal reviews 0; threads 0.
 
 ## Completed
