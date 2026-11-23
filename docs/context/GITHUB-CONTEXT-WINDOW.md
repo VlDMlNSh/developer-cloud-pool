@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-23 — Pass 50 persistent progress and launch-readiness measurement standard
+Last refreshed: 2026-11-23 — Pass 52 fresh GitHub state reconciliation and remaining-effort estimate
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2390,5 +2390,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Retrospective cumulative engineering-equivalent effort estimate: 80–120h (midpoint ~100h), LOW CONFIDENCE and NOT MEASURED; no historic timer/session data available. Pass 51 elapsed/active time NOT RECORDED / NOT MEASURED.
 - Status: component feasibility RESEARCH VERIFIED; verifier implementation/lockfile/tests NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain independently verifiable npm dist integrity, generate exact lockfile in an isolated branch, then implement trusted-config verifier factory and synthetic adversarial tests. Preserve `dispatch:false` and `executionAuthorized:false`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 52 — remaining Contour A effort estimate — 2026-11-23
+
+- Fresh GitHub readback: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration branch @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; docs branch before Pass 52 @ `1c5d8605d8040779818d0d0a1c57445bb8d3493d`.
+- PR #168 OPEN/DRAFT/UNMERGED; Issue #140 OPEN with bounded no-secret local-only restrictions.
+- Ruleset #26550182 active on `refs/heads/Основной`; PR and thread-resolution rules active, required approving reviews = 0, no bypass actors.
+- Exact-head workflow runs re-read: D1 45212088972 SUCCESS; Pool Contract Validation 45212089137 SUCCESS. Not rerun this pass.
+- D1 package manifest remains without `jose`; existing injected verifier remains a trust seam, not production authentication.
+- Bottom-up remaining effort: 35–60 engineering hours to a first limited technical launch, conditional; 70–120 engineering hours to full Contour A launch and ACCEPTED. Estimate is LOW CONFIDENCE, not measured time. Prior spent estimate 80–120h remains LOW CONFIDENCE / NOT MEASURED; implied total effort envelope 150–240h is planning context only.
+- Pass 52 documentation only; no code tests, no secrets/provider/hosted D1/dispatch/deployment/merge. Gemini NOT RUN / NOT AUTHORIZED.
+- Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 52 remaining-effort estimate](../reports/2026-11-23-pass52-remaining-effort-estimate.md). Checkpoint: [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-continuation-checkpoint.md).
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
