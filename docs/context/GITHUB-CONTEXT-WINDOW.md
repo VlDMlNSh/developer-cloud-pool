@@ -1,61 +1,68 @@
-# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL
+# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
-> **Оперативный источник восстановления `/next`.** Сначала используй этот блок и живые GitHub refs; исторические разделы ниже — архивные доказательства и требуют повторной проверки перед использованием.
+> **Оперативный источник восстановления `/next`.** Этот блок — текущий срез. Исторические разделы ниже сохранены как архив и требуют повторной проверки перед использованием.
 
-Last refreshed: 2026-11-23 — Pass 54 context recovery
+Last refreshed: 2026-11-23 — Pass 55 controller trust-boundary audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (read before Pass 54 writes; revalidate on next pass)
+Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read in Pass 55)
 Working documentation branch: `docs/engineering-excellence-2026-11-23`
-PR #169: OPEN / DRAFT / UNMERGED; pre-Pass54 head `78d4c4c51f2bb4e48173d171a8fb72ae22aedcff`; Pass54 adds report/checkpoint and refreshes this file
-Latest verified documentation-branch commit before this context refresh: `951d3567eb3829b5ea440511d41da2a3129aabd8` (Pass 54 checkpoint/report final read-back; this context update creates the next branch commit).
-PR #169 latest check: `mergeable=false`; exact-head workflow lookup empty; reviews 0; threads 0. Cause of mergeability state NOT VERIFIED; do not merge.
-PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41` (behind observed default `8c38bb...`)
+PR #169: OPEN / DRAFT / UNMERGED; head after Pass 55 report/checkpoint writes: `74f09ffd2285d9abcd40ee49fa3aed85b364f5de`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
+PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 2 commits behind current default (compare 107 ahead / 2 behind)
+PR #169 before Pass 55: exact-head workflow runs empty; combined statuses empty; reviews 0; review threads 0. Recheck after this context update. No CI/review is implied by this documentation write.
 
 ## Current engineering state — 2026-11-23
 
-- **Priority:** finish Contour A. Contour B is prohibited until formal `ACCEPTED`.
-- **Pass 52:** D1 lineage consolidated into one candidate PR #168; migrations 0001–0015 documented; historical PR lineage preserved.
-- **Pass 53:** admission adapter changed to require injected `trustedClock`; caller `input.now` is not authoritative; all adapter outcomes explicitly remain `dispatch:false` and `executionAuthorized:false`.
-- **Pass 53 evidence:** D1 merge-result CI run `45236726880` — 74/74 tests SUCCESS on synthetic merge result `7989e45...`; Pool Contract run `45236726907` SUCCESS.
-- **Boundary:** this proves the isolated local adapter/test contract only. Real controller clock provenance, issue-comment authenticity/binding, production callsite integration, hosted D1 and executor remain NOT VERIFIED.
-- **PR #168:** draft/unmerged; no independent review recorded; no merge authorization inferred from CI.
-- **PR #169:** documentation-only Engineering Excellence package; draft/unmerged. It defines pass protocol, DoD, acceptance matrix, critical path, reuse register, metrics and agent/security governance. Policy adoption awaits review/merge; automated metrics collection is NOT IMPLEMENTED.
-- **PR #169 stale statement corrected in Pass 54:** Pass 50 caller-time defect is remediated at adapter boundary in Pass 53. Runtime clock provenance remains an open blocker.
-- **UI:** Issue #22 controls read-only authenticated console. Static/Hono prototypes are not a deployed authenticated UI; no live mobile/desktop qualification.
-- **Executor:** Issue #96 owner priority is Claude Code + ECC + FCC via a separately verified free route; Gemini optional, not a launch dependency. Host/sandbox/free route qualification is not proven.
-- **Issue #118:** persistent host/access qualification remains deferred and must not be assumed available.
-- **Secrets/dispatch/provider calls/deployment:** not performed in Pass 54. Do not read secret values or bypass approved controllers.
-- **Governance:** current effective ruleset details and required approvals must be re-read before merge; CI success is not review or acceptance.
+- **Priority:** complete and accept Cloud Development Pool Contour A. Contour B remains prohibited until formal `ACCEPTED`.
+- **Pass 52–53:** D1 lineage consolidated into PR #168; migrations 0001–0015; admission/lease/reconciliation adapters use injected trusted dependencies and retain `dispatch:false`, `executionAuthorized:false`.
+- **Pass 53 evidence:** D1 run `45236726880` — 74/74 tests SUCCESS; Pool Contract run `45236726907` SUCCESS on synthetic PR merge result `7989e4538eb39d26f645f856225ba27308dc27ca`. This result is now stale relative to current default by two commits.
+- **Pass 54:** Engineering Excellence docs/process package on PR #169; docs-only, unmerged. Automated metrics collection NOT IMPLEMENTED.
+- **Pass 55:** source audit VERIFIED. Report: [Pass 55](../reports/2026-11-23-pass55-controller-trust-boundary-audit.md); checkpoint: [Pass 55 checkpoint](../checkpoints/2026-11-23-pass55-controller-trust-boundary-audit.md).
+- **Pass 55 decisive finding:** current default recursive tree has five workflows and no Cloud Pool `issue_comment` owner controller or `cloud-pool-next-controller.yml`. PR #168 adds only pull_request-triggered local D1 validation. Cloud Pool Issue #96 remains PLANNED; Issue #140 remains OPEN.
+- **D1 boundary:** adapters are isolated local proof, not mounted in product Worker/Hono/Supervisor/Worker. `trustedClock`, executor authenticator and reconciliation verifier are injected seams; trusted production callsites are NOT VERIFIED.
+- **PR #168:** current head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base is `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`, not current default. Current-base reconciliation and fresh merge-result CI required before relying on its proof.
+- **PR #169:** documentation/process proposal remains OPEN/DRAFT/UNMERGED. Latest exact-head CI and review state must be re-read each pass.
+- **UI:** authenticated mobile/desktop console is not deployed or qualified.
+- **Executor:** first CODE executor Claude Code + ECC + FCC via a verified free route; host/sandbox/free route qualification NOT VERIFIED. Gemini is optional to product launch but owner-requested auxiliary work remains gated by its approved controller; do not bypass it.
+- **Secrets, dispatch, provider calls, hosted D1 and deployment:** not performed. Never inspect secret values. No production authority.
+- **Governance:** active ruleset `26550182` targets `refs/heads/Основной`; PR required, deletion/non-fast-forward denied, review-thread resolution required; required approving review count is 0 and bypass actors empty. This does not substitute for independent review or acceptance.
 
-## Pass 54 — acceleration adoption and context recovery
+## Pass 55 source evidence
 
-- Report: [Pass 54](../reports/2026-11-23-pass54-engineering-acceleration-adoption.md)
-- Checkpoint: [Pass 54 checkpoint](../checkpoints/2026-11-23-pass54-engineering-acceleration-adoption.md)
-- Documentation changes are on `docs/engineering-excellence-2026-11-23`, PR #169; not merged.
-- Pass type: documentation/process/context correction. Runtime tests NOT APPLICABLE; PR-head docs CI NOT VERIFIED until it runs.
-- Time metrics: active hours NOT MEASURED; test time NOT APPLICABLE; CI queue/runtime pending. Do not estimate from commit counts.
+- Default HEAD `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` workflow inventory:
+  - `.github/workflows/dsh-runtime-evaluation.yml` blob `df8a3788cd8ff4ba5c5b1009298f6bd81b80344d`
+  - `.github/workflows/pool-contract-validation.yml` blob `d6a4e62c1521d09df7835a8a1b918dc83e079504`
+  - `.github/workflows/pool-supervisor.yml` blob `3942189fc338b73b39627706ea001e1b87dc0ed8`
+  - `.github/workflows/pool-worker.yml` blob `6833692c45bbb0b6f7bf31c068a30888c53f5471`
+  - `.github/workflows/runner-resource-probe.yml` blob `3b925d2ff7db77b669a1056b6ec04d4028640edf`
+- No issue_comment controller exists in the default tree.
+- PR #168 D1 workflow blob `c1cff6e9f9ee3ca8f5766e07c7d17f84b21dc05e`, trigger `pull_request` only.
+- Admission adapter blob `f4c788c1d5231cdce3a84d006b07407971ef6491`.
+- Lease adapter blob `0b4798a8a0a38484682165ef8c5265807a04e27b`.
+- Reconciliation adapter blob `9fc8007f2aad8630417ed0357d4e939777d756f8`.
+- Lease test blob `52ee72bf89a73b5d9088d1be301b2aa5ae442d4a`; admission test blob `c78bd4b08dae0709ef057861cb71df119071a980`.
+- Ruleset details read: PR required; zero required approvals; no bypass actors.
 
 ## Mandatory `/next` resume procedure
 
-1. Re-read this current-state block, Pass 54 checkpoint, and the Engineering Excellence Pass Protocol.
-2. Re-fetch default HEAD, PR #168/#169 heads and bases, open Issues/PRs, branch refs, exact-head/merge-result CI, reviews, rulesets and relevant governance. Treat every SHA here as historical until revalidated.
-3. Confirm no newer owner decision or blocker supersedes the next task.
-4. Select exactly one bounded task on the Contour A critical path. Freeze target SHA, scope, non-goals, reuse-first decision, risk and DoD before editing.
-5. Prefer integrating or qualifying existing components over creating parallel implementations. Do not open another D1 branch while PR #168 remains the canonical candidate unless evidence proves it unusable.
-6. Make one coherent change. Inspect diff, source readback, blob SHAs and tests. Distinguish PR head from synthetic merge result.
-7. Do not dispatch agents, enable dispatch, access secret values, call providers, deploy or merge unless their independent gates are explicitly verified.
-8. Update one dated report, checkpoint and this Context Window. Record measured time buckets only; unavailable evidence is NOT VERIFIED.
-
-## Next bounded task
-
-**Pass 55 — controller trust-boundary source audit.** Freeze a current SHA; inspect Issue #96/#140 and actual `issue_comment` workflow/controller callsites. Trace trusted GitHub event context, repository/owner/issue/comment binding, immutable target SHA, replay/duplicate handling and trusted clock source. Produce a source-path/blob-SHA/property/test matrix and define one remediation or BLOCKED result. No dispatch, secrets, provider calls, hosted D1 or deployment.
+1. Re-read this current-state block and Pass 55 checkpoint/report.
+2. Re-fetch default HEAD, PR #168/#169 heads/bases, Issues #96/#140, open PRs, exact-head/merge-result CI, reviews, ruleset details and relevant governance.
+3. Confirm no newer owner decision supersedes this handoff.
+4. Select one bounded Contour A critical-path task. Freeze target SHA, scope, non-goals, reuse-first decision, risk and DoD before editing.
+5. **Pass 56 next:** reconcile the single existing PR #168 D1 proof lineage against current default `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; preserve migrations/IDs, inspect all files, run D1 and Pool Contract CI on the resulting exact merge result. Do not create a parallel ledger or add the live controller in the same pass.
+6. After current-base D1 chain is stable, implement the missing Cloud Pool `issue_comment` controller as a separate bounded pass, binding exact owner/repo/issue/comment/body/event/default ref/target SHA and durable replay receipt before any future dispatch. Keep dispatch disabled.
+7. Do not dispatch agents, enable dispatch, access secrets, call providers, deploy or merge unless separate gates are explicitly verified.
+8. Update dated report, checkpoint and this Context Window; record measured time only.
 
 ## Canonical navigation
 
 - Engineering Excellence: https://github.com/VlDMlNSh/developer-cloud-pool/tree/docs/engineering-excellence-2026-11-23/docs/engineering-excellence
+- Pass 55 report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/engineering-excellence-2026-11-23/docs/reports/2026-11-23-pass55-controller-trust-boundary-audit.md
+- Pass 55 checkpoint: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/engineering-excellence-2026-11-23/docs/checkpoints/2026-11-23-pass55-controller-trust-boundary-audit.md
 - PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
 - PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169
+- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
+- Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
 - MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 ---
