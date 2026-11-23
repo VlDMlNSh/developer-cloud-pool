@@ -308,7 +308,7 @@ describe("authenticated D1 attempt lease adapter", () => {
     const result = await acquireAttemptLease(env.POOL_DB, {
       ...request,
       executorId: "executor-other"
-    }, authenticate);
+    }, authenticate, trustedClock);
     expect(result).toMatchObject({ decision: "DENY", reason: "TASK_EXECUTOR_OR_ATTEMPT_MISMATCH", dispatch: false });
     const task = await env.POOL_DB.prepare(
       "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
