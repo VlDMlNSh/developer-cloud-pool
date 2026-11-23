@@ -62,3 +62,11 @@ Changes to metric definitions, DoD, acceptance gates, agent authority or securit
 - [Audit checkpoint](../checkpoints/2026-11-23-cloud-pool-acceleration-audit.md)
 
 The audit prioritizes one integrated Contour A vertical slice, D1 PR consolidation, runtime clock qualification, authenticated web delivery, one executor, and independent acceptance. It does not authorize dispatch or Contour B.
+
+
+## Pass 52 — canonical D1 consolidation
+
+- [Pass 52 report](../reports/2026-11-23-pass52-canonical-d1-consolidation.md)
+- [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-canonical-d1-consolidation.md)
+
+PR #168 is the single canonical D1 candidate; the stacked lineage is preserved as provenance. Pass 53 must remediate trusted time and explicit non-authorization flags in the admission adapter. Issue #96 makes Gemini optional and identifies the first CODE executor as Claude Code + ECC + FCC, subject to separate free-route and sandbox qualification.
