@@ -2411,3 +2411,26 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Pass 51 report blob: `0159bea304be7f25fcfe5eb4fcd780293640a4c9`; Pass 51 checkpoint blob: `c54f7a71192fa949b9a2cb759b7450b2546948e4`.
 - The Context Window, report and checkpoint were read back from the working branch. PR head will advance as this final Context Window commit is published; always re-read live refs before further decisions.
 - PR #169 remains a documentation-policy proposal, not adopted governance or runtime implementation. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+
+## Cloud Pool acceleration and architecture audit — 2026-11-23
+
+- Full report: [Cloud Pool acceleration and architecture audit](../reports/2026-11-23-cloud-pool-acceleration-audit.md).
+- Checkpoint: [Cloud Pool acceleration audit checkpoint](../checkpoints/2026-11-23-cloud-pool-acceleration-audit.md).
+- Report blob SHA: `f094aafaf02067b90dc1e90faff3365262cfa29d`; checkpoint blob SHA: `099e4b075f7db187084aedc84e2f6ef0caf8ecf6`.
+- Snapshot default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- PR #168: OPEN/DRAFT/UNMERGED; head `ec1caca61caa453d4e0ce5405890e8791f6bfd29`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 33 files, +6,877; exact-head D1 CI 68/68 and Pool Contract Validation SUCCESS; merge-result CI NOT VERIFIED; formal reviews 0.
+- PR #169: OPEN/DRAFT/UNMERGED; documentation branch head before this audit publication `d7cdee8bdff5dd1d11fc0b042a1d544c433d15c7`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact-head CI NOT VERIFIED; formal reviews 0. This audit advances the documentation branch; re-read live PR head before next work.
+- Branch inventory returned 175 names over two pages. Open PR search returned 100 records at the requested page size; do not treat that capped result as an exact total.
+- Default Context Window is approximately 332k characters; documentation branch copy approximately 352k characters. Default copy refresh marker still says 2026-11-08 and lacks Pass 51; branch copy contains Pass 51 and this audit. Preserve history while prioritizing a concise current-state summary.
+- Earliest inspected UI PR #6 created 2026-11-04; current snapshot 2026-11-23 gives at least 19 calendar days of observed delivery history, not active engineering hours. Verified active hours and remaining hours are NOT AVAILABLE.
+- Runtime Worker remains intentionally inert. Actual controller clock provenance, deployed/authenticated UI, qualified executor and integrated end-to-end lifecycle are NOT VERIFIED.
+- Free-tier review: public GitHub-hosted standard runners are free; Cloudflare Workers Free documents 100k requests/day and 10ms CPU; D1 Free 5M rows read/day, 100k rows written/day, 500MB/database; Queues Free 10k operations/day with 24-hour retention; Workflows step/storage billing applies since 2026-08-10. Verify account-specific entitlement before deployment.
+- Reuse-first recommendation: retain Hono + Workers Static Assets + D1 for the thin control plane; GitHub Actions for bounded ephemeral runner jobs. Reuse OpenHands/Coder/Temporal/LiteLLM patterns selectively; do not add their full runtime stacks to MVP.
+- Key efficiency changes: one vertical-slice MVP; Issue #140 as sole D1 integration objective; pause parallel D1 PR stacks pending migration/source overlap map; synchronize PR #168; qualify actual runtime clock; deploy authenticated read-only web surface; qualify one executor; independent review; defer multi-account/GPU/provider expansion and Contour B.
+- Conflict: current project instruction says 3 Gemini agents, Issue #96 still specifies 4 child jobs. Reconcile authoritative issue/controller contract before dispatch. Gemini dispatch remains NOT RUN.
+- No secrets read, provider calls, agent dispatch, Cloudflare resource mutation, deployment, merge or production action occurred in this audit.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+- Next recommended bounded pass: canonical D1 PR consolidation and actual runtime clock-source qualification, after fresh refs/governance/CI restore.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
