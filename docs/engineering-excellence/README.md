@@ -70,3 +70,11 @@ The audit prioritizes one integrated Contour A vertical slice, D1 PR consolidati
 - [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-canonical-d1-consolidation.md)
 
 PR #168 is the single canonical D1 candidate; the stacked lineage is preserved as provenance. Pass 53 must remediate trusted time and explicit non-authorization flags in the admission adapter. Issue #96 makes Gemini optional and identifies the first CODE executor as Claude Code + ECC + FCC, subject to separate free-route and sandbox qualification.
+
+
+## Pass 53 — atomic admission trusted clock
+
+- [Pass 53 report](../reports/2026-11-23-pass53-atomic-admission-trusted-clock.md)
+- [Pass 53 checkpoint](../checkpoints/2026-11-23-pass53-atomic-admission-trusted-clock.md)
+
+The admission adapter now uses injected trusted time and explicitly remains non-authorizing. Merge-result CI passed 74/74 tests. Actual runtime clock provenance and independent security review remain open gates.
