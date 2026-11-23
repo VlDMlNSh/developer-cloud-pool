@@ -42,3 +42,13 @@ Refresh PR #169 head, base, changed files, checks and reviews. Obtain independen
 
 Canonical Context Window: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md)  
 Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Addendum — Pass 51 and latest PR state (2026-11-23)
+
+- Pass 51 trusted-clock remediation is documented separately in [its report](2026-11-23-pass51-d1-trusted-clock-remediation.md) and [checkpoint](../checkpoints/2026-11-23-pass51-d1-trusted-clock-remediation.md); implementation is on PR #168, not this documentation PR.
+- PR #169 latest observed head: `fa1726032c9a310f759fba1e83238547fcdbe5e8`; base: `Основной` @ `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 16 changed files.
+- PR #169 remains OPEN / DRAFT / UNMERGED. Formal reviews: 0. Exact-head workflow runs/status contexts: NOT VERIFIED.
+- Context Window and Pass 51 report/checkpoint were read back at their recorded blob SHAs. The Context Window now contains the Pass 51 evidence and explicitly corrects superseded temporary duplicate-document links.
+- This package remains documentation policy PROPOSED; it does not qualify runtime or authorize dispatch. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
