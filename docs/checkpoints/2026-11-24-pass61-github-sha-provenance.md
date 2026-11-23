@@ -8,7 +8,7 @@ Contour A: NOT ACCEPTED; Contour B DEFERRED.
 - Default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
 - PR #170 pre-pass: `9a61572dca2a6621001a1bae770e8d85a5d93315`
 - PR #170 final head: `4b4055b4f2026db617f1e2f686f337ad85e9531e`
-- Exact synthetic merge short SHA in job log: `9171489`
+- Exact synthetic merge SHA: `9171489be9232a3c3389fef215904f5ade25a5ea`.
 - PR #170 OPEN/DRAFT/UNMERGED; reviews 0; threads 0.
 
 ## Completed
