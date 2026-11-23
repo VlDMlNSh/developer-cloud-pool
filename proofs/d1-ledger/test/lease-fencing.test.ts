@@ -289,7 +289,7 @@ describe("authenticated D1 attempt lease adapter", () => {
       subject: "worker-alpha",
       executorId: "executor-other",
       capabilityProfile: "jarvis-code-sandbox-v1"
-    }));
+    }), trustedClock);
     expect(result).toMatchObject({ decision: "DENY", reason: "EXECUTOR_PRINCIPAL_BINDING_INVALID", dispatch: false });
     const task = await env.POOL_DB.prepare(
       "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
