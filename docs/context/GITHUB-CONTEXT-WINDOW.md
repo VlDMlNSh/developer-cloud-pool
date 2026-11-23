@@ -2560,3 +2560,5 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Report: [Pass 61](../reports/2026-11-24-pass61-github-sha-provenance.md); checkpoint: [Pass 61 checkpoint](../checkpoints/2026-11-24-pass61-github-sha-provenance.md).
 - Next: SQL receipt adversarial test matrix, keeping all dispatch paths disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- CI correction history: intermediate D1 run 45273064784 failed 1/107 because the prior negative test still rejected a valid distinct workflow SHA; replaced by malformed-SHA negative + distinct-SHA positive coverage. Final D1 run 45273084680 passed 108/108; final Pool Contract 45273084714 passed; intermediate contract run cancelled. Final target green.
