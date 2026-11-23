@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
-import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
+import { admitQualifiedTask as admitQualifiedTaskWithClock } from "../src/admit-qualified-task.mjs";
 
 const NOW = 1_800_000_000;
+const trustedClock = () => NOW;
+const admitQualifiedTask = (db, value, clock = trustedClock) => admitQualifiedTaskWithClock(db, value, clock);
 const input = {
   admissionId: "admission-001",
   taskKey: "57f7bbc19f483c2cb754a96ae71ca4d248d7ec455f6393086ba9da304c312ee5",
@@ -375,4 +377,45 @@ describe("atomic qualified A0 -> D1 admission", () => {
     expect(attempts.n).toBe(1);
     expect(results.every(x => x.dispatch === false)).toBe(true);
   });
+
+  it("ignores a caller-supplied future timestamp and uses trusted time", async () => {
+    await seed();
+    const result = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW + 86_400 });
+    expect(result).toMatchObject({
+      decision: "ADMITTED_QUEUED", dispatch: false, executionAuthorized: false
+    });
+  });
+
+  it("ignores a caller-supplied past timestamp and uses trusted time", async () => {
+    await seed();
+    const result = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW - 86_400 });
+    expect(result).toMatchObject({
+      decision: "ADMITTED_QUEUED", dispatch: false, executionAuthorized: false
+    });
+  });
+
+  it("fails closed when the trusted clock returns an invalid value", async () => {
+    const result = await admitQualifiedTask(env.POOL_DB, input, () => Number.NaN);
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "TRUSTED_CLOCK_INVALID",
+      dispatch: false, executionAuthorized: false
+    });
+  });
+
+  it("fails closed when the trusted clock throws", async () => {
+    const result = await admitQualifiedTask(env.POOL_DB, input, () => { throw new Error("clock unavailable"); });
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "TRUSTED_CLOCK_UNAVAILABLE",
+      dispatch: false, executionAuthorized: false
+    });
+  });
+
+  it("fails closed when no trusted clock is supplied", async () => {
+    const result = await admitQualifiedTaskWithClock(env.POOL_DB, input);
+    expect(result).toMatchObject({
+      decision: "DENY", reason: "TRUSTED_CLOCK_UNAVAILABLE",
+      dispatch: false, executionAuthorized: false
+    });
+  });
+
 });
