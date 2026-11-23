@@ -29,6 +29,26 @@ describe("canonical D1 migration baseline", () => {
     expect(ledger?.sql).toContain("jarvis-code-sandbox-v1");
   });
 
+  it("blocks direct SQL writes to retired per-approval claim and outbox tables", async () => {
+    const names = await env.POOL_DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name LIKE 'pool_task_%_legacy_%_block'"
+    ).all<{ name: string }>();
+    expect(new Set((names.results ?? []).map(row => row.name))).toEqual(new Set([
+      "pool_task_claims_legacy_insert_block",
+      "pool_task_claims_legacy_update_block",
+      "pool_task_claims_legacy_delete_block",
+      "pool_task_outbox_legacy_insert_block",
+      "pool_task_outbox_legacy_update_block",
+      "pool_task_outbox_legacy_delete_block"
+    ]));
+    await expect(env.POOL_DB.prepare(
+      "INSERT INTO pool_task_claims (approval_id, claim_id, envelope_digest, created_at) VALUES ('x', 'x', ?, 1)"
+    ).bind("a".repeat(64)).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+    await expect(env.POOL_DB.prepare(
+      "INSERT INTO pool_task_outbox (outbox_id, approval_id, event_type, envelope_digest, created_at) VALUES ('x', 'x', 'pool.task.claimed', ?, 1)"
+    ).bind("a".repeat(64)).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+  });
+
   it("attaches multiple approvals to one logical task with exactly one task-ready outbox row", async () => {
     const taskKey = "a".repeat(64);
     const targetSha = "b".repeat(40);
