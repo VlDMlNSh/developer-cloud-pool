@@ -222,6 +222,7 @@ describe("authenticated D1 attempt lease adapter", () => {
     now: NOW,
     ttlSeconds: 60
   };
+  const trustedClock = () => NOW;
   const authenticate = async (context, expected) => ({
     authenticated: true,
     subject: context.syntheticSubject,
@@ -229,9 +230,45 @@ describe("authenticated D1 attempt lease adapter", () => {
     capabilityProfile: expected.capabilityProfile
   });
 
+  it("ignores a caller-supplied future timestamp and uses the trusted clock", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, { ...request, now: NOW + 1_000_000 }, authenticate, trustedClock);
+    expect(result).toMatchObject({ decision: "LEASE_ACQUIRED", leaseExpiresAt: NOW + 60 });
+    const row = await env.POOL_DB.prepare("SELECT updated_at, lease_expires_at FROM pool_tasks WHERE task_key = ?").bind(TASK_KEY).first();
+    expect(row).toMatchObject({ updated_at: NOW, lease_expires_at: NOW + 60 });
+  });
+
+  it("ignores a caller-supplied past timestamp and uses the trusted clock", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, { ...request, now: 1 }, authenticate, trustedClock);
+    expect(result).toMatchObject({ decision: "LEASE_ACQUIRED", leaseExpiresAt: NOW + 60 });
+  });
+
+  it("fails closed when the trusted clock returns an invalid value", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate, () => Number.NaN);
+    expect(result).toMatchObject({ decision: "DENY", reason: "TRUSTED_CLOCK_INVALID", dispatch: false });
+    const row = await env.POOL_DB.prepare("SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?").bind(TASK_KEY).first();
+    expect(row).toMatchObject({ state: "pending", lease_generation: 0 });
+  });
+
+  it("fails closed when the trusted clock moves behind persisted task time", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate, () => NOW - 1);
+    expect(result).toMatchObject({ decision: "DENY", reason: "TRUSTED_CLOCK_ROLLBACK", dispatch: false });
+    const row = await env.POOL_DB.prepare("SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?").bind(TASK_KEY).first();
+    expect(row).toMatchObject({ state: "pending", lease_generation: 0 });
+  });
+
+  it("fails closed when the trusted clock throws", async () => {
+    await seedAttempt();
+    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate, () => { throw new Error("clock unavailable"); });
+    expect(result).toMatchObject({ decision: "DENY", reason: "TRUSTED_CLOCK_UNAVAILABLE", dispatch: false });
+  });
+
   it("acquires the prepared attempt only after trusted principal binding and primary readback", async () => {
     await seedAttempt();
-    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate);
+    const result = await acquireAttemptLease(env.POOL_DB, request, authenticate, trustedClock);
     expect(result).toMatchObject({
       decision: "LEASE_ACQUIRED",
       taskKey: TASK_KEY,
