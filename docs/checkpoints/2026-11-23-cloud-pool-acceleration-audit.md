@@ -27,7 +27,7 @@ The project has a substantial D1 security/proof foundation, but too many paralle
 5. Reuse Hono + Workers Static Assets + D1; verify current free entitlement before deployment.
 6. Use GitHub-hosted public runners for bounded ephemeral work; do not treat them as persistent web hosting.
 7. Do not add Temporal, Coder, OpenHands Agent Server or LiteLLM as MVP runtime dependencies; selectively reuse patterns.
-8. Resolve three-vs-four Gemini child topology conflict between current project instructions and Issue #96 before any dispatch.
+8. Apply Issue #96 owner correction: qualify Claude Code + ECC + FCC as first CODE executor via verified free route; Gemini is optional, not a launch dependency.
 9. Defer multi-account/GPU (Issue #151), broad model routing (Issue #26), browser automation and all Contour B work.
 10. Compact Context Window into active summary plus linked historical archive; preserve all history.
 11. Start pass-level time accounting; no retrospective hours invented.
@@ -37,3 +37,8 @@ Detailed audit and citations: [Cloud Pool acceleration and architecture audit](.
 No provider calls, dispatch, secret reads, Cloudflare mutation, deployment, merge or production action occurred in this audit.
 
 Next: use the audit's dependency order to plan one bounded Pass 52: current-base D1 PR consolidation and trusted-clock runtime qualification. Keep Contour B deferred.
+
+
+## Pass 52 correction
+
+The earlier three-vs-four Gemini conflict claim was incorrect. Issue #96's 2026-11-17 owner correction explicitly makes Gemini optional and identifies Claude Code + ECC + FCC as the first CODE executor via a separately verified free route. See [Pass 52 consolidation report](../reports/2026-11-23-pass52-canonical-d1-consolidation.md).
