@@ -8,6 +8,8 @@ Default branch: `Основной`
 Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (read before Pass 54 writes; revalidate on next pass)
 Working documentation branch: `docs/engineering-excellence-2026-11-23`
 PR #169: OPEN / DRAFT / UNMERGED; pre-Pass54 head `78d4c4c51f2bb4e48173d171a8fb72ae22aedcff`; Pass54 adds report/checkpoint and refreshes this file
+Latest verified documentation-branch commit before this context refresh: `951d3567eb3829b5ea440511d41da2a3129aabd8` (Pass 54 checkpoint/report final read-back; this context update creates the next branch commit).
+PR #169 latest check: `mergeable=false`; exact-head workflow lookup empty; reviews 0; threads 0. Cause of mergeability state NOT VERIFIED; do not merge.
 PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41` (behind observed default `8c38bb...`)
 
 ## Current engineering state — 2026-11-23
