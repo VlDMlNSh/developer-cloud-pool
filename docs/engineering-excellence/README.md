@@ -69,7 +69,7 @@ The audit prioritizes one integrated Contour A vertical slice, D1 PR consolidati
 - [Pass 52 report](../reports/2026-11-23-pass52-canonical-d1-consolidation.md)
 - [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-canonical-d1-consolidation.md)
 
-PR #168 is the single canonical D1 candidate; the stacked lineage is preserved as provenance. Pass 53 must remediate trusted time and explicit non-authorization flags in the admission adapter. Issue #96 makes Gemini optional and identifies the first CODE executor as Claude Code + ECC + FCC, subject to separate free-route and sandbox qualification.
+PR #168 is the single canonical D1 candidate; the stacked lineage is preserved as provenance. Pass 53 remediated trusted time and explicit non-authorization flags in the local admission adapter; runtime clock provenance and production controller integration remain separate NOT VERIFIED gates. Issue #96 makes Gemini optional and identifies the first CODE executor as Claude Code + ECC + FCC, subject to separate free-route and sandbox qualification.
 
 
 ## Pass 53 — atomic admission trusted clock
@@ -78,3 +78,11 @@ PR #168 is the single canonical D1 candidate; the stacked lineage is preserved a
 - [Pass 53 checkpoint](../checkpoints/2026-11-23-pass53-atomic-admission-trusted-clock.md)
 
 The admission adapter now uses injected trusted time and explicitly remains non-authorizing. Merge-result CI passed 74/74 tests. Actual runtime clock provenance and independent security review remain open gates.
+
+
+## Pass 54 — acceleration process adoption and context recovery
+
+- [Pass 54 report](../reports/2026-11-23-pass54-engineering-acceleration-adoption.md)
+- [Pass 54 checkpoint](../checkpoints/2026-11-23-pass54-engineering-acceleration-adoption.md)
+
+The Context Window header is now an operational recovery snapshot with current observed refs, blockers and a mandatory `/next` procedure; historical sections are retained as archive. PR #169 remains draft/unmerged, so policy adoption is pending review. Runtime clock/controller provenance remains NOT VERIFIED.
