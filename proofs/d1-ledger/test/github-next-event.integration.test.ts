@@ -124,6 +124,30 @@ function faultDatabase({ insertMode, receiptReadMode } = {}) {
   };
 }
 
+
+const sourceReceiptColumns = [
+  "source_comment_id", "repository_id", "owner_numeric_id", "issue_number",
+  "event_name", "event_action", "actor_numeric_id", "actor_login",
+  "author_association", "body_digest", "ref", "target_sha", "workflow_ref",
+  "workflow_sha", "run_id", "run_attempt", "profile", "event_digest",
+  "admission_id", "recorded_at", "dispatch_enabled"
+];
+
+function sourceReceiptInsert(db, event, admissionId, overrides = {}) {
+  const values = [
+    event.sourceCommentId, event.repositoryId, event.ownerNumericId, event.issueNumber,
+    event.eventName, event.eventAction, event.actorNumericId, event.actorLogin,
+    event.authorAssociation, event.bodyDigest, event.ref, event.targetSha,
+    event.workflowRef, event.workflowSha, event.runId, event.runAttempt,
+    event.profile, event.eventDigest, admissionId, NOW, 0
+  ];
+  const bound = values.map((value, index) =>
+    Object.hasOwn(overrides, sourceReceiptColumns[index]) ? overrides[sourceReceiptColumns[index]] : value
+  );
+  return db.prepare(`INSERT INTO pool_source_comment_receipts (${sourceReceiptColumns.join(", ")})
+    VALUES (${sourceReceiptColumns.map(() => "?").join(", ")})`).bind(...bound).run();
+}
+
 async function receiptCount(sourceCommentId) {
   return env.POOL_DB.prepare(
     "SELECT COUNT(*) AS count FROM pool_source_comment_receipts WHERE source_comment_id = ?"
@@ -245,4 +269,125 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     });
     expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 0 });
   });
+
+  it("rejects a duplicate repository source-comment key carrying a distinct admission envelope", async () => {
+    const first = await fixture("g");
+    const firstResult = await admitGitHubNextEvent(env.POOL_DB, first.input, first.context, trustedClock);
+    expect(firstResult.decision).toBe("ADMITTED_QUEUED");
+
+    const second = await fixture("h");
+    const secondContext = { ...second.context, commentId: Number(first.event.sourceCommentId) };
+    const secondBound = await bindGitHubNextEvent(secondContext);
+    expect(secondBound.decision).toBe("BOUND");
+    second.input.approval.envelopeDigest = secondBound.context.eventDigest;
+    const secondAdmission = await admitQualifiedTask(env.POOL_DB, second.input, trustedClock);
+    expect(secondAdmission.decision).toBe("ADMITTED_QUEUED");
+
+    await expect(sourceReceiptInsert(
+      env.POOL_DB, secondBound.context, second.input.admissionId
+    )).rejects.toThrow();
+    expect(await receiptCount(first.event.sourceCommentId)).toMatchObject({ count: 1 });
+    expect(await receiptCount(secondBound.context.sourceCommentId)).toMatchObject({ count: 1 });
+  });
+
+  it("rejects forged receipt INSERT bindings even when the admission id exists", async () => {
+    const f = await fixture("i");
+    const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
+    expect(admitted.decision).toBe("ADMITTED_QUEUED");
+    await expect(sourceReceiptInsert(
+      env.POOL_DB, f.event, f.input.admissionId, { event_digest: "0".repeat(64) }
+    )).rejects.toThrow("SOURCE_COMMENT_ADMISSION_BINDING_INVALID");
+    expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 0 });
+  });
+
+  it("rejects source receipt insertion when the independently required commit receipt is missing", async () => {
+    const f = await fixture("j");
+    const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
+    expect(admitted.decision).toBe("ADMITTED_QUEUED");
+    const saved = await env.POOL_DB.prepare(
+      "SELECT * FROM pool_admission_commit_receipts WHERE admission_id = ?"
+    ).bind(f.input.admissionId).first();
+    expect(saved).toBeTruthy();
+
+    await env.POOL_DB.prepare("DROP TRIGGER pool_admission_receipts_no_delete").run();
+    await env.POOL_DB.prepare(
+      "DELETE FROM pool_admission_commit_receipts WHERE admission_id = ?"
+    ).bind(f.input.admissionId).run();
+    try {
+      await expect(sourceReceiptInsert(
+        env.POOL_DB, f.event, f.input.admissionId
+      )).rejects.toThrow("SOURCE_COMMENT_ADMISSION_BINDING_INVALID");
+      expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 0 });
+    } finally {
+      await env.POOL_DB.prepare(`
+        INSERT INTO pool_admission_commit_receipts (
+          admission_id, approval_id, task_key, executor_id, attempt_id,
+          qualification_id, evidence_digest, committed_at, assertion, dispatch_enabled
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(saved.admission_id, saved.approval_id, saved.task_key, saved.executor_id,
+        saved.attempt_id, saved.qualification_id, saved.evidence_digest, saved.committed_at,
+        saved.assertion, saved.dispatch_enabled).run();
+      await env.POOL_DB.prepare(`
+        CREATE TRIGGER pool_admission_receipts_no_delete
+        BEFORE DELETE ON pool_admission_commit_receipts
+        BEGIN SELECT RAISE(ABORT, 'ADMISSION_RECEIPTS_APPEND_ONLY'); END
+      `).run();
+    }
+  });
+
+  it("rejects source receipt insertion when the independently required route row is missing", async () => {
+    const f = await fixture("k");
+    const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
+    expect(admitted.decision).toBe("ADMITTED_QUEUED");
+
+    const statements = [
+      env.POOL_DB.prepare("DROP TRIGGER pool_route_qualification_no_delete"),
+      env.POOL_DB.prepare("PRAGMA defer_foreign_keys = ON"),
+      env.POOL_DB.prepare("DELETE FROM pool_route_qualifications WHERE qualification_id = ?")
+        .bind(f.input.route.qualificationId),
+      env.POOL_DB.prepare(`INSERT INTO pool_source_comment_receipts (
+        ${sourceReceiptColumns.join(", ")}) VALUES (${sourceReceiptColumns.map(() => "?").join(", ")})`)
+        .bind(...[
+          f.event.sourceCommentId, f.event.repositoryId, f.event.ownerNumericId, f.event.issueNumber,
+          f.event.eventName, f.event.eventAction, f.event.actorNumericId, f.event.actorLogin,
+          f.event.authorAssociation, f.event.bodyDigest, f.event.ref, f.event.targetSha,
+          f.event.workflowRef, f.event.workflowSha, f.event.runId, f.event.runAttempt,
+          f.event.profile, f.event.eventDigest, f.input.admissionId, NOW, 0
+        ]),
+      env.POOL_DB.prepare(`INSERT INTO pool_route_qualifications (
+        schema_version, qualification_id, route_id, provider_id, model_id, issuer_id,
+        account_ref, credential_handle_ref, quota_domain_id, cost_class, capability_id,
+        capability_profile, evidence_ref, evidence_digest, observed_at, valid_until,
+        revocation_version, registry_version, qualification_status, revoked_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'qualified', NULL)`)
+        .bind(f.input.route.schemaVersion, f.input.route.qualificationId, f.input.route.routeId,
+          f.input.route.providerId, f.input.route.modelId, f.input.route.issuerId,
+          f.input.route.accountRef, f.input.route.credentialHandleRef, f.input.route.quotaDomainId,
+          f.input.route.costClass, f.input.route.capabilityId, f.input.route.capabilityProfile,
+          f.input.route.evidenceRef, f.input.route.evidenceDigest, f.input.route.observedAt,
+          f.input.route.validUntil, f.input.route.revocationVersion, f.input.route.registryVersion),
+      env.POOL_DB.prepare(`CREATE TRIGGER pool_route_qualification_no_delete
+        BEFORE DELETE ON pool_route_qualifications
+        BEGIN SELECT RAISE(ABORT, 'ROUTE_QUALIFICATION_APPEND_ONLY'); END`)
+    ];
+    await expect(env.POOL_DB.batch(statements)).rejects.toThrow("SOURCE_COMMENT_ADMISSION_BINDING_INVALID");
+    expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 0 });
+    const route = await env.POOL_DB.prepare(
+      "SELECT qualification_status FROM pool_route_qualifications WHERE qualification_id = ?"
+    ).bind(f.input.route.qualificationId).first();
+    expect(route).toMatchObject({ qualification_status: "qualified" });
+  });
+
+  it("rejects updates to every source receipt field, including identity, provenance, linkage and state", async () => {
+    const f = await fixture("l");
+    const admitted = await admitGitHubNextEvent(env.POOL_DB, f.input, f.context, trustedClock);
+    expect(admitted.receiptDecision).toBe("SOURCE_COMMENT_RECORDED");
+    for (const column of sourceReceiptColumns) {
+      await expect(env.POOL_DB.prepare(
+        `UPDATE pool_source_comment_receipts SET ${column} = ${column} WHERE source_comment_id = ?`
+      ).bind(f.event.sourceCommentId).run()).rejects.toThrow("SOURCE_COMMENT_RECEIPTS_APPEND_ONLY");
+    }
+    expect(await receiptCount(f.event.sourceCommentId)).toMatchObject({ count: 1 });
+  });
+
 });
