@@ -1,7 +1,7 @@
 import { applyD1Migrations } from "cloudflare:test";
 import { env } from "cloudflare:workers";
 import { beforeAll, describe, expect, it } from "vitest";
-import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
+import { admitQualifiedTask as admitQualifiedTaskWithClock } from "../src/admit-qualified-task.mjs";
 import { canonicalTaskKey } from "../src/task-identity.mjs";
 
 const db = env.UPGRADE_DB;
@@ -10,6 +10,8 @@ const legacyApprovalId = "legacy-approval-001";
 const legacyAttemptId = "legacy-attempt-001";
 const legacyDigest = "b".repeat(64);
 const now = 1_800_000_000;
+const trustedClock = () => now;
+const admitQualifiedTask = (database, value, clock = trustedClock) => admitQualifiedTaskWithClock(database, value, clock);
 
 const admissionTaskKey = await canonicalTaskKey({ repositoryId: "20002", issueNumber: 43, targetSha: "c".repeat(40), profile: "jarvis-code-sandbox-v1", executorId: "executor-upgrade-alpha" });
 const admissionInput = {
