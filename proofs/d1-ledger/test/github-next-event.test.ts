@@ -33,6 +33,14 @@ describe("GitHub owner /next event context", () => {
     expect(result.context.eventDigest).toMatch(/^[a-f0-9]{64}$/);
   });
 
+  it("keeps source-comment identity stable across run retries while retaining run provenance", async () => {
+    const first = await bindGitHubNextEvent(valid);
+    const retry = await bindGitHubNextEvent({ ...valid, runId: 654321, runAttempt: 2 });
+    expect(retry.context.eventDigest).toBe(first.context.eventDigest);
+    expect(retry.context.runId).toBe(654321);
+    expect(retry.context.runAttempt).toBe(2);
+  });
+
   it.each(["/next\n", "/next\r\n", " /next", "/next ", "prefix /next", "/next\nextra"])(
     "rejects non-exact command body %j", async commentBody => {
       await expect(bindGitHubNextEvent({ ...valid, commentBody })).resolves.toMatchObject({
