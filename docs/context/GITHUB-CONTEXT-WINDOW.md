@@ -2285,3 +2285,24 @@ Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoint
 - Status: state restoration VERIFIED for the endpoints read; exact-current-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 47 — D1 lineage delta and integration-safety audit — 2026-11-23
+
+- Report: [Pass 47 D1 lineage delta audit](../reports/2026-11-23-pass47-d1-lineage-delta-audit.md).
+- Checkpoint: [Pass 47 continuation checkpoint](../checkpoints/2026-11-23-pass47-continuation-checkpoint.md).
+- Immutable target re-read: `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- GitHub compare from PR #165 parent `83b8e9d3b0bdeeb201e24a7a9d2fe042fb00694a` to current default: current default is 7 commits ahead; all 7 changes are documentation-only (Pass 33/38 reports/checkpoint/context). No source, SQL, workflow, package or runtime overlap on the default-side delta.
+- Compare current default to PR #165 head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`: candidate 93 ahead / 7 behind; histories diverged. `proofs/d1-ledger` and its PR-only validation workflow remain absent from default.
+- Changed-file audit maps migration ownership: #148 migrations 0001–0010; #149 0011; #152 0012; #159 0013; #161 0014; #165 0015; #163 adds authenticated lease adapter without migration. No duplicate migration ID found in inspected #148→#165 changed-file lists. Semantic replay remains NOT RUN.
+- Current active ruleset #26550182 targets only `refs/heads/Основной`, requires PR and thread resolution, blocks deletion/non-fast-forward, has no bypass actors, but required approving reviews = 0; independent approval is not enforced.
+- PR #165 has one owner COMMENTED review and no independent approval; head status is pending with zero contexts. Historical runs 45032534259/45032534262 are PR merge-result checks, not exact-current-head qualification.
+- Retired Supervisor heartbeat run 45161800097 succeeded on current default HEAD; this does not prove an executor or worker is functioning.
+- #165 adapter samples trustedNow before awaiting injected verifyEvidence and reuses it after await. Fresh post-verification trusted-clock read, claim revalidation and deterministic delayed-expiry test remain mandatory before integration.
+- No code/SQL/workflow/package/test/branch/governance changes, no hosted D1, no dispatch/provider calls, no secret reads, no deployment or merge.
+- Next: create one clean branch from a freshly frozen current default HEAD; transplant #148→#165 preserving provenance and migration order; repair post-verification clock validation; run full Workers/Vitest suite on exact final head. Keep non-authorizing outputs and PR-only workflow.
+- Status: Pass 47 audit VERIFIED; semantic replay NOT RUN; current exact-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
