@@ -10,6 +10,8 @@ Documentation continuation branch: `docs/pass39-reconciliation-review-2026-11-22
 Latest Pass 54 documentation commit: `4fa05dfb1eca3814eb817294cf18695caabd17ba` (working branch; not merged into default)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
+> **Freshness precedence:** The dated pass blocks appended to this document are the authoritative snapshots for their stated dates. Older sections below may contain historical branch names, SHAs, counts or statuses and must not override the fresh GitHub refs recorded in Pass 54. Refresh primary GitHub state before acting.
+
 ---
 
 ## 1. Project objective, scope and priority order
