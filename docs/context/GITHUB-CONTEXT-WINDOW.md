@@ -2292,3 +2292,23 @@ Initial component research references OpenTelemetry semantic conventions/CI-CD m
 Next: complete read-back, create a draft PR against `Основной`, inspect exact-head CI and review evidence, and keep the PR unmerged pending governance/review requirements.
 
 Canonical MediaHub map (separate repository; Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Engineering Excellence 1.0 — documentation baseline — 2026-11-23
+
+- Package: [docs/engineering-excellence/README.md](../engineering-excellence/README.md).
+- Scope: process/documentation baseline for Contour A only; Contour B remains DEFERRED until Contour A is ACCEPTED.
+- Working branch: `docs/engineering-excellence-2026-11-23`, created from default branch `Основной` at immutable base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This is a working documentation branch, not merged/default/canonical production state.
+- Package documents: Master Control Center; Engineering Pass Protocol and DoD; Contour A Acceptance Criteria Matrix; Dependency and Critical Path; Metrics and Time Accounting; Reuse First Register; Multi-Agent Roles and Continuous Security Qualification; Engineering Intelligence.
+- Added report: [2026-11-23 Engineering Excellence documentation baseline](../reports/2026-11-23-engineering-excellence-documentation-baseline.md).
+- Added checkpoint: [2026-11-23 Engineering Excellence](../checkpoints/2026-11-23-engineering-excellence.md).
+- The package formalizes one-pass scope, immutable SHA, evidence inspection, exact-head CI, independent review, no-duplication ownership, reuse evaluation, metric definitions and estimation guardrails.
+- OSS candidates (OpenTelemetry, OPA, Temporal, Testcontainers, LiteLLM, DORA) are research references only; no dependency is approved or integrated by this documentation.
+- Engineering metrics, automated collection, dependency graph automation and Engineering Intelligence automation are NOT IMPLEMENTED. No historical hours were fabricated.
+- Agent roles are specified, but Gemini dispatch remains NOT RUN in this pass; controller and security gates remain mandatory.
+- Documentation-only pass: no runtime code, secret reads, provider calls, hosted D1, dispatch, deployment, merge or acceptance. No software tests were applicable or claimed. Content was read back from GitHub; CI and independent review remain pending.
+- Current known blocker remains Pass 50 F-50-01 (HIGH: caller-controlled D1 lease time). Next engineering implementation task remains Pass 51 trusted-clock remediation.
+- Adoption status: PROPOSED / REVIEW PENDING. Do not treat this process package as active policy until reviewed and merged.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
