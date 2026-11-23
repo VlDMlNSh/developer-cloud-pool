@@ -2,56 +2,57 @@
 
 > Оперативный источник восстановления `/next`. Исторические разделы ниже сохранены, но требуют повторной сверки.
 
-Last refreshed: 2026-11-23 — Pass 56 current-base D1 proof reconciliation
+Last refreshed: 2026-11-23 — Pass 57 legacy claim-path SQL bypass remediation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (verified in Pass 56)
-Current D1 integration PR: #170 OPEN / DRAFT / UNMERGED
-PR #170 head: `6cf52533b06a3460307a584372791b1c30f4ed63`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare 1 ahead / 0 behind
-PR #170 synthetic merge result: `0cf3bf2421a1afe2422976f51bcde7d536cf63a1`
-PR #168: historical source candidate OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`, base stale by 2 commits. Do not merge #168 and #170 both.
+Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (verified through default-branch commits endpoint)
+Canonical D1 integration candidate: PR #170 OPEN / DRAFT / UNMERGED
+PR #170 head: `35a3ea7e168aaeb91f63c5616e498b4d0f21b537`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare 10 ahead / 0 behind
+PR #170 synthetic merge result: `0e06e8179ca0fbdef53d3b7c9c7dc9bbe2720c50`
+PR #170 diff: 34 files, +7,074 / -0. PR #168 is historical source lineage; do not merge both.
 PR #169: docs/process proposal OPEN / DRAFT / UNMERGED; exact head and CI/reviews must be re-read each pass.
 
 ## Current engineering state — 2026-11-23
 
-- Priority: finish and accept Cloud Development Pool Contour A. Contour B remains prohibited until formal `ACCEPTED`.
-- Pass 55: source audit VERIFIED; Cloud Pool owner-only issue_comment controller absent from current default. Report/checkpoint retained below in historical archive; see Pass 55 links in navigation.
-- Pass 56: canonical D1 proof reconciled to current default by transplanting all 33 unchanged source blobs. All paths were absent from current default; no collisions. New PR #170 contains 33 additions / 6,950 lines / 0 deletions and is 1 ahead / 0 behind.
-- Pass 56 CI on merge SHA `0cf3bf2421a1afe2422976f51bcde7d536cf63a1`: D1 run `45258840904` SUCCESS, 6 files / 74 tests passed; Pool Contract run `45258840896` SUCCESS. Workflow logs checked out the synthetic merge SHA.
-- D1 migrations 0001–0015, adapters, tests, package lock and local-only workflow reused unchanged. No duplicate ledger, controller or runtime wiring.
-- All D1 adapters remain non-authorizing: `dispatch:false`, `executionAuthorized:false`. Worker entrypoint remains inert.
-- PR #170 formal reviews 0, review threads 0; draft, unmerged. CI success does not equal independent review, hosted qualification or acceptance.
-- Node 20 deprecation warning for pinned action revisions observed in CI; non-blocking, track separately. No action pins changed in Pass 56.
-- UI: authenticated mobile/desktop console not deployed or qualified. Executor free route/host qualification NOT VERIFIED. Hosted D1 and production execution NOT VERIFIED.
-- No dispatch, secret/metadata inspection, provider calls, hosted D1, deployment or production mutation.
-- Ruleset details last observed in Pass 55: active ruleset ID `26550182`; PR required, required approving review count 0, no bypass actors. Re-read before any merge decision.
+- Priority: complete and accept Cloud Development Pool Contour A. Contour B remains prohibited until formal `ACCEPTED`.
+- Pass 55: VERIFIED source audit; Cloud Pool owner-only `issue_comment` controller absent from default branch. No controller dispatch.
+- Pass 56: 33 unchanged source blobs from PR #168 transplanted onto current default. D1 74/74 and Pool Contract PASS on then-current merge result.
+- Pass 57: confirmed direct-SQL write gap in retired `pool_task_claims` and `pool_task_outbox` tables. Added forward-only migration 0016 with six INSERT/UPDATE/DELETE guards across both tables. Existing rows and migrations 0001–0015 preserved.
+- Pass 57 exact merge-result CI: D1 run `45260394194` SUCCESS, 6 files / 75 tests passed; Pool Contract run `45260394177` SUCCESS. Both logs checked out synthetic merge SHA `0e06e8179ca0fbdef53d3b7c9c7dc9bbe2720c50`.
+- PR #170 head `35a3ea7e168aaeb91f63c5616e498b4d0f21b537`; 10 ahead / 0 behind; 34 files, +7,074 / -0; GitHub mergeable true; OPEN/DRAFT/UNMERGED.
+- Formal reviews 0; review threads 0. Active ruleset `26550182` requires PR, disallows deletion/non-fast-forward and unresolved review threads; approving-review count configured 0; no bypass actors. CI is not independent review.
+- D1 migrations 0001–0016, adapters, tests, package lock and local-only workflow are present in PR #170. No parallel ledger, controller or runtime wiring.
+- All adapters remain non-authorizing: `dispatch:false`, `executionAuthorized:false`. Worker entrypoint remains inert.
+- Unverified: real issue_comment event authenticity and owner/repository/comment binding; production trusted clock, executor authenticator and evidence verifier; hosted D1; UI, routing, quotas and live worker execution.
+- Node.js 20 deprecation warning for pinned checkout/setup-node actions observed while jobs run Node 24; non-blocking, track separately.
+- No dispatch, secret/metadata inspection, provider calls, hosted D1, deployment, merge or production mutation.
 
-## Pass 56 evidence
+## Pass 57 evidence
 
-- Report: [Pass 56 report](../reports/2026-11-23-pass56-current-base-d1-proof-reconciliation.md)
-- Checkpoint: [Pass 56 checkpoint](../checkpoints/2026-11-23-pass56-current-base-d1-proof-reconciliation.md)
-- New integration commit: `6cf52533b06a3460307a584372791b1c30f4ed63`
-- Merge result: `0cf3bf2421a1afe2422976f51bcde7d536cf63a1`
-- D1 run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45258840904
-- Contract run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45258840896
-- Issue #140 updated with Pass 56 evidence.
+- Report: [Pass 57 report](../reports/2026-11-23-pass57-legacy-claim-path-sql-bypass-audit.md)
+- Checkpoint: [Pass 57 checkpoint](../checkpoints/2026-11-23-pass57-legacy-claim-path-sql-bypass-audit.md)
+- PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
+- Migration 0016: `proofs/d1-ledger/migrations/0016_disable_legacy_claim_write_path.sql`
+- D1 run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45260394194
+- Contract run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45260394177
 
 ## Mandatory `/next` resume procedure
 
-1. Re-read this current-state block and latest Pass 56 report/checkpoint.
+1. Re-read this current-state block and latest Pass 57 report/checkpoint.
 2. Re-fetch default HEAD, PR #170/#169/#168 heads/bases, Issues #96/#140, all relevant open PRs, exact-head/merge-result CI, reviews, ruleset and governance.
-3. Select one bounded Contour A critical-path task; freeze target SHA, scope, non-goals, reuse-first decision, risk and DoD.
-4. **Pass 57 next:** independent source/security audit of PR #170 against Issue #140. Inspect migrations 0001–0015, staged upgrade, SQL bypasses, replay/ambiguous-write guarantees, lease/fencing transitions and tests. No merge, dispatch or hosted D1.
-5. If defects are proven, make one minimal remediation and rerun exact merge-result D1 and Pool Contract CI. If not, record explicit findings and independent-review status.
-6. After D1 proof is independently reviewed and accepted, implement Cloud Pool `issue_comment` controller as a separate non-dispatching pass; bind exact owner/repo/issue/comment/body/event/default ref/target SHA and durable replay receipt.
-7. Do not inspect secrets, dispatch agents, call providers, provision hosted D1, deploy or merge without separate verified gates and authorization.
-8. Update dated report, checkpoint and this Context Window; record measured time only.
+3. Select one bounded Contour A critical-path task; freeze target SHA, scope, non-goals, reuse-first decision, risks and DoD.
+4. **Pass 58 next:** audit/reconcile the existing owner-only `/next` event-envelope validator from historical PR #112 and composition candidate #125 against current default and Issues #96/#140. Compare exact owner/repository/issue/comment/body/event/ref/SHA binding, replay identity and trusted workflow context. Reuse the strongest predicate; do not create a parallel admission authority.
+5. Keep controller non-dispatching. No secrets, provider calls, hosted D1, deployment, merge or execution authorization.
+6. After event-boundary audit, implement only the minimal non-dispatching controller integration needed to compose the event validator with the single D1 admission/lease ledger; require exact-head tests and fail-closed replay behavior.
+7. Update dated report, checkpoint and this Context Window; record measured time only.
 
 ## Canonical navigation
 
 - PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
 - PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
 - PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169
+- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112
+- PR #125: https://github.com/VlDMlNSh/developer-cloud-pool/pull/125
 - Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
 - Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
 - Engineering Excellence: https://github.com/VlDMlNSh/developer-cloud-pool/tree/docs/engineering-excellence-2026-11-23/docs/engineering-excellence
