@@ -310,7 +310,7 @@ Official guides:
 4. **Keep PR #169 documentation-only**; review/merge it separately after exact-head CI and governance review. Do not couple documentation acceptance to code acceptance.
 5. **Reuse Hono + Workers Static Assets + D1** for the web control plane, subject to actual free-plan and access verification.
 6. **Do not adopt Temporal, Coder, OpenHands Agent Server or LiteLLM as new runtime dependencies for MVP**. Reuse their architecture patterns selectively.
-7. **Resolve Gemini topology conflict before any dispatch**.
+7. **Qualify the owner-frozen first CODE executor (Claude Code + ECC + FCC) via a verified free route; keep Gemini optional**.
 8. **Defer multi-account, GPU, broad provider and MediaHub work until Contour A is ACCEPTED**.
 9. **Replace pass-count forecasting with evidence-based time accounting and critical-path forecasting**.
 10. **Compact Context Window without losing history**: active summary first, historical reports linked, append-only archive retained.
