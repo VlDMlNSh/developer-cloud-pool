@@ -82,3 +82,8 @@ Links:
 - [Pass 60](./2026-11-24-pass60-next-event-receipt-d1-integration.md)
 - [Context Window](../context/GITHUB-CONTEXT-WINDOW.md)
 - [MediaHub canonical map](https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md)
+
+## CI correction history
+
+- An intermediate run on commit `f4b818ddb791251359401f051774e137c3a029e2` failed 1/107 tests because the old negative test still expected a different-but-well-formed workflow SHA to be rejected. This was an obsolete assertion after the intended semantic correction, not a runtime regression. The test was replaced with malformed-SHA rejection plus a positive distinct-SHA case.
+- The final exact target run `45273084680` passed 108/108 tests; Pool Contract `45273084714` passed. An intermediate Pool Contract run was cancelled after the next commit. No failures remain on the final target.
