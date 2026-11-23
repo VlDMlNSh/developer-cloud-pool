@@ -46,3 +46,14 @@ Open a draft PR targeting `Основной`, inspect its exact-head/merge-resul
 
 Canonical Context Window: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md)  
 Canonical MediaHub map (Contour B remains deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Audit consolidation addendum — 2026-11-23
+
+A second-pass audit of the complete PR file list found that this baseline report and the existing checkpoint already served as the canonical dated report/checkpoint. A duplicate audit report and duplicate adoption checkpoint introduced during the first drafting pass were therefore removed from the branch. The original baseline report/checkpoint are retained and used as the single dated evidence pair.
+
+The package index now links the pre-existing `ENGINEERING-MASTER-CONTROL.md`, which owns the operational control loop and dashboard minimum; `README.md` remains the navigation/ownership index. This separates their responsibilities and avoids competing control-center documents.
+
+Draft PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169. It remains OPEN / DRAFT / UNMERGED. Exact-head/merge-result CI was not returned by GitHub at the time of review (no associated workflow runs or status contexts), so CI is NOT VERIFIED. Formal review submissions and inline review threads were both zero at that observation. Re-read live refs before any subsequent decision.
+
+No runtime implementation, metrics collection, agent dispatch, provider calls, secret access, deployment or merge occurred. Pass 50 F-50-01 remains HIGH. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
