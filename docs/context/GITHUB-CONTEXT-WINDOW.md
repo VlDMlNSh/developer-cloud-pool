@@ -2221,3 +2221,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: obtain an independent reviewer for PR #165 and conduct a focused audit of migration 0015, canonical identity, issuer/audience trust boundary, trusted clock, replay/JTI constraints, and fail-closed behavior. Keep Contour B deferred.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 50 — D1 lease trusted-time adversarial review — 2026-11-23
+
+- Report: [docs/reports/2026-11-23-pass50-d1-lease-trusted-time-adversarial-review.md](../reports/2026-11-23-pass50-d1-lease-trusted-time-adversarial-review.md).
+- Immutable reviewed target: PR #168 head `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; default base observed as `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- Focused source-level review of migrations 0011–0015 and the lease/admission/reconciliation adapters identified HIGH blocker F-50-01: `acquireAttemptLease` trusts caller-supplied `input.now` for task update time, lease expiry, attempt start and event timestamp. The SQL guard compares against the same caller-controlled timestamp; executor authentication does not establish time provenance.
+- Required fix: inject trusted clock, sample after authentication and immediately before write, derive all persisted times from that sample, fail closed on invalid/rollback time, and add future/past/invalid/rollback adversarial tests. Trusted-clock provenance must later be qualified in the actual runtime.
+- Finding recorded on PR #168 and Issue #140. No implementation changes or local tests were performed in this pass.
+- Existing PR merge-result workflows remain SUCCESS: D1 run 45212088972 and Pool Contract run 45212089137. They do not cover this newly identified issue; rerun both after remediation.
+- Formal independent/external review: NOT RUN. PR #168 remains OPEN / DRAFT / UNMERGED. No dispatch, hosted D1, deployment, provider calls, merge, or execution authorization.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
