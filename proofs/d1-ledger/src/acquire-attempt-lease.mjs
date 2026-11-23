@@ -87,6 +87,8 @@ export async function acquireAttemptLease(db, input, authenticateExecutor, trust
   }
 
   let updateAttempted = false;
+  let leaseNow;
+  let leaseExpiresAt;
   try {
     const primary = db.withSession("first-primary");
     const current = await primary.prepare(`
@@ -96,7 +98,7 @@ export async function acquireAttemptLease(db, input, authenticateExecutor, trust
         FROM pool_tasks t
         JOIN pool_attempts a ON a.attempt_id = t.current_attempt_id AND a.task_key = t.task_key
        WHERE t.task_key = ?
-    `).bind(taskKey).first();
+    `).bind(input.taskKey).first();
 
     if (!current || current.executor_id !== principal.executorId ||
         current.current_attempt_id !== input.attemptId) return deny("TASK_EXECUTOR_OR_ATTEMPT_MISMATCH");
@@ -109,11 +111,11 @@ export async function acquireAttemptLease(db, input, authenticateExecutor, trust
     if (!Number.isSafeInteger(expectedGeneration) || expectedGeneration < 1 ||
         current.attempt_generation !== 0) return deny("LEASE_GENERATION_INVALID");
 
-    let leaseNow;
     try { leaseNow = trustedClock(); } catch { return deny("TRUSTED_CLOCK_UNAVAILABLE"); }
     if (!Number.isSafeInteger(leaseNow) || leaseNow <= 0) return deny("TRUSTED_CLOCK_INVALID");
-    if (leaseNow < current.updated_at || leaseNow < current.attempt_created_at) return deny("TRUSTED_CLOCK_ROLLBACK");
-    const leaseExpiresAt = leaseNow + input.ttlSeconds;
+    if (!Number.isSafeInteger(current.updated_at) || !Number.isSafeInteger(current.attempt_created_at) ||
+        leaseNow < current.updated_at || leaseNow < current.attempt_created_at) return deny("TRUSTED_CLOCK_ROLLBACK");
+    leaseExpiresAt = leaseNow + input.ttlSeconds;
     if (!Number.isSafeInteger(leaseExpiresAt)) return deny("TRUSTED_CLOCK_INVALID");
 
     updateAttempted = true;
