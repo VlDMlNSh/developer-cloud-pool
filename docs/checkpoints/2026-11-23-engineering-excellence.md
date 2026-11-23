@@ -31,3 +31,12 @@ Status: **CREATED ON WORKING BRANCH / REVIEW PENDING / NOT MERGED**
 
 Canonical Context Window: [GITHUB-CONTEXT-WINDOW.md](../context/GITHUB-CONTEXT-WINDOW.md)  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Audit consolidation and PR state — 2026-11-23
+
+The existing baseline checkpoint is retained as the canonical checkpoint. A duplicate adoption checkpoint drafted during the audit was removed to avoid parallel checkpoint records. The package index now distinguishes README navigation from the operational Master Control Center.
+
+Draft PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169 — OPEN / DRAFT / UNMERGED. No associated PR workflow runs or status contexts were returned for the observed head/merge-result; exact-head CI is NOT VERIFIED. Formal reviews: 0; inline review threads: 0 at the observed snapshot. Re-read live PR refs before relying on those values.
+
+No runtime tests were applicable to this docs-only change. No dispatch, provider calls, secret reads, deployment or merge occurred. F-50-01 remains HIGH; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
