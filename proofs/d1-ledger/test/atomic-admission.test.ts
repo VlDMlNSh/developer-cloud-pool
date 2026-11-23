@@ -107,7 +107,8 @@ beforeEach(async () => {
     ["pool_task_outbox_legacy_delete_block", "BEFORE DELETE ON pool_task_outbox"]
   ];
   for (const [name, clause] of guards) {
-    await env.POOL_DB.prepare(`CREATE TRIGGER ${name} ${clause} BEGIN SELECT RAISE(ABORT, '${name.toUpperCase()}'); END`).run();
+    const message = name.includes('_legacy_') ? 'LEGACY_CLAIM_PATH_DISABLED' : name.toUpperCase();
+    await env.POOL_DB.prepare(`CREATE TRIGGER ${name} ${clause} BEGIN SELECT RAISE(ABORT, '${message}'); END`).run();
   }
   await seed();
 });
