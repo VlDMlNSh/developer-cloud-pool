@@ -2329,8 +2329,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 The documentation package remains process policy only. Runtime metrics, automatic dependency graphing and Engineering Intelligence are NOT IMPLEMENTED. Gemini dispatch remains NOT RUN. Pass 50 F-50-01 remains HIGH and unremediated. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 
 
-### Documentation de-duplication correction — 2026-11-23
+### Documentation package final read-back — 2026-11-23
 
-A full PR changed-file audit found that the working branch already contained `ENGINEERING-MASTER-CONTROL.md`, `docs/reports/2026-11-23-engineering-excellence-documentation-baseline.md` and `docs/checkpoints/2026-11-23-engineering-excellence.md`. These pre-existing branch artifacts were preserved. README now explicitly separates index/navigation from the Master Control Center's operating procedure. The baseline report and checkpoint were updated with the audit/PR addendum. Two duplicate report/checkpoint files created during the first drafting pass were deleted. No existing architecture, contract or pass-history document was removed.
-
-The intended PR file set is now the eight new process/reference documents plus the pre-existing master-control, report and checkpoint, and the append-only Context Window. Re-read the PR changed-file list to confirm no duplicate artifacts remain.
+- The final package contains nine documents under `docs/engineering-excellence/`; README is the index and Master Control Center is the operating procedure.
+- A single dated report and a single adoption checkpoint were published: [report](../reports/2026-11-23-engineering-excellence-1.0.md) and [checkpoint](../checkpoints/2026-11-23-engineering-excellence-1.0.md).
+- The PR changed-file list was inspected. It includes the nine package documents and this Context Window; report/checkpoint additions are included in subsequent branch commits and must be re-read at the latest branch SHA.
+- No existing architecture, contract, pass-history or acceptance evidence was deleted.
+- Documentation policy remains PROPOSED pending review/merge. Metrics/critical-path/Engineering Intelligence automation remain NOT IMPLEMENTED.
