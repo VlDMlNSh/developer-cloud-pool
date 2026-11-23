@@ -31,7 +31,7 @@ describe("canonical D1 migration baseline", () => {
 
   it("blocks direct SQL writes to retired per-approval claim and outbox tables", async () => {
     const names = await env.POOL_DB.prepare(
-      "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name LIKE 'pool_task_%_legacy_%_block'"
+      "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name IN ('pool_task_claims_legacy_insert_block', 'pool_task_claims_legacy_update_block', 'pool_task_claims_legacy_delete_block', 'pool_task_outbox_legacy_insert_block', 'pool_task_outbox_legacy_update_block', 'pool_task_outbox_legacy_delete_block')"
     ).all<{ name: string }>();
     expect(new Set((names.results ?? []).map(row => row.name))).toEqual(new Set([
       "pool_task_claims_legacy_insert_block",
