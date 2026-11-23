@@ -2459,3 +2459,16 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Pass 52 report blob: `1cd556fb80a2bc255c3301d63431782a52f9c23e`; checkpoint blob: `4ff1f1cefe67fabba8b2b584241907329d18f577`.
 - Corrected acceleration audit blob: `ff8e69fd99457ac6110a7b59423794ac865e733b`.
 - Pass 52 did not modify runtime code. Pass 53 remains the trusted-clock and explicit `executionAuthorized:false` remediation in the admission adapter.
+
+
+## Pass 53 — atomic admission trusted-clock remediation (2026-11-23)
+
+- Report: [Pass 53 trusted admission clock remediation](../reports/2026-11-23-pass53-atomic-admission-trusted-clock.md); checkpoint: [Pass 53 checkpoint](../checkpoints/2026-11-23-pass53-atomic-admission-trusted-clock.md).
+- PR #168 final head: `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; OPEN/DRAFT/UNMERGED.
+- Admission adapter now requires `trustedClock`; caller `input.now` removed; trusted time drives primary admission/replay and fresh recovery validation; all outcomes explicitly return `dispatch:false` and `executionAuthorized:false`.
+- D1 merge-result CI run `45236726880` SUCCESS, 6/6 files and 74/74 tests. Pool Contract run `45236726907` SUCCESS; `POOL_CONTRACT_VALIDATION=PASS`; validation environment reports `POOL_DISPATCH_ENABLED=false`.
+- Merge-result SHA `7989e45` merges final PR head into current default `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- Six adversarial tests added; initial CI failure at intermediate head `3650c9d...` was corrected (duplicate fixture seeds and migration-upgrade trusted-clock injection). Final CI is green.
+- Source blob `f4c788c1d5231cdce3a84d006b07407971ef6491`; atomic test blob `c78bd4b08dae0709ef057861cb71df119071a980`; migration-upgrade test blob `f1f88c8955d241e2798788edf4b0e6343ff31a1d`.
+- Actual controller/runtime clock provenance NOT VERIFIED; Worker remains inert (404); independent security review NOT RUN; formal PR reviews 0. No secrets, provider calls, hosted D1, dispatch, deployment, Cloudflare mutation or merge.
+- Next: Pass 54 — qualify actual controller clock/event provenance and obtain independent security review. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
