@@ -6,14 +6,14 @@ const SAFE_ID = /^[A-Za-z0-9._:-]{1,160}$/;
 const EXECUTOR_ID = /^[A-Za-z0-9._:-]{1,128}$/;
 const COST_CLASSES = new Set(["local", "free_quota"]);
 
-const deny = (reason) => ({ decision: "DENY", dispatch: false, reason });
+const deny = (reason) => ({ decision: "DENY", dispatch: false, executionAuthorized: false, reason });
 
 function valid(input) {
   const a = input?.approval;
   const r = input?.route;
   const t = input?.attempt;
   return Boolean(
-    input && Number.isSafeInteger(input.now) && input.now > 0 &&
+    input &&
     EXECUTOR_ID.test(input.executorId || "") &&
     SAFE_ID.test(input.admissionId || "") &&
     SHA256.test(input.taskKey || "") &&
@@ -75,8 +75,8 @@ function same(row, input) {
     row.capability_profile === r.capabilityProfile && row.revocation_version === r.revocationVersion;
 }
 
-function statements(db, input) {
-  const { approval: a, route: r, attempt: t, now, admissionId } = input;
+function statements(db, input, now) {
+  const { approval: a, route: r, attempt: t, admissionId } = input;
   const routeMatch = `
     q.qualification_id = ? AND q.route_id = ? AND q.provider_id = ?
     AND q.model_id = ? AND q.issuer_id = ? AND q.account_ref = ?
@@ -245,8 +245,9 @@ async function readPrior(readDb, input) {
  * existing task/outbox, records admission, creates/reuses one immutable attempt,
  * and writes a constraint-backed commit receipt. It never dispatches.
  */
-export async function admitQualifiedTask(db, input) {
+export async function admitQualifiedTask(db, input, trustedClock) {
   if (!valid(input)) return deny("INVALID_ADMISSION_BINDING");
+  if (typeof trustedClock !== "function") return deny("TRUSTED_CLOCK_UNAVAILABLE");
   const expectedTaskKey = await canonicalTaskKey({ repositoryId: input.approval.repositoryId, issueNumber: input.approval.issueNumber, targetSha: input.approval.targetSha, profile: input.approval.profile, executorId: input.executorId });
   if (input.taskKey !== expectedTaskKey) return deny("TASK_KEY_BINDING_MISMATCH");
   if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
@@ -258,6 +259,9 @@ export async function admitQualifiedTask(db, input) {
     const priorReadDb = db.withSession("first-primary");
     if (!priorReadDb || typeof priorReadDb.prepare !== "function") return deny("CONSISTENT_READBACK_UNAVAILABLE");
     const prior = await readPrior(priorReadDb, input);
+    let trustedNow;
+    try { trustedNow = trustedClock(); } catch { return deny("TRUSTED_CLOCK_UNAVAILABLE"); }
+    if (!Number.isSafeInteger(trustedNow) || trustedNow <= 0) return deny("TRUSTED_CLOCK_INVALID");
     if (prior) {
       if (!same(prior, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       if (prior.approval_state !== "consumed" || prior.attempt_status !== "prepared" ||
@@ -291,18 +295,19 @@ export async function admitQualifiedTask(db, input) {
         input.route.credentialHandleRef, input.route.quotaDomainId ?? null,
         input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
         input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
-        input.route.observedAt, input.route.validUntil, input.route.revocationVersion, input.now,
-        input.now - 300, input.now
+        input.route.observedAt, input.route.validUntil, input.route.revocationVersion, trustedNow,
+        trustedNow - 300, trustedNow
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
         decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
-        taskKey: input.taskKey, executorId: input.executorId, attemptId: prior.requested_attempt_id, dispatch: false
+        taskKey: input.taskKey, executorId: input.executorId, attemptId: prior.requested_attempt_id,
+        dispatch: false, executionAuthorized: false
       };
     }
 
     batchAttempted = true;
-    await db.batch(statements(db, input));
+    await db.batch(statements(db, input, trustedNow));
     const committedReadDb = db.withSession("first-primary");
     const committed = await committedReadDb.prepare(`
       SELECT a.admission_id, a.approval_id, a.task_key, a.executor_id,
@@ -337,7 +342,7 @@ export async function admitQualifiedTask(db, input) {
     return {
       decision: "ADMITTED_QUEUED", admissionId: committed.admission_id,
       taskKey: committed.task_key, executorId: committed.executor_id, attemptId: committed.attempt_id,
-      attemptNumber: committed.attempt_number, dispatch: false,
+      attemptNumber: committed.attempt_number, dispatch: false, executionAuthorized: false,
       reason: "ATOMIC_A0_D1_COMMIT_CONFIRMED"
     };
   } catch {
@@ -348,6 +353,9 @@ export async function admitQualifiedTask(db, input) {
       const recoveryReadDb = db.withSession("first-primary");
       const recovered = await readPrior(recoveryReadDb, input);
       if (!recovered) return deny("ADMISSION_OUTCOME_UNCONFIRMED");
+      let recoveryNow;
+      try { recoveryNow = trustedClock(); } catch { return deny("TRUSTED_CLOCK_UNAVAILABLE"); }
+      if (!Number.isSafeInteger(recoveryNow) || recoveryNow <= 0) return deny("TRUSTED_CLOCK_INVALID");
       if (!same(recovered, input)) return deny("ADMISSION_IDENTITY_CONFLICT");
       if (recovered.approval_state !== "consumed" || recovered.attempt_status !== "prepared" ||
           recovered.receipt_assertion !== 1 || recovered.receipt_executor_id !== input.executorId ||
@@ -382,13 +390,13 @@ export async function admitQualifiedTask(db, input) {
         input.route.costClass, input.route.capabilityId, input.route.capabilityProfile, input.route.evidenceDigest,
         input.route.registryVersion, input.route.schemaVersion, input.route.evidenceRef,
         input.route.observedAt, input.route.validUntil, input.route.revocationVersion,
-        input.now, input.now - 300, input.now
+        recoveryNow, recoveryNow - 300, recoveryNow
       ).first();
       if (!active) return deny("ROUTE_EVIDENCE_REVOKED_OR_STALE");
       return {
         decision: "ADMISSION_ALREADY_COMMITTED", admissionId: input.admissionId,
         taskKey: input.taskKey, executorId: input.executorId,
-        attemptId: recovered.requested_attempt_id, dispatch: false,
+        attemptId: recovered.requested_attempt_id, dispatch: false, executionAuthorized: false,
         reason: "AMBIGUOUS_BATCH_RESOLVED_BY_PRIMARY_READBACK"
       };
     } catch {
