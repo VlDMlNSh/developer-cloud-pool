@@ -13,13 +13,12 @@ function valid(input) {
     SAFE_ID.test(input.taskKey || "") &&
     SAFE_ID.test(input.attemptId || "") &&
     EXECUTOR_ID.test(input.executorId || "") &&
-    Number.isSafeInteger(input.now) && input.now > 0 &&
     Number.isSafeInteger(input.ttlSeconds) &&
     input.ttlSeconds >= 1 && input.ttlSeconds <= 900
   );
 }
 
-function sameLease(row, input, principal, expectedGeneration) {
+function sameLease(row, input, principal, expectedGeneration, leaseNow) {
   return Boolean(
     row &&
     row.task_key === input.taskKey &&
@@ -30,17 +29,17 @@ function sameLease(row, input, principal, expectedGeneration) {
     row.lease_owner === principal.subject &&
     row.lease_attempt_id === input.attemptId &&
     row.lease_generation === expectedGeneration &&
-    row.lease_expires_at === input.now + input.ttlSeconds &&
+    row.lease_expires_at === leaseNow + input.ttlSeconds &&
     row.attempt_status === "running" &&
     row.attempt_lease_generation === expectedGeneration &&
-    row.started_at === input.now &&
+    row.started_at === leaseNow &&
     row.event_id === `lease-acquired:${input.attemptId}:${expectedGeneration}` &&
     row.event_actor_id === principal.subject &&
     row.event_generation === expectedGeneration
   );
 }
 
-async function readLease(db, input) {
+async function readLease(db, taskKey) {
   return db.prepare(`
     SELECT t.task_key, t.executor_id, t.current_attempt_id, t.state AS task_state,
            t.lease_owner, t.lease_attempt_id, t.lease_generation, t.lease_expires_at,
@@ -54,7 +53,7 @@ async function readLease(db, input) {
         AND e.event_type = 'lease.acquired'
         AND e.lease_generation = t.lease_generation
      WHERE t.task_key = ?
-  `).bind(input.taskKey).first();
+  `).bind(taskKey).first();
 }
 
 /**
@@ -62,10 +61,10 @@ async function readLease(db, input) {
  * the trusted controller/runtime; this module never treats caller-supplied
  * executor or owner strings as authentication. No dispatch is performed.
  */
-export async function acquireAttemptLease(db, input, authenticateExecutor) {
+export async function acquireAttemptLease(db, input, authenticateExecutor, trustedClock) {
   if (!valid(input)) return deny("INVALID_LEASE_REQUEST");
   if (!db || typeof db.prepare !== "function" || typeof db.withSession !== "function" ||
-      typeof authenticateExecutor !== "function") return deny("LEASE_AUTHORITY_UNAVAILABLE");
+      typeof authenticateExecutor !== "function" || typeof trustedClock !== "function") return deny("LEASE_AUTHORITY_UNAVAILABLE");
 
   let principal;
   try {
@@ -92,12 +91,12 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
     const primary = db.withSession("first-primary");
     const current = await primary.prepare(`
       SELECT t.task_key, t.executor_id, t.state, t.current_attempt_id,
-             t.lease_generation, t.lease_owner, t.lease_expires_at,
-             a.status AS attempt_status, a.lease_generation AS attempt_generation
+             t.lease_generation, t.lease_owner, t.lease_expires_at, t.updated_at,
+             a.created_at AS attempt_created_at, a.status AS attempt_status, a.lease_generation AS attempt_generation
         FROM pool_tasks t
         JOIN pool_attempts a ON a.attempt_id = t.current_attempt_id AND a.task_key = t.task_key
        WHERE t.task_key = ?
-    `).bind(input.taskKey).first();
+    `).bind(taskKey).first();
 
     if (!current || current.executor_id !== principal.executorId ||
         current.current_attempt_id !== input.attemptId) return deny("TASK_EXECUTOR_OR_ATTEMPT_MISMATCH");
@@ -109,6 +108,13 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
     const expectedGeneration = current.lease_generation + 1;
     if (!Number.isSafeInteger(expectedGeneration) || expectedGeneration < 1 ||
         current.attempt_generation !== 0) return deny("LEASE_GENERATION_INVALID");
+
+    let leaseNow;
+    try { leaseNow = trustedClock(); } catch { return deny("TRUSTED_CLOCK_UNAVAILABLE"); }
+    if (!Number.isSafeInteger(leaseNow) || leaseNow <= 0) return deny("TRUSTED_CLOCK_INVALID");
+    if (leaseNow < current.updated_at || leaseNow < current.attempt_created_at) return deny("TRUSTED_CLOCK_ROLLBACK");
+    const leaseExpiresAt = leaseNow + input.ttlSeconds;
+    if (!Number.isSafeInteger(leaseExpiresAt)) return deny("TRUSTED_CLOCK_INVALID");
 
     updateAttempted = true;
     await db.prepare(`
@@ -125,14 +131,14 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
               AND a.status = 'prepared' AND a.lease_generation = 0
          )
     `).bind(
-      principal.subject, expectedGeneration, input.now + input.ttlSeconds,
-      input.now, input.taskKey, principal.executorId, input.attemptId,
+      principal.subject, expectedGeneration, leaseExpiresAt,
+      leaseNow, input.taskKey, principal.executorId, input.attemptId,
       current.lease_generation
     ).run();
 
     const readDb = db.withSession("first-primary");
-    const committed = await readLease(readDb, input);
-    if (!sameLease(committed, input, principal, expectedGeneration)) {
+    const committed = await readLease(readDb, input.taskKey);
+    if (!sameLease(committed, input, principal, expectedGeneration, leaseNow)) {
       return deny("LEASE_COMMIT_READBACK_MISMATCH");
     }
     return {
@@ -142,7 +148,7 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
       executorId: principal.executorId,
       leaseOwner: principal.subject,
       leaseGeneration: expectedGeneration,
-      leaseExpiresAt: input.now + input.ttlSeconds,
+      leaseExpiresAt,
       dispatch: false,
       executionAuthorized: false
     };
@@ -150,10 +156,10 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
     if (!updateAttempted) return deny("LEASE_PRECONDITION_READ_FAILED");
     try {
       const recovery = db.withSession("first-primary");
-      const observed = await readLease(recovery, input);
+      const observed = await readLease(recovery, input.taskKey);
       if (!observed) return deny("LEASE_OUTCOME_UNCONFIRMED");
       const expectedGeneration = observed.lease_generation;
-      if (!sameLease(observed, input, principal, expectedGeneration)) {
+      if (!sameLease(observed, input, principal, expectedGeneration, leaseNow)) {
         return deny("LEASE_OUTCOME_UNCONFIRMED");
       }
       return {
@@ -163,7 +169,7 @@ export async function acquireAttemptLease(db, input, authenticateExecutor) {
         executorId: principal.executorId,
         leaseOwner: principal.subject,
         leaseGeneration: expectedGeneration,
-        leaseExpiresAt: input.now + input.ttlSeconds,
+        leaseExpiresAt,
         dispatch: false,
         executionAuthorized: false,
         reason: "AMBIGUOUS_WRITE_RESOLVED_BY_PRIMARY_READBACK"
