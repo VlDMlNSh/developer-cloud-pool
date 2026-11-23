@@ -2562,3 +2562,21 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - CI correction history: intermediate D1 run 45273064784 failed 1/107 because the prior negative test still rejected a valid distinct workflow SHA; replaced by malformed-SHA negative + distinct-SHA positive coverage. Final D1 run 45273084680 passed 108/108; final Pool Contract 45273084714 passed; intermediate contract run cancelled. Final target green.
+
+
+## Pass 62 — SQL source receipt adversarial qualification + launch estimate (2026-11-24)
+
+- Default `Основной` HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- PR #170 final head: `7d900d9fe11b19f048548a3bed657b2549f8091f`; exact synthetic merge: `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`. PR OPEN/DRAFT/UNMERGED; reviews 0; threads 0.
+- Pass 62 added five local D1 adversarial tests: duplicate repository source-comment ID with distinct admission envelope; forged event digest INSERT; independently missing commit receipt; independently missing route row using deferred-FK transaction; field-by-field UPDATE rejection for all 21 receipt columns.
+- D1 run 45274455569 SUCCESS: 8/8 files, 113/113 tests. Pool Contract run 45274455577 SUCCESS. Both jobs checked out exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`.
+- One integration test file changed; no runtime/migration/dependency changes. Intermediate candidates had test-fixture errors (invalid hex IDs; then changing comment ID after approval envelope creation); both were corrected. Final target green.
+- Remaining active engineering estimate (Pass 62 SQL matrix excluded): base 34–58 hours; risk-adjusted +20% 41–70 hours; planning midpoint ~55 hours. This is an estimate, not measured effort or calendar duration. Active hours actually spent: NOT MEASURED.
+- Estimate excludes optional four-Gemini wave, second Claude profile, multi-account/GPU, and Contour B. First-release executor is one Claude Code + ECC + FCC profile per Issue #94/#96 owner correction.
+- Main remaining gates: trusted workflow identity/content/default-ref race policy; durable lease/fencing/trusted time/crash recovery; artifact byte integrity/immutable object binding; Claude/ECC/FCC runner; free route/account/issuer/quota proof; remote phone/desktop UI + persistent workspace/restore; repeated E2E and independent review.
+- Issue #118 last recorded no active SentinelX host, no Cloudflare Tunnel/Access application, and no persistence/restore proof. This is the largest infrastructure uncertainty and may increase the estimate if prerequisites are unavailable.
+- No secrets, Gemini/Claude dispatch, provider calls, hosted D1 writes, workspace install, deployment, merge or production mutation.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 62](../reports/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md); checkpoint: [Pass 62 checkpoint](../checkpoints/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md).
+- Next: Pass 63 — independently verifiable GitHub workflow provenance; keep dispatch disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
