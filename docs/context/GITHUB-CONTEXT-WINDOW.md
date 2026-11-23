@@ -2300,8 +2300,8 @@ Canonical MediaHub map (separate repository; Contour B deferred): https://github
 - Scope: process/documentation baseline for Contour A only; Contour B remains DEFERRED until Contour A is ACCEPTED.
 - Working branch: `docs/engineering-excellence-2026-11-23`, created from default branch `Основной` at immutable base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This is a working documentation branch, not merged/default/canonical production state.
 - Package documents: Master Control Center; Engineering Pass Protocol and DoD; Contour A Acceptance Criteria Matrix; Dependency and Critical Path; Metrics and Time Accounting; Reuse First Register; Multi-Agent Roles and Continuous Security Qualification; Engineering Intelligence.
-- Added report: [2026-11-23 Engineering Excellence documentation baseline](../reports/2026-11-23-engineering-excellence-documentation-baseline.md).
-- Added checkpoint: [2026-11-23 Engineering Excellence](../checkpoints/2026-11-23-engineering-excellence.md).
+- Added report: [2026-11-23 Engineering Excellence documentation audit](../reports/2026-11-23-engineering-excellence-documentation-audit.md).
+- Added checkpoint: [2026-11-23 Engineering Excellence adoption checkpoint](../checkpoints/2026-11-23-engineering-excellence-adoption.md).
 - The package formalizes one-pass scope, immutable SHA, evidence inspection, exact-head CI, independent review, no-duplication ownership, reuse evaluation, metric definitions and estimation guardrails.
 - OSS candidates (OpenTelemetry, OPA, Temporal, Testcontainers, LiteLLM, DORA) are research references only; no dependency is approved or integrated by this documentation.
 - Engineering metrics, automated collection, dependency graph automation and Engineering Intelligence automation are NOT IMPLEMENTED. No historical hours were fabricated.
