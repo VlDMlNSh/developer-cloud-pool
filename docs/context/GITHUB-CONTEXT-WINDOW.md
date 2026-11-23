@@ -26,6 +26,7 @@ Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / D
 - Pass 60 added 7 local D1 integration tests for receipt success/exact replay, conflicting admission, run provenance conflict, pre-commit failure/recovery, lost acknowledgement, partial readback, unavailable primary readback and incomplete task-ready outbox tuple. All paths preserve dispatch/execution authorization false.
 - No live default-branch `issue_comment` controller exists. The workflow ref in the binder is only the expected future identity, not proof the workflow is present or trusted.
 - No cryptographic webhook signature validation or independent GitHub API read of default HEAD. Runner-context binding alone does not establish live event authenticity.
+- **Pass 60 SHA-semantics finding:** GitHub documents `GITHUB_SHA` for `issue_comment` as the last commit on the default branch, while `github.workflow_sha` is the commit SHA for the workflow file. The current binder's `workflowSha === targetSha` assumption is not a generally valid invariant. Pass 61 must separate event target SHA from workflow-code SHA and define an independently verifiable trust relationship before controller creation. Sources: [issue_comment event semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#issue_comment), [Actions contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
 - PR #112 remains historical: owner/event predicate only, no durable receipt or workflow/run binding. PR #125 remains historical: competing schema, retired DSH profile, incomplete replay tuple; never copy its ledger or legacy outbox.
 - PR #170 remains OPEN/DRAFT/UNMERGED, head `9a61572dca2a6621001a1bae770e8d85a5d93315`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 38 files, +7,655/-0; reviews 0, threads 0.
 - All adapters remain non-authorizing; worker entrypoint remains inert. No live routing, quota enforcement, hosted D1, worker execution or authenticated UI qualification.
@@ -56,7 +57,7 @@ Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / D
 
 1. Re-read this state block, latest report/checkpoint and refresh default HEAD, PR #170/#169, Issues #96/#140, exact-head/merge-result CI, reviews and rulesets.
 2. Freeze target SHA, scope, non-goals, Reuse First decision, risks and DoD before code changes.
-3. **Pass 61 next:** test duplicate source-comment key against a distinct admission envelope; forged receipt SQL bindings; missing route/commit receipt; receipt immutability; and verify future issue_comment workflow SHA/target-ref semantics before controller creation.
+3. **Pass 61 next:** test duplicate source-comment key against a distinct admission envelope; forged receipt SQL bindings; missing route/commit receipt; receipt immutability; and separate event target SHA from workflow-file SHA and establish a trusted relationship before controller creation.
 4. Keep one canonical `proofs/d1-ledger` path, CODE profile only, no second ledger, no live controller, no dispatch.
 5. Run exact synthetic merge-result D1 and Pool Contract CI; update report/checkpoint/Context Window. No hosted D1, secrets, provider calls, deployment, merge or production mutation.
 6. Keep Contour B deferred until Contour A is formally ACCEPTED.
