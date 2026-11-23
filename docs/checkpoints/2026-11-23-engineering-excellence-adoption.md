@@ -26,8 +26,9 @@ Pass 50 F-50-01 remains HIGH: D1 lease acquisition trusts caller-controlled `inp
 
 - Eight Engineering Excellence documents were created and read back from GitHub.
 - Report published: [2026-11-23 documentation audit](../reports/2026-11-23-engineering-excellence-documentation-audit.md).
-- This checkpoint read-back and Context Window append remain pending.
+- Checkpoint and Context Window append were read back from GitHub.
 - Runtime tests: not applicable to docs-only scope.
+- Draft PR #169: OPEN / DRAFT / UNMERGED; initial head `10c80c33b665ae7a59f60a845368303a4255fae2`; initial synthetic merge SHA `29d07eb6b6da3f84a6bea581cf38c903dac6705e`. No PR workflow runs/status contexts returned; CI NOT VERIFIED; reviews 0. Recheck after final documentation commit.
 - Agent dispatch, provider calls, deployment, merge: NOT RUN.
 
 Contour A: **BLOCKED / NOT ACCEPTED**. Contour B: **DEFERRED**.
