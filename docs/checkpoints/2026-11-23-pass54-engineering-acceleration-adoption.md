@@ -34,3 +34,10 @@ Pass 55 — source-level audit of the real issue-comment controller trust bounda
 
 Contour A: BLOCKED / NOT ACCEPTED.
 Contour B: DEFERRED.
+
+## Final post-write read-back
+- PR #169 latest observed head before this final checkpoint/context refresh: `7f40d9349930ec5330f825d89a19ae49670f21d1`.
+- PR #169 reports `mergeable=false`; cause NOT VERIFIED.
+- Exact-head workflow lookup for that SHA returned no runs: CI NOT VERIFIED.
+- Reviews 0; review threads 0.
+- Do not merge. Recheck branch/base divergence, exact-head CI and governance on next pass.
