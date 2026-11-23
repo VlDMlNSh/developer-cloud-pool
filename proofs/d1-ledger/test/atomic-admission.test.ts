@@ -375,7 +375,7 @@ describe("atomic qualified A0 -> D1 admission", () => {
     const attempts = await env.POOL_DB.prepare("SELECT COUNT(*) AS n FROM pool_attempts").first();
     expect(approvals.n).toBe(1);
     expect(attempts.n).toBe(1);
-    expect(results.every(x => x.dispatch === false)).toBe(true);
+    expect(results.every(x => x.dispatch === false && x.executionAuthorized === false)).toBe(true);
   });
 
   it("ignores a caller-supplied future timestamp and uses trusted time", async () => {
