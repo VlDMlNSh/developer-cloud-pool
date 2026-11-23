@@ -2357,3 +2357,13 @@ The documentation package remains process policy only. Runtime metrics, automati
 - Documentation-only publication on docs/engineering-excellence-2026-11-23 / PR #169. No source, SQL, workflow, runtime or security-boundary changes; no local tests, workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
 - Next bounded step: Pass 51 trusted-clock remediation design for the isolated, non-mounted D1 lease adapter. Inject a trusted clock after authentication and immediately before the write; derive all persisted times from it; reject invalid/rollback time; add future/past/invalid/rollback/boundary tests. Preserve dispatch:false and executionAuthorized:false. Do not connect to Worker/Supervisor or run GitHub workflows.
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+
+### Daily documentation publication read-back — 2026-11-23
+
+- Daily report publication: commit 652ee7097f3a5848bbda0088f717df6f98b47177; report blob 393b2b131ce8002add2aba5558181bf204bfbcd2.
+- Daily checkpoint publication: commit cf4deff7241b64987c293ba1bb53ae4866782d93; checkpoint blob 924388a97842d8161e0489485b444ed270481ca7.
+- Both files were re-read from docs/engineering-excellence-2026-11-23 and their blob SHAs matched.
+- After adding the report, checkpoint and first Context Window append, live PR #169 head was 863ffd793ebc7d099f247b10e67b107cbb03ef03, 33 ahead / 0 behind current default, 14 changed files, OPEN/DRAFT/UNMERGED. Its exact-head workflow query and combined status array were empty; formal reviews and inline threads were empty. This is a documentation-only working branch, not canonical.
+- The report's PR #169 branch metrics (head 031b4c..., 30 ahead, 12 files) are the pre-publication snapshot at audit start. The checkpoint records the same pre-publication head explicitly. The live branch advanced with this daily documentation update; refresh PR metadata after the final Context Window commit.
+- Final Context Window update is documentation-only. No code, SQL, workflow, runtime, security-boundary or governance changes; no local tests, workflow dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
