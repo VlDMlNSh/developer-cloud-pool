@@ -47,6 +47,48 @@ describe("canonical D1 migration baseline", () => {
     await expect(env.POOL_DB.prepare(
       "INSERT INTO pool_task_outbox (outbox_id, approval_id, event_type, envelope_digest, created_at) VALUES ('x', 'x', 'pool.task.claimed', ?, 1)"
     ).bind("a".repeat(64)).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+
+    // Seed one historical row with only the INSERT guards temporarily lifted;
+    // UPDATE and DELETE guards remain active and are exercised below.
+    await env.POOL_DB.prepare(`
+      INSERT INTO pool_approval_ledger (
+        approval_id, owner_numeric_id, repository_id, issue_number, target_sha,
+        profile, envelope_digest, expires_at, executor_id
+      ) VALUES ('legacy-write-seal-fixture', '10001', '20002', 91, ?, 'jarvis-code-sandbox-v1', ?, 1900003600, 'executor-legacy-test')
+    `).bind("b".repeat(40), "c".repeat(64)).run();
+    await env.POOL_DB.prepare("DROP TRIGGER pool_task_claims_legacy_insert_block").run();
+    await env.POOL_DB.prepare("DROP TRIGGER pool_task_outbox_legacy_insert_block").run();
+    await env.POOL_DB.prepare(`
+      INSERT INTO pool_task_claims (approval_id, claim_id, envelope_digest, created_at)
+      VALUES ('legacy-write-seal-fixture', 'legacy-write-seal-fixture', ?, 1)
+    `).bind("a".repeat(64)).run();
+    await env.POOL_DB.prepare(`
+      INSERT INTO pool_task_outbox (outbox_id, approval_id, event_type, envelope_digest, created_at)
+      VALUES ('legacy-write-seal-fixture', 'legacy-write-seal-fixture', 'pool.task.claimed', ?, 1)
+    `).bind("a".repeat(64)).run();
+    await env.POOL_DB.prepare("CREATE TRIGGER pool_task_claims_legacy_insert_block BEFORE INSERT ON pool_task_claims BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+    await env.POOL_DB.prepare("CREATE TRIGGER pool_task_outbox_legacy_insert_block BEFORE INSERT ON pool_task_outbox BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_task_claims SET status = 'dead' WHERE approval_id = 'legacy-write-seal-fixture'"
+    ).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_task_claims WHERE approval_id = 'legacy-write-seal-fixture'"
+    ).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+    await expect(env.POOL_DB.prepare(
+      "UPDATE pool_task_outbox SET status = 'dead' WHERE approval_id = 'legacy-write-seal-fixture'"
+    ).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+    await expect(env.POOL_DB.prepare(
+      "DELETE FROM pool_task_outbox WHERE approval_id = 'legacy-write-seal-fixture'"
+    ).run()).rejects.toThrow("LEGACY_CLAIM_PATH_DISABLED");
+
+    await env.POOL_DB.prepare("DROP TRIGGER pool_task_claims_legacy_delete_block").run();
+    await env.POOL_DB.prepare("DROP TRIGGER pool_task_outbox_legacy_delete_block").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_task_claims WHERE approval_id = 'legacy-write-seal-fixture'").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_task_outbox WHERE approval_id = 'legacy-write-seal-fixture'").run();
+    await env.POOL_DB.prepare("CREATE TRIGGER pool_task_claims_legacy_delete_block BEFORE DELETE ON pool_task_claims BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+    await env.POOL_DB.prepare("CREATE TRIGGER pool_task_outbox_legacy_delete_block BEFORE DELETE ON pool_task_outbox BEGIN SELECT RAISE(ABORT, 'LEGACY_CLAIM_PATH_DISABLED'); END").run();
+    await env.POOL_DB.prepare("DELETE FROM pool_approval_ledger WHERE approval_id = 'legacy-write-seal-fixture'").run();
   });
 
   it("attaches multiple approvals to one logical task with exactly one task-ready outbox row", async () => {
