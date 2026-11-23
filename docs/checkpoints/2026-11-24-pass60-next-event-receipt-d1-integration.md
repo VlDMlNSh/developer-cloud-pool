@@ -31,7 +31,7 @@ Audit SQL source-receipt integrity and workflow SHA trust assumptions:
 2. forged receipt INSERT bindings across approval/admission/task/attempt/route/outbox/commit receipt;
 3. missing route and missing commit receipt independently;
 4. immutable receipt fields and key scope;
-5. validate GITHUB_SHA vs GITHUB_WORKFLOW_SHA semantics for future issue_comment controller and specify independently trusted default-ref/target SHA.
+5. Correct the current strict equality assumption: GitHub documents `GITHUB_SHA` for `issue_comment` as the last default-branch commit, while `github.workflow_sha` is the workflow-file commit SHA. Treat these as distinct provenance values and define an independently verifiable trust relation before controller creation.
 Keep dispatch disabled; no live controller, hosted D1, secrets, providers, deployment, merge or production mutation.
 
 Report: [Pass 60](../reports/2026-11-24-pass60-next-event-receipt-d1-integration.md)  
