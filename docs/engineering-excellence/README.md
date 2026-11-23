@@ -53,3 +53,12 @@ The operational control loop and dashboard minimum are defined in [ENGINEERING-M
 ## Versioning
 
 Changes to metric definitions, DoD, acceptance gates, agent authority or security policy require a dated rationale and review. Historical pass reports are immutable evidence; corrections are additive and must identify the superseded statement rather than silently rewriting history.
+
+
+
+## Latest architecture and acceleration audit
+
+- [Cloud Pool acceleration and architecture audit — 2026-11-23](../reports/2026-11-23-cloud-pool-acceleration-audit.md)
+- [Audit checkpoint](../checkpoints/2026-11-23-cloud-pool-acceleration-audit.md)
+
+The audit prioritizes one integrated Contour A vertical slice, D1 PR consolidation, runtime clock qualification, authenticated web delivery, one executor, and independent acceptance. It does not authorize dispatch or Contour B.
