@@ -14,7 +14,7 @@ CREATE TABLE pool_source_comment_receipts (
   ref TEXT NOT NULL CHECK (ref = 'refs/heads/Основной'),
   target_sha TEXT NOT NULL CHECK (length(target_sha) = 40 AND target_sha NOT GLOB '*[^0-9a-f]*'),
   workflow_ref TEXT NOT NULL CHECK (workflow_ref = 'VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной'),
-  workflow_sha TEXT NOT NULL CHECK (length(workflow_sha) = 40 AND workflow_sha NOT GLOB '*[^0-9a-f]*' AND workflow_sha = target_sha),
+  workflow_sha TEXT NOT NULL CHECK (length(workflow_sha) = 40 AND workflow_sha NOT GLOB '*[^0-9a-f]*'),
   run_id INTEGER NOT NULL CHECK (run_id > 0),
   run_attempt INTEGER NOT NULL CHECK (run_attempt > 0),
   profile TEXT NOT NULL CHECK (profile = 'jarvis-code-sandbox-v1'),
