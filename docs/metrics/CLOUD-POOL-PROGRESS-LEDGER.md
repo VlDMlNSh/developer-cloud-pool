@@ -15,3 +15,4 @@ Append-only by pass. Corrections must be explicit and retain prior observations.
 - EP/LR remain NOT COMPUTABLE / NOT SCORED until scoring inputs exist.
 - Exact tested SHA and run/job URLs belong in detailed reports.
 - This ledger is on a documentation working branch, not the default-branch canonical record until merged through governance.
+| 52 | 2026-11-23 | default `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; docs branch | Fresh state reconciliation and bottom-up remaining-effort estimate published; no code changes | Re-read D1 run 45212088972 SUCCESS; Pool Contract run 45212089137 SUCCESS; no tests rerun | NOT RECORDED / NOT MEASURED | NOT COMPUTABLE | NOT SCORED | Remaining: 70–120h to ACCEPTED (LOW CONFIDENCE); first limited launch 35–60h. Cumulative spent estimate 80–120h LOW CONFIDENCE / NOT MEASURED |
