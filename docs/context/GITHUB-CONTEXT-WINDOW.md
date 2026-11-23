@@ -2330,3 +2330,26 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: independent security review of PR #168, address findings, rerun exact-head CI. Do not merge or dispatch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 49 — reconciliation pre-write expiry revalidation — 2026-11-23
+
+- Report: [Pass 49 reconciliation pre-write expiry audit](../reports/2026-11-23-pass49-reconciliation-prewrite-expiry-audit.md).
+- Checkpoint: [Pass 49 continuation checkpoint](../checkpoints/2026-11-23-pass49-continuation-checkpoint.md).
+- Frozen PR base: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- Pass 49 integration head: `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; branch `integration/pass48-current-base-d1-2026-11-23`; PR #168 remains OPEN/DRAFT/UNMERGED.
+- Additional TOCTOU correction: after asynchronous primary D1 precondition read, take a final trusted-clock sample immediately before first durable mutation; fail closed on invalid/backwards clock; revalidate expiry and persist/readback final verified_at.
+- Added deterministic test for token expiry during asynchronous primary D1 precondition read; no decision row is written.
+- PR merge-result checkout: `659bc39dc448e9f803c4a20044209017d3cd7fb6`.
+- D1 run 45212088972 / job 137823313130: SUCCESS; 6/6 files, 63/63 tests passed.
+- Pool Contract run 45212089137 / job 137823313662: SUCCESS; dispatch false; six workflow YAML files parsed; all pool security contract checks passed.
+- Internal audit: migration 0015 append-only and current attempt binding reviewed; no production crypto claim.
+- Production JOSE/JWKS remains NOT IMPLEMENTED; verifier is still injected. Mature candidate `panva/jose` selected in Pass 41 remains unintegrated/unpinned/unqualified.
+- Issue #140 excludes independent/external review requests; no external review was requested. Internal inspection is not independent review. Ruleset #26550182 requires zero approvals.
+- Gemini NOT RUN / NOT AUTHORIZED. No secret values read, hosted D1 writes, provider calls, deployment, merge or production action.
+- Status: Pass 49 code and exact-head CI VERIFIED; production trust NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement a no-secret JOSE verifier prototype with exact dependency pin, signed synthetic JWT/JWKS tests, issuer/audience/alg/typ/lifetime checks, bounded fetch and key rotation tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
