@@ -125,3 +125,14 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - Canonical task admission and delivery continue exclusively through `pool_tasks` and `pool_task_delivery_outbox`.
 - Baseline tests assert the six guards exist and reject direct INSERT. Atomic-admission and lease test fixtures temporarily drop and restore the six guards only during synthetic teardown.
 - This closes the documented direct-SQL legacy-write gap in the local proof. It does not establish hosted D1 permissions, live worker isolation, or execution authorization.
+
+
+## Pass 59 — GitHub owner /next event context and durable source-comment receipt
+
+- Added a fail-closed binder for the exact owner-created top-level `issue_comment` event on Issue #96. It binds repository/owner numeric IDs, exact `/next` body, owner association, default branch ref, target/workflow SHA, workflow ref, run ID and run attempt.
+- The only accepted capability profile is `jarvis-code-sandbox-v1`. The binder rejects whitespace, suffixes, LF/CRLF, wrong issue/repository/owner/ref/workflow, malformed SHA, and invalid event/run identifiers.
+- Added forward-only migration 0017 in the existing `proofs/d1-ledger` only. It creates an append-only source-comment receipt with repository-scoped uniqueness, fixed owner/repository/issue/event/profile constraints, workflow provenance fields, event digest and admission linkage. SQL requires a matching consumed approval, task, prepared attempt, current route, pending task-ready outbox and immutable admission commit receipt; update/delete are denied.
+- Added `admitGitHubNextEvent` composition: bind the event, require the admission envelope digest to equal the canonical event digest, run the existing non-authorizing admission adapter, then record and primary-first read back the source-comment receipt. Ambiguous receipt writes are reconciled by primary readback; mismatches remain DENY/UNCONFIRMED. This two-stage local proof never dispatches.
+- Reuse: existing Cloudflare Workers Vitest + local D1 harness and canonical `pool_task_delivery_outbox`; no external dependency, alternate ledger or legacy outbox.
+- Limitations: no live `issue_comment` workflow/controller exists on default; workflow ref is a frozen expected identity for the future controller. This local binder does not cryptographically authenticate GitHub's event payload, independently query GitHub for default HEAD, prove hosted D1 behavior, or authorize dispatch. Receipt persistence occurs after the existing admission transaction; the wrapper returns no success unless receipt readback confirms. Recovery uses the same immutable admission and source-comment key.
+- Dispatch and execution authorization remain false.
