@@ -104,3 +104,14 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - Supported observations are `safe_to_retry` (executor stopped and external effects absent), `result_confirmed` (result and provenance digests supplied), and `effects_unknown` (explicit uncertainty). Unsafe or mismatched claims fail closed.
 - Successful recording does not modify the task, attempt, lease, queue or outbox. It does not release the lease, create another attempt, authorize retry, or dispatch. Every result retains `dispatch: false`, `executionAuthorized: false`, `stateChanged: false`, and `retryAuthorized: false`.
 - The verifier is only an injected trust boundary in this local proof. No production issuer/key registry, OIDC verifier integration, owner approval for retry, or execution transition is implemented. Synthetic tests do not qualify cryptographic trust or hosted D1 behavior.
+
+
+## Pass 52 — trusted clock for atomic admission
+
+- `admitQualifiedTask(db, input, trustedClock)` requires an injected trusted clock. Caller-supplied `input.now` is not validated or used.
+- The adapter samples trusted time after the primary pre-read, then uses that same sample for approval consumption, route freshness, admission timestamps, exact replay validation and the first atomic write.
+- Ambiguous-write recovery takes a fresh trusted sample before revalidating time-sensitive route evidence.
+- Missing, throwing or invalid clocks fail closed.
+- Every deny and success response explicitly includes `dispatch: false` and `executionAuthorized: false`.
+- Adversarial tests cover caller future/past timestamps, invalid/throwing/missing clock, time preceding route evidence, and the existing replay/concurrency/recovery paths.
+- This is a local adapter contract. It does not prove the real controller/runtime clock source or authorize execution; runtime clock provenance remains a separate gate.
