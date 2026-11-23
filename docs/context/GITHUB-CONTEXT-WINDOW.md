@@ -2273,8 +2273,8 @@ Existing architecture, contracts, decisions, Issues, PRs, dated reports and chec
 - `docs/engineering-excellence/REUSE-FIRST-REGISTER.md`
 - `docs/engineering-excellence/AGENT-AND-SECURITY-QUALIFICATION.md`
 - `docs/engineering-excellence/ENGINEERING-INTELLIGENCE.md`
-- `docs/reports/2026-11-23-engineering-excellence-documentation-audit.md`
-- `docs/checkpoints/2026-11-23-engineering-excellence-adoption.md`
+- `docs/reports/2026-11-23-engineering-excellence-documentation-baseline.md`
+- `docs/checkpoints/2026-11-23-engineering-excellence.md`
 
 ### Research and limitations
 
@@ -2327,3 +2327,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Keep PR #169 draft/unmerged pending final exact-head CI, governance and review checks. No merge was performed.
 
 The documentation package remains process policy only. Runtime metrics, automatic dependency graphing and Engineering Intelligence are NOT IMPLEMENTED. Gemini dispatch remains NOT RUN. Pass 50 F-50-01 remains HIGH and unremediated. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+
+
+### Documentation de-duplication correction — 2026-11-23
+
+A full PR changed-file audit found that the working branch already contained `ENGINEERING-MASTER-CONTROL.md`, `docs/reports/2026-11-23-engineering-excellence-documentation-baseline.md` and `docs/checkpoints/2026-11-23-engineering-excellence.md`. These pre-existing branch artifacts were preserved. README now explicitly separates index/navigation from the Master Control Center's operating procedure. The baseline report and checkpoint were updated with the audit/PR addendum. Two duplicate report/checkpoint files created during the first drafting pass were deleted. No existing architecture, contract or pass-history document was removed.
+
+The intended PR file set is now the eight new process/reference documents plus the pre-existing master-control, report and checkpoint, and the append-only Context Window. Re-read the PR changed-file list to confirm no duplicate artifacts remain.
