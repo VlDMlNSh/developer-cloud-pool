@@ -89,7 +89,7 @@ Canonical references:
 
 ## 9. Final post-write read-back
 
-- Documentation branch latest observed head after report/checkpoint/context/README writes: `7f40d9349930ec5330f825d89a19ae49670f21d1` (PR #169 metadata read-back).
+- First consolidated docs write produced branch head `7f40d9349930ec5330f825d89a19ae49670f21d1`; final verification append then produced checkpoint commit `951d3567eb3829b5ea440511d41da2a3129aabd8`; the final Context Window refresh produced commit `8255904f5dc76b4bfe2f32ed8369b55ecd98a3ac`.
 - PR #169 remains OPEN / DRAFT / UNMERGED; GitHub reports `mergeable=false` at this read. Do not infer a cause without a fresh compare/diff inspection.
 - Exact-head workflow lookup for `7f40d934...` returned an empty run list: CI NOT VERIFIED.
 - Formal PR reviews: 0; review threads: 0.
