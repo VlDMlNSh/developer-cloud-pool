@@ -271,11 +271,11 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects a duplicate repository source-comment key carrying a distinct admission envelope", async () => {
-    const first = await fixture("g");
+    const first = await fixture("0");
     const firstResult = await admitGitHubNextEvent(env.POOL_DB, first.input, first.context, trustedClock);
     expect(firstResult.decision).toBe("ADMITTED_QUEUED");
 
-    const second = await fixture("h");
+    const second = await fixture("1");
     const secondContext = { ...second.context, commentId: Number(first.event.sourceCommentId) };
     const secondBound = await bindGitHubNextEvent(secondContext);
     expect(secondBound.decision).toBe("BOUND");
@@ -291,7 +291,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects forged receipt INSERT bindings even when the admission id exists", async () => {
-    const f = await fixture("i");
+    const f = await fixture("2");
     const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
     expect(admitted.decision).toBe("ADMITTED_QUEUED");
     await expect(sourceReceiptInsert(
@@ -301,7 +301,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects source receipt insertion when the independently required commit receipt is missing", async () => {
-    const f = await fixture("j");
+    const f = await fixture("3");
     const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
     expect(admitted.decision).toBe("ADMITTED_QUEUED");
     const saved = await env.POOL_DB.prepare(
@@ -336,7 +336,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects source receipt insertion when the independently required route row is missing", async () => {
-    const f = await fixture("k");
+    const f = await fixture("4");
     const admitted = await admitQualifiedTask(env.POOL_DB, f.input, trustedClock);
     expect(admitted.decision).toBe("ADMITTED_QUEUED");
 
@@ -379,7 +379,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects updates to every source receipt field, including identity, provenance, linkage and state", async () => {
-    const f = await fixture("l");
+    const f = await fixture("5");
     const admitted = await admitGitHubNextEvent(env.POOL_DB, f.input, f.context, trustedClock);
     expect(admitted.receiptDecision).toBe("SOURCE_COMMENT_RECORDED");
     for (const column of sourceReceiptColumns) {
