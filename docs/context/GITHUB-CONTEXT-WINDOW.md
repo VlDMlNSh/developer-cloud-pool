@@ -1,17 +1,64 @@
-# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
+# GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL
 
-> **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
+> **Оперативный источник восстановления `/next`.** Сначала используй этот блок и живые GitHub refs; исторические разделы ниже — архивные доказательства и требуют повторной проверки перед использованием.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-23 — Pass 54 context recovery
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
-This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (read before Pass 54 writes; revalidate on next pass)
+Working documentation branch: `docs/engineering-excellence-2026-11-23`
+PR #169: OPEN / DRAFT / UNMERGED; pre-Pass54 head `78d4c4c51f2bb4e48173d171a8fb72ae22aedcff`; Pass54 adds report/checkpoint and refreshes this file
+PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41` (behind observed default `8c38bb...`)
+
+## Current engineering state — 2026-11-23
+
+- **Priority:** finish Contour A. Contour B is prohibited until formal `ACCEPTED`.
+- **Pass 52:** D1 lineage consolidated into one candidate PR #168; migrations 0001–0015 documented; historical PR lineage preserved.
+- **Pass 53:** admission adapter changed to require injected `trustedClock`; caller `input.now` is not authoritative; all adapter outcomes explicitly remain `dispatch:false` and `executionAuthorized:false`.
+- **Pass 53 evidence:** D1 merge-result CI run `45236726880` — 74/74 tests SUCCESS on synthetic merge result `7989e45...`; Pool Contract run `45236726907` SUCCESS.
+- **Boundary:** this proves the isolated local adapter/test contract only. Real controller clock provenance, issue-comment authenticity/binding, production callsite integration, hosted D1 and executor remain NOT VERIFIED.
+- **PR #168:** draft/unmerged; no independent review recorded; no merge authorization inferred from CI.
+- **PR #169:** documentation-only Engineering Excellence package; draft/unmerged. It defines pass protocol, DoD, acceptance matrix, critical path, reuse register, metrics and agent/security governance. Policy adoption awaits review/merge; automated metrics collection is NOT IMPLEMENTED.
+- **PR #169 stale statement corrected in Pass 54:** Pass 50 caller-time defect is remediated at adapter boundary in Pass 53. Runtime clock provenance remains an open blocker.
+- **UI:** Issue #22 controls read-only authenticated console. Static/Hono prototypes are not a deployed authenticated UI; no live mobile/desktop qualification.
+- **Executor:** Issue #96 owner priority is Claude Code + ECC + FCC via a separately verified free route; Gemini optional, not a launch dependency. Host/sandbox/free route qualification is not proven.
+- **Issue #118:** persistent host/access qualification remains deferred and must not be assumed available.
+- **Secrets/dispatch/provider calls/deployment:** not performed in Pass 54. Do not read secret values or bypass approved controllers.
+- **Governance:** current effective ruleset details and required approvals must be re-read before merge; CI success is not review or acceptance.
+
+## Pass 54 — acceleration adoption and context recovery
+
+- Report: [Pass 54](../reports/2026-11-23-pass54-engineering-acceleration-adoption.md)
+- Checkpoint: [Pass 54 checkpoint](../checkpoints/2026-11-23-pass54-engineering-acceleration-adoption.md)
+- Documentation changes are on `docs/engineering-excellence-2026-11-23`, PR #169; not merged.
+- Pass type: documentation/process/context correction. Runtime tests NOT APPLICABLE; PR-head docs CI NOT VERIFIED until it runs.
+- Time metrics: active hours NOT MEASURED; test time NOT APPLICABLE; CI queue/runtime pending. Do not estimate from commit counts.
+
+## Mandatory `/next` resume procedure
+
+1. Re-read this current-state block, Pass 54 checkpoint, and the Engineering Excellence Pass Protocol.
+2. Re-fetch default HEAD, PR #168/#169 heads and bases, open Issues/PRs, branch refs, exact-head/merge-result CI, reviews, rulesets and relevant governance. Treat every SHA here as historical until revalidated.
+3. Confirm no newer owner decision or blocker supersedes the next task.
+4. Select exactly one bounded task on the Contour A critical path. Freeze target SHA, scope, non-goals, reuse-first decision, risk and DoD before editing.
+5. Prefer integrating or qualifying existing components over creating parallel implementations. Do not open another D1 branch while PR #168 remains the canonical candidate unless evidence proves it unusable.
+6. Make one coherent change. Inspect diff, source readback, blob SHAs and tests. Distinguish PR head from synthetic merge result.
+7. Do not dispatch agents, enable dispatch, access secret values, call providers, deploy or merge unless their independent gates are explicitly verified.
+8. Update one dated report, checkpoint and this Context Window. Record measured time buckets only; unavailable evidence is NOT VERIFIED.
+
+## Next bounded task
+
+**Pass 55 — controller trust-boundary source audit.** Freeze a current SHA; inspect Issue #96/#140 and actual `issue_comment` workflow/controller callsites. Trace trusted GitHub event context, repository/owner/issue/comment binding, immutable target SHA, replay/duplicate handling and trusted clock source. Produce a source-path/blob-SHA/property/test matrix and define one remediation or BLOCKED result. No dispatch, secrets, provider calls, hosted D1 or deployment.
+
+## Canonical navigation
+
+- Engineering Excellence: https://github.com/VlDMlNSh/developer-cloud-pool/tree/docs/engineering-excellence-2026-11-23/docs/engineering-excellence
+- PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
+- PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169
+- MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 ---
 
+> The following sections are retained historical context. Their refs, statuses, dates, limits and implementation claims are not live facts unless reconfirmed in the current GitHub source of truth.
 ## 1. Project objective, scope and priority order
 
 Developer Cloud Pool is an independent, cloud-first, governed agent platform and remote development environment. The goal is to make a secure web console accessible from iPhone and desktop, then qualify the cloud execution pool and only afterward move to native mobile and external compute.
