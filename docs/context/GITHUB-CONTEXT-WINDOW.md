@@ -2549,9 +2549,9 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 
 - Default branch `Основной` HEAD remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
 - PR #170 pre-pass head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; final head: `4b4055b4f2026db617f1e2f686f337ad85e9531e`; OPEN/DRAFT/UNMERGED.
-- Exact synthetic merge checked by D1 CI log: `9171489` (merge of final PR head into frozen default).
+- Exact synthetic merge checked by D1 CI log: `9171489be9232a3c3389fef215904f5ade25a5ea` (merge of final PR head into frozen default).
 - Binder now treats `context.sha` (event/default-ref target) and `context.workflowSha` (workflow file commit) as distinct values, validates each SHA format independently, and keeps exact workflowRef identity. Migration 0017 no longer requires `workflow_sha = target_sha`. Unit/integration fixtures use distinct SHAs.
-- D1 run 45273084680 SUCCESS: 8 files / 108 tests; Pool Contract run 45273084714 SUCCESS. D1 job log confirms checkout of exact synthetic merge `9171489`. No new dependencies; four files changed (+12/-6).
+- D1 run 45273084680 SUCCESS: 8 files / 108 tests; Pool Contract run 45273084714 SUCCESS. D1 job log confirms checkout of exact synthetic merge `9171489be9232a3c3389fef215904f5ade25a5ea`. No new dependencies; four files changed (+12/-6).
 - Ruleset 26550182 re-read: active on `refs/heads/Основной`; PR required; thread resolution required; approval count 0; deletion/non-fast-forward prohibited; no bypass actors; current user cannot bypass. PR #170 formal reviews 0, review threads 0.
 - Critical residual NOT VERIFIED: workflow SHA authenticity, workflow file content digest, workflow commit ancestry against event target SHA, independent default-ref API read and race policy. Binder is a local predicate proof only, not a cryptographic event authenticator or deployable controller.
 - SQL receipt adversarial cases remain open: duplicate source-comment ID with distinct envelope; forged receipt INSERT bindings; independently missing route/commit receipt; field-by-field immutability and repository key scope.
