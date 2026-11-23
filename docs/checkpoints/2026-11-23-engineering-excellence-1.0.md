@@ -30,3 +30,12 @@ See [Engineering Excellence index](../engineering-excellence/README.md). The pac
 - PR head and exact-head checks must be refreshed before relying on them; missing checks are NOT VERIFIED.
 
 No runtime code, tests, dispatch, provider calls, secret reads, deployment, merge or acceptance were performed in this documentation pass.
+
+
+
+## Addendum — latest documentation PR state (2026-11-23)
+
+- PR #169 latest observed head: `fa1726032c9a310f759fba1e83238547fcdbe5e8`; base SHA: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 16 changed files.
+- PR remains OPEN / DRAFT / UNMERGED; formal reviews 0; exact-head CI NOT VERIFIED.
+- Pass 51 implementation and its separate evidence are recorded in the dedicated Pass 51 report/checkpoint and Context Window.
+- Documentation policy remains PROPOSED; no runtime qualification or acceptance is implied.
