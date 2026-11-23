@@ -379,7 +379,6 @@ describe("atomic qualified A0 -> D1 admission", () => {
   });
 
   it("ignores a caller-supplied future timestamp and uses trusted time", async () => {
-    await seed();
     const result = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW + 86_400 });
     expect(result).toMatchObject({
       decision: "ADMITTED_QUEUED", dispatch: false, executionAuthorized: false
@@ -387,7 +386,6 @@ describe("atomic qualified A0 -> D1 admission", () => {
   });
 
   it("ignores a caller-supplied past timestamp and uses trusted time", async () => {
-    await seed();
     const result = await admitQualifiedTask(env.POOL_DB, { ...input, now: NOW - 86_400 });
     expect(result).toMatchObject({
       decision: "ADMITTED_QUEUED", dispatch: false, executionAuthorized: false
