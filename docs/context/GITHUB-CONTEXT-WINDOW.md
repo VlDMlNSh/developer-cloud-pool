@@ -2,13 +2,15 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-23 — Pass 54 multi-account identity and quota-isolation audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
+Observed default HEAD: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41` (Git refs API)
+Documentation continuation branch: `docs/pass39-reconciliation-review-2026-11-22`
+Latest Pass 54 documentation commit: `4fa05dfb1eca3814eb817294cf18695caabd17ba` (working branch; not merged into default)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+
+> **Freshness precedence:** The dated pass blocks appended to this document are the authoritative snapshots for their stated dates. Older sections below may contain historical branch names, SHAs, counts or statuses and must not override the fresh GitHub refs recorded in Pass 54. Refresh primary GitHub state before acting.
 
 ---
 
@@ -2221,3 +2223,220 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: obtain an independent reviewer for PR #165 and conduct a focused audit of migration 0015, canonical identity, issuer/audience trust boundary, trusted clock, replay/JTI constraints, and fail-closed behavior. Keep Contour B deferred.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 40 — production JWT/JWKS verifier component qualification research — 2026-11-22
+
+- Immutable project baseline: default branch `Основной` HEAD `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; PR #165 head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`, base `83b8e9d3b0bdeeb201e24a7a9d2fe042fb00694a`.
+- PR #165 re-read OPEN / DRAFT / UNMERGED. One COMMENTED review exists (Pass 39, review ID `6012744917`); no approval or independent review. Corrected merge-result CI remains D1 run `45032534259` SUCCESS and Pool Contract run `45032534262` SUCCESS; these are merge-result checks, not standalone head-only validation.
+- Repository D1 package `proofs/d1-ledger/package.json` blob `d970b887f52eb1011e3df74b560ad9a35bb25866` has Vitest/Cloudflare test dependencies only; no production JWT/JWKS verifier dependency is present. Reconciliation adapter blob `fe4102eae2038b98be3220bb2961fa433bb9b4b0` still requires injected `verifyEvidence` and `trustedClock`.
+- Mature component review: `panva/jose` latest observed release `6.2.18`, repository `panva/jose`, latest observed commit `d1e200f22d2bc66cd2ed6cc48fc622b6f1765cc5`; package metadata says MIT, zero dependencies, ESM and Cloudflare Workers compatibility. Provides `jwtVerify`, remote/local JWKS resolution, signature verification and JWT claim validation. Candidate for the narrow cryptographic verification seam; not yet integrated.
+- `panva/oauth4webapi` latest observed release `3.8.9`, latest observed commit `aa7e6e889fd64a325adbef651419326e8a3266e7`; MIT, zero dependencies, ESM, Cloudflare Workers compatibility, OAuth/OIDC flows, introspection/revocation and incoming JWT access-token validation. It is a mature OAuth/OIDC protocol layer, but is not a replacement for the explicit custom reconciliation capability/claim policy. Existing synthetic OAuth compatibility work is separate.
+- `jose` remote JWKS selection respects `alg`, `kid`, `use`, and `key_ops`; refresh is cooldown-limited. Its security model explicitly leaves trusted JWKS URL selection, transport/network policy, persistent cache protection and application authorization to the integrator. Key removal from JWKS therefore does not itself prove immediate revocation of already cached keys.
+- Recommended direction: prototype an adapter around pinned `jose` using immutable issuer configuration (exact issuer, audience, JWKS URL, explicit algorithm allowlist, required typ/profile, max token age, clock tolerance and key-cache policy). Never derive a JWKS URL from untrusted token claims or follow arbitrary URLs. Keep capability and task/attempt/generation checks in the Cloud Pool adapter after signature and standard claim verification. Define explicit emergency key-revocation/cache invalidation and issuer rollover behavior before production.
+- Required adversarial tests before integration: wrong issuer/audience, algorithm confusion/none, wrong key type/use/key_ops, unknown/duplicate kid, invalid signature/tampering, expired/not-yet-valid token, excessive lifetime, clock skew boundaries, JTI replay across same and different issuer scopes, old-key rollover overlap, removed/revoked key with warm cache, JWKS outage/timeout/redirect/oversized response, malformed JWKS, and fail-closed behavior when trust configuration or clock is unavailable.
+- No dependency was added and no implementation changed in Pass 40. No real issuer, JWKS endpoint, secret, hosted D1, provider call, executor, dispatch or deployment was used.
+- Gemini controller dispatch: NOT RUN. This was a bounded research/documentation pass; no agent task is needed, and controller/security gates were not validated for dispatch.
+- Contour A remains NOT ACCEPTED; Contour B DEFERRED. Keep PR #165 Draft and dispatch disabled pending production trust integration, independent review, hosted persistence and remaining runtime/governance gates.
+
+Pass 40 research report: [2026-11-22-pass40-jose-jwks-verifier-component-research.md](../reports/2026-11-22-pass40-jose-jwks-verifier-component-research.md)
+Pass 40 checkpoint: [2026-11-22-pass40-continuation-checkpoint.md](../checkpoints/2026-11-22-pass40-continuation-checkpoint.md)
+
+
+---
+
+## Daily live revalidation — 2026-11-22 19:36 Europe/Vilnius / Pass 41 preflight
+
+- Audit status: SUCCEEDED (read-only GitHub revalidation, bounded static source review, documentation-only publication). Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Current default: Основной @ 81baadbb5944e11ed41a64bd0190bf2c8edd0c41. Compared with prior baseline 7e76bd2ebba5e3a27ccd32ecf7f52c2d10178250: 4 commits ahead / 0 behind; only Context Window and Pass 38 report changed. Current HEAD commit is unsigned. Default combined status is empty; CI NOT VERIFIED.
+- Current complete default tree has 69 entries (truncated=false). No web application directory, no proofs/d1-ledger package and no Gemini controller are present on default.
+- Issues #1, #22, #26, #94, #96 and #140 remain OPEN; GitHub search returned 15 open Issues. Search returned 100 open-PR results on its first page; total beyond that page NOT VERIFIED.
+- Ruleset #26550182 is active for exactly refs/heads/Основной; PR required; deletion/non-fast-forward blocked; review-thread resolution required; bypass list empty. Required approvals remain 0, CODEOWNERS review false, last-push approval false and extra approval false. Therefore ruleset does not enforce independent approval. POOL_DISPATCH_ENABLED value NOT VERIFIED; no variable was read or changed.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED and 153 commits behind current default (ahead counts 62/29/35/36 respectively). Exact-head associated CI: #24 two SUCCESS, #25 two SUCCESS, #30 empty/NOT VERIFIED, #31 one SUCCESS. Formal reviews and inline threads: zero on all four.
+- PR #165 remains OPEN/DRAFT/UNMERGED at 80dcd602a86ab6df58fb144ecdffaa6266cb9cf0, 93 ahead / 7 behind current default. D1 run 45032534259/job 137239043125 and Pool Contract run 45032534262/job 137239043235 are SUCCESS; classify as PR merge-result CI, not standalone head-only qualification. One COMMENTED review by repository owner VlDMlNSh, no approval, no threads; independent review NOT VERIFIED. PR #166 is validation-only.
+- Current documentation PR #167 branch docs/pass39-reconciliation-review-2026-11-22 was at c3c48891982d4868f97c328369a9e244cf7b7146, 7 ahead / 0 behind before this daily publication. It remains OPEN/DRAFT/UNMERGED; exact-head CI and reviews absent. Older PR #145 branch is 119 ahead / 7 behind, no CI/reviews.
+- GitHub Read Adapter path-fix branch fix/github-read-adapter-path-segments-2026-11-06 remains dee17350864cb49e8c5dd41cf61859d77d3affca, 38 ahead / 153 behind; no PR, no exact-head CI, tests NOT VERIFIED.
+- Default Supervisor workflow is scheduled heartbeat-only; script refuses legacy dispatch if POOL_DISPATCH_ENABLED is true. Worker workflow_dispatch is an inert retired DSH worker that always fails closed. Live schedule-run freshness and runtime execution NOT VERIFIED because current run collection was unavailable. No controller/worker was launched.
+- Pass 41 static source review target: PR #165 head 80dcd602a86ab6df58fb144ecdffaa6266cb9cf0. Read blobs: package d970b887f52eb1011e3df74b560ad9a35bb25866; adapter fe4102eae2038b98be3220bb2961fa433bb9b4b0; migration 0015 442db58f7c6ff0463e9a391572a1e45ebccc7df3; tests b6cb31bd7e33e5934c005b3268b44de8792e5597.
+- New pre-integration finding: adapter samples trustedNow before awaiting verifyEvidence, then uses the same timestamp for claim expiry normalization and verified_at. If a production verifier performs asynchronous remote JWKS resolution and validates against that supplied timestamp, a token expiring during lookup may pass stale-time checks. Require a fresh trusted-clock read after verification, post-verification exp/iat/nbf checks, clock-rollback rejection and a deterministic delayed-verifier expiry test. This is a source-level risk in an unmounted proof package, not a deployed exploit.
+- panva/jose v6.2.18 release (2026-11-18) and upstream docs re-read. jwtVerify supports explicit algorithms, issuer/audience, clockTolerance, currentDate, maxTokenAge and typ; RemoteJWKSetOptions supports customFetch, cacheMaxAge, cooldownDuration and timeoutDuration. Remote JWKS selection/cooldown semantics require fixed server-owned JWKS URI, redirect/origin/size/timeout policy and emergency cache invalidation/revocation.
+- Pass 41 source review VERIFIED; code change NOT RUN; tests NOT RUN; production verifier NOT IMPLEMENTED. D1 package has no jose dependency; verifier and clock remain injected seams.
+- Documentation-only publication on docs/pass39-reconciliation-review-2026-11-22:
+  - Daily report commit d916dae9fa0728d888e2ded56398771ad06a3f69; blob d580d011eaf6cd9c32a83f30406de7c787b085bd.
+  - Daily checkpoint commit 262935de6a03566d7bd0aa63c0bbfa4813819221; blob efb8875c6eacd514f630daa79969c8c68d2566cc.
+  - Documentation branch HEAD before the final Context Window refresh: 3afb9d19effc56e72a0c87349059cefa8f60bc53; 10 ahead / 0 behind current default. PR #167 remains OPEN/DRAFT/UNMERGED; its updated head has no exact-head CI and no reviews. This working branch is not canonical. No merge.
+- No source/schema/runtime/security-boundary changes, no tests/workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
+- Next bounded step: Pass 42 test-only, no-secret jose verifier prototype with synthetic keys/JWKS, including a delayed verifier that crosses exp; keep it unmounted and non-authorizing. Do not trigger GitHub workflows.
+
+
+---
+
+## Pass 46 — current-state reconciliation and integration gate audit — 2026-11-23
+
+- Report: [Pass 46 current-state reconciliation](../reports/2026-11-23-pass46-current-state-reconciliation.md).
+- Checkpoint: [Pass 46 continuation checkpoint](../checkpoints/2026-11-23-pass46-continuation-checkpoint.md).
+- Immutable default baseline re-read: `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- Repository metadata: public, non-archived; 140 open Issues. Current default combined status returned empty; exact-current-head CI NOT VERIFIED.
+- PR #167 OPEN/DRAFT/UNMERGED, head `b7ffa0fcbd710fccca6aaec0d4ad5ba00dc47315`, base current default HEAD. Formal reviews empty; status pending with zero contexts; exact-head CI NOT VERIFIED.
+- PR #165/#166 remain OPEN/DRAFT/UNMERGED. Previously recorded D1/Pool Contract runs passed on PR merge-result checkouts only; standalone head-only and current-default-base qualification NOT VERIFIED.
+- Issue #140 remains OPEN. Pass 45's #148→#165 clean CODE/D1 lineage remains the strongest existing local proof candidate, but is not integrated into default or production-mounted.
+- Production JOSE/JWKS verification remains NOT IMPLEMENTED. The adapter still has injected verifier/clock seams. Pass 41's asynchronous stale-time finding remains an integration blocker; require a fresh trusted-clock read after verification and a deterministic delayed-verifier expiry test.
+- Hosted D1, full legacy-table write denial, trusted live GitHub event binding, authenticated executor principal, independent security review and live worker qualification remain outstanding.
+- No source/SQL/workflow/dependency changes, no tests, no dispatch, no provider calls, no hosted D1, no secret reads, no deployment or merge occurred in Pass 46.
+- Decision: do not merge #165/#166 and do not create a parallel D1 lineage. Next bounded task is one current-default-based validation/integration candidate for #148→#165, preceded by immutable target freeze, file-overlap/migration-order/provenance review, and exact-base local Workers/Vitest execution.
+- Status: state restoration VERIFIED for the endpoints read; exact-current-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 47 — D1 lineage delta and integration-safety audit — 2026-11-23
+
+- Report: [Pass 47 D1 lineage delta audit](../reports/2026-11-23-pass47-d1-lineage-delta-audit.md).
+- Checkpoint: [Pass 47 continuation checkpoint](../checkpoints/2026-11-23-pass47-continuation-checkpoint.md).
+- Immutable target re-read: `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- GitHub compare from PR #165 parent `83b8e9d3b0bdeeb201e24a7a9d2fe042fb00694a` to current default: current default is 7 commits ahead; all 7 changes are documentation-only (Pass 33/38 reports/checkpoint/context). No source, SQL, workflow, package or runtime overlap on the default-side delta.
+- Compare current default to PR #165 head `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`: candidate 93 ahead / 7 behind; histories diverged. `proofs/d1-ledger` and its PR-only validation workflow remain absent from default.
+- Changed-file audit maps migration ownership: #148 migrations 0001–0010; #149 0011; #152 0012; #159 0013; #161 0014; #165 0015; #163 adds authenticated lease adapter without migration. No duplicate migration ID found in inspected #148→#165 changed-file lists. Semantic replay remains NOT RUN.
+- Current active ruleset #26550182 targets only `refs/heads/Основной`, requires PR and thread resolution, blocks deletion/non-fast-forward, has no bypass actors, but required approving reviews = 0; independent approval is not enforced.
+- PR #165 has one owner COMMENTED review and no independent approval; head status is pending with zero contexts. Historical runs 45032534259/45032534262 are PR merge-result checks, not exact-current-head qualification.
+- Retired Supervisor heartbeat run 45161800097 succeeded on current default HEAD; this does not prove an executor or worker is functioning.
+- #165 adapter samples trustedNow before awaiting injected verifyEvidence and reuses it after await. Fresh post-verification trusted-clock read, claim revalidation and deterministic delayed-expiry test remain mandatory before integration.
+- No code/SQL/workflow/package/test/branch/governance changes, no hosted D1, no dispatch/provider calls, no secret reads, no deployment or merge.
+- Next: create one clean branch from a freshly frozen current default HEAD; transplant #148→#165 preserving provenance and migration order; repair post-verification clock validation; run full Workers/Vitest suite on exact final head. Keep non-authorizing outputs and PR-only workflow.
+- Status: Pass 47 audit VERIFIED; semantic replay NOT RUN; current exact-head CI NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 48 — current-base D1 integration and post-verification time fence — 2026-11-23
+
+- Report: [Pass 48 current-base D1 integration](../reports/2026-11-23-pass48-current-base-d1-integration.md).
+- Checkpoint: [Pass 48 continuation checkpoint](../checkpoints/2026-11-23-pass48-continuation-checkpoint.md).
+- Frozen default first parent: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- D1 lineage second parent: `80dcd602a86ab6df58fb144ecdffaa6266cb9cf0`.
+- Integration commit: `c248241f4cc64f703cfb62679a665a921504d3e3`; two parents preserve both current-base and source lineage provenance.
+- Draft PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168.
+- Source fix: trusted clock is sampled again after async verification; invalid/non-positive/backwards time fails closed; expiry claims, persisted verified_at and readback use post-verification time.
+- Added deterministic tests for expiry during async verification and trusted-clock rollback.
+- PR merge-result SHA: `f0c28a110653b735c349a7a635a6dc21663fffc0`.
+- D1 run 45210022504 / job 137816004227: SUCCESS; exact PR merge-result checkout; npm ci, check, tests passed; 6/6 files and 62/62 tests passed.
+- Pool Contract run 45210022494 / job 137815996812: SUCCESS; dispatch env false; six workflow YAML files parsed; all pool security contract checks passed; `POOL_CONTRACT_VALIDATION=PASS`.
+- PR #168 remains OPEN/DRAFT/UNMERGED; no formal reviews. Independent security review NOT RUN.
+- Production JOSE/JWKS verifier NOT IMPLEMENTED / NOT MOUNTED; hosted D1, live executor, provider quota and web UI remain NOT QUALIFIED.
+- Gemini NOT RUN / NOT AUTHORIZED. No secret values read, no provider calls, hosted D1 writes, deployment, merge or production action.
+- Status: integration/provenance VERIFIED; PR merge-result CI VERIFIED; independent review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent security review of PR #168, address findings, rerun exact-head CI. Do not merge or dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 49 — reconciliation pre-write expiry revalidation — 2026-11-23
+
+- Report: [Pass 49 reconciliation pre-write expiry audit](../reports/2026-11-23-pass49-reconciliation-prewrite-expiry-audit.md).
+- Checkpoint: [Pass 49 continuation checkpoint](../checkpoints/2026-11-23-pass49-continuation-checkpoint.md).
+- Frozen PR base: `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`.
+- Pass 49 integration head: `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; branch `integration/pass48-current-base-d1-2026-11-23`; PR #168 remains OPEN/DRAFT/UNMERGED.
+- Additional TOCTOU correction: after asynchronous primary D1 precondition read, take a final trusted-clock sample immediately before first durable mutation; fail closed on invalid/backwards clock; revalidate expiry and persist/readback final verified_at.
+- Added deterministic test for token expiry during asynchronous primary D1 precondition read; no decision row is written.
+- PR merge-result checkout: `659bc39dc448e9f803c4a20044209017d3cd7fb6`.
+- D1 run 45212088972 / job 137823313130: SUCCESS; 6/6 files, 63/63 tests passed.
+- Pool Contract run 45212089137 / job 137823313662: SUCCESS; dispatch false; six workflow YAML files parsed; all pool security contract checks passed.
+- Internal audit: migration 0015 append-only and current attempt binding reviewed; no production crypto claim.
+- Production JOSE/JWKS remains NOT IMPLEMENTED; verifier is still injected. Mature candidate `panva/jose` selected in Pass 41 remains unintegrated/unpinned/unqualified.
+- Issue #140 excludes independent/external review requests; no external review was requested. Internal inspection is not independent review. Ruleset #26550182 requires zero approvals.
+- Gemini NOT RUN / NOT AUTHORIZED. No secret values read, hosted D1 writes, provider calls, deployment, merge or production action.
+- Status: Pass 49 code and exact-head CI VERIFIED; production trust NOT QUALIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement a no-secret JOSE verifier prototype with exact dependency pin, signed synthetic JWT/JWKS tests, issuer/audience/alg/typ/lifetime checks, bounded fetch and key rotation tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 50 — persistent progress and launch-readiness measurement system — 2026-11-23
+
+- Report: [Pass 50 measurement system](../reports/2026-11-23-pass50-progress-measurement-system.md).
+- Checkpoint: [Pass 50 continuation checkpoint](../checkpoints/2026-11-23-pass50-continuation-checkpoint.md).
+- Measurement standard: [Cloud Pool Progress & Launch Readiness Measurement Standard](../metrics/CLOUD-POOL-PROGRESS-MEASUREMENT-STANDARD.md).
+- Append-only ledger: [Cloud Pool Progress Ledger](../metrics/CLOUD-POOL-PROGRESS-LEDGER.md).
+- Immutable code state re-read: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration branch @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; PR #168 OPEN/DRAFT/UNMERGED.
+- Issue #140 remains OPEN and excludes external review requests for its bounded local D1 task. Active ruleset #26550182 requires PR/thread resolution but zero approving reviews; independent approval is not enforced.
+- Defined separate Engineering Progress (EP) and Launch Readiness (LR). EP uses approved effort points and verified work items; LR uses ten weighted domains, 0–4 maturity scores, caps and governance vetoes.
+- Per-pass telemetry distinguishes observed UTC elapsed time from directly measured active time; tracks immutable SHA, diff stats, tests, exact-head CI, blockers, rework and confidence. No historical message counts or durations are fabricated.
+- Previous 60% EP / 30% LR values are low-confidence conversational estimates only, not formal measured scores. EP is NOT COMPUTABLE until approved effort baseline exists; LR is NOT SCORED until domain-by-domain primary evidence scoring is completed.
+- Pass 50 was documentation-only. No application code/tests, dispatch, provider calls, hosted D1 writes, deployment, secrets access or merge.
+- Pass 49 evidence remains: D1 63/63 tests on exact PR merge-result; Pool Contract Validation SUCCESS with dispatch false. Production JOSE/JWKS, routing/quotas, authenticated UI, real executors, hosted persistence/recovery and independent review remain blockers.
+- Pass 51 next: no-secret `panva/jose` verifier prototype with exact dependency/lockfile pin, fixed trusted issuer/audience/JWKS policy, explicit algorithms/typ, bounded fetch/rotation, synthetic JWT/JWKS fixtures, negative-first tests and exact-head CI. Preserve `dispatch:false` and `executionAuthorized:false`.
+- Status: Pass 50 documentation publication and GitHub readback VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+ 
+---
+
+## Pass 51 — JOSE verifier feasibility review — 2026-11-23
+
+- Report: [Pass 51 JOSE verifier feasibility](../reports/2026-11-23-pass51-jose-verifier-feasibility.md).
+- Checkpoint: [Pass 51 continuation checkpoint](../checkpoints/2026-11-23-pass51-continuation-checkpoint.md).
+- Rechecked default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`, integration @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`, PR #168 OPEN/DRAFT/UNMERGED, Issue #140 OPEN and ruleset #26550182 active with zero required approvals.
+- Research verified `jose@6.2.18` is MIT, zero runtime dependencies and supports Cloudflare Workers/WebCrypto. JSR documents remote JWKS customFetch, timeout, cache age and cooldown controls. See Pass 51 report for source links.
+- Implementation deliberately NOT RUN: npm registry metadata request timed out, so exact tarball dist.integrity could not be verified. No integrity value fabricated; package manifest/lockfile and source remain unchanged.
+- Current D1 adapter still accepts injected verifier; this remains a trust seam, not production authentication.
+- No code tests, secrets access, provider calls, hosted D1 writes, dispatch, deployment or merge. Gemini NOT RUN / NOT AUTHORIZED.
+- Retrospective cumulative engineering-equivalent effort estimate: 80–120h (midpoint ~100h), LOW CONFIDENCE and NOT MEASURED; no historic timer/session data available. Pass 51 elapsed/active time NOT RECORDED / NOT MEASURED.
+- Status: component feasibility RESEARCH VERIFIED; verifier implementation/lockfile/tests NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain independently verifiable npm dist integrity, generate exact lockfile in an isolated branch, then implement trusted-config verifier factory and synthetic adversarial tests. Preserve `dispatch:false` and `executionAuthorized:false`.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 52 — remaining Contour A effort estimate — 2026-11-23
+
+- Fresh GitHub readback: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration branch @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; docs branch before Pass 52 @ `1c5d8605d8040779818d0d0a1c57445bb8d3493d`.
+- PR #168 OPEN/DRAFT/UNMERGED; Issue #140 OPEN with bounded no-secret local-only restrictions.
+- Ruleset #26550182 active on `refs/heads/Основной`; PR and thread-resolution rules active, required approving reviews = 0, no bypass actors.
+- Exact-head workflow runs re-read: D1 45212088972 SUCCESS; Pool Contract Validation 45212089137 SUCCESS. Not rerun this pass.
+- D1 package manifest remains without `jose`; existing injected verifier remains a trust seam, not production authentication.
+- Bottom-up remaining effort: 35–60 engineering hours to a first limited technical launch, conditional; 70–120 engineering hours to full Contour A launch and ACCEPTED. Estimate is LOW CONFIDENCE, not measured time. Prior spent estimate 80–120h remains LOW CONFIDENCE / NOT MEASURED; implied total effort envelope 150–240h is planning context only.
+- Pass 52 documentation only; no code tests, no secrets/provider/hosted D1/dispatch/deployment/merge. Gemini NOT RUN / NOT AUTHORIZED.
+- Status: Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 52 remaining-effort estimate](../reports/2026-11-23-pass52-remaining-effort-estimate.md). Checkpoint: [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-continuation-checkpoint.md).
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 53 — reconciliation verifier trust-boundary audit — 2026-11-23
+
+- Report: [Pass 53 verifier trust-boundary audit](../reports/2026-11-23-pass53-verifier-trust-boundary-audit.md); checkpoint: [Pass 53 checkpoint](../checkpoints/2026-11-23-pass53-continuation-checkpoint.md).
+- State re-read: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; PR #168 OPEN/DRAFT/UNMERGED; Issue #140 OPEN; ruleset #26550182 active, zero required approvals.
+- CI evidence re-read only: D1 run 45212088972 SUCCESS; Pool Contract run 45212089137 SUCCESS.
+- Source audit confirms reconciliation adapter still depends on injected verifier. Existing tests synthesize `verified:true` claims and do not validate signatures/JWKS. Trusted issuer/audience/JWKS/alg/typ/principal-account mapping are not frozen in trusted config.
+- npm lists jose 6.2.18 MIT, zero dependencies and Workers compatibility, but exact tarball integrity was not obtained. Upstream main lockfile indexed at 6.2.14 cannot substantiate 6.2.18. No dependency/code change.
+- Pass 53 source audit only; no tests. Gemini NOT RUN / NOT AUTHORIZED. No secrets/provider/hosted D1/dispatch/deployment/merge.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: freeze trust policy, prove package provenance, implement bounded-fetch JOSE verifier and signed synthetic tests.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 54 — 2026-11-23 multi-account identity and quota-isolation audit
+
+- Fresh refs: default `Основной` @ `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; integration @ `5450ddd8002d7a336b3eb41adeaba1d62a17fb75`; docs branch @ `4fa05dfb1eca3814eb817294cf18695caabd17ba` after Pass 54 report/checkpoint/ledger updates (context update follows).
+- PR #168 remains OPEN / DRAFT / UNMERGED; Issue #140 remains OPEN with local-only prohibitions unchanged.
+- Ruleset #26550182 is active on `refs/heads/Основной`; requires PR and thread resolution, 0 approving reviews, no bypass actors.
+- Exact integration-head CI re-read: D1 45212088972 SUCCESS; Pool Contract 45212089137 SUCCESS; not rerun this pass.
+- Source audit: task identity v2 binds repository, issue, target SHA, profile and executor, but not acting GitHub account/installation, tenant, credential reference, issuer/subject or provider quota domain. Migration 0011 adds executor identity only. This is a contract gap; no exploit is asserted.
+- Existing quota ledger requires provider-verified evidence and quota domain but does not authenticate account/issuer ownership. LiteLLM was reviewed as a mature architecture reference for user/team/service-account and spend separation, not adopted as a dependency.
+- No source/schema/workflow/dependency changes; no tests run. Gemini NOT RUN / NOT AUTHORIZED. No secrets, provider calls, hosted D1, dispatch, deployment, merge or external review request.
+- Pass 54 report: `docs/reports/2026-11-23-pass54-multi-account-identity-isolation-audit.md`; checkpoint: `docs/checkpoints/2026-11-23-pass54-continuation-checkpoint.md`.
+- Next: reconcile A0/D1 account and route-evidence contracts; define schema compatibility matrix and cross-account replay tests. Do not alter schema until trusted identity source and account lifecycle authority are frozen.
+
