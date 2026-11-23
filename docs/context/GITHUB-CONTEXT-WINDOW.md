@@ -2367,3 +2367,35 @@ The documentation package remains process policy only. Runtime metrics, automati
 - After adding the report, checkpoint and first Context Window append, live PR #169 head was 863ffd793ebc7d099f247b10e67b107cbb03ef03, 33 ahead / 0 behind current default, 14 changed files, OPEN/DRAFT/UNMERGED. Its exact-head workflow query and combined status array were empty; formal reviews and inline threads were empty. This is a documentation-only working branch, not canonical.
 - The report's PR #169 branch metrics (head 031b4c..., 30 ahead, 12 files) are the pre-publication snapshot at audit start. The checkpoint records the same pre-publication head explicitly. The live branch advanced with this daily documentation update; refresh PR metadata after the final Context Window commit.
 - Final Context Window update is documentation-only. No code, SQL, workflow, runtime, security-boundary or governance changes; no local tests, workflow dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
+
+
+
+## Pass 51 — D1 lease trusted-clock remediation — 2026-11-23
+
+- Implementation PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
+- Issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
+- Working branch: `integration/pass48-current-base-d1-2026-11-23`.
+- Exact implementation PR head: `ec1caca61caa453d4e0ce5405890e8791f6bfd29`.
+- Source blob `proofs/d1-ledger/src/acquire-attempt-lease.mjs`: `0b4798a8a0a38484682165ef8c5265807a04e27b`.
+- Test blob `proofs/d1-ledger/test/lease-fencing.test.ts`: `52ee72bf89a73b5d9088d1be301b2aa5ae442d4a`.
+- Pass 50 F-50-01 remediation: caller-supplied `input.now` is no longer an authority. The adapter requires a trusted clock dependency, samples it after executor authentication and task precondition read immediately before the conditional write, validates the sample and expiry arithmetic, rejects time earlier than persisted task/attempt timestamps, and uses the same sample for write, readback and ambiguous-write recovery.
+- Five adversarial cases added: caller future time, caller past time, invalid clock, persisted-time rollback and clock exception.
+- Reuse First: existing Vitest 4.1.12 and Cloudflare Vitest plugin 1.4.7 retained; no new dependency/service.
+- Exact PR-head D1 workflow run 45227149858: COMPLETED/SUCCESS; job 137876597970; 6 test files / 68 tests passed.
+- Exact PR-head Pool Contract Validation run 45227149883: COMPLETED/SUCCESS; dispatch-disabled, workflow YAML and security contract steps passed.
+- Combined commit-status contexts empty; not counted as extra CI evidence.
+- PR #168 remains OPEN/DRAFT/UNMERGED; formal reviews 0. Merge-result CI NOT VERIFIED.
+- PR base recorded as `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; current default HEAD observed as `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Compare shows default is two commits ahead, both documentation-only (Context Window and Pass 50 report); branch/base synchronization and merge-result CI remain required.
+- Production/controller trusted-clock provenance NOT VERIFIED; independent security review NOT RUN. The adapter test seam alone does not qualify a live clock source.
+- No hosted D1, secrets, provider calls, dispatch, deployment, production action or merge.
+- PR #168 exact-head local proof: VERIFIED. Runtime qualification: NOT VERIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Detailed report: [Pass 51 trusted-clock remediation](../reports/2026-11-23-pass51-d1-trusted-clock-remediation.md).
+- Checkpoint: [Pass 51 checkpoint](../checkpoints/2026-11-23-pass51-d1-trusted-clock-remediation.md).
+
+### Documentation deduplication correction
+
+Earlier historical text in this Context Window temporarily linked to `2026-11-23-engineering-excellence-documentation-audit.md` and `2026-11-23-engineering-excellence-adoption.md`. Those duplicate draft files were removed. The canonical consolidated documents are [Engineering Excellence 1.0 report](../reports/2026-11-23-engineering-excellence-1.0.md) and [Engineering Excellence 1.0 checkpoint](../checkpoints/2026-11-23-engineering-excellence-1.0.md). The earlier links are superseded and must not be treated as live files.
+
+Next critical-path step: synchronize PR #168 against current default without losing its provenance; run and inspect exact merge-result CI; independently qualify the trusted clock provider in the actual controller/runtime. Keep PR draft/unmerged and dispatch disabled until every gate passes.
+
+Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
