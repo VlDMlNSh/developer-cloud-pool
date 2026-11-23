@@ -2236,3 +2236,59 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Engineering Excellence 1.0 documentation adoption — 2026-11-23
+
+- Working branch: `docs/engineering-excellence-2026-11-23` (documentation-only, unmerged).
+- Frozen default/base SHA for this package: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- Package index: [docs/engineering-excellence/README.md](../engineering-excellence/README.md).
+- Audit report: [2026-11-23 Engineering Excellence documentation audit](../reports/2026-11-23-engineering-excellence-documentation-audit.md).
+- Checkpoint: [2026-11-23 Engineering Excellence adoption](../checkpoints/2026-11-23-engineering-excellence-adoption.md).
+
+### Owner-approved directions captured
+
+1. Engineering Control Center — the Engineering Excellence index and this Context Window form a navigation/control surface; this is documentation, not a deployed dashboard.
+2. Persistent engineering metrics and time accounting — definitions and recording protocol added; telemetry/collection is NOT IMPLEMENTED. Historical active hours are not inferred or fabricated.
+3. Definition of Done for every Pass — mandatory pass admission, evidence and closeout contract documented.
+4. Reuse First — component research register and adoption gates documented; no new runtime dependency adopted.
+5. Three independent agent roles — Engineering, QA/Architecture and Security/Provenance; controller-only dispatch remains mandatory and no dispatch was performed.
+6. Continuous Security Qualification — qualification checklist and evidence semantics documented; runtime qualification remains separate.
+7. Dependency and critical path — initial dependency graph and Pass 50 blocker-first sequence documented; graph automation NOT IMPLEMENTED.
+8. Engineering Intelligence — evidence-driven learning loop documented as advisory-only; no autonomous authority.
+
+### Documentation audit / anti-duplication decision
+
+Existing architecture, contracts, decisions, Issues, PRs, dated reports and checkpoints remain authoritative in their own domains. New documents define cross-cutting process and point to existing evidence; they do not duplicate pass history or replace the canonical Context Window. This update is append-only and does not rewrite prior historical entries. The Context Window's original top-level "Last refreshed" line is historical and should not be mistaken for this appended update date.
+
+### New files on the working branch
+
+- `docs/engineering-excellence/README.md`
+- `docs/engineering-excellence/ENGINEERING-PASS-PROTOCOL.md`
+- `docs/engineering-excellence/ACCEPTANCE-CRITERIA-MATRIX.md`
+- `docs/engineering-excellence/DEPENDENCY-AND-CRITICAL-PATH.md`
+- `docs/engineering-excellence/METRICS-AND-TIME-ACCOUNTING.md`
+- `docs/engineering-excellence/REUSE-FIRST-REGISTER.md`
+- `docs/engineering-excellence/AGENT-AND-SECURITY-QUALIFICATION.md`
+- `docs/engineering-excellence/ENGINEERING-INTELLIGENCE.md`
+- `docs/reports/2026-11-23-engineering-excellence-documentation-audit.md`
+- `docs/checkpoints/2026-11-23-engineering-excellence-adoption.md`
+
+### Research and limitations
+
+Initial component research references OpenTelemetry semantic conventions/CI-CD metrics, DORA delivery metrics, OPA, Temporal, Testcontainers and LiteLLM. These are candidates/reference material only, not approved or integrated dependencies. License, security, supply-chain, runtime, free-tier, quota and authority compatibility must be checked before adoption.
+
+### Verification and current status
+
+- Eight core Engineering Excellence documents were read back from GitHub and their titles/character counts checked.
+- The dated report and checkpoint were published after the first read-back; final read-back of all ten files and this Context Window update is required before PR creation.
+- No code tests are applicable to this docs-only pass; Markdown/link CI and formal review are NOT VERIFIED until run and inspected.
+- No secrets were read; no Gemini/controller dispatch, provider call, deployment, production dispatch or merge occurred.
+- Pass 50 finding F-50-01 remains HIGH and unremediated. This documentation pass does not qualify the D1 lease.
+- Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
+
+Next: complete read-back, create a draft PR against `Основной`, inspect exact-head CI and review evidence, and keep the PR unmerged pending governance/review requirements.
+
+Canonical MediaHub map (separate repository; Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
