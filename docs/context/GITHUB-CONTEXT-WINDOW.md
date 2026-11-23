@@ -2450,3 +2450,12 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - No secrets, provider calls, hosted D1, dispatch, Cloudflare mutation, deployment, merge or production action. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: Pass 53 trusted-clock + explicit authority flags remediation in admission adapter; add adversarial tests and run exact-head CI.
 - Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 52 documentation readback correction
+
+- The prior acceleration report and checkpoint now explicitly correct the false Gemini topology conflict claim. Issue #96's 2026-11-17 amendment is authoritative: Claude Code + ECC + FCC is the first CODE executor, Gemini optional, no four-Gemini launch requirement.
+- PR #169 documentation branch head before this Context Window refresh: `97ef7a71dc197a93a2d44a9f59d908162e9e12e7`; exact-head workflow query returned no runs; formal reviews 0. PR remains OPEN/DRAFT/UNMERGED. Re-read live head after this update.
+- Pass 52 report blob: `1cd556fb80a2bc255c3301d63431782a52f9c23e`; checkpoint blob: `4ff1f1cefe67fabba8b2b584241907329d18f577`.
+- Corrected acceleration audit blob: `ff8e69fd99457ac6110a7b59423794ac865e733b`.
+- Pass 52 did not modify runtime code. Pass 53 remains the trusted-clock and explicit `executionAuthorized:false` remediation in the admission adapter.
