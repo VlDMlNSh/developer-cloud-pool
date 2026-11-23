@@ -136,3 +136,12 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - Reuse: existing Cloudflare Workers Vitest + local D1 harness and canonical `pool_task_delivery_outbox`; no external dependency, alternate ledger or legacy outbox.
 - Limitations: no live `issue_comment` workflow/controller exists on default; workflow ref is a frozen expected identity for the future controller. This local binder does not cryptographically authenticate GitHub's event payload, independently query GitHub for default HEAD, prove hosted D1 behavior, or authorize dispatch. Receipt persistence occurs after the existing admission transaction; the wrapper returns no success unless receipt readback confirms. Recovery uses the same immutable admission and source-comment key.
 - Dispatch and execution authorization remain false.
+
+
+## Pass 60 — local D1 integration for GitHub /next receipt
+
+- Added `test/github-next-event.integration.test.ts` with seven local Workers/D1 scenarios for successful receipt persistence and exact replay, conflicting admission, changed run provenance, pre-commit failure recovery, lost insert acknowledgement, partial readback, unavailable primary readback and incomplete canonical outbox tuple.
+- Tests seed only synthetic CODE approval and local route rows, then call the actual `admitGitHubNextEvent` composition. Fault wrappers inject failures at the D1 statement/session boundary; they do not contact hosted D1.
+- All returned paths assert `dispatch: false` and `executionAuthorized: false`.
+- Exact synthetic merge CI: D1 107/107 (8 files), Pool Contract PASS; see Pass 60 report/checkpoint.
+- This improves local proof coverage only. It does not establish GitHub event authenticity, hosted D1 behavior, live controller operation, executor qualification or Contour A acceptance.
