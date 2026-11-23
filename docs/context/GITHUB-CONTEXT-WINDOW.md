@@ -2543,3 +2543,20 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - PR #168 remains OPEN/DRAFT/UNMERGED at `caaba7345b698cfcfc92ad711ad1ed985980620d`; merge-result D1 CI 74/74 PASS and Pool Contract Validation PASS; formal reviews 0; independent security review NOT RUN.
 - Final Pass 53 report blob `123b6e826a2496e67166057577fd86a5d31b6d78`; checkpoint blob `482c5e7b9c7169b7b95845ad70376bf6379a98ac`; corrected acceleration audit blob `ff8e69fd99457ac6110a7b59423794ac865e733b`.
 - No merge or production action is authorized or performed. Next: Pass 54 runtime clock/event provenance qualification and independent security review.
+
+
+## Pass 61 — GitHub Actions event/workflow SHA provenance correction (2026-11-24)
+
+- Default branch `Основной` HEAD remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- PR #170 pre-pass head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; final head: `4b4055b4f2026db617f1e2f686f337ad85e9531e`; OPEN/DRAFT/UNMERGED.
+- Exact synthetic merge checked by D1 CI log: `9171489` (merge of final PR head into frozen default).
+- Binder now treats `context.sha` (event/default-ref target) and `context.workflowSha` (workflow file commit) as distinct values, validates each SHA format independently, and keeps exact workflowRef identity. Migration 0017 no longer requires `workflow_sha = target_sha`. Unit/integration fixtures use distinct SHAs.
+- D1 run 45273084680 SUCCESS: 8 files / 108 tests; Pool Contract run 45273084714 SUCCESS. D1 job log confirms checkout of exact synthetic merge `9171489`. No new dependencies; four files changed (+12/-6).
+- Ruleset 26550182 re-read: active on `refs/heads/Основной`; PR required; thread resolution required; approval count 0; deletion/non-fast-forward prohibited; no bypass actors; current user cannot bypass. PR #170 formal reviews 0, review threads 0.
+- Critical residual NOT VERIFIED: workflow SHA authenticity, workflow file content digest, workflow commit ancestry against event target SHA, independent default-ref API read and race policy. Binder is a local predicate proof only, not a cryptographic event authenticator or deployable controller.
+- SQL receipt adversarial cases remain open: duplicate source-comment ID with distinct envelope; forged receipt INSERT bindings; independently missing route/commit receipt; field-by-field immutability and repository key scope.
+- No secrets/variables values read; no Gemini/Claude dispatch; no hosted D1; no provider calls; no deployment; no merge; no production mutation. Active engineering time NOT MEASURED.
+- Contour A NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 61](../reports/2026-11-24-pass61-github-sha-provenance.md); checkpoint: [Pass 61 checkpoint](../checkpoints/2026-11-24-pass61-github-sha-provenance.md).
+- Next: SQL receipt adversarial test matrix, keeping all dispatch paths disabled.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
