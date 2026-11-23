@@ -9,8 +9,8 @@ Contour B: **DEFERRED**
 
 - Default branch `Основной` HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`
 - Pass 59 PR #170 head: `4946f9c6656aef4d7bb75fddc552b4045f1ccd73`
-- Final PR #170 head: `11704d82023644c5846489515415fafb744a0ade`
-- Exact synthetic merge SHA used by both final workflows: `e05736b720599e56c30d3dcc46975029da2e6921`
+- Final PR #170 head: `9a61572dca2a6621001a1bae770e8d85a5d93315`
+- Exact synthetic merge SHA used by both final workflows: `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`
 - PR #170 remains OPEN / DRAFT / UNMERGED.
 - Scope: add direct local Workers/D1 integration tests for the Pass 59 `admitGitHubNextEvent` composition and durable source-comment receipt. No production implementation or migration changes.
 
@@ -50,7 +50,7 @@ Both final workflows completed SUCCESS on the same exact synthetic merge SHA `e0
 ## Diff and governance
 
 - One new test path; +248 lines relative to Pass 59 candidate.
-- PR #170: 37 files, +7,646 / -0; 25 commits ahead / 0 behind frozen default.
+- PR #170: 38 files, +7,655 / -0; 25 commits ahead / 0 behind frozen default.
 - Formal reviews: 0; review threads: 0.
 - Ruleset full detail was not re-read in this pass; prior recorded ruleset ID `26550182` must be rechecked before any merge.
 - PR remains DRAFT / UNMERGED. No merge attempted.
