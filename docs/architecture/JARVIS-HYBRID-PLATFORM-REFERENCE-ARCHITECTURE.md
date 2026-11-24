@@ -387,3 +387,14 @@ DeepSeek Harness is now the primary candidate agent runtime for evaluation. Use 
 - Automatic runner slot refill, checkpointing, idempotency, lease/fencing, recovery and UI reconnect/replay are specified in [the lifecycle design](CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md) and tracked by [Issue #172](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
 
 Status: DESIGN / NOT IMPLEMENTED / NOT QUALIFIED. No Claude Code executor, local host, video server or VS Code remote connection was launched in this pass.
+
+
+## 12. Multi-layer agent organization and strategic evolution (2026-11-24)
+
+The long-term target is not only a multi-agent workflow but a governed, extensible AI organization. Preserve ECC as an explicit required component of the proposed Claude Code execution stack; do not omit it. The proposed lineage remains local model / inference adapter → FCC → Claude Code → ECC, with FCC/ECC identities and authentication/tool contracts subject to canonical-source verification.
+
+The staged model is: (1) Multi-Agent System coordinated by Jarvis; (2) AI Corporation with departments, accountable roles, quota/budget envelopes, organizational memory, quality and incident management; (3) Agentic Ecosystem / Agent Economy with independently governed organizations, authenticated capability discovery and contract-based delegation. Level 3 is a research direction, not a settled industry standard or current implementation.
+
+The compute topology explicitly includes ephemeral GitHub Actions, persistent cloud control plane, candidate Mac mini 2011 and 2018 nodes, a future isolated remote video server, and Microsoft Visual Studio Code as the human operator/admin workbench. None of the local nodes is considered connected or qualified until separately tested. Detailed stages and progression gates: [Jarvis Multi-Layer Agent Organization Roadmap](JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md); tracking: [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
+
+Contour A remains the priority. Contour B and later-level implementation remain deferred until Contour A is ACCEPTED and the relevant subsequent gates pass.
