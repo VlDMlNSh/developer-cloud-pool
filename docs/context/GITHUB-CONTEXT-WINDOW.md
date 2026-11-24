@@ -2708,3 +2708,21 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Report: [Pass 62](../reports/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md); checkpoint: [Pass 62 checkpoint](../checkpoints/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md).
 - Next: Pass 63 — independently verifiable GitHub workflow provenance; keep dispatch disabled.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 70 — owner-approved continuous improvement cadence (2026-11-24)
+
+- Owner approved incorporating the engineering-efficiency recommendations and holding recurring architecture/process reviews.
+- Added `docs/engineering-excellence/CONTINUOUS-IMPROVEMENT-REVIEW.md`: review every 3–5 completed `/next` passes or 7 calendar days during active development; event-triggered reviews after material security findings, repeated regressions, critical-path changes or failed integration.
+- The review agenda covers verified progress/critical path, quality/rework, architecture/trust boundaries, Reuse First, time accounting, security/governance and a bounded decision. Each recommendation must become a bounded task, documented decision, deferred candidate with trigger, or evidence-backed rejection.
+- Engineering Intelligence remains advisory-only. It cannot dispatch, merge, deploy, access secrets or change governance. At most one primary process experiment and one bounded engineering follow-up per review.
+- Reuse First register now lists actionlint, zizmor, OpenSSF Scorecard, Workers Vitest integration harness and GitHub artifact attestations/SLSA as CANDIDATE only. None is claimed installed, executed or qualified; no dependency or third-party Action added.
+- First planned experiment: reproducible no-secret actionlint/zizmor pilot after fresh workflow inventory and license/maintenance/version/permissions/free-tier review. No CI enforcement until findings and false-positive behavior are understood.
+- Pass 70 report: `docs/reports/2026-11-24-pass70-continuous-improvement-cadence.md`; checkpoint: `docs/checkpoints/2026-11-24-pass70-continuous-improvement-cadence.md`.
+- Documentation artifacts were fetched back successfully after writes; runtime tests are NOT APPLICABLE, local Markdown validation NOT RUN, updated PR #169 exact-head CI NOT VERIFIED.
+- PR #169 remains OPEN/DRAFT/UNMERGED; its head has advanced from `a9db83b039f1ba5ed9b9221dfac0fcbd8fe2f63e` through the Pass 70 documentation commits. Re-read exact live head before further changes.
+- PR #171 at last observed head `423da55ca1e2d91c28572f88f60b494b59d56e9`: no workflow runs and no combined statuses; exact-head CI NOT VERIFIED. PR #170 remains OPEN/DRAFT/UNMERGED; historical Pass 62 checks are not current-head evidence.
+- No secrets, dispatch, provider calls, hosted D1 writes, deployment, merge or production mutation. Active engineering time NOT MEASURED.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+- Next: restore live refs/CI/governance and run the bounded actionlint/zizmor Reuse First pilot; keep all execution paths fail-closed.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
