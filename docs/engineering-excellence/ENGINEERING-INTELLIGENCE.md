@@ -47,3 +47,8 @@ A concise monthly/pass-batch review:
 - Do not compare individual agents on raw throughput without task complexity and evidence quality.
 - No autonomous modification of security policies, controller inputs, permissions, secrets or dispatch settings.
 - Human/project-owner acceptance remains the final authority for Contour A.
+
+
+## Owner-approved review cadence (2026-11-24)
+
+Use the [Continuous Improvement Review Cadence](CONTINUOUS-IMPROVEMENT-REVIEW.md): review every 3–5 completed /next passes or every 7 calendar days during active work, plus event-triggered reviews after material security findings, repeated regressions, critical-path changes or failed integrations. Each review must produce evidence-backed decisions, not an unbounded idea list. Select at most one primary process experiment and one bounded engineering follow-up. Keep this loop advisory: it cannot dispatch, merge, deploy, change permissions or access secrets.
