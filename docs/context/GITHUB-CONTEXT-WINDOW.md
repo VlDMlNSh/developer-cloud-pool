@@ -1,3 +1,21 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 64 (2026-11-24)
+
+Last refreshed: 2026-11-24 — Pass 64 independent workflow trust-anchor assessment  
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
+Default branch: `Основной`  
+Frozen default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged)  
+PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; reviews 0; threads 0. Pass 62 exact synthetic merge CI remains D1 113/113 + Pool Contract PASS; no new run in Pass 64.  
+PR #169: OPEN / DRAFT / UNMERGED; head before Pass 64 `0a98d581d3b6522227104c6e3824e5e1fff1157d`; base default; 42 files, +3,275/-9; reviews 0; threads 0; exact-head Actions runs none and legacy statuses empty (NOT RUN / NOT VERIFIED). Pass 64 adds two documentation files and refreshes this Context Window; final branch head to be re-read after update.  
+Ruleset 26550182 exact API read: ACTIVE on `refs/heads/Основной`; PR required; thread resolution required; approvals 0; stale-review dismissal true; last-push approval false; CODEOWNER review false; bypass actors empty; current user cannot bypass.  
+Pass 64 decision: SELECT Option A as minimum viable free-tier governance — one independent human approval, stale approvals dismissed, latest-push approval required, CODEOWNERS for workflow/D1/security-manifest paths, no bypass. User-owned repo cannot use team-required-reviewer rule; reviewer must be a distinct person with write permission, not admin. Explicit residual: this does not resist repository-admin compromise or deliberate ruleset weakening.  
+Option B (separately controlled GitHub App/verifier runtime) DEFERRED; no external operator, credential custody or free runtime qualified. Option C (independent digest repository) DEFERRED until separate maintainer exists; same-owner repository is not independent. GitHub artifact attestations are supplemental provenance, not policy trust root.  
+No ruleset change, collaborator invite, permission change, App/credential, workflow/controller, dispatch, secrets read, provider call, hosted D1, deployment, merge, production mutation or MediaHub change. Code changes 0; dependencies 0; active time NOT MEASURED.  
+Pass 64 report: [report](../reports/2026-11-24-pass64-independent-workflow-trust-anchor.md)  
+Pass 64 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass64-independent-workflow-trust-anchor.md)  
+Next: owner authorization to nominate one distinct independent reviewer and approve ruleset/CODEOWNERS changes. Until then controller creation and dispatch remain blocked. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 63 (2026-11-24)
 
 Last refreshed: 2026-11-24 — Pass 63 workflow provenance trust-contract audit  
