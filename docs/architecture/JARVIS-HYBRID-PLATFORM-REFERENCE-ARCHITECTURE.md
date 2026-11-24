@@ -376,3 +376,14 @@ The L1/L2/L3 topology above is the intended future architecture, not current inv
 The first build phase runs on GitHub-hosted ephemeral jobs. The 2011 Mac mini may later join as an optional low-intensity worker or backup helper after read-only inventory; it must not execute untrusted public PR code.
 
 DeepSeek Harness is now the primary candidate agent runtime for evaluation. Use its headless profile for one-shot cloud tasks only after the dedicated runtime smoke test and security gates. It does not replace GitHub Actions dispatch, Pool Bridge policy, immutable task envelopes, durable project state or independent acceptance. See [DeepSeek Harness adoption and cloud-first build plan](DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md).
+
+
+## 11. Owner-approved Claude Code-first execution and operator workbench update (2026-11-24)
+
+- Claude Code is the primary candidate engineering-agent runtime for the first qualified executor. The existing project lineage is `local model / inference adapter → FCC → Claude Code → ECC`; FCC/ECC exact identities and contracts must be verified, not inferred.
+- FCC is the intended authorization/compatibility path in the owner proposal, not a quota bypass or automatic proof of Claude Code authentication. Free API providers and local models are separate inference routes behind account-isolated quota policy; local inference does not grant GitHub permissions.
+- Mac mini Server 2011 (owner-reported i7/16 GB) is a low-intensity connector/index/cache/backup candidate only after host and disk qualification. Mac mini 2018 i3 (planned 32 GB) is a local worker/control/data candidate only after security and performance qualification. The future remote video server is a separate media/storage/transcoding/inference node, never a privileged control plane.
+- Microsoft Visual Studio Code is the human operator/admin workbench for repository work and approved remote-node diagnostics. It is not the Jarvis scheduler, durable state store, identity provider or dispatch authority. Remote SSH/Tunnels and extensions require host/network/supply-chain review.
+- Automatic runner slot refill, checkpointing, idempotency, lease/fencing, recovery and UI reconnect/replay are specified in [the lifecycle design](CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md) and tracked by [Issue #172](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
+
+Status: DESIGN / NOT IMPLEMENTED / NOT QUALIFIED. No Claude Code executor, local host, video server or VS Code remote connection was launched in this pass.
