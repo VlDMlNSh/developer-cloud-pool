@@ -1,3 +1,21 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 63 (2026-11-24)
+
+Last refreshed: 2026-11-24 — Pass 63 workflow provenance trust-contract audit  
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
+Default branch: `Основной`  
+Frozen default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
+PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; base is the frozen default; exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`; formal reviews 0; review threads 0.  
+Pass 62 exact merge-result evidence: D1 run 45274455569 SUCCESS (8/8 files, 113/113 tests); Pool Contract run 45274455577 SUCCESS. Both recorded against the exact synthetic merge SHA above.  
+Ruleset 26550182: ACTIVE on `refs/heads/Основной`; PR and resolved review threads required; 0 approvals configured; no bypass actors; current user cannot bypass.  
+Documentation branch `docs/engineering-excellence-2026-11-23`: PR #169 OPEN / DRAFT / UNMERGED; pre-pass head `029f942960a3626d5b17d85f9655fc94beb8e2eb`; 0 reviews / 0 threads.  
+Pass 63: VERIFIED source/GitHub semantics/governance audit. The default tree and PR #170 candidate do not contain `.github/workflows/next-event-controller.yml`; default tree also lacks the candidate D1 proof package. The binder checks workflow-ref/SHA shape but does not independently verify GitHub ref, workflow bytes/digest, ancestry or run metadata. GitHub docs confirm issue_comment GITHUB_SHA is the last default-branch commit and GITHUB_WORKFLOW_SHA is the workflow-file commit.  
+Decision: no controller or dispatch. Workflow verifier implementation BLOCKED until the exact workflow exists on default and an independent trust anchor is approved. Current same-repository ruleset has 0 required approvals; a digest committed only beside the workflow is not independent. No code/runtime/schema changes, secrets, provider calls, hosted D1, deployment, merge or production mutation. Active time NOT MEASURED.  
+Pass 63 report: [report](../reports/2026-11-24-pass63-workflow-provenance-trust-contract.md)  
+Pass 63 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass63-workflow-provenance-trust-contract.md)  
+Next: Pass 64 — evaluate free-tier-compatible independent workflow trust anchors and governance. Do not change rulesets or create credentials without explicit authorization. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
 > Operational `/next` recovery source. Historical sections below are retained; refresh live GitHub refs, PRs, Issues, exact-head CI and governance on every pass.
