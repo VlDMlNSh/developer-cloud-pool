@@ -1,3 +1,20 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 66 (2026-11-24)
+
+Last refreshed: 2026-11-24 — Pass 66 canonical D1 PR overlap audit  
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
+Default branch: `Основной` @ `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged).  
+PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; 33 ahead / 0 behind; 38 paths; reviews 0; threads 0. Pass 62 exact synthetic merge evidence: D1 113/113 (run 45274455569) + Pool Contract SUCCESS (run 45274455577).  
+PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; 107 ahead / 2 behind; 33 paths. Compare API confirms all 33 PR #168 paths overlap PR #170. PR #170 is the sole current-base D1 candidate; do not independently merge/cherry-pick PR #168. PR #168 not closed (no owner authorization).  
+PR #169: OPEN / DRAFT / UNMERGED; head `c2868f936c4dbe6baf02bc15f389d1409254f028`; exact-head CI NOT VERIFIED; reviews 0.  
+Issue #140 updated with Pass 66 overlap finding (comment ID 7123594184).  
+Governance: ruleset #26550182 remains active but approvals 0, CODEOWNER review false; Pass 65 recursive scans found no CODEOWNERS or trusted controller on default/docs trees. Independent reviewer nomination and minimum Write authorization remain owner blockers.  
+No code/schema/dependency changes; no new tests; existing Pass 62 CI only re-read. No secrets, dispatch, provider calls, hosted D1, deployment, merge/close, production or MediaHub changes. Active time NOT MEASURED.  
+Pass 66 report: [report](../reports/2026-11-24-pass66-canonical-d1-pr-overlap-audit.md)  
+Pass 66 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass66-canonical-d1-pr-overlap-audit.md)  
+Next: owner nominates a distinct reviewer by exact GitHub login and authorizes minimum Write permission; retain PR #170 as sole D1 candidate; do not activate controller/dispatch before independent governance and remaining trust/execution gates.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 65 (2026-11-24)
 
 Last refreshed: 2026-11-24 — Pass 65 CODEOWNERS readiness audit  
