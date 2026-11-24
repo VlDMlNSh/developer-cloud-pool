@@ -11,7 +11,7 @@ Contour A only. Pass75 resolves the intended FCC/ECC identities from owner-appro
 - Updated architecture docs: runner lifecycle, Jarvis multi-layer roadmap, hybrid platform reference. Added Pass75 report/checkpoint. All five readbacks succeeded.
 - Pass75 report: [report](../reports/2026-11-24-pass75-fcc-ecc-provenance-runner-proof.md)
 - Pass75 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass75-fcc-ecc-provenance.md)
-- PR #169 currently OPEN/DRAFT/UNMERGED; latest head `d3a6f3546c38400dfc4010bab264a2e78e27a835`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Exact-head CI/reviews must be refreshed after final docs writes.
+- PR #169 remains OPEN/DRAFT/UNMERGED on base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Final Pass75 pre-context documentation head `863f9fb02fcdd9842fbaf70cf7da1a9885f5cb56` had 0 exact-head Actions runs, 0 combined statuses, 0 formal reviews and 0 review threads. The Context Window refresh is the final docs-branch commit; read live PR #169 for the resulting head.
 - Gemini dispatch, local install/runtime, provider calls, secret reads, deployment, merge and production mutation: NOT RUN.
 - Actual time NOT MEASURED; local validators NOT RUN.
 - Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
