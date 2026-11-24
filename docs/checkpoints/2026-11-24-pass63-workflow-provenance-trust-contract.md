@@ -27,7 +27,7 @@ No controller, dispatch, code/schema/runtime changes, secrets, provider calls, h
 ## Evidence
 - Pass 62 D1: run 45274455569, 113/113 PASS.
 - Pass 62 Pool Contract: run 45274455577 PASS.
-- Both recorded on exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`.
+- Both job logs independently fetched in Pass 63; job IDs 138042499229 / 138042499753 both checked out exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`. D1 log: 8/8 files, 113/113 tests; Pool Contract: `POOL_CONTRACT_VALIDATION=PASS`.
 - Active engineering time: NOT MEASURED.
 
 ## Next
