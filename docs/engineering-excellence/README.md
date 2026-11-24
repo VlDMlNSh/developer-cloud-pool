@@ -86,3 +86,10 @@ The admission adapter now uses injected trusted time and explicitly remains non-
 - [Pass 54 checkpoint](../checkpoints/2026-11-23-pass54-engineering-acceleration-adoption.md)
 
 The Context Window header is now an operational recovery snapshot with current observed refs, blockers and a mandatory `/next` procedure; historical sections are retained as archive. PR #169 remains draft/unmerged, so policy adoption is pending review. Runtime clock/controller provenance remains NOT VERIFIED.
+
+
+## Continuous improvement review cadence
+
+- [Continuous Improvement Review Cadence](CONTINUOUS-IMPROVEMENT-REVIEW.md)
+
+Owner-approved recurring architecture/process reviews now run every 3–5 completed /next passes or 7 calendar days, with immediate reviews for material security or critical-path events. Recommendations are tracked as bounded tasks and are not treated as implemented until evidence exists.
