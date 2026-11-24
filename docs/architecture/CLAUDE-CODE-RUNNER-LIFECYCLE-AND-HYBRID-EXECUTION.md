@@ -284,3 +284,30 @@ This is an owner-approved target architecture and qualification plan. It does no
 ECC is a required named component in the owner-approved Claude Code toolchain. Keep it explicit in executor profiles, architecture diagrams, task contracts, installation/security review and acceptance matrices. Do not silently omit, replace or assume an implementation. Its canonical source, exact identity, version, license, permission model and supported integration remain to be verified.
 
 The strategic evolution is documented in [Jarvis Multi-Layer Agent Organization Roadmap](JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md) and tracked in [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173): Level 1 Multi-Agent System; Level 2 AI Corporation; Level 3 Agentic Ecosystem / Agent Economy. These are descriptive project stages, not a claim that the industry has one settled standard name. Later levels remain design/backlog only; Contour A acceptance remains the immediate priority and Contour B stays deferred.
+
+
+## Pass 75 — canonical FCC/ECC identity and qualification boundary
+
+This addendum supersedes earlier statements in this document that the intended FCC/ECC identities were unknown. The owner-approved executor task [Issue #115](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115) and its source/provenance notes identify:
+
+- **FCC — Free Claude Code:** https://github.com/Alishahryar1/free-claude-code
+- **ECC — Everything Claude Code:** canonical repository now https://github.com/affaan-m/ECC (the former `affaan-m/everything-claude-code` URL redirects to this repository).
+
+Pinned provenance already used by the repository's no-secret qualification:
+- FCC commit: `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pinned LICENSE declares `AGPL-3.0-only`; pinned `pyproject.toml` requires exactly Python `3.14.10`.
+- ECC commit: `e413166c50e85fb205b988b5e78874b5a88ea4d2`; pinned LICENSE declares MIT.
+- Current ECC repository metadata read during Pass75: package `ecc-universal` version `2.2.3`, MIT; SECURITY.md currently lists 2.x / RC as supported. This current version is not a replacement for the pinned commit in the historical runner artifact; any new qualification must pin and attest a fresh exact version/commit.
+- FCC current README continues to identify the project as an independent, non-Anthropic project and advertises Python 3.14 / AGPL. No dedicated SECURITY.md was found at the checked path; this is not proof of absence of all security processes.
+
+Critical FCC quota boundary: pinned source includes ordered API-key lists and numbered selection; the pinned test suite exercises sequential attempts across keys after 403/429. Never place credentials from distinct accounts/quota domains into one FCC profile. Require exactly one credential/account per isolated FCC profile, one selected model, no `MODEL_FALLBACKS`, no numbered-key fallback/key cycling, and no provider or paid fallback. Keep provider identity and quota ledger separate.
+
+Historical PR #116 no-secret runner evidence:
+- PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; base at creation `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Runner run `44286955337` SUCCESS; job `134741981861`, all 18 listed steps SUCCESS.
+- Pool Contract Validation run `44286955360` SUCCESS; job `134741972786`, all 7 listed steps SUCCESS.
+- Artifact `14420066410`, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; artifact expiry reported 2026-11-25.
+- The proof covers installation, signed Claude Code binary verification, Docker no-egress primitive, FCC loopback health/shutdown, synthetic profile guard and mock CLI handoff, selected ECC skill installation, resource/provenance capture. It does **not** prove actual CODE worker execution inside the container, provider-specific egress allowlisting, a real Claude session, a permitted free provider route/account/quota, or production dispatch.
+- PR #116 remains OPEN/DRAFT/UNMERGED and is 74 commits ahead / 12 behind the current observed base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Its successful runs are historical evidence on its own immutable head, not current-base integration evidence.
+- FCC must remain loopback-only until qualified legal review resolves AGPL-3.0-only obligations for the intended remote/network deployment. Claude Code hosted-use entitlement and provider terms remain separately NOT VERIFIED.
+
+Disposition: identity and historical source/license provenance are now VERIFIED from owner task records plus upstream repository readback. Installation feasibility has historical exact-head CI evidence. New integration, current-base qualification, provider route, quota, actual worker execution, remote FCC deployment and legal review remain NOT QUALIFIED. No install or runtime was executed in Pass75.
