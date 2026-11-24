@@ -1,3 +1,49 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 71 (2026-11-24)
+
+Last refreshed: 2026-11-24 19:46:59 Europe/Vilnius — live GitHub revalidation and no-secret workflow static-analysis pilot
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Canonical default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (unchanged from Pass 70 baseline); recursive tree 70 entries, not truncated.
+Working documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN/DRAFT/UNMERGED, current head before Pass71 publication `6db91bfbda955d213119976273dfba6dcaf6ac49`, 141 ahead / 0 behind, 57 files, 0 reviews, exact-head CI absent.
+
+Current PRs:
+- PR #170 is the sole current-base D1 candidate: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; 33 ahead / 0 behind; 38 files; reviews 0 / threads 0. Exact-head run 45274455569/job 138042499229 (D1) SUCCESS and run 45274455577/job 138042499753 (Pool Contract) SUCCESS; run metadata binds head and base `8c38bb0...`.
+- PR #168 remains OPEN/DRAFT/UNMERGED at `caaba7345b698cfcfc92ad711ad1ed985980620d`, 107 ahead / 2 behind; all 33 changed paths overlap PR #170. Do not merge/cherry-pick independently.
+- PR #171 non-dispatch intake: OPEN/DRAFT/UNMERGED; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; 3 ahead / 0 behind; 2 files, +74/-1; exact-head Actions runs 0, combined statuses empty, reviews 0. Its workflow is observation-only, `permissions: {}`, no D1 write/dispatch, and is not on default.
+- PR #169 documentation branch remains OPEN/DRAFT/UNMERGED; Pass71 report/checkpoint/context are published there. Exact-head CI and reviews remain NOT VERIFIED / absent.
+- Priority PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 155 behind default, 0 reviews / 0 threads. #30 has no associated run; historical successes for #24/#25/#31 are not independent acceptance.
+- GitHub Read Adapter path-fix branch `fix/github-read-adapter-path-segments-2026-11-06`: HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 155 behind, 19 files, no PR/CI. Do not transplant wholesale.
+
+Issues #1, #22, #26, #96 and #140 remain OPEN. Open Issue search returned 15 items; open PR search returned 100 first-page items, total beyond first page NOT VERIFIED.
+
+Governance Ruleset #26550182 is ACTIVE on `refs/heads/Основной`; PR required, approvals 0, CODEOWNERS review false, last-push approval false, review-thread resolution required, bypass actors empty. Classic branch-protection endpoint returned 403 and is NOT VERIFIED. No governance changes.
+
+Default runtime:
+- Current default tree contains five workflows only; no web app, D1 proof package, `next-event-controller.yml` or Gemini controller.
+- Supervisor remains scheduled heartbeat-only. Current-HEAD run 45339684803/job 138260077123 SUCCESS; this is not executor or dispatch evidence.
+- Worker remains retired/fail-closed. DSH and Resource Probe are manual-only and were not run.
+- Current `POOL_DISPATCH_ENABLED` value was not directly read; NOT VERIFIED.
+
+D1 source review on PR #170:
+- Trusted clock is now injected into attempt lease, atomic admission and reconciliation adapters. Negative tests cover caller future/past timestamps, invalid/missing/rollback clocks, and expiry during asynchronous reconciliation verification. This corrects the older Pass50 caller-time defect in the current PR #170 candidate.
+- All proof adapters remain `dispatch:false` and `executionAuthorized:false`; Worker entrypoint is inert 404.
+- Current HIGH blocker: `bindGitHubNextEvent(context)` accepts caller-supplied context and checks workflow-ref equality plus SHA syntax, but does not independently verify authoritative GitHub run metadata, workflow bytes/digest, ancestry or default-ref race policy. PR #171's intake workflow does not close this trust gap.
+
+Pass71 Reuse First pilot:
+- Six exact workflow copies (five default workflows plus PR #171 intake) had local Git blob hashes matching GitHub blob SHAs.
+- PyYAML parse/limited structural scan: 6/6 PASS; no unpinned `uses:`, secret/token references, write scopes or direct `github.event.*` interpolation in shell run blocks found.
+- actionlint and zizmor binaries are unavailable in the local environment; outbound DNS is unavailable. Both remain CANDIDATE / NOT RUN; no dependency or CI enforcement added.
+- No code/schema/dependency/runtime change, workflow execution, dispatch, agents, DSH, Resource Probe, provider calls, hosted D1, deployment, production writes, secret reads, variable/ruleset mutation or merge.
+
+Pass71 report: [report](../reports/2026-11-24-pass71-live-revalidation-static-analysis-pilot.md)
+Pass71 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass71-live-revalidation-static-analysis-pilot.md)
+Pass71 report blob: `9e5e49aa684b8dc9eea6bb0d000f842e02577cc2`
+Pass71 checkpoint blob: `c6ced0fafccfc69d237ce9acf43cea2958e518ed`
+
+Next: Pass72 — read-only diagnosis of missing exact-head CI on PR #171; then specify authoritative GitHub run/workflow/blob/ref provenance with adversarial no-secret tests. Preserve `dispatch:false` and `executionAuthorized:false`; do not wire Worker/Supervisor or merge without exact-head CI, provenance review, active protections and independent review.
+Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 69 (2026-11-24)
 
 Last refreshed: 2026-11-24 — non-dispatch owner /next intake workflow
