@@ -1,3 +1,38 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 73 (2026-11-24)
+
+Strategic architecture update recorded from owner discussion. Contour A remains the only active implementation priority; Contour B stays deferred until ACCEPTED. Tracking: [Issue #173 — Jarvis evolution: Multi-Agent System → AI Corporation → Agentic Ecosystem](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
+
+## Owner-approved staged vision
+1. **Level 1 — Multi-Agent System:** Jarvis orchestrates specialist agents. Claude Code + ECC is the primary candidate engineering execution stack. Preserve proposed lineage: local model / inference adapter → FCC → Claude Code → ECC.
+2. **Level 2 — AI Corporation:** departments, accountable roles, task portfolio, quota/budget envelopes, organizational memory, quality gates, incident management and human approval boundaries.
+3. **Level 3 — Agentic Ecosystem / Agent Economy:** independently governed organizations, authenticated capability discovery, contract-based delegation, provenance, trust and controlled resource exchange. These are descriptive candidate terms, not a claim of one settled industry standard.
+
+## Components that must remain explicit
+- **ECC is required in the owner-approved Claude Code stack.** Do not omit or silently replace it. Exact canonical identity/source, version, license, permissions, security posture and integration remain NOT VERIFIED.
+- FCC remains the proposed Claude Code authorization/compatibility component; exact identity and supported auth semantics remain NOT VERIFIED.
+- Claude Code authentication, provider inference and GitHub permissions are separate trust domains. Free provider APIs and local models are inference routes only; no quota/terms bypass and no paid fallback.
+- Compute topology: ephemeral GitHub Actions; persistent cloud control plane; candidate Mac mini Server 2011 i7/16GB; planned Mac mini 2018 i3/32GB; future isolated powerful remote video server; Microsoft Visual Studio Code as human operator/admin workbench, not the scheduler or identity authority.
+- All local nodes remain candidates until host identity, OS, patchability, network, storage, backup, capabilities and security are qualified.
+
+## Pass73 artifacts
+- [Multi-layer Jarvis roadmap](../architecture/JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md)
+- [Claude Code + runner lifecycle design](../architecture/CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md)
+- [Hybrid reference architecture](../architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
+- [Pass73 report](../reports/2026-11-24-pass73-jarvis-multi-layer-roadmap.md)
+- [Pass73 checkpoint](../checkpoints/2026-11-24-pass73-jarvis-multi-layer-roadmap.md)
+- Tracking [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
+
+## Sequencing and verification
+- Level 2/3 are strategic design/backlog only, not authorization to implement or deploy.
+- Contour B remains prohibited until Contour A is ACCEPTED.
+- GitHub documentation writes succeeded. Full read-back and final PR #169 head/CI/reviews/governance refresh remain to be performed.
+- Local validators/tests: NOT RUN. Runtime/dispatch/provider calls/secret reads/local host connections/video server/VS Code remote session/deployment/production writes: NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED.
+
+Next bounded step: read back all Pass73 files, validate ECC references and relative links, refresh PR #169 exact-head CI/reviews/governance, then Reuse First verification of canonical FCC/ECC sources and Claude Code compatibility. Keep dispatch fail-closed.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 72 (2026-11-24)
 
 Owner-approved Contour A design update. Default `Основной` remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR #169 is OPEN/DRAFT/UNMERGED; Pass72 final head at time of refresh: `b10d36d946b4f2bd972ff3fedc1c0d2b3f7487e8`; exact-head CI/reviews still require fresh verification.
