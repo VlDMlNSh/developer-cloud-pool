@@ -1,3 +1,25 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 72 (2026-11-24)
+
+Owner-approved Contour A design update. Default `Основной` remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR #169 is OPEN/DRAFT/UNMERGED; Pass72 final head at time of refresh: `b10d36d946b4f2bd972ff3fedc1c0d2b3f7487e8`; exact-head CI/reviews still require fresh verification.
+
+- Tracking: [Issue #172 — Claude Code-first executors and zero-loss runner lifecycle](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
+- Primary candidate engineering-agent runtime: Claude Code.
+- Preserve owner/project toolchain lineage: `local model / inference adapter → FCC → Claude Code → ECC`. FCC/ECC canonical identities, expansions, versions, licenses and supported auth semantics are NOT VERIFIED; do not infer them.
+- FCC is the proposed authorization/compatibility path, not a quota bypass. Claude Code authentication, provider inference and GitHub permissions are distinct. Free APIs and local models are inference routes only; paid fallback is disabled.
+- Mac mini 2011 i7/16GB (owner-reported), Mac mini 2018 i3/32GB (planned) and future remote video server are candidate local/media nodes; none connected or qualified.
+- Microsoft Visual Studio Code is the human operator/admin workbench, not Jarvis control plane, scheduler, identity provider or durable store.
+- Automatic refill schedules the next eligible job after account-level GitHub Actions capacity is released; each job still gets a fresh ephemeral VM and startup is not instantaneous or guaranteed.
+- Durable external task state, checkpoints, idempotency, atomic completion, leases/fencing, artifact digests, audit and bounded recovery are mandatory. UI state/reconnect must be independent of runner lifecycle.
+- “Zero loss” applies only to committed state under a defined tested failure model; uncheckpointed work resumes from the last durable checkpoint.
+- Design: [Claude Code + runner lifecycle](../architecture/CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md). Updated [20-runner architecture](../architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md) and [hybrid reference architecture](../architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md).
+- Report: [Pass72](../reports/2026-11-24-pass72-claude-code-runner-lifecycle-design.md). Checkpoint: [Pass72](../checkpoints/2026-11-24-pass72-claude-code-runner-lifecycle-design.md).
+
+Verification: documentation-only; no code/schema/dependency/workflow changes and no local validators/tests (NOT RUN). No Claude Code/FCC/ECC runtime, provider calls, secret reads, Gemini dispatch, local host/video server connection, VS Code remote session, deployment, merge or production writes. PR #171 Pool Contract run `45448087868` SUCCESS but audit-only; PR #170 runs `45274455569` and `45274455577` are historical. PR #169 exact-head CI NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+Next: read back changed docs and final PR #169 head, validate links/Markdown, refresh exact-head CI/reviews/governance, then no-secret source/compatibility review of Claude Code/FCC/ECC. Dispatch stays fail-closed.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 71 (2026-11-24)
 
 Last refreshed: 2026-11-24 19:46:59 Europe/Vilnius — live GitHub revalidation and no-secret workflow static-analysis pilot
