@@ -46,14 +46,14 @@ for (const [path, source] of workflows) {
   }
 }
 const nextIntake = read(".github/workflows/next-request-intake.yml");
-if (!/^permissions:\\s*\\{\\s*\\}/m.test(nextIntake)) fail("Next intake must have an empty permissions map");
-if (/^\\s*uses:\\s*/m.test(nextIntake)) fail("Next intake must not invoke external Actions");
-if (/secrets\\.|GITHUB_TOKEN|workflow_dispatch:|repository_dispatch:|workflow_run:|actions:\\s*write|issues:\\s*write|contents:\\s*write|fetch\\s*\\(|dispatches|wrangler/i.test(nextIntake)) {
+if (!/^permissions:\s*\{\s*\}/m.test(nextIntake)) fail("Next intake must have an empty permissions map");
+if (/^\s*uses:\s*/m.test(nextIntake)) fail("Next intake must not invoke external Actions");
+if (/secrets\.|GITHUB_TOKEN|workflow_dispatch:|repository_dispatch:|workflow_run:|actions:\s*write|issues:\s*write|contents:\s*write|fetch\s*\(|dispatches|wrangler/i.test(nextIntake)) {
   fail("Next intake must remain credential-free, read-only and non-dispatch");
 }
-if (!/github\\.event\\.issue\\.number == 96/.test(nextIntake) ||
-    !/github\\.event\\.comment\\.user\\.login == github\\.repository_owner/.test(nextIntake) ||
-    !/github\\.event\\.comment\\.body == '\\/next'/.test(nextIntake)) {
+if (!/github\.event\.issue\.number == 96/.test(nextIntake) ||
+    !/github\.event\.comment\.user\.login == github\.repository_owner/.test(nextIntake) ||
+    !/github\.event\.comment\.body == '\/next'/.test(nextIntake)) {
   fail("Next intake must gate the exact owner /next request on Issue #96");
 }
 if (!/Execution authorization: false/.test(nextIntake) || !/no task was dispatched/.test(nextIntake)) {
