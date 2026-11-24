@@ -47,3 +47,16 @@ Before adding a dependency:
 7. Record decision in `docs/decisions/` and update this register.
 
 Avoid cargo-cult adoption. Reuse is preferred only when it reduces total risk and lifecycle cost.
+
+
+## Additional candidates from the 2026-11-24 engineering review
+
+| Capability | Candidate | Intended evaluation | Current decision |
+|---|---|---|---|
+| GitHub Actions workflow linting | actionlint | Syntax, expression and workflow-structure validation | CANDIDATE / NOT RUN |
+| GitHub Actions security analysis | zizmor | Detect workflow security anti-patterns and unsafe permissions/data flow | CANDIDATE / NOT RUN |
+| Repository security posture | OpenSSF Scorecard | Advisory evidence for repository and supply-chain practices | CANDIDATE / NOT RUN |
+| Cloudflare Workers/D1 integration tests | Workers Vitest integration harness | Runtime-faithful local D1/Workers tests without remote bindings | CANDIDATE / NOT QUALIFIED |
+| Build/artifact provenance | GitHub artifact attestations / SLSA provenance | Bind produced artifacts to source and workflow identity; verify attestations | CANDIDATE / NOT QUALIFIED |
+
+These are research candidates, not dependencies. Before integration, verify current license, release/maintenance status, security advisories, exact version, free-tier eligibility, required GitHub permissions, data egress and rollback. Prefer pinned binaries/packages or reproducible invocations; do not add unpinned third-party Actions. No tool in this table is asserted to be installed or executed by this documentation change.
