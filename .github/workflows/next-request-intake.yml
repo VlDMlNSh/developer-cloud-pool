@@ -1,0 +1,56 @@
+name: Next Request Intake (Non-Dispatch)
+
+on:
+  issue_comment:
+    types: [created]
+
+# This workflow is deliberately audit-only. It has no token permissions,
+# secrets, checkout, external actions, D1 writes, or worker dispatch.
+permissions: {}
+
+concurrency:
+  group: next-request-intake-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  validate-owner-request:
+    name: Validate exact owner /next request
+    if: >-
+      github.event.issue.number == 96 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.login == github.repository_owner &&
+      github.event.comment.body == '/next'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Recheck event envelope without executing a task
+        shell: bash
+        env:
+          EVENT_ACTOR: ${{ github.actor }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_ACTOR" != "$REPOSITORY_OWNER" ]]; then
+            echo "::error::Actor is not the repository owner."
+            exit 1
+          fi
+          if [[ "$COMMENT_AUTHOR" != "$REPOSITORY_OWNER" || "$ISSUE_NUMBER" != "96" || "$COMMENT_BODY" != "/next" ]]; then
+            echo "::error::Event does not satisfy the exact owner-only /next contract."
+            exit 1
+          fi
+          if [[ ! "$COMMENT_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::Comment ID is not a numeric GitHub event identifier."
+            exit 1
+          fi
+          {
+            echo "## Owner /next request observed"
+            echo "- Issue: #96"
+            echo "- Comment ID: $COMMENT_ID"
+            echo "- Actor: repository owner"
+            echo "- Admission: observed only; no task was dispatched."
+            echo "- Execution authorization: false"
+          } >> "$GITHUB_STEP_SUMMARY"

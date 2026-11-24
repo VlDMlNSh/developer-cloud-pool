@@ -19,7 +19,8 @@ const workflows = [
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
-  ".github/workflows/runner-resource-probe.yml"
+  ".github/workflows/runner-resource-probe.yml",
+  ".github/workflows/next-request-intake.yml"
 ].map((path) => [path, read(path)]);
 
 for (const [path, source] of workflows) {
@@ -44,6 +45,22 @@ for (const [path, source] of workflows) {
     }
   }
 }
+const nextIntake = read(".github/workflows/next-request-intake.yml");
+if (!/^permissions:\s*\{\s*\}/m.test(nextIntake)) fail("Next intake must have an empty permissions map");
+if (/^\s*uses:\s*/m.test(nextIntake)) fail("Next intake must not invoke external Actions");
+if (/secrets\.|GITHUB_TOKEN|workflow_dispatch:|repository_dispatch:|workflow_run:|actions:\s*write|issues:\s*write|contents:\s*write|fetch\s*\(|dispatches|wrangler/i.test(nextIntake)) {
+  fail("Next intake must remain credential-free, read-only and non-dispatch");
+}
+if (!/github\.event\.issue\.number == 96/.test(nextIntake) ||
+    !/github\.event\.comment\.user\.login == github\.repository_owner/.test(nextIntake) ||
+    !/github\.event\.comment\.body == '\/next'/.test(nextIntake)) {
+  fail("Next intake must gate the exact owner /next request on Issue #96");
+}
+if (!/Execution authorization: false/.test(nextIntake) || !/no task was dispatched/.test(nextIntake)) {
+  fail("Next intake must explicitly remain observation-only");
+}
+if (failures.length === 0) pass("Next intake is owner-only, exact-command, credential-free and non-dispatch");
+
 if (failures.length === 0) pass("workflow inputs are not interpolated into shell run blocks");
 if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /@[0-9a-f]{40}$/.test(m[1])))) {
   pass("all external Actions references are pinned to 40-character commit SHAs");
