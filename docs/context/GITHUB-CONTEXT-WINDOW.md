@@ -1,3 +1,22 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 68 (2026-11-24)
+
+Last refreshed: 2026-11-24 — controller presence and workflow provenance audit
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+PR #170: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`. Sole D1 candidate.
+PR #169: OPEN/DRAFT/UNMERGED; docs head before this pass `d1c401dd6279f105b6bac5fdad267d65dd7594bf`.
+PR #168: OPEN/DRAFT/UNMERGED; non-canonical; do not merge/cherry-pick separately.
+Issue #96 and #140 remain OPEN.
+Decision: independent human review is post-launch, before final Contour A ACCEPTED; not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI/security/governance/provenance/fail-closed gates remain mandatory.
+Pass 68 confirmed NOT_FOUND for `.github/workflows/next-event-controller.yml` and `.github/workflows/gemini-batch-dispatch-controller.yml` on both default and PR #170 refs. Therefore no live event controller or Gemini controller is available at those refs. Do not claim provenance verification or dispatch capability.
+D1 adapter blob `fdec14e9088fd1db186d0ee1541a6085ca84104a` validates caller-supplied Actions context; synthetic-context unit tests prove predicate logic, not live workflow authenticity. Need workflow on default first, then verify authoritative run metadata, workflow identity/blob SHA, event/ref/target SHA and default-ref race policy.
+Historical Pass62 synthetic-merge CI: D1 run 45274455569/job 138042499229 SUCCESS; Pool Contract run 45274455577/job 138042499753 SUCCESS with dispatch-disabled contract. Not new Pass68 CI. PR #170 reviews 0 / threads 0; PR #169 exact-head CI NOT VERIFIED. Pass68 new tests 0; code/schema/dependency changes 0; active time NOT MEASURED. No secrets, dispatch, provider calls, hosted D1, deployment, merge/close or production mutation.
+Pass68 report: [report](../reports/2026-11-24-pass68-controller-presence-and-workflow-provenance.md)
+Pass68 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass68-controller-presence-and-workflow-provenance.md)
+Next: Pass69 minimal non-dispatch event-controller workflow contract + workflow syntax/security tests, normal reviewed PR; only then implement provenance verifier against actual workflow/run metadata. Gemini remains NOT RUN; Contour B DEFERRED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 67 (2026-11-24)
 
 Last refreshed: 2026-11-24 — Pass 67 launch sequence correction and trusted provenance audit
