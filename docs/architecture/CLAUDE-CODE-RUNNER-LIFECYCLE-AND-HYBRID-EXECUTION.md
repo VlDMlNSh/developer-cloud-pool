@@ -277,3 +277,10 @@ Metrics: queue wait; dispatch-to-runner-ready provisioning latency; prior-job-te
 - No provider calls, secret reads, local-host connections, video-server provisioning, deployment, merge or production writes occurred.
 
 This is an owner-approved target architecture and qualification plan. It does not prove implementation, deployment, runtime availability or qualification.
+
+
+## 11. ECC preservation and multi-layer Jarvis evolution
+
+ECC is a required named component in the owner-approved Claude Code toolchain. Keep it explicit in executor profiles, architecture diagrams, task contracts, installation/security review and acceptance matrices. Do not silently omit, replace or assume an implementation. Its canonical source, exact identity, version, license, permission model and supported integration remain to be verified.
+
+The strategic evolution is documented in [Jarvis Multi-Layer Agent Organization Roadmap](JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md) and tracked in [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173): Level 1 Multi-Agent System; Level 2 AI Corporation; Level 3 Agentic Ecosystem / Agent Economy. These are descriptive project stages, not a claim that the industry has one settled standard name. Later levels remain design/backlog only; Contour A acceptance remains the immediate priority and Contour B stays deferred.
