@@ -1,3 +1,21 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 69 (2026-11-24)
+
+Last refreshed: 2026-11-24 — non-dispatch owner /next intake workflow
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Default `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+PR #171: OPEN/DRAFT/UNMERGED; branch `feat/next-event-intake-nondispatch-pass69`; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; base `Основной`; 2 files, 74 additions. Adds inert owner /next intake workflow and static contract checks.
+PR #170: OPEN/DRAFT/UNMERGED; D1 head `7d900d9fe11b19f048548a3bed657b2549f8091f`; unchanged.
+PR #169 docs PR remains OPEN/DRAFT/UNMERGED; current docs branch includes this checkpoint/report.
+Decision: independent human review is post-launch, before final Contour A ACCEPTED; not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI/security/governance/provenance/fail-closed gates remain mandatory.
+Pass69 workflow `.github/workflows/next-request-intake.yml`: exact owner-authored `/next` on Issue #96 only; excludes PR comments; explicit `permissions: {}`; no secrets, checkout, external Actions, D1/API writes, dispatch or execution. Audit-only. Validator now includes the workflow and checks exact owner gate, empty permissions, no external actions/credentials/write/dispatch and observation-only output.
+Workflow blob `9402a803e21987b61813436647e43dac333c866c`; validator blob `6f82878beabeb2c0a1f65dfa66dee1c7de253482`.
+PR #171 exact-head CI: NOT VERIFIED (no runs returned; combined statuses empty). Local YAML/Node tests NOT RUN. Reviews 0; no merge or runtime trigger. No secrets, D1 writes, dispatch, deployment or production mutation. Active time NOT MEASURED.
+Pass69 report: [report](../reports/2026-11-24-pass69-nondispatch-next-intake.md)
+Pass69 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass69-nondispatch-next-intake.md)
+Next: Pass70 re-read PR #171 exact-head CI, fix evidenced failures, then implement trusted GitHub run/workflow/blob/ref provenance and D1 admission as separate fail-closed work. Contour B DEFERRED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 68 (2026-11-24)
 
 Last refreshed: 2026-11-24 — controller presence and workflow provenance audit
