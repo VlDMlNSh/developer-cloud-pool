@@ -1,3 +1,25 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 75 (2026-11-24)
+
+Contour A only. Pass75 resolves the intended FCC/ECC identities from owner-approved Issue #115 and upstream source readback; historical installation feasibility evidence is refreshed, but current-base qualification and provider route remain open.
+
+- Current base SHA observed on open PR refs: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- FCC = Free Claude Code, `Alishahryar1/free-claude-code`; pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pinned license AGPL-3.0-only; Python exactly 3.14.10.
+- ECC = Everything Claude Code, canonical `affaan-m/ECC`; pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`; MIT. Current package `ecc-universal` 2.2.3; SECURITY.md supports 2.x / RC.
+- FCC supports ordered/numbered API key selection and fallback across 403/429 in pinned tests. Require exactly one account credential per FCC profile, one model, no MODEL_FALLBACKS/key cycling/cross-account mixing/provider or paid fallback.
+- FCC stays loopback-only pending legal review for AGPL network use. Claude Code hosted-use entitlement NOT VERIFIED.
+- Historical PR #116 no-secret runner: head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; run `44286955337` SUCCESS (18/18 steps), contract run `44286955360` SUCCESS (7/7). Artifact `14420066410`, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`, expires 2026-11-25. PR #116 is 74 ahead / 12 behind current base; historical install proof only, not current-base integration or real worker/provider qualification.
+- Updated architecture docs: runner lifecycle, Jarvis multi-layer roadmap, hybrid platform reference. Added Pass75 report/checkpoint. All five readbacks succeeded.
+- Pass75 report: [report](../reports/2026-11-24-pass75-fcc-ecc-provenance-runner-proof.md)
+- Pass75 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass75-fcc-ecc-provenance.md)
+- PR #169 currently OPEN/DRAFT/UNMERGED; latest head `d3a6f3546c38400dfc4010bab264a2e78e27a835`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Exact-head CI/reviews must be refreshed after final docs writes.
+- Gemini dispatch, local install/runtime, provider calls, secret reads, deployment, merge and production mutation: NOT RUN.
+- Actual time NOT MEASURED; local validators NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+Next: create a clean current-base no-secret runner qualification branch by porting only the minimal PR #116 proof, then add actual CODE worker-in-no-egress-sandbox evidence. Keep provider calls and dispatch disabled.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 74 (2026-11-24)
 
 Live GitHub revalidation and bounded Reuse First identity review. Contour A remains the sole active implementation priority; Contour B remains deferred until ACCEPTED.
