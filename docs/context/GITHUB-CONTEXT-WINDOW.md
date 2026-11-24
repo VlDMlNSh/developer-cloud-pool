@@ -1,3 +1,21 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 65 (2026-11-24)
+
+Last refreshed: 2026-11-24 — Pass 65 CODEOWNERS readiness audit  
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
+Default branch: `Основной` @ `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged).  
+PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; reviews 0; threads 0. Prior exact merge evidence remains historical; no new CI in Pass 65.  
+PR #169: OPEN / DRAFT / UNMERGED; pre-Pass65 head `c566b3189fbbadb9da7d900434a3ddd72512b5a2`; base default; before Pass65 additions 44 files, +3,441/-9; reviews 0; threads 0. Exact-head Actions runs and legacy statuses were not returned; NOT RUN / NOT VERIFIED. Pass65 adds report/checkpoint and refreshes this Context Window; final branch tip is recorded in the Pass65 completion response.  
+Ruleset 26550182: ACTIVE; PR required; thread resolution required; approvals 0; stale-review dismissal true; last-push approval false; CODEOWNER review false; bypass actors empty; current user cannot bypass.  
+Pass65 recursive Git Trees API scans (both `truncated=false`) of default and docs branch found no CODEOWNERS in root, `.github/` or `docs/`; neither tree contains `next-event-controller` or `gemini-batch-dispatch-controller`. CODEOWNERS requires a real owner with Write permission and must be present on PR base branch to govern. Do not add placeholders.  
+Decision: first activate one general independent approval rule after owner authorizes a distinct reviewer; only then introduce CODEOWNERS through a separately reviewed PR, then require code-owner review. User-owned repo cannot use team-required-reviewer rules. No reviewer nominated yet.  
+Issue #96 remains OPEN / PLANNED; no controller or dispatch authorization. Issue #1 contains historic POOL_DISPATCH_ENABLED=false evidence from 2026-11-04 only; do not treat as current verification.  
+No invitations, permission/ruleset changes, CODEOWNERS, secret/variable reads, controller/workflow, dispatch, provider calls, hosted D1, deployment, merge, production or MediaHub changes. Code changes 0; dependencies 0; active time NOT MEASURED.  
+Pass65 report: [report](../reports/2026-11-24-pass65-codeowners-governance-readiness.md)  
+Pass65 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass65-codeowners-governance-readiness.md)  
+Next: owner nominates distinct reviewer by exact GitHub login and authorizes minimum Write permission. Until then governance activation and controller remain BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 64 (2026-11-24)
 
 Last refreshed: 2026-11-24 — Pass 64 independent workflow trust-anchor assessment  
