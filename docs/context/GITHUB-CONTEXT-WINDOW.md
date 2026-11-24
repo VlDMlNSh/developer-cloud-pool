@@ -1,3 +1,24 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 74 (2026-11-24)
+
+Live GitHub revalidation and bounded Reuse First identity review. Contour A remains the sole active implementation priority; Contour B remains deferred until ACCEPTED.
+
+- Default base SHA observed from open PR base refs: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- PR #169 OPEN/DRAFT/UNMERGED; head `239ac7a3b3a19643548df7893a873d9e3ac0deab`; exact-head Actions runs absent, combined statuses empty, formal reviews 0, threads 0.
+- PR #170 OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; exact-head D1 run `45274455569` SUCCESS and Pool Contract run `45274455577` SUCCESS; formal reviews 0.
+- PR #171 OPEN/DRAFT/UNMERGED; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; exact-head audit-only Pool Contract run `45448087868` SUCCESS; formal reviews 0.
+- PR #169 docs read-back: Pass73 roadmap, report and checkpoint verified. Runner lifecycle and hybrid architecture read back; ECC remains explicit.
+- Default-branch checks for `.github/workflows/gemini-batch-dispatch-controller.yml` and `.github/workflows/next-event-controller.yml` returned NOT_FOUND. Dispatch remains NOT RUN / BLOCKED.
+- FCC identity is ambiguous; ECC public candidate identity/license/version/security/compatibility are not sufficiently verified from primary source. No install/integration.
+- Ruleset details and current dispatch variable metadata: NOT VERIFIED.
+- Pass74 report: [report](../reports/2026-11-24-pass74-live-revalidation-reuse-first.md)
+- Pass74 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass74-live-revalidation.md)
+- Actual time NOT MEASURED; local validators NOT RUN; no code/schema/workflow/dependency changes, secrets, provider calls, runtime, dispatch, deployment, merge or production writes.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+
+Next: obtain canonical FCC/ECC source identity from an authoritative owner-approved project record; verify license, release, maintenance, security and Claude Code compatibility without installing/executing. Keep dispatch fail-closed.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 73 (2026-11-24)
 
 Strategic architecture update recorded from owner discussion. Contour A remains the only active implementation priority; Contour B stays deferred until ACCEPTED. Tracking: [Issue #173 — Jarvis evolution: Multi-Agent System → AI Corporation → Agentic Ecosystem](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
