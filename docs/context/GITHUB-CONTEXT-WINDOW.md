@@ -1,3 +1,22 @@
+# CURRENT OPERATIONAL SNAPSHOT — Pass 67 (2026-11-24)
+
+Last refreshed: 2026-11-24 — Pass 67 launch sequence correction and trusted provenance audit
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+PR #170: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; sole current-base D1 candidate. Historical Pass 62 synthetic-merge CI: D1 113/113 (45274455569) and Pool Contract SUCCESS (45274455577); NOT current-head CI.
+PR #168: OPEN/DRAFT/UNMERGED; non-canonical; all 33 paths overlap PR #170. Do not merge/cherry-pick independently.
+PR #169: OPEN/DRAFT/UNMERGED; head before Pass 67 docs `36bba45bc9750eb4f09faef5aa92433d913abc89`; no workflow runs returned for that exact SHA (NOT VERIFIED).
+Issue #96: exact owner-only /next; first executor remains one Claude Code + ECC + FCC via separately verified free route; Gemini optional.
+Issue #140: canonical D1 admission/lease proof chain.
+Decision: independent human review is post-launch qualification before final Contour A ACCEPTED, not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI, security, governance, provenance and fail-closed gates remain mandatory.
+Pass 67 inspected adapter blob `fdec14e9088fd1db186d0ee1541a6085ca84104a`, migration 0017 blob `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`, unit test blob `a55733460d18974d8a965417ed6633a019fb4c5c`, and D1 integration tests. Adapter persists durable source-comment receipt linked to admission, but it validates a supplied Actions context and does not independently verify workflow bytes/digest/ancestry or default-ref API/race state. Local predicate tests do not prove live event authenticity. Controller/dispatch remains BLOCKED on this technical trust gap; no independent review prerequisite for ongoing engineering.
+No code/schema/dependency changes; no new tests; no secrets, dispatch, provider calls, hosted D1, deployment, merge/close, production or MediaHub changes. Active time NOT MEASURED.
+Pass 67 report: [report](../reports/2026-11-24-pass67-launch-sequence-and-trusted-provenance.md)
+Pass 67 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass67-launch-sequence-and-trusted-provenance.md)
+Next: implement/test authoritative GitHub workflow/run/ref provenance verification and default-ref race policy; keep canonical D1 path and dispatch=false. Then qualify lease/trusted-clock and proceed executor/UI runtime. Independent review post-launch, before ACCEPTED.
+
+---
+
 # CURRENT OPERATIONAL SNAPSHOT — Pass 66 (2026-11-24)
 
 Last refreshed: 2026-11-24 — Pass 66 canonical D1 PR overlap audit  
