@@ -39,9 +39,9 @@ Required next implementation: one canonical workflow call path must obtain the A
 
 PR #174 audits `.github/workflows/owner-next-event-audit.yml`; PR #175's D1 binder and migration 0017 hard-code `.github/workflows/next-event-controller.yml`. A naïve copy/paste integration will either reject the real audit workflow or weaken workflow identity checks. Choose one reviewed canonical controller workflow identity and bind it consistently across API audit, D1 envelope, receipt schema and tests.
 
-### F94-03 — current-head CI after README correction is pending
+### F94-03 — new-head merge-result CI completed; exact-head status remains unavailable
 
-The previous PR #175 merge-result CI is green for head `bb9fd296...`, but the current branch head is now `3d69bc943677dba909792bf4930d4c0aa5d2233f`. At the time of this report, workflow lookup and combined status for the new head returned no runs/status contexts. Do not reuse the prior CI result as evidence for the changed head. Exact-head CI is NOT VERIFIED; rerun/merge-result CI for the new head is pending.
+After the README correction, PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f` triggered two successful PR merge-result workflows. D1 run `45690428935`, job `139474112922`, checked out merge-result SHA `1606645` (full SHA in the job checkout log), passed the Worker syntax check and 8/8 files / 123/123 tests. Pool Contract run `45690428805`, job `139474113226`, checked out the same merge result, parsed all six workflow YAML files, passed the security contract and reported `POOL_CONTRACT_VALIDATION=PASS` with `POOL_DISPATCH_ENABLED=false`. Combined status for the PR head remains empty; these are merge-result checks, not standalone exact-head checks.
 
 ### F94-04 — governance/review remain open
 
@@ -55,7 +55,7 @@ No merge, deployment, hosted D1 access, production write, live issue_comment eve
 
 - Files changed this pass: 1 README.
 - Tests executed in this pass: none locally.
-- Existing CI evidence: 123/123 D1 tests and Pool Contract PASS on the pre-correction merge-result SHA only.
+- CI after correction: D1 123/123 (8/8 files) and Pool Contract PASS on merge-result for current PR head; standalone exact-head status contexts remain empty.
 - Active engineering time: NOT MEASURED; no wall-clock estimate asserted.
 - Defects: 1 documentation range mismatch corrected; 3 active integration/review blockers (F94-01 through F94-04, with CI/governance as separate gates).
 - Critical path: API-attested event envelope → D1 receipt binding/recovery → trusted lease/runtime integration → authenticated remote UI and persistent state → quota/routing and executor qualification → E2E/security/governance → independent acceptance.
