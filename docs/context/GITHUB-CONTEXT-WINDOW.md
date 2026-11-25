@@ -2254,3 +2254,23 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Checkpoint: `docs/checkpoints/2026-11-25-pass98-canonical-next-controller-foundation.md`
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 - Next: Pass 99 — same-run API-attested immutable envelope with workflow-code identity, composed with the D1 adapter while admission/dispatch remain disabled.
+
+
+## Pass 99 — API attestation / D1 composition audit (2026-11-25)
+
+- Frozen default SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Audited candidate PR #176 head: `2e76f82572bc6df8de2b0548200ebc285ad7537a`; branch `feat/pass98-canonical-next-controller-audit-2026-11-25`.
+- PR #175 D1 candidate head: `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #174 API audit head: `a8809c1dc8c2eaa49944fb031baeec54ce46b922`.
+- Pass 99 inspected canonical controller, API verifier/tests, D1 binder, flat Actions context adapter, migration 0017, D1 unit/integration tests, Issue #96 and current worker/supervisor workflows.
+- Finding: PR #176 verifier performs useful API read-back but emits an incomplete observation; no full immutable envelope and no workflow-file content/blob SHA attestation.
+- Finding: PR #175 D1 binder consumes a flat Actions-context object. Its tests use constructed fixtures; no same-run composition callsite feeds API verifier output into D1.
+- D1 replay/receipt tests remain valuable but do not prove API verifier -> envelope -> D1 end-to-end composition.
+- Current worker workflow is retired/fail-closed; supervisor is heartbeat-only. No qualified executor is active.
+- PR #176 current Pool Contract Validation run 45694558420 was PENDING at audit time; PR reviews 0; review threads 0. Recheck live status before next pass.
+- Ruleset 26550182 active; PR required, zero required approvals, review-thread resolution required.
+- No code changes, local tests, D1 writes/deployment, dispatch, child execution, secrets, provider calls, merge or production writes.
+- Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; active time NOT MEASURED.
+- Report: `docs/reports/2026-11-25-pass99-api-attestation-d1-composition-audit.md`
+- Checkpoint: `docs/checkpoints/2026-11-25-pass99-api-attestation-d1-composition-audit.md`
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: Pass 100 same-run immutable API-attested envelope, workflow-code identity and D1 adapter integration tests; dispatch stays disabled.
