@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
+// This verifier observes provenance only; it never creates admission or dispatch authority.
 const EXPECTED_ISSUE = 96;
 const EXPECTED_WORKFLOW_PATH = ".github/workflows/next-event-controller.yml";
 
