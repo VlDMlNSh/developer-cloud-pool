@@ -51,3 +51,9 @@ Reuse the existing Node built-in `fetch` / GitHub REST verifier from PR #174 and
 - Contour B: DEFERRED.
 
 Next: implement one same-workflow API-readback → canonical envelope → D1 receipt composition slice on a clean frozen base, then test stale-ref races, rerun/replay, workflow identity and every envelope-field substitution before any dispatch integration.
+
+
+## Documentation-branch governance addendum
+
+- Pass 96 documentation is on working branch `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED. Its base SHA remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, while current default is `565404f84b6b86afb4dc2d8fa939341f42df6eca`; compare reports diverged, 254 commits ahead / 2 behind. This branch must not be treated as canonical/default.
+- New docs-branch head: `6e2b95eb9f392292727b14ed5d456def0fdc1629`. Exact-head Actions runs: 0; combined status contexts: 0; formal reviews: 0; review threads: 0. Documentation publication is read-back verified, but PR #169 CI/governance qualification is NOT VERIFIED. Do not merge.
