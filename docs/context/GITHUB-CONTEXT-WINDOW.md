@@ -2274,3 +2274,25 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Checkpoint: `docs/checkpoints/2026-11-25-pass99-api-attestation-d1-composition-audit.md`
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: Pass 100 same-run immutable API-attested envelope, workflow-code identity and D1 adapter integration tests; dispatch stays disabled.
+
+
+
+## Pass 100 — live CI requalification and API-to-D1 integration gate (2026-11-26)
+
+- Frozen default branch: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca` (repository metadata + latest commit search read-back).
+- PR #174 head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`: OPEN / DRAFT / UNMERGED; Pool Contract Validation run [45677997233](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45677997233) COMPLETED / SUCCESS.
+- PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`: OPEN / DRAFT / UNMERGED; Isolated D1 Ledger Proof run [45690428935](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45690428935) and Pool Contract Validation run [45690428805](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45690428805) COMPLETED / SUCCESS.
+- PR #176 head `6f9289e0f8e65b8f918b45bbcb9e3a27f6362a23`: OPEN / DRAFT / UNMERGED; Pool Contract Validation run [45695204555](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45695204555) COMPLETED / SUCCESS.
+- Exact-head candidate CI is now VERIFIED for the three respective heads. This does not prove cross-PR composition or merge-result CI.
+- Formal PR reviews: 0 on #174/#175/#176; review threads: 0 on all three. Mergeable=true is not an approval or governance qualification.
+- Default branch remains unchanged at the frozen SHA; canonical `.github/workflows/next-event-controller.yml` and its verifier remain candidate-only, not present on `Основной`.
+- Issue #96 remains OPEN and its dispatch gates remain unmet.
+- Re-read D1 candidate `proofs/d1-ledger/src/github-next-event.mjs`: `bindGitHubNextEvent(context)` still accepts a flat context object; `github-actions-context.mjs` maps runner-provided context directly. The D1 integration tests build fixtures and call the binder directly. No same-run callsite feeds the API verifier result into this binder.
+- Re-read PR #176 verifier: it performs read-backs for repository, Issue #96, comment, workflow run, workflow metadata and default-branch ref, but its result remains `OBSERVED_ONLY` and does not include a canonical immutable envelope or independently read-back workflow file blob/content identity.
+- Therefore the principal blocker is unchanged: API-attested event -> immutable envelope/workflow-code identity -> D1 binder -> durable receipt is not composed end-to-end.
+- Dispatch/execution remain false. No D1 writes, workflow dispatch, provider calls, secrets read, deployment, merge or production writes.
+- Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; merge-result CI NOT VERIFIED; live issue_comment qualification NOT RUN; active engineering time NOT MEASURED.
+- Pass 100 outcome: live exact-head CI requalification VERIFIED; integration composition NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 100 live CI requalification and integration gate](../reports/2026-11-26-pass100-live-ci-requalification-integration-gate.md). Checkpoint: [Pass 100](../checkpoints/2026-11-26-pass100-live-ci-requalification-integration-gate.md).
+- Next: create a clean-base integration candidate that consumes one API-attested immutable envelope in the same controller run, verifies workflow file/blob identity at an immutable ref, passes that exact object to D1 admission/receipt logic, and proves the complete mocked flow with adversarial tests. Keep dispatch disabled and PR Draft until independent security review, governance and merge-result CI pass.
+- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
