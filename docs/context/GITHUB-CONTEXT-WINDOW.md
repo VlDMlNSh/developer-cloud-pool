@@ -3033,3 +3033,12 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - No code/schema/workflow/dependency/test changes; no secret/variable reads, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, merge, governance mutation or production write. Active time NOT MEASURED.
 - Report: [Pass 84 report](../reports/2026-11-25-pass84-daily-live-revalidation.md). Checkpoint: [Pass 84 checkpoint](../checkpoints/2026-11-25-pass84-daily-live-revalidation.md).
 - Next Pass 85: obtain explicit owner-policy authorization before any Ruleset change; then define required approval/status-check contexts. Reconcile PR #170 ancestry and independently review trusted workflow provenance. No merge/dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 84 documentation publication read-back
+
+- Daily report created on this working branch: commit `03fde12f939fac6f133d8551f5903224f97177cf`, blob `fa2b824eafe8974c72e1c49361a5297f0983eb05`.
+- Checkpoint created on this working branch: commit `c1cf26a36c513c4cd67ac986846ea16e412321f7`, blob `6715bf71d20bfd731c2f87180aec3695cc3b873c`.
+- The first Context Window refresh commit was `898a81f046711096a0af953befd25343b1607288`, blob `676b0ca4ee0088c0fa3dff13da3eff6a86e012bb`.
+- After those three documents were published, PR #169 head was `898a81f046711096a0af953befd25343b1607288`, 204 ahead / 2 behind current default, 89 changed files (all documentation paths), exact-head Actions runs 0, combined statuses empty, formal reviews 0, review threads 0. It remained OPEN/DRAFT/UNMERGED and is not canonical.
+- The Pass84 baseline entry above records the pre-publication immutable docs target `b77a3823275e1e86b4e520c8fc9f22470563fc8f`; this publication read-back records the resulting docs-only advance. The final Context Window refresh commit is recorded in the daily run result.
