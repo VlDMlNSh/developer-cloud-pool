@@ -3144,3 +3144,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Pass 89 report/checkpoint updated with final CI evidence. PR #174 remains OPEN / DRAFT / UNMERGED, formal reviews 0, no merge. Live default-branch issue_comment audit still NOT RUN; current ruleset and current dispatch variable NOT VERIFIED.
 - PR #169 is the docs working branch containing this Context Window; it remains OPEN/DRAFT/UNMERGED and based on old SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This Context Window is not yet merged into default branch.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify whether any approved default-branch/governance gate can be established without changing protections; then design the durable source-comment receipt/outbox/reconciliation chain on a clean current base. No dispatch.
+
+
+## Pass 90 — D1 admission/outbox lineage audit (2026-11-25)
+
+- Frozen current target: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 D1 candidate head `40281787c208af2df916f10af1dba073061ff0d3` is OPEN/DRAFT/UNMERGED, 41 ahead / 2 behind target, merge base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; D1 proof paths are absent from current default.
+- PR #170 exact-head CI verified: D1 run `45556287534` / job `139009015200`, 8 files / 123 tests PASS; Pool Contract run `45556287686` / job `139009016019`, seven YAML files parsed, contract PASS, dispatch gate disabled.
+- PR #174 API audit head `a8809c1dc8c2eaa49944fb031baeec54ce46b922` is current-base OPEN/DRAFT/UNMERGED; exact-head Pool Contract run `45677997233` passed 21/21.
+- F90-01: PR #170's Actions context mapper is explicitly pure and does not authenticate runner/API metadata. PR #174's API-backed workflow returns OBSERVED_ONLY and is not composed with D1. No single trusted provenance-to-D1 control path exists.
+- D1 strengths: canonical task ledger; retired legacy claim/outbox paths sealed; migration 0017 unique append-only source-comment receipt; SQL binding to admission/task/attempt/route/outbox/commit receipt; primary-first readback; 12 receipt integration tests; atomic admission/outbox and fenced lease local proofs. All flags remain dispatch:false and executionAuthorized:false.
+- PR #170's old-base green CI is not current-base merge-result proof or hosted D1 evidence. No merge, dispatch, hosted D1, secret read, provider call, deployment, production write or governance mutation.
+- Current ruleset and current POOL_DISPATCH_ENABLED remain NOT VERIFIED. Live issue_comment controller NOT RUN. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
+- Report: [Pass 90 D1 lineage audit](../reports/2026-11-25-pass90-d1-admission-outbox-lineage-audit.md). Checkpoint: [Pass 90 checkpoint](../checkpoints/2026-11-25-pass90-d1-admission-outbox-lineage-audit.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: one clean current-base integration branch that composes API-attested owner event with D1 admission/source receipt; reuse existing local D1 test harness; dispatch remains false.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
