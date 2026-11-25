@@ -3243,3 +3243,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: implement one canonical API-attested event envelope and bind its full tuple into the D1 receipt; test stale-ref races, workflow identity, source-comment binding and replay before any dispatch integration.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 95 — OSS CLI tooling Reuse First review — 2026-11-25
+
+- Scope: evaluate five user-supplied OSS projects for Cloud Development Pool fit; future MediaHub applicability remains deferred. Frozen canonical default: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Decision: no dependency adoption and no code changes. rust-anything = ADAPT LATER only for a deterministic CPU-bound CLI after Contour A acceptance, offline in a disposable environment with no credentials/network/production side effects; croc = DEFERRED for a separately authorized owned-device transfer use case; yt-dlp = NOT ADOPTED; Espanso = NOT ADOPTED; Material You New Tab = VISUAL REFERENCE ONLY, no code reuse.
+- Identity correction: supplied `sigoden/rust-anything` returned GitHub API 404. Matching project inspected at `erkamyaman/rust-anything`, MIT, inspected commit `6b588c37ae2172690d557cb21464b5dfb24b9c16`. Its record/replay runs original code repeatedly and may repeat network/database/file side effects; only recorded behavior is covered.
+- croc inspected at commit `d77d59a8931d67460574f7603b9446470d475070`, MIT; relay/network surface does not belong in Cloud Pool control plane.
+- yt-dlp release inspected: `2026.11.23` / `6f73a8d`; source Unlicense with additional bundled-executable license obligations and recent upstream security advisories; no installation or execution integration.
+- Espanso inspected at `80d9e353e3c0a58c77feb72671cec4a61958366f`, GPL-3.0; desktop text expansion is not a server control-plane dependency.
+- Material You New Tab corrected repository identity: `prem-k-r/MaterialYouNewTab`, GPL-3.0, inspected commit `066bdc603198c04c47d7e745a60ba5c7576215a7`; browser extension, possible UX reference only.
+- Projects reviewed: 5. Dependencies adopted: 0. Code files changed: 0. Tests/benchmarks/source execution: NOT RUN. Full supply-chain audit: NOT RUN. Active time NOT MEASURED.
+- Report: [Pass 95 OSS CLI tooling reuse review](../reports/2026-11-25-pass95-oss-cli-tooling-reuse-review.md). Checkpoint: [Pass 95 checkpoint](../checkpoints/2026-11-25-pass95-oss-cli-tooling-reuse-review.md).
+- No dispatch, hosted D1, secrets, provider calls, deployment, merge, production write, or Contour B work.
+- Contour A remains BLOCKED / NOT ACCEPTED. Next: resume API-attested GitHub event envelope → immutable D1 admission/receipt binding, resolve canonical workflow identity, and add race/replay/adversarial tests; dispatch stays disabled.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
