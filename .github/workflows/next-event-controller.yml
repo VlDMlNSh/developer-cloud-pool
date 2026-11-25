@@ -1,0 +1,43 @@
+name: Canonical Owner /next Event Controller (Audit Only) (Non-Dispatch)
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: read
+  actions: read
+
+concurrency:
+  group: owner-next-audit-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    if: >-
+      github.event.issue.number == 96 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.body == '/next'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      issues: read
+      actions: read
+    steps:
+      - name: Checkout trusted default-branch source without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+
+      - name: Verify event, repository, source comment and workflow run via read-only GitHub API
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/owner-next-event-audit.mjs
