@@ -2885,3 +2885,8 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - Next: reconcile the canonical D1 admission/receipt/lease chain against the current default base, complete trusted event/workflow provenance and trusted-clock/fencing integration, and keep `dispatch=false`.
 - Canonical MediaHub map (separate deferred project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Governance deviation — documentation checkpoint write correction
+
+During Pass 76, one checkpoint create call omitted the working-branch argument and briefly created the checkpoint directly on the default branch. This was detected immediately; the file was deleted in the next commit. The two default-branch commits are: transient file creation `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311`, corrective deletion `565404f84b6b86afb4dc2d8fa939341f42df6eca`. The checkpoint has been recreated on the documentation working branch. No runtime/code/workflow/configuration or secret content was written; the net file state on default is absent. This was nevertheless a governance/process deviation: default HEAD advanced, and PR #169 now has a base SHA older than current default. Do not claim a clean default-branch history or merge readiness. Next pass must rebase/reconcile the documentation branch and all candidate PRs against current default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`, and inspect effective ruleset/governance before further writes.
