@@ -20,6 +20,9 @@ export async function bindGitHubNextEvent(context) {
       String(context.ownerNumericId) !== OWNER_ID || context.ownerLogin !== OWNER_LOGIN) return deny("GITHUB_EVENT_IDENTITY_MISMATCH");
   if (context.issueNumber !== 96 || context.isPullRequest !== false ||
       String(context.commentUserId) !== OWNER_ID || context.commentUserLogin !== OWNER_LOGIN ||
+      String(context.actorId) !== OWNER_ID || context.actorLogin !== OWNER_LOGIN ||
+      String(context.actorId) !== String(context.commentUserId) ||
+      context.actorLogin !== context.commentUserLogin ||
       context.commentAuthorAssociation !== "OWNER") return deny("GITHUB_OWNER_ISSUE_PREDICATE_FAILED");
   if (context.commentBody !== "/next") return deny("GITHUB_COMMAND_BODY_NOT_EXACT");
   if (context.ref !== DEFAULT_REF || !SHA40.test(context.sha || "") ||
@@ -29,7 +32,7 @@ export async function bindGitHubNextEvent(context) {
   const bound = {
     sourceCommentId: String(context.commentId), repositoryId: REPOSITORY_ID,
     ownerNumericId: OWNER_ID, issueNumber: 96, eventName: "issue_comment",
-    eventAction: "created", actorNumericId: OWNER_ID, actorLogin: OWNER_LOGIN,
+    eventAction: "created", actorNumericId: String(context.actorId), actorLogin: context.actorLogin,
     authorAssociation: "OWNER", bodyDigest: BODY_DIGEST, ref: DEFAULT_REF,
     targetSha: context.sha, workflowRef: WORKFLOW_REF, workflowSha: context.workflowSha,
     runId: context.runId, runAttempt: context.runAttempt, profile: PROFILE
