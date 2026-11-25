@@ -2,10 +2,10 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-25 — Pass 98 canonical owner /next controller foundation (candidate; unmerged)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (direct Git ref read-back; 2026-11-25)
 Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
@@ -2236,3 +2236,21 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 98 — canonical owner /next controller foundation (2026-11-25)
+
+- Frozen default base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Candidate PR #176: https://github.com/VlDMlNSh/developer-cloud-pool/pull/176
+- Branch: `feat/pass98-canonical-next-controller-audit-2026-11-25`; head `e76fa09432d53edb2c21febc2991b6c5c9c4f919` before docs additions. Refresh exact head from PR before relying on it.
+- Added canonical candidate workflow `.github/workflows/next-event-controller.yml`, matching the path pinned by PR #175's D1 binder.
+- Adapted PR #174's read-only API verifier and Node built-in adversarial tests; added test execution to Pool Contract Validation. No new dependencies.
+- Exact-head Pool Contract Validation run 45694135875 / job 139486982096: COMPLETED / SUCCESS. YAML parse, dispatch-disabled assertion, contract validator and Node adversarial tests passed in the combined validation step.
+- Combined commit status contexts empty; formal reviews 0; review threads 0. PR #176 OPEN / DRAFT / UNMERGED.
+- Controller output remains OBSERVED_ONLY. No D1 admission, receipt, outbox, dispatch, execution authority, secrets, provider calls, deployment or production writes.
+- D1 binder/API verifier composition remains NOT VERIFIED; workflow-code SHA attestation is still missing. Do not enable dispatch or merge.
+- Local test execution NOT RUN; hosted exact-head CI is evidence. Independent security review NOT RUN. Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Report: `docs/reports/2026-11-25-pass98-canonical-next-controller-foundation.md`
+- Checkpoint: `docs/checkpoints/2026-11-25-pass98-canonical-next-controller-foundation.md`
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+- Next: Pass 99 — same-run API-attested immutable envelope with workflow-code identity, composed with the D1 adapter while admission/dispatch remain disabled.
