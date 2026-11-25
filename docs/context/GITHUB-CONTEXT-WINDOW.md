@@ -3079,3 +3079,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: controller-to-Issue-#96 traceability matrix and trusted workflow/run/ref + rerun-recovery design. Keep all execution paths fail-closed.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 87 — owner /next controller traceability and recovery contract (2026-11-25)
+
+- Default HEAD revalidated: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Working docs branch target before Pass 87: `bba9ad337834e4c67b26d2d9453dacf3d6b4347e`.
+- PR #169: head `bba9ad337834e4c67b26d2d9453dacf3d6b4347e`, OPEN/DRAFT/UNMERGED, 211 ahead / 2 behind; PR #170: `40281787c208af2df916f10af1dba073061ff0d3`, 41 ahead / 2 behind; PR #171: `423da55ca1e2d91c28572f88f60b494b59d56e9e`, 3 ahead / 2 behind. All share merge base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9). All three remain OPEN/DRAFT/UNMERGED, combined statuses empty, formal reviews 0 and review threads 0.
+- PR #171 workflow is deliberately audit-only: `permissions: {}`, no secrets, checkout, external actions, D1 writes, API calls or dispatch. It checks login equality and event fields, not independently verified immutable numeric owner/repository identity. Its own description disclaims admission persistence and execution authority.
+- PR #170 remains local D1 proof only. Migration 0017 provides append-only source-comment receipt and local tests, but no trusted default-branch controller invokes the binder; the workflow in PR #170 is pull_request-only and Worker is inert. Caller-supplied run/workflow fields are not independently verified against GitHub Actions API records.
+- Issue #96 is the authoritative control contract. Its 2026-11-17 owner correction sets first executor to Claude Code + ECC + FCC using an explicitly qualified free API route; Gemini is optional. Issue #94's 2026-11-17 correction confirms the same; historical four-Gemini-child wording is not a first-release gate.
+- Pass 87 records a requirement-to-evidence matrix, trust design, target SHA pinning, run attestation requirements, outbox/reconciliation state machine and distinct semantics for duplicate delivery, workflow rerun and separate controller replay. No implementation is claimed.
+- Report: [Pass 87 controller contract traceability](../reports/2026-11-25-pass87-controller-contract-traceability.md). Checkpoint: [Pass 87 checkpoint](../checkpoints/2026-11-25-pass87-controller-contract-traceability.md).
+- Pass actions: report + checkpoint + Context Window only. No code/runtime/schema/workflow/dependency changes, tests/CI triggered, secrets/variables read, hosted D1, provider calls, agent dispatch, deployment, merge, governance mutation or production write.
+- Gemini agents NOT RUN; Claude Code + ECC + FCC NOT RUN; active engineering time NOT MEASURED. No exact-head CI pass or independent review is established.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create a clean-current-base, non-dispatching trusted-main provenance + idempotent admission/outbox/reconciliation proof, with no secrets/provider calls and exact-head adversarial tests. Live dispatch remains disabled; no governance mutation without explicit owner approval.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
