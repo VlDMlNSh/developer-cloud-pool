@@ -3042,3 +3042,21 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - The first Context Window refresh commit was `898a81f046711096a0af953befd25343b1607288`, blob `676b0ca4ee0088c0fa3dff13da3eff6a86e012bb`.
 - After those three documents were published, PR #169 head was `898a81f046711096a0af953befd25343b1607288`, 204 ahead / 2 behind current default, 89 changed files (all documentation paths), exact-head Actions runs 0, combined statuses empty, formal reviews 0, review threads 0. It remained OPEN/DRAFT/UNMERGED and is not canonical.
 - The Pass84 baseline entry above records the pre-publication immutable docs target `b77a3823275e1e86b4e520c8fc9f22470563fc8f`; this publication read-back records the resulting docs-only advance. The final Context Window refresh commit is recorded in the daily run result.
+
+
+## Pass 85 — PR ancestry and governance authorization gate (2026-11-25)
+
+- Current default HEAD confirmed by repository commit search: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree remains the Pass 84 recorded tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`.
+- Current working documentation branch before Pass 85: `4d6ebe369bd3e0f67d8c3e94073dcb834ed563a0`.
+- PR #169 head `4d6ebe369bd3e0f67d8c3e94073dcb834ed563a0`: 205 ahead / 2 behind current default; exact-head runs 0, statuses empty, reviews 0, threads 0.
+- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`: 41 ahead / 2 behind; statuses empty, reviews 0, threads 0. Historical D1/Contract runs on this head used the old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; they do not establish current-base qualification.
+- PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`: 3 ahead / 2 behind; statuses empty, reviews 0, threads 0. Historical contract validation was not a real issue_comment event.
+- All three PRs remain OPEN/DRAFT/UNMERGED; common merge base is `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- Ruleset changes were NOT AUTHORIZED and none were made. A generic `/next` was not treated as specific approval to alter governance; Issue #140 excludes branch-protection changes.
+- PR #171 remains audit-only, with no durable receipt or full trusted workflow/run/ref provenance. PR #170 adapter/binder remains local and non-authorizing; no default workflow invokes it. Execution authorization remains false.
+- Report: [Pass 85](../reports/2026-11-25-pass85-pr-ancestry-and-governance-gate.md). Checkpoint: [Pass 85 checkpoint](../checkpoints/2026-11-25-pass85-pr-ancestry-and-governance-gate.md).
+- Changes this pass: report + checkpoint + this Context Window update only. No runtime/source/schema/workflow/dependency changes, no tests/CI triggered, no secrets, dispatch, hosted D1, provider calls, deployment, merge or governance mutation.
+- Gemini Agents 1/2/3: NOT RUN. Claude Code + FCC + ECC: NOT RUN. Active engineering time: NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: read-only source review of PR #170 provenance/current-base integration strategy. Obtain explicit owner authorization before any Ruleset mutation. Keep PRs draft/unmerged and execution fail-closed.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
