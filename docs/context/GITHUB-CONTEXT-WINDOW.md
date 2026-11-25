@@ -2242,10 +2242,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 - Frozen default base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
 - Candidate PR #176: https://github.com/VlDMlNSh/developer-cloud-pool/pull/176
-- Branch: `feat/pass98-canonical-next-controller-audit-2026-11-25`; head `e76fa09432d53edb2c21febc2991b6c5c9c4f919` before docs additions. Refresh exact head from PR before relying on it.
+- Branch: `feat/pass98-canonical-next-controller-audit-2026-11-25`; final head `4c0b2a44fc53fd36ac1d65175a9651c016f59219`. Refresh exact head from PR before relying on it.
 - Added canonical candidate workflow `.github/workflows/next-event-controller.yml`, matching the path pinned by PR #175's D1 binder.
 - Adapted PR #174's read-only API verifier and Node built-in adversarial tests; added test execution to Pool Contract Validation. No new dependencies.
-- Exact-head Pool Contract Validation run 45694135875 / job 139486982096: COMPLETED / SUCCESS. YAML parse, dispatch-disabled assertion, contract validator and Node adversarial tests passed in the combined validation step.
+- Exact-head Pool Contract Validation on final PR head: run 45694389681 / job 139487901061, COMPLETED / SUCCESS. YAML parse, dispatch-disabled assertion, contract validator and Node adversarial tests passed in the combined validation step. Earlier implementation-head run 45694135875 also succeeded.
 - Combined commit status contexts empty; formal reviews 0; review threads 0. PR #176 OPEN / DRAFT / UNMERGED.
 - Controller output remains OBSERVED_ONLY. No D1 admission, receipt, outbox, dispatch, execution authority, secrets, provider calls, deployment or production writes.
 - D1 binder/API verifier composition remains NOT VERIFIED; workflow-code SHA attestation is still missing. Do not enable dispatch or merge.
