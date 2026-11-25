@@ -14,7 +14,7 @@ Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
 - Frozen base SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`
 - Implementation branch: `feat/pass98-canonical-next-controller-audit-2026-11-25`
 - PR: [#176](https://github.com/VlDMlNSh/developer-cloud-pool/pull/176)
-- Exact head SHA: `e76fa09432d53edb2c21febc2991b6c5c9c4f919`
+- Exact head SHA: `4c0b2a44fc53fd36ac1d65175a9651c016f59219`
 
 ## Reuse First
 
@@ -35,8 +35,9 @@ Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
 
 ## Verification evidence
 
-- Exact-head Pool Contract Validation run [45694135875](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694135875): COMPLETED / SUCCESS.
-- Job `139486982096`: COMPLETED / SUCCESS; workflow YAML parse, dispatch-disabled assertion and pool security contract steps succeeded.
+- Exact-head Pool Contract Validation run [45694389681](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694389681): COMPLETED / SUCCESS on final PR head.
+- Job `139487901061`: COMPLETED / SUCCESS; YAML parse, dispatch-disabled assertion, contract validator and Node adversarial test suite completed successfully.
+- Earlier implementation-head run [45694135875](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694135875) also completed SUCCESS. workflow YAML parse, dispatch-disabled assertion and pool security contract steps succeeded.
 - Contract step executes `node scripts/validate-pool-contract.mjs` and `node --test scripts/owner-next-event-audit.test.mjs`; the combined step completed successfully.
 - Read-back verified the five changed files and the canonical workflow path in workflow, verifier, tests and validator.
 - Combined commit-status contexts: empty; no status contexts are inferred as passed.
