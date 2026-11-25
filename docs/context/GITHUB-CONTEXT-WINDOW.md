@@ -2961,3 +2961,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Report: [Pass 80](../reports/2026-11-25-pass80-trusted-controller-context-audit.md); checkpoint: [Pass 80 checkpoint](../checkpoints/2026-11-25-pass80-trusted-controller-context-audit.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: define and test one canonical no-dispatch workflow-to-binder context mapping; reconcile PR #170 ancestry; verify governance and obtain independent review.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 81 — GitHub Actions context normalization adapter (2026-11-25)
+
+- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 code/test head: `31bebd029847aa212559d580b6c3680163ee126e`; current head after README-only follow-up: `40281787c208af2df916f10af1dba073061ff0d3`.
+- Added `proofs/d1-ledger/src/github-actions-context.mjs`, a pure explicit mapping from runner `github` context + `GITHUB_ACTIONS` / `GITHUB_SERVER_URL` into the D1 binder input. It copies actor ID/login, owner/repo IDs, issue/comment metadata, ref, target SHA, workflow ref/SHA and run tuple; no caller-input fallback. Event SHA and workflow SHA remain distinct.
+- Added 4 unit cases: full mapping and binder acceptance, PR-comment detection, missing context fail-closed, and comment body distinct from issue body. README documents that no workflow invokes this adapter.
+- D1 run [45556206548](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556206548): SUCCESS, 8/8 files, 123/123 tests, `npm run check` PASS. Pool Contract [45556206386](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556206386): SUCCESS, dispatch gate false, six workflow YAML files parse, security validator PASS. Both checked out synthetic merge SHA `558ced790bbbfb872fed532109c5282465d30655` against default `565404f...`.
+- CI ran on code/test head `31bebd...`; README-only follow-up moved PR #170 to `402817...`. Latest-head CI therefore NOT VERIFIED, although no runtime/test source changed after the passing run.
+- PR #170 compare to default: 41 ahead / 2 behind, merge base still `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR remains OPEN/DRAFT/UNMERGED. PR #169 docs head remains `90ccf8375d3e27cb1ea483e57e67da17ad58e4bc`, with no exact-head CI.
+- PRs #169/#170/#171 have 0 formal reviews and 0 threads at last check. Ruleset 26550182 active, no bypass, thread resolution required, approvals 0; effective branch protection NOT VERIFIED.
+- No workflow was added or invoked; no secret/variable reads, dispatch, provider calls, hosted D1, deployment or merge. Active time NOT MEASURED.
+- Report: [Pass 81](../reports/2026-11-25-pass81-github-actions-context-adapter.md); checkpoint: [Pass 81](../checkpoints/2026-11-25-pass81-github-actions-context-adapter.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile PR #170 ancestry, align canonical workflow identity with Issue #96, then consider a no-dispatch workflow-level mapping probe after governance gates.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
