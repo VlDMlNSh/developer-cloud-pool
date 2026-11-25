@@ -13,6 +13,7 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const ownerNextAudit = read(".github/workflows/owner-next-event-audit.yml");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
@@ -86,7 +87,20 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
 
-if (failures.length) {
+
+if (!/^permissions:\s*\n\s+contents:\s*read\s*\n\s+issues:\s*read\s*\n\s+actions:\s*read\s*$/m.test(ownerNextAudit)) {
+  fail("Owner /next audit must have only contents/issues/actions read permissions");
+}
+if (!/issue_comment:\s*\n\s+types:\s*\[created\]/.test(ownerNextAudit) ||
+    !/github\.event\.issue\.number == 96/.test(ownerNextAudit) ||
+    !/github\.event\.comment\.body == '\/next'/.test(ownerNextAudit)) {
+  fail("Owner /next audit must be limited to new exact /next comments on Issue #96");
+}
+if (/secrets\.|workflow_dispatch:|actions:\s*write|issues:\s*write|contents:\s*write/.test(ownerNextAudit)) {
+  fail("Owner /next audit must remain read-only and non-dispatching");
+}
+if (failures.length === 0) pass("owner /next provenance audit remains read-only and non-dispatching");
+\nif (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
   process.exitCode = 1;
 } else {
