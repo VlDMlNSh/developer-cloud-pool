@@ -3095,3 +3095,23 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: create a clean-current-base, non-dispatching trusted-main provenance + idempotent admission/outbox/reconciliation proof, with no secrets/provider calls and exact-head adversarial tests. Live dispatch remains disabled; no governance mutation without explicit owner approval.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 88 — non-dispatch owner /next API provenance proof (2026-11-25)
+
+- Frozen default target SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- New implementation branch `feat/pass88-owner-next-api-audit-proof-2026-11-25`; PR #174 OPEN / DRAFT / UNMERGED; final head `5ec1e3663683e1ad7c64e9548d2f65e10d14de7f`; 8 ahead / 0 behind; merge base equals frozen target.
+- Implemented read-only issue_comment.created audit for exact `/next` on Issue #96. Verifier fetches repository/owner IDs, issue, source comment, Actions run, workflow metadata and current default branch ref via GitHub REST. Requires numeric identities, OWNER association, exact body, correct workflow path/event/run/actor, first attempt and matching default SHA.
+- Explicit outcome `OBSERVED_ONLY`; no durable admission, receipt, lease, outbox or dispatch. Workflow uses only read permissions `contents: read`, `issues: read`, `actions: read`; no stored secret values or provider credentials are read. The platform-generated short-lived `github.token` is used only for scoped read-only API calls.
+- Added 19 adversarial Node tests and static workflow-contract checks; no new OSS dependency (Node built-ins, node:test and existing pinned Actions reused).
+- Exact-head Pool Contract Validation run #45675656378 / job #139422380969 completed SUCCESS on PR #174 head; log confirms six YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`, 19 tests passed / 0 failed. Combined commit-status API returned no status contexts; this run is the concrete CI evidence.
+- Live issue_comment API event from default branch NOT RUN; run/workflow API response assumptions remain NOT VERIFIED in live event execution. Rerun attempts >1 fail closed pending durable recovery.
+- PR #174 reviews 0 / review threads 0; independent review NOT RUN; remains Draft. No merge.
+- PR #169 remains OPEN/DRAFT/UNMERGED head `884775c60fa6a8646a91052e410297326d8a04f1`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; all based on old `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` and diverged from current default.
+- Governance: Issue #1 is the branch-protection gate; current effective ruleset and current `POOL_DISPATCH_ENABLED` value NOT VERIFIED. Historical Issue #1 evidence is not a current read-back. Issue #140 is D1 admission/lease proof, not branch governance.
+- No secret-value reads, provider calls, D1 writes, executor dispatch, deployment, merge, production writes or governance mutation. Gemini and Claude Code + ECC + FCC NOT RUN. Local clone/test attempt NOT RUN due container DNS failure; GitHub Actions CI supplied test evidence.
+- Active engineering time NOT MEASURED.
+- Report: [Pass 88 owner /next API provenance audit](../reports/2026-11-25-pass88-owner-next-api-provenance-audit.md). Checkpoint: [Pass 88 checkpoint](../checkpoints/2026-11-25-pass88-owner-next-api-provenance-audit.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent review and current governance read-back; then install only through an approved protected-default-branch process and run one real owner event in OBSERVED_ONLY mode. Afterward implement durable source-comment idempotency, lease/fencing and outbox/reconciliation proof. Dispatch remains disabled.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
