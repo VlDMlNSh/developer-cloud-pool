@@ -8,7 +8,7 @@
 - PR #175 diff: 39 added files, 0 modified, 0 deleted. D1 migrations 0001–0017, adapters, tests, pinned package lock and isolated workflow imported.
 - Exact-head workflow run lookup returned 0 runs; combined status list empty; reviews 0; review threads 0. CI and tests NOT VERIFIED. Prior PR #170 123/123 remains historical only.
 - F91-01 remains: API audit PR #174 is not composed with D1 event admission. Admission/receipt two-phase recovery still needs controller-level durable identity reuse.
-- No local tests, live webhook, hosted D1, dispatch, provider calls, secret read, deployment, merge, production write or governance mutation.
+- Node 20 deprecation warnings on pinned checkout/setup-node actions are non-fatal. No local tests, live webhook, hosted D1, dispatch, provider calls, secret read, deployment, merge, production write or governance mutation.
 - No new dependencies; active time NOT MEASURED.
 - Current ruleset and POOL_DISPATCH_ENABLED NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN.
 - Clean-base import VERIFIED; behavior NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
