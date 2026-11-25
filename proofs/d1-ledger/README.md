@@ -145,3 +145,9 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 - All returned paths assert `dispatch: false` and `executionAuthorized: false`.
 - Exact synthetic merge CI: D1 107/107 (8 files), Pool Contract PASS; see Pass 60 report/checkpoint.
 - This improves local proof coverage only. It does not establish GitHub event authenticity, hosted D1 behavior, live controller operation, executor qualification or Contour A acceptance.
+
+## Pass 79 — triggering actor binding requirement
+
+The GitHub issue-comment binder requires both the comment author's identity and the triggering workflow actor identity. The future controller must source `actorId` and `actorLogin` from GitHub's trusted `github.actor_id` and `github.actor` contexts, not from event JSON supplied by a caller or repository variables. The binder compares those values with the owner identity and the comment author's `user.id` / `user.login`; any mismatch fails closed. The D1 receipt records the validated actor identity.
+
+This is a source-level adapter requirement only. No real controller currently maps these fields, and synthetic tests do not prove that mapping. Workflow-level provenance remains NOT VERIFIED. Dispatch and execution authorization remain false.
