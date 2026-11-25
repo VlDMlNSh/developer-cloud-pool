@@ -27,11 +27,13 @@ All 39 destination file blob SHAs were re-read and compared with the correspondi
 
 ## CI and validation
 
-- PR #175 exact-head workflow run lookup returned no workflow runs.
-- Combined commit status lookup returned an empty status list.
-- Formal reviews: 0; inline review threads: 0.
-- Therefore D1 tests, Pool Contract validation, exact-head CI and merge-result CI are NOT VERIFIED for PR #175.
-- Prior PR #170 CI (D1 123/123 and Pool Contract PASS) is historical source-candidate evidence only, not proof for PR #175.
+- PR #175 Actions runs: D1 run #45689197397 (job #139469816000) SUCCESS; Pool Contract run #45689197360 (job #139469816983) SUCCESS.
+- Both jobs checked out PR merge ref and executed on merge-result SHA `f543b77115edd797c735e74cc84a996937ae6ff2` (confirmed in job logs), not directly on PR head `bb9fd296928df3a99b6f060144cc60f5642f0d15`.
+- D1: Node 24.9.0, `npm ci --ignore-scripts --no-audit --no-fund`, inert Worker syntax check passed, 8/8 test files and 123/123 tests passed.
+- Pool Contract: six workflow YAML files parsed; all five contract checks passed; `POOL_CONTRACT_VALIDATION=PASS`; the run environment reported `POOL_DISPATCH_ENABLED=false`.
+- Exact-head CI: NOT VERIFIED. Merge-result CI: VERIFIED on `f543b77115edd797c735e74cc84a996937ae6ff2`.
+- Combined commit status on PR head returned empty; formal reviews: 0; inline review threads: 0.
+- Node 20 deprecation warnings remain for pinned checkout/setup-node actions; non-fatal in these runs.
 - No local clone/runtime test was run in this pass.
 
 The isolated workflow in PR #175 is configured for pull_request on the default branch with paths scoped to D1 package/workflow, read-only contents permissions, checkout credentials disabled, pinned Node 24.9.0, lockfile npm ci with scripts/audit/funding disabled, inert worker syntax check and Vitest. No secrets or hosted D1 are configured in this workflow.
