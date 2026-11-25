@@ -3178,3 +3178,23 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: create one clean branch from independently revalidated current default SHA; port one canonical D1 lineage, then add API-attested event envelope and composition tests, all dispatch/execution false.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 92 — clean-base D1 lineage and migration overlap audit (2026-11-25)
+
+- Current default target revalidated through repository commit search and PR #174 base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Created staging branch `integration/pass92-d1-clean-base-565404f` from that exact SHA. No files/commits added to the staging branch.
+- PR #170 candidate head `40281787c208af2df916f10af1dba073061ff0d3`; PR #111 head `687196738782432797bf394f1342cb9df19f478f`.
+- All 35 PR #170 changed paths are absent from current default.
+- Migration overlap: #111/#170 migrations 0002–0005 have identical blobs. README, migration 0001, package.json and worker differ. Migration 0006 is a collision (PR #111 lease guard vs PR #170 projection outbox); PR #170 later provides lease/fencing in migration 0014. Do not overlay or renumber.
+- PR #114/#125 use separate `proofs/d1-admission` package and migration 0001; do not create a second admission ledger. Reuse PR #170 canonical D1 candidate and pinned Workers Vitest/Miniflare harness.
+- F92-01: migration numbering collision prohibits naive path overlay.
+- F92-02: separate d1-admission package would create competing authority if imported.
+- F92-03: safe base-preserving tree write not completed because commit reader omits base tree SHA; creating a tree without the base tree would replace repository contents. Staging branch intentionally remains clean.
+- Existing PR #170 D1 123/123 and Pool Contract PASS are old-head candidate evidence only. No new CI.
+- No runtime code/schema change, hosted D1, live webhook, dispatch, secret read, provider call, deployment, merge, production write or governance mutation.
+- Current ruleset and current `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
+- Report: [Pass 92 clean-base D1 lineage audit](../reports/2026-11-25-pass92-clean-base-d1-lineage-audit.md). Checkpoint: [Pass 92 checkpoint](../checkpoints/2026-11-25-pass92-clean-base-d1-lineage-audit.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: obtain the base tree SHA via an approved Git object read path; create one base-preserving commit importing the reviewed PR #170 file set; verify parent/tree/diff, open draft PR, run exact-head D1 and Pool Contract CI.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
