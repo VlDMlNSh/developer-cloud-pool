@@ -3225,3 +3225,21 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Merge-result CI VERIFIED; exact-head CI NOT VERIFIED. PR-head combined status empty. Reviews 0; inline threads 0.
 - Non-fatal Node 20 deprecation warnings remain for pinned checkout/setup-node actions.
 - Reports/checkpoint updated: [Pass 93 report](../reports/2026-11-25-pass93-clean-base-d1-import.md), [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
+
+
+## Pass 94 — D1 guide correction and API-attestation composition gate — 2026-11-25
+
+- PR #175 clean-base D1 import remains OPEN/DRAFT/UNMERGED. Frozen base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Current PR #175 head after bounded documentation correction: `3d69bc943677dba909792bf4930d4c0aa5d2233f`.
+- Corrected `proofs/d1-ledger/README.md` to state fresh migrations 0001–0017 and staged upgrade 0011–0017; blob `93f133653e7e7b1315ebaca1d53b44ca671589d8`. Read-back verified.
+- Prior head `bb9fd296...` merge-result CI remains D1 123/123 (8/8 files) and Pool Contract PASS on synthetic merge SHA `f543b77115edd797c735e74cc84a996937ae6ff2`. This is NOT evidence for the new head. Current-head CI/status NOT VERIFIED at report time.
+- PR #175 formal reviews 0; threads 0; no merge.
+- HIGH F94-01: PR #175 `admitGitHubNextEvent` trusts the flat Actions context through `bindGitHubNextEvent`; PR #174's independent GitHub API read-back verifier is a separate OBSERVED_ONLY workflow and does not supply an immutable attested envelope to D1.
+- F94-02: workflow identity mismatch: PR #174 audits `owner-next-event-audit.yml`; D1 binder/migration 0017 hard-code `next-event-controller.yml`. Resolve one canonical workflow identity before composition.
+- Reuse First: retain official Cloudflare Workers Vitest/Miniflare and Node built-in fetch/GitHub REST; no new dependency.
+- No local tests, hosted D1, live webhook, dispatch, secrets, provider calls, deployment, merge or production writes. Dispatch/execution remain false.
+- Active time NOT MEASURED. Independent security review NOT RUN. Current ruleset and dispatch variable NOT re-read in this pass.
+- Report: [Pass 94 D1 API-attestation composition gate](../reports/2026-11-25-pass94-d1-api-attestation-composition-gate.md). Checkpoint: [Pass 94 checkpoint](../checkpoints/2026-11-25-pass94-d1-api-attestation-composition-gate.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: implement one canonical API-attested event envelope and bind its full tuple into the D1 receipt; test stale-ref races, workflow identity, source-comment binding and replay before any dispatch integration.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
