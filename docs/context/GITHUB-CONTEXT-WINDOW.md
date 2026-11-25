@@ -2979,3 +2979,21 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 - Final Pass 81 readback: report blob `42d0c8b7166c323a12b59b9f31ea2a71a1d62c77`, checkpoint blob `2e8373cabf0c27d429392e3d0bc20b8ffe63f9af`, Context Window blob `ed3e061fd7aebcf65438f61f39a95853e9ae3cf7`. PR #169 exact-head CI rechecked after these docs writes: 0 checks, 0 statuses; NOT VERIFIED.
+
+
+## Pass 82 — PR ancestry and current-base CI reconciliation (2026-11-25)
+
+- Frozen default branch `Основной`: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`.
+- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR metadata base remains stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare reports 41 ahead / 2 behind.
+- The two commits behind are `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311` (temporary Pass 76 checkpoint addition) and `565404f84b6b86afb4dc2d8fa939341f42df6eca` (corrective revert). Current default tree equals the old merge-base tree, so the two commits change ancestry but not the final default tree. No rebase/reset/cherry-pick/force-push performed.
+- Exact current-base synthetic merge is `d828f62cb15c99981f47ce7eea06ec84eb7d02f0`, parents current default `565404f...` and PR head `4028178...`.
+- D1 run [45556287534](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287534), job 139009015200: SUCCESS, npm check PASS, 8/8 files, 123/123 tests. Pool Contract run [45556287686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287686), job 139009016019: SUCCESS, dispatch disabled, workflow YAML parse and security validator PASS. Both logs checked out merge `d828f62...`.
+- PR #169 head `027719f4ec63269743e900a18a4cf9d47e66e6f4`; exact-head CI absent (0 runs); reviews/threads 0.
+- PR #170 and #171 remain OPEN/DRAFT/UNMERGED; reviews/threads 0. PR #171's previous Pool Contract run 45448087868 is historical; no fresh exact-head run found this pass.
+- Ruleset `26550182` active on `refs/heads/Основной`, no bypass, PR required, thread resolution required, approvals configured 0. Branch API reports `protected=false`; effective enforcement remains NOT VERIFIED.
+- `.github/workflows/next-event-controller.yml` and `.github/workflows/gemini-batch-dispatch-controller.yml` are absent from default (404). Live controller provenance and Gemini dispatch remain NOT VERIFIED / NOT RUN.
+- Pass 82 report: [report](../reports/2026-11-25-pass82-pr-ancestry-current-base-ci.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass82-pr-ancestry-current-base-ci.md).
+- No source/runtime/workflow/dependency/schema changes, secrets, dispatch, provider calls, hosted D1, deployment, merge or production mutation. Actual active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: investigate governance enforcement discrepancy and reconcile Issue #96 controller contract with D1 binder for a no-dispatch workflow integration design. Keep all execution authorization false.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
