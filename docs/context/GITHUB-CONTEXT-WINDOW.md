@@ -3285,3 +3285,17 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Working docs branch `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED; new head `6e2b95eb9f392292727b14ed5d456def0fdc1629`.
 - PR #169 base SHA remains stale `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; current default is `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Compare: diverged, 254 ahead / 2 behind.
 - Exact-head Actions runs 0; combined status contexts 0; formal reviews 0; review threads 0. Pass96 docs are read-back verified on working branch but PR #169 CI/governance qualification NOT VERIFIED. Do not merge.
+
+
+## Pass 97 — canonical controller existence gate — 2026-11-25
+
+- Default SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. PR #175 D1 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #174 API audit head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`. Both OPEN/DRAFT/UNMERGED.
+- Repository workflow directory enumerated at default SHA and PR #175 branch: `next-event-controller.yml` is absent at both refs; direct file fetch 404. Migration 0017 + binder nevertheless pin that nonexistent path.
+- PR #174 `owner-next-event-audit.yml` is a distinct audit-only feature-branch workflow; verifier returns `OBSERVED_ONLY`, creates no D1 admission and rejects run attempts >1 pending durable reconciliation.
+- Decision: no isolated verifier integration or migration-only patch. First create the canonical controller on a clean current-default branch, run API read-back in that same workflow, and bind workflow ID/path/ref/code SHA to D1 envelope/receipt. Recheck default ref immediately before admission; keep reruns denied until durable replay/reconciliation. Dispatch remains disabled.
+- PR #175 CI: D1 run `45690428935` SUCCESS; Pool Contract `45690428805` SUCCESS; combined status contexts empty / NOT VERIFIED; reviews/threads 0/0. Ruleset `26550182`: PR required, no bypass, 0 approvals, review-thread resolution required.
+- No code/schema/workflow/dependency changes; local tests NOT RUN; no hosted D1, live webhook, dispatch, provider calls, deployment, merge or production writes. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 97 canonical controller precondition](../reports/2026-11-25-pass97-canonical-controller-precondition.md). Checkpoint: [Pass 97](../checkpoints/2026-11-25-pass97-canonical-controller-precondition.md).
+- Next: create canonical controller + same-run API attestation on clean current-default base, then D1 integration and adversarial tests.
+- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
