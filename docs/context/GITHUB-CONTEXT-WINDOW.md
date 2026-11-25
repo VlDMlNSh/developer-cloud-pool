@@ -3060,3 +3060,22 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: read-only source review of PR #170 provenance/current-base integration strategy. Obtain explicit owner authorization before any Ruleset mutation. Keep PRs draft/unmerged and execution fail-closed.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 86 — D1 event provenance and controller-wiring review (2026-11-25)
+
+- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, 41 ahead / 2 behind current default; exact-head statuses empty; 0 formal reviews and 0 review threads; OPEN/DRAFT/UNMERGED.
+- Reviewed immutable blobs: context adapter `574d289964b5d908395573b91c6f890305c94eeb`; event binder `31a254e28f42eee3a3add07ca5fae2c5a46cc8b57`; migration 0017 `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`; integration test `e9c26f565c587bf9f8ab40bb6e7a33c9fd50fcd3`; unit test `d9385e21ec4528d4091d3d1af9ce74c5d5398bd9`.
+- Positive: exact owner/issue/body/ref predicates; append-only source-comment receipt; SQL binding to canonical admission/task/attempt/route/outbox/commit receipt; dispatch/execution flags remain false; local adversarial integration cases exist.
+- Limits: adapter is pure and does not independently authenticate GitHub event/run/workflow/ref metadata; workflow SHA is syntax-checked but not resolved to trusted workflow bytes/digest/ancestry; target SHA is not independently checked against default HEAD; trusted clock/authenticator is injected, not production-qualified.
+- Wiring: PR #170 contains D1 local proof workflow and source helpers, but no next-event controller workflow. Current default fetch of both `.github/workflows/next-event-controller.yml` and `.github/workflows/d1-ledger-proof-validation.yml` returned 404. Local Worker remains inert/404. No default workflow invokes the binder.
+- Issue #96's four-child dispatch and run/child/artifact reconciliation gates are not implemented by this local proof. No dispatch authorized.
+- Replay recovery requires explicit distinction between exact same-run delivery, GitHub rerun attempt, and separate controller run after ambiguous receipt outcome; immutable first receipt must not be overwritten.
+- Reuse First: retain pinned Cloudflare Workers Vitest/Miniflare/workerd harness; no new dependencies.
+- Report: [Pass 86](../reports/2026-11-25-pass86-d1-event-provenance-review.md). Checkpoint: [Pass 86 checkpoint](../checkpoints/2026-11-25-pass86-d1-event-provenance-review.md).
+- Pass actions: report + checkpoint + Context Window only. No code/runtime/schema/workflow changes, tests/CI triggered, secrets, provider calls, hosted D1, dispatch, deployment, merge or governance mutation.
+- Gemini Agents 1/2/3 NOT RUN; Claude Code/ECC/FCC NOT RUN; active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: controller-to-Issue-#96 traceability matrix and trusted workflow/run/ref + rerun-recovery design. Keep all execution paths fail-closed.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
