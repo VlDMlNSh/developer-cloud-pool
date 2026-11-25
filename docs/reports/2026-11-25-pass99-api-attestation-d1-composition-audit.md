@@ -78,8 +78,9 @@ The verifier checks workflow metadata ID/path/state and the run path suffix, but
 
 - PR #176: OPEN / DRAFT / UNMERGED; audited head `2e76f82572bc6df8de2b0548200ebc285ad7537a`.
 - PR #174 and #175: OPEN / DRAFT / UNMERGED.
-- Current PR #176 Pool Contract Validation run `45694558420`: PENDING at audit time.
-- PR #176 formal reviews: 0; inline threads: 0.
+- PR #176 Pool Contract Validation run `45694558420` (earlier Pass 98 documentation head): PENDING at audit time.
+- After Pass 99 documentation updates, current PR tip is `8fdf5243379c0a793e10c93c15f8a796a784c276`; latest Pool Contract Validation run `45695110282` is PENDING. Combined status contexts are empty. Previous code-head run `45694389681` on `4c0b2a44fc53fd36ac1d65175a9651c016f59219` completed SUCCESS; later commits are documentation-only.
+- PR #176 formal reviews: 0; inline threads: 0; GitHub reports mergeable=true / mergeable_state=clean (this is not a review or CI gate).
 - Default branch workflow inventory has five files; canonical controller exists only in PR #176 candidate, not default.
 - Ruleset `26550182` active, PR required, 0 required approvals, review-thread resolution required.
 - Legacy `pool-worker.yml` is retired/fail-closed; `pool-supervisor.yml` is heartbeat-only. No qualified executor is active.
