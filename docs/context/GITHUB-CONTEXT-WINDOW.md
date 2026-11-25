@@ -2911,3 +2911,18 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
 - Next: read-only reconcile current default-base and governance state, then close uncovered Issue #140 negative cases with dispatch disabled.
 - Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pass 78 — GitHub Actions workflow identity and event-SHA provenance audit (2026-11-25)
+
+- Frozen default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; PR #170 head `cfd123a6e622a71454b42a0314f9dee981ca5035`; exact CI merge `ab6ecf709c4c5f96912b7160caa348b8c89ce518`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`.
+- Verified source: D1 binder keeps event target SHA (`context.sha`) separate from workflow-code SHA (`context.workflowSha`); unit test explicitly accepts distinct SHA values. No equality requirement was introduced.
+- Trust gap: binder expects `.github/workflows/next-event-controller.yml@refs/heads/Основной`, but this workflow is absent from default. PR #171 adds a distinct audit-only `next-request-intake.yml` with empty permissions/no checkout/no D1/no dispatch; it is not the controller and does not map real Actions context to D1.
+- Therefore real trusted mapping from `github.workflow_ref`, `github.workflow_sha`, event target SHA, run ID/attempt and comment ID into the D1 binder remains NOT VERIFIED. Current tests use synthetic context objects.
+- Receipt digest intentionally excludes run ID/attempt while immutable receipt tuple compares them; rerun of same comment with a changed run tuple is rejected, as integration test asserts.
+- PR #170 D1 run `45521582932` SUCCESS: 8/8 files, 116/116 tests; exact merge verified in job log. Pool Contract run `45521582953` SUCCESS. PR #171 Pool Contract run `45448087868` SUCCESS.
+- PR #170 and #171 remain OPEN/DRAFT/UNMERGED, each 0 formal reviews and 0 threads. No merge.
+- Ruleset `26550182` active, no bypass; branch API reports `protected=false`; effective Contents-API enforcement remains NOT VERIFIED.
+- No code/runtime/schema/workflow/dependency change, secret read, dispatch, provider call, hosted D1 write, deployment, merge or production mutation. Active time NOT MEASURED.
+- Pass 78 report: [report](../reports/2026-11-25-pass78-github-actions-provenance-audit.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass78-github-actions-provenance-audit.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: define and test trusted context mapping for one canonical no-dispatch controller; keep dispatch and execution authorization false.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
