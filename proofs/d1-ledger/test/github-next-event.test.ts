@@ -97,3 +97,97 @@ describe("GitHub owner /next event context", () => {
     ]));
   });
 });
+
+
+import { mapGitHubActionsContext } from "../src/github-actions-context.mjs";
+
+describe("GitHub Actions context adapter", () => {
+  const github = {
+    event_name: "issue_comment",
+    event: {
+      action: "created",
+      issue: { number: 96 },
+      comment: {
+        id: 987654,
+        body: "/next",
+        user: { id: 157891068, login: "VlDMlNSh", author_association: "OWNER" }
+      }
+    },
+    repository: "VlDMlNSh/developer-cloud-pool",
+    repository_id: "1445644538",
+    repository_owner: "VlDMlNSh",
+    repository_owner_id: "157891068",
+    actor: "VlDMlNSh",
+    actor_id: "157891068",
+    ref: "refs/heads/Основной",
+    sha: "a".repeat(40),
+    workflow_ref: "VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной",
+    workflow_sha: "b".repeat(40),
+    run_id: "123456",
+    run_attempt: "2"
+  };
+  const runnerEnv = { GITHUB_ACTIONS: "true", GITHUB_SERVER_URL: "https://github.com" };
+
+  it("maps trusted runner context fields without conflating event and workflow SHAs", async () => {
+    const mapped = mapGitHubActionsContext(github, runnerEnv);
+    expect(mapped).toMatchObject({
+      githubActions: "true",
+      serverUrl: "https://github.com",
+      eventName: "issue_comment",
+      eventAction: "created",
+      repository: "VlDMlNSh/developer-cloud-pool",
+      repositoryId: "1445644538",
+      ownerNumericId: "157891068",
+      ownerLogin: "VlDMlNSh",
+      actorId: "157891068",
+      actorLogin: "VlDMlNSh",
+      issueNumber: 96,
+      isPullRequest: false,
+      commentId: 987654,
+      commentBody: "/next",
+      commentUserId: 157891068,
+      commentUserLogin: "VlDMlNSh",
+      commentAuthorAssociation: "OWNER",
+      ref: "refs/heads/Основной",
+      sha: "a".repeat(40),
+      workflowSha: "b".repeat(40),
+      runId: 123456,
+      runAttempt: 2
+    });
+    expect(mapped.sha).not.toBe(mapped.workflowSha);
+    await expect(bindGitHubNextEvent(mapped)).resolves.toMatchObject({
+      decision: "BOUND", dispatch: false, executionAuthorized: false
+    });
+  });
+
+  it("marks pull-request conversation comments from the trusted issue payload", () => {
+    const mapped = mapGitHubActionsContext({
+      ...github,
+      event: { ...github.event, issue: { number: 96, pull_request: { url: "https://api.github.com/pulls/1" } } }
+    }, runnerEnv);
+    expect(mapped.isPullRequest).toBe(true);
+  });
+
+  it("does not fill missing trusted context from event text or repository metadata", () => {
+    const mapped = mapGitHubActionsContext({
+      event_name: "issue_comment",
+      event: { action: "created", issue: { number: 96 }, comment: { body: "/next" } }
+    }, {});
+    expect(mapped).toMatchObject({
+      githubActions: undefined, serverUrl: undefined,
+      actorId: undefined, repositoryId: undefined,
+      ownerNumericId: undefined, sha: undefined,
+      workflowRef: undefined, workflowSha: undefined
+    });
+    expect(mapped.runId).toBeNaN();
+    expect(mapped.runAttempt).toBeNaN();
+  });
+
+  it("does not let an issue body replace the comment body", () => {
+    const mapped = mapGitHubActionsContext({
+      ...github,
+      event: { ...github.event, issue: { number: 96, body: "/next" }, comment: { ...github.event.comment, body: "not-next" } }
+    }, runnerEnv);
+    expect(mapped.commentBody).toBe("not-next");
+  });
+});
