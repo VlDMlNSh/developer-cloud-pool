@@ -2930,3 +2930,18 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 ## Pass 78 final documentation PR gate recheck
 
 - Following the Context Window refresh, PR #169 head is `f31e6f8839f8e631ad6028aa540dbd99ee5ae795`; exact-head Actions runs 0, formal reviews 0, review threads 0, GitHub `mergeable=false`. PR #169 remains OPEN/DRAFT/UNMERGED; integration NOT VERIFIED.
+
+## Pass 79 — triggering GitHub actor bound to owner comment (2026-11-25)
+
+- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 final head: `8e853575a29ccd05cb8c6d22a74d44dd41465f44`; exact CI synthetic merge: `fe0303d229efce42b37ef0c6dd283eefedf836c7`.
+- Binder now requires actual `actorId` / `actorLogin`, compares them against frozen owner identity and comment author, and persists validated values. Previously actor identity was populated from constants without checking actual Actions actor input.
+- Unit tests add 3 negative cases for actor ID/login mismatch and actor/comment mismatch; integration fixture supplies actor; README requires future controller to map from trusted `github.actor_id` and `github.actor`.
+- D1 run [45522771920](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45522771920): SUCCESS, exact merge `fe0303d...`, 8/8 files, 119/119 tests; npm ci/check/test PASS. Pool Contract [45522771986](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45522771986): SUCCESS; dispatch false, six workflows parsed, security invariants PASS.
+- PR #170 OPEN/DRAFT/UNMERGED, mergeable true, 0 formal reviews, 0 review threads. Base metadata `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` remains stale vs default HEAD `565404f84b6b86afb4dc2d8fa939341f42df6eca`; compare 34 ahead / 2 behind. Exact CI synthesized against current default, but ancestry needs reconciliation before merge.
+- Ruleset `26550182` active, no bypass, current-user bypass never, thread resolution required, approvals 0. Branch API reports protection disabled; effective governance enforcement NOT VERIFIED.
+- Real controller mapping from trusted Actions contexts into binder remains NOT VERIFIED. No workflow/controller, schema, migration, dependency, secret, hosted D1, dispatch, provider, deployment, merge or production changes.
+- 4 files changed; 3 new negative tests; actual active time NOT MEASURED.
+- Pass 79 report: [report](../reports/2026-11-25-pass79-github-actor-binding.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass79-github-actor-binding.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: canonical no-dispatch controller context mapping and workflow-level tests; reconcile default-base/governance discrepancy; preserve dispatch=false and obtain independent review.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
