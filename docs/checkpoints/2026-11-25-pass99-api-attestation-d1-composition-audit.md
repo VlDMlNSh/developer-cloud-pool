@@ -10,7 +10,7 @@
 - D1 binder still consumes flat GitHub Actions context; no callsite passes verifier output to D1 in the same workflow run.
 - D1 tests validate constructed contexts and durable receipt behavior, not API verifier -> immutable envelope -> D1 composition.
 - Existing D1 replay/receipt tests and fail-closed dispatch flags are retained as useful safeguards.
-- PR #176 run 45694558420 was PENDING at audit time; reviews 0; threads 0.
+- PR #176 run 45694558420 was PENDING at audit time. Current documentation tip `8fdf5243379c0a793e10c93c15f8a796a784c276` has run 45695110282 PENDING; combined status contexts empty. Earlier code-head run 45694389681 succeeded; subsequent changes are documentation-only. Reviews 0; threads 0; GitHub mergeable=true / clean.
 - Legacy pool worker retired; supervisor heartbeat-only; no qualified executor active.
 - No code changes, local tests, D1 writes, dispatch, secrets, provider calls, merge or deployment.
 - Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; active time NOT MEASURED.
