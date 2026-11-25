@@ -8,3 +8,7 @@
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: reconcile canonical D1 chain on current default base and complete trusted event/workflow provenance plus lease/trusted clock/fencing; keep dispatch=false.
 - Full report: `docs/reports/2026-11-25-pass76-owner-next-intake-verification.md`.
+
+
+## Governance deviation
+A create-file call omitted the working branch and briefly wrote this checkpoint on the default branch (commit `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311`). It was immediately deleted in commit `565404f84b6b86afb4dc2d8fa939341f42df6eca`; the checkpoint was recreated on the docs working branch. No runtime/code/workflow/configuration or secret content was written. This remains a process deviation and moved default HEAD; reconcile PR #169 and other candidate branches against current default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca` before further integration.
