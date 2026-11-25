@@ -35,7 +35,7 @@ Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
 
 ## Verification evidence
 
-- Exact-head Pool Contract Validation run [45694389681](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694389681): COMPLETED / SUCCESS on final PR head.
+- Exact-head Pool Contract Validation run [45694389681](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694389681): COMPLETED / SUCCESS on implementation code commit `4c0b2a44fc53fd36ac1d65175a9651c016f59219`. Subsequent PR commits only refreshed report/checkpoint/context documentation; no runtime code changed after this CI run.
 - Job `139487901061`: COMPLETED / SUCCESS; YAML parse, dispatch-disabled assertion, contract validator and Node adversarial test suite completed successfully.
 - Earlier implementation-head run [45694135875](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45694135875) also completed SUCCESS. workflow YAML parse, dispatch-disabled assertion and pool security contract steps succeeded.
 - Contract step executes `node scripts/validate-pool-contract.mjs` and `node --test scripts/owner-next-event-audit.test.mjs`; the combined step completed successfully.
