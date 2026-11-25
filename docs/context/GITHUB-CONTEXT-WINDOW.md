@@ -2895,3 +2895,19 @@ During Pass 76, one checkpoint create call omitted the working-branch argument a
 ## Ruleset reconciliation
 
 A fresh read of repository ruleset `26550182` reports enforcement `active`, targeting `refs/heads/Основной`, with a pull-request rule, zero required approving reviews, required review-thread resolution, deletion/non-fast-forward restrictions and no bypass actors; `current_user_can_bypass=never`. The branch API still reports `protected=false`. The transient Contents-API write and subsequent delete commits succeeded despite the active PR rule. This is an observed governance/API behavior discrepancy, not evidence that the ruleset is ineffective or that bypass is permitted. Treat effective enforcement for Contents-API writes as NOT VERIFIED; no further default-branch writes. Investigate this discrepancy before any merge or write path and require PR-only changes.
+
+
+## Pass 77 — D1 lease recovery and concurrent fencing qualification (2026-11-25)
+
+- PR #170 target parent `7d900d9fe11b19f048548a3bed657b2549f8091f`; test-only final head `cfd123a6e622a71454b42a0314f9dee981ca5035`.
+- Current default HEAD observed: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. D1 Actions job checked out synthetic merge `ab6ecf709c4c5f96912b7160caa348b8c89ce518`, proving CI merged the PR head with current default even though PR metadata still reports the older base SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Verify again before integration.
+- Added three D1 adapter tests: lost acknowledgement after successful commit resolves only by exact primary-first readback; pre-commit failure stays DENY/UNCONFIRMED and task pending; two distinct authenticated principals cannot acquire the same prepared attempt.
+- D1 run `45521582932` SUCCESS; job `138894501912` SUCCESS; 8/8 files and 116/116 tests. Exact merge SHA verified from job log. Pool Contract run `45521582953` SUCCESS. Combined status contexts empty; do not overstate as separate status checks.
+- PR #170 remains OPEN/DRAFT/UNMERGED; formal reviews 0, threads 0. No merge.
+- PR #171 remains OPEN/DRAFT/UNMERGED; exact-head Actions runs absent and reviews 0 at last read.
+- Ruleset `26550182` active for `Основной`; Contents API enforcement discrepancy from Pass 76 remains NOT VERIFIED. No default-branch writes this pass.
+- No secrets, Gemini/Claude dispatch, provider calls, hosted D1 writes, deployment or production mutation. Runtime/schema/dependency/workflow changes: 0. Actual active engineering time NOT MEASURED.
+- Pass 77 report: `docs/reports/2026-11-25-pass77-d1-lease-recovery-fencing.md`; checkpoint: `docs/checkpoints/2026-11-25-pass77-d1-lease-recovery-fencing.md`.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: read-only reconcile current default-base and governance state, then close uncovered Issue #140 negative cases with dispatch disabled.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
