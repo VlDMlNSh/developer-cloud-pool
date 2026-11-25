@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { pathToFileURL } from "node:url";
 
 const EXPECTED_ISSUE = 96;
 const EXPECTED_WORKFLOW_PATH = ".github/workflows/owner-next-event-audit.yml";
@@ -90,7 +91,7 @@ async function main() {
   process.stdout.write("Owner /next event provenance verified; no admission or dispatch occurred.\n");
 }
 
-if (process.argv[1] && import.meta.url === new URL("file://" + process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((error) => {
     process.stderr.write("Owner /next audit failed closed: " + error.message + "\n");
     process.exitCode = 1;
