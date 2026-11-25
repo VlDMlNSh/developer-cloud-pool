@@ -3278,3 +3278,10 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Report: [Pass 96 API-attested event composition audit](../reports/2026-11-25-pass96-api-attested-event-composition-audit.md). Checkpoint: [Pass 96 checkpoint](../checkpoints/2026-11-25-pass96-api-attested-event-composition-audit.md).
 - Next: implement same-workflow API-readback → immutable envelope → D1 receipt composition and stale-ref/rerun/replay/field-substitution tests.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 96 documentation PR governance addendum
+
+- Working docs branch `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED; new head `6e2b95eb9f392292727b14ed5d456def0fdc1629`.
+- PR #169 base SHA remains stale `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; current default is `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Compare: diverged, 254 ahead / 2 behind.
+- Exact-head Actions runs 0; combined status contexts 0; formal reviews 0; review threads 0. Pass96 docs are read-back verified on working branch but PR #169 CI/governance qualification NOT VERIFIED. Do not merge.
