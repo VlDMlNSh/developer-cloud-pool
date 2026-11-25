@@ -24,7 +24,7 @@ export function verifyOwnerNextEvent(input) {
   if (event.sender?.id !== comment.user.id) return fail("EVENT_SENDER_MISMATCH");
   if (!workflowRun || workflowRun.id !== Number(env.runId) || workflowRun.run_attempt !== Number(env.runAttempt)) return fail("WORKFLOW_RUN_ID_OR_ATTEMPT_MISMATCH");
   if (workflowRun.run_attempt !== 1) return fail("RERUN_REQUIRES_DURABLE_RECONCILIATION");
-  if (workflowRun.event !== "issue_comment" || workflowRun.path !== EXPECTED_WORKFLOW_PATH) return fail("WORKFLOW_EVENT_OR_PATH_MISMATCH");
+  if (workflowRun.event !== "issue_comment" || workflowRun.path !== EXPECTED_WORKFLOW_PATH + "@" + repository.default_branch) return fail("WORKFLOW_EVENT_OR_PATH_MISMATCH");
   if (workflow?.path !== EXPECTED_WORKFLOW_PATH || workflow?.state !== "active" || workflow.id !== workflowRun.workflow_id) return fail("WORKFLOW_METADATA_MISMATCH");
   if (workflowRun.repository?.id !== repository.id) return fail("RUN_REPOSITORY_ID_MISMATCH");
   if (workflowRun.actor?.id !== comment.user.id) return fail("RUN_ACTOR_NOT_SOURCE_AUTHOR");
