@@ -12,3 +12,8 @@
 
 ## Governance deviation
 A create-file call omitted the working branch and briefly wrote this checkpoint on the default branch (commit `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311`). It was immediately deleted in commit `565404f84b6b86afb4dc2d8fa939341f42df6eca`; the checkpoint was recreated on the docs working branch. No runtime/code/workflow/configuration or secret content was written. This remains a process deviation and moved default HEAD; reconcile PR #169 and other candidate branches against current default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca` before further integration.
+
+
+## Ruleset reconciliation
+
+A fresh read of repository ruleset `26550182` reports enforcement `active`, targeting `refs/heads/Основной`, with a pull-request rule, zero required approving reviews, required review-thread resolution, deletion/non-fast-forward restrictions and no bypass actors; `current_user_can_bypass=never`. The branch API still reports `protected=false`. The transient Contents-API write and subsequent delete commits succeeded despite the active PR rule. This is an observed governance/API behavior discrepancy, not evidence that the ruleset is ineffective or that bypass is permitted. Treat effective enforcement for Contents-API writes as NOT VERIFIED; no further default-branch writes. Investigate this discrepancy before any merge or write path and require PR-only changes.
