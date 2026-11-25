@@ -40,7 +40,7 @@ That exact comparison rejects the documented API response format and would cause
 - The workflow metadata endpoint's `workflow.path` remains checked against the bare workflow file path.
 - Test fixture now uses `.github/workflows/owner-next-event-audit.yml@Основной`.
 - Added negative tests for a missing branch suffix and a path bound to a different branch.
-- Total adversarial tests represented by the test file: 21 (one positive + 20 rejection cases).
+- Total adversarial tests: 21 (one positive + 20 rejection cases); exact-head CI confirms 21 passed / 0 failed.
 - Read-back verified corrected source and test blobs:
   - script blob: `26a842e50ae4239996ec2c95a4969b291e63d266`
   - test blob: `71ead8a42e6de77afd7093145dcaa7756efef965`
@@ -55,7 +55,7 @@ No new dependency is warranted for this API-shape correction. Retain Node built-
 - GitHub compare confirms 10 ahead / 0 behind and exact frozen merge base.
 - Corrected source and test files were fetched again from the branch and their blob SHAs recorded above.
 - Previous exact-head run #45675656378 / job #139422380969 passed 19/19 tests on superseded head `5ec1e3663683e1ad7c64e9548d2f65e10d14de7f`. It is historical evidence only.
-- Corrected final-head CI: NOT VERIFIED at checkpoint time; the available connector did not return a run for the final SHA.
+- Corrected final-head CI VERIFIED: Pool Contract Validation run #45677997233, job #139430608357, completed SUCCESS on exact head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`. Job log confirms six workflow YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`, and 21/21 Node tests passed (0 failed).
 - Live `issue_comment` audit on default branch: NOT RUN; PR is unmerged.
 - Current branch ruleset and current dispatch variable: NOT VERIFIED.
 - No secret values read, D1 writes, provider calls, child dispatch, production writes, deployment, merge, or governance mutation.
