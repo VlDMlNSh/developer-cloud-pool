@@ -9,6 +9,7 @@ const valid = {
   eventName: "issue_comment", eventAction: "created",
   repository: "VlDMlNSh/developer-cloud-pool", repositoryId: "1445644538",
   ownerNumericId: "157891068", ownerLogin: "VlDMlNSh",
+  actorId: "157891068", actorLogin: "VlDMlNSh",
   ref: "refs/heads/Основной", sha,
   workflowRef: "VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной",
   workflowSha, runId: 123456, runAttempt: 1,
@@ -57,6 +58,9 @@ describe("GitHub owner /next event context", () => {
 
   it.each([
     ["non-owner numeric identity", { commentUserId: "999" }],
+    ["triggering actor numeric identity mismatch", { actorId: "999" }],
+    ["triggering actor login mismatch", { actorLogin: "other" }],
+    ["triggering actor differs from comment author", { actorId: "999", commentUserId: "999" }],
     ["non-owner login", { commentUserLogin: "other" }],
     ["non-owner association", { commentAuthorAssociation: "COLLABORATOR" }],
     ["wrong repository id", { repositoryId: "1" }],
