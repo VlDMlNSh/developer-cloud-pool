@@ -3134,3 +3134,13 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: verify corrected final-head CI and inspect its logs; then continue durable source-comment idempotency/outbox reconciliation proof with dispatch disabled.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 89 corrected-head CI closure
+
+- Corrected final PR #174 head `a8809c1dc8c2eaa49944fb031baeec54ce46b922` completed exact-head Pool Contract Validation: run `45677997233`, job `139430608357`, COMPLETED / SUCCESS.
+- Job log confirms six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; Node adversarial suite `21 passed / 0 failed`. This is exact-head CI evidence for the path-suffix correction, unlike superseded run #45675656378.
+- The CI log emitted a non-fatal warning that pinned `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683` targets Node.js 20 and was forced to Node.js 24. Track as maintenance debt; it did not fail the run.
+- Pass 89 report/checkpoint updated with final CI evidence. PR #174 remains OPEN / DRAFT / UNMERGED, formal reviews 0, no merge. Live default-branch issue_comment audit still NOT RUN; current ruleset and current dispatch variable NOT VERIFIED.
+- PR #169 is the docs working branch containing this Context Window; it remains OPEN/DRAFT/UNMERGED and based on old SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This Context Window is not yet merged into default branch.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify whether any approved default-branch/governance gate can be established without changing protections; then design the durable source-comment receipt/outbox/reconciliation chain on a clean current base. No dispatch.
