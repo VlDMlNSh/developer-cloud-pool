@@ -17,3 +17,5 @@
 - Next: same-workflow API-readback → immutable envelope → D1 receipt implementation and stale-ref/rerun/replay/substitution tests.
 - Report: [Pass 96](../reports/2026-11-25-pass96-api-attested-event-composition-audit.md).
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Documentation branch PR #169 remains OPEN/DRAFT/UNMERGED; new head `6e2b95eb9f392292727b14ed5d456def0fdc1629`, base SHA stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` vs current default `565404f84b6b86afb4dc2d8fa939341f42df6eca`; compare 254 ahead / 2 behind. Exact-head runs/statuses 0/0; reviews/threads 0/0. Do not merge; rebase/reconcile only under separate bounded pass and gates.
