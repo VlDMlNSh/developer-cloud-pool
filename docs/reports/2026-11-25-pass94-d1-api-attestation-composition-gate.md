@@ -41,7 +41,7 @@ PR #174 audits `.github/workflows/owner-next-event-audit.yml`; PR #175's D1 bind
 
 ### F94-03 — new-head merge-result CI completed; exact-head status remains unavailable
 
-After the README correction, PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f` triggered two successful PR merge-result workflows. D1 run `45690428935`, job `139474112922`, checked out merge-result SHA `1606645` (full SHA in the job checkout log), passed the Worker syntax check and 8/8 files / 123/123 tests. Pool Contract run `45690428805`, job `139474113226`, checked out the same merge result, parsed all six workflow YAML files, passed the security contract and reported `POOL_CONTRACT_VALIDATION=PASS` with `POOL_DISPATCH_ENABLED=false`. Combined status for the PR head remains empty; these are merge-result checks, not standalone exact-head checks.
+After the README correction, PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f` triggered two successful PR merge-result workflows. D1 run `45690428935`, job `139474112922`, checked out merge-result SHA `16066457db9c86cc085e4afce743eb7e77408ca7`, passed the Worker syntax check and 8/8 files / 123/123 tests. Pool Contract run `45690428805`, job `139474113226`, checked out the same merge result, parsed all six workflow YAML files, passed the security contract and reported `POOL_CONTRACT_VALIDATION=PASS` with `POOL_DISPATCH_ENABLED=false`. Combined status for the PR head remains empty; these are merge-result checks, not standalone exact-head checks.
 
 ### F94-04 — governance/review remain open
 
@@ -57,7 +57,7 @@ No merge, deployment, hosted D1 access, production write, live issue_comment eve
 - Tests executed in this pass: none locally.
 - CI after correction: D1 123/123 (8/8 files) and Pool Contract PASS on merge-result for current PR head; standalone exact-head status contexts remain empty.
 - Active engineering time: NOT MEASURED; no wall-clock estimate asserted.
-- Defects: 1 documentation range mismatch corrected; 3 active integration/review blockers (F94-01 through F94-04, with CI/governance as separate gates).
+- Defects: 1 documentation range mismatch corrected; 2 technical integration blockers (API attestation not composed; workflow identity mismatch), plus open review/governance gates.
 - Critical path: API-attested event envelope → D1 receipt binding/recovery → trusted lease/runtime integration → authenticated remote UI and persistent state → quota/routing and executor qualification → E2E/security/governance → independent acceptance.
 
 ## Decision
