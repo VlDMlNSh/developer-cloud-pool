@@ -3214,3 +3214,14 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Report: [Pass 93 clean-base D1 import](../reports/2026-11-25-pass93-clean-base-d1-import.md). Checkpoint: [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
 - Next: investigate empty PR #175 CI/status; verify D1 workflow and Pool Contract eligibility; then exact-head CI and separate API-attested event-envelope composition slice.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 93 CI addendum — 2026-11-25
+
+- PR #175 D1 run #45689197397 / job #139469816000 SUCCESS; Pool Contract run #45689197360 / job #139469816983 SUCCESS.
+- Both job logs confirm checkout of merge-result SHA `f543b77115edd797c735e74cc84a996937ae6ff2`; PR head remains `bb9fd296928df3a99b6f060144cc60f5642f0d15`.
+- D1: 8/8 files, 123/123 tests; pinned Node 24.9.0; Worker syntax check passed.
+- Pool Contract: six workflow YAML files parsed; contract checks PASS; `POOL_CONTRACT_VALIDATION=PASS`; CI process environment reported `POOL_DISPATCH_ENABLED=false`.
+- Merge-result CI VERIFIED; exact-head CI NOT VERIFIED. PR-head combined status empty. Reviews 0; inline threads 0.
+- Non-fatal Node 20 deprecation warnings remain for pinned checkout/setup-node actions.
+- Reports/checkpoint updated: [Pass 93 report](../reports/2026-11-25-pass93-clean-base-d1-import.md), [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
