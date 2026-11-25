@@ -2872,3 +2872,16 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 - Next: restore live refs/CI/governance and run the bounded actionlint/zizmor Reuse First pilot; keep all execution paths fail-closed.
 - Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pass 76 — owner /next intake verification (2026-11-25)
+
+- Reviewed PR #171 target head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; PR merge-result SHA `b4d418fc731c2bb51d9c946f2689bf2607371f26`; frozen base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- Exact merge-result Pool Contract Validation run `45448087868`, job `138637290205`: COMPLETED/SUCCESS. Job log confirms checkout of merge-result SHA, `POOL_DISPATCH_ENABLED=false`, all six workflow YAML files parsed, and `POOL_CONTRACT_VALIDATION=PASS`.
+- PR #171 workflow is deliberately observation-only: Issue #96, owner-authored exact `/next`, non-PR issue; empty permissions; no checkout, external Actions, secrets, D1/API writes or dispatch. No durable source-comment receipt or admission authority is created.
+- PR #171 remains OPEN/DRAFT/UNMERGED; formal reviews 0, review threads 0. Combined commit status contexts empty; no independent review. A successful merge-result workflow is not an approval or proof of live event delivery.
+- PR #169 remains OPEN/DRAFT/UNMERGED; its exact-head CI and reviews remain NOT VERIFIED at this observation.
+- No live issue_comment event, hosted D1, executor, provider call, secret read, deployment, merge or dispatch. No production changes.
+- Pass 76 report: `docs/reports/2026-11-25-pass76-owner-next-intake-verification.md`; checkpoint: `docs/checkpoints/2026-11-25-pass76-owner-next-intake-verification.md`.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+- Next: reconcile the canonical D1 admission/receipt/lease chain against the current default base, complete trusted event/workflow provenance and trusted-clock/fencing integration, and keep `dispatch=false`.
+- Canonical MediaHub map (separate deferred project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
