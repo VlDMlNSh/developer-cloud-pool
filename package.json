@@ -1,0 +1,17 @@
+{
+  "name": "jarvis-web-console",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "check": "node --check src/index.js && node --check tests/api.test.js && node --check web/jarvis-dashboard/app.js",
+    "test": "node --test",
+    "validate:ui": "node scripts/validate-jarvis-dashboard.mjs"
+  },
+  "dependencies": {
+    "hono": "4.13.16"
+  },
+  "devDependencies": {
+    "wrangler": "4.158.0"
+  }
+}
