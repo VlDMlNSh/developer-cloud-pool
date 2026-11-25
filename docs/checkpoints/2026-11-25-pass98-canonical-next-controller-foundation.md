@@ -8,7 +8,7 @@
 - Head: `4c0b2a44fc53fd36ac1d65175a9651c016f59219`
 - Canonical workflow `.github/workflows/next-event-controller.yml` now exists in the candidate.
 - Reused PR #174 Node API verifier/tests; no new dependencies.
-- Exact-head Pool Contract Validation on final head: run 45694389681, job 139487901061, SUCCESS (earlier implementation-head run 45694135875 also SUCCESS).
+- Exact-head Pool Contract Validation on implementation code commit `4c0b2a44fc53fd36ac1d65175a9651c016f59219`: run 45694389681, job 139487901061, SUCCESS. Subsequent PR commits were documentation-only.
 - The CI contract step ran the static validator and `node --test scripts/owner-next-event-audit.test.mjs`.
 - Combined status contexts empty; PR reviews 0; review threads 0; PR remains Draft/unmerged.
 - API verifier remains OBSERVED_ONLY. No D1 admission/receipt/outbox/dispatch/execution.
