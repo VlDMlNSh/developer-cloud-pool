@@ -327,4 +327,111 @@ describe("authenticated D1 attempt lease adapter", () => {
     ).bind(TASK_KEY).first();
     expect(task).toMatchObject({ state: "pending", lease_generation: 0 });
   });
+
+  it("recovers a committed lease when the D1 write acknowledgement is lost", async () => {
+    await seedAttempt();
+    let lostAcknowledgement = false;
+    const faultDb = {
+      withSession: consistency => env.POOL_DB.withSession(consistency),
+      prepare: sql => {
+        const statement = env.POOL_DB.prepare(sql);
+        return {
+          bind: (...values) => {
+            const bound = statement.bind(...values);
+            return {
+              first: (...args) => bound.first(...args),
+              run: async () => {
+                const result = await bound.run();
+                if (sql.includes("UPDATE pool_tasks") && !lostAcknowledgement) {
+                  lostAcknowledgement = true;
+                  throw new Error("simulated lost D1 acknowledgement after commit");
+                }
+                return result;
+              }
+            };
+          }
+        };
+      }
+    };
+    const result = await acquireAttemptLease(faultDb, request, authenticate, trustedClock);
+    expect(lostAcknowledgement).toBe(true);
+    expect(result).toMatchObject({
+      decision: "LEASE_ALREADY_COMMITTED",
+      leaseOwner: "worker-alpha",
+      leaseGeneration: 1,
+      leaseExpiresAt: NOW + 60,
+      dispatch: false,
+      executionAuthorized: false
+    });
+    const attempt = await env.POOL_DB.prepare(
+      "SELECT status, lease_generation, started_at FROM pool_attempts WHERE attempt_id = ?"
+    ).bind(ATTEMPT_ID).first();
+    expect(attempt).toMatchObject({ status: "running", lease_generation: 1, started_at: NOW });
+  });
+
+  it("does not claim a lease when the write fails before commit", async () => {
+    await seedAttempt();
+    let rejectedWrite = false;
+    const faultDb = {
+      withSession: consistency => env.POOL_DB.withSession(consistency),
+      prepare: sql => {
+        const statement = env.POOL_DB.prepare(sql);
+        return {
+          bind: (...values) => {
+            const bound = statement.bind(...values);
+            return {
+              first: (...args) => bound.first(...args),
+              run: async () => {
+                if (sql.includes("UPDATE pool_tasks") && !rejectedWrite) {
+                  rejectedWrite = true;
+                  throw new Error("simulated D1 failure before commit");
+                }
+                return bound.run();
+              }
+            };
+          }
+        };
+      }
+    };
+    const result = await acquireAttemptLease(faultDb, request, authenticate, trustedClock);
+    expect(rejectedWrite).toBe(true);
+    expect(result).toMatchObject({
+      decision: "DENY",
+      reason: "LEASE_OUTCOME_UNCONFIRMED",
+      dispatch: false,
+      executionAuthorized: false
+    });
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(TASK_KEY).first();
+    expect(task).toMatchObject({ state: "pending", lease_generation: 0 });
+  });
+
+  it("prevents two distinct authenticated principals from acquiring the same attempt", async () => {
+    await seedAttempt();
+    const authenticateBySubject = async (context, expected) => ({
+      authenticated: true,
+      subject: context.syntheticSubject,
+      executorId: expected.executorId,
+      capabilityProfile: expected.capabilityProfile
+    });
+    const [alpha, beta] = await Promise.all([
+      acquireAttemptLease(env.POOL_DB, {
+        ...request, authContext: { syntheticSubject: "worker-alpha" }
+      }, authenticateBySubject, trustedClock),
+      acquireAttemptLease(env.POOL_DB, {
+        ...request, authContext: { syntheticSubject: "worker-beta" }
+      }, authenticateBySubject, trustedClock)
+    ]);
+    const results = [alpha, beta];
+    expect(results.filter(result => result.decision === "LEASE_ACQUIRED")).toHaveLength(1);
+    expect(results.filter(result => result.decision === "DENY")).toHaveLength(1);
+    const task = await env.POOL_DB.prepare(
+      "SELECT state, lease_owner, lease_generation FROM pool_tasks WHERE task_key = ?"
+    ).bind(TASK_KEY).first();
+    expect(task).toMatchObject({ state: "leased", lease_generation: 1 });
+    expect(["worker-alpha", "worker-beta"]).toContain(task.lease_owner);
+    expect(results.some(result => result.dispatch !== false || result.executionAuthorized !== false)).toBe(false);
+  });
+
 });
