@@ -100,7 +100,8 @@ if (/secrets\.|workflow_dispatch:|actions:\s*write|issues:\s*write|contents:\s*w
   fail("Owner /next audit must remain read-only and non-dispatching");
 }
 if (failures.length === 0) pass("owner /next provenance audit remains read-only and non-dispatching");
-\nif (failures.length) {
+
+if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
   process.exitCode = 1;
 } else {
