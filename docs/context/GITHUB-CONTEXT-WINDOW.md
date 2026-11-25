@@ -3115,3 +3115,22 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent review and current governance read-back; then install only through an approved protected-default-branch process and run one real owner event in OBSERVED_ONLY mode. Afterward implement durable source-comment idempotency, lease/fencing and outbox/reconciliation proof. Dispatch remains disabled.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 89 — owner /next API path contract correction (2026-11-25)
+
+- Default target frozen at `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Revalidated PR #174 OPEN/DRAFT/UNMERGED; corrected final head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, 10 ahead / 0 behind, merge base equals target.
+- Independent review found F89-01: GitHub REST `workflow_run.path` includes the branch suffix (documented example `.github/workflows/build.yml@main`). The prior exact bare-path comparison would reject the documented API response. Corrected to require workflow file path + `@` + repository default branch; workflow metadata path remains bare path.
+- Updated positive fixture to `.github/workflows/owner-next-event-audit.yml@Основной`; added negative cases for missing suffix and a different branch. 21 total test cases in the test file (1 positive + 20 rejection cases).
+- Final source/test blobs read back: `26a842e50ae4239996ec2c95a4969b291e63d266`, `71ead8a42e6de77afd7093145dcaa7756efef965`.
+- Previous-head run #45675656378 passed 19/19 on superseded SHA `5ec1e3663683e1ad7c64e9548d2f65e10d14de7f`; do not transfer that evidence to the corrected head. Final-head CI NOT VERIFIED at checkpoint time; the available workflow-run reader returns PR-triggered runs only and did not return a final-head run.
+- PR #169 docs branch head before this update: `726b1ac0ec5884177079a54c0108ca76f167e0a9`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`. All remain OPEN/DRAFT/UNMERGED on old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
+- Issue #96 remains OPEN/PLANNED and dispatch-disabled by contract. Issue #94 and #140 remain open. Issue #1 remains governance gate; current ruleset and current `POOL_DISPATCH_ENABLED` were NOT VERIFIED. Issue #140 is D1 admission/lease proof, not branch governance.
+- No live issue_comment audit, D1 writes, secret-value reads, provider calls, child dispatch, production writes, deployment, merge or governance mutation. Gemini roles NOT RUN; Claude Code/ECC/FCC NOT RUN.
+- Independent review NOT RUN; owner direction on Issue #96 deferred external reviews until the pool can conduct its own bounded review workflow. No review request sent.
+- Active engineering time NOT MEASURED.
+- Report: [Pass 89 API path contract fix](../reports/2026-11-25-pass89-owner-next-api-path-contract-fix.md). Checkpoint: [Pass 89 checkpoint](../checkpoints/2026-11-25-pass89-owner-next-api-path-contract-fix.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: verify corrected final-head CI and inspect its logs; then continue durable source-comment idempotency/outbox reconciliation proof with dispatch disabled.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
