@@ -2266,7 +2266,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Finding: PR #175 D1 binder consumes a flat Actions-context object. Its tests use constructed fixtures; no same-run composition callsite feeds API verifier output into D1.
 - D1 replay/receipt tests remain valuable but do not prove API verifier -> envelope -> D1 end-to-end composition.
 - Current worker workflow is retired/fail-closed; supervisor is heartbeat-only. No qualified executor is active.
-- PR #176 current Pool Contract Validation run 45694558420 was PENDING at audit time; PR reviews 0; review threads 0. Recheck live status before next pass.
+- PR #176 run 45694558420 was PENDING at audit time. Current documentation tip `8fdf5243379c0a793e10c93c15f8a796a784c276` has Pool Contract Validation run 45695110282 PENDING; combined status contexts empty. Earlier code-head run 45694389681 succeeded; subsequent changes are documentation-only. PR reviews 0; review threads 0; GitHub mergeable=true / clean. Recheck live status before next pass.
 - Ruleset 26550182 active; PR required, zero required approvals, review-thread resolution required.
 - No code changes, local tests, D1 writes/deployment, dispatch, child execution, secrets, provider calls, merge or production writes.
 - Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; active time NOT MEASURED.
