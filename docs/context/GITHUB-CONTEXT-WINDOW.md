@@ -2945,3 +2945,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Pass 79 report: [report](../reports/2026-11-25-pass79-github-actor-binding.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass79-github-actor-binding.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: canonical no-dispatch controller context mapping and workflow-level tests; reconcile default-base/governance discrepancy; preserve dispatch=false and obtain independent review.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 80 — trusted controller context and branch-governance reconciliation (2026-11-25)
+
+- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 head `8e853575a29ccd05cb8c6d22a74d44dd41465f44`; base metadata remains stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare to current default is 38 ahead / 2 behind. D1 run `45522771920` and Pool Contract run `45522771986` SUCCESS; exact synthetic merge evidence remains `fe0303d229efce42b37ef0c6dd283eefedf836c7`. This does not resolve ancestry or live provenance.
+- Issue #96 is the exact owner-only `/next` control contract; Issue #140 is the D1 proof issue.
+- PR #171 adds only an audit-only `next-request-intake.yml` (`permissions: {}`, no checkout/secrets/D1/dispatch). It validates owner/comment login and comment ID but does not map numeric actor identity, owner/repository IDs, ref, target SHA, workflow ref/SHA or run tuple to the binder.
+- PR #170 binder expects `next-event-controller.yml@refs/heads/Основной`; that workflow is NOT FOUND on default. Gemini batch controller workflow also NOT FOUND on default. Synthetic binder tests do not prove real Actions-context provenance.
+- PR #171 Pool Contract run `45448087868` SUCCESS. PR #169 head before this refresh `15cecb7fd3036ce8a6ecc827728bbedeaa5acdf5` had zero check runs/status contexts; exact-head CI NOT VERIFIED.
+- PRs #169/#170/#171 remain OPEN/DRAFT/UNMERGED with zero formal reviews and zero review threads. No merge.
+- Ruleset `26550182` active, no bypass, thread resolution required, required approvals 0. Branch-protection API returned 403; effective enforcement NOT VERIFIED.
+- Pass 80 is a read-only source/API audit; no code/schema/workflow/dependency changes; local tests NOT RUN; no secret reads, dispatch, provider calls, hosted D1, deployment, merge or production mutation. Active time NOT MEASURED.
+- Report: [Pass 80](../reports/2026-11-25-pass80-trusted-controller-context-audit.md); checkpoint: [Pass 80 checkpoint](../checkpoints/2026-11-25-pass80-trusted-controller-context-audit.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: define and test one canonical no-dispatch workflow-to-binder context mapping; reconcile PR #170 ancestry; verify governance and obtain independent review.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
