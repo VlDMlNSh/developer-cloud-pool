@@ -151,3 +151,13 @@ This is still a local synthetic Workers/D1 proof. The lease API is not yet wired
 The GitHub issue-comment binder requires both the comment author's identity and the triggering workflow actor identity. The future controller must source `actorId` and `actorLogin` from GitHub's trusted `github.actor_id` and `github.actor` contexts, not from event JSON supplied by a caller or repository variables. The binder compares those values with the owner identity and the comment author's `user.id` / `user.login`; any mismatch fails closed. The D1 receipt records the validated actor identity.
 
 This is a source-level adapter requirement only. No real controller currently maps these fields, and synthetic tests do not prove that mapping. Workflow-level provenance remains NOT VERIFIED. Dispatch and execution authorization remain false.
+
+
+## Pass 81 — GitHub Actions context normalization
+
+- `src/github-actions-context.mjs` maps the runner-provided `github` context and `GITHUB_ACTIONS` / `GITHUB_SERVER_URL` environment values into the strict flat input expected by `bindGitHubNextEvent`.
+- Identity, event metadata, issue/comment fields, ref, event target SHA, workflow ref/SHA and run ID/attempt are copied from explicit Actions context properties. Missing trusted values are left missing (run ID/attempt become `NaN`) so the binder rejects them; there are no caller-input or repository-variable fallbacks.
+- The issue comment body is read only from `github.event.comment.body`, not the issue body. Pull-request conversation comments are marked from the trusted event issue's `pull_request` property.
+- Unit tests verify field mapping, distinct event/workflow SHAs, missing-context fail-closed behavior and comment-vs-issue body separation.
+- This adapter is a pure normalization function. It does not authenticate GitHub's runtime, prove a workflow callsite, write D1, or authorize execution. No workflow invokes it yet; live context-to-binder wiring remains NOT VERIFIED.
+- Every binder result remains `dispatch: false` and `executionAuthorized: false`.
