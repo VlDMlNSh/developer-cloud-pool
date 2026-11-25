@@ -3259,3 +3259,22 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - No dispatch, hosted D1, secrets, provider calls, deployment, merge, production write, or Contour B work.
 - Contour A remains BLOCKED / NOT ACCEPTED. Next: resume API-attested GitHub event envelope → immutable D1 admission/receipt binding, resolve canonical workflow identity, and add race/replay/adversarial tests; dispatch stays disabled.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+
+## Pass 96 — API-attested event composition audit — 2026-11-25
+
+- Frozen default `Основной`: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #175 OPEN/DRAFT/UNMERGED; head `3d69bc943677dba909792bf4930d4c0aa5d2233f`. PR #174 OPEN/DRAFT/UNMERGED; head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`.
+- Confirmed F96-01: PR #175 flat Actions context binder is not composed with PR #174's independent API verifier; no immutable API-attested envelope reaches D1 admission.
+- Confirmed F96-02: D1 source + migration 0017 pin `next-event-controller.yml`; PR #174 audits `owner-next-event-audit.yml`. These are different workflow identities.
+- Decision: `next-event-controller.yml` remains the single canonical controller identity. PR #174 stays audit-only until API verification is integrated into that same controller execution path. No unsigned cross-workflow artifact/input can be treated as attestation.
+- Required envelope: API-readback-bound repository/owner IDs, issue/PR state, source comment ID/body digest/action, sender/author/OWNER association, target SHA/default ref, workflow ID/path/ref/code SHA, run ID/attempt and CODE profile; canonical digest must be bound into D1 admission and source receipt. Re-read default ref immediately before admission; deny movement. Reruns remain denied until durable replay/reconciliation is proven.
+- PR #175 Actions: D1 run `45690428935` SUCCESS; Pool Contract run `45690428805` SUCCESS. Combined status contexts empty / NOT VERIFIED. Reviews/threads: PR #174 0/0; PR #175 0/0.
+- Active ruleset `26550182`: PR required, no bypass actors, 0 required approvals, thread resolution required. Dispatch-variable metadata not verified this pass.
+- Reuse First: retain Node built-in fetch/GitHub REST verifier and Cloudflare Workers Vitest/Miniflare; no new dependencies.
+- No code/workflow/schema/dependency changes; local tests NOT RUN; no hosted D1, live webhook, secrets, provider calls, dispatch, deployment, merge or production writes. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN.
+- Active time NOT MEASURED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 96 API-attested event composition audit](../reports/2026-11-25-pass96-api-attested-event-composition-audit.md). Checkpoint: [Pass 96 checkpoint](../checkpoints/2026-11-25-pass96-api-attested-event-composition-audit.md).
+- Next: implement same-workflow API-readback → immutable envelope → D1 receipt composition and stale-ref/rerun/replay/field-substitution tests.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
