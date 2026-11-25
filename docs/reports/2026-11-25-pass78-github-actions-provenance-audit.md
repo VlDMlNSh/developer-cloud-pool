@@ -32,7 +32,7 @@
 - PR #170 remains OPEN/DRAFT/UNMERGED, 0 formal reviews and 0 review threads. PR #171 remains OPEN/DRAFT/UNMERGED, 0 formal reviews and 0 review threads. No merge attempted.
 - PR #170 metadata still reports base SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare and exact CI log establish current default `565404f...` as the synthetic merge base. Reverify before integration.
 - Ruleset `26550182` is active on `refs/heads/Основной`, no bypass actors, current user bypass `never`, required thread resolution true and required approvals 0. Branch API still reports `protected=false`; effective Contents-API enforcement remains NOT VERIFIED.
-- PR #169 documentation branch head observed: `4562326d25415ea77b9346e1f092c207e19f7766`. PR #172 lookup returned NOT_FOUND; no status is inferred for it.
+- PR #169 documentation PR now points to head `f31e6f8839f8e631ad6028aa540dbd99ee5ae795`; after the Pass 78 docs update it has 0 exact-head Actions runs, 0 formal reviews and 0 review threads, and GitHub reports `mergeable=false`. It remains OPEN/DRAFT/UNMERGED; its base SHA metadata remains stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR #172 lookup returned NOT_FOUND; no status is inferred for it.
 
 ## Metrics and safety
 
@@ -60,3 +60,9 @@
 - Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
 - Pass 77 report: https://github.com/VlDMlNSh/developer-cloud-pool/blob/docs/engineering-excellence-2026-11-23/docs/reports/2026-11-25-pass77-d1-lease-recovery-fencing.md
 - Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final documentation-PR recheck
+
+- After publishing this report/checkpoint/Context Window, PR #169 head advanced to `f31e6f8839f8e631ad6028aa540dbd99ee5ae795`.
+- Exact-head Actions runs: 0; formal reviews: 0; review threads: 0; `mergeable=false`. Documentation PR integration is therefore NOT VERIFIED and remains draft/unmerged.
