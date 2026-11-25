@@ -7,7 +7,7 @@ function fixture(overrides = {}) {
   const issue = { number: 96, url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" };
   const comment = { id: 300, issue_url: issue.url, body: "/next", author_association: "OWNER", user: { id: 200, login: "VlDMlNSh" } };
   const event = { action: "created", repository: { id: 100, owner: { id: 200 } }, issue: { number: 96 }, comment: { id: 300, body: "/next", user: { id: 200 } }, sender: { id: 200 } };
-  const workflowRun = { id: 400, run_attempt: 1, event: "issue_comment", path: ".github/workflows/owner-next-event-audit.yml", workflow_id: 500, repository: { id: 100 }, actor: { id: 200 }, head_branch: "Основной", head_sha: "a".repeat(40) };
+  const workflowRun = { id: 400, run_attempt: 1, event: "issue_comment", path: ".github/workflows/owner-next-event-audit.yml@Основной", workflow_id: 500, repository: { id: 100 }, actor: { id: 200 }, head_branch: "Основной", head_sha: "a".repeat(40) };
   const workflow = { id: 500, path: ".github/workflows/owner-next-event-audit.yml", state: "active" };
   const defaultBranchRef = { object: { sha: "a".repeat(40) } };
   const expected = { eventName: "issue_comment", repository: repository.full_name, runId: "400", runAttempt: "1", ref: "refs/heads/Основной", sha: "a".repeat(40) };
@@ -32,7 +32,9 @@ const rejected = [
   ["repository ID mismatch", (x) => { x.event.repository.id = 999; }],
   ["comment ID mismatch", (x) => { x.event.comment.id = 999; }],
   ["sender mismatch", (x) => { x.event.sender.id = 201; }],
-  ["wrong workflow path", (x) => { x.workflow.path = ".github/workflows/untrusted.yml"; }],
+  ["wrong workflow metadata path", (x) => { x.workflow.path = ".github/workflows/untrusted.yml"; }],
+  ["workflow run path missing branch suffix", (x) => { x.workflowRun.path = ".github/workflows/owner-next-event-audit.yml"; }],
+  ["workflow run path bound to another branch", (x) => { x.workflowRun.path = ".github/workflows/owner-next-event-audit.yml@feature/untrusted"; }],
   ["wrong workflow event", (x) => { x.workflowRun.event = "workflow_dispatch"; }],
   ["run ID mismatch", (x) => { x.workflowRun.id = 401; }],
   ["run attempt mismatch", (x) => { x.workflowRun.run_attempt = 2; }],
