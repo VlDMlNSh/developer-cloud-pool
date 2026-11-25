@@ -55,4 +55,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node scripts/validate-pool-contract.mjs\n          node --test scripts/owner-next-event-audit.test.mjs
+          node scripts/validate-pool-contract.mjs
+          node --test scripts/owner-next-event-audit.test.mjs
