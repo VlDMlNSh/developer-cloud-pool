@@ -15,6 +15,7 @@ async function fixture(id, commentIdOverride) {
     eventName: "issue_comment", eventAction: "created",
     repository: "VlDMlNSh/developer-cloud-pool", repositoryId: "1445644538",
     ownerNumericId: "157891068", ownerLogin: "VlDMlNSh",
+    actorId: "157891068", actorLogin: "VlDMlNSh",
     ref: "refs/heads/Основной", sha: targetSha, workflowRef, workflowSha: "f".repeat(40),
     runId: 500000 + id.charCodeAt(0), runAttempt: 1,
     issueNumber: 96, isPullRequest: false, commentId: commentIdOverride ?? (900000 + id.charCodeAt(0)),
