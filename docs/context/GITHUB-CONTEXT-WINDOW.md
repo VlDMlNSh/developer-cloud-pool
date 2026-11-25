@@ -3198,3 +3198,19 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: obtain the base tree SHA via an approved Git object read path; create one base-preserving commit importing the reviewed PR #170 file set; verify parent/tree/diff, open draft PR, run exact-head D1 and Pool Contract CI.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 93 — clean-base D1 proof import (2026-11-25)
+
+- Created draft PR #175: https://github.com/VlDMlNSh/developer-cloud-pool/pull/175
+- Base SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`; head SHA `bb9fd296928df3a99b6f060144cc60f5642f0d15`; 39 ahead / 0 behind.
+- Imported 39 files from PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`: canonical D1 migrations 0001–0017, adapters, tests, pinned package lock and isolated pull_request workflow.
+- Re-read and compared every source/destination blob SHA: 39/39 identical. PR #175 diff has 39 added paths, 0 modified, 0 deleted. Base files remain untouched.
+- PR #175 OPEN/DRAFT/UNMERGED. Exact-head workflow lookup returned 0 runs and combined commit status list is empty; reviews 0, threads 0. D1 tests, Pool Contract, exact-head and merge-result CI NOT VERIFIED. Historical PR #170 123/123 CI does not qualify PR #175.
+- F91-01 remains: API-backed owner event audit PR #174 is not composed into D1 admission; no immutable API-attested envelope reaches the D1 adapter. Two-phase admission/source receipt recovery still needs controller-level durable reuse of the original admission identity.
+- No local tests, live issue_comment event, hosted D1, provider calls, dispatch, execution authorization, secret read, deployment, merge, production write or governance mutation.
+- No new dependencies. Active time NOT MEASURED. Current ruleset and `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN.
+- Clean-base import VERIFIED; D1 behavior NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 93 clean-base D1 import](../reports/2026-11-25-pass93-clean-base-d1-import.md). Checkpoint: [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
+- Next: investigate empty PR #175 CI/status; verify D1 workflow and Pool Contract eligibility; then exact-head CI and separate API-attested event-envelope composition slice.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
