@@ -3160,3 +3160,21 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: one clean current-base integration branch that composes API-attested owner event with D1 admission/source receipt; reuse existing local D1 test harness; dispatch remains false.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 91 — API provenance to D1 admission composition review (2026-11-25)
+
+- PR #174 API audit: OPEN/DRAFT/UNMERGED, head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #170 D1 candidate: OPEN/DRAFT/UNMERGED, head `40281787c208af2df916f10af1dba073061ff0d3`, old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 41 ahead / 2 behind PR #174 base.
+- PR #169 docs branch head `fb6eb335621e72a46ebda3f47e0bb0d372c27219`, OPEN/DRAFT/UNMERGED on old base; PR #171 also remains OPEN/DRAFT/UNMERGED on old base.
+- F91-01: PR #174 API verifier returns OBSERVED_ONLY and its workflow only writes a step summary; it does not pass a verified event envelope to D1. PR #170 independently accepts a pure Actions context object; its mapper/binder does not authenticate the source through GitHub API. No unified trusted provenance-to-D1 controller.
+- F91-02: D1 admission and source-comment receipt are two phases. Local tests demonstrate recovery using the same immutable admission identity and fail-closed readback, but the controller must persist/reuse original admission ID and event envelope across retries; never mint a new task/attempt after receipt failure.
+- F91-03: PR #170 remains divergent and absent from current default; PR #174 is a separate current-base API audit. No combined merge-result CI.
+- Inspected source blobs: PR #170 github-next-event `31a254e28f42eee3a3add07ca5fae2c5a46cc8b57`, context mapper `574d289964b5d908395573b91c6f890305c94eeb`, admission adapter `f4c788c1d5231cdce3a84d006b07407971ef6491`, migration 0017 `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`, integration tests `e9c26f565c587bf9f8ab40bb6e7a33c9fd50fcd3`.
+- Reuse First: retain pinned Cloudflare Workers Vitest/Miniflare D1 harness, Node built-in fetch and pinned GitHub Actions; no new dependency.
+- No code/schema change, live webhook, hosted D1, dispatch, secret read, provider call, deployment, merge, production write or governance mutation.
+- Current ruleset and current `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
+- Report: [Pass 91 API-to-D1 composition review](../reports/2026-11-25-pass91-api-to-d1-composition-review.md). Checkpoint: [Pass 91 checkpoint](../checkpoints/2026-11-25-pass91-api-to-d1-composition-review.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: create one clean branch from independently revalidated current default SHA; port one canonical D1 lineage, then add API-attested event envelope and composition tests, all dispatch/execution false.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
