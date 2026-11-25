@@ -2997,3 +2997,20 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: investigate governance enforcement discrepancy and reconcile Issue #96 controller contract with D1 binder for a no-dispatch workflow integration design. Keep all execution authorization false.
 - Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 83 — governance enforcement and no-dispatch controller contract audit (2026-11-25)
+
+- Frozen default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`. PR #169 head `b667ff33f89b718d1eaae4e0bbfcfc5b6c6a5db6`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`. All OPEN/DRAFT/UNMERGED; reviews 0; review threads 0.
+- Ruleset `26550182` ACTIVE on `refs/heads/Основной`, bypass empty/current user bypass never. Rules include deletion/non-fast-forward restrictions, PR required and review-thread resolution. Required approvals = 0; no required reviewers; no code-owner/last-push approval; NO required-status-checks rule. Therefore successful CI is observed evidence, not an enforced merge prerequisite under this ruleset.
+- Branch API reports classic protection disabled; GET classic protection returns 403 integration access. This does not negate active Ruleset; full effective enforcement remains NOT VERIFIED. Issue #140 explicitly excludes branch-protection changes, so no policy mutation was made.
+- Issue #96 remains canonical exact owner-only /next contract. Dispatch remains disabled pending all gates. First executor profile is Claude Code + ECC + FCC on verified free API route; Gemini optional.
+- PR #171 next-request-intake workflow is audit-only: exact Issue #96, non-PR comment, repository owner login, exact /next; permissions empty; no checkout/secrets/D1/dispatch. It does not bind numeric IDs, trusted ref/SHA/workflow SHA/run tuple or durable receipt.
+- PR #170 mapGitHubActionsContext is a pure non-authorizing adapter; no live trusted-main controller exists on default.
+- PR #170 exact-head checks: D1 run [45556287534](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287534) SUCCESS, 8/8 files, 123/123 tests, npm check PASS; Pool Contract [45556287686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287686) SUCCESS on current-base synthetic merge `d828f62...`.
+- PR #171 has historical exact-head Pool Contract run [45448087868](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45448087868) SUCCESS. PR #169 exact-head CI 0 runs, NOT VERIFIED.
+- Pass 83 report: [report](../reports/2026-11-25-pass83-governance-controller-audit.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass83-governance-controller-audit.md).
+- No source/workflow/tests changes; no secrets, dispatch, hosted D1, provider calls, deployment, merge or ruleset/branch-protection mutation. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: explicit owner-policy authorization gate for required approvals/status checks, then exact required-check context design and no-dispatch trusted-main integration. Do not dispatch or merge.
+- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
