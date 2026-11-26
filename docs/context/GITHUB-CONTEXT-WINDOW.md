@@ -2421,3 +2421,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: wire API verifier and attested D1 adapter in one non-dispatching controller workflow; remove legacy non-attested entrypoint from production import surface; add same-run E2E and repeat CI.
 - Report: `docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md`; checkpoint: `docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md`.
 - MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 111 governance revalidation — 2026-11-27
+
+- Default ref API confirms `refs/heads/Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Active repository ruleset ID `26550182` (`Основной — verified`) applies to default: deletion and non-fast-forward blocked; pull request required; review-thread resolution required; required approving review count 0; code-owner review false; no bypass actors; current integration cannot bypass.
+- Branch protection read endpoint returns 403, so legacy branch protection settings NOT VERIFIED. Root and `.github/CODEOWNERS` not found. PR #181 review submissions 0 and inline threads 0. Project-level independent review remains required before qualification/merge.
