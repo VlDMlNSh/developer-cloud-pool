@@ -2359,3 +2359,20 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement Workers-native WebCrypto strict envelope validator + trusted Actions cross-check + negative-first tests. Follow with migration 0018 and coordinated binder/approval/receipt/replay integration.
 - PR #178: https://github.com/VlDMlNSh/developer-cloud-pool/pull/178
 - MediaHub canonical map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 110 — Workers-native API-attested envelope verifier (2026-11-27)
+
+- Frozen base: PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Working branch: `feat/pass110-workers-envelope-validator-2026-11-27`; verifier source commit `24dd17483ea3b15567159c6cabccf0db184bf3c3`; test commit `c4d7849c5934e9f3700b3cba22267f27cfa9a72e`.
+- Added `proofs/d1-ledger/src/owner-next-envelope.mjs`: Workers-compatible strict JSON duplicate-key rejection, exact schema validation, WebCrypto body/canonical digest, and trusted Actions context cross-check. No Node crypto/Buffer in runtime module.
+- Added `proofs/d1-ledger/test/owner-next-envelope.test.ts`: positive and negative test coverage. Tests authored; local execution NOT RUN; CI pending.
+- Reused existing Node v1 envelope contract and `mapGitHubActionsContext`; no new dependency/service/ledger.
+- No D1 schema/binder/receipt integration or workflow wiring in this pass. No hosted D1, secrets, provider calls, dispatch, executor, deployment, merge or production writes.
+- Independent security review NOT RUN; active time NOT MEASURED. Gemini/Claude/ECC/FCC NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch and execution authorization remain false.
+- Next: verify PR exact-head CI and logs, then independent review; only afterward implement migration 0018 and coordinated D1 envelope binding.
+- Report: `docs/reports/2026-11-27-pass110-workers-native-envelope-verifier.md`; checkpoint: `docs/checkpoints/2026-11-27-pass110-workers-native-envelope-verifier.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
