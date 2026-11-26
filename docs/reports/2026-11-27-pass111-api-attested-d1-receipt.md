@@ -55,3 +55,11 @@ Date: 2026-11-27
 PR #181: https://github.com/VlDMlNSh/developer-cloud-pool/pull/181
 Validation-only PR #182: https://github.com/VlDMlNSh/developer-cloud-pool/pull/182
 Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Governance read-back — 2026-11-27
+
+- Canonical default ref re-read via Git refs API: `refs/heads/Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Repository ruleset [26550182](https://github.com/VlDMlNSh/developer-cloud-pool/rules/26550182), `Основной — verified`: ACTIVE; applies to default branch; blocks deletion and non-fast-forward; requires pull requests; requires review-thread resolution; configured required approving review count is 0; code-owner review is not required; bypass actors empty and current integration cannot bypass.
+- Branch-protection endpoint returned 403 (integration lacks permission): traditional branch protection NOT VERIFIED. Root and `.github/CODEOWNERS` paths returned NOT_FOUND; no CODEOWNERS file verified at those paths.
+- PR #181 formal reviews 0 and inline threads 0. The ruleset does not require approvals, but project policy still requires an independent review before qualification/merge. No merge performed.
