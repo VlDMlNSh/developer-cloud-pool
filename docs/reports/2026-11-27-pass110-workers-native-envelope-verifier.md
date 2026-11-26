@@ -52,3 +52,14 @@ Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahu
 - Because D1 workflow is scoped to PRs targeting `Основной`, PR #179 remains stacked on PR #178 and PR #180 is the validation-only PR targeting default. New run for the parity assertion is pending / NOT VERIFIED.
 - PR #179 remains OPEN/DRAFT/UNMERGED; 0 formal reviews and 0 inline threads. PR #180 is validation-only and must not be merged.
 - No CI claim is transferred from prior merge-result SHA to latest parity-test SHA.
+
+
+## Final Pass 110 validation — 2026-11-27
+
+- Validation-only PR #180 exposed exact implementation code SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e` to existing workflows on canonical base `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- D1 run [45895942746](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45895942746), job `140169725137`: COMPLETED / SUCCESS. Job log confirms merge-result checkout `7e7f5b5` (full SHA `7e7f5b5...`); `npm ci`, inert Worker syntax check and Vitest completed. 9 test files / 134 tests passed, including 11 tests in `owner-next-envelope.test.ts`; this includes Node-vs-WebCrypto canonical digest parity.
+- Pool Contract Validation [45895942756](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45895942756), job `140169725307`: COMPLETED / SUCCESS; dispatch-disabled assertion, workflow YAML parsing and security-contract validation passed. The separate envelope contract suite reports 20/20 tests passed.
+- These are PR merge-result CI runs for code SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`, not a standalone push check on the later docs-only branch tip. No source/test changes followed the validated code SHA; docs-only commits advanced PR #179 to `dfe6b34d4cd28481e5ec28d2a6e1657a3c18ffcf`.
+- PR #179 remains OPEN/DRAFT/UNMERGED, base PR #178 branch, mergeable=true, formal reviews 0, threads 0. PR #180 remains OPEN/DRAFT/UNMERGED and validation-only; do not merge it.
+- Independent security review and governance/ruleset revalidation remain NOT VERIFIED. No workflow wiring, D1 migration 0018, D1 binder integration, hosted D1, secrets, providers, dispatch, executor, deployment, merge or production writes.
+- Pass 110 verifier and tests: VERIFIED by merge-result CI. API-attestation → D1 end-to-end integration: NOT IMPLEMENTED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
