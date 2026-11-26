@@ -1,6 +1,6 @@
 # CURRENT OPERATIONAL SNAPSHOT — Pass 101 (2026-11-26)
 
-Last refreshed: 2026-11-26 19:03:35 Europe/Vilnius (UTC+02:00)
+Last refreshed: 2026-11-26 — Pass 102 workflow path and D1 lease contract revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
 
@@ -3339,4 +3339,17 @@ A fresh read of repository ruleset `26550182` reports enforcement `active`, targ
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [Pass 97 canonical controller precondition](../reports/2026-11-25-pass97-canonical-controller-precondition.md). Checkpoint: [Pass 97](../checkpoints/2026-11-25-pass97-canonical-controller-precondition.md).
 - Next: create canonical controller + same-run API attestation on clean current-default base, then D1 integration and adversarial tests.
+- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pass 102 — workflow path and lease contract revalidation (2026-11-26)
+
+- Default `Основной` HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #174/#175/#176 remain OPEN/DRAFT/UNMERGED at heads `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, `3d69bc943677dba909792bf4930d4c0aa5d2233f`, `ca53ed9eb625d2532aa00cc269cf7f8617d97266`; exact-head CI SUCCESS (runs 45677997233; 45690428935 + 45690428805; 45705794330). Formal reviews and threads 0.
+- Correction to Pass101: official GitHub REST workflow-run example shows `.github/workflows/build.yml@main`; PR #176 verifier's `<workflow-path>@<default-branch>` comparison matches documented response shape. This is not live `issue_comment` qualification; none was observed. Pass101 report/checkpoint updated accordingly.
+- PR #175 lease adapter uses injected `trustedClock()`, not caller `input.now`; it validates positive safe integer/rollback, TTL 1–900s, generation fencing and primary read-back. Existing tests cover caller future/past timestamps being ignored. Production clock/authenticator wiring and hosted D1 remain NOT VERIFIED.
+- Blocking edge remains: PR #176's API verifier does not pass a canonical immutable API-attested envelope into PR #175's D1 admission/receipt in the same workflow run; workflow file blob identity/ancestry remains unbound.
+- No code/schema/workflow/dependency changes; no local tests, live webhook, hosted D1, dispatch, provider calls, secret/variable reads, Ruleset changes, deployment, merge or production writes. Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 102](../reports/2026-11-26-pass102-workflow-path-and-lease-contract-revalidation.md); checkpoint: [Pass 102](../checkpoints/2026-11-26-pass102-workflow-path-and-lease-contract-revalidation.md).
+- Next: Pass103 implement same-run immutable API-attested envelope + workflow-file blob identity into D1 admission/receipt, with end-to-end adversarial tests; keep dispatch/execution authorization false.
 - MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
