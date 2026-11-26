@@ -11,3 +11,10 @@
 - Tests NOT RUN in this audit. No hosted D1/live event/secrets/provider/dispatch/deployment/merge/production write. Independent review/Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: clean combined integration branch, port single D1 package + v1 validator, implement migration 0018 and Workers E2E tests. Keep dispatch=false.
+
+
+## Final Pass 107 branch read-back
+
+- Pass 107 docs/checkpoint/Context Window were read back successfully. Final working branch HEAD after documentation updates: `d0595e58c6acab976238c7fe365cdab29adc4739`; compare to frozen base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 26 ahead / 0 behind; 11 changed files total.
+- PR #177 remains OPEN/DRAFT/UNMERGED. The PR listing returned `mergeable=false`; reason/state was not exposed by the available read, so treat mergeability as NOT VERIFIED and do not merge. Reviews 0, threads 0.
+- No Actions run or combined status was returned for final documentation HEAD `d0595e58...`; exact-head CI NOT VERIFIED. Previous merge-result run `45879712743` remains limited to 20/20 envelope tests on earlier code/workflow tip `535e4fac...`.
