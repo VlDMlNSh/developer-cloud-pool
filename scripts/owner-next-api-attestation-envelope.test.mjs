@@ -39,7 +39,6 @@ test("validates, canonicalizes and verifies a complete immutable envelope", () =
   assert.equal(verified.digest, digest);
   assert.equal(verified.dispatch, false);
   assert.equal(verified.executionAuthorized, false);
-  const reordered = JSON.parse(JSON.stringify(envelope, Object.keys(envelope).sort()));
   assert.equal(digestOwnerNextEnvelope(envelope), digest);
   assert.equal(parseStrictOwnerNextEnvelope(JSON.stringify(envelope)).schema, envelope.schema);
 });
