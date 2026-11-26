@@ -2310,3 +2310,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Pass 103](../reports/2026-11-26-pass103-workflow-blob-attestation.md); checkpoint: [Pass 103](../checkpoints/2026-11-26-pass103-workflow-blob-attestation.md).
 - Next: Pass104 typed immutable API-attested envelope in same controller run, bound to D1 admission/source-comment receipt; adversarial tests for tampering, stale ref, replay/rerun and ambiguous acknowledgement; dispatch/execution remain false.
 - MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 104 — Controller-to-D1 composition boundary audit (2026-11-26)
+
+- Canonical default `Основной` remains `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #176 current observed head before Pass104 docs: `25fb6b19997b7818c124b546072430ddbcfce6d4`; PR #175 D1 head: `3d69bc943677dba909792bf4930d4c0aa5d2233f`. Both OPEN/DRAFT/UNMERGED.
+- Source-level audit confirms PR #176 controller workflow only invokes `scripts/owner-next-event-audit.mjs` and writes a step summary. No D1 binding/import/admission/receipt call exists in that workflow.
+- PR #176 verifier returns `OBSERVED_ONLY`; its API-readback result is not serialized as a typed envelope for D1 consumption.
+- PR #175 D1 binder accepts a flat GitHub Actions context object and independently derives an event digest. Its local Workers/D1 tests call the binder directly; they do not call the PR #176 verifier.
+- Therefore same-run API-attested envelope -> D1 binder -> durable source-comment receipt remains NOT VERIFIED. Workflow blob SHA attestation alone does not authenticate an output passed across a step boundary.
+- PR #176 reviews: 0; review threads: 0. Pool Contract run associated with current candidate head: 45878070090 SUCCESS. Earlier PR merge-result run 45877919733 succeeded on merge result `0a6b7130c75978290c841488239a0d93b2028e8c` with 25/25 verifier tests; this is not standalone exact-head evidence for the current tip.
+- Pass104 was a bounded source/governance audit and documentation pass; no runtime code changed. Report: `docs/reports/2026-11-26-pass104-controller-d1-composition-boundary-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass104-controller-d1-composition-boundary.md`.
+- No live issue_comment event, hosted D1, secrets/variables inspection, provider calls, dispatch, deployment, merge, production writes or governance changes. Gemini/Claude/ECC/FCC and independent security review: NOT RUN. Active engineering time: NOT MEASURED.
+- Next: build one clean-base integration candidate with a versioned canonical API-attested envelope, D1-side schema/provenance/digest recomputation, and a mocked end-to-end Workers test plus tamper/stale-ref/replay/rerun/ambiguous-ack adversarial cases. Keep dispatch and execution authorization false.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
