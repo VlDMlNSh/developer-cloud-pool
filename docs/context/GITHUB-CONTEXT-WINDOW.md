@@ -2320,3 +2320,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - A subsequent GitHub PR metadata refresh now reports PR #177 `mergeable=true` (the earlier `false` value was transient/inconsistent; no conflict is currently reported). PR remains OPEN/DRAFT/UNMERGED, 0 reviews and 0 review threads.
 - Latest branch/PR HEAD: `d1aa5c07b5fa7bec9b937b53fb61cd616bd72f5d`; compare to base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 29 commits ahead / 0 behind, 11 changed files.
 - No Actions run or combined status was returned for this final SHA. Exact-head CI remains NOT VERIFIED. Prior merge-result run `45879712743` remains 20/20 envelope tests on earlier code/workflow tip only.
+
+
+## Pass 108 — D1 ledger + envelope integration foundation (2026-11-26)
+
+- Frozen starting SHA: da8de0e258571fa98aad8da053f8e4134a94ceb9 (PR #177 head). Working branch: integration/pass108-d1-ledger-plus-envelope-2026-11-26.
+- Ported canonical PR #175 D1 package and workflow onto the envelope v1 branch: migrations 0001–0017, Workers source, Vitest tests/config, pinned package/lockfile and Wrangler config. Existing ledger and migration semantics preserved; no new dependency or service.
+- No D1 semantics changed. The binder still consumes flat Actions context and computes the legacy 15-field digest. It does not yet validate envelope v1.
+- The v1 Node validator imports node:crypto and is not Workers-compatible. A separate WebCrypto D1-side verifier is still required. Do not import the Node validator into Workers.
+- Migration 0017 workflow_sha remains workflow commit SHA, not Contents API Git blob SHA. Migration 0018 not implemented.
+- Pass 108 report: docs/reports/2026-11-26-pass108-d1-envelope-integration-foundation.md; checkpoint: docs/checkpoints/2026-11-26-pass108-d1-envelope-integration-foundation.md.
+- Local tests NOT RUN. Draft PR CI required for the isolated D1 Workers migration suite; results must be inspected before claiming verification.
+- No hosted D1, secret access, provider calls, dispatch, deployment, merge or production mutation. Gemini/Claude/ECC/FCC and independent security review NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: Workers-native strict WebCrypto envelope verifier and trusted Actions context cross-check, followed by migration 0018 and coordinated binder/approval/receipt/replay changes. Keep dispatch=false.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
