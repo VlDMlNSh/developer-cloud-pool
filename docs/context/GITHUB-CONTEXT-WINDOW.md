@@ -2376,3 +2376,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: verify PR exact-head CI and logs, then independent review; only afterward implement migration 0018 and coordinated D1 envelope binding.
 - Report: `docs/reports/2026-11-27-pass110-workers-native-envelope-verifier.md`; checkpoint: `docs/checkpoints/2026-11-27-pass110-workers-native-envelope-verifier.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 110 CI/read-back update — 2026-11-27
+
+- PR #179 implementation HEAD advanced to `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; base is PR #178 branch `integration/pass108-d1-ledger-plus-envelope-2026-11-26` @ `680bb7a1af7984b74b93e17284ef4f11ad30dba0`. PR #179 OPEN/DRAFT/UNMERGED, mergeable=true, formal reviews 0, threads 0.
+- Initial validation of pre-parity head c8551564... passed on merge-result SHA `24124356a878568da9327d109ce8170bc73232c3`: D1 run `45895815698` SUCCESS, 9 files / 133 tests; Pool Contract run `45895815527` SUCCESS (dispatch gate, YAML and security contracts).
+- Added cross-implementation canonical digest parity test against frozen Node implementation in commit `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`. New exact code SHA validation is exposed through validation-only PR #180 targeting `Основной`; no run returned yet, therefore parity test CI NOT VERIFIED.
+- PR #180 OPEN/DRAFT/UNMERGED, validation-only; never merge. PR #179 remains stacked on PR #178.
+- Pass 110 runtime source still does not wire verifier into D1 admission or workflow. No hosted D1, secrets, providers, dispatch, executor, deployment, merge or production writes. Independent review NOT RUN; active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
