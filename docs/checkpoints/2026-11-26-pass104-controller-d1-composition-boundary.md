@@ -21,3 +21,10 @@ Date: 2026-11-26
 - Final PR #176 head: `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c` (32 ahead / 0 behind frozen default).
 - Final-head Pool Contract run `45878657129`: IN_PROGRESS at last observation. Prior run `45878070090`: SUCCESS on earlier merge result; 25/25 tests, dispatch false.
 - Reviews 0; threads 0. Keep Draft/unmerged.
+
+
+### Final publication tip correction
+
+- Subsequent documentation commits advanced PR #176 to `692a058c3cde4ea5e54916da0d50231406410e64` (35 ahead / 0 behind frozen default). The final diff remains 16 files and contains no D1 runtime files.
+- A fresh Actions lookup for this final tip returned no associated workflow runs. Run `45878657129` was observed IN_PROGRESS for the immediately preceding tip `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c`; its final conclusion is NOT VERIFIED here. The earlier successful merge-result run `45878070090` remains evidence only for its own earlier merge-result SHA.
+- Therefore final-tip CI is NOT VERIFIED. No claim of final-head CI pass is made.
