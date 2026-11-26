@@ -2345,3 +2345,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - These are PR merge-result CI runs, not standalone exact-head runs. They verify the imported D1 package and static pool contract against the recorded merge result; they do not verify API-attestation-to-D1 composition because that code is not yet implemented.
 - PR #178 remains OPEN / DRAFT / UNMERGED, mergeable=true, formal reviews 0, review threads 0. No merge.
 - No hosted D1, live event, secret read, provider call, dispatch, deployment or production mutation.
+
+## Pass 109 — PR #178 current-head CI and integration-boundary audit (2026-11-26)
+
+- Audit target before documentation: PR #178 HEAD `a7c8df8be07ded912a1a66d527b87f2897bc1014`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Current-head Pool Contract Validation run `45881302922` / job `140121074498`: SUCCESS; dispatch-disabled assertion, workflow YAML parsing and pool security-contract validation steps completed.
+- Current-head Isolated D1 Ledger Proof run `45881303101` / job `140121027145`: SUCCESS; exact PR revision checkout, pinned dependency install, inert Worker check and fresh local D1 migration/authority test steps completed. Job summary does not expose test totals or checkout SHA; no count claimed.
+- PR #178 remains OPEN/DRAFT/UNMERGED, 0 formal reviews and 0 inline threads. PR #174–#177 also returned 0 formal reviews/threads. Governance/ruleset protection and independent security review remain NOT VERIFIED.
+- Source audit: Node envelope validator depends on node:crypto/Buffer; D1 binder still accepts flat Actions context and computes legacy 15-field digest; migration 0017 lacks distinct API provenance fields; approval/receipt still compare legacy digest. No API-envelope-to-D1 composition.
+- Pass109 report: `docs/reports/2026-11-26-pass109-pr178-ci-integration-boundary-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass109-pr178-ci-integration-boundary-audit.md`.
+- No runtime/schema changes, hosted D1, secrets, provider calls, dispatch, deployment, merge or production writes. Gemini/Claude/ECC/FCC and independent security review NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
+- Next: implement Workers-native WebCrypto strict envelope validator + trusted Actions cross-check + negative-first tests. Follow with migration 0018 and coordinated binder/approval/receipt/replay integration.
+- PR #178: https://github.com/VlDMlNSh/developer-cloud-pool/pull/178
+- MediaHub canonical map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
