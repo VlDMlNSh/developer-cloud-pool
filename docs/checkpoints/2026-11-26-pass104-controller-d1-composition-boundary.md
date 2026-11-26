@@ -14,3 +14,10 @@ Date: 2026-11-26
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: one clean-base integration branch; versioned canonical API-attested envelope; D1-side recomputation/validation; one mocked end-to-end Workers test plus adversarial tamper/stale-ref/replay/ambiguous-ack cases. Keep dispatch=false and executionAuthorized=false.
 - Full report: ../reports/2026-11-26-pass104-controller-d1-composition-boundary-audit.md
+
+
+## Final ref/CI status
+
+- Final PR #176 head: `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c` (32 ahead / 0 behind frozen default).
+- Final-head Pool Contract run `45878657129`: IN_PROGRESS at last observation. Prior run `45878070090`: SUCCESS on earlier merge result; 25/25 tests, dispatch false.
+- Reviews 0; threads 0. Keep Draft/unmerged.
