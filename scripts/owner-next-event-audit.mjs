@@ -10,7 +10,7 @@ function fail(code) {
 }
 
 export function verifyOwnerNextEvent(input) {
-  const { event, repository, issue, comment, workflowRun, workflow, defaultBranchRef, expected = {} } = input ?? {};
+  const { event, repository, issue, comment, workflowRun, workflow, workflowFile, defaultBranchRef, expected = {} } = input ?? {};
   const env = expected;
   if (!event || event.action !== "created" || env.eventName !== "issue_comment") return fail("EVENT_TYPE_OR_ACTION");
   if (!repository || !Number.isSafeInteger(repository.id) || !repository.owner || !Number.isSafeInteger(repository.owner.id)) return fail("REPOSITORY_IDENTITY_MISSING");
@@ -27,6 +27,7 @@ export function verifyOwnerNextEvent(input) {
   if (workflowRun.run_attempt !== 1) return fail("RERUN_REQUIRES_DURABLE_RECONCILIATION");
   if (workflowRun.event !== "issue_comment" || workflowRun.path !== EXPECTED_WORKFLOW_PATH + "@" + repository.default_branch) return fail("WORKFLOW_EVENT_OR_PATH_MISMATCH");
   if (workflow?.path !== EXPECTED_WORKFLOW_PATH || workflow?.state !== "active" || workflow.id !== workflowRun.workflow_id) return fail("WORKFLOW_METADATA_MISMATCH");
+  if (workflowFile?.path !== EXPECTED_WORKFLOW_PATH || !/^[0-9a-f]{40}$/.test(workflowFile?.sha ?? "") || workflowFile?.refSha !== workflowRun.head_sha) return fail("WORKFLOW_FILE_BLOB_NOT_BOUND_TO_RUN_SHA");
   if (workflowRun.repository?.id !== repository.id) return fail("RUN_REPOSITORY_ID_MISMATCH");
   if (workflowRun.actor?.id !== comment.user.id) return fail("RUN_ACTOR_NOT_SOURCE_AUTHOR");
   if (workflowRun.head_branch !== repository.default_branch || env.ref !== "refs/heads/" + repository.default_branch) return fail("RUN_NOT_ON_DEFAULT_BRANCH");
@@ -37,7 +38,7 @@ export function verifyOwnerNextEvent(input) {
     dispatch: "NOT_AUTHORIZED",
     source: { repositoryId: repository.id, ownerId: repository.owner.id, issueNumber: issue.number, commentId: comment.id },
     targetSha: workflowRun.head_sha,
-    workflow: { id: workflow.id, path: workflow.path },
+    workflow: { id: workflow.id, path: workflow.path, fileSha: workflowFile.sha, fileRefSha: workflowFile.refSha },
     run: { id: workflowRun.id, attempt: workflowRun.run_attempt }
   };
 }
@@ -68,12 +69,14 @@ async function main() {
     apiGet("/repos/" + repositoryName + "/issues/comments/" + event.comment?.id, token, apiUrl),
     apiGet("/repos/" + repositoryName + "/actions/runs/" + runId, token, apiUrl)
   ]);
-  const [workflow, defaultBranchRef] = await Promise.all([
+  const [workflow, defaultBranchRef, workflowFileResponse] = await Promise.all([
     apiGet("/repos/" + repositoryName + "/actions/workflows/" + workflowRun.workflow_id, token, apiUrl),
-    apiGet("/repos/" + repositoryName + "/git/ref/heads/" + encodeURIComponent(repository.default_branch).replaceAll("%2F", "/"), token, apiUrl)
+    apiGet("/repos/" + repositoryName + "/git/ref/heads/" + encodeURIComponent(repository.default_branch).replaceAll("%2F", "/"), token, apiUrl),
+    apiGet("/repos/" + repositoryName + "/contents/.github/workflows/next-event-controller.yml?ref=" + encodeURIComponent(workflowRun.head_sha), token, apiUrl)
   ]);
+  const workflowFile = { path: EXPECTED_WORKFLOW_PATH, sha: workflowFileResponse.sha, refSha: workflowRun.head_sha };
   const result = verifyOwnerNextEvent({
-    event, repository, issue, comment, workflowRun, workflow, defaultBranchRef,
+    event, repository, issue, comment, workflowRun, workflow, workflowFile, defaultBranchRef,
     expected: { eventName, repository: repositoryName, runId, runAttempt, ref, sha }
   });
   if (result.status !== "OBSERVED_ONLY") throw new Error("Owner /next audit rejected: " + result.code);
@@ -81,7 +84,7 @@ async function main() {
     "## Canonical Owner /next event controller audit",
     "- Result: OBSERVED_ONLY",
     "- Source: repository ID " + result.source.repositoryId + ", owner ID " + result.source.ownerId + ", issue #" + result.source.issueNumber + ", comment ID " + result.source.commentId,
-    "- Workflow: " + result.workflow.path + " (workflow ID " + result.workflow.id + ")",
+    "- Workflow: " + result.workflow.path + " (workflow ID " + result.workflow.id + ", blob " + result.workflow.fileSha + " at " + result.workflow.fileRefSha + ")",
     "- Run: " + result.run.id + ", attempt " + result.run.attempt,
     "- Target SHA: " + result.targetSha,
     "- Admission: NOT_CREATED",
