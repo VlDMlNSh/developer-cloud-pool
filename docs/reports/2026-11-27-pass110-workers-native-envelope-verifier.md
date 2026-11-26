@@ -42,3 +42,13 @@ Date: 2026-11-27
 
 PR: https://github.com/VlDMlNSh/developer-cloud-pool/pulls
 Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Validation update — 2026-11-27
+
+- Initial PR #179 merge-result run `45895815698` completed SUCCESS on merge-result SHA `24124356a878568da9327d109ce8170bc73232c3`. D1 suite: 9 files / 133 tests passed; this run preceded the added Node-vs-WebCrypto digest parity assertion.
+- Pool Contract Validation `45895815527` completed SUCCESS: dispatch-disabled assertion, YAML parsing and security-contract validation passed.
+- Added explicit parity test against frozen `scripts/owner-next-api-attestation-envelope.mjs` in commit `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e` (latest implementation HEAD at this update).
+- Because D1 workflow is scoped to PRs targeting `Основной`, PR #179 remains stacked on PR #178 and PR #180 is the validation-only PR targeting default. New run for the parity assertion is pending / NOT VERIFIED.
+- PR #179 remains OPEN/DRAFT/UNMERGED; 0 formal reviews and 0 inline threads. PR #180 is validation-only and must not be merged.
+- No CI claim is transferred from prior merge-result SHA to latest parity-test SHA.
