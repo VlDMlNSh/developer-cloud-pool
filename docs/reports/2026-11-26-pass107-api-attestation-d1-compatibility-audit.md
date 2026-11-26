@@ -86,3 +86,10 @@ Create one clean integration branch from the frozen common base, port the D1 pac
 - Pass 107 docs/checkpoint/Context Window were read back successfully. Final working branch HEAD after documentation updates: `d0595e58c6acab976238c7fe365cdab29adc4739`; compare to frozen base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 26 ahead / 0 behind; 11 changed files total.
 - PR #177 remains OPEN/DRAFT/UNMERGED. The PR listing returned `mergeable=false`; reason/state was not exposed by the available read, so treat mergeability as NOT VERIFIED and do not merge. Reviews 0, threads 0.
 - No Actions run or combined status was returned for final documentation HEAD `d0595e58...`; exact-head CI NOT VERIFIED. Previous merge-result run `45879712743` remains limited to 20/20 envelope tests on earlier code/workflow tip `535e4fac...`.
+
+
+## PR metadata refresh (final read)
+
+- A subsequent GitHub PR metadata refresh now reports PR #177 `mergeable=true` (the earlier `false` value was transient/inconsistent; no conflict is currently reported). PR remains OPEN/DRAFT/UNMERGED, 0 reviews and 0 review threads.
+- Latest branch/PR HEAD: `d1aa5c07b5fa7bec9b937b53fb61cd616bd72f5d`; compare to base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 29 commits ahead / 0 behind, 11 changed files.
+- No Actions run or combined status was returned for this final SHA. Exact-head CI remains NOT VERIFIED. Prior merge-result run `45879712743` remains 20/20 envelope tests on earlier code/workflow tip only.
