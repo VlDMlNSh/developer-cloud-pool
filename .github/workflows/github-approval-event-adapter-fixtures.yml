@@ -1,0 +1,27 @@
+name: GitHub Approval Event Adapter Fixture Tests
+
+on:
+  pull_request:
+    paths:
+      - "proofs/github-approval-event-adapter/**"
+      - ".github/workflows/github-approval-event-adapter-fixtures.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: approval-event-adapter-fixtures-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-fixtures:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout immutable source without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Run negative-first API fixture tests
+        working-directory: proofs/github-approval-event-adapter
+        run: node --test
