@@ -1,0 +1,51 @@
+name: Cloud Pool Next Admission Contract
+
+on:
+  push:
+    branches:
+      - feat/cloud-pool-next-admission-contract-2026-11-15
+  pull_request:
+    paths:
+      - "scripts/next-admission.mjs"
+      - "scripts/next-dispatch-ledger.mjs"
+      - "scripts/next-github-ledger-adapter.mjs"
+      - "scripts/next-github-api-adapter.mjs"
+      - "test/next-admission.test.mjs"
+      - "test/next-dispatch-ledger.test.mjs"
+      - "test/next-github-ledger-adapter.test.mjs"
+      - "test/next-github-api-adapter.test.mjs"
+      - ".github/workflows/next-admission-contract.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: next-admission-contract-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.9.0
+          check-latest: false
+      - name: Syntax checks
+        run: |
+          node --check scripts/next-admission.mjs
+          node --check scripts/next-dispatch-ledger.mjs
+          node --check scripts/next-github-ledger-adapter.mjs
+          node --check scripts/next-github-api-adapter.mjs
+          node --check test/next-admission.test.mjs
+          node --check test/next-dispatch-ledger.test.mjs
+          node --check test/next-github-ledger-adapter.test.mjs
+          node --check test/next-github-api-adapter.test.mjs
+      - name: Adversarial admission and ledger tests
+        run: node --test test/next-admission.test.mjs test/next-dispatch-ledger.test.mjs test/next-github-ledger-adapter.test.mjs test/next-github-api-adapter.test.mjs
