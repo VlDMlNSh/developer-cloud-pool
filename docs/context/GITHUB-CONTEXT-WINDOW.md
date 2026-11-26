@@ -2236,3 +2236,15 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 105 — API-attested envelope contract freeze (2026-11-26)
+
+- Clean working branch `integration/pass105-api-attested-envelope-contract-2026-11-26` created from canonical default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; no PR branch stack inherited.
+- Inspected PR #176 controller API verifier/workflow and PR #175 D1 binder/context adapter/migration 0017/receipt path. API verifier returns workflow Contents API blob SHA/ref SHA but only emits a step summary. D1 binder independently derives digest from flat Actions context. No same-run call path joins them.
+- Migration 0017 stores `workflow_sha` but has no dedicated workflow-file blob SHA, Issue/Comment node IDs, attestation schema/version or distinct API-observed run-head SHA. Do not conflate GitHub workflow commit SHA with Contents API Git blob SHA.
+- Pass105 documentation contract freeze: `docs/contracts/2026-11-26-owner-next-api-attested-envelope-v1.md`; report `docs/reports/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`; checkpoint `docs/checkpoints/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`.
+- Proposed v1 contract uses strict typed schema, fixed ordered-array canonical SHA-256 with domain separator, full API event/workflow/run provenance, and D1-side schema/provenance validation + digest recomputation. Requires migration 0018 and one mocked same-run API verifier -> envelope -> D1 admission -> durable receipt test with adversarial cases.
+- This was documentation-only. Runtime/migration code unchanged; tests/CI NOT RUN. Hosted D1, live issue_comment, dispatch, provider calls, secrets, deployment, merge NOT RUN. Independent security review NOT RUN. Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement the v1 validator and migration 0018 on this clean branch, wire D1 adapter, and add end-to-end mocked Workers test; dispatch remains false.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
