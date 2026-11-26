@@ -2290,3 +2290,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Job logs: six workflow YAML files parsed; `POOL_DISPATCH_ENABLED=false`; `POOL_CONTRACT_VALIDATION=PASS`; Node envelope suite `20 tests / 20 pass / 0 fail`, including duplicate-key rejection and read-only policy assertions.
 - This is the strongest current CI evidence for the implementation. It is merge-result CI on the code/workflow tip, not exact-head CI. Subsequent docs-only updates may advance branch HEAD; no CI claim is transferred to a later docs-only SHA.
 - PR #177 remains Draft/unmerged, reviews 0, threads 0. No merge or dispatch.
+
+
+## Pass 107 — API-attestation / D1 compatibility audit (2026-11-26)
+
+- Read back PR #175 D1 binder/migration 0017, PR #176 API verifier/workflow, and PR #177 v1 envelope validator. Source audit VERIFIED; no runtime changes.
+- PR #176 verifier returns `OBSERVED_ONLY`, `admission: NOT_CREATED`, `dispatch: NOT_AUTHORIZED`; workflow does not serialize an envelope or call D1.
+- PR #175 `bindGitHubNextEvent` accepts flat Actions context and independently hashes a 15-field legacy tuple. It does not consume v1 envelope. Digest omits schema/version, issue/comment node IDs, observed default HEAD as separate field, workflow ID/path/state, workflow-file blob SHA and workflow-file ref SHA.
+- Migration 0017 `workflow_sha` is populated from `github.workflow_sha` (workflow commit SHA). Do not overload it with Contents API blob SHA. Migration 0018 must add explicit workflow commit/blob/ref SHA, issue/comment node IDs, observed default SHA, workflow ID/path/state and schema/version; IDs remain TEXT.
+- D1 already uses WebCrypto `crypto.subtle.digest`; use this for independent v1 digest recomputation, not Node `node:crypto` in Workers runtime.
+- Approval currently requires `approval.envelopeDigest === bound.context.eventDigest`; the v1 envelope digest must become the single coordinated digest for admission approval and receipt, not a parallel digest.
+- Reuse PR #176 API readbacks/blob attestation and PR #175 single ledger, SQL trigger chain, primary-first readback and Workers Vitest harness. No second ledger/service/dependency.
+- PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #176 head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`; both Draft/unmerged, 0 reviews/threads. Their prior merge-result CI successes do not prove composed integration.
+- Pass 107 report: `docs/reports/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`.
+- Tests NOT RUN in this audit. No hosted D1/live event/secrets/provider/dispatch/deployment/merge/production write. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: one clean combined integration branch, port D1 package + v1 validator, implement migration 0018 and negative-first Workers E2E test; keep dispatch=false.
+- MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
