@@ -57,3 +57,10 @@ Create one clean-base integration candidate containing the controller verifier a
 - After documentation commits, PR #176 head is `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c`, 32 commits ahead / 0 behind the frozen default base. The final diff contains 16 files: existing controller/verifier, tests, validation workflow, prior reports/checkpoints, and this Pass104 report/checkpoint/context update; no D1 runtime files are present in PR #176.
 - Pool Contract Validation run `45878657129` was IN_PROGRESS at final observation on this final head. Do not mark final-tip CI PASS until it completes. The earlier run `45878070090` SUCCESS checked out PR #176 merge result `162ba8c326357f4ef5a45dab4c54b1620fd4eb05`, combining pre-Pass104-doc head `25fb6b19997b7818c124b546072430ddbcfce6d4` with default base.
 - The 45878070090 job log confirms `POOL_CONTRACT_VALIDATION=PASS`, all six workflow YAML files parsed, dispatch gate `false`, and 25/25 owner-event verifier tests passed. This is merge-result evidence for the earlier tip, not final-tip evidence.
+
+
+### Final publication tip correction
+
+- Subsequent documentation commits advanced PR #176 to `692a058c3cde4ea5e54916da0d50231406410e64` (35 ahead / 0 behind frozen default). The final diff remains 16 files and contains no D1 runtime files.
+- A fresh Actions lookup for this final tip returned no associated workflow runs. Run `45878657129` was observed IN_PROGRESS for the immediately preceding tip `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c`; its final conclusion is NOT VERIFIED here. The earlier successful merge-result run `45878070090` remains evidence only for its own earlier merge-result SHA.
+- Therefore final-tip CI is NOT VERIFIED. No claim of final-head CI pass is made.
