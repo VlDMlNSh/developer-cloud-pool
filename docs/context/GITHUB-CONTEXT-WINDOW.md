@@ -2248,3 +2248,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - This was documentation-only. Runtime/migration code unchanged; tests/CI NOT RUN. Hosted D1, live issue_comment, dispatch, provider calls, secrets, deployment, merge NOT RUN. Independent security review NOT RUN. Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement the v1 validator and migration 0018 on this clean branch, wire D1 adapter, and add end-to-end mocked Workers test; dispatch remains false.
 - MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 106 — strict API-attested envelope validator (2026-11-26)
+
+- On clean integration branch `integration/pass105-api-attested-envelope-contract-2026-11-26` based on `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`, added `scripts/owner-next-api-attestation-envelope.mjs` and `scripts/owner-next-api-attestation-envelope.test.mjs`.
+- Validator enforces exact schema/key sets, fixed repository/owner/issue/body/profile, owner actor, decimal IDs, lowercase SHA formats, attempt=1, observed default-head/run-head equality, workflow file blob ref equality, separate workflow commit/blob SHAs, canonical ordered-array UTF-8 SHA-256 digest and fixed domain separator. Raw JSON duplicate keys rejected before JSON.parse.
+- Verification output is read-only: `dispatch:false`, `executionAuthorized:false`.
+- Updated `.github/workflows/pool-contract-validation.yml` to run the new node:test suite alongside existing owner-event audit tests.
+- No new dependencies. Reuse Node built-ins and existing CI workflow.
+- Local test execution NOT RUN: attempted clone failed because github.com DNS/network resolution was unavailable. CI not yet observed; draft PR to be opened for CI evidence.
+- API verifier still does not construct this envelope; PR #175 D1 binder/migration/receipt are not yet ported or wired to validate it. D1 migration 0018 and same-run end-to-end test NOT IMPLEMENTED.
+- Pass106 report: `docs/reports/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`; checkpoint: `docs/checkpoints/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`.
+- No D1/live event/secret/provider/dispatch/deployment/merge/production writes. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: port D1 ledger, add migration 0018, D1-side strict envelope verification, then controller-to-receipt mocked Workers integration test.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
