@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mapGitHubActionsContext } from "../src/github-actions-context.mjs";
 import { digestOwnerNextEnvelope, verifyOwnerNextEnvelopeForActions } from "../src/owner-next-envelope.mjs";
+import { digestOwnerNextEnvelope as digestNodeEnvelope } from "../../../scripts/owner-next-api-attestation-envelope.mjs";
 
 const sha = (char) => char.repeat(40);
 const context = {
@@ -42,6 +43,11 @@ describe("Workers-native owner /next API envelope", () => {
     const digest = await digestOwnerNextEnvelope(value);
     const result = await verifyOwnerNextEnvelopeForActions(JSON.stringify(value), digest, context);
     expect(result).toMatchObject({ decision: "VERIFIED", digest, dispatch: false, executionAuthorized: false });
+  });
+
+  it("matches the frozen Node implementation canonical digest byte-for-byte", async () => {
+    const value = envelope();
+    await expect(digestOwnerNextEnvelope(value)).resolves.toBe(digestNodeEnvelope(value));
   });
 
   it("rejects duplicate JSON keys before JSON.parse ambiguity", async () => {
