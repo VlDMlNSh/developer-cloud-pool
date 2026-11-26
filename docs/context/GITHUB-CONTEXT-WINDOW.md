@@ -2334,3 +2334,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Final diff: 16 files; no D1 runtime or migration files are included in PR #176.
 - Current final-head Pool Contract run `45878657129` was IN_PROGRESS at last observation. Prior run `45878070090` completed SUCCESS on merge-result SHA `162ba8c326357f4ef5a45dab4c54b1620fd4eb05` for earlier tip `25fb6b19997b7818c124b546072430ddbcfce6d4`; its log showed 25/25 verifier tests and dispatch disabled. Do not attribute that PASS to final tip.
 - Formal reviews remain 0; review threads 0. No merge or dispatch.
+
+
+### Final publication tip correction
+
+- Subsequent documentation commits advanced PR #176 to `692a058c3cde4ea5e54916da0d50231406410e64` (35 ahead / 0 behind frozen default). The final diff remains 16 files and contains no D1 runtime files.
+- A fresh Actions lookup for this final tip returned no associated workflow runs. Run `45878657129` was observed IN_PROGRESS for the immediately preceding tip `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c`; its final conclusion is NOT VERIFIED here. The earlier successful merge-result run `45878070090` remains evidence only for its own earlier merge-result SHA.
+- Therefore final-tip CI is NOT VERIFIED. No claim of final-head CI pass is made.
