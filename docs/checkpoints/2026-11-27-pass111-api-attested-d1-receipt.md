@@ -18,3 +18,10 @@
 - Next: non-dispatching controller workflow same-run API verifier → attested D1 adapter E2E; eliminate production use of legacy non-attested entrypoint.
 - Report: `docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Governance read-back
+- Default ref verified at `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Active ruleset #26550182 requires PR and review-thread resolution, blocks deletion/non-fast-forward, but configured approval count is 0 and CODEOWNERS review is disabled. No bypass actors; integration cannot bypass.
+- Branch-protection endpoint 403; traditional branch protection NOT VERIFIED. Root and `.github/CODEOWNERS` not found.
+- PR #181 reviews 0, threads 0. Independent review remains a project gate even though repository ruleset does not require approvals.
