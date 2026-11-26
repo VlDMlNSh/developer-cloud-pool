@@ -2359,3 +2359,49 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: implement Workers-native WebCrypto strict envelope validator + trusted Actions cross-check + negative-first tests. Follow with migration 0018 and coordinated binder/approval/receipt/replay integration.
 - PR #178: https://github.com/VlDMlNSh/developer-cloud-pool/pull/178
 - MediaHub canonical map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+---
+
+## Pass 110 — Workers-native API-attested envelope verifier (2026-11-27)
+
+- Frozen base: PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Working branch: `feat/pass110-workers-envelope-validator-2026-11-27`; verifier source commit `24dd17483ea3b15567159c6cabccf0db184bf3c3`; test commit `c4d7849c5934e9f3700b3cba22267f27cfa9a72e`.
+- Added `proofs/d1-ledger/src/owner-next-envelope.mjs`: Workers-compatible strict JSON duplicate-key rejection, exact schema validation, WebCrypto body/canonical digest, and trusted Actions context cross-check. No Node crypto/Buffer in runtime module.
+- Added `proofs/d1-ledger/test/owner-next-envelope.test.ts`: positive and negative test coverage. Tests authored; local execution NOT RUN; CI pending.
+- Reused existing Node v1 envelope contract and `mapGitHubActionsContext`; no new dependency/service/ledger.
+- No D1 schema/binder/receipt integration or workflow wiring in this pass. No hosted D1, secrets, provider calls, dispatch, executor, deployment, merge or production writes.
+- Independent security review NOT RUN; active time NOT MEASURED. Gemini/Claude/ECC/FCC NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch and execution authorization remain false.
+- Next: verify PR exact-head CI and logs, then independent review; only afterward implement migration 0018 and coordinated D1 envelope binding.
+- Report: `docs/reports/2026-11-27-pass110-workers-native-envelope-verifier.md`; checkpoint: `docs/checkpoints/2026-11-27-pass110-workers-native-envelope-verifier.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 110 CI/read-back update — 2026-11-27
+
+- PR #179 implementation HEAD advanced to `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; base is PR #178 branch `integration/pass108-d1-ledger-plus-envelope-2026-11-26` @ `680bb7a1af7984b74b93e17284ef4f11ad30dba0`. PR #179 OPEN/DRAFT/UNMERGED, mergeable=true, formal reviews 0, threads 0.
+- Initial validation of pre-parity head c8551564... passed on merge-result SHA `24124356a878568da9327d109ce8170bc73232c3`: D1 run `45895815698` SUCCESS, 9 files / 133 tests; Pool Contract run `45895815527` SUCCESS (dispatch gate, YAML and security contracts).
+- Added cross-implementation canonical digest parity test against frozen Node implementation in commit `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`. New exact code SHA validation is exposed through validation-only PR #180 targeting `Основной`; no run returned yet, therefore parity test CI NOT VERIFIED.
+- PR #180 OPEN/DRAFT/UNMERGED, validation-only; never merge. PR #179 remains stacked on PR #178.
+- Pass 110 runtime source still does not wire verifier into D1 admission or workflow. No hosted D1, secrets, providers, dispatch, executor, deployment, merge or production writes. Independent review NOT RUN; active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 110 final validation read-back — 2026-11-27
+
+- Workers-native envelope validator + tests: VERIFIED by PR merge-result CI. Implementation code SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; validation checkout merge-result SHA `7e7f5b5...` (PR #180 validation-only).
+- D1 run `45895942746` / job `140169725137`: SUCCESS; npm ci, inert Worker check, 9 test files / 134 tests passed. Envelope test file: 11/11, including parity with frozen Node canonical digest.
+- Pool Contract run `45895942756` / job `140169725307`: SUCCESS; dispatch-disabled assertion, workflow YAML parse and security contracts passed; Node envelope suite 20/20.
+- PR #179 latest docs-only head `dfe6b34d4cd28481e5ec28d2a6e1657a3c18ffcf`, base PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, reviews 0, threads 0. Code/test SHA validated above; no code/test edits after it.
+- PR #180 validation-only OPEN/DRAFT/UNMERGED; do not merge. PR #179 remains the implementation review surface.
+- Independent security review and current ruleset/governance details NOT VERIFIED. D1 migration 0018 and end-to-end API-envelope → D1 receipt/replay integration NOT IMPLEMENTED. No hosted D1, secret reads, provider calls, dispatch, executor, deployment, merge or production writes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
+
+
+### Pass 110 documentation publication read-back — 2026-11-27
+
+- Final working branch / PR #179 head after report, checkpoint and Context Window commits: `eb74baa76e8081331ef28bbe5c37b3bb295b1d2e`. Implementation code/test SHA remains `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; only documentation changed afterward.
+- PR #179 base remains PR #178 branch at `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, 0 formal reviews/threads.
+- Validation PR #180 targets default `Основной`, exact code/test SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; OPEN/DRAFT/UNMERGED, validation-only; do not merge.
+- Pass 110 report/checkpoint/Context Window were written and read back through GitHub; final CI evidence remains D1 45895942746 (134/134) and Contract 45895942756 SUCCESS.
