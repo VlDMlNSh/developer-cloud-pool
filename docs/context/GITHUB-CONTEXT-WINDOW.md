@@ -2326,3 +2326,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: build one clean-base integration candidate with a versioned canonical API-attested envelope, D1-side schema/provenance/digest recomputation, and a mocked end-to-end Workers test plus tamper/stale-ref/replay/rerun/ambiguous-ack adversarial cases. Keep dispatch and execution authorization false.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 104 final-ref addendum
+
+- Final PR #176 head after Pass104 documentation commits: `ea4c9c54be1e8d7cf3ae5c0c7e281e2998a61b6c`; compare against frozen default `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 32 ahead / 0 behind.
+- Final diff: 16 files; no D1 runtime or migration files are included in PR #176.
+- Current final-head Pool Contract run `45878657129` was IN_PROGRESS at last observation. Prior run `45878070090` completed SUCCESS on merge-result SHA `162ba8c326357f4ef5a45dab4c54b1620fd4eb05` for earlier tip `25fb6b19997b7818c124b546072430ddbcfce6d4`; its log showed 25/25 verifier tests and dispatch disabled. Do not attribute that PASS to final tip.
+- Formal reviews remain 0; review threads 0. No merge or dispatch.
