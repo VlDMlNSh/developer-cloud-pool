@@ -12,3 +12,10 @@
 - Next: exact-head CI/log inspection and independent code review; then separate migration 0018 + D1 integration pass.
 - Report: `docs/reports/2026-11-27-pass110-workers-native-envelope-verifier.md`.
 - MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI update
+- Pre-parity validation: D1 run 45895815698 SUCCESS, 9 files / 133 tests; Pool Contract run 45895815527 SUCCESS. Merge-result SHA 24124356a878568da9327d109ce8170bc73232c3.
+- Added Node-vs-WebCrypto canonical digest parity assertion at latest implementation HEAD b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e.
+- PR #179 remains stacked on PR #178. Validation-only PR #180 targets canonical default to trigger the existing workflows. CI for the new parity assertion is pending / NOT VERIFIED.
+- Do not merge PR #180. No independent review yet.
