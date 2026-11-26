@@ -1,4 +1,45 @@
-# CURRENT OPERATIONAL SNAPSHOT — Pass 75 (2026-11-24)
+# CURRENT OPERATIONAL SNAPSHOT — Pass 101 (2026-11-26)
+
+Last refreshed: 2026-11-26 19:03:35 Europe/Vilnius (UTC+02:00)
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
+
+## Canonical baseline
+- Default branch: `Основной`
+- Immutable default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`
+- Tree SHA: `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`; 70 entries.
+- Default has five workflows only. Canonical `next-event-controller.yml` and prior `next-request-intake.yml` are absent (404). No `issue_comment` workflow runs were returned.
+- Open Issues: 17. Open PRs: 132 (100 first-page results). Priority #1/#22/#26/#96/#140 remain OPEN.
+- Active Ruleset #26550182: PR required; approvals 0; no required status-check rule; no bypass actors. Classic branch-protection GET 403. Governance remains BLOCKED; no Ruleset changes.
+- Default combined commit statuses: empty. Current Supervisor check-run success is heartbeat/retirement-only, not executor evidence.
+
+## Current candidate chain
+- PR #174 API audit: head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, 10 ahead / 0 behind; exact-head Pool Contract run 45677997233 SUCCESS.
+- PR #175 clean-base D1 proof: head `3d69bc943677dba909792bf4930d4c0aa5d2233f`, 40 ahead / 0 behind; D1 run 45690428935 and Contract run 45690428805 SUCCESS.
+- PR #176 canonical controller candidate: head `ca53ed9eb625d2532aa00cc269cf7f8617d97266`, 24 ahead / 0 behind; Contract run 45705794330 SUCCESS. Workflow exists only on this draft branch.
+- All #174/#175/#176 remain OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads.
+- PR #176 verifier is read-only and returns OBSERVED_ONLY. It does not create a D1 admission/receipt. PR #175 binder still accepts flat Actions context; no same-run API-envelope-to-D1 callsite exists.
+- Workflow-code blob identity is not attested. A possible `workflowRun.path` fixture/API shape mismatch remains NOT VERIFIED; synthetic tests expect a branch suffix not present in observed existing run objects.
+- PR #168/#170 are older-base D1 predecessors; do not merge independently. PR #171 is an older intake candidate.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 157 commits behind current default; #30 has no exact-head CI. All checked PR reviews/threads are zero.
+- GitHub Read Adapter path-fix branch `fix/github-read-adapter-path-segments-2026-11-06`: HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 157 behind, 19 files, no PR/CI.
+
+## Runtime / acceptance
+- Supervisor run 45811637973/job 139880704125 SUCCESS only verifies retired dispatch remains retired.
+- Worker remains retired/fail-closed. No qualified executor, hosted D1, live routing/quota ledger, authenticated Web Console or durable user-visible state.
+- `POOL_DISPATCH_ENABLED`: NOT VERIFIED; no variable or secret read.
+- Dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge and production writes: NOT RUN.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+## Documentation authority
+- Pass101 report: [report](../reports/2026-11-26-pass101-live-revalidation-canonical-controller-audit.md), commit `d21b4605a29e31b00524e9bcc9fcb172f41797ea`.
+- Pass101 checkpoint: [checkpoint](../checkpoints/2026-11-26-pass101-live-revalidation-canonical-controller-audit.md), commit `b0cafdc9e82b591d1bde33121860d69363abba43`.
+- This Context Window is maintained on working documentation branch `docs/engineering-excellence-2026-11-23`, associated with PR #169. It is not canonical/default and must not be merged without exact-head CI, provenance, governance and review gates.
+- This Pass101 snapshot supersedes conflicting older operational values below. Historical architecture and audit material is retained for traceability; revalidate all old SHAs and claims before relying on them.
+
+---
+
+# HISTORICAL SNAPSHOT — Pass 75 (2026-11-24; superseded by Pass 101)
 
 Contour A only. Pass75 resolves the intended FCC/ECC identities from owner-approved Issue #115 and upstream source readback; historical installation feasibility evidence is refreshed, but current-base qualification and provider route remain open.
 
