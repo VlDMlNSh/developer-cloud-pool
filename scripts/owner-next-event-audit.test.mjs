@@ -9,9 +9,10 @@ function fixture(overrides = {}) {
   const event = { action: "created", repository: { id: 100, owner: { id: 200 } }, issue: { number: 96 }, comment: { id: 300, body: "/next", user: { id: 200 } }, sender: { id: 200 } };
   const workflowRun = { id: 400, run_attempt: 1, event: "issue_comment", path: ".github/workflows/next-event-controller.yml@Основной", workflow_id: 500, repository: { id: 100 }, actor: { id: 200 }, head_branch: "Основной", head_sha: "a".repeat(40) };
   const workflow = { id: 500, path: ".github/workflows/next-event-controller.yml", state: "active" };
+  const workflowFile = { path: ".github/workflows/next-event-controller.yml", sha: "c".repeat(40), refSha: "a".repeat(40) };
   const defaultBranchRef = { object: { sha: "a".repeat(40) } };
   const expected = { eventName: "issue_comment", repository: repository.full_name, runId: "400", runAttempt: "1", ref: "refs/heads/Основной", sha: "a".repeat(40) };
-  return { event, repository, issue, comment, workflowRun, workflow, defaultBranchRef, expected, ...overrides };
+  return { event, repository, issue, comment, workflowRun, workflow, workflowFile, defaultBranchRef, expected, ...overrides };
 }
 
 test("accepts only a fully API-attested exact owner /next event as audit-only", () => {
@@ -20,6 +21,8 @@ test("accepts only a fully API-attested exact owner /next event as audit-only", 
   assert.equal(result.admission, "NOT_CREATED");
   assert.equal(result.dispatch, "NOT_AUTHORIZED");
   assert.equal(result.targetSha, "a".repeat(40));
+  assert.equal(result.workflow.fileSha, "c".repeat(40));
+  assert.equal(result.workflow.fileRefSha, "a".repeat(40));
 });
 
 const rejected = [
@@ -33,6 +36,10 @@ const rejected = [
   ["comment ID mismatch", (x) => { x.event.comment.id = 999; }],
   ["sender mismatch", (x) => { x.event.sender.id = 201; }],
   ["wrong workflow metadata path", (x) => { x.workflow.path = ".github/workflows/untrusted.yml"; }],
+  ["missing workflow file blob", (x) => { x.workflowFile = undefined; }],
+  ["workflow file blob from a different ref", (x) => { x.workflowFile.refSha = "b".repeat(40); }],
+  ["malformed workflow file blob SHA", (x) => { x.workflowFile.sha = "not-a-git-blob"; }],
+  ["workflow file path substitution", (x) => { x.workflowFile.path = ".github/workflows/untrusted.yml"; }],
   ["workflow run path missing branch suffix", (x) => { x.workflowRun.path = ".github/workflows/next-event-controller.yml"; }],
   ["workflow run path bound to another branch", (x) => { x.workflowRun.path = ".github/workflows/next-event-controller.yml@feature/untrusted"; }],
   ["wrong workflow event", (x) => { x.workflowRun.event = "workflow_dispatch"; }],
