@@ -67,7 +67,16 @@ function receiptMatches(row, event, admissionId) {
     row.workflow_ref === event.workflowRef && row.workflow_sha === event.workflowSha &&
     row.run_id === event.runId && row.run_attempt === event.runAttempt &&
     row.profile === PROFILE && row.event_digest === event.eventDigest &&
-    row.admission_id === admissionId && row.dispatch_enabled === 0 &&\n    row.attestation_schema === (event.attestationSchema ?? "") &&\n    row.attestation_version === (event.attestationVersion ?? 0) &&\n    row.issue_node_id === (event.issueNodeId ?? "") && row.comment_node_id === (event.commentNodeId ?? "") &&\n    row.observed_default_head_sha === (event.observedDefaultHeadSha ?? "") &&\n    row.run_head_sha === (event.runHeadSha ?? "") && row.workflow_id === (event.workflowId ?? "") &&\n    row.workflow_state === (event.workflowState ?? "") &&\n    row.workflow_commit_sha === (event.workflowCommitSha ?? "") &&\n    row.workflow_file_blob_sha === (event.workflowFileBlobSha ?? "") &&\n    row.workflow_file_ref_sha === (event.workflowFileRefSha ?? ""));
+    row.admission_id === admissionId && row.dispatch_enabled === 0 &&
+    row.attestation_schema === (event.attestationSchema ?? "") &&
+    row.attestation_version === (event.attestationVersion ?? 0) &&
+    row.issue_node_id === (event.issueNodeId ?? "") && row.comment_node_id === (event.commentNodeId ?? "") &&
+    row.observed_default_head_sha === (event.observedDefaultHeadSha ?? "") &&
+    row.run_head_sha === (event.runHeadSha ?? "") && row.workflow_id === (event.workflowId ?? "") &&
+    row.workflow_state === (event.workflowState ?? "") &&
+    row.workflow_commit_sha === (event.workflowCommitSha ?? "") &&
+    row.workflow_file_blob_sha === (event.workflowFileBlobSha ?? "") &&
+    row.workflow_file_ref_sha === (event.workflowFileRefSha ?? ""));
 }
 
 async function verifyAdmissionChain(db, input) {
@@ -128,7 +137,10 @@ async function recordGitHubNextReceipt(db, input, event, trustedClock) {
       event.eventName, event.eventAction, event.actorNumericId, event.actorLogin,
       event.authorAssociation, event.bodyDigest, event.ref, event.targetSha, event.workflowRef,
       event.workflowSha, event.runId, event.runAttempt, event.profile, event.eventDigest,
-      input.admissionId, recordedAt, event.attestationSchema ?? "", event.attestationVersion ?? 0,\n      event.issueNodeId ?? "", event.commentNodeId ?? "", event.observedDefaultHeadSha ?? "",\n      event.runHeadSha ?? "", event.workflowId ?? "", event.workflowState ?? "",\n      event.workflowCommitSha ?? "", event.workflowFileBlobSha ?? "", event.workflowFileRefSha ?? "").run();
+      input.admissionId, recordedAt, event.attestationSchema ?? "", event.attestationVersion ?? 0,
+      event.issueNodeId ?? "", event.commentNodeId ?? "", event.observedDefaultHeadSha ?? "",
+      event.runHeadSha ?? "", event.workflowId ?? "", event.workflowState ?? "",
+      event.workflowCommitSha ?? "", event.workflowFileBlobSha ?? "", event.workflowFileRefSha ?? "").run();
     const committed = await readReceipt(db.withSession("first-primary"), event);
     return receiptMatches(committed, event, input.admissionId)
       ? { decision: "SOURCE_COMMENT_RECORDED", admissionId: input.admissionId, sourceCommentId: event.sourceCommentId, dispatch: false, executionAuthorized: false }
