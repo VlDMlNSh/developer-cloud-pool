@@ -2236,3 +2236,87 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 105 — API-attested envelope contract freeze (2026-11-26)
+
+- Clean working branch `integration/pass105-api-attested-envelope-contract-2026-11-26` created from canonical default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; no PR branch stack inherited.
+- Inspected PR #176 controller API verifier/workflow and PR #175 D1 binder/context adapter/migration 0017/receipt path. API verifier returns workflow Contents API blob SHA/ref SHA but only emits a step summary. D1 binder independently derives digest from flat Actions context. No same-run call path joins them.
+- Migration 0017 stores `workflow_sha` but has no dedicated workflow-file blob SHA, Issue/Comment node IDs, attestation schema/version or distinct API-observed run-head SHA. Do not conflate GitHub workflow commit SHA with Contents API Git blob SHA.
+- Pass105 documentation contract freeze: `docs/contracts/2026-11-26-owner-next-api-attested-envelope-v1.md`; report `docs/reports/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`; checkpoint `docs/checkpoints/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`.
+- Proposed v1 contract uses strict typed schema, fixed ordered-array canonical SHA-256 with domain separator, full API event/workflow/run provenance, and D1-side schema/provenance validation + digest recomputation. Requires migration 0018 and one mocked same-run API verifier -> envelope -> D1 admission -> durable receipt test with adversarial cases.
+- This was documentation-only. Runtime/migration code unchanged; tests/CI NOT RUN. Hosted D1, live issue_comment, dispatch, provider calls, secrets, deployment, merge NOT RUN. Independent security review NOT RUN. Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement the v1 validator and migration 0018 on this clean branch, wire D1 adapter, and add end-to-end mocked Workers test; dispatch remains false.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 106 — strict API-attested envelope validator (2026-11-26)
+
+- On clean integration branch `integration/pass105-api-attested-envelope-contract-2026-11-26` based on `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`, added `scripts/owner-next-api-attestation-envelope.mjs` and `scripts/owner-next-api-attestation-envelope.test.mjs`.
+- Validator enforces exact schema/key sets, fixed repository/owner/issue/body/profile, owner actor, decimal IDs, lowercase SHA formats, attempt=1, observed default-head/run-head equality, workflow file blob ref equality, separate workflow commit/blob SHAs, canonical ordered-array UTF-8 SHA-256 digest and fixed domain separator. Raw JSON duplicate keys rejected before JSON.parse.
+- Verification output is read-only: `dispatch:false`, `executionAuthorized:false`.
+- Updated `.github/workflows/pool-contract-validation.yml` to run the new node:test suite alongside existing owner-event audit tests.
+- No new dependencies. Reuse Node built-ins and existing CI workflow.
+- Local test execution NOT RUN: attempted clone failed because github.com DNS/network resolution was unavailable. CI not yet observed; draft PR to be opened for CI evidence.
+- API verifier still does not construct this envelope; PR #175 D1 binder/migration/receipt are not yet ported or wired to validate it. D1 migration 0018 and same-run end-to-end test NOT IMPLEMENTED.
+- Pass106 report: `docs/reports/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`; checkpoint: `docs/checkpoints/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`.
+- No D1/live event/secret/provider/dispatch/deployment/merge/production writes. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: port D1 ledger, add migration 0018, D1-side strict envelope verification, then controller-to-receipt mocked Workers integration test.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI correction and final validation boundary
+
+- PR #177 opened Draft against `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Initial merge-result run `45879474164` completed SUCCESS on merge SHA `70989a36afba9ec72c4e54579c0aa54eb9bb7b30`; logs proved YAML parsing, `POOL_CONTRACT_VALIDATION=PASS`, and `POOL_DISPATCH_ENABLED=false`, but did **not** execute Node test suites. The initial test-command insertion targeted the wrong workflow text and had no effect.
+- Corrected `.github/workflows/pool-contract-validation.yml` to run `node --test scripts/owner-next-event-audit.test.mjs scripts/owner-next-api-attestation-envelope.test.mjs` after contract validation. Correction commit: `ff55291b2b2ea33ce94d861fd2f0af142bc97bd9`.
+- A new run for correction head was not returned by the Actions lookup at last observation. Therefore the envelope and owner-event Node tests remain NOT VERIFIED by execution; do not count run `45879474164` as test evidence.
+- Local clone/test attempt remains blocked by DNS failure resolving github.com. The corrected CI command is in the PR diff but its execution is pending/NOT VERIFIED.
+
+
+## Executed CI evidence and current-tip caveat
+
+- Draft PR #177: https://github.com/VlDMlNSh/developer-cloud-pool/pull/177
+- Candidate head at PR creation: `e9a9dea03fdd78e2789c8314cae384da51953bc9`; merge-result run `45879474164` SUCCESS on `70989a36afba9ec72c4e54579c0aa54eb9bb7b30` did not execute Node tests. It only established YAML syntax, static pool contract and dispatch gate false.
+- Corrected CI command at commit `ff55291b2b2ea33ce94d861fd2f0af142bc97bd9` then ran under PR merge-result run `45879528386` (job `140115037739`), SUCCESS. Log evidence: six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; `POOL_DISPATCH_ENABLED=false`; envelope suite `# tests 20 / # pass 20 / # fail 0`, including duplicate JSON key rejection, policy lockout, provenance mismatch and digest tampering.
+- The first corrected command also named an owner-event test path absent from this clean-base branch. The log proves the envelope suite ran (20/20), but no owner-event suite result is claimed. Workflow command has since been narrowed to only `node --test scripts/owner-next-api-attestation-envelope.test.mjs` in commit `960abc3af2651a8357f5b31623673820fb178993`.
+- Latest PR head after this command correction: `960abc3af2651a8357f5b31623673820fb178993`. No Actions run was returned for this exact head at last lookup. Thus final-tip CI is NOT VERIFIED; run `45879528386` is merge-result evidence for the immediately preceding commit only.
+- PR #177 remains Draft/unmerged; formal reviews 0; review threads 0. No merge.
+
+
+## Latest merge-result CI requalification
+
+- After narrowing the test command to the envelope test file only, PR #177 current code/workflow tip was `535e4fac6418209e13b33801308fdc42b95cbabc`.
+- Pool Contract Validation run `45879712743` / job `140115662601` completed SUCCESS. It checked out PR merge-result commit prefix `9b2d7f4` (merge-result validation, not standalone head checkout).
+- Job logs: six workflow YAML files parsed; `POOL_DISPATCH_ENABLED=false`; `POOL_CONTRACT_VALIDATION=PASS`; Node envelope suite `20 tests / 20 pass / 0 fail`, including duplicate-key rejection and read-only policy assertions.
+- This is the strongest current CI evidence for the implementation. It is merge-result CI on the code/workflow tip, not exact-head CI. Subsequent docs-only updates may advance branch HEAD; no CI claim is transferred to a later docs-only SHA.
+- PR #177 remains Draft/unmerged, reviews 0, threads 0. No merge or dispatch.
+
+
+## Pass 107 — API-attestation / D1 compatibility audit (2026-11-26)
+
+- Read back PR #175 D1 binder/migration 0017, PR #176 API verifier/workflow, and PR #177 v1 envelope validator. Source audit VERIFIED; no runtime changes.
+- PR #176 verifier returns `OBSERVED_ONLY`, `admission: NOT_CREATED`, `dispatch: NOT_AUTHORIZED`; workflow does not serialize an envelope or call D1.
+- PR #175 `bindGitHubNextEvent` accepts flat Actions context and independently hashes a 15-field legacy tuple. It does not consume v1 envelope. Digest omits schema/version, issue/comment node IDs, observed default HEAD as separate field, workflow ID/path/state, workflow-file blob SHA and workflow-file ref SHA.
+- Migration 0017 `workflow_sha` is populated from `github.workflow_sha` (workflow commit SHA). Do not overload it with Contents API blob SHA. Migration 0018 must add explicit workflow commit/blob/ref SHA, issue/comment node IDs, observed default SHA, workflow ID/path/state and schema/version; IDs remain TEXT.
+- D1 already uses WebCrypto `crypto.subtle.digest`; use this for independent v1 digest recomputation, not Node `node:crypto` in Workers runtime.
+- Approval currently requires `approval.envelopeDigest === bound.context.eventDigest`; the v1 envelope digest must become the single coordinated digest for admission approval and receipt, not a parallel digest.
+- Reuse PR #176 API readbacks/blob attestation and PR #175 single ledger, SQL trigger chain, primary-first readback and Workers Vitest harness. No second ledger/service/dependency.
+- PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #176 head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`; both Draft/unmerged, 0 reviews/threads. Their prior merge-result CI successes do not prove composed integration.
+- Pass 107 report: `docs/reports/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`.
+- Tests NOT RUN in this audit. No hosted D1/live event/secrets/provider/dispatch/deployment/merge/production write. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: one clean combined integration branch, port D1 package + v1 validator, implement migration 0018 and negative-first Workers E2E test; keep dispatch=false.
+- MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final Pass 107 branch read-back
+
+- Pass 107 docs/checkpoint/Context Window were read back successfully. Final working branch HEAD after documentation updates: `d0595e58c6acab976238c7fe365cdab29adc4739`; compare to frozen base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 26 ahead / 0 behind; 11 changed files total.
+- PR #177 remains OPEN/DRAFT/UNMERGED. The PR listing returned `mergeable=false`; reason/state was not exposed by the available read, so treat mergeability as NOT VERIFIED and do not merge. Reviews 0, threads 0.
+- No Actions run or combined status was returned for final documentation HEAD `d0595e58...`; exact-head CI NOT VERIFIED. Previous merge-result run `45879712743` remains limited to 20/20 envelope tests on earlier code/workflow tip `535e4fac...`.
+
+
+## PR metadata refresh (final read)
+
+- A subsequent GitHub PR metadata refresh now reports PR #177 `mergeable=true` (the earlier `false` value was transient/inconsistent; no conflict is currently reported). PR remains OPEN/DRAFT/UNMERGED, 0 reviews and 0 review threads.
+- Latest branch/PR HEAD: `d1aa5c07b5fa7bec9b937b53fb61cd616bd72f5d`; compare to base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 29 commits ahead / 0 behind, 11 changed files.
+- No Actions run or combined status was returned for this final SHA. Exact-head CI remains NOT VERIFIED. Prior merge-result run `45879712743` remains 20/20 envelope tests on earlier code/workflow tip only.
