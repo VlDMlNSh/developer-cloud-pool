@@ -428,7 +428,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
   });
 
   it("rejects attestation with mismatched workflow-file ref provenance", async () => {
-    const f = await fixture("9", undefined, true);
+    const f = await fixture("a", undefined, true);
     const changed = JSON.parse(f.sourceJson); changed.run.workflowFileRefSha = "d".repeat(40);
     const result = await admitGitHubNextAttestedEvent(env.POOL_DB, f.input, JSON.stringify(changed), f.digest, f.context, trustedClock);
     expect(result).toMatchObject({ decision: "DENY", reason: "RUN_REF_PROVENANCE_MISMATCH", dispatch: false, executionAuthorized: false });
