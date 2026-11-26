@@ -2386,3 +2386,14 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #180 OPEN/DRAFT/UNMERGED, validation-only; never merge. PR #179 remains stacked on PR #178.
 - Pass 110 runtime source still does not wire verifier into D1 admission or workflow. No hosted D1, secrets, providers, dispatch, executor, deployment, merge or production writes. Independent review NOT RUN; active time NOT MEASURED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 110 final validation read-back — 2026-11-27
+
+- Workers-native envelope validator + tests: VERIFIED by PR merge-result CI. Implementation code SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; validation checkout merge-result SHA `7e7f5b5...` (PR #180 validation-only).
+- D1 run `45895942746` / job `140169725137`: SUCCESS; npm ci, inert Worker check, 9 test files / 134 tests passed. Envelope test file: 11/11, including parity with frozen Node canonical digest.
+- Pool Contract run `45895942756` / job `140169725307`: SUCCESS; dispatch-disabled assertion, workflow YAML parse and security contracts passed; Node envelope suite 20/20.
+- PR #179 latest docs-only head `dfe6b34d4cd28481e5ec28d2a6e1657a3c18ffcf`, base PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, reviews 0, threads 0. Code/test SHA validated above; no code/test edits after it.
+- PR #180 validation-only OPEN/DRAFT/UNMERGED; do not merge. PR #179 remains the implementation review surface.
+- Independent security review and current ruleset/governance details NOT VERIFIED. D1 migration 0018 and end-to-end API-envelope → D1 receipt/replay integration NOT IMPLEMENTED. No hosted D1, secret reads, provider calls, dispatch, executor, deployment, merge or production writes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
