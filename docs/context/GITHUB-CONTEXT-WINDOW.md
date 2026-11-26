@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-25 — Pass 98 canonical owner /next controller foundation (candidate; unmerged)
+Last refreshed: 2026-11-26 — Pass 103 immutable workflow-file blob attestation (candidate; unmerged)
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (direct Git ref read-back; 2026-11-25)
@@ -2295,4 +2295,18 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Pass 100 outcome: live exact-head CI requalification VERIFIED; integration composition NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [Pass 100 live CI requalification and integration gate](../reports/2026-11-26-pass100-live-ci-requalification-integration-gate.md). Checkpoint: [Pass 100](../checkpoints/2026-11-26-pass100-live-ci-requalification-integration-gate.md).
 - Next: create a clean-base integration candidate that consumes one API-attested immutable envelope in the same controller run, verifies workflow file/blob identity at an immutable ref, passes that exact object to D1 admission/receipt logic, and proves the complete mocked flow with adversarial tests. Keep dispatch disabled and PR Draft until independent security review, governance and merge-result CI pass.
+- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Pass 103 — immutable workflow-file blob attestation (2026-11-26)
+
+- Canonical default `Основной` HEAD remains `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #176 head after bounded verifier change: `ac75ba08aa7660b0bed2bba1b04daefa2cc31c5d`; base remains frozen default.
+- Verifier reads `.github/workflows/next-event-controller.yml` through GitHub Contents API at `workflowRun.head_sha`; it validates canonical path, Git blob SHA shape and ref SHA equality. Audit result and step summary expose blob SHA/ref SHA.
+- Four new negative tests cover missing blob, ref substitution, malformed SHA and path substitution.
+- PR merge-result CI run 45877919733 / job 140109610824 SUCCESS; merge-result SHA `0a6b7130c75978290c841488239a0d93b2028e8c`; Pool Contract PASS; all six workflow YAML files parse; dispatch false; owner-event verifier tests 25/25 PASS. This is merge-result CI, not standalone exact-head CI.
+- PR #176 remains OPEN/DRAFT/UNMERGED; formal reviews 0; review threads 0.
+- No D1 composition/hosted D1, live issue_comment event, dispatch, provider calls, secret/variable reads, governance changes, deployment, merge or production writes. Independent security review NOT RUN; Gemini/Claude/ECC/FCC NOT RUN; active time NOT MEASURED.
+- Workflow blob identity VERIFIED in candidate merge-result CI; same-run immutable envelope to D1 admission/receipt NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 103](../reports/2026-11-26-pass103-workflow-blob-attestation.md); checkpoint: [Pass 103](../checkpoints/2026-11-26-pass103-workflow-blob-attestation.md).
+- Next: Pass104 typed immutable API-attested envelope in same controller run, bound to D1 admission/source-comment receipt; adversarial tests for tampering, stale ref, replay/rerun and ambiguous acknowledgement; dispatch/execution remain false.
 - MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
