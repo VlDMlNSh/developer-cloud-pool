@@ -1,4 +1,48 @@
-# CURRENT OPERATIONAL SNAPSHOT — Pass 103 (2026-11-26)
+# CURRENT OPERATIONAL SNAPSHOT — Pass 112 (2026-11-27)
+
+Last refreshed: 2026-11-27 19:54:12 Europe/Vilnius — live GitHub revalidation and API-attested D1 source audit
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Default branch: `Основной`
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`
+Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
+Working documentation branch: `docs/engineering-excellence-2026-11-23` (PR #169 OPEN/DRAFT/UNMERGED; not canonical).
+
+## Pass 112 current result
+
+- GitHub live audit and source read-back: VERIFIED.
+- Exact-head CI for current D1 candidate PR #181/#182: SUCCEEDED on current head `682b060ef376b8ebee8ae47872150776d28c4426`; D1 run 45897304880 / job 140174283393, 9/9 files and 137/137 tests on synthetic merge result `13445081dfc6d79ec65678989683a5057cdecdf3`; Pool Contract run 45897304914 / job 140174303010 SUCCESS.
+- Default HEAD/tree unchanged: 70 entries, five workflows; no web UI, D1 proof package or canonical next-event controller. `issue_comment` runs 0; combined statuses empty.
+- Latest Supervisor run 45995541766 / job 140493896631 SUCCESS is retired-heartbeat only; no executor qualification.
+- Active Ruleset #26550182 requires PR and review-thread resolution but has 0 required approvals, no required status-check rule, CODEOWNERS review disabled and no bypass actors. Classic branch-protection GET 403. Governance remains BLOCKED; no Ruleset/branch-protection changes.
+- Issues #1/#22/#26/#96/#140 remain OPEN. #22 UI absent on default; #26 routing/account isolation/quotas not qualified.
+- PR #24/#25/#30/#31 remain stale OPEN/DRAFT/UNMERGED; #30 exact-head CI absent. PRs #174–#182 remain OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads. PR #179 current head has no exact-head run. PR #182 is validation-only and must not be merged.
+- GitHub Read Adapter path branch `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`: 38 ahead / 157 behind, 19 files, no PR/CI; do not transplant whole branch.
+- Pass 111 adds D1 migration 0018 and `admitGitHubNextAttestedEvent`, but controller API verifier and D1 adapter remain separate. PR #176 verifier emits only `OBSERVED_ONLY` summary; it does not serialize Envelope v1 or call D1.
+- D1 envelope verifier recomputes an unkeyed digest and cross-checks runner context, but API-only node/workflow/blob fields are not independently bound to GitHub API at D1 boundary. Existing tamper test reuses old digest; recomputed-digest forgery is not tested. Legacy non-attested `admitGitHubNextEvent` remains exported and migration 0018 permits empty-sentinel legacy receipts. Same-run composition, workflow-blob authenticity and default-ref race remain BLOCKED.
+- Hosted D1, real `issue_comment` execution, executor/provider routing, quota ledger, authenticated Web Console and persistent user-visible state remain NOT VERIFIED / NOT QUALIFIED.
+- No secrets/tokens/API keys read. `POOL_DISPATCH_ENABLED` NOT READ. No workflow manually launched, dispatch, agents, DSH, Resource Probe, provider/model call, deployment, merge or production mutation. Local tests NOT RUN; active time NOT MEASURED.
+
+## Pass 112 evidence and documents
+
+- Detailed report: [Pass 112 report](../reports/2026-11-27-pass112-live-revalidation-api-attestation-boundary.md)
+  - Commit `553fb1be0419266f5df9c95909c243209ccb1a2b`
+  - Blob `49e73cd7fe20989b168c18c5e34e436f9e942b27`
+- Checkpoint: [Pass 112 checkpoint](../checkpoints/2026-11-27-pass112-live-revalidation-api-attestation-boundary.md)
+  - Final commit `3fe37a64547d5d141cc883c09d272fb29777800d`
+  - Blob `3fa8362f20144d9733a3e64d17b30b88a135bfd0`
+- Pass 111 implementation report/checkpoint remain on PR #181 branch:
+  - [Pass 111 report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md)
+  - [Pass 111 checkpoint](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md)
+
+## Next bounded step
+
+On a clean current-default branch, build one non-dispatching same-run API verifier → attested D1 adapter composition. Authenticate or independently re-verify API-only node IDs, workflow ID/state, workflow blob SHA and current default ref; add recomputed-digest, blob-substitution, ref-race, replay/rerun and ambiguous-receipt tests; remove the legacy non-attested entrypoint from the production import surface. Keep `dispatch=false` and `executionAuthorized=false`. Do not deploy or call providers.
+
+Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+
+
+---
+## Historical Pass 103 snapshot (superseded by Pass 112)
 
 Last refreshed: 2026-11-26 — audit-only canonical owner /next controller qualification
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
@@ -19,7 +63,7 @@ Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
 - Checkpoint: ../checkpoints/2026-11-26-pass103-canonical-next-controller-audit.md
 
 ---
-# CURRENT OPERATIONAL SNAPSHOT — Pass 101 (2026-11-26)
+## Historical Pass 101 snapshot (superseded by Pass 112) (2026-11-26)
 
 Last refreshed: 2026-11-26 — Pass 102 workflow path and D1 lease contract revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
