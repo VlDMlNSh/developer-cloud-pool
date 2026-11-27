@@ -19,3 +19,6 @@
 - Pass 111 implementation report/checkpoint remain on PR #181 branch: [report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md) / [checkpoint](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md).
 - Next: clean current-base non-dispatching same-run API verifier → attested D1 entrypoint; authenticate API-only fields, add recomputed-digest/blob/default-ref adversarial tests, and remove legacy non-attested production import path. Keep dispatch=false.
 - Working docs branch: `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED; it is not canonical and is 271 ahead / 2 behind current default. Do not merge without exact-head CI, protections and independent review.
+
+- Report commit SHA: `553fb1be0419266f5df9c95909c243209ccb1a2b`.
+- Report blob SHA (read-back): `49e73cd7fe20989b168c18c5e34e436f9e942b27`.
