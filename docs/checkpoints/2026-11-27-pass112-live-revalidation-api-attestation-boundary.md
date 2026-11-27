@@ -1,0 +1,21 @@
+# Pass 112 checkpoint — live revalidation and API-attested D1 boundary
+
+- Date/time: 2026-11-27 19:54:12 Europe/Vilnius.
+- Scope: Contour A only; read-only GitHub audit + one bounded source-level review; documentation-only follow-up.
+- Canonical default: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`, 70 entries.
+- Default has five workflows; no web UI, D1 proof package or next-event controller. `issue_comment` workflow runs: 0. Combined statuses: empty.
+- Latest Supervisor run 45995541766 / job 140493896631 SUCCESS is retired-heartbeat only.
+- Issues #1/#22/#26/#96/#140 remain OPEN. Ruleset #26550182 ACTIVE, PR required, 0 approvals, no required status-check rule, CODEOWNERS review disabled, no bypass actors; classic branch-protection GET 403. No governance mutation. `POOL_DISPATCH_ENABLED` NOT READ.
+- PR #24/#25/#30/#31 remain stale OPEN/DRAFT/UNMERGED; #30 has no CI. All have 0 formal reviews/threads.
+- Current D1/controller chain: #174/#175/#176/#177/#178/#179/#180/#181/#182 all OPEN/DRAFT/UNMERGED, 0 reviews/threads. #179 current head has no exact-head run. #181 is stacked on #179; #182 is validation-only on default and must not be merged.
+- PR #181/#182 exact head `682b060ef376b8ebee8ae47872150776d28c4426`: D1 run 45897304880 / job 140174283393 SUCCESS (9/9 files, 137/137 tests on synthetic merge result `13445081dfc6d79ec65678989683a5057cdecdf3)); Contract run 45897304914 / job 140174303010 SUCCESS. This is local Workers/Miniflare CI, not hosted D1/runtime.
+- Path-fix branch `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`: 38 ahead / 157 behind, 19 files, no PR/CI.
+- Main finding: API verifier in PR #176 returns OBSERVED_ONLY summary and does not emit Envelope v1 or call D1. D1 verifier in PR #181 checks envelope structure/digest and runner context, but API-only node/workflow/blob fields are not independently bound to GitHub API at D1 boundary. Digest is unkeyed; existing tamper test reuses old digest rather than recomputing it. Default-ref race and workflow blob authenticity remain unqualified.
+- Legacy non-attested `admitGitHubNextEvent` remains exported; migration 0018 still permits empty-sentinel legacy receipts. Production import surface must be narrowed before controller activation.
+- No same-run API→D1 callsite, no live issue_comment run, no hosted D1, no qualified executor, no routing/quota ledger, no protected Web Console.
+- Pass 112 source audit VERIFIED; API verifier→D1 composition BLOCKED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- No secrets/tokens/API keys read; no variable read/change; no workflows manually launched; no dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge or production writes. Local tests NOT RUN; active time NOT MEASURED.
+- Report: `docs/reports/2026-11-27-pass112-live-revalidation-api-attestation-boundary.md`.
+- Pass 111 implementation report/checkpoint remain on PR #181 branch: [report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md) / [checkpoint](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md).
+- Next: clean current-base non-dispatching same-run API verifier → attested D1 entrypoint; authenticate API-only fields, add recomputed-digest/blob/default-ref adversarial tests, and remove legacy non-attested production import path. Keep dispatch=false.
+- Working docs branch: `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED; it is not canonical and is 271 ahead / 2 behind current default. Do not merge without exact-head CI, protections and independent review.
