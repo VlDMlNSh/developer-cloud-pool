@@ -188,3 +188,38 @@ This is the fresh delta scan performed after the owner-approved policy was recor
 - agentgateway complete threat model, SBOM, standalone persistence and outbound data flows: NOT VERIFIED.
 - LiteLLM advisory applicability is version/configuration-specific; this scan is a deployment-risk assessment, not a forensic audit of every release.
 - No new runtime dependency or provider route was added. All candidates remain unqualified.
+
+
+## Pass 124 — read-only controller implementation and security-driven OSS decisions (2026-11-28)
+
+### Reuse First and upstream delta
+
+- **Bifrost:** prior Pass 123 PILOT candidate is superseded by **DEFER runtime/pilot**. The official GitHub security advisory index currently lists high-severity unauthenticated RCE in custom plugin HTTP path for dynamically linked builds, critical MCP stdio RCE, and high-severity SSRF deny-list gaps. Affected/fixed version ranges and exploit preconditions have not been fully verified for our intended topology. Do not install, run or expose Bifrost until an advisory-by-advisory version analysis, SBOM, build provenance, threat model and independent review are complete. This is a risk-based hold, not a claim that every release is vulnerable.
+  - Primary sources: https://github.com/maximhq/bifrost/security/advisories ; https://github.com/maximhq/bifrost/security
+- **agentgateway:** continue **ADAPT concepts / DEFER runtime**. Its v1.7 release documents model catalog capabilities/modalities/context window, service-tier cost accounting, per-model/user analytics and prompt guards that include tool outputs by default. Tool-output inspection can increase data sent to vendor guardrail APIs; do not enable external guardrails by default. Adopt capability/cost metadata and explicit privacy/failure-mode policy only.
+  - Primary source: https://github.com/agentgateway/agentgateway/releases
+- **LiteLLM:** continue **no deployment in current Contour A**; reuse only generic routing/usage patterns. Official advisories and the disclosed 2026 release-pipeline incident justify a credential-bearing gateway threat review before any reconsideration. Advisory applicability remains version/configuration-specific; no claim that every release is compromised.
+  - Primary sources: https://github.com/BerriAI/litellm/security/advisories ; https://docs.litellm.ai/blog/tags/security ; https://docs.litellm.ai/blog/trail-of-bits-patch-the-planet
+
+### Implemented: read-only owner /next controller
+
+- Reused the existing bounded GitHub API collector and canonical API-attested Envelope v1 / digest / Workers verifier; no parallel schema, ledger or runtime dependency was introduced.
+- Added `.github/workflows/next-event-controller.yml`: only `issue_comment.created`; exact Issue #96; exact `/next` body; numeric repository-owner ID checked against both comment author and sender; OWNER association; pull-request conversation comments excluded.
+- Workflow permissions are limited to `contents: read`, `issues: read`, `actions: read`. No workflow_dispatch, workflow_run, workflow_call, write scope, provider or executor path.
+- Checkout pins source to `github.workflow_sha` and disables persisted credentials. This keeps the controller code on the immutable workflow revision while the collector separately binds workflow bytes to `GITHUB_WORKFLOW_SHA`.
+- Added `scripts/owner-next-controller.mjs` to read the event file, call the fixed-origin bounded API collector, map trusted Actions context, recompute the canonical Envelope v1 digest, and write only base64-safe outputs (serialized envelope, digest, trusted context) plus explicit false authorization flags.
+- Added adversarial CLI tests for exact serialization, digest substitution, dispatch escalation, trusted-context mismatch and GitHub output injection. Pool Contract validator now executes the CLI tests and statically checks the workflow's identity/permission/pinning invariants.
+- All external Actions references in the new workflow are pinned to full commit SHAs.
+
+### Verification state
+
+- PR #188: OPEN / DRAFT / UNMERGED, base `Основной` at `565404f84b6b86afb4dc2d8fa939341f42df6eca`; head code/test SHA `359302ea4082b36b5c5be7af4bdb03d5037daeed`; merge-result SHA `4731e2d21fde8a328ec6dbbc14791da40980f0e7`.
+- Pool Contract Validation run `46170933384`, job `141058959300`: SUCCESS; workflow YAML parse and security-contract validation passed; Node tests 32/32 passed.
+- D1 local integration suite on the Pass 124 merge result: NOT RUN. The default-base validation path ran Pool Contract Validation only; it did not establish end-to-end collector → Workers verifier → D1 receipt composition.
+- PR #188 formal reviews: 0; inline threads: 0; independent security review: NOT RUN.
+- Controller workflow has not been invoked on the default branch; no live issue event, API collection, hosted D1, provider call, executor, dispatch, deployment or production mutation occurred.
+- The PR's cumulative clean-default diff is 83 files / 11,425 additions / 4 deletions across 170 commits. Pass 124's bounded code delta from the Pass 120 lineage is five files; earlier D1 proof and Pass 121–123 documentation are carried as its prerequisite stack. Keep Draft and do not merge until D1 composition, exact-head validation, independent security review and governance gates pass.
+
+### Next critical-path task
+
+Feed the exact collector-produced serialized JSON and digest plus the independently mapped trusted Actions context into the Workers-native verifier and local D1 attested adapter in one integration test. Prove receipt persistence and replay readback, and prove legacy synthetic adapter imports cannot enter the production worker graph. Keep `dispatch=false`, `executionAuthorized=false`; no hosted D1 or executor.
