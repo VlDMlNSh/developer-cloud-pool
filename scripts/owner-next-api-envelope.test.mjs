@@ -53,7 +53,7 @@ function apiFixture(overrides = {}) {
     if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/runs/400") return runResult;
     if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/workflows/500") return workflow;
     if (path.includes("/git/ref/heads/")) return refResult;
-    if (path.includes("/contents/.github/workflows/next-event-controller.yml?ref=" + sha)) return fileResult;
+    if (path.includes("/contents/.github/workflows/next-event-controller.yml?ref=" + env.GITHUB_WORKFLOW_SHA)) return fileResult;
     throw new Error("unexpected API path: " + path);
   };
 }
@@ -63,7 +63,7 @@ test("collects one canonical API-attested envelope with distinct target and work
   assert.equal(result.envelope.run.headSha, sha);
   assert.equal(result.envelope.run.workflowCommitSha, "b".repeat(40));
   assert.equal(result.envelope.run.workflowFileBlobSha, blobSha);
-  assert.equal(result.envelope.run.workflowFileRefSha, sha);
+  assert.equal(result.envelope.run.workflowFileRefSha, env.GITHUB_WORKFLOW_SHA);
   assert.equal(result.envelope.event.issueNodeId, "I_kwDOTestIssue");
   assert.equal(result.envelope.event.commentNodeId, "IC_kwDOTestComment");
   assert.equal(result.dispatch, false);
@@ -77,6 +77,19 @@ test("rejects a default-ref race", async () => {
     collectOwnerNextEnvelope({ event, env, apiGet: apiFixture({ refSha: "d".repeat(40) }) }),
     /DEFAULT_REF_MOVED_DURING_RUN/
   );
+});
+
+test("fetches workflow bytes at GITHUB_WORKFLOW_SHA, not the target SHA", async () => {
+  const calls = [];
+  const apiGet = async path => {
+    calls.push(path);
+    return apiFixture()(path);
+  };
+  const result = await collectOwnerNextEnvelope({ event, env, apiGet });
+  const fileRead = calls.find(path => path.includes("/contents/.github/workflows/next-event-controller.yml?"));
+  assert.ok(fileRead?.endsWith("ref=" + env.GITHUB_WORKFLOW_SHA));
+  assert.notEqual(env.GITHUB_WORKFLOW_SHA, env.GITHUB_SHA);
+  assert.equal(result.envelope.run.workflowFileRefSha, result.envelope.run.workflowCommitSha);
 });
 
 test("rejects a workflow file blob digest mismatch", async () => {
