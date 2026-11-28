@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { env } from "cloudflare:workers";
 import { admitGitHubNextAttestedEvent, admitGitHubNextEvent, bindGitHubNextEvent } from "../src/github-next-event.mjs";
 import { digestOwnerNextEnvelope } from "../src/owner-next-envelope.mjs";
+import { collectOwnerNextEnvelope, mapGitHubActionsContext } from "../../../scripts/owner-next-api-envelope.mjs";
 import { admitQualifiedTask } from "../src/admit-qualified-task.mjs";
 import { canonicalTaskKey } from "../src/task-identity.mjs";
 
@@ -9,7 +10,7 @@ const NOW = 1_800_000_000;
 const trustedClock = () => NOW;
 const workflowRef = "VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной";
 
-async function fixture(id, commentIdOverride, attested = false) {
+async function fixture(id, commentIdOverride, attested = false, collectorBacked = false) {
   const targetSha = id.repeat(40);
   const context = {
     githubActions: "true", serverUrl: "https://github.com",
@@ -42,7 +43,63 @@ async function fixture(id, commentIdOverride, attested = false) {
       workflowFileRefSha: context.workflowSha },
     policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
   };
-  const attestationDigest = await digestOwnerNextEnvelope(envelope);
+  let attestation = { sourceJson: JSON.stringify(envelope), digest: await digestOwnerNextEnvelope(envelope), trustedContext: context };
+  if (collectorBacked) {
+    const workflowBytes = new TextEncoder().encode("name: next-event-controller\\n");
+    const blobHeader = new TextEncoder().encode("blob " + workflowBytes.byteLength + "\\0");
+    const blobObject = new Uint8Array(blobHeader.byteLength + workflowBytes.byteLength);
+    blobObject.set(blobHeader);
+    blobObject.set(workflowBytes, blobHeader.byteLength);
+    const blobDigest = await crypto.subtle.digest("SHA-1", blobObject);
+    const workflowFileSha = [...new Uint8Array(blobDigest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+    const binary = [...workflowBytes].map(byte => String.fromCharCode(byte)).join("");
+    const api = {
+      repository: { id: 1445644538, full_name: "VlDMlNSh/developer-cloud-pool",
+        owner: { id: 157891068, login: "VlDMlNSh" }, default_branch: "Основной" },
+      issue: { number: 96, node_id: "I_kwDOTestIssue", url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
+      comment: { id: context.commentId, node_id: "IC_kwDOTestComment",
+        issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96",
+        body: "/next", user: { id: 157891068 }, author_association: "OWNER" },
+      run: { id: context.runId, run_attempt: 1, event: "issue_comment",
+        path: ".github/workflows/next-event-controller.yml@Основной",
+        repository: { id: 1445644538 }, actor: { id: 157891068 },
+        head_branch: "Основной", head_sha: context.sha, workflow_id: 98765 },
+      workflow: { id: 98765, path: ".github/workflows/next-event-controller.yml", state: "active" },
+      ref: { object: { sha: context.sha } },
+      file: { path: ".github/workflows/next-event-controller.yml", encoding: "base64",
+        content: btoa(binary), sha: workflowFileSha }
+    };
+    const repoPath = "/repos/VlDMlNSh/developer-cloud-pool";
+    const apiGet = async requestPath => {
+      if (requestPath === repoPath) return api.repository;
+      if (requestPath === repoPath + "/issues/96") return api.issue;
+      if (requestPath === repoPath + "/issues/comments/" + context.commentId) return api.comment;
+      if (requestPath === repoPath + "/actions/runs/" + context.runId) return api.run;
+      if (requestPath === repoPath + "/actions/workflows/98765") return api.workflow;
+      if (requestPath === repoPath + "/git/ref/heads/" + encodeURIComponent("Основной")) return api.ref;
+      if (requestPath === repoPath + "/contents/.github/workflows/next-event-controller.yml?ref=" + encodeURIComponent(context.workflowSha)) return api.file;
+      throw new Error("UNEXPECTED_API_PATH");
+    };
+    const event = {
+      action: "created",
+      issue: { number: 96, node_id: api.issue.node_id },
+      comment: { id: context.commentId, node_id: api.comment.node_id, body: "/next",
+        user: { id: 157891068 }, author_association: "OWNER" },
+      sender: { id: 157891068 }
+    };
+    const runnerEnv = {
+      GITHUB_REPOSITORY: "VlDMlNSh/developer-cloud-pool", GITHUB_EVENT_NAME: "issue_comment",
+      GITHUB_REF: "refs/heads/Основной", GITHUB_SHA: context.sha,
+      GITHUB_WORKFLOW_SHA: context.workflowSha, GITHUB_WORKFLOW_REF: workflowRef,
+      GITHUB_RUN_ID: String(context.runId), GITHUB_RUN_ATTEMPT: "1"
+    };
+    const collected = await collectOwnerNextEnvelope({ event, env: runnerEnv, apiGet });
+    attestation = {
+      sourceJson: collected.sourceJson, digest: collected.digest,
+      trustedContext: mapGitHubActionsContext({ event, env: runnerEnv, envelope: collected.envelope })
+    };
+  }
+  const attestationDigest = attestation.digest;
   const approval = {
     approvalId: "approval-next-" + id, ownerNumericId: "157891068",
     repositoryId: "1445644538", issueNumber: 96, targetSha,
@@ -90,7 +147,7 @@ async function fixture(id, commentIdOverride, attested = false) {
     route.quotaDomainId, route.costClass, route.capabilityId, route.capabilityProfile,
     route.evidenceRef, route.evidenceDigest, route.observedAt, route.validUntil,
     route.revocationVersion, route.registryVersion).run();
-  return { context, input, event: bound.context, envelope, sourceJson: JSON.stringify(envelope), digest: attestationDigest };
+  return { context, input, event: bound.context, envelope, sourceJson: attestation.sourceJson, digest: attestationDigest, trustedContext: attestation.trustedContext };
 }
 
 function faultDatabase({ insertMode, receiptReadMode } = {}) {
@@ -416,6 +473,45 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     expect(replay).toMatchObject({ decision: "ADMISSION_ALREADY_COMMITTED", receiptDecision: "SOURCE_COMMENT_ALREADY_RECORDED", dispatch: false, executionAuthorized: false });
     const row = await env.POOL_DB.prepare("SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE source_comment_id = ?").bind(String(f.context.commentId)).first();
     expect(row).toMatchObject({ event_digest: f.digest, attestation_schema: "cloud-pool.owner-next.api-attestation", attestation_version: 1, issue_node_id: "I_kwDOTestIssue", comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: f.context.sha, run_head_sha: f.context.sha, workflow_id: "98765", workflow_state: "active", workflow_commit_sha: f.context.workflowSha, workflow_file_blob_sha: "c".repeat(40), workflow_file_ref_sha: f.context.workflowSha, dispatch_enabled: 0 });
+  });
+
+  it("composes the exact bounded API collector serialization through Workers verification into durable D1 receipt and replay", async () => {
+    const f = await fixture("5", undefined, true, true);
+    expect(f.sourceJson).toBe(JSON.stringify(JSON.parse(f.sourceJson)));
+    expect(f.trustedContext).toMatchObject({
+      githubActions: "true", serverUrl: "https://github.com",
+      workflowSha: "f".repeat(40), sha: "5".repeat(40),
+      issueNumber: 96, commentBody: "/next", commentAuthorAssociation: "OWNER"
+    });
+    const first = await admitGitHubNextAttestedEvent(
+      env.POOL_DB, f.input, f.sourceJson, f.digest, f.trustedContext, trustedClock
+    );
+    const replay = await admitGitHubNextAttestedEvent(
+      env.POOL_DB, f.input, f.sourceJson, f.digest, f.trustedContext, trustedClock
+    );
+    expect(first).toMatchObject({
+      decision: "ADMITTED_QUEUED", receiptDecision: "SOURCE_COMMENT_RECORDED",
+      dispatch: false, executionAuthorized: false
+    });
+    expect(replay).toMatchObject({
+      decision: "ADMISSION_ALREADY_COMMITTED", receiptDecision: "SOURCE_COMMENT_ALREADY_RECORDED",
+      dispatch: false, executionAuthorized: false
+    });
+    const row = await env.POOL_DB.prepare(
+      "SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE source_comment_id = ?"
+    ).bind(String(f.input.approval.approvalId).replace("approval-next-", "900000")).first();
+    const receipt = await env.POOL_DB.prepare(
+      "SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE admission_id = ?"
+    ).bind(f.input.admissionId).first();
+    expect(receipt).toMatchObject({
+      event_digest: f.digest, attestation_schema: "cloud-pool.owner-next.api-attestation",
+      attestation_version: 1, issue_node_id: "I_kwDOTestIssue",
+      comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: "5".repeat(40),
+      run_head_sha: "5".repeat(40), workflow_id: "98765", workflow_state: "active",
+      workflow_commit_sha: "f".repeat(40), workflow_file_blob_sha: expect.stringMatching(/^[0-9a-f]{40}$/),
+      workflow_file_ref_sha: "f".repeat(40), dispatch_enabled: 0
+    });
+    expect(row).toBeUndefined();
   });
 
   it("rejects API-envelope substitution before D1 admission", async () => {
