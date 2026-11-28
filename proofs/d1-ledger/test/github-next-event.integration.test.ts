@@ -82,10 +82,12 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
     };
     const event = {
       action: "created",
+      repository: { id: 1445644538, full_name: "VlDMlNSh/developer-cloud-pool",
+        owner: { id: 157891068, login: "VlDMlNSh" } },
       issue: { number: 96, node_id: api.issue.node_id },
       comment: { id: context.commentId, node_id: api.comment.node_id, body: "/next",
-        user: { id: 157891068 }, author_association: "OWNER" },
-      sender: { id: 157891068 }
+        user: { id: 157891068, login: "VlDMlNSh" }, author_association: "OWNER" },
+      sender: { id: 157891068, login: "VlDMlNSh" }
     };
     const runnerEnv = {
       GITHUB_ACTIONS: "true", GITHUB_SERVER_URL: "https://github.com",
