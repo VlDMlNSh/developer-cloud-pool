@@ -2266,3 +2266,23 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Pool Contract Validation does not watch these docs/spec paths; no exact-head CI run was observed or expected. CI remains NOT RUN, not PASS.
 - PR #184 formal reviews: 0; review threads: 0; independent security review NOT RUN.
 - No tests or runtime operations were performed; active time NOT MEASURED.
+
+
+## Pass 116 — Controller/API/Envelope/D1 source reconciliation (2026-11-28)
+
+- Frozen default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Controller PR #176 head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`; Pass 111 branch HEAD `4c8d820102472e130c2e9760f5d42f650ca43394`; Pass 111 code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- Ancestry: #176 vs Pass 111 DIVERGED, common base default; Pass 111 side 111 commits ahead, controller side 38 behind. #177 and #178 are ancestors of Pass 111. Do not merge full #176 branch.
+- Source findings: controller workflow blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a` is absent from Pass 111 branch; controller verifier blob `4e969000ab32df6ff37663c329fe406b859809f4` ends at OBSERVED_ONLY and does not emit Envelope JSON/digest or call D1. D1 adapter blob `af12b9113de5f67d0242ef19f57c2d6b999270a3` exports legacy and attested APIs. D1 Worker is inert (blob `5429e1abb2049a63562fa411b0d3b041f2f8276b`). Integration tests construct Envelope fixtures directly rather than using controller API collector.
+- Migration 0017 blob `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`; migration 0018 blob `366a890797cd8187848072894a1d7dbe8f5e6791`. Existing single-ledger chain is reusable; no second ledger or migration required by current evidence.
+- PR #181 CI on code/test SHA `88911e5...`: D1 run #45897059595 SUCCESS (9 files / 137 tests); Pool Contract run #45897059549 SUCCESS. These do not establish controller→Envelope→D1 E2E. Formal reviews and threads: 0; independent security review NOT RUN.
+- Pass 116 is source/docs/spec only. No runtime code, D1 schema, workflow permissions, secrets, hosted D1, provider, dispatch, executor, deployment or merge changed.
+- Spec refined with FR-009–FR-011, SEC-008, AC-007–AC-009. Plan explicitly selects a minimal source port onto a fresh branch from Pass 111 lineage and requires real collector output to feed the local D1 integration test. Tasks T001/T002 VERIFIED at source-audit level; T003–T013 remain PLANNED.
+- Pass 116 report: `docs/reports/2026-11-28-pass116-controller-api-d1-source-reconciliation.md`.
+- Pass 116 checkpoint: `docs/checkpoints/2026-11-28-pass116-controller-api-d1-source-reconciliation.md`.
+- Pass 115/116 docs branch: `docs/pass115-spec-kit-adoption-2026-11-28`; PR #184 remains Draft/unmerged.
+- Exact-head CI for Pass 116 docs: NOT RUN; changed paths are docs/spec and are excluded by current Pool Contract workflow path filters. Independent review NOT RUN. Active engineering time NOT MEASURED.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+- Next: create one integration branch from Pass 111 HEAD, port minimal Controller API collector, emit canonical Envelope v1 from same-run evidence, and prove it through the Workers verifier + local D1 attested adapter; isolate legacy import path. No hosted D1 or dispatch.
+
+Canonical MediaHub map (separate deferred Contour B): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
