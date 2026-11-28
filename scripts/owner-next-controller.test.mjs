@@ -72,3 +72,16 @@ test("controller writes only single-line, base64-safe GitHub outputs", async () 
     fs.rmSync(directory, { recursive: true, force: true });
   }
 });
+
+
+test("issue_comment activation is default-branch gated and controller policy stays immutable", () => {
+  const workflow = fs.readFileSync(".github/workflows/next-event-controller.yml", "utf8");
+  const activation = fs.readFileSync("docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md", "utf8");
+  assert.match(workflow, /^on:\\s*\\n  issue_comment:\\s*\\n    types:\\s*\\[created\\]/m);
+  assert.doesNotMatch(workflow, /^  (?:workflow_dispatch|workflow_run|workflow_call|schedule):/m);
+  assert.match(workflow, /actions\\/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1/);
+  assert.match(workflow, /actions\\/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1/);
+  assert.match(workflow, /package-manager-cache:\\s*false/);
+  assert.match(activation, /does not trigger an \\x60issue_comment\\x60 workflow unless the workflow file exists on the repository's default branch/);
+  assert.match(activation, /Live \\x60issue_comment\\x60 execution: \\*\\*NOT RUN\\*\\*/);
+});
