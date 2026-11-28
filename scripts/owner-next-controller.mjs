@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { createBoundedGitHubApiGet, collectOwnerNextEnvelope, mapGitHubActionsContext } from "./owner-next-api-envelope.mjs";
+import { digestOwnerNextEnvelope } from "../proofs/d1-ledger/src/owner-next-envelope.mjs";
 
 const DIGEST = /^[0-9a-f]{64}$/;
 const MAX_ENVELOPE_BYTES = 16_384;
@@ -12,7 +13,7 @@ function reject(code) {
   throw error;
 }
 
-export function buildOwnerNextControllerOutputs(result, trustedContext) {
+export async function buildOwnerNextControllerOutputs(result, trustedContext) {
   if (!result || typeof result !== "object" ||
       result.dispatch !== false || result.executionAuthorized !== false ||
       typeof result.sourceJson !== "string" ||
@@ -28,6 +29,10 @@ export function buildOwnerNextControllerOutputs(result, trustedContext) {
       envelope?.policy?.executionAuthorized !== false) {
     reject("CONTROLLER_ENVELOPE_POLICY_INVALID");
   }
+  let computedDigest;
+  try { computedDigest = await digestOwnerNextEnvelope(envelope); }
+  catch { reject("CONTROLLER_ENVELOPE_INVALID"); }
+  if (computedDigest !== result.digest) reject("CONTROLLER_ENVELOPE_DIGEST_MISMATCH");
   if (!trustedContext || trustedContext.githubActions !== "true" ||
       trustedContext.serverUrl !== "https://github.com") {
     reject("CONTROLLER_TRUSTED_CONTEXT_INVALID");
@@ -57,7 +62,7 @@ export function appendOwnerNextControllerOutputs(outputPath, outputs) {
 export async function collectControllerEvidence({ event, env, apiGet }) {
   const result = await collectOwnerNextEnvelope({ event, env, apiGet });
   const trustedContext = mapGitHubActionsContext({ event, env, envelope: result.envelope });
-  return { outputs: buildOwnerNextControllerOutputs(result, trustedContext), result, trustedContext };
+  return { outputs: await buildOwnerNextControllerOutputs(result, trustedContext), result, trustedContext };
 }
 
 export async function main(env = process.env) {
