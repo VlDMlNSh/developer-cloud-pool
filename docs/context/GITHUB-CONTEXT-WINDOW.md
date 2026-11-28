@@ -1,460 +1,18 @@
-# CURRENT OPERATIONAL SNAPSHOT — Pass 112 (2026-11-27)
-
-Last refreshed: 2026-11-27 19:54:12 Europe/Vilnius — live GitHub revalidation and API-attested D1 source audit
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Default branch: `Основной`
-Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`
-Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
-Working documentation branch: `docs/engineering-excellence-2026-11-23` (PR #169 OPEN/DRAFT/UNMERGED; not canonical).
-
-## Pass 112 current result
-
-- GitHub live audit and source read-back: VERIFIED.
-- Exact-head CI for current D1 candidate PR #181/#182: SUCCEEDED on current head `682b060ef376b8ebee8ae47872150776d28c4426`; D1 run 45897304880 / job 140174283393, 9/9 files and 137/137 tests on synthetic merge result `13445081dfc6d79ec65678989683a5057cdecdf3`; Pool Contract run 45897304914 / job 140174303010 SUCCESS.
-- Default HEAD/tree unchanged: 70 entries, five workflows; no web UI, D1 proof package or canonical next-event controller. `issue_comment` runs 0; combined statuses empty.
-- Latest Supervisor run 45995541766 / job 140493896631 SUCCESS is retired-heartbeat only; no executor qualification.
-- Active Ruleset #26550182 requires PR and review-thread resolution but has 0 required approvals, no required status-check rule, CODEOWNERS review disabled and no bypass actors. Classic branch-protection GET 403. Governance remains BLOCKED; no Ruleset/branch-protection changes.
-- Issues #1/#22/#26/#96/#140 remain OPEN. #22 UI absent on default; #26 routing/account isolation/quotas not qualified.
-- PR #24/#25/#30/#31 remain stale OPEN/DRAFT/UNMERGED; #30 exact-head CI absent. PRs #174–#182 remain OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads. PR #179 current head has no exact-head run. PR #182 is validation-only and must not be merged.
-- GitHub Read Adapter path branch `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`: 38 ahead / 157 behind, 19 files, no PR/CI; do not transplant whole branch.
-- Pass 111 adds D1 migration 0018 and `admitGitHubNextAttestedEvent`, but controller API verifier and D1 adapter remain separate. PR #176 verifier emits only `OBSERVED_ONLY` summary; it does not serialize Envelope v1 or call D1.
-- D1 envelope verifier recomputes an unkeyed digest and cross-checks runner context, but API-only node/workflow/blob fields are not independently bound to GitHub API at D1 boundary. Existing tamper test reuses old digest; recomputed-digest forgery is not tested. Legacy non-attested `admitGitHubNextEvent` remains exported and migration 0018 permits empty-sentinel legacy receipts. Same-run composition, workflow-blob authenticity and default-ref race remain BLOCKED.
-- Hosted D1, real `issue_comment` execution, executor/provider routing, quota ledger, authenticated Web Console and persistent user-visible state remain NOT VERIFIED / NOT QUALIFIED.
-- No secrets/tokens/API keys read. `POOL_DISPATCH_ENABLED` NOT READ. No workflow manually launched, dispatch, agents, DSH, Resource Probe, provider/model call, deployment, merge or production mutation. Local tests NOT RUN; active time NOT MEASURED.
-
-## Pass 112 evidence and documents
-
-- Detailed report: [Pass 112 report](../reports/2026-11-27-pass112-live-revalidation-api-attestation-boundary.md)
-  - Commit `553fb1be0419266f5df9c95909c243209ccb1a2b`
-  - Blob `49e73cd7fe20989b168c18c5e34e436f9e942b27`
-- Checkpoint: [Pass 112 checkpoint](../checkpoints/2026-11-27-pass112-live-revalidation-api-attestation-boundary.md)
-  - Final commit `3fe37a64547d5d141cc883c09d272fb29777800d`
-  - Blob `3fa8362f20144d9733a3e64d17b30b88a135bfd0`
-- Pass 111 implementation report/checkpoint remain on PR #181 branch:
-  - [Pass 111 report](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md)
-  - [Pass 111 checkpoint](https://github.com/VlDMlNSh/developer-cloud-pool/blob/feat/pass111-d1-attested-receipt-2026-11-27/docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md)
-
-## Next bounded step
-
-On a clean current-default branch, build one non-dispatching same-run API verifier → attested D1 adapter composition. Authenticate or independently re-verify API-only node IDs, workflow ID/state, workflow blob SHA and current default ref; add recomputed-digest, blob-substitution, ref-race, replay/rerun and ambiguous-receipt tests; remove the legacy non-attested entrypoint from the production import surface. Keep `dispatch=false` and `executionAuthorized=false`. Do not deploy or call providers.
-
-Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
-
-
----
-## Historical Pass 103 snapshot (superseded by Pass 112)
-
-Last refreshed: 2026-11-26 — audit-only canonical owner /next controller qualification
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
-
-## Pass 103 result
-- Default branch Основной remains at 565404f84b6b86afb4dc2d8fa939341f42df6eca.
-- PR #176 candidate head ca53ed9eb625d2532aa00cc269cf7f8617d97266; exact synthetic merge SHA db75bd6d6d538ea64ef63c97647b13bd05a3657d.
-- Pool Contract run 45705794330, job 139527312668: SUCCESS; 6 workflow YAML files parsed, pool contract PASS, 21/21 Node tests PASS.
-- PR #176 is OPEN/DRAFT/UNMERGED, 0 formal reviews, 0 review threads; combined commit statuses empty.
-- Controller is audit-only: OBSERVED_ONLY; no D1 admission/receipt/outbox, no dispatch. No live owner issue_comment event was run or observed.
-- PR #175 D1 proof is separate and uncomposed. No same-run API-envelope-to-D1 callsite.
-- Default branch has no canonical next-event controller. Ruleset #26550182 has PR required, zero approvals, no required status-check rule and no bypass actors; classic protection read is 403. Governance BLOCKED.
-- No qualified executor, hosted D1, authenticated web console, durable user-visible state or live routing/quota ledger.
-- No secret reads, provider calls, hosted D1, dispatch, deployment, merge or production mutation. POOL_DISPATCH_ENABLED unchanged.
-- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
-- Report: ../reports/2026-11-26-pass103-canonical-next-controller-audit.md
-- Checkpoint: ../checkpoints/2026-11-26-pass103-canonical-next-controller-audit.md
-
----
-## Historical Pass 101 snapshot (superseded by Pass 112) (2026-11-26)
-
-Last refreshed: 2026-11-26 — Pass 102 workflow path and D1 lease contract revalidation
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Scope: Contour A only. Contour B remains DEFERRED until Contour A is ACCEPTED.
-
-## Canonical baseline
-- Default branch: `Основной`
-- Immutable default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`
-- Tree SHA: `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`; 70 entries.
-- Default has five workflows only. Canonical `next-event-controller.yml` and prior `next-request-intake.yml` are absent (404). No `issue_comment` workflow runs were returned.
-- Open Issues: 17. Open PRs: 132 (100 first-page results). Priority #1/#22/#26/#96/#140 remain OPEN.
-- Active Ruleset #26550182: PR required; approvals 0; no required status-check rule; no bypass actors. Classic branch-protection GET 403. Governance remains BLOCKED; no Ruleset changes.
-- Default combined commit statuses: empty. Current Supervisor check-run success is heartbeat/retirement-only, not executor evidence.
-
-## Current candidate chain
-- PR #174 API audit: head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, 10 ahead / 0 behind; exact-head Pool Contract run 45677997233 SUCCESS.
-- PR #175 clean-base D1 proof: head `3d69bc943677dba909792bf4930d4c0aa5d2233f`, 40 ahead / 0 behind; D1 run 45690428935 and Contract run 45690428805 SUCCESS.
-- PR #176 canonical controller candidate: head `ca53ed9eb625d2532aa00cc269cf7f8617d97266`, 24 ahead / 0 behind; Contract run 45705794330 SUCCESS. Workflow exists only on this draft branch.
-- All #174/#175/#176 remain OPEN/DRAFT/UNMERGED with 0 formal reviews and 0 review threads.
-- PR #176 verifier is read-only and returns OBSERVED_ONLY. It does not create a D1 admission/receipt. PR #175 binder still accepts flat Actions context; no same-run API-envelope-to-D1 callsite exists.
-- Workflow-code blob identity is not attested. A possible `workflowRun.path` fixture/API shape mismatch remains NOT VERIFIED; synthetic tests expect a branch suffix not present in observed existing run objects.
-- PR #168/#170 are older-base D1 predecessors; do not merge independently. PR #171 is an older intake candidate.
-- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 157 commits behind current default; #30 has no exact-head CI. All checked PR reviews/threads are zero.
-- GitHub Read Adapter path-fix branch `fix/github-read-adapter-path-segments-2026-11-06`: HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 157 behind, 19 files, no PR/CI.
-
-## Runtime / acceptance
-- Supervisor run 45811637973/job 139880704125 SUCCESS only verifies retired dispatch remains retired.
-- Worker remains retired/fail-closed. No qualified executor, hosted D1, live routing/quota ledger, authenticated Web Console or durable user-visible state.
-- `POOL_DISPATCH_ENABLED`: NOT VERIFIED; no variable or secret read.
-- Dispatch, agents, DSH, Resource Probe, provider/model calls, deployment, merge and production writes: NOT RUN.
-- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
-
-## Documentation authority
-- Pass101 report: [report](../reports/2026-11-26-pass101-live-revalidation-canonical-controller-audit.md), commit `d21b4605a29e31b00524e9bcc9fcb172f41797ea`.
-- Pass101 checkpoint: [checkpoint](../checkpoints/2026-11-26-pass101-live-revalidation-canonical-controller-audit.md), commit `b0cafdc9e82b591d1bde33121860d69363abba43`.
-- This Context Window is maintained on working documentation branch `docs/engineering-excellence-2026-11-23`, associated with PR #169. It is not canonical/default and must not be merged without exact-head CI, provenance, governance and review gates.
-- This Pass101 snapshot supersedes conflicting older operational values below. Historical architecture and audit material is retained for traceability; revalidate all old SHAs and claims before relying on them.
-
----
-
-# HISTORICAL SNAPSHOT — Pass 75 (2026-11-24; superseded by Pass 101)
-
-Contour A only. Pass75 resolves the intended FCC/ECC identities from owner-approved Issue #115 and upstream source readback; historical installation feasibility evidence is refreshed, but current-base qualification and provider route remain open.
-
-- Current base SHA observed on open PR refs: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- FCC = Free Claude Code, `Alishahryar1/free-claude-code`; pinned commit `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pinned license AGPL-3.0-only; Python exactly 3.14.10.
-- ECC = Everything Claude Code, canonical `affaan-m/ECC`; pinned commit `e413166c50e85fb205b988b5e78874b5a88ea4d2`; MIT. Current package `ecc-universal` 2.2.3; SECURITY.md supports 2.x / RC.
-- FCC supports ordered/numbered API key selection and fallback across 403/429 in pinned tests. Require exactly one account credential per FCC profile, one model, no MODEL_FALLBACKS/key cycling/cross-account mixing/provider or paid fallback.
-- FCC stays loopback-only pending legal review for AGPL network use. Claude Code hosted-use entitlement NOT VERIFIED.
-- Historical PR #116 no-secret runner: head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; run `44286955337` SUCCESS (18/18 steps), contract run `44286955360` SUCCESS (7/7). Artifact `14420066410`, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`, expires 2026-11-25. PR #116 is 74 ahead / 12 behind current base; historical install proof only, not current-base integration or real worker/provider qualification.
-- Updated architecture docs: runner lifecycle, Jarvis multi-layer roadmap, hybrid platform reference. Added Pass75 report/checkpoint. All five readbacks succeeded.
-- Pass75 report: [report](../reports/2026-11-24-pass75-fcc-ecc-provenance-runner-proof.md)
-- Pass75 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass75-fcc-ecc-provenance.md)
-- PR #169 remains OPEN/DRAFT/UNMERGED on base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Final Pass75 pre-context documentation head `863f9fb02fcdd9842fbaf70cf7da1a9885f5cb56` had 0 exact-head Actions runs, 0 combined statuses, 0 formal reviews and 0 review threads. The Context Window refresh is the final docs-branch commit; read live PR #169 for the resulting head.
-- Gemini dispatch, local install/runtime, provider calls, secret reads, deployment, merge and production mutation: NOT RUN.
-- Actual time NOT MEASURED; local validators NOT RUN.
-- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
-
-Next: create a clean current-base no-secret runner qualification branch by porting only the minimal PR #116 proof, then add actual CODE worker-in-no-egress-sandbox evidence. Keep provider calls and dispatch disabled.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 74 (2026-11-24)
-
-Live GitHub revalidation and bounded Reuse First identity review. Contour A remains the sole active implementation priority; Contour B remains deferred until ACCEPTED.
-
-- Default base SHA observed from open PR base refs: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- PR #169 OPEN/DRAFT/UNMERGED; head `239ac7a3b3a19643548df7893a873d9e3ac0deab`; exact-head Actions runs absent, combined statuses empty, formal reviews 0, threads 0.
-- PR #170 OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; exact-head D1 run `45274455569` SUCCESS and Pool Contract run `45274455577` SUCCESS; formal reviews 0.
-- PR #171 OPEN/DRAFT/UNMERGED; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; exact-head audit-only Pool Contract run `45448087868` SUCCESS; formal reviews 0.
-- PR #169 docs read-back: Pass73 roadmap, report and checkpoint verified. Runner lifecycle and hybrid architecture read back; ECC remains explicit.
-- Default-branch checks for `.github/workflows/gemini-batch-dispatch-controller.yml` and `.github/workflows/next-event-controller.yml` returned NOT_FOUND. Dispatch remains NOT RUN / BLOCKED.
-- FCC identity is ambiguous; ECC public candidate identity/license/version/security/compatibility are not sufficiently verified from primary source. No install/integration.
-- Ruleset details and current dispatch variable metadata: NOT VERIFIED.
-- Pass74 report: [report](../reports/2026-11-24-pass74-live-revalidation-reuse-first.md)
-- Pass74 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass74-live-revalidation.md)
-- Actual time NOT MEASURED; local validators NOT RUN; no code/schema/workflow/dependency changes, secrets, provider calls, runtime, dispatch, deployment, merge or production writes.
-- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
-
-Next: obtain canonical FCC/ECC source identity from an authoritative owner-approved project record; verify license, release, maintenance, security and Claude Code compatibility without installing/executing. Keep dispatch fail-closed.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 73 (2026-11-24)
-
-Strategic architecture update recorded from owner discussion. Contour A remains the only active implementation priority; Contour B stays deferred until ACCEPTED. Tracking: [Issue #173 — Jarvis evolution: Multi-Agent System → AI Corporation → Agentic Ecosystem](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
-
-## Owner-approved staged vision
-1. **Level 1 — Multi-Agent System:** Jarvis orchestrates specialist agents. Claude Code + ECC is the primary candidate engineering execution stack. Preserve proposed lineage: local model / inference adapter → FCC → Claude Code → ECC.
-2. **Level 2 — AI Corporation:** departments, accountable roles, task portfolio, quota/budget envelopes, organizational memory, quality gates, incident management and human approval boundaries.
-3. **Level 3 — Agentic Ecosystem / Agent Economy:** independently governed organizations, authenticated capability discovery, contract-based delegation, provenance, trust and controlled resource exchange. These are descriptive candidate terms, not a claim of one settled industry standard.
-
-## Components that must remain explicit
-- **ECC is required in the owner-approved Claude Code stack.** Do not omit or silently replace it. Exact canonical identity/source, version, license, permissions, security posture and integration remain NOT VERIFIED.
-- FCC remains the proposed Claude Code authorization/compatibility component; exact identity and supported auth semantics remain NOT VERIFIED.
-- Claude Code authentication, provider inference and GitHub permissions are separate trust domains. Free provider APIs and local models are inference routes only; no quota/terms bypass and no paid fallback.
-- Compute topology: ephemeral GitHub Actions; persistent cloud control plane; candidate Mac mini Server 2011 i7/16GB; planned Mac mini 2018 i3/32GB; future isolated powerful remote video server; Microsoft Visual Studio Code as human operator/admin workbench, not the scheduler or identity authority.
-- All local nodes remain candidates until host identity, OS, patchability, network, storage, backup, capabilities and security are qualified.
-
-## Pass73 artifacts
-- [Multi-layer Jarvis roadmap](../architecture/JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md)
-- [Claude Code + runner lifecycle design](../architecture/CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md)
-- [Hybrid reference architecture](../architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
-- [Pass73 report](../reports/2026-11-24-pass73-jarvis-multi-layer-roadmap.md)
-- [Pass73 checkpoint](../checkpoints/2026-11-24-pass73-jarvis-multi-layer-roadmap.md)
-- Tracking [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
-
-## Sequencing and verification
-- Level 2/3 are strategic design/backlog only, not authorization to implement or deploy.
-- Contour B remains prohibited until Contour A is ACCEPTED.
-- GitHub documentation writes succeeded. Full read-back and final PR #169 head/CI/reviews/governance refresh remain to be performed.
-- Local validators/tests: NOT RUN. Runtime/dispatch/provider calls/secret reads/local host connections/video server/VS Code remote session/deployment/production writes: NOT RUN.
-- Contour A BLOCKED / NOT ACCEPTED.
-
-Next bounded step: read back all Pass73 files, validate ECC references and relative links, refresh PR #169 exact-head CI/reviews/governance, then Reuse First verification of canonical FCC/ECC sources and Claude Code compatibility. Keep dispatch fail-closed.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 72 (2026-11-24)
-
-Owner-approved Contour A design update. Default `Основной` remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR #169 is OPEN/DRAFT/UNMERGED; Pass72 final head at time of refresh: `b10d36d946b4f2bd972ff3fedc1c0d2b3f7487e8`; exact-head CI/reviews still require fresh verification.
-
-- Tracking: [Issue #172 — Claude Code-first executors and zero-loss runner lifecycle](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
-- Primary candidate engineering-agent runtime: Claude Code.
-- Preserve owner/project toolchain lineage: `local model / inference adapter → FCC → Claude Code → ECC`. FCC/ECC canonical identities, expansions, versions, licenses and supported auth semantics are NOT VERIFIED; do not infer them.
-- FCC is the proposed authorization/compatibility path, not a quota bypass. Claude Code authentication, provider inference and GitHub permissions are distinct. Free APIs and local models are inference routes only; paid fallback is disabled.
-- Mac mini 2011 i7/16GB (owner-reported), Mac mini 2018 i3/32GB (planned) and future remote video server are candidate local/media nodes; none connected or qualified.
-- Microsoft Visual Studio Code is the human operator/admin workbench, not Jarvis control plane, scheduler, identity provider or durable store.
-- Automatic refill schedules the next eligible job after account-level GitHub Actions capacity is released; each job still gets a fresh ephemeral VM and startup is not instantaneous or guaranteed.
-- Durable external task state, checkpoints, idempotency, atomic completion, leases/fencing, artifact digests, audit and bounded recovery are mandatory. UI state/reconnect must be independent of runner lifecycle.
-- “Zero loss” applies only to committed state under a defined tested failure model; uncheckpointed work resumes from the last durable checkpoint.
-- Design: [Claude Code + runner lifecycle](../architecture/CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md). Updated [20-runner architecture](../architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md) and [hybrid reference architecture](../architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md).
-- Report: [Pass72](../reports/2026-11-24-pass72-claude-code-runner-lifecycle-design.md). Checkpoint: [Pass72](../checkpoints/2026-11-24-pass72-claude-code-runner-lifecycle-design.md).
-
-Verification: documentation-only; no code/schema/dependency/workflow changes and no local validators/tests (NOT RUN). No Claude Code/FCC/ECC runtime, provider calls, secret reads, Gemini dispatch, local host/video server connection, VS Code remote session, deployment, merge or production writes. PR #171 Pool Contract run `45448087868` SUCCESS but audit-only; PR #170 runs `45274455569` and `45274455577` are historical. PR #169 exact-head CI NOT VERIFIED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-
-Next: read back changed docs and final PR #169 head, validate links/Markdown, refresh exact-head CI/reviews/governance, then no-secret source/compatibility review of Claude Code/FCC/ECC. Dispatch stays fail-closed.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 71 (2026-11-24)
-
-Last refreshed: 2026-11-24 19:46:59 Europe/Vilnius — live GitHub revalidation and no-secret workflow static-analysis pilot
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Canonical default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (unchanged from Pass 70 baseline); recursive tree 70 entries, not truncated.
-Working documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN/DRAFT/UNMERGED, current head before Pass71 publication `6db91bfbda955d213119976273dfba6dcaf6ac49`, 141 ahead / 0 behind, 57 files, 0 reviews, exact-head CI absent.
-
-Current PRs:
-- PR #170 is the sole current-base D1 candidate: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; 33 ahead / 0 behind; 38 files; reviews 0 / threads 0. Exact-head run 45274455569/job 138042499229 (D1) SUCCESS and run 45274455577/job 138042499753 (Pool Contract) SUCCESS; run metadata binds head and base `8c38bb0...`.
-- PR #168 remains OPEN/DRAFT/UNMERGED at `caaba7345b698cfcfc92ad711ad1ed985980620d`, 107 ahead / 2 behind; all 33 changed paths overlap PR #170. Do not merge/cherry-pick independently.
-- PR #171 non-dispatch intake: OPEN/DRAFT/UNMERGED; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; 3 ahead / 0 behind; 2 files, +74/-1; exact-head Actions runs 0, combined statuses empty, reviews 0. Its workflow is observation-only, `permissions: {}`, no D1 write/dispatch, and is not on default.
-- PR #169 documentation branch remains OPEN/DRAFT/UNMERGED; Pass71 report/checkpoint/context are published there. Exact-head CI and reviews remain NOT VERIFIED / absent.
-- Priority PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 155 behind default, 0 reviews / 0 threads. #30 has no associated run; historical successes for #24/#25/#31 are not independent acceptance.
-- GitHub Read Adapter path-fix branch `fix/github-read-adapter-path-segments-2026-11-06`: HEAD `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38 ahead / 155 behind, 19 files, no PR/CI. Do not transplant wholesale.
-
-Issues #1, #22, #26, #96 and #140 remain OPEN. Open Issue search returned 15 items; open PR search returned 100 first-page items, total beyond first page NOT VERIFIED.
-
-Governance Ruleset #26550182 is ACTIVE on `refs/heads/Основной`; PR required, approvals 0, CODEOWNERS review false, last-push approval false, review-thread resolution required, bypass actors empty. Classic branch-protection endpoint returned 403 and is NOT VERIFIED. No governance changes.
-
-Default runtime:
-- Current default tree contains five workflows only; no web app, D1 proof package, `next-event-controller.yml` or Gemini controller.
-- Supervisor remains scheduled heartbeat-only. Current-HEAD run 45339684803/job 138260077123 SUCCESS; this is not executor or dispatch evidence.
-- Worker remains retired/fail-closed. DSH and Resource Probe are manual-only and were not run.
-- Current `POOL_DISPATCH_ENABLED` value was not directly read; NOT VERIFIED.
-
-D1 source review on PR #170:
-- Trusted clock is now injected into attempt lease, atomic admission and reconciliation adapters. Negative tests cover caller future/past timestamps, invalid/missing/rollback clocks, and expiry during asynchronous reconciliation verification. This corrects the older Pass50 caller-time defect in the current PR #170 candidate.
-- All proof adapters remain `dispatch:false` and `executionAuthorized:false`; Worker entrypoint is inert 404.
-- Current HIGH blocker: `bindGitHubNextEvent(context)` accepts caller-supplied context and checks workflow-ref equality plus SHA syntax, but does not independently verify authoritative GitHub run metadata, workflow bytes/digest, ancestry or default-ref race policy. PR #171's intake workflow does not close this trust gap.
-
-Pass71 Reuse First pilot:
-- Six exact workflow copies (five default workflows plus PR #171 intake) had local Git blob hashes matching GitHub blob SHAs.
-- PyYAML parse/limited structural scan: 6/6 PASS; no unpinned `uses:`, secret/token references, write scopes or direct `github.event.*` interpolation in shell run blocks found.
-- actionlint and zizmor binaries are unavailable in the local environment; outbound DNS is unavailable. Both remain CANDIDATE / NOT RUN; no dependency or CI enforcement added.
-- No code/schema/dependency/runtime change, workflow execution, dispatch, agents, DSH, Resource Probe, provider calls, hosted D1, deployment, production writes, secret reads, variable/ruleset mutation or merge.
-
-Pass71 report: [report](../reports/2026-11-24-pass71-live-revalidation-static-analysis-pilot.md)
-Pass71 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass71-live-revalidation-static-analysis-pilot.md)
-Pass71 report blob: `9e5e49aa684b8dc9eea6bb0d000f842e02577cc2`
-Pass71 checkpoint blob: `c6ced0fafccfc69d237ce9acf43cea2958e518ed`
-
-Next: Pass72 — read-only diagnosis of missing exact-head CI on PR #171; then specify authoritative GitHub run/workflow/blob/ref provenance with adversarial no-secret tests. Preserve `dispatch:false` and `executionAuthorized:false`; do not wire Worker/Supervisor or merge without exact-head CI, provenance review, active protections and independent review.
-Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 69 (2026-11-24)
-
-Last refreshed: 2026-11-24 — non-dispatch owner /next intake workflow
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Default `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-PR #171: OPEN/DRAFT/UNMERGED; branch `feat/next-event-intake-nondispatch-pass69`; head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; base `Основной`; 2 files, 74 additions. Adds inert owner /next intake workflow and static contract checks.
-PR #170: OPEN/DRAFT/UNMERGED; D1 head `7d900d9fe11b19f048548a3bed657b2549f8091f`; unchanged.
-PR #169 docs PR remains OPEN/DRAFT/UNMERGED; current docs branch includes this checkpoint/report.
-Decision: independent human review is post-launch, before final Contour A ACCEPTED; not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI/security/governance/provenance/fail-closed gates remain mandatory.
-Pass69 workflow `.github/workflows/next-request-intake.yml`: exact owner-authored `/next` on Issue #96 only; excludes PR comments; explicit `permissions: {}`; no secrets, checkout, external Actions, D1/API writes, dispatch or execution. Audit-only. Validator now includes the workflow and checks exact owner gate, empty permissions, no external actions/credentials/write/dispatch and observation-only output.
-Workflow blob `9402a803e21987b61813436647e43dac333c866c`; validator blob `6f82878beabeb2c0a1f65dfa66dee1c7de253482`.
-PR #171 exact-head CI: NOT VERIFIED (no runs returned; combined statuses empty). Local YAML/Node tests NOT RUN. Reviews 0; no merge or runtime trigger. No secrets, D1 writes, dispatch, deployment or production mutation. Active time NOT MEASURED.
-Pass69 report: [report](../reports/2026-11-24-pass69-nondispatch-next-intake.md)
-Pass69 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass69-nondispatch-next-intake.md)
-Next: Pass70 re-read PR #171 exact-head CI, fix evidenced failures, then implement trusted GitHub run/workflow/blob/ref provenance and D1 admission as separate fail-closed work. Contour B DEFERRED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 68 (2026-11-24)
-
-Last refreshed: 2026-11-24 — controller presence and workflow provenance audit
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-PR #170: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`. Sole D1 candidate.
-PR #169: OPEN/DRAFT/UNMERGED; docs head before this pass `d1c401dd6279f105b6bac5fdad267d65dd7594bf`.
-PR #168: OPEN/DRAFT/UNMERGED; non-canonical; do not merge/cherry-pick separately.
-Issue #96 and #140 remain OPEN.
-Decision: independent human review is post-launch, before final Contour A ACCEPTED; not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI/security/governance/provenance/fail-closed gates remain mandatory.
-Pass 68 confirmed NOT_FOUND for `.github/workflows/next-event-controller.yml` and `.github/workflows/gemini-batch-dispatch-controller.yml` on both default and PR #170 refs. Therefore no live event controller or Gemini controller is available at those refs. Do not claim provenance verification or dispatch capability.
-D1 adapter blob `fdec14e9088fd1db186d0ee1541a6085ca84104a` validates caller-supplied Actions context; synthetic-context unit tests prove predicate logic, not live workflow authenticity. Need workflow on default first, then verify authoritative run metadata, workflow identity/blob SHA, event/ref/target SHA and default-ref race policy.
-Historical Pass62 synthetic-merge CI: D1 run 45274455569/job 138042499229 SUCCESS; Pool Contract run 45274455577/job 138042499753 SUCCESS with dispatch-disabled contract. Not new Pass68 CI. PR #170 reviews 0 / threads 0; PR #169 exact-head CI NOT VERIFIED. Pass68 new tests 0; code/schema/dependency changes 0; active time NOT MEASURED. No secrets, dispatch, provider calls, hosted D1, deployment, merge/close or production mutation.
-Pass68 report: [report](../reports/2026-11-24-pass68-controller-presence-and-workflow-provenance.md)
-Pass68 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass68-controller-presence-and-workflow-provenance.md)
-Next: Pass69 minimal non-dispatch event-controller workflow contract + workflow syntax/security tests, normal reviewed PR; only then implement provenance verifier against actual workflow/run metadata. Gemini remains NOT RUN; Contour B DEFERRED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 67 (2026-11-24)
-
-Last refreshed: 2026-11-24 — Pass 67 launch sequence correction and trusted provenance audit
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool
-Default branch `Основной`: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-PR #170: OPEN/DRAFT/UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; sole current-base D1 candidate. Historical Pass 62 synthetic-merge CI: D1 113/113 (45274455569) and Pool Contract SUCCESS (45274455577); NOT current-head CI.
-PR #168: OPEN/DRAFT/UNMERGED; non-canonical; all 33 paths overlap PR #170. Do not merge/cherry-pick independently.
-PR #169: OPEN/DRAFT/UNMERGED; head before Pass 67 docs `36bba45bc9750eb4f09faef5aa92433d913abc89`; no workflow runs returned for that exact SHA (NOT VERIFIED).
-Issue #96: exact owner-only /next; first executor remains one Claude Code + ECC + FCC via separately verified free route; Gemini optional.
-Issue #140: canonical D1 admission/lease proof chain.
-Decision: independent human review is post-launch qualification before final Contour A ACCEPTED, not a prerequisite for continuing implementation/initial launch. Pre-launch automated CI, security, governance, provenance and fail-closed gates remain mandatory.
-Pass 67 inspected adapter blob `fdec14e9088fd1db186d0ee1541a6085ca84104a`, migration 0017 blob `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`, unit test blob `a55733460d18974d8a965417ed6633a019fb4c5c`, and D1 integration tests. Adapter persists durable source-comment receipt linked to admission, but it validates a supplied Actions context and does not independently verify workflow bytes/digest/ancestry or default-ref API/race state. Local predicate tests do not prove live event authenticity. Controller/dispatch remains BLOCKED on this technical trust gap; no independent review prerequisite for ongoing engineering.
-No code/schema/dependency changes; no new tests; no secrets, dispatch, provider calls, hosted D1, deployment, merge/close, production or MediaHub changes. Active time NOT MEASURED.
-Pass 67 report: [report](../reports/2026-11-24-pass67-launch-sequence-and-trusted-provenance.md)
-Pass 67 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass67-launch-sequence-and-trusted-provenance.md)
-Next: implement/test authoritative GitHub workflow/run/ref provenance verification and default-ref race policy; keep canonical D1 path and dispatch=false. Then qualify lease/trusted-clock and proceed executor/UI runtime. Independent review post-launch, before ACCEPTED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 66 (2026-11-24)
-
-Last refreshed: 2026-11-24 — Pass 66 canonical D1 PR overlap audit  
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
-Default branch: `Основной` @ `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged).  
-PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; 33 ahead / 0 behind; 38 paths; reviews 0; threads 0. Pass 62 exact synthetic merge evidence: D1 113/113 (run 45274455569) + Pool Contract SUCCESS (run 45274455577).  
-PR #168: OPEN / DRAFT / UNMERGED; head `caaba7345b698cfcfc92ad711ad1ed985980620d`; 107 ahead / 2 behind; 33 paths. Compare API confirms all 33 PR #168 paths overlap PR #170. PR #170 is the sole current-base D1 candidate; do not independently merge/cherry-pick PR #168. PR #168 not closed (no owner authorization).  
-PR #169: OPEN / DRAFT / UNMERGED; head `c2868f936c4dbe6baf02bc15f389d1409254f028`; exact-head CI NOT VERIFIED; reviews 0.  
-Issue #140 updated with Pass 66 overlap finding (comment ID 7123594184).  
-Governance: ruleset #26550182 remains active but approvals 0, CODEOWNER review false; Pass 65 recursive scans found no CODEOWNERS or trusted controller on default/docs trees. Independent reviewer nomination and minimum Write authorization remain owner blockers.  
-No code/schema/dependency changes; no new tests; existing Pass 62 CI only re-read. No secrets, dispatch, provider calls, hosted D1, deployment, merge/close, production or MediaHub changes. Active time NOT MEASURED.  
-Pass 66 report: [report](../reports/2026-11-24-pass66-canonical-d1-pr-overlap-audit.md)  
-Pass 66 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass66-canonical-d1-pr-overlap-audit.md)  
-Next: owner nominates a distinct reviewer by exact GitHub login and authorizes minimum Write permission; retain PR #170 as sole D1 candidate; do not activate controller/dispatch before independent governance and remaining trust/execution gates.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 65 (2026-11-24)
-
-Last refreshed: 2026-11-24 — Pass 65 CODEOWNERS readiness audit  
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
-Default branch: `Основной` @ `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged).  
-PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; reviews 0; threads 0. Prior exact merge evidence remains historical; no new CI in Pass 65.  
-PR #169: OPEN / DRAFT / UNMERGED; pre-Pass65 head `c566b3189fbbadb9da7d900434a3ddd72512b5a2`; base default; before Pass65 additions 44 files, +3,441/-9; reviews 0; threads 0. Exact-head Actions runs and legacy statuses were not returned; NOT RUN / NOT VERIFIED. Pass65 adds report/checkpoint and refreshes this Context Window; final branch tip is recorded in the Pass65 completion response.  
-Ruleset 26550182: ACTIVE; PR required; thread resolution required; approvals 0; stale-review dismissal true; last-push approval false; CODEOWNER review false; bypass actors empty; current user cannot bypass.  
-Pass65 recursive Git Trees API scans (both `truncated=false`) of default and docs branch found no CODEOWNERS in root, `.github/` or `docs/`; neither tree contains `next-event-controller` or `gemini-batch-dispatch-controller`. CODEOWNERS requires a real owner with Write permission and must be present on PR base branch to govern. Do not add placeholders.  
-Decision: first activate one general independent approval rule after owner authorizes a distinct reviewer; only then introduce CODEOWNERS through a separately reviewed PR, then require code-owner review. User-owned repo cannot use team-required-reviewer rules. No reviewer nominated yet.  
-Issue #96 remains OPEN / PLANNED; no controller or dispatch authorization. Issue #1 contains historic POOL_DISPATCH_ENABLED=false evidence from 2026-11-04 only; do not treat as current verification.  
-No invitations, permission/ruleset changes, CODEOWNERS, secret/variable reads, controller/workflow, dispatch, provider calls, hosted D1, deployment, merge, production or MediaHub changes. Code changes 0; dependencies 0; active time NOT MEASURED.  
-Pass65 report: [report](../reports/2026-11-24-pass65-codeowners-governance-readiness.md)  
-Pass65 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass65-codeowners-governance-readiness.md)  
-Next: owner nominates distinct reviewer by exact GitHub login and authorizes minimum Write permission. Until then governance activation and controller remain BLOCKED. Contour A NOT ACCEPTED; Contour B DEFERRED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 64 (2026-11-24)
-
-Last refreshed: 2026-11-24 — Pass 64 independent workflow trust-anchor assessment  
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
-Default branch: `Основной`  
-Frozen default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` (re-read; unchanged)  
-PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; reviews 0; threads 0. Pass 62 exact synthetic merge CI remains D1 113/113 + Pool Contract PASS; no new run in Pass 64.  
-PR #169: OPEN / DRAFT / UNMERGED; pre-Pass 64 head `0a98d581d3b6522227104c6e3824e5e1fff1157d`; base default; after Pass 64 documentation additions: 44 files, +3,441/-9; reviews 0; threads 0. Exact-head Actions runs for the updated branch were not returned at the last check; CI NOT RUN / NOT VERIFIED. See the Pass 64 response for the final branch tip.  
-Ruleset 26550182 exact API read: ACTIVE on `refs/heads/Основной`; PR required; thread resolution required; approvals 0; stale-review dismissal true; last-push approval false; CODEOWNER review false; bypass actors empty; current user cannot bypass.  
-Pass 64 decision: SELECT Option A as minimum viable free-tier governance — one independent human approval, stale approvals dismissed, latest-push approval required, CODEOWNERS for workflow/D1/security-manifest paths, no bypass. User-owned repo cannot use team-required-reviewer rule; reviewer must be a distinct person with write permission, not admin. Explicit residual: this does not resist repository-admin compromise or deliberate ruleset weakening.  
-Option B (separately controlled GitHub App/verifier runtime) DEFERRED; no external operator, credential custody or free runtime qualified. Option C (independent digest repository) DEFERRED until separate maintainer exists; same-owner repository is not independent. GitHub artifact attestations are supplemental provenance, not policy trust root.  
-No ruleset change, collaborator invite, permission change, App/credential, workflow/controller, dispatch, secrets read, provider call, hosted D1, deployment, merge, production mutation or MediaHub change. Code changes 0; dependencies 0; active time NOT MEASURED.  
-Pass 64 report: [report](../reports/2026-11-24-pass64-independent-workflow-trust-anchor.md)  
-Pass 64 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass64-independent-workflow-trust-anchor.md)  
-Next: owner authorization to nominate one distinct independent reviewer and approve ruleset/CODEOWNERS changes. Until then controller creation and dispatch remain blocked. Contour A NOT ACCEPTED; Contour B DEFERRED.
-
----
-
-# CURRENT OPERATIONAL SNAPSHOT — Pass 63 (2026-11-24)
-
-Last refreshed: 2026-11-24 — Pass 63 workflow provenance trust-contract audit  
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
-Default branch: `Основной`  
-Frozen default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
-PR #170: OPEN / DRAFT / UNMERGED; head `7d900d9fe11b19f048548a3bed657b2549f8091f`; base is the frozen default; exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`; formal reviews 0; review threads 0.  
-Pass 62 exact merge-result evidence: D1 run 45274455569 SUCCESS (8/8 files, 113/113 tests); Pool Contract run 45274455577 SUCCESS. Both recorded against the exact synthetic merge SHA above.  
-Ruleset 26550182: ACTIVE on `refs/heads/Основной`; PR and resolved review threads required; 0 approvals configured; no bypass actors; current user cannot bypass.  
-Documentation branch `docs/engineering-excellence-2026-11-23`: PR #169 OPEN / DRAFT / UNMERGED; pre-pass head `029f942960a3626d5b17d85f9655fc94beb8e2eb`; 0 reviews / 0 threads.
-Pass 63 documentation update final branch/PR #169 head: `bb1da4380582991ea1d09be20889ec0fed7e9e25`; PR #169 remains OPEN / DRAFT / UNMERGED; documentation-branch workflow runs for this exact head: none returned (NOT RUN / NOT VERIFIED, not a failure). Report and checkpoint were re-read after creation; final report blob `c52b96e9b9e85471a3b5d62a8058fef2c5ceb800`, checkpoint blob `7ad6f0472f4c9e191bb45eb1bafae6f53ad241a8`.  
-Pass 63: VERIFIED source/GitHub semantics/governance audit. The default tree and PR #170 candidate do not contain `.github/workflows/next-event-controller.yml`; default tree also lacks the candidate D1 proof package. The binder checks workflow-ref/SHA shape but does not independently verify GitHub ref, workflow bytes/digest, ancestry or run metadata. GitHub docs confirm issue_comment GITHUB_SHA is the last default-branch commit and GITHUB_WORKFLOW_SHA is the workflow-file commit.  
-Decision: no controller or dispatch. Workflow verifier implementation BLOCKED until the exact workflow exists on default and an independent trust anchor is approved. Current same-repository ruleset has 0 required approvals; a digest committed only beside the workflow is not independent. No code/runtime/schema changes, secrets, provider calls, hosted D1, deployment, merge or production mutation. Active time NOT MEASURED.  
-Pass 63 report: [report](../reports/2026-11-24-pass63-workflow-provenance-trust-contract.md)  
-Pass 63 checkpoint: [checkpoint](../checkpoints/2026-11-24-pass63-workflow-provenance-trust-contract.md)  
-Next: Pass 64 — evaluate free-tier-compatible independent workflow trust anchors and governance. Do not change rulesets or create credentials without explicit authorization. Contour A NOT ACCEPTED; Contour B DEFERRED.
-
----
-
 # GITHUB CONTEXT WINDOW — DEVELOPER CLOUD POOL / CLOUD DEVELOPMENT ENVIRONMENT
 
-> Operational `/next` recovery source. Historical sections below are retained; refresh live GitHub refs, PRs, Issues, exact-head CI and governance on every pass.
+> **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-24 — Pass 60 local D1 integration for GitHub /next source-comment receipt  
-Repository: https://github.com/VlDMlNSh/developer-cloud-pool  
-Default branch: `Основной`  
-Observed default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`  
-Current D1 integration candidate: PR #170 OPEN / DRAFT / UNMERGED  
-PR #170 head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact synthetic merge `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`  
-PR #170 diff: 38 files, +7,655 / -0; formal reviews 0, review threads 0. PR #168 remains historical source lineage; do not merge both #168 and #170.  
-Pass 60 final-head D1 run #45271784660 SUCCESS (8 files, 107/107 tests); Pool Contract run #45271784521 SUCCESS. Both checked out exact synthetic merge SHA `73adf651c32882d0d57f339ac6eb8e5e1c41cfbd`.  
-Documentation branch: `docs/engineering-excellence-2026-11-23`; PR #169 OPEN / DRAFT / UNMERGED; latest PR #169 head is tracked in live PR metadata.
+Last refreshed: 2026-11-28 19:18:56 Europe/Vilnius — Pass 121 live revalidation and workflow provenance composition gate
+Repository: https://github.com/VlDMlNSh/developer-cloud-pool
+Default branch: `Основной`
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (GitHub REST commit read-back; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`)
+Working documentation branch: `docs/engineering-excellence-2026-11-23` (PR #169 OPEN/DRAFT/UNMERGED; not canonical)
+Latest daily report commit: `f8889376426208ab1718b63126fde180db31b6b5` (Pass 121; this branch remains unmerged)
+Latest checkpoint commit: `eab4f3124173e54442aa1cf9f4b31092c0b49bc3`
+This document is maintained on the working documentation branch `docs/engineering-excellence-2026-11-23` through PR #169. It is OPEN/DRAFT/UNMERGED and is NOT the default branch or canonical production code. Do not represent it as merged.
 
-## Current engineering state — 2026-11-24
-
-- Priority: complete and accept Cloud Development Pool Contour A. Contour B remains prohibited until formal `ACCEPTED`.
-- Pass 56: reconciled canonical D1 proof onto current default; exact merge-result CI 74/74 plus Pool Contract PASS.
-- Pass 57: migration 0016 seals INSERT/UPDATE/DELETE on retired `pool_task_claims` and `pool_task_outbox`; exact merge-result CI 75/75 plus Pool Contract PASS.
-- Pass 58: audited PR #112 event predicate and PR #125 Actions-context/D1 composition. Reuse predicate/context pattern only; no competing ledger.
-- Pass 59: added `src/github-next-event.mjs`, migration 0017 and owner event tests within the existing `proofs/d1-ledger`. Exact merge-result CI 100/100 plus Pool Contract PASS.
-- Binder requires exact repository/owner numeric IDs, Issue #96, top-level created `issue_comment`, exact `/next`, owner association, default ref, target/workflow SHA, expected workflow ref, comment ID, run ID and attempt. Only CODE profile `jarvis-code-sandbox-v1`.
-- Migration 0017 adds an append-only, source-comment-unique receipt linked to the canonical admission and guarded against mismatch with the consumed approval, task, attempt, route, task-ready outbox and commit receipt. No legacy outbox or second ledger.
-- Receipt write follows the existing admission transaction in a second phase. The wrapper does not return success until primary-first receipt readback matches; ambiguous writes are reconciled by primary readback. All results remain `dispatch:false`, `executionAuthorized:false`.
-- Event digest is stable across run ID/attempt changes so a rerun can recover a committed admission if the source receipt was not yet written. Run ID/attempt remain persisted in the receipt; a mismatch against an existing receipt fails closed.
-- Pass 60 added 7 local D1 integration tests for receipt success/exact replay, conflicting admission, run provenance conflict, pre-commit failure/recovery, lost acknowledgement, partial readback, unavailable primary readback and incomplete task-ready outbox tuple. All paths preserve dispatch/execution authorization false.
-- No live default-branch `issue_comment` controller exists. The workflow ref in the binder is only the expected future identity, not proof the workflow is present or trusted.
-- No cryptographic webhook signature validation or independent GitHub API read of default HEAD. Runner-context binding alone does not establish live event authenticity.
-- **Pass 60 SHA-semantics finding:** GitHub documents `GITHUB_SHA` for `issue_comment` as the last commit on the default branch, while `github.workflow_sha` is the commit SHA for the workflow file. The current binder's `workflowSha === targetSha` assumption is not a generally valid invariant. Pass 61 must separate event target SHA from workflow-code SHA and define an independently verifiable trust relationship before controller creation. Sources: [issue_comment event semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#issue_comment), [Actions contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
-- PR #112 remains historical: owner/event predicate only, no durable receipt or workflow/run binding. PR #125 remains historical: competing schema, retired DSH profile, incomplete replay tuple; never copy its ledger or legacy outbox.
-- PR #170 remains OPEN/DRAFT/UNMERGED, head `9a61572dca2a6621001a1bae770e8d85a5d93315`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 38 files, +7,655/-0; reviews 0, threads 0.
-- All adapters remain non-authorizing; worker entrypoint remains inert. No live routing, quota enforcement, hosted D1, worker execution or authenticated UI qualification.
-- Exact ruleset detail was not independently re-read in Pass 59; no merge was attempted. Prior recorded ruleset ID: `26550182`, active enforcement; recheck its full rules before any merge/dispatch.
-- No dispatch, secrets/variables inspection, provider calls, hosted D1, deployment, merge or production mutation. Active engineering time NOT MEASURED.
-
-## Pass 60 evidence
-
-- Report: [Pass 60 report](../reports/2026-11-24-pass60-next-event-receipt-d1-integration.md)
-- Checkpoint: [Pass 60 checkpoint](../checkpoints/2026-11-24-pass60-next-event-receipt-d1-integration.md)
-- PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
-- D1 run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45271784660
-- Pool Contract run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45271784521
-- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
-- Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
-
-## Pass 59 evidence
-
-- Report: [Pass 59 report](../reports/2026-11-24-pass59-owner-next-event-receipt.md)
-- Checkpoint: [Pass 59 checkpoint](../checkpoints/2026-11-24-pass59-owner-next-event-receipt.md)
-- PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
-- D1 run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45270189346
-- Pool Contract run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45270189385
-- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
-- Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
-
-## Mandatory `/next` resume procedure
-
-1. Re-read this state block, latest report/checkpoint and refresh default HEAD, PR #170/#169, Issues #96/#140, exact-head/merge-result CI, reviews and rulesets.
-2. Freeze target SHA, scope, non-goals, Reuse First decision, risks and DoD before code changes.
-3. **Pass 61 next:** test duplicate source-comment key against a distinct admission envelope; forged receipt SQL bindings; missing route/commit receipt; receipt immutability; and separate event target SHA from workflow-file SHA and establish a trusted relationship before controller creation.
-4. Keep one canonical `proofs/d1-ledger` path, CODE profile only, no second ledger, no live controller, no dispatch.
-5. Run exact synthetic merge-result D1 and Pool Contract CI; update report/checkpoint/Context Window. No hosted D1, secrets, provider calls, deployment, merge or production mutation.
-6. Keep Contour B deferred until Contour A is formally ACCEPTED.
-
-## Canonical navigation
-
-- PR #170: https://github.com/VlDMlNSh/developer-cloud-pool/pull/170
-- PR #168: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
-- PR #169: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169
-- PR #112: https://github.com/VlDMlNSh/developer-cloud-pool/pull/112
-- PR #125: https://github.com/VlDMlNSh/developer-cloud-pool/pull/125
-- Issue #96: https://github.com/VlDMlNSh/developer-cloud-pool/issues/96
-- Issue #140: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
-- MediaHub canonical map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 ---
 
-> The following sections are retained historical context. Their refs, statuses, dates, limits and implementation claims are not live facts unless reconfirmed in the current GitHub source of truth.
 ## 1. Project objective, scope and priority order
 
 Developer Cloud Pool is an independent, cloud-first, governed agent platform and remote development environment. The goal is to make a secure web console accessible from iPhone and desktop, then qualify the cloud execution pool and only afterward move to native mobile and external compute.
@@ -488,16 +46,25 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 - MediaHub PR #441: https://github.com/VlDMlNSh/mediahub-os/pull/441 (previously observed open/unmerged; refresh before relying)
 - Preserve MediaHub Baseline 2.0 and historical IDs where applicable. Jarvis, ASTRA A0, and MediaHub Product State Authority have distinct authority boundaries. A technical capability is not authorization.
 
-## 3. Repository state, branches and governance
+## 3. Repository state, branches and governance — Pass 121 live snapshot
 
-- Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
-- Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
-- Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
-- Issue #2 is closed and contains an earlier governance alignment history; its former ruleset ID 26535481 was reported absent. Current ruleset collection shows ID 26550182.
-- PRs are not automatically accepted because mergeable=true or CI passed. Formal independent review, effective ruleset details, provenance, exact-head checks and acceptance criteria remain separate gates.
-- The current documentation branch `docs/cross-chat-continuation-2026-11-06` is a working continuation branch. PR #27 remains OPEN/DRAFT/UNMERGED. Do not call it merged or the default branch.
+- Repository: public, not archived. Default branch: `Основной`.
+- Canonical HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree: `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`. Default HEAD has not advanced since the last audit.
+- Repository pushed_at: 2026-11-28T17:15:04Z. Open Issues: 17; open PRs: 143.
+- Default has five workflows: Pool Contract Validation, Pool Supervisor (retired heartbeat), Pool Worker (retired DSH profile), DSH Runtime Evaluation and Runner Resource Probe.
+- Default does NOT contain `.github/workflows/next-event-controller.yml`, `proofs/d1-ledger` or `web` (direct Contents API reads returned 404). `issue_comment` workflow runs: 0.
+- Current ruleset ID `26550182`, name `Основной — verified`, enforcement ACTIVE, exact selector `refs/heads/Основной`; PR required; deletion/non-fast-forward blocked; required approvals 0; CODEOWNERS review disabled; required status-check rules absent; review-thread resolution required; bypass actors none.
+- Classic branch-protection GET returned 403; classic protection remains NOT VERIFIED. Do not infer branch protection from the active ruleset alone.
+- POOL_DISPATCH_ENABLED was not read; its current value is NOT VERIFIED. No secret, token, API key or value was read.
+- Working documentation branch: `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED. It is a documentation branch only, not canonical. Before Pass121 it was 275 ahead / 2 behind default, with 123 documentation files; exact-head CI and formal reviews were absent.
+- PR #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED and 157 commits behind current default; historical exact-head CI is not current-base qualification.
+- PR #185 collector head `74bef427d4c68633ae57c26de5c9df352f45b4db`, 130 ahead / 0 behind default; exact-head Pool Contract run 46168184010 SUCCESS.
+- PR #186 provenance head `82b7983d9b4178ffbad44bcfc8122a87a0026123`, 144 ahead / 0 behind default; exact-head D1 and two Pool Contract runs SUCCESS. It descends from PR #185 by 14 commits.
+- PR #187 is validation-only at the same head as #186; do not merge it.
+- PR #183 read-only poolctl CLI is 21 ahead / 0 behind and has exact-head Pool Contract SUCCESS; it is not the remote Web Console.
+- PR #184 Spec Kit / llm.asm assessment is documentation/spec-only, 37 ahead / 0 behind; exact-head CI NOT VERIFIED.
+- GitHub Read Adapter path branch `fix/github-read-adapter-path-segments-2026-11-06` @ `dee17350864cb49e8c5dd41cf61859d77d3affca`: 38 ahead / 157 behind, 19 files, no PR, exact-head CI NOT VERIFIED. Do not transplant the entire branch.
+- Formal independent reviews and inline review comments are absent on the reviewed priority PRs. Passing CI does not establish independent acceptance or runtime.
 
 ## 4. Cloud execution architecture and actual runtime status
 
@@ -2681,740 +2248,282 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 
+## Pass 105 — API-attested envelope contract freeze (2026-11-26)
+
+- Clean working branch `integration/pass105-api-attested-envelope-contract-2026-11-26` created from canonical default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; no PR branch stack inherited.
+- Inspected PR #176 controller API verifier/workflow and PR #175 D1 binder/context adapter/migration 0017/receipt path. API verifier returns workflow Contents API blob SHA/ref SHA but only emits a step summary. D1 binder independently derives digest from flat Actions context. No same-run call path joins them.
+- Migration 0017 stores `workflow_sha` but has no dedicated workflow-file blob SHA, Issue/Comment node IDs, attestation schema/version or distinct API-observed run-head SHA. Do not conflate GitHub workflow commit SHA with Contents API Git blob SHA.
+- Pass105 documentation contract freeze: `docs/contracts/2026-11-26-owner-next-api-attested-envelope-v1.md`; report `docs/reports/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`; checkpoint `docs/checkpoints/2026-11-26-pass105-api-attested-envelope-contract-freeze.md`.
+- Proposed v1 contract uses strict typed schema, fixed ordered-array canonical SHA-256 with domain separator, full API event/workflow/run provenance, and D1-side schema/provenance validation + digest recomputation. Requires migration 0018 and one mocked same-run API verifier -> envelope -> D1 admission -> durable receipt test with adversarial cases.
+- This was documentation-only. Runtime/migration code unchanged; tests/CI NOT RUN. Hosted D1, live issue_comment, dispatch, provider calls, secrets, deployment, merge NOT RUN. Independent security review NOT RUN. Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: implement the v1 validator and migration 0018 on this clean branch, wire D1 adapter, and add end-to-end mocked Workers test; dispatch remains false.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 106 — strict API-attested envelope validator (2026-11-26)
+
+- On clean integration branch `integration/pass105-api-attested-envelope-contract-2026-11-26` based on `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`, added `scripts/owner-next-api-attestation-envelope.mjs` and `scripts/owner-next-api-attestation-envelope.test.mjs`.
+- Validator enforces exact schema/key sets, fixed repository/owner/issue/body/profile, owner actor, decimal IDs, lowercase SHA formats, attempt=1, observed default-head/run-head equality, workflow file blob ref equality, separate workflow commit/blob SHAs, canonical ordered-array UTF-8 SHA-256 digest and fixed domain separator. Raw JSON duplicate keys rejected before JSON.parse.
+- Verification output is read-only: `dispatch:false`, `executionAuthorized:false`.
+- Updated `.github/workflows/pool-contract-validation.yml` to run the new node:test suite alongside existing owner-event audit tests.
+- No new dependencies. Reuse Node built-ins and existing CI workflow.
+- Local test execution NOT RUN: attempted clone failed because github.com DNS/network resolution was unavailable. CI not yet observed; draft PR to be opened for CI evidence.
+- API verifier still does not construct this envelope; PR #175 D1 binder/migration/receipt are not yet ported or wired to validate it. D1 migration 0018 and same-run end-to-end test NOT IMPLEMENTED.
+- Pass106 report: `docs/reports/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`; checkpoint: `docs/checkpoints/2026-11-26-pass106-strict-api-attestation-envelope-validator.md`.
+- No D1/live event/secret/provider/dispatch/deployment/merge/production writes. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: port D1 ledger, add migration 0018, D1-side strict envelope verification, then controller-to-receipt mocked Workers integration test.
+- MediaHub map (separate/deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## CI correction and final validation boundary
+
+- PR #177 opened Draft against `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Initial merge-result run `45879474164` completed SUCCESS on merge SHA `70989a36afba9ec72c4e54579c0aa54eb9bb7b30`; logs proved YAML parsing, `POOL_CONTRACT_VALIDATION=PASS`, and `POOL_DISPATCH_ENABLED=false`, but did **not** execute Node test suites. The initial test-command insertion targeted the wrong workflow text and had no effect.
+- Corrected `.github/workflows/pool-contract-validation.yml` to run `node --test scripts/owner-next-event-audit.test.mjs scripts/owner-next-api-attestation-envelope.test.mjs` after contract validation. Correction commit: `ff55291b2b2ea33ce94d861fd2f0af142bc97bd9`.
+- A new run for correction head was not returned by the Actions lookup at last observation. Therefore the envelope and owner-event Node tests remain NOT VERIFIED by execution; do not count run `45879474164` as test evidence.
+- Local clone/test attempt remains blocked by DNS failure resolving github.com. The corrected CI command is in the PR diff but its execution is pending/NOT VERIFIED.
+
+
+## Executed CI evidence and current-tip caveat
+
+- Draft PR #177: https://github.com/VlDMlNSh/developer-cloud-pool/pull/177
+- Candidate head at PR creation: `e9a9dea03fdd78e2789c8314cae384da51953bc9`; merge-result run `45879474164` SUCCESS on `70989a36afba9ec72c4e54579c0aa54eb9bb7b30` did not execute Node tests. It only established YAML syntax, static pool contract and dispatch gate false.
+- Corrected CI command at commit `ff55291b2b2ea33ce94d861fd2f0af142bc97bd9` then ran under PR merge-result run `45879528386` (job `140115037739`), SUCCESS. Log evidence: six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; `POOL_DISPATCH_ENABLED=false`; envelope suite `# tests 20 / # pass 20 / # fail 0`, including duplicate JSON key rejection, policy lockout, provenance mismatch and digest tampering.
+- The first corrected command also named an owner-event test path absent from this clean-base branch. The log proves the envelope suite ran (20/20), but no owner-event suite result is claimed. Workflow command has since been narrowed to only `node --test scripts/owner-next-api-attestation-envelope.test.mjs` in commit `960abc3af2651a8357f5b31623673820fb178993`.
+- Latest PR head after this command correction: `960abc3af2651a8357f5b31623673820fb178993`. No Actions run was returned for this exact head at last lookup. Thus final-tip CI is NOT VERIFIED; run `45879528386` is merge-result evidence for the immediately preceding commit only.
+- PR #177 remains Draft/unmerged; formal reviews 0; review threads 0. No merge.
+
+
+## Latest merge-result CI requalification
+
+- After narrowing the test command to the envelope test file only, PR #177 current code/workflow tip was `535e4fac6418209e13b33801308fdc42b95cbabc`.
+- Pool Contract Validation run `45879712743` / job `140115662601` completed SUCCESS. It checked out PR merge-result commit prefix `9b2d7f4` (merge-result validation, not standalone head checkout).
+- Job logs: six workflow YAML files parsed; `POOL_DISPATCH_ENABLED=false`; `POOL_CONTRACT_VALIDATION=PASS`; Node envelope suite `20 tests / 20 pass / 0 fail`, including duplicate-key rejection and read-only policy assertions.
+- This is the strongest current CI evidence for the implementation. It is merge-result CI on the code/workflow tip, not exact-head CI. Subsequent docs-only updates may advance branch HEAD; no CI claim is transferred to a later docs-only SHA.
+- PR #177 remains Draft/unmerged, reviews 0, threads 0. No merge or dispatch.
+
+
+## Pass 107 — API-attestation / D1 compatibility audit (2026-11-26)
+
+- Read back PR #175 D1 binder/migration 0017, PR #176 API verifier/workflow, and PR #177 v1 envelope validator. Source audit VERIFIED; no runtime changes.
+- PR #176 verifier returns `OBSERVED_ONLY`, `admission: NOT_CREATED`, `dispatch: NOT_AUTHORIZED`; workflow does not serialize an envelope or call D1.
+- PR #175 `bindGitHubNextEvent` accepts flat Actions context and independently hashes a 15-field legacy tuple. It does not consume v1 envelope. Digest omits schema/version, issue/comment node IDs, observed default HEAD as separate field, workflow ID/path/state, workflow-file blob SHA and workflow-file ref SHA.
+- Migration 0017 `workflow_sha` is populated from `github.workflow_sha` (workflow commit SHA). Do not overload it with Contents API blob SHA. Migration 0018 must add explicit workflow commit/blob/ref SHA, issue/comment node IDs, observed default SHA, workflow ID/path/state and schema/version; IDs remain TEXT.
+- D1 already uses WebCrypto `crypto.subtle.digest`; use this for independent v1 digest recomputation, not Node `node:crypto` in Workers runtime.
+- Approval currently requires `approval.envelopeDigest === bound.context.eventDigest`; the v1 envelope digest must become the single coordinated digest for admission approval and receipt, not a parallel digest.
+- Reuse PR #176 API readbacks/blob attestation and PR #175 single ledger, SQL trigger chain, primary-first readback and Workers Vitest harness. No second ledger/service/dependency.
+- PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #176 head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`; both Draft/unmerged, 0 reviews/threads. Their prior merge-result CI successes do not prove composed integration.
+- Pass 107 report: `docs/reports/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass107-api-attestation-d1-compatibility-audit.md`.
+- Tests NOT RUN in this audit. No hosted D1/live event/secrets/provider/dispatch/deployment/merge/production write. Independent security review and Gemini/Claude/ECC/FCC NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: one clean combined integration branch, port D1 package + v1 validator, implement migration 0018 and negative-first Workers E2E test; keep dispatch=false.
+- MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Final Pass 107 branch read-back
+
+- Pass 107 docs/checkpoint/Context Window were read back successfully. Final working branch HEAD after documentation updates: `d0595e58c6acab976238c7fe365cdab29adc4739`; compare to frozen base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 26 ahead / 0 behind; 11 changed files total.
+- PR #177 remains OPEN/DRAFT/UNMERGED. The PR listing returned `mergeable=false`; reason/state was not exposed by the available read, so treat mergeability as NOT VERIFIED and do not merge. Reviews 0, threads 0.
+- No Actions run or combined status was returned for final documentation HEAD `d0595e58...`; exact-head CI NOT VERIFIED. Previous merge-result run `45879712743` remains limited to 20/20 envelope tests on earlier code/workflow tip `535e4fac...`.
+
+
+## PR metadata refresh (final read)
+
+- A subsequent GitHub PR metadata refresh now reports PR #177 `mergeable=true` (the earlier `false` value was transient/inconsistent; no conflict is currently reported). PR remains OPEN/DRAFT/UNMERGED, 0 reviews and 0 review threads.
+- Latest branch/PR HEAD: `d1aa5c07b5fa7bec9b937b53fb61cd616bd72f5d`; compare to base `565404f84b6b86afb4dc2d8fa939341f42df6eca`: 29 commits ahead / 0 behind, 11 changed files.
+- No Actions run or combined status was returned for this final SHA. Exact-head CI remains NOT VERIFIED. Prior merge-result run `45879712743` remains 20/20 envelope tests on earlier code/workflow tip only.
+
+
+## Pass 108 — D1 ledger + envelope integration foundation (2026-11-26)
+
+- Frozen starting SHA: da8de0e258571fa98aad8da053f8e4134a94ceb9 (PR #177 head). Working branch: integration/pass108-d1-ledger-plus-envelope-2026-11-26.
+- Ported canonical PR #175 D1 package and workflow onto the envelope v1 branch: migrations 0001–0017, Workers source, Vitest tests/config, pinned package/lockfile and Wrangler config. Existing ledger and migration semantics preserved; no new dependency or service.
+- No D1 semantics changed. The binder still consumes flat Actions context and computes the legacy 15-field digest. It does not yet validate envelope v1.
+- The v1 Node validator imports node:crypto and is not Workers-compatible. A separate WebCrypto D1-side verifier is still required. Do not import the Node validator into Workers.
+- Migration 0017 workflow_sha remains workflow commit SHA, not Contents API Git blob SHA. Migration 0018 not implemented.
+- Pass 108 report: docs/reports/2026-11-26-pass108-d1-envelope-integration-foundation.md; checkpoint: docs/checkpoints/2026-11-26-pass108-d1-envelope-integration-foundation.md.
+- Local tests NOT RUN. Draft PR CI required for the isolated D1 Workers migration suite; results must be inspected before claiming verification.
+- No hosted D1, secret access, provider calls, dispatch, deployment, merge or production mutation. Gemini/Claude/ECC/FCC and independent security review NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: Workers-native strict WebCrypto envelope verifier and trusted Actions context cross-check, followed by migration 0018 and coordinated binder/approval/receipt/replay changes. Keep dispatch=false.
+- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## CI evidence and PR gate — 2026-11-26
+
+- Draft PR #178: https://github.com/VlDMlNSh/developer-cloud-pool/pull/178
+- PR head: fca5c1239108cd3622312d8c7e975f1e42f6afe3; base: 565404f84b6b86afb4dc2d8fa939341f42df6eca; compare 74 ahead / 0 behind; 52 changed files.
+- Isolated D1 Ledger Proof run 45881178545 / job 140120610456: SUCCESS. Logs show merge-result checkout f7a5c18 (merge of PR head into frozen base), npm ci completed, inert Worker check passed, 8 test files passed and 123 tests passed.
+- Pool Contract Validation run 45881178528 / job 140120610663: SUCCESS. Seven workflow YAML files parsed; POOL_CONTRACT_VALIDATION=PASS; dispatch gate confirmed disabled or unset.
+- These are PR merge-result CI runs, not standalone exact-head runs. They verify the imported D1 package and static pool contract against the recorded merge result; they do not verify API-attestation-to-D1 composition because that code is not yet implemented.
+- PR #178 remains OPEN / DRAFT / UNMERGED, mergeable=true, formal reviews 0, review threads 0. No merge.
+- No hosted D1, live event, secret read, provider call, dispatch, deployment or production mutation.
+
+## Pass 109 — PR #178 current-head CI and integration-boundary audit (2026-11-26)
+
+- Audit target before documentation: PR #178 HEAD `a7c8df8be07ded912a1a66d527b87f2897bc1014`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Current-head Pool Contract Validation run `45881302922` / job `140121074498`: SUCCESS; dispatch-disabled assertion, workflow YAML parsing and pool security-contract validation steps completed.
+- Current-head Isolated D1 Ledger Proof run `45881303101` / job `140121027145`: SUCCESS; exact PR revision checkout, pinned dependency install, inert Worker check and fresh local D1 migration/authority test steps completed. Job summary does not expose test totals or checkout SHA; no count claimed.
+- PR #178 remains OPEN/DRAFT/UNMERGED, 0 formal reviews and 0 inline threads. PR #174–#177 also returned 0 formal reviews/threads. Governance/ruleset protection and independent security review remain NOT VERIFIED.
+- Source audit: Node envelope validator depends on node:crypto/Buffer; D1 binder still accepts flat Actions context and computes legacy 15-field digest; migration 0017 lacks distinct API provenance fields; approval/receipt still compare legacy digest. No API-envelope-to-D1 composition.
+- Pass109 report: `docs/reports/2026-11-26-pass109-pr178-ci-integration-boundary-audit.md`; checkpoint: `docs/checkpoints/2026-11-26-pass109-pr178-ci-integration-boundary-audit.md`.
+- No runtime/schema changes, hosted D1, secrets, provider calls, dispatch, deployment, merge or production writes. Gemini/Claude/ECC/FCC and independent security review NOT RUN. Active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
+- Next: implement Workers-native WebCrypto strict envelope validator + trusted Actions cross-check + negative-first tests. Follow with migration 0018 and coordinated binder/approval/receipt/replay integration.
+- PR #178: https://github.com/VlDMlNSh/developer-cloud-pool/pull/178
+- MediaHub canonical map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
 ---
 
-## Engineering Excellence 1.0 documentation adoption — 2026-11-23
+## Pass 110 — Workers-native API-attested envelope verifier (2026-11-27)
 
-- Working branch: `docs/engineering-excellence-2026-11-23` (documentation-only, unmerged).
-- Frozen default/base SHA for this package: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- Package index: [docs/engineering-excellence/README.md](../engineering-excellence/README.md).
-- Audit report: [2026-11-23 Engineering Excellence documentation audit](../reports/2026-11-23-engineering-excellence-documentation-audit.md).
-- Checkpoint: [2026-11-23 Engineering Excellence adoption](../checkpoints/2026-11-23-engineering-excellence-adoption.md).
-
-### Owner-approved directions captured
-
-1. Engineering Control Center — the Engineering Excellence index and this Context Window form a navigation/control surface; this is documentation, not a deployed dashboard.
-2. Persistent engineering metrics and time accounting — definitions and recording protocol added; telemetry/collection is NOT IMPLEMENTED. Historical active hours are not inferred or fabricated.
-3. Definition of Done for every Pass — mandatory pass admission, evidence and closeout contract documented.
-4. Reuse First — component research register and adoption gates documented; no new runtime dependency adopted.
-5. Three independent agent roles — Engineering, QA/Architecture and Security/Provenance; controller-only dispatch remains mandatory and no dispatch was performed.
-6. Continuous Security Qualification — qualification checklist and evidence semantics documented; runtime qualification remains separate.
-7. Dependency and critical path — initial dependency graph and Pass 50 blocker-first sequence documented; graph automation NOT IMPLEMENTED.
-8. Engineering Intelligence — evidence-driven learning loop documented as advisory-only; no autonomous authority.
-
-### Documentation audit / anti-duplication decision
-
-Existing architecture, contracts, decisions, Issues, PRs, dated reports and checkpoints remain authoritative in their own domains. New documents define cross-cutting process and point to existing evidence; they do not duplicate pass history or replace the canonical Context Window. This update is append-only and does not rewrite prior historical entries. The Context Window's original top-level "Last refreshed" line is historical and should not be mistaken for this appended update date.
-
-### New files on the working branch
-
-- `docs/engineering-excellence/README.md`
-- `docs/engineering-excellence/ENGINEERING-PASS-PROTOCOL.md`
-- `docs/engineering-excellence/ACCEPTANCE-CRITERIA-MATRIX.md`
-- `docs/engineering-excellence/DEPENDENCY-AND-CRITICAL-PATH.md`
-- `docs/engineering-excellence/METRICS-AND-TIME-ACCOUNTING.md`
-- `docs/engineering-excellence/REUSE-FIRST-REGISTER.md`
-- `docs/engineering-excellence/AGENT-AND-SECURITY-QUALIFICATION.md`
-- `docs/engineering-excellence/ENGINEERING-INTELLIGENCE.md`
-- `docs/reports/2026-11-23-engineering-excellence-documentation-baseline.md`
-- `docs/checkpoints/2026-11-23-engineering-excellence.md`
-
-### Research and limitations
-
-Initial component research references OpenTelemetry semantic conventions/CI-CD metrics, DORA delivery metrics, OPA, Temporal, Testcontainers and LiteLLM. These are candidates/reference material only, not approved or integrated dependencies. License, security, supply-chain, runtime, free-tier, quota and authority compatibility must be checked before adoption.
-
-### Verification and current status
-
-- Eight core Engineering Excellence documents were read back from GitHub and their titles/character counts checked.
-- The dated report and checkpoint were published after the first read-back; final read-back of all ten files and this Context Window update is required before PR creation.
-- No code tests are applicable to this docs-only pass; Markdown/link CI and formal review are NOT VERIFIED until run and inspected.
-- No secrets were read; no Gemini/controller dispatch, provider call, deployment, production dispatch or merge occurred.
-- Pass 50 finding F-50-01 remains HIGH and unremediated. This documentation pass does not qualify the D1 lease.
-- Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
-
-Next: complete read-back, create a draft PR against `Основной`, inspect exact-head CI and review evidence, and keep the PR unmerged pending governance/review requirements.
-
-Canonical MediaHub map (separate repository; Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Engineering Excellence 1.0 — documentation baseline — 2026-11-23
-
-- Package: [docs/engineering-excellence/README.md](../engineering-excellence/README.md).
-- Scope: process/documentation baseline for Contour A only; Contour B remains DEFERRED until Contour A is ACCEPTED.
-- Working branch: `docs/engineering-excellence-2026-11-23`, created from default branch `Основной` at immutable base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This is a working documentation branch, not merged/default/canonical production state.
-- Package documents: Master Control Center; Engineering Pass Protocol and DoD; Contour A Acceptance Criteria Matrix; Dependency and Critical Path; Metrics and Time Accounting; Reuse First Register; Multi-Agent Roles and Continuous Security Qualification; Engineering Intelligence.
-- Added report: [2026-11-23 Engineering Excellence documentation audit](../reports/2026-11-23-engineering-excellence-documentation-audit.md).
-- Added checkpoint: [2026-11-23 Engineering Excellence adoption checkpoint](../checkpoints/2026-11-23-engineering-excellence-adoption.md).
-- The package formalizes one-pass scope, immutable SHA, evidence inspection, exact-head CI, independent review, no-duplication ownership, reuse evaluation, metric definitions and estimation guardrails.
-- OSS candidates (OpenTelemetry, OPA, Temporal, Testcontainers, LiteLLM, DORA) are research references only; no dependency is approved or integrated by this documentation.
-- Engineering metrics, automated collection, dependency graph automation and Engineering Intelligence automation are NOT IMPLEMENTED. No historical hours were fabricated.
-- Agent roles are specified, but Gemini dispatch remains NOT RUN in this pass; controller and security gates remain mandatory.
-- Documentation-only pass: no runtime code, secret reads, provider calls, hosted D1, dispatch, deployment, merge or acceptance. No software tests were applicable or claimed. Content was read back from GitHub; CI and independent review remain pending.
-- Current known blocker remains Pass 50 F-50-01 (HIGH: caller-controlled D1 lease time). Next engineering implementation task remains Pass 51 trusted-clock remediation.
-- Adoption status: PROPOSED / REVIEW PENDING. Do not treat this process package as active policy until reviewed and merged.
-- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
-
-Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-### Engineering Excellence PR publication and review state — 2026-11-23
-
-- Draft PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/169
-- PR #169 title: `docs: add Cloud Pool Engineering Excellence 1.0`.
-- Base: `Основной` at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` when PR was opened.
-- Working branch: `docs/engineering-excellence-2026-11-23`.
-- Initial PR head at creation: `10c80c33b665ae7a59f60a845368303a4255fae2`; initial merge-result ref: `29d07eb6b6da3f84a6bea581cf38c903dac6705e`. These are superseded by the final documentation update commits; re-read the current PR head and merge ref before judging CI.
-- PR state at creation: OPEN / DRAFT / UNMERGED. No formal reviews or inline review threads were present at first read.
-- Initial PR head and merge-result SHA returned no associated workflow runs or status contexts. CI: **NOT VERIFIED**.
-- Report and checkpoint now include this PR evidence. Their final read-back and the final Context Window read-back are required after this append.
-- Keep PR #169 draft/unmerged pending final exact-head CI, governance and review checks. No merge was performed.
-
-The documentation package remains process policy only. Runtime metrics, automatic dependency graphing and Engineering Intelligence are NOT IMPLEMENTED. Gemini dispatch remains NOT RUN. Pass 50 F-50-01 remains HIGH and unremediated. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
-
-
-### Documentation package final read-back — 2026-11-23
-
-- The final package contains nine documents under `docs/engineering-excellence/`; README is the index and Master Control Center is the operating procedure.
-- A single dated report and a single adoption checkpoint were published: [report](../reports/2026-11-23-engineering-excellence-1.0.md) and [checkpoint](../checkpoints/2026-11-23-engineering-excellence-1.0.md).
-- The PR changed-file list was inspected. It includes the nine package documents and this Context Window; report/checkpoint additions are included in subsequent branch commits and must be re-read at the latest branch SHA.
-- No existing architecture, contract, pass-history or acceptance evidence was deleted.
-- Documentation policy remains PROPOSED pending review/merge. Metrics/critical-path/Engineering Intelligence automation remain NOT IMPLEMENTED.
-
-
----
-
-## Daily revalidation — 2026-11-23 19:11:56 Europe/Vilnius
-
-- Immutable current default: Основной @ 8c38bb073146d1c71da3e90cbbb11b55eb34a1e9. Compared with 81baadbb5944e11ed41a64bd0190bf2c8edd0c41, default is 2 commits ahead / 0 behind; both changes are documentation-only. Default commit is unsigned. Current default exact-head workflow query and combined status are empty: CI NOT VERIFIED.
-- Repository Ruleset 26550182 is active on refs/heads/Основной, requires PRs and review-thread resolution, but required approvals are 0, CODEOWNERS/last-push approval are disabled, and bypass actors are empty. Classic branch protection API reports protected=false; this does not negate the active ruleset. Current POOL_DISPATCH_ENABLED value remains NOT VERIFIED.
-- Issues #1, #22, #26, #140 remain OPEN. Search returned 15 open Issues. Issue #140 latest Pass 50 comment records HIGH F-50-01 against PR #168.
-- Current default tree has 70 entries and no web console, D1 proof package or Gemini controller. Supervisor workflow is scheduled heartbeat-only; Worker workflow is retired/fail-closed. Latest observed Supervisor run 45161800097 succeeded on prior default SHA 81baadbb... at 2026-11-23 11:04:25Z; this is not current-head runtime qualification. No current default-head workflow run was returned.
-- Priority PRs #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, all 155 commits behind current default; #30 has no associated exact-head run. #24/#25/#31 historical exact-head CI is SUCCESS; #30 CI is NOT VERIFIED. All four have zero formal reviews and zero inline threads.
-- PR #165 remains OPEN/DRAFT/UNMERGED at 80dcd602a86ab6df58fb144ecdffaa6266cb9cf0, 93 ahead / 9 behind current default.
-- PR #168 remains OPEN/DRAFT/UNMERGED at 5450ddd8002d7a336b3eb41adeaba1d62a17fb75, base 81baadbb... (2 commits behind current default), 95 ahead / 2 behind. D1 run 45212088972/job 137823313130 and Pool Contract run 45212089137/job 137823313662 are SUCCESS on this exact PR head. Both predate the Pass 50 review finding; no formal reviews or inline threads exist. The top-level Pass 50 comment is owner-authored, not independent.
-- Pass 50 F-50-01 was independently re-read at immutable PR #168 head: lease adapter blob 1b6232137dc53998d3efda36a32c809916e9d316 requires caller-supplied input.now, has no trustedClock dependency, and uses that timestamp for expiry and persisted times. Migration 0014 blob 8504b2ae3150092493a2a7808d58a89a4ef9650e compares expiry to NEW.updated_at, written from the same caller input. Test blob 22a3c0050f2a93969efb981a450a1027c92de7f6 uses fixed now and has no trusted-clock adversarial cases. F-50-01 remains HIGH / BLOCKED; adapter outcomes remain dispatch:false and executionAuthorized:false.
-- PR #169 is the current documentation-only Engineering Excellence branch: OPEN/DRAFT/UNMERGED, base 8c38bb073146d1c71da3e90cbbb11b55eb34a1e9, pre-publication head 031b4c6013a5b944f0d7dc60e9fd47cfd2a648ef, 30 ahead / 0 behind. Exact-head CI and reviews are absent. This branch is not canonical and must not be merged without exact-head checks and independent review.
-- GitHub Read Adapter path-fix branch remains dee17350864cb49e8c5dd41cf61859d77d3affca, 38 ahead / 155 behind, 19 files, no PR, no workflow run and empty combined statuses. Source/test blobs 9f4f9e5918e1c84fc8ad4b4f1369a92207394c63 and bd8ac8d97cdd673bb170a22d67ce08697cf46789 contain raw dot-segment allowlist rejection and negative fixtures; tests NOT VERIFIED. Do not transplant the stale branch wholesale.
-- Daily report: docs/reports/2026-11-23-cloud-pool-daily-revalidation.md; creation commit 652ee7097f3a5848bbda0088f717df6f98b47177; blob 393b2b131ce8002add2aba5558181bf204bfbcd2.
-- Daily checkpoint: docs/checkpoints/2026-11-23-daily-revalidation.md; creation commit cf4deff7241b64987c293ba1bb53ae4866782d93; blob 924388a97842d8161e0489485b444ed270481ca7.
-- Documentation-only publication on docs/engineering-excellence-2026-11-23 / PR #169. No source, SQL, workflow, runtime or security-boundary changes; no local tests, workflows, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
-- Next bounded step: Pass 51 trusted-clock remediation design for the isolated, non-mounted D1 lease adapter. Inject a trusted clock after authentication and immediately before the write; derive all persisted times from it; reject invalid/rollback time; add future/past/invalid/rollback/boundary tests. Preserve dispatch:false and executionAuthorized:false. Do not connect to Worker/Supervisor or run GitHub workflows.
-- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
-
-
-### Daily documentation publication read-back — 2026-11-23
-
-- Daily report publication: commit 652ee7097f3a5848bbda0088f717df6f98b47177; report blob 393b2b131ce8002add2aba5558181bf204bfbcd2.
-- Daily checkpoint publication: commit cf4deff7241b64987c293ba1bb53ae4866782d93; checkpoint blob 924388a97842d8161e0489485b444ed270481ca7.
-- Both files were re-read from docs/engineering-excellence-2026-11-23 and their blob SHAs matched.
-- After adding the report, checkpoint and first Context Window append, live PR #169 head was 863ffd793ebc7d099f247b10e67b107cbb03ef03, 33 ahead / 0 behind current default, 14 changed files, OPEN/DRAFT/UNMERGED. Its exact-head workflow query and combined status array were empty; formal reviews and inline threads were empty. This is a documentation-only working branch, not canonical.
-- The report's PR #169 branch metrics (head 031b4c..., 30 ahead, 12 files) are the pre-publication snapshot at audit start. The checkpoint records the same pre-publication head explicitly. The live branch advanced with this daily documentation update; refresh PR metadata after the final Context Window commit.
-- Final Context Window update is documentation-only. No code, SQL, workflow, runtime, security-boundary or governance changes; no local tests, workflow dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, production writes, secret/token/API-key reads, variable/ruleset changes or merge.
-
-
-
-## Pass 51 — D1 lease trusted-clock remediation — 2026-11-23
-
-- Implementation PR: https://github.com/VlDMlNSh/developer-cloud-pool/pull/168
-- Issue: https://github.com/VlDMlNSh/developer-cloud-pool/issues/140
-- Working branch: `integration/pass48-current-base-d1-2026-11-23`.
-- Exact implementation PR head: `ec1caca61caa453d4e0ce5405890e8791f6bfd29`.
-- Source blob `proofs/d1-ledger/src/acquire-attempt-lease.mjs`: `0b4798a8a0a38484682165ef8c5265807a04e27b`.
-- Test blob `proofs/d1-ledger/test/lease-fencing.test.ts`: `52ee72bf89a73b5d9088d1be301b2aa5ae442d4a`.
-- Pass 50 F-50-01 remediation: caller-supplied `input.now` is no longer an authority. The adapter requires a trusted clock dependency, samples it after executor authentication and task precondition read immediately before the conditional write, validates the sample and expiry arithmetic, rejects time earlier than persisted task/attempt timestamps, and uses the same sample for write, readback and ambiguous-write recovery.
-- Five adversarial cases added: caller future time, caller past time, invalid clock, persisted-time rollback and clock exception.
-- Reuse First: existing Vitest 4.1.12 and Cloudflare Vitest plugin 1.4.7 retained; no new dependency/service.
-- Exact PR-head D1 workflow run 45227149858: COMPLETED/SUCCESS; job 137876597970; 6 test files / 68 tests passed.
-- Exact PR-head Pool Contract Validation run 45227149883: COMPLETED/SUCCESS; dispatch-disabled, workflow YAML and security contract steps passed.
-- Combined commit-status contexts empty; not counted as extra CI evidence.
-- PR #168 remains OPEN/DRAFT/UNMERGED; formal reviews 0. Merge-result CI NOT VERIFIED.
-- PR base recorded as `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; current default HEAD observed as `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Compare shows default is two commits ahead, both documentation-only (Context Window and Pass 50 report); branch/base synchronization and merge-result CI remain required.
-- Production/controller trusted-clock provenance NOT VERIFIED; independent security review NOT RUN. The adapter test seam alone does not qualify a live clock source.
-- No hosted D1, secrets, provider calls, dispatch, deployment, production action or merge.
-- PR #168 exact-head local proof: VERIFIED. Runtime qualification: NOT VERIFIED. Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
-- Detailed report: [Pass 51 trusted-clock remediation](../reports/2026-11-23-pass51-d1-trusted-clock-remediation.md).
-- Checkpoint: [Pass 51 checkpoint](../checkpoints/2026-11-23-pass51-d1-trusted-clock-remediation.md).
-
-### Documentation deduplication correction
-
-Earlier historical text in this Context Window temporarily linked to `2026-11-23-engineering-excellence-documentation-audit.md` and `2026-11-23-engineering-excellence-adoption.md`. Those duplicate draft files were removed. The canonical consolidated documents are [Engineering Excellence 1.0 report](../reports/2026-11-23-engineering-excellence-1.0.md) and [Engineering Excellence 1.0 checkpoint](../checkpoints/2026-11-23-engineering-excellence-1.0.md). The earlier links are superseded and must not be treated as live files.
-
-Next critical-path step: synchronize PR #168 against current default without losing its provenance; run and inspect exact merge-result CI; independently qualify the trusted clock provider in the actual controller/runtime. Keep PR draft/unmerged and dispatch disabled until every gate passes.
-
-Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-
-### Engineering Excellence documentation PR final refresh — 2026-11-23
-
-- PR #169 latest head observed before this Context Window commit: `ac7baacc7d19d1aaf3f10794ed11c942c5237a2f`; base SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 16 changed files; OPEN / DRAFT / UNMERGED.
-- Formal reviews: 0. Exact-head CI/status contexts: NOT VERIFIED; documentation-only scope has no runtime test claim.
-- Consolidated report blob: `e1ff1a2fbd1cc7965d1d78701da0fd493290fdf9`.
-- Consolidated checkpoint blob: `52bbe026c8f35048dbcb01b535558919a19a395c`.
-- Pass 51 report blob: `0159bea304be7f25fcfe5eb4fcd780293640a4c9`; Pass 51 checkpoint blob: `c54f7a71192fa949b9a2cb759b7450b2546948e4`.
-- The Context Window, report and checkpoint were read back from the working branch. PR head will advance as this final Context Window commit is published; always re-read live refs before further decisions.
-- PR #169 remains a documentation-policy proposal, not adopted governance or runtime implementation. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-
-
-
-## Cloud Pool acceleration and architecture audit — 2026-11-23
-
-- Full report: [Cloud Pool acceleration and architecture audit](../reports/2026-11-23-cloud-pool-acceleration-audit.md).
-- Checkpoint: [Cloud Pool acceleration audit checkpoint](../checkpoints/2026-11-23-cloud-pool-acceleration-audit.md).
-- Report blob SHA: `f094aafaf02067b90dc1e90faff3365262cfa29d`; checkpoint blob SHA: `099e4b075f7db187084aedc84e2f6ef0caf8ecf6`.
-- Snapshot default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- PR #168: OPEN/DRAFT/UNMERGED; head `ec1caca61caa453d4e0ce5405890e8791f6bfd29`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 33 files, +6,877; exact-head D1 CI 68/68 and Pool Contract Validation SUCCESS; merge-result CI NOT VERIFIED; formal reviews 0.
-- PR #169: OPEN/DRAFT/UNMERGED; documentation branch head before this audit publication `d7cdee8bdff5dd1d11fc0b042a1d544c433d15c7`; base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; exact-head CI NOT VERIFIED; formal reviews 0. This audit advances the documentation branch; re-read live PR head before next work.
-- Branch inventory returned 175 names over two pages. Open PR search returned 100 records at the requested page size; do not treat that capped result as an exact total.
-- Default Context Window is approximately 332k characters; documentation branch copy approximately 352k characters. Default copy refresh marker still says 2026-11-08 and lacks Pass 51; branch copy contains Pass 51 and this audit. Preserve history while prioritizing a concise current-state summary.
-- Earliest inspected UI PR #6 created 2026-11-04; current snapshot 2026-11-23 gives at least 19 calendar days of observed delivery history, not active engineering hours. Verified active hours and remaining hours are NOT AVAILABLE.
-- Runtime Worker remains intentionally inert. Actual controller clock provenance, deployed/authenticated UI, qualified executor and integrated end-to-end lifecycle are NOT VERIFIED.
-- Free-tier review: public GitHub-hosted standard runners are free; Cloudflare Workers Free documents 100k requests/day and 10ms CPU; D1 Free 5M rows read/day, 100k rows written/day, 500MB/database; Queues Free 10k operations/day with 24-hour retention; Workflows step/storage billing applies since 2026-08-10. Verify account-specific entitlement before deployment.
-- Reuse-first recommendation: retain Hono + Workers Static Assets + D1 for the thin control plane; GitHub Actions for bounded ephemeral runner jobs. Reuse OpenHands/Coder/Temporal/LiteLLM patterns selectively; do not add their full runtime stacks to MVP.
-- Key efficiency changes: one vertical-slice MVP; Issue #140 as sole D1 integration objective; pause parallel D1 PR stacks pending migration/source overlap map; synchronize PR #168; qualify actual runtime clock; deploy authenticated read-only web surface; qualify one executor; independent review; defer multi-account/GPU/provider expansion and Contour B.
-- Conflict: current project instruction says 3 Gemini agents, Issue #96 still specifies 4 child jobs. Reconcile authoritative issue/controller contract before dispatch. Gemini dispatch remains NOT RUN.
-- No secrets read, provider calls, agent dispatch, Cloudflare resource mutation, deployment, merge or production action occurred in this audit.
-- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
-- Next recommended bounded pass: canonical D1 PR consolidation and actual runtime clock-source qualification, after fresh refs/governance/CI restore.
+- Frozen base: PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Working branch: `feat/pass110-workers-envelope-validator-2026-11-27`; verifier source commit `24dd17483ea3b15567159c6cabccf0db184bf3c3`; test commit `c4d7849c5934e9f3700b3cba22267f27cfa9a72e`.
+- Added `proofs/d1-ledger/src/owner-next-envelope.mjs`: Workers-compatible strict JSON duplicate-key rejection, exact schema validation, WebCrypto body/canonical digest, and trusted Actions context cross-check. No Node crypto/Buffer in runtime module.
+- Added `proofs/d1-ledger/test/owner-next-envelope.test.ts`: positive and negative test coverage. Tests authored; local execution NOT RUN; CI pending.
+- Reused existing Node v1 envelope contract and `mapGitHubActionsContext`; no new dependency/service/ledger.
+- No D1 schema/binder/receipt integration or workflow wiring in this pass. No hosted D1, secrets, provider calls, dispatch, executor, deployment, merge or production writes.
+- Independent security review NOT RUN; active time NOT MEASURED. Gemini/Claude/ECC/FCC NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Dispatch and execution authorization remain false.
+- Next: verify PR exact-head CI and logs, then independent review; only afterward implement migration 0018 and coordinated D1 envelope binding.
+- Report: `docs/reports/2026-11-27-pass110-workers-native-envelope-verifier.md`; checkpoint: `docs/checkpoints/2026-11-27-pass110-workers-native-envelope-verifier.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
 
-## Pass 52 — canonical D1 consolidation and executor priority correction (2026-11-23)
+### Pass 110 CI/read-back update — 2026-11-27
 
-- Report: [Pass 52 canonical D1 consolidation](../reports/2026-11-23-pass52-canonical-d1-consolidation.md); checkpoint: [Pass 52 checkpoint](../checkpoints/2026-11-23-pass52-canonical-d1-consolidation.md).
-- Default HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- PR #168 is the canonical D1 candidate for Issue #140: OPEN/DRAFT/UNMERGED; head `ec1caca61caa453d4e0ce5405890e8791f6bfd29`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; 33 files, +6,877; contains one migration lineage 0001–0015. Default is two commits ahead, and compare shows both commits are documentation-only (Context Window + Pass 50 report). No source/migration drift was observed.
-- PR #148 → #149 → #150 → #152 → #157 → #159 → #161 → #163 → #165 is the implementation lineage. #153/#154/#156/#158/#160/#162/#164/#166 are validation PRs. Do not merge the stacked implementation/validation PRs individually; preserve their provenance and continue on #168.
-- PR #168 CI exact head: D1 run `45227149858` SUCCESS, 6 files/68 tests; Pool Contract run `45227149883` SUCCESS. Merge-result CI NOT VERIFIED; formal reviews 0; independent review NOT RUN.
-- New HIGH blocker: `admitQualifiedTask` still uses caller-controlled `input.now`; its deny and success outputs omit explicit `executionAuthorized:false`. Issue #140 requires both `dispatch:false` and `executionAuthorized:false` on every adapter outcome. Worker remains inert; no runtime integration proven. Pass 53 must fix this before the adapter can qualify.
-- README confirms full legacy-table write-denial migration remains outstanding.
-- Corrected Issue #96: owner scope amendment 2026-11-17 states Claude Code + ECC + FCC is first CODE executor via separately verified free route; Gemini is optional and not a launch dependency. Previous three-vs-four conflict claim in the acceleration audit was incorrect and has been corrected in the report/checkpoint.
-- PR #169 remains OPEN/DRAFT/UNMERGED, current head before Context Window/README update `b6d79ffaf8e6e60e28d4aef9da6a2c6638f40792`; exact-head CI NOT VERIFIED; reviews 0. Re-read live head before next pass.
-- No secrets, provider calls, hosted D1, dispatch, Cloudflare mutation, deployment, merge or production action. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: Pass 53 trusted-clock + explicit authority flags remediation in admission adapter; add adversarial tests and run exact-head CI.
-- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- PR #179 implementation HEAD advanced to `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; base is PR #178 branch `integration/pass108-d1-ledger-plus-envelope-2026-11-26` @ `680bb7a1af7984b74b93e17284ef4f11ad30dba0`. PR #179 OPEN/DRAFT/UNMERGED, mergeable=true, formal reviews 0, threads 0.
+- Initial validation of pre-parity head c8551564... passed on merge-result SHA `24124356a878568da9327d109ce8170bc73232c3`: D1 run `45895815698` SUCCESS, 9 files / 133 tests; Pool Contract run `45895815527` SUCCESS (dispatch gate, YAML and security contracts).
+- Added cross-implementation canonical digest parity test against frozen Node implementation in commit `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`. New exact code SHA validation is exposed through validation-only PR #180 targeting `Основной`; no run returned yet, therefore parity test CI NOT VERIFIED.
+- PR #180 OPEN/DRAFT/UNMERGED, validation-only; never merge. PR #179 remains stacked on PR #178.
+- Pass 110 runtime source still does not wire verifier into D1 admission or workflow. No hosted D1, secrets, providers, dispatch, executor, deployment, merge or production writes. Independent review NOT RUN; active time NOT MEASURED.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 
-### Pass 52 documentation readback correction
+### Pass 110 final validation read-back — 2026-11-27
 
-- The prior acceleration report and checkpoint now explicitly correct the false Gemini topology conflict claim. Issue #96's 2026-11-17 amendment is authoritative: Claude Code + ECC + FCC is the first CODE executor, Gemini optional, no four-Gemini launch requirement.
-- PR #169 documentation branch head before this Context Window refresh: `97ef7a71dc197a93a2d44a9f59d908162e9e12e7`; exact-head workflow query returned no runs; formal reviews 0. PR remains OPEN/DRAFT/UNMERGED. Re-read live head after this update.
-- Pass 52 report blob: `1cd556fb80a2bc255c3301d63431782a52f9c23e`; checkpoint blob: `4ff1f1cefe67fabba8b2b584241907329d18f577`.
-- Corrected acceleration audit blob: `ff8e69fd99457ac6110a7b59423794ac865e733b`.
-- Pass 52 did not modify runtime code. Pass 53 remains the trusted-clock and explicit `executionAuthorized:false` remediation in the admission adapter.
-
-
-## Pass 53 — atomic admission trusted-clock remediation (2026-11-23)
-
-- Report: [Pass 53 trusted admission clock remediation](../reports/2026-11-23-pass53-atomic-admission-trusted-clock.md); checkpoint: [Pass 53 checkpoint](../checkpoints/2026-11-23-pass53-atomic-admission-trusted-clock.md).
-- PR #168 final head: `caaba7345b698cfcfc92ad711ad1ed985980620d`; base `81baadbb5944e11ed41a64bd0190bf2c8edd0c41`; OPEN/DRAFT/UNMERGED.
-- Admission adapter now requires `trustedClock`; caller `input.now` removed; trusted time drives primary admission/replay and fresh recovery validation; all outcomes explicitly return `dispatch:false` and `executionAuthorized:false`.
-- D1 merge-result CI run `45236726880` SUCCESS, 6/6 files and 74/74 tests. Pool Contract run `45236726907` SUCCESS; `POOL_CONTRACT_VALIDATION=PASS`; validation environment reports `POOL_DISPATCH_ENABLED=false`.
-- Merge-result SHA `7989e45` merges final PR head into current default `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- Six adversarial tests added; initial CI failure at intermediate head `3650c9d...` was corrected (duplicate fixture seeds and migration-upgrade trusted-clock injection). Final CI is green.
-- Source blob `f4c788c1d5231cdce3a84d006b07407971ef6491`; atomic test blob `c78bd4b08dae0709ef057861cb71df119071a980`; migration-upgrade test blob `f1f88c8955d241e2798788edf4b0e6343ff31a1d`.
-- Actual controller/runtime clock provenance NOT VERIFIED; Worker remains inert (404); independent security review NOT RUN; formal PR reviews 0. No secrets, provider calls, hosted D1, dispatch, deployment, Cloudflare mutation or merge.
-- Next: Pass 54 — qualify actual controller clock/event provenance and obtain independent security review. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Workers-native envelope validator + tests: VERIFIED by PR merge-result CI. Implementation code SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; validation checkout merge-result SHA `7e7f5b5...` (PR #180 validation-only).
+- D1 run `45895942746` / job `140169725137`: SUCCESS; npm ci, inert Worker check, 9 test files / 134 tests passed. Envelope test file: 11/11, including parity with frozen Node canonical digest.
+- Pool Contract run `45895942756` / job `140169725307`: SUCCESS; dispatch-disabled assertion, workflow YAML parse and security contracts passed; Node envelope suite 20/20.
+- PR #179 latest docs-only head `dfe6b34d4cd28481e5ec28d2a6e1657a3c18ffcf`, base PR #178 head `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, reviews 0, threads 0. Code/test SHA validated above; no code/test edits after it.
+- PR #180 validation-only OPEN/DRAFT/UNMERGED; do not merge. PR #179 remains the implementation review surface.
+- Independent security review and current ruleset/governance details NOT VERIFIED. D1 migration 0018 and end-to-end API-envelope → D1 receipt/replay integration NOT IMPLEMENTED. No hosted D1, secret reads, provider calls, dispatch, executor, deployment, merge or production writes.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
 
 
-### Pass 53 final documentation branch state
+### Pass 110 documentation publication read-back — 2026-11-27
 
-- PR #169 current head before this final Context Window update: `450fd95cee9856e958bbf3547951adff285a2edc`; OPEN/DRAFT/UNMERGED; 22 changed files; exact-head workflow query returned no runs; formal reviews 0. Documentation CI: NOT VERIFIED.
-- PR #168 remains OPEN/DRAFT/UNMERGED at `caaba7345b698cfcfc92ad711ad1ed985980620d`; merge-result D1 CI 74/74 PASS and Pool Contract Validation PASS; formal reviews 0; independent security review NOT RUN.
-- Final Pass 53 report blob `123b6e826a2496e67166057577fd86a5d31b6d78`; checkpoint blob `482c5e7b9c7169b7b95845ad70376bf6379a98ac`; corrected acceleration audit blob `ff8e69fd99457ac6110a7b59423794ac865e733b`.
-- No merge or production action is authorized or performed. Next: Pass 54 runtime clock/event provenance qualification and independent security review.
+- Final working branch / PR #179 head after report, checkpoint and Context Window commits: `eb74baa76e8081331ef28bbe5c37b3bb295b1d2e`. Implementation code/test SHA remains `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; only documentation changed afterward.
+- PR #179 base remains PR #178 branch at `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, 0 formal reviews/threads.
+- Validation PR #180 targets default `Основной`, exact code/test SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; OPEN/DRAFT/UNMERGED, validation-only; do not merge.
+- Pass 110 report/checkpoint/Context Window were written and read back through GitHub; final CI evidence remains D1 45895942746 (134/134) and Contract 45895942756 SUCCESS.
 
 
-## Pass 61 — GitHub Actions event/workflow SHA provenance correction (2026-11-24)
+## Pass 111 — API-attested Envelope v1 to D1 durable receipt (2026-11-27)
 
-- Default branch `Основной` HEAD remains `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- PR #170 pre-pass head: `9a61572dca2a6621001a1bae770e8d85a5d93315`; final head: `4b4055b4f2026db617f1e2f686f337ad85e9531e`; OPEN/DRAFT/UNMERGED.
-- Exact synthetic merge checked by D1 CI log: `9171489be9232a3c3389fef215904f5ade25a5ea` (merge of final PR head into frozen default).
-- Binder now treats `context.sha` (event/default-ref target) and `context.workflowSha` (workflow file commit) as distinct values, validates each SHA format independently, and keeps exact workflowRef identity. Migration 0017 no longer requires `workflow_sha = target_sha`. Unit/integration fixtures use distinct SHAs.
-- D1 run 45273084680 SUCCESS: 8 files / 108 tests; Pool Contract run 45273084714 SUCCESS. D1 job log confirms checkout of exact synthetic merge `9171489be9232a3c3389fef215904f5ade25a5ea`. No new dependencies; four files changed (+12/-6).
-- Ruleset 26550182 re-read: active on `refs/heads/Основной`; PR required; thread resolution required; approval count 0; deletion/non-fast-forward prohibited; no bypass actors; current user cannot bypass. PR #170 formal reviews 0, review threads 0.
-- Critical residual NOT VERIFIED: workflow SHA authenticity, workflow file content digest, workflow commit ancestry against event target SHA, independent default-ref API read and race policy. Binder is a local predicate proof only, not a cryptographic event authenticator or deployable controller.
-- SQL receipt adversarial cases remain open: duplicate source-comment ID with distinct envelope; forged receipt INSERT bindings; independently missing route/commit receipt; field-by-field immutability and repository key scope.
-- No secrets/variables values read; no Gemini/Claude dispatch; no hosted D1; no provider calls; no deployment; no merge; no production mutation. Active engineering time NOT MEASURED.
-- Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 61](../reports/2026-11-24-pass61-github-sha-provenance.md); checkpoint: [Pass 61 checkpoint](../checkpoints/2026-11-24-pass61-github-sha-provenance.md).
-- Next: SQL receipt adversarial test matrix, keeping all dispatch paths disabled.
+- Parent PR #179 head / frozen stack base: `80705bae2dca1f928368429c17922787b86be4bc`; canonical default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Implementation branch `feat/pass111-d1-attested-receipt-2026-11-27`; final code/test HEAD `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- Added migration 0018 to existing append-only source-comment receipt, persisting attestation schema/version, Issue/Comment node IDs, observed default/run HEAD, workflow ID/state, workflow commit SHA, workflow-file blob SHA and workflow-file ref SHA. Existing workflow_sha remains the workflow commit SHA.
+- Added `admitGitHubNextAttestedEvent`: strict serialized Envelope v1 parse, WebCrypto digest recomputation, trusted Actions event/run/workflow cross-check, canonical digest bound to existing approval envelope digest, D1 admission and durable receipt write/readback/replay. No parallel ledger or dependency.
+- Added local D1 integration tests for full provenance persistence + replay, node-ID/digest substitution and workflow-ref mismatch. Legacy synthetic adapter remains for compatibility tests only; production workflow is not wired and must use attested entrypoint.
+- Final validation-only PR #182 merge-result CI for code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`: D1 run `45897059595` / job `140173459403` SUCCESS, 9/9 files and 137/137 tests, merge-result checkout `ac30d05...`; Pool Contract run `45897059549` / job `140173459315` SUCCESS (dispatch gate false, YAML and security contract checks).
+- PR #181 OPEN/DRAFT/UNMERGED, base PR #179 branch at `80705bae2dca1f928368429c17922787b86be4bc`, mergeable=true, formal reviews 0, threads 0. PR #182 validation-only OPEN/DRAFT/UNMERGED; do not merge. PR #178–#180 remain open/draft/unmerged.
+- Controller/API verifier same-run wiring, trusted API read-back, workflow-byte authenticity/default-ref race, hosted D1, executor/provider/UI/state recovery and independent review NOT VERIFIED / NOT IMPLEMENTED. No secrets, hosted D1 writes, provider calls, dispatch, executor, deployment, merge or production mutation.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
+- Next: wire API verifier and attested D1 adapter in one non-dispatching controller workflow; remove legacy non-attested entrypoint from production import surface; add same-run E2E and repeat CI.
+- Report: `docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md`; checkpoint: `docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md`.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 111 governance revalidation — 2026-11-27
+
+- Default ref API confirms `refs/heads/Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Active repository ruleset ID `26550182` (`Основной — verified`) applies to default: deletion and non-fast-forward blocked; pull request required; review-thread resolution required; required approving review count 0; code-owner review false; no bypass actors; current integration cannot bypass.
+- Branch protection read endpoint returns 403, so legacy branch protection settings NOT VERIFIED. Root and `.github/CODEOWNERS` not found. PR #181 review submissions 0 and inline threads 0. Project-level independent review remains required before qualification/merge.
+
+
+## Pass 112 — Controller/API verifier/D1 composition preflight — 2026-11-28
+
+- Canonical default re-read: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pass 111 implementation branch `feat/pass111-d1-attested-receipt-2026-11-27`; prior branch HEAD observed `682b060ef376b8ebee8ae47872150776d28c4426`; code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- PR #176 candidate contains `.github/workflows/next-event-controller.yml` (blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a`), a read-only audit workflow invoking `scripts/owner-next-event-audit.mjs`. It has no D1 binding or admission call.
+- That workflow file is NOT FOUND on Pass 111 branch. The branch stack therefore does not yet compose Controller/API verifier with the Pass 111 D1 adapter.
+- Pass 111 adapter exports both `admitGitHubNextAttestedEvent` and legacy `admitGitHubNextEvent`. Legacy remains in test imports; production import-surface restriction is NOT VERIFIED because no production controller caller is wired.
+- Re-read Pass 111 CI: D1 run 45897059595 SUCCESS (9/9 files, 137/137 tests, merge-result prefix `ac30d05`); Pool Contract run 45897059549 SUCCESS. These do not prove same-run controller→API→D1 E2E.
+- PR #181 remains OPEN/DRAFT/UNMERGED; formal reviews 0, inline threads 0.
+- Added report `docs/reports/2026-11-28-pass112-controller-api-d1-composition-preflight.md` and checkpoint `docs/checkpoints/2026-11-28-pass112-controller-api-d1-composition-preflight.md` on this branch.
+- No code changes, secrets, hosted D1 writes, provider calls, dispatch, executor, deployment, merge or production mutation. Gemini/Claude/ECC/FCC NOT RUN. Independent security review NOT RUN. Active engineering time NOT MEASURED.
+- Decision: composition BLOCKED pending ancestry reconciliation and same-branch wiring. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. dispatch=false and executionAuthorized=false.
+- Next: reconcile PR #176–#182 ancestry; port the read-only API controller and construct same-run serialized Envelope v1; call only attested D1 adapter; remove legacy non-attested production import path; add E2E/adversarial tests; exact-head and canonical-base CI; independent security review.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 113 — Controller/API/D1 ancestry and governance reconciliation — 2026-11-28
+
+- Canonical default remains `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; Pass111 implementation/code baseline is `4c8d820102472e130c2e9760f5d42f650ca43394`; Pass113 documentation commit is `6c59924d874e4434b038839bcd28c55bf4f5169f`.
+- PR #176 controller head `f06155b8ac121a4af90cbc2356f12b965d0fbde9` diverges from Pass111: Pass111 ahead 111 commits, PR176 ahead 38 commits, common base default. PR #177 and #178 are ancestors of Pass111 (79 and 31 commits respectively).
+- PR #176 workflow `.github/workflows/next-event-controller.yml` is read-only and calls `scripts/owner-next-event-audit.mjs`; it reads GitHub API provenance but does not call D1. Workflow path is absent on Pass111 branch.
+- Pass111 D1 adapter still exports both attested and legacy non-attested admission functions; no production controller caller is wired. Production import-surface restriction NOT VERIFIED.
+- PRs #176–#182 remain OPEN/DRAFT/UNMERGED; review submissions and inline threads are empty. Active ruleset #26550182 scopes to default, requires PR and resolved threads, blocks deletion/non-fast-forward, but requires 0 approvals and has no bypass actors.
+- Pass112 head CI re-read: D1 #46162665233 SUCCESS; Pool Contract #46162665194 SUCCESS. These do not prove Controller→API→D1 E2E.
+- Pass113 ancestry reconciliation VERIFIED; integration BLOCKED pending minimal file-level port. No code changes, secrets, hosted D1 writes, dispatch, provider calls, deployment, merge or production mutation. Gemini/Claude/ECC/FCC and independent security review NOT RUN; active engineering time NOT MEASURED.
+- Next: port only the minimal read-only controller/API evidence path onto Pass111 lineage, produce same-run Envelope v1, call only attested D1 adapter, isolate legacy adapter to test-only use, add E2E/adversarial tests and run exact-head/merge-result CI.
+- Report: `docs/reports/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`; checkpoint: `docs/checkpoints/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 118 — bounded API-attested owner /next envelope collector (2026-11-28)
+
+Status: SUCCEEDED (bounded collector + exact-head Pool Contract CI); end-to-end controller/D1 composition NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Base PR #181 head: `453d74ff70a67d3091d920281f6471a721f1808d`.
+- Code/test/workflow head validated: `9f80fb5df2bca95165385e989e284c633cc24f45`.
+- PR #185: OPEN/DRAFT/UNMERGED, stacked on PR #181; head is advanced by report/checkpoint/Context Window commits after tested code head.
+- Added `scripts/owner-next-api-envelope.mjs` and `scripts/owner-next-api-envelope.test.mjs`; adapted existing API audit approach and reused `digestOwnerNextEnvelope`.
+- API origin fixed to `https://api.github.com`; repository path allowlist; rejects traversal/encoded path separators and redirects; 3-second timeout; 256 KiB response cap; fatal UTF-8/JSON parse.
+- Collector reads repo, Issue #96, comment, workflow run, workflow metadata, default ref and workflow-file bytes; checks immutable identity, exact event and first attempt; computes Git blob SHA-1 from bytes; keeps target SHA, workflow commit SHA, blob SHA and ref SHA distinct.
+- Exact-head Pool Contract CI [46168085516](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46168085516): SUCCESS; job 141050055417; YAML parse and security contract pass; Node tests 28/28 PASS (20 existing Envelope tests + 8 collector tests).
+- Earlier intermediate CI failures were inspected and corrected; only the final exact code/test/workflow head is marked successful.
+- Local tests NOT RUN; CI run is the test evidence. Independent security review NOT RUN.
+- No D1 code/schema changed; collector is not yet invoked by issue_comment workflow; exact JSON/digest not yet fed into Workers/D1 integration test. Legacy adapter export remains; production import graph NOT VERIFIED.
+- Current dispatch variable NOT VERIFIED; dispatch prohibited. No secrets, hosted D1, provider calls, execution, deployment, production mutation or merge.
+- Active engineering time NOT MEASURED. Compare before docs: 3 files, 375 additions, 0 deletions.
+- Next: Pass 119 wires trusted issue_comment workflow → collector → exact serialized Envelope/digest → Workers verifier → local D1 attested adapter integration test; no hosted D1 or dispatch.
+
+Report: `docs/reports/2026-11-28-pass118-bounded-owner-next-envelope-collector.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass118-bounded-owner-next-envelope-collector.md`
+
+
+## Pass 120 — workflow-code provenance correction + Jarvis free-compute plan (2026-11-28)
+
+Status: VERIFIED (source correction + exact-head CI); independent security review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Implementation PR #186 OPEN/DRAFT/UNMERGED, stacked on PR #181. Validation-only PR #187 OPEN/DRAFT/UNMERGED against default; never merge #187.
+- Pass 111 base: `453d74ff70a67d3091d920281f6471a721f1808d`; Pass 118 source collector blob: `9946881694fac6d57876d543103ee66af31a480b`.
+- Final tested code/test/workflow head: `8d0401ec7d45542a71e20594a9f22d193afe4846`. Later docs-only commits added compute plan/report/checkpoint.
+- F-119-01 corrected across collector, Node canonical verifier, Workers verifier, D1 migration 0018 and integration fixtures: workflow bytes are read at immutable `GITHUB_WORKFLOW_SHA`; `workflowFileRefSha` must equal `workflowCommitSha`; target/head SHA remains independently checked against observed default ref.
+- Adversarial tests cover distinct target/workflow SHAs, reject target-SHA-as-workflow-ref, and assert API request ref uses `GITHUB_WORKFLOW_SHA`.
+- Final D1 run `46168608155`, job `141051675618`: SUCCESS, 9/9 test files and 139/139 tests.
+- Final Pool Contract runs `46168608158` / `46168608181`, jobs `141051675805` / `141051675838`: SUCCESS; YAML parsing/security contracts PASS; 29/29 tests each. Intermediate failures were read, diagnosed and corrected before final head.
+- Added `docs/architecture/JARVIS-FREE-COMPUTE-AND-ROUTING-PLAN-2026-11-28.md`: GitHub public standard runners (free/unlimited for public repos; standard Ubuntu 4 vCPU/16 GB/14 GB; Free plan concurrency 20), Cloudflare Workers/D1 Free limits, Gemini Free-tier constraints, model gateway, task isolation, persist-before-dispatch and free-first/no-paid-fallback policy.
+- OpenAI API is usage-priced, not free compute; no OpenAI API key is required or configured. Gemini free tier is optional and unqualified; privacy/quota/account checks required before use.
+- Report: `docs/reports/2026-11-28-pass120-workflow-provenance-and-free-compute.md`; checkpoint: `docs/checkpoints/2026-11-28-pass120-workflow-provenance-and-free-compute.md`.
+- No secret values or Actions variables read; no API keys created/stored; no hosted D1 writes, provider calls, dispatch, executor launch, deployment, merge or production mutation.
+- Active engineering time NOT MEASURED. Independent security review NOT RUN. Local non-CI tests NOT RUN.
+- Next Pass 121: wire trusted read-only issue_comment workflow → actual collector JSON/digest → Workers verifier → local D1 attested adapter integration test; prove legacy adapter import isolation; independent security review. Keep dispatch false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
 
-- CI correction history: intermediate D1 run 45273064784 failed 1/107 because the prior negative test still rejected a valid distinct workflow SHA; replaced by malformed-SHA negative + distinct-SHA positive coverage. Final D1 run 45273084680 passed 108/108; final Pool Contract 45273084714 passed; intermediate contract run cancelled. Final target green.
 
+## Pass 121 — Live revalidation and workflow provenance composition gate — 2026-11-28
 
-## Pass 62 — SQL source receipt adversarial qualification + launch estimate (2026-11-24)
-
-- Default `Основной` HEAD: `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- PR #170 final head: `7d900d9fe11b19f048548a3bed657b2549f8091f`; exact synthetic merge: `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`. PR OPEN/DRAFT/UNMERGED; reviews 0; threads 0.
-- Pass 62 added five local D1 adversarial tests: duplicate repository source-comment ID with distinct admission envelope; forged event digest INSERT; independently missing commit receipt; independently missing route row using deferred-FK transaction; field-by-field UPDATE rejection for all 21 receipt columns.
-- D1 run 45274455569 SUCCESS: 8/8 files, 113/113 tests. Pool Contract run 45274455577 SUCCESS. Both jobs checked out exact synthetic merge `8b1c674c6fd2bdfaae55868fe75c13c6919fd047`.
-- One integration test file changed; no runtime/migration/dependency changes. Intermediate candidates had test-fixture errors (invalid hex IDs; then changing comment ID after approval envelope creation); both were corrected. Final target green.
-- Remaining active engineering estimate (Pass 62 SQL matrix excluded): base 34–58 hours; risk-adjusted +20% 41–70 hours; planning midpoint ~55 hours. This is an estimate, not measured effort or calendar duration. Active hours actually spent: NOT MEASURED.
-- Estimate excludes optional four-Gemini wave, second Claude profile, multi-account/GPU, and Contour B. First-release executor is one Claude Code + ECC + FCC profile per Issue #94/#96 owner correction.
-- Main remaining gates: trusted workflow identity/content/default-ref race policy; durable lease/fencing/trusted time/crash recovery; artifact byte integrity/immutable object binding; Claude/ECC/FCC runner; free route/account/issuer/quota proof; remote phone/desktop UI + persistent workspace/restore; repeated E2E and independent review.
-- Issue #118 last recorded no active SentinelX host, no Cloudflare Tunnel/Access application, and no persistence/restore proof. This is the largest infrastructure uncertainty and may increase the estimate if prerequisites are unavailable.
-- No secrets, Gemini/Claude dispatch, provider calls, hosted D1 writes, workspace install, deployment, merge or production mutation.
-- Contour A NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 62](../reports/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md); checkpoint: [Pass 62 checkpoint](../checkpoints/2026-11-24-pass62-sql-receipt-adversarial-and-launch-estimate.md).
-- Next: Pass 63 — independently verifiable GitHub workflow provenance; keep dispatch disabled.
-- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 70 — owner-approved continuous improvement cadence (2026-11-24)
-
-- Owner approved incorporating the engineering-efficiency recommendations and holding recurring architecture/process reviews.
-- Added `docs/engineering-excellence/CONTINUOUS-IMPROVEMENT-REVIEW.md`: review every 3–5 completed `/next` passes or 7 calendar days during active development; event-triggered reviews after material security findings, repeated regressions, critical-path changes or failed integration.
-- The review agenda covers verified progress/critical path, quality/rework, architecture/trust boundaries, Reuse First, time accounting, security/governance and a bounded decision. Each recommendation must become a bounded task, documented decision, deferred candidate with trigger, or evidence-backed rejection.
-- Engineering Intelligence remains advisory-only. It cannot dispatch, merge, deploy, access secrets or change governance. At most one primary process experiment and one bounded engineering follow-up per review.
-- Reuse First register now lists actionlint, zizmor, OpenSSF Scorecard, Workers Vitest integration harness and GitHub artifact attestations/SLSA as CANDIDATE only. None is claimed installed, executed or qualified; no dependency or third-party Action added.
-- First planned experiment: reproducible no-secret actionlint/zizmor pilot after fresh workflow inventory and license/maintenance/version/permissions/free-tier review. No CI enforcement until findings and false-positive behavior are understood.
-- Pass 70 report: `docs/reports/2026-11-24-pass70-continuous-improvement-cadence.md`; checkpoint: `docs/checkpoints/2026-11-24-pass70-continuous-improvement-cadence.md`.
-- Documentation artifacts were fetched back successfully after writes; runtime tests are NOT APPLICABLE, local Markdown validation NOT RUN, updated PR #169 exact-head CI NOT VERIFIED.
-- PR #169 remains OPEN/DRAFT/UNMERGED; its head has advanced from `a9db83b039f1ba5ed9b9221dfac0fcbd8fe2f63e` through the Pass 70 documentation commits. Re-read exact live head before further changes.
-- PR #171 at last observed head `423da55ca1e2d91c28572f88f60b494b59d56e9`: no workflow runs and no combined statuses; exact-head CI NOT VERIFIED. PR #170 remains OPEN/DRAFT/UNMERGED; historical Pass 62 checks are not current-head evidence.
-- No secrets, dispatch, provider calls, hosted D1 writes, deployment, merge or production mutation. Active engineering time NOT MEASURED.
-- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
-- Next: restore live refs/CI/governance and run the bounded actionlint/zizmor Reuse First pilot; keep all execution paths fail-closed.
-- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-## Pass 76 — owner /next intake verification (2026-11-25)
-
-- Reviewed PR #171 target head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; PR merge-result SHA `b4d418fc731c2bb51d9c946f2689bf2607371f26`; frozen base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- Exact merge-result Pool Contract Validation run `45448087868`, job `138637290205`: COMPLETED/SUCCESS. Job log confirms checkout of merge-result SHA, `POOL_DISPATCH_ENABLED=false`, all six workflow YAML files parsed, and `POOL_CONTRACT_VALIDATION=PASS`.
-- PR #171 workflow is deliberately observation-only: Issue #96, owner-authored exact `/next`, non-PR issue; empty permissions; no checkout, external Actions, secrets, D1/API writes or dispatch. No durable source-comment receipt or admission authority is created.
-- PR #171 remains OPEN/DRAFT/UNMERGED; formal reviews 0, review threads 0. Combined commit status contexts empty; no independent review. A successful merge-result workflow is not an approval or proof of live event delivery.
-- PR #169 remains OPEN/DRAFT/UNMERGED; its exact-head CI and reviews remain NOT VERIFIED at this observation.
-- No live issue_comment event, hosted D1, executor, provider call, secret read, deployment, merge or dispatch. No production changes.
-- Pass 76 report: `docs/reports/2026-11-25-pass76-owner-next-intake-verification.md`; checkpoint: `docs/checkpoints/2026-11-25-pass76-owner-next-intake-verification.md`.
+- Frozen default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`.
+- Read Pass120 report/checkpoint and the Pass120 Context Window. Corrected stale context header values that still pointed at default SHA `197ba98...` and the obsolete documentation branch.
+- Revalidated Issues #1/#22/#26/#96/#140; PRs #24/#25/#30/#31/#169/#181–#187; exact-head CI jobs; review submissions/threads; ruleset #26550182; current default workflows and recent runtime runs.
+- Pass120 correction F-119-01 is VERIFIED at source level: collector reads workflow bytes at GITHUB_WORKFLOW_SHA, verifies the Git blob SHA, and keeps workflow-code SHA separate from event target SHA. Node/Workers validators and migration 0018 require workflow file ref = workflow commit SHA = trusted workflow SHA.
+- Source blobs: collector `e06a405bdb0d2b0d47fcabde6f0449d067a5cfd7`; Node envelope validator `6c8d88629dc19ccf15f65f380db79d9dc2a60b4a`; Workers envelope validator `594ef6611f1bc53d0deb4fa1ccd0c6ec077ff55a`; D1 migration 0018 `a7cbb7527d3dbe0882b68a88d13e15a3b3bbb1c6`; D1 event adapter `af12b9113de5f67d0242ef19f57c2d6b999270a3`.
+- Exact-head CI: PR #185 run 46168184010/job 141050350447 SUCCESS; PR #186/#187 head 82b798... runs 46168765439/job 141052180779, 46168765224/job 141052184672 and 46168765420/job 141052164511 all SUCCESS; PR #183 run 46164394254/job 141038604937 SUCCESS.
+- Blocking: no trusted issue_comment controller workflow exists on default or PR #186; no issue_comment runs; no same-run collector → Workers verifier → D1 adapter composition. Legacy non-attested adapter remains exported; production import-surface isolation NOT VERIFIED. Hosted D1, real owner event, worker execution, routing, quotas and Web Console remain NOT VERIFIED / NOT QUALIFIED.
+- Latest Supervisor run 46141645368/job 140968671423 is SUCCESS but only verifies retired legacy dispatch. Worker/DSH/Resource Probe runs were absent from the 100 most recent default-branch runs; lifetime history NOT VERIFIED.
+- Documentation only was changed in this pass. No code/schema/workflow changes, workflow launches, dispatch, agent, DSH, Resource Probe, provider/model calls, hosted D1 writes, deployment, merge or production mutation. Local tests NOT RUN; active engineering time NOT MEASURED.
+- Report: [Pass121 report](../reports/2026-11-28-pass121-live-revalidation-workflow-provenance-composition-gate.md), commit `f8889376426208ab1718b63126fde180db31b6b5`, blob `61ec16bced73cab9704534674b2e100312484133`.
+- Checkpoint: [Pass121 checkpoint](../checkpoints/2026-11-28-pass121-live-revalidation-workflow-provenance-composition-gate.md), commit `eab4f3124173e54442aa1cf9f4b31092c0b49bc3`, blob `2720dfb64b2a296e09b6b08b443fd4ca9e2edc1b`.
 - Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
-- Next: reconcile the canonical D1 admission/receipt/lease chain against the current default base, complete trusted event/workflow provenance and trusted-clock/fencing integration, and keep `dispatch=false`.
-- Canonical MediaHub map (separate deferred project): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Governance deviation — documentation checkpoint write correction
-
-During Pass 76, one checkpoint create call omitted the working-branch argument and briefly created the checkpoint directly on the default branch. This was detected immediately; the file was deleted in the next commit. The two default-branch commits are: transient file creation `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311`, corrective deletion `565404f84b6b86afb4dc2d8fa939341f42df6eca`. The checkpoint has been recreated on the documentation working branch. No runtime/code/workflow/configuration or secret content was written; the net file state on default is absent. This was nevertheless a governance/process deviation: default HEAD advanced, and PR #169 now has a base SHA older than current default. Do not claim a clean default-branch history or merge readiness. Next pass must rebase/reconcile the documentation branch and all candidate PRs against current default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`, and inspect effective ruleset/governance before further writes.
-
-
-## Ruleset reconciliation
-
-A fresh read of repository ruleset `26550182` reports enforcement `active`, targeting `refs/heads/Основной`, with a pull-request rule, zero required approving reviews, required review-thread resolution, deletion/non-fast-forward restrictions and no bypass actors; `current_user_can_bypass=never`. The branch API still reports `protected=false`. The transient Contents-API write and subsequent delete commits succeeded despite the active PR rule. This is an observed governance/API behavior discrepancy, not evidence that the ruleset is ineffective or that bypass is permitted. Treat effective enforcement for Contents-API writes as NOT VERIFIED; no further default-branch writes. Investigate this discrepancy before any merge or write path and require PR-only changes.
-
-
-## Pass 77 — D1 lease recovery and concurrent fencing qualification (2026-11-25)
-
-- PR #170 target parent `7d900d9fe11b19f048548a3bed657b2549f8091f`; test-only final head `cfd123a6e622a71454b42a0314f9dee981ca5035`.
-- Current default HEAD observed: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. D1 Actions job checked out synthetic merge `ab6ecf709c4c5f96912b7160caa348b8c89ce518`, proving CI merged the PR head with current default even though PR metadata still reports the older base SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Verify again before integration.
-- Added three D1 adapter tests: lost acknowledgement after successful commit resolves only by exact primary-first readback; pre-commit failure stays DENY/UNCONFIRMED and task pending; two distinct authenticated principals cannot acquire the same prepared attempt.
-- D1 run `45521582932` SUCCESS; job `138894501912` SUCCESS; 8/8 files and 116/116 tests. Exact merge SHA verified from job log. Pool Contract run `45521582953` SUCCESS. Combined status contexts empty; do not overstate as separate status checks.
-- PR #170 remains OPEN/DRAFT/UNMERGED; formal reviews 0, threads 0. No merge.
-- PR #171 remains OPEN/DRAFT/UNMERGED; exact-head Actions runs absent and reviews 0 at last read.
-- Ruleset `26550182` active for `Основной`; Contents API enforcement discrepancy from Pass 76 remains NOT VERIFIED. No default-branch writes this pass.
-- No secrets, Gemini/Claude dispatch, provider calls, hosted D1 writes, deployment or production mutation. Runtime/schema/dependency/workflow changes: 0. Actual active engineering time NOT MEASURED.
-- Pass 77 report: `docs/reports/2026-11-25-pass77-d1-lease-recovery-fencing.md`; checkpoint: `docs/checkpoints/2026-11-25-pass77-d1-lease-recovery-fencing.md`.
-- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
-- Next: read-only reconcile current default-base and governance state, then close uncovered Issue #140 negative cases with dispatch disabled.
-- Canonical MediaHub map (Contour B deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-## Pass 78 — GitHub Actions workflow identity and event-SHA provenance audit (2026-11-25)
-
-- Frozen default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; PR #170 head `cfd123a6e622a71454b42a0314f9dee981ca5035`; exact CI merge `ab6ecf709c4c5f96912b7160caa348b8c89ce518`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`.
-- Verified source: D1 binder keeps event target SHA (`context.sha`) separate from workflow-code SHA (`context.workflowSha`); unit test explicitly accepts distinct SHA values. No equality requirement was introduced.
-- Trust gap: binder expects `.github/workflows/next-event-controller.yml@refs/heads/Основной`, but this workflow is absent from default. PR #171 adds a distinct audit-only `next-request-intake.yml` with empty permissions/no checkout/no D1/no dispatch; it is not the controller and does not map real Actions context to D1.
-- Therefore real trusted mapping from `github.workflow_ref`, `github.workflow_sha`, event target SHA, run ID/attempt and comment ID into the D1 binder remains NOT VERIFIED. Current tests use synthetic context objects.
-- Receipt digest intentionally excludes run ID/attempt while immutable receipt tuple compares them; rerun of same comment with a changed run tuple is rejected, as integration test asserts.
-- PR #170 D1 run `45521582932` SUCCESS: 8/8 files, 116/116 tests; exact merge verified in job log. Pool Contract run `45521582953` SUCCESS. PR #171 Pool Contract run `45448087868` SUCCESS.
-- PR #170 and #171 remain OPEN/DRAFT/UNMERGED, each 0 formal reviews and 0 threads. No merge.
-- Ruleset `26550182` active, no bypass; branch API reports `protected=false`; effective Contents-API enforcement remains NOT VERIFIED.
-- No code/runtime/schema/workflow/dependency change, secret read, dispatch, provider call, hosted D1 write, deployment, merge or production mutation. Active time NOT MEASURED.
-- Pass 78 report: [report](../reports/2026-11-25-pass78-github-actions-provenance-audit.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass78-github-actions-provenance-audit.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: define and test trusted context mapping for one canonical no-dispatch controller; keep dispatch and execution authorization false.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-## Pass 78 final documentation PR gate recheck
-
-- Following the Context Window refresh, PR #169 head is `f31e6f8839f8e631ad6028aa540dbd99ee5ae795`; exact-head Actions runs 0, formal reviews 0, review threads 0, GitHub `mergeable=false`. PR #169 remains OPEN/DRAFT/UNMERGED; integration NOT VERIFIED.
-
-## Pass 79 — triggering GitHub actor bound to owner comment (2026-11-25)
-
-- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 final head: `8e853575a29ccd05cb8c6d22a74d44dd41465f44`; exact CI synthetic merge: `fe0303d229efce42b37ef0c6dd283eefedf836c7`.
-- Binder now requires actual `actorId` / `actorLogin`, compares them against frozen owner identity and comment author, and persists validated values. Previously actor identity was populated from constants without checking actual Actions actor input.
-- Unit tests add 3 negative cases for actor ID/login mismatch and actor/comment mismatch; integration fixture supplies actor; README requires future controller to map from trusted `github.actor_id` and `github.actor`.
-- D1 run [45522771920](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45522771920): SUCCESS, exact merge `fe0303d...`, 8/8 files, 119/119 tests; npm ci/check/test PASS. Pool Contract [45522771986](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45522771986): SUCCESS; dispatch false, six workflows parsed, security invariants PASS.
-- PR #170 OPEN/DRAFT/UNMERGED, mergeable true, 0 formal reviews, 0 review threads. Base metadata `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` remains stale vs default HEAD `565404f84b6b86afb4dc2d8fa939341f42df6eca`; compare 34 ahead / 2 behind. Exact CI synthesized against current default, but ancestry needs reconciliation before merge.
-- Ruleset `26550182` active, no bypass, current-user bypass never, thread resolution required, approvals 0. Branch API reports protection disabled; effective governance enforcement NOT VERIFIED.
-- Real controller mapping from trusted Actions contexts into binder remains NOT VERIFIED. No workflow/controller, schema, migration, dependency, secret, hosted D1, dispatch, provider, deployment, merge or production changes.
-- 4 files changed; 3 new negative tests; actual active time NOT MEASURED.
-- Pass 79 report: [report](../reports/2026-11-25-pass79-github-actor-binding.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass79-github-actor-binding.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: canonical no-dispatch controller context mapping and workflow-level tests; reconcile default-base/governance discrepancy; preserve dispatch=false and obtain independent review.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 80 — trusted controller context and branch-governance reconciliation (2026-11-25)
-
-- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 head `8e853575a29ccd05cb8c6d22a74d44dd41465f44`; base metadata remains stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare to current default is 38 ahead / 2 behind. D1 run `45522771920` and Pool Contract run `45522771986` SUCCESS; exact synthetic merge evidence remains `fe0303d229efce42b37ef0c6dd283eefedf836c7`. This does not resolve ancestry or live provenance.
-- Issue #96 is the exact owner-only `/next` control contract; Issue #140 is the D1 proof issue.
-- PR #171 adds only an audit-only `next-request-intake.yml` (`permissions: {}`, no checkout/secrets/D1/dispatch). It validates owner/comment login and comment ID but does not map numeric actor identity, owner/repository IDs, ref, target SHA, workflow ref/SHA or run tuple to the binder.
-- PR #170 binder expects `next-event-controller.yml@refs/heads/Основной`; that workflow is NOT FOUND on default. Gemini batch controller workflow also NOT FOUND on default. Synthetic binder tests do not prove real Actions-context provenance.
-- PR #171 Pool Contract run `45448087868` SUCCESS. PR #169 head before this refresh `15cecb7fd3036ce8a6ecc827728bbedeaa5acdf5` had zero check runs/status contexts; exact-head CI NOT VERIFIED.
-- PRs #169/#170/#171 remain OPEN/DRAFT/UNMERGED with zero formal reviews and zero review threads. No merge.
-- Ruleset `26550182` active, no bypass, thread resolution required, required approvals 0. Branch-protection API returned 403; effective enforcement NOT VERIFIED.
-- Pass 80 is a read-only source/API audit; no code/schema/workflow/dependency changes; local tests NOT RUN; no secret reads, dispatch, provider calls, hosted D1, deployment, merge or production mutation. Active time NOT MEASURED.
-- Report: [Pass 80](../reports/2026-11-25-pass80-trusted-controller-context-audit.md); checkpoint: [Pass 80 checkpoint](../checkpoints/2026-11-25-pass80-trusted-controller-context-audit.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: define and test one canonical no-dispatch workflow-to-binder context mapping; reconcile PR #170 ancestry; verify governance and obtain independent review.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 81 — GitHub Actions context normalization adapter (2026-11-25)
-
-- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 code/test head: `31bebd029847aa212559d580b6c3680163ee126e`; current head after README-only follow-up: `40281787c208af2df916f10af1dba073061ff0d3`.
-- Added `proofs/d1-ledger/src/github-actions-context.mjs`, a pure explicit mapping from runner `github` context + `GITHUB_ACTIONS` / `GITHUB_SERVER_URL` into the D1 binder input. It copies actor ID/login, owner/repo IDs, issue/comment metadata, ref, target SHA, workflow ref/SHA and run tuple; no caller-input fallback. Event SHA and workflow SHA remain distinct.
-- Added 4 unit cases: full mapping and binder acceptance, PR-comment detection, missing context fail-closed, and comment body distinct from issue body. README documents that no workflow invokes this adapter.
-- D1 run [45556206548](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556206548): SUCCESS, 8/8 files, 123/123 tests, `npm run check` PASS. Pool Contract [45556206386](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556206386): SUCCESS, dispatch gate false, six workflow YAML files parse, security validator PASS. Both checked out synthetic merge SHA `558ced790bbbfb872fed532109c5282465d30655` against default `565404f...`.
-- CI ran on code/test head `31bebd...`; README-only follow-up moved PR #170 to `402817...`. Latest-head CI therefore NOT VERIFIED, although no runtime/test source changed after the passing run.
-- PR #170 compare to default: 41 ahead / 2 behind, merge base still `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. PR remains OPEN/DRAFT/UNMERGED. PR #169 docs head after Pass 81 documentation updates: `8a0a7ecd7d95454f953cf0b3aeae905d6026a344`; exact-head CI has 0 check runs and 0 status contexts (NOT VERIFIED).
-- PRs #169/#170/#171 have 0 formal reviews and 0 threads at last check. Ruleset 26550182 active, no bypass, thread resolution required, approvals 0; effective branch protection NOT VERIFIED.
-- No workflow was added or invoked; no secret/variable reads, dispatch, provider calls, hosted D1, deployment or merge. Active time NOT MEASURED.
-- Report: [Pass 81](../reports/2026-11-25-pass81-github-actions-context-adapter.md); checkpoint: [Pass 81](../checkpoints/2026-11-25-pass81-github-actions-context-adapter.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: reconcile PR #170 ancestry, align canonical workflow identity with Issue #96, then consider a no-dispatch workflow-level mapping probe after governance gates.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-- Final Pass 81 readback: report blob `42d0c8b7166c323a12b59b9f31ea2a71a1d62c77`, checkpoint blob `2e8373cabf0c27d429392e3d0bc20b8ffe63f9af`, Context Window blob `ed3e061fd7aebcf65438f61f39a95853e9ae3cf7`. PR #169 exact-head CI rechecked after these docs writes: 0 checks, 0 statuses; NOT VERIFIED.
-
-
-## Pass 82 — PR ancestry and current-base CI reconciliation (2026-11-25)
-
-- Frozen default branch `Основной`: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`.
-- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR metadata base remains stale at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; compare reports 41 ahead / 2 behind.
-- The two commits behind are `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311` (temporary Pass 76 checkpoint addition) and `565404f84b6b86afb4dc2d8fa939341f42df6eca` (corrective revert). Current default tree equals the old merge-base tree, so the two commits change ancestry but not the final default tree. No rebase/reset/cherry-pick/force-push performed.
-- Exact current-base synthetic merge is `d828f62cb15c99981f47ce7eea06ec84eb7d02f0`, parents current default `565404f...` and PR head `4028178...`.
-- D1 run [45556287534](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287534), job 139009015200: SUCCESS, npm check PASS, 8/8 files, 123/123 tests. Pool Contract run [45556287686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287686), job 139009016019: SUCCESS, dispatch disabled, workflow YAML parse and security validator PASS. Both logs checked out merge `d828f62...`.
-- PR #169 head `027719f4ec63269743e900a18a4cf9d47e66e6f4`; exact-head CI absent (0 runs); reviews/threads 0.
-- PR #170 and #171 remain OPEN/DRAFT/UNMERGED; reviews/threads 0. PR #171's previous Pool Contract run 45448087868 is historical; no fresh exact-head run found this pass.
-- Ruleset `26550182` active on `refs/heads/Основной`, no bypass, PR required, thread resolution required, approvals configured 0. Branch API reports `protected=false`; effective enforcement remains NOT VERIFIED.
-- `.github/workflows/next-event-controller.yml` and `.github/workflows/gemini-batch-dispatch-controller.yml` are absent from default (404). Live controller provenance and Gemini dispatch remain NOT VERIFIED / NOT RUN.
-- Pass 82 report: [report](../reports/2026-11-25-pass82-pr-ancestry-current-base-ci.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass82-pr-ancestry-current-base-ci.md).
-- No source/runtime/workflow/dependency/schema changes, secrets, dispatch, provider calls, hosted D1, deployment, merge or production mutation. Actual active time NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: investigate governance enforcement discrepancy and reconcile Issue #96 controller contract with D1 binder for a no-dispatch workflow integration design. Keep all execution authorization false.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 83 — governance enforcement and no-dispatch controller contract audit (2026-11-25)
-
-- Frozen default SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`. PR #169 head `b667ff33f89b718d1eaae4e0bbfcfc5b6c6a5db6`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`. All OPEN/DRAFT/UNMERGED; reviews 0; review threads 0.
-- Ruleset `26550182` ACTIVE on `refs/heads/Основной`, bypass empty/current user bypass never. Rules include deletion/non-fast-forward restrictions, PR required and review-thread resolution. Required approvals = 0; no required reviewers; no code-owner/last-push approval; NO required-status-checks rule. Therefore successful CI is observed evidence, not an enforced merge prerequisite under this ruleset.
-- Branch API reports classic protection disabled; GET classic protection returns 403 integration access. This does not negate active Ruleset; full effective enforcement remains NOT VERIFIED. Issue #140 explicitly excludes branch-protection changes, so no policy mutation was made.
-- Issue #96 remains canonical exact owner-only /next contract. Dispatch remains disabled pending all gates. First executor profile is Claude Code + ECC + FCC on verified free API route; Gemini optional.
-- PR #171 next-request-intake workflow is audit-only: exact Issue #96, non-PR comment, repository owner login, exact /next; permissions empty; no checkout/secrets/D1/dispatch. It does not bind numeric IDs, trusted ref/SHA/workflow SHA/run tuple or durable receipt.
-- PR #170 mapGitHubActionsContext is a pure non-authorizing adapter; no live trusted-main controller exists on default.
-- PR #170 exact-head checks: D1 run [45556287534](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287534) SUCCESS, 8/8 files, 123/123 tests, npm check PASS; Pool Contract [45556287686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45556287686) SUCCESS on current-base synthetic merge `d828f62...`.
-- PR #171 has historical exact-head Pool Contract run [45448087868](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/45448087868) SUCCESS. PR #169 exact-head CI 0 runs, NOT VERIFIED.
-- Pass 83 report: [report](../reports/2026-11-25-pass83-governance-controller-audit.md); checkpoint: [checkpoint](../checkpoints/2026-11-25-pass83-governance-controller-audit.md).
-- No source/workflow/tests changes; no secrets, dispatch, hosted D1, provider calls, deployment, merge or ruleset/branch-protection mutation. Active time NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: explicit owner-policy authorization gate for required approvals/status checks, then exact required-check context design and no-dispatch trusted-main integration. Do not dispatch or merge.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 84 — daily live revalidation and workflow provenance review (2026-11-25 19:55:54 Europe/Vilnius)
-
-- Immutable default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`; recursive tree 70 entries, not truncated. Default combined status contexts empty.
-- Default history anomaly: `f8dbb46ce4f167bf3e36c9898dd2fc683b8f8311` added a 10-line Pass 76 checkpoint to default; `565404f84b6b86afb4dc2d8fa939341f42df6eca` reverted it as written to default in error. Both single-parent and unsigned. Current tree equals prior baseline tree at `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; no net content change, but ancestry advanced by two commits. This is a governance deviation. The API does not establish the authorization path; do not infer a bypass actor. Effective write-path enforcement remains NOT VERIFIED.
-- Ruleset 26550182 active on exact default selector; PR required; deletion/non-fast-forward/thread-resolution rules; approvals 0; no required status checks; CODEOWNERS and last-push approval disabled; bypass empty/current-user bypass never. Classic branch protection GET returns 403; branch API reports protected=false. No mutation because Issue #140 excludes branch-protection changes.
-- Open Issues endpoint returned 11 issues. #1/#22/#26/#96/#115/#140/#172/#173 remain OPEN. Open PR endpoint returned its first 100 results; complete total NOT VERIFIED.
-- #24/#25/#30/#31 remain OPEN/DRAFT/UNMERGED, 0 reviews/threads. Current-default compare: #24 62/157; #25 29/157; #30 35/157; #31 36/157. #24 two exact-head jobs SUCCESS; #25 two SUCCESS; #30 no run (NOT VERIFIED); #31 one SUCCESS.
-- PR #169 docs branch head `b77a3823275e1e86b4e520c8fc9f22470563fc8f`, 201 ahead / 2 behind, 87 documentation-only files, 0 exact-head runs, 0 reviews/threads.
-- PR #170 D1 head `40281787c208af2df916f10af1dba073061ff0d3`, 41 ahead / 2 behind. D1 run 45556287534/job 139009015200 and Pool Contract 45556287686/job 139009016019 SUCCESS; run metadata binds exact head but reports old base `8c38bb...`, so current-base requalification NOT VERIFIED. Reviews/threads 0.
-- PR #171 intake head `423da55ca1e2d91c28572f88f60b494b59d56e9e`, 3 ahead / 2 behind. Historical Contract run 45448087868/job 138637290205 SUCCESS, but it is a PR validation, not a real issue_comment event. Reviews/threads 0.
-- Path-fix branch `fix/github-read-adapter-path-segments-2026-11-06`: head `dee17350864cb49e8c5dd41cf61859d77d3affca`, 38/157, 19 files, no PR, no CI/statuses.
-- PR #116 runner proof: 74/14; historical runner and contract jobs SUCCESS; four owner COMMENTED reviews, no independent review; current artifact listing returned zero artifacts. Actual CODE worker-in-sandbox, provider route/account/quota and hosted-use entitlement NOT VERIFIED.
-- Default tree has five workflows only and no web app, D1 package, next-event controller, next-request intake workflow or Gemini controller. Latest Supervisor run 45597108398/job 139145990252 SUCCESS but heartbeat/retirement-only. Hosted D1 and production routing NOT VERIFIED.
-- Bounded source review blobs: PR #171 workflow `9402a803e21987b61813436647e43dac333c866c`, validator `6f82878beabeb2c0a1f65dfa66dee1c7de253482`; PR #170 context adapter `574d289964b5d908395573b91c6f890305c94eeb`, binder `31a254e28f42eee3a3add07ca5fae2c5a46cc8b57`, inert Worker `5429e1abb2049a63562fa411b0d3b041f2f8276b`. #171 is audit-only and does not bind numeric identities/ref/SHA/run tuple or write D1. #170 adapter is pure/non-authorizing and does not independently verify authoritative GitHub run/workflow metadata, workflow bytes/digest, ancestry or default-ref race. No default workflow invokes it.
-- No code/schema/workflow/dependency/test changes; no secret/variable reads, dispatch, agents, DSH, Resource Probe, provider/model calls, hosted D1, deployment, merge, governance mutation or production write. Active time NOT MEASURED.
-- Report: [Pass 84 report](../reports/2026-11-25-pass84-daily-live-revalidation.md). Checkpoint: [Pass 84 checkpoint](../checkpoints/2026-11-25-pass84-daily-live-revalidation.md).
-- Next Pass 85: obtain explicit owner-policy authorization before any Ruleset change; then define required approval/status-check contexts. Reconcile PR #170 ancestry and independently review trusted workflow provenance. No merge/dispatch. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-
-
-### Pass 84 documentation publication read-back
-
-- Daily report created on this working branch: commit `03fde12f939fac6f133d8551f5903224f97177cf`, blob `fa2b824eafe8974c72e1c49361a5297f0983eb05`.
-- Checkpoint created on this working branch: commit `c1cf26a36c513c4cd67ac986846ea16e412321f7`, blob `6715bf71d20bfd731c2f87180aec3695cc3b873c`.
-- The first Context Window refresh commit was `898a81f046711096a0af953befd25343b1607288`, blob `676b0ca4ee0088c0fa3dff13da3eff6a86e012bb`.
-- After those three documents were published, PR #169 head was `898a81f046711096a0af953befd25343b1607288`, 204 ahead / 2 behind current default, 89 changed files (all documentation paths), exact-head Actions runs 0, combined statuses empty, formal reviews 0, review threads 0. It remained OPEN/DRAFT/UNMERGED and is not canonical.
-- The Pass84 baseline entry above records the pre-publication immutable docs target `b77a3823275e1e86b4e520c8fc9f22470563fc8f`; this publication read-back records the resulting docs-only advance. The final Context Window refresh commit is recorded in the daily run result.
-
-
-## Pass 85 — PR ancestry and governance authorization gate (2026-11-25)
-
-- Current default HEAD confirmed by repository commit search: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; tree remains the Pass 84 recorded tree `0e473eee69b3c799a4ba5284103d3ca30e1bcae8`.
-- Current working documentation branch before Pass 85: `4d6ebe369bd3e0f67d8c3e94073dcb834ed563a0`.
-- PR #169 head `4d6ebe369bd3e0f67d8c3e94073dcb834ed563a0`: 205 ahead / 2 behind current default; exact-head runs 0, statuses empty, reviews 0, threads 0.
-- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`: 41 ahead / 2 behind; statuses empty, reviews 0, threads 0. Historical D1/Contract runs on this head used the old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; they do not establish current-base qualification.
-- PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`: 3 ahead / 2 behind; statuses empty, reviews 0, threads 0. Historical contract validation was not a real issue_comment event.
-- All three PRs remain OPEN/DRAFT/UNMERGED; common merge base is `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- Ruleset changes were NOT AUTHORIZED and none were made. A generic `/next` was not treated as specific approval to alter governance; Issue #140 excludes branch-protection changes.
-- PR #171 remains audit-only, with no durable receipt or full trusted workflow/run/ref provenance. PR #170 adapter/binder remains local and non-authorizing; no default workflow invokes it. Execution authorization remains false.
-- Report: [Pass 85](../reports/2026-11-25-pass85-pr-ancestry-and-governance-gate.md). Checkpoint: [Pass 85 checkpoint](../checkpoints/2026-11-25-pass85-pr-ancestry-and-governance-gate.md).
-- Changes this pass: report + checkpoint + this Context Window update only. No runtime/source/schema/workflow/dependency changes, no tests/CI triggered, no secrets, dispatch, hosted D1, provider calls, deployment, merge or governance mutation.
-- Gemini Agents 1/2/3: NOT RUN. Claude Code + FCC + ECC: NOT RUN. Active engineering time: NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: read-only source review of PR #170 provenance/current-base integration strategy. Obtain explicit owner authorization before any Ruleset mutation. Keep PRs draft/unmerged and execution fail-closed.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 86 — D1 event provenance and controller-wiring review (2026-11-25)
-
-- Default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`, base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`, 41 ahead / 2 behind current default; exact-head statuses empty; 0 formal reviews and 0 review threads; OPEN/DRAFT/UNMERGED.
-- Reviewed immutable blobs: context adapter `574d289964b5d908395573b91c6f890305c94eeb`; event binder `31a254e28f42eee3a3add07ca5fae2c5a46cc8b57`; migration 0017 `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`; integration test `e9c26f565c587bf9f8ab40bb6e7a33c9fd50fcd3`; unit test `d9385e21ec4528d4091d3d1af9ce74c5d5398bd9`.
-- Positive: exact owner/issue/body/ref predicates; append-only source-comment receipt; SQL binding to canonical admission/task/attempt/route/outbox/commit receipt; dispatch/execution flags remain false; local adversarial integration cases exist.
-- Limits: adapter is pure and does not independently authenticate GitHub event/run/workflow/ref metadata; workflow SHA is syntax-checked but not resolved to trusted workflow bytes/digest/ancestry; target SHA is not independently checked against default HEAD; trusted clock/authenticator is injected, not production-qualified.
-- Wiring: PR #170 contains D1 local proof workflow and source helpers, but no next-event controller workflow. Current default fetch of both `.github/workflows/next-event-controller.yml` and `.github/workflows/d1-ledger-proof-validation.yml` returned 404. Local Worker remains inert/404. No default workflow invokes the binder.
-- Issue #96's four-child dispatch and run/child/artifact reconciliation gates are not implemented by this local proof. No dispatch authorized.
-- Replay recovery requires explicit distinction between exact same-run delivery, GitHub rerun attempt, and separate controller run after ambiguous receipt outcome; immutable first receipt must not be overwritten.
-- Reuse First: retain pinned Cloudflare Workers Vitest/Miniflare/workerd harness; no new dependencies.
-- Report: [Pass 86](../reports/2026-11-25-pass86-d1-event-provenance-review.md). Checkpoint: [Pass 86 checkpoint](../checkpoints/2026-11-25-pass86-d1-event-provenance-review.md).
-- Pass actions: report + checkpoint + Context Window only. No code/runtime/schema/workflow changes, tests/CI triggered, secrets, provider calls, hosted D1, dispatch, deployment, merge or governance mutation.
-- Gemini Agents 1/2/3 NOT RUN; Claude Code/ECC/FCC NOT RUN; active time NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: controller-to-Issue-#96 traceability matrix and trusted workflow/run/ref + rerun-recovery design. Keep all execution paths fail-closed.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 87 — owner /next controller traceability and recovery contract (2026-11-25)
-
-- Default HEAD revalidated: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Working docs branch target before Pass 87: `bba9ad337834e4c67b26d2d9453dacf3d6b4347e`.
-- PR #169: head `bba9ad337834e4c67b26d2d9453dacf3d6b4347e`, OPEN/DRAFT/UNMERGED, 211 ahead / 2 behind; PR #170: `40281787c208af2df916f10af1dba073061ff0d3`, 41 ahead / 2 behind; PR #171: `423da55ca1e2d91c28572f88f60b494b59d56e9e`, 3 ahead / 2 behind. All share merge base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9). All three remain OPEN/DRAFT/UNMERGED, combined statuses empty, formal reviews 0 and review threads 0.
-- PR #171 workflow is deliberately audit-only: `permissions: {}`, no secrets, checkout, external actions, D1 writes, API calls or dispatch. It checks login equality and event fields, not independently verified immutable numeric owner/repository identity. Its own description disclaims admission persistence and execution authority.
-- PR #170 remains local D1 proof only. Migration 0017 provides append-only source-comment receipt and local tests, but no trusted default-branch controller invokes the binder; the workflow in PR #170 is pull_request-only and Worker is inert. Caller-supplied run/workflow fields are not independently verified against GitHub Actions API records.
-- Issue #96 is the authoritative control contract. Its 2026-11-17 owner correction sets first executor to Claude Code + ECC + FCC using an explicitly qualified free API route; Gemini is optional. Issue #94's 2026-11-17 correction confirms the same; historical four-Gemini-child wording is not a first-release gate.
-- Pass 87 records a requirement-to-evidence matrix, trust design, target SHA pinning, run attestation requirements, outbox/reconciliation state machine and distinct semantics for duplicate delivery, workflow rerun and separate controller replay. No implementation is claimed.
-- Report: [Pass 87 controller contract traceability](../reports/2026-11-25-pass87-controller-contract-traceability.md). Checkpoint: [Pass 87 checkpoint](../checkpoints/2026-11-25-pass87-controller-contract-traceability.md).
-- Pass actions: report + checkpoint + Context Window only. No code/runtime/schema/workflow/dependency changes, tests/CI triggered, secrets/variables read, hosted D1, provider calls, agent dispatch, deployment, merge, governance mutation or production write.
-- Gemini agents NOT RUN; Claude Code + ECC + FCC NOT RUN; active engineering time NOT MEASURED. No exact-head CI pass or independent review is established.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: create a clean-current-base, non-dispatching trusted-main provenance + idempotent admission/outbox/reconciliation proof, with no secrets/provider calls and exact-head adversarial tests. Live dispatch remains disabled; no governance mutation without explicit owner approval.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 88 — non-dispatch owner /next API provenance proof (2026-11-25)
-
-- Frozen default target SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- New implementation branch `feat/pass88-owner-next-api-audit-proof-2026-11-25`; PR #174 OPEN / DRAFT / UNMERGED; final head `5ec1e3663683e1ad7c64e9548d2f65e10d14de7f`; 8 ahead / 0 behind; merge base equals frozen target.
-- Implemented read-only issue_comment.created audit for exact `/next` on Issue #96. Verifier fetches repository/owner IDs, issue, source comment, Actions run, workflow metadata and current default branch ref via GitHub REST. Requires numeric identities, OWNER association, exact body, correct workflow path/event/run/actor, first attempt and matching default SHA.
-- Explicit outcome `OBSERVED_ONLY`; no durable admission, receipt, lease, outbox or dispatch. Workflow uses only read permissions `contents: read`, `issues: read`, `actions: read`; no stored secret values or provider credentials are read. The platform-generated short-lived `github.token` is used only for scoped read-only API calls.
-- Added 19 adversarial Node tests and static workflow-contract checks; no new OSS dependency (Node built-ins, node:test and existing pinned Actions reused).
-- Exact-head Pool Contract Validation run #45675656378 / job #139422380969 completed SUCCESS on PR #174 head; log confirms six YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`, 19 tests passed / 0 failed. Combined commit-status API returned no status contexts; this run is the concrete CI evidence.
-- Live issue_comment API event from default branch NOT RUN; run/workflow API response assumptions remain NOT VERIFIED in live event execution. Rerun attempts >1 fail closed pending durable recovery.
-- PR #174 reviews 0 / review threads 0; independent review NOT RUN; remains Draft. No merge.
-- PR #169 remains OPEN/DRAFT/UNMERGED head `884775c60fa6a8646a91052e410297326d8a04f1`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`; all based on old `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9` and diverged from current default.
-- Governance: Issue #1 is the branch-protection gate; current effective ruleset and current `POOL_DISPATCH_ENABLED` value NOT VERIFIED. Historical Issue #1 evidence is not a current read-back. Issue #140 is D1 admission/lease proof, not branch governance.
-- No secret-value reads, provider calls, D1 writes, executor dispatch, deployment, merge, production writes or governance mutation. Gemini and Claude Code + ECC + FCC NOT RUN. Local clone/test attempt NOT RUN due container DNS failure; GitHub Actions CI supplied test evidence.
-- Active engineering time NOT MEASURED.
-- Report: [Pass 88 owner /next API provenance audit](../reports/2026-11-25-pass88-owner-next-api-provenance-audit.md). Checkpoint: [Pass 88 checkpoint](../checkpoints/2026-11-25-pass88-owner-next-api-provenance-audit.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: independent review and current governance read-back; then install only through an approved protected-default-branch process and run one real owner event in OBSERVED_ONLY mode. Afterward implement durable source-comment idempotency, lease/fencing and outbox/reconciliation proof. Dispatch remains disabled.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 89 — owner /next API path contract correction (2026-11-25)
-
-- Default target frozen at `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Revalidated PR #174 OPEN/DRAFT/UNMERGED; corrected final head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, 10 ahead / 0 behind, merge base equals target.
-- Independent review found F89-01: GitHub REST `workflow_run.path` includes the branch suffix (documented example `.github/workflows/build.yml@main`). The prior exact bare-path comparison would reject the documented API response. Corrected to require workflow file path + `@` + repository default branch; workflow metadata path remains bare path.
-- Updated positive fixture to `.github/workflows/owner-next-event-audit.yml@Основной`; added negative cases for missing suffix and a different branch. 21 total test cases in the test file (1 positive + 20 rejection cases).
-- Final source/test blobs read back: `26a842e50ae4239996ec2c95a4969b291e63d266`, `71ead8a42e6de77afd7093145dcaa7756efef965`.
-- Previous-head run #45675656378 passed 19/19 on superseded SHA `5ec1e3663683e1ad7c64e9548d2f65e10d14de7f`; do not transfer that evidence to the corrected head. Final-head CI NOT VERIFIED at checkpoint time; the available workflow-run reader returns PR-triggered runs only and did not return a final-head run.
-- PR #169 docs branch head before this update: `726b1ac0ec5884177079a54c0108ca76f167e0a9`; PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`; PR #171 head `423da55ca1e2d91c28572f88f60b494b59d56e9e`. All remain OPEN/DRAFT/UNMERGED on old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`.
-- Issue #96 remains OPEN/PLANNED and dispatch-disabled by contract. Issue #94 and #140 remain open. Issue #1 remains governance gate; current ruleset and current `POOL_DISPATCH_ENABLED` were NOT VERIFIED. Issue #140 is D1 admission/lease proof, not branch governance.
-- No live issue_comment audit, D1 writes, secret-value reads, provider calls, child dispatch, production writes, deployment, merge or governance mutation. Gemini roles NOT RUN; Claude Code/ECC/FCC NOT RUN.
-- Independent review NOT RUN; owner direction on Issue #96 deferred external reviews until the pool can conduct its own bounded review workflow. No review request sent.
-- Active engineering time NOT MEASURED.
-- Report: [Pass 89 API path contract fix](../reports/2026-11-25-pass89-owner-next-api-path-contract-fix.md). Checkpoint: [Pass 89 checkpoint](../checkpoints/2026-11-25-pass89-owner-next-api-path-contract-fix.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: verify corrected final-head CI and inspect its logs; then continue durable source-comment idempotency/outbox reconciliation proof with dispatch disabled.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-### Pass 89 corrected-head CI closure
-
-- Corrected final PR #174 head `a8809c1dc8c2eaa49944fb031baeec54ce46b922` completed exact-head Pool Contract Validation: run `45677997233`, job `139430608357`, COMPLETED / SUCCESS.
-- Job log confirms six workflow YAML files parsed; `POOL_CONTRACT_VALIDATION=PASS`; Node adversarial suite `21 passed / 0 failed`. This is exact-head CI evidence for the path-suffix correction, unlike superseded run #45675656378.
-- The CI log emitted a non-fatal warning that pinned `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683` targets Node.js 20 and was forced to Node.js 24. Track as maintenance debt; it did not fail the run.
-- Pass 89 report/checkpoint updated with final CI evidence. PR #174 remains OPEN / DRAFT / UNMERGED, formal reviews 0, no merge. Live default-branch issue_comment audit still NOT RUN; current ruleset and current dispatch variable NOT VERIFIED.
-- PR #169 is the docs working branch containing this Context Window; it remains OPEN/DRAFT/UNMERGED and based on old SHA `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. This Context Window is not yet merged into default branch.
-- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED. Next: verify whether any approved default-branch/governance gate can be established without changing protections; then design the durable source-comment receipt/outbox/reconciliation chain on a clean current base. No dispatch.
-
-
-## Pass 90 — D1 admission/outbox lineage audit (2026-11-25)
-
-- Frozen current target: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 D1 candidate head `40281787c208af2df916f10af1dba073061ff0d3` is OPEN/DRAFT/UNMERGED, 41 ahead / 2 behind target, merge base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; D1 proof paths are absent from current default.
-- PR #170 exact-head CI verified: D1 run `45556287534` / job `139009015200`, 8 files / 123 tests PASS; Pool Contract run `45556287686` / job `139009016019`, seven YAML files parsed, contract PASS, dispatch gate disabled.
-- PR #174 API audit head `a8809c1dc8c2eaa49944fb031baeec54ce46b922` is current-base OPEN/DRAFT/UNMERGED; exact-head Pool Contract run `45677997233` passed 21/21.
-- F90-01: PR #170's Actions context mapper is explicitly pure and does not authenticate runner/API metadata. PR #174's API-backed workflow returns OBSERVED_ONLY and is not composed with D1. No single trusted provenance-to-D1 control path exists.
-- D1 strengths: canonical task ledger; retired legacy claim/outbox paths sealed; migration 0017 unique append-only source-comment receipt; SQL binding to admission/task/attempt/route/outbox/commit receipt; primary-first readback; 12 receipt integration tests; atomic admission/outbox and fenced lease local proofs. All flags remain dispatch:false and executionAuthorized:false.
-- PR #170's old-base green CI is not current-base merge-result proof or hosted D1 evidence. No merge, dispatch, hosted D1, secret read, provider call, deployment, production write or governance mutation.
-- Current ruleset and current POOL_DISPATCH_ENABLED remain NOT VERIFIED. Live issue_comment controller NOT RUN. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
-- Report: [Pass 90 D1 lineage audit](../reports/2026-11-25-pass90-d1-admission-outbox-lineage-audit.md). Checkpoint: [Pass 90 checkpoint](../checkpoints/2026-11-25-pass90-d1-admission-outbox-lineage-audit.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: one clean current-base integration branch that composes API-attested owner event with D1 admission/source receipt; reuse existing local D1 test harness; dispatch remains false.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 91 — API provenance to D1 admission composition review (2026-11-25)
-
-- PR #174 API audit: OPEN/DRAFT/UNMERGED, head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #170 D1 candidate: OPEN/DRAFT/UNMERGED, head `40281787c208af2df916f10af1dba073061ff0d3`, old base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; 41 ahead / 2 behind PR #174 base.
-- PR #169 docs branch head `fb6eb335621e72a46ebda3f47e0bb0d372c27219`, OPEN/DRAFT/UNMERGED on old base; PR #171 also remains OPEN/DRAFT/UNMERGED on old base.
-- F91-01: PR #174 API verifier returns OBSERVED_ONLY and its workflow only writes a step summary; it does not pass a verified event envelope to D1. PR #170 independently accepts a pure Actions context object; its mapper/binder does not authenticate the source through GitHub API. No unified trusted provenance-to-D1 controller.
-- F91-02: D1 admission and source-comment receipt are two phases. Local tests demonstrate recovery using the same immutable admission identity and fail-closed readback, but the controller must persist/reuse original admission ID and event envelope across retries; never mint a new task/attempt after receipt failure.
-- F91-03: PR #170 remains divergent and absent from current default; PR #174 is a separate current-base API audit. No combined merge-result CI.
-- Inspected source blobs: PR #170 github-next-event `31a254e28f42eee3a3add07ca5fae2c5a46cc8b57`, context mapper `574d289964b5d908395573b91c6f890305c94eeb`, admission adapter `f4c788c1d5231cdce3a84d006b07407971ef6491`, migration 0017 `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`, integration tests `e9c26f565c587bf9f8ab40bb6e7a33c9fd50fcd3`.
-- Reuse First: retain pinned Cloudflare Workers Vitest/Miniflare D1 harness, Node built-in fetch and pinned GitHub Actions; no new dependency.
-- No code/schema change, live webhook, hosted D1, dispatch, secret read, provider call, deployment, merge, production write or governance mutation.
-- Current ruleset and current `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
-- Report: [Pass 91 API-to-D1 composition review](../reports/2026-11-25-pass91-api-to-d1-composition-review.md). Checkpoint: [Pass 91 checkpoint](../checkpoints/2026-11-25-pass91-api-to-d1-composition-review.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: create one clean branch from independently revalidated current default SHA; port one canonical D1 lineage, then add API-attested event envelope and composition tests, all dispatch/execution false.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 92 — clean-base D1 lineage and migration overlap audit (2026-11-25)
-
-- Current default target revalidated through repository commit search and PR #174 base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Created staging branch `integration/pass92-d1-clean-base-565404f` from that exact SHA. No files/commits added to the staging branch.
-- PR #170 candidate head `40281787c208af2df916f10af1dba073061ff0d3`; PR #111 head `687196738782432797bf394f1342cb9df19f478f`.
-- All 35 PR #170 changed paths are absent from current default.
-- Migration overlap: #111/#170 migrations 0002–0005 have identical blobs. README, migration 0001, package.json and worker differ. Migration 0006 is a collision (PR #111 lease guard vs PR #170 projection outbox); PR #170 later provides lease/fencing in migration 0014. Do not overlay or renumber.
-- PR #114/#125 use separate `proofs/d1-admission` package and migration 0001; do not create a second admission ledger. Reuse PR #170 canonical D1 candidate and pinned Workers Vitest/Miniflare harness.
-- F92-01: migration numbering collision prohibits naive path overlay.
-- F92-02: separate d1-admission package would create competing authority if imported.
-- F92-03: safe base-preserving tree write not completed because commit reader omits base tree SHA; creating a tree without the base tree would replace repository contents. Staging branch intentionally remains clean.
-- Existing PR #170 D1 123/123 and Pool Contract PASS are old-head candidate evidence only. No new CI.
-- No runtime code/schema change, hosted D1, live webhook, dispatch, secret read, provider call, deployment, merge, production write or governance mutation.
-- Current ruleset and current `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent review NOT RUN; active time NOT MEASURED.
-- Report: [Pass 92 clean-base D1 lineage audit](../reports/2026-11-25-pass92-clean-base-d1-lineage-audit.md). Checkpoint: [Pass 92 checkpoint](../checkpoints/2026-11-25-pass92-clean-base-d1-lineage-audit.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: obtain the base tree SHA via an approved Git object read path; create one base-preserving commit importing the reviewed PR #170 file set; verify parent/tree/diff, open draft PR, run exact-head D1 and Pool Contract CI.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 93 — clean-base D1 proof import (2026-11-25)
-
-- Created draft PR #175: https://github.com/VlDMlNSh/developer-cloud-pool/pull/175
-- Base SHA `565404f84b6b86afb4dc2d8fa939341f42df6eca`; head SHA `bb9fd296928df3a99b6f060144cc60f5642f0d15`; 39 ahead / 0 behind.
-- Imported 39 files from PR #170 head `40281787c208af2df916f10af1dba073061ff0d3`: canonical D1 migrations 0001–0017, adapters, tests, pinned package lock and isolated pull_request workflow.
-- Re-read and compared every source/destination blob SHA: 39/39 identical. PR #175 diff has 39 added paths, 0 modified, 0 deleted. Base files remain untouched.
-- PR #175 OPEN/DRAFT/UNMERGED. Exact-head workflow lookup returned 0 runs and combined commit status list is empty; reviews 0, threads 0. D1 tests, Pool Contract, exact-head and merge-result CI NOT VERIFIED. Historical PR #170 123/123 CI does not qualify PR #175.
-- F91-01 remains: API-backed owner event audit PR #174 is not composed into D1 admission; no immutable API-attested envelope reaches the D1 adapter. Two-phase admission/source receipt recovery still needs controller-level durable reuse of the original admission identity.
-- No local tests, live issue_comment event, hosted D1, provider calls, dispatch, execution authorization, secret read, deployment, merge, production write or governance mutation.
-- No new dependencies. Active time NOT MEASURED. Current ruleset and `POOL_DISPATCH_ENABLED` NOT VERIFIED. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN.
-- Clean-base import VERIFIED; D1 behavior NOT VERIFIED; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 93 clean-base D1 import](../reports/2026-11-25-pass93-clean-base-d1-import.md). Checkpoint: [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
-- Next: investigate empty PR #175 CI/status; verify D1 workflow and Pool Contract eligibility; then exact-head CI and separate API-attested event-envelope composition slice.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-### Pass 93 CI addendum — 2026-11-25
-
-- PR #175 D1 run #45689197397 / job #139469816000 SUCCESS; Pool Contract run #45689197360 / job #139469816983 SUCCESS.
-- Both job logs confirm checkout of merge-result SHA `f543b77115edd797c735e74cc84a996937ae6ff2`; PR head remains `bb9fd296928df3a99b6f060144cc60f5642f0d15`.
-- D1: 8/8 files, 123/123 tests; pinned Node 24.9.0; Worker syntax check passed.
-- Pool Contract: six workflow YAML files parsed; contract checks PASS; `POOL_CONTRACT_VALIDATION=PASS`; CI process environment reported `POOL_DISPATCH_ENABLED=false`.
-- Merge-result CI VERIFIED; exact-head CI NOT VERIFIED. PR-head combined status empty. Reviews 0; inline threads 0.
-- Non-fatal Node 20 deprecation warnings remain for pinned checkout/setup-node actions.
-- Reports/checkpoint updated: [Pass 93 report](../reports/2026-11-25-pass93-clean-base-d1-import.md), [Pass 93 checkpoint](../checkpoints/2026-11-25-pass93-clean-base-d1-import.md).
-
-
-## Pass 94 — D1 guide correction and API-attestation composition gate — 2026-11-25
-
-- PR #175 clean-base D1 import remains OPEN/DRAFT/UNMERGED. Frozen base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Current PR #175 head after bounded documentation correction: `3d69bc943677dba909792bf4930d4c0aa5d2233f`.
-- Corrected `proofs/d1-ledger/README.md` to state fresh migrations 0001–0017 and staged upgrade 0011–0017; blob `93f133653e7e7b1315ebaca1d53b44ca671589d8`. Read-back verified.
-- Prior head `bb9fd296...` merge-result CI was D1 123/123 and Pool Contract PASS on `f543b771...`. After the README correction, current PR #175 head `3d69bc943677dba909792bf4930d4c0aa5d2233f` also passed merge-result CI: D1 run `45690428935` / job `139474112922`, 8/8 files and 123/123 tests; Pool Contract run `45690428805` / job `139474113226`, six workflow YAML files parsed, `POOL_CONTRACT_VALIDATION=PASS`, dispatch false. Merge-result checkout SHA `16066457db9c86cc085e4afce743eb7e77408ca7`. Standalone exact-head status contexts remain empty / NOT VERIFIED.
-- PR #175 formal reviews 0; threads 0; no merge.
-- HIGH F94-01: PR #175 `admitGitHubNextEvent` trusts the flat Actions context through `bindGitHubNextEvent`; PR #174's independent GitHub API read-back verifier is a separate OBSERVED_ONLY workflow and does not supply an immutable attested envelope to D1.
-- F94-02: workflow identity mismatch: PR #174 audits `owner-next-event-audit.yml`; D1 binder/migration 0017 hard-code `next-event-controller.yml`. Resolve one canonical workflow identity before composition.
-- Reuse First: retain official Cloudflare Workers Vitest/Miniflare and Node built-in fetch/GitHub REST; no new dependency.
-- No local tests, hosted D1, live webhook, dispatch, secrets, provider calls, deployment, merge or production writes. Dispatch/execution remain false.
-- Active time NOT MEASURED. Independent security review NOT RUN. Current ruleset and dispatch variable NOT re-read in this pass.
-- Report: [Pass 94 D1 API-attestation composition gate](../reports/2026-11-25-pass94-d1-api-attestation-composition-gate.md). Checkpoint: [Pass 94 checkpoint](../checkpoints/2026-11-25-pass94-d1-api-attestation-composition-gate.md).
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: implement one canonical API-attested event envelope and bind its full tuple into the D1 receipt; test stale-ref races, workflow identity, source-comment binding and replay before any dispatch integration.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-## Pass 95 — OSS CLI tooling Reuse First review — 2026-11-25
-
-- Scope: evaluate five user-supplied OSS projects for Cloud Development Pool fit; future MediaHub applicability remains deferred. Frozen canonical default: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Decision: no dependency adoption and no code changes. rust-anything = ADAPT LATER only for a deterministic CPU-bound CLI after Contour A acceptance, offline in a disposable environment with no credentials/network/production side effects; croc = DEFERRED for a separately authorized owned-device transfer use case; yt-dlp = NOT ADOPTED; Espanso = NOT ADOPTED; Material You New Tab = VISUAL REFERENCE ONLY, no code reuse.
-- Identity correction: supplied `sigoden/rust-anything` returned GitHub API 404. Matching project inspected at `erkamyaman/rust-anything`, MIT, inspected commit `6b588c37ae2172690d557cb21464b5dfb24b9c16`. Its record/replay runs original code repeatedly and may repeat network/database/file side effects; only recorded behavior is covered.
-- croc inspected at commit `d77d59a8931d67460574f7603b9446470d475070`, MIT; relay/network surface does not belong in Cloud Pool control plane.
-- yt-dlp release inspected: `2026.11.23` / `6f73a8d`; source Unlicense with additional bundled-executable license obligations and recent upstream security advisories; no installation or execution integration.
-- Espanso inspected at `80d9e353e3c0a58c77feb72671cec4a61958366f`, GPL-3.0; desktop text expansion is not a server control-plane dependency.
-- Material You New Tab corrected repository identity: `prem-k-r/MaterialYouNewTab`, GPL-3.0, inspected commit `066bdc603198c04c47d7e745a60ba5c7576215a7`; browser extension, possible UX reference only.
-- Projects reviewed: 5. Dependencies adopted: 0. Code files changed: 0. Tests/benchmarks/source execution: NOT RUN. Full supply-chain audit: NOT RUN. Active time NOT MEASURED.
-- Report: [Pass 95 OSS CLI tooling reuse review](../reports/2026-11-25-pass95-oss-cli-tooling-reuse-review.md). Checkpoint: [Pass 95 checkpoint](../checkpoints/2026-11-25-pass95-oss-cli-tooling-reuse-review.md).
-- No dispatch, hosted D1, secrets, provider calls, deployment, merge, production write, or Contour B work.
-- Contour A remains BLOCKED / NOT ACCEPTED. Next: resume API-attested GitHub event envelope → immutable D1 admission/receipt binding, resolve canonical workflow identity, and add race/replay/adversarial tests; dispatch stays disabled.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-
-## Pass 96 — API-attested event composition audit — 2026-11-25
-
-- Frozen default `Основной`: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #175 OPEN/DRAFT/UNMERGED; head `3d69bc943677dba909792bf4930d4c0aa5d2233f`. PR #174 OPEN/DRAFT/UNMERGED; head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`.
-- Confirmed F96-01: PR #175 flat Actions context binder is not composed with PR #174's independent API verifier; no immutable API-attested envelope reaches D1 admission.
-- Confirmed F96-02: D1 source + migration 0017 pin `next-event-controller.yml`; PR #174 audits `owner-next-event-audit.yml`. These are different workflow identities.
-- Decision: `next-event-controller.yml` remains the single canonical controller identity. PR #174 stays audit-only until API verification is integrated into that same controller execution path. No unsigned cross-workflow artifact/input can be treated as attestation.
-- Required envelope: API-readback-bound repository/owner IDs, issue/PR state, source comment ID/body digest/action, sender/author/OWNER association, target SHA/default ref, workflow ID/path/ref/code SHA, run ID/attempt and CODE profile; canonical digest must be bound into D1 admission and source receipt. Re-read default ref immediately before admission; deny movement. Reruns remain denied until durable replay/reconciliation is proven.
-- PR #175 Actions: D1 run `45690428935` SUCCESS; Pool Contract run `45690428805` SUCCESS. Combined status contexts empty / NOT VERIFIED. Reviews/threads: PR #174 0/0; PR #175 0/0.
-- Active ruleset `26550182`: PR required, no bypass actors, 0 required approvals, thread resolution required. Dispatch-variable metadata not verified this pass.
-- Reuse First: retain Node built-in fetch/GitHub REST verifier and Cloudflare Workers Vitest/Miniflare; no new dependencies.
-- No code/workflow/schema/dependency changes; local tests NOT RUN; no hosted D1, live webhook, secrets, provider calls, dispatch, deployment, merge or production writes. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN.
-- Active time NOT MEASURED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 96 API-attested event composition audit](../reports/2026-11-25-pass96-api-attested-event-composition-audit.md). Checkpoint: [Pass 96 checkpoint](../checkpoints/2026-11-25-pass96-api-attested-event-composition-audit.md).
-- Next: implement same-workflow API-readback → immutable envelope → D1 receipt composition and stale-ref/rerun/replay/field-substitution tests.
-- Canonical MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-
-### Pass 96 documentation PR governance addendum
-
-- Working docs branch `docs/engineering-excellence-2026-11-23`, PR #169 OPEN/DRAFT/UNMERGED; new head `6e2b95eb9f392292727b14ed5d456def0fdc1629`.
-- PR #169 base SHA remains stale `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`; current default is `565404f84b6b86afb4dc2d8fa939341f42df6eca`. Compare: diverged, 254 ahead / 2 behind.
-- Exact-head Actions runs 0; combined status contexts 0; formal reviews 0; review threads 0. Pass96 docs are read-back verified on working branch but PR #169 CI/governance qualification NOT VERIFIED. Do not merge.
-
-
-## Pass 97 — canonical controller existence gate — 2026-11-25
-
-- Default SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`. PR #175 D1 head `3d69bc943677dba909792bf4930d4c0aa5d2233f`; PR #174 API audit head `a8809c1dc8c2eaa49944fb031baeec54ce46b922`. Both OPEN/DRAFT/UNMERGED.
-- Repository workflow directory enumerated at default SHA and PR #175 branch: `next-event-controller.yml` is absent at both refs; direct file fetch 404. Migration 0017 + binder nevertheless pin that nonexistent path.
-- PR #174 `owner-next-event-audit.yml` is a distinct audit-only feature-branch workflow; verifier returns `OBSERVED_ONLY`, creates no D1 admission and rejects run attempts >1 pending durable reconciliation.
-- Decision: no isolated verifier integration or migration-only patch. First create the canonical controller on a clean current-default branch, run API read-back in that same workflow, and bind workflow ID/path/ref/code SHA to D1 envelope/receipt. Recheck default ref immediately before admission; keep reruns denied until durable replay/reconciliation. Dispatch remains disabled.
-- PR #175 CI: D1 run `45690428935` SUCCESS; Pool Contract `45690428805` SUCCESS; combined status contexts empty / NOT VERIFIED; reviews/threads 0/0. Ruleset `26550182`: PR required, no bypass, 0 approvals, review-thread resolution required.
-- No code/schema/workflow/dependency changes; local tests NOT RUN; no hosted D1, live webhook, dispatch, provider calls, deployment, merge or production writes. Gemini NOT RUN; Claude Code/ECC/FCC NOT RUN; independent security review NOT RUN. Active time NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 97 canonical controller precondition](../reports/2026-11-25-pass97-canonical-controller-precondition.md). Checkpoint: [Pass 97](../checkpoints/2026-11-25-pass97-canonical-controller-precondition.md).
-- Next: create canonical controller + same-run API attestation on clean current-default base, then D1 integration and adversarial tests.
-- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
-
-## Pass 102 — workflow path and lease contract revalidation (2026-11-26)
-
-- Default `Основной` HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- PR #174/#175/#176 remain OPEN/DRAFT/UNMERGED at heads `a8809c1dc8c2eaa49944fb031baeec54ce46b922`, `3d69bc943677dba909792bf4930d4c0aa5d2233f`, `ca53ed9eb625d2532aa00cc269cf7f8617d97266`; exact-head CI SUCCESS (runs 45677997233; 45690428935 + 45690428805; 45705794330). Formal reviews and threads 0.
-- Correction to Pass101: official GitHub REST workflow-run example shows `.github/workflows/build.yml@main`; PR #176 verifier's `<workflow-path>@<default-branch>` comparison matches documented response shape. This is not live `issue_comment` qualification; none was observed. Pass101 report/checkpoint updated accordingly.
-- PR #175 lease adapter uses injected `trustedClock()`, not caller `input.now`; it validates positive safe integer/rollback, TTL 1–900s, generation fencing and primary read-back. Existing tests cover caller future/past timestamps being ignored. Production clock/authenticator wiring and hosted D1 remain NOT VERIFIED.
-- Blocking edge remains: PR #176's API verifier does not pass a canonical immutable API-attested envelope into PR #175's D1 admission/receipt in the same workflow run; workflow file blob identity/ancestry remains unbound.
-- No code/schema/workflow/dependency changes; no local tests, live webhook, hosted D1, dispatch, provider calls, secret/variable reads, Ruleset changes, deployment, merge or production writes. Gemini/Claude/ECC/FCC NOT RUN; independent security review NOT RUN; active time NOT MEASURED.
-- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Report: [Pass 102](../reports/2026-11-26-pass102-workflow-path-and-lease-contract-revalidation.md); checkpoint: [Pass 102](../checkpoints/2026-11-26-pass102-workflow-path-and-lease-contract-revalidation.md).
-- Next: Pass103 implement same-run immutable API-attested envelope + workflow-file blob identity into D1 admission/receipt, with end-to-end adversarial tests; keep dispatch/execution authorization false.
-- MediaHub map (deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+- Next: Pass122 same-run read-only issue_comment workflow → exact Envelope v1 JSON/digest → Workers verifier → local D1 attested adapter integration; isolate legacy adapter; add adversarial tests and exact-head CI. Keep dispatch and execution authorization false.
