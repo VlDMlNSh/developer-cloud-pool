@@ -1,4 +1,5 @@
 import { admitQualifiedTask } from "./admit-qualified-task.mjs";
+import { verifyOwnerNextEnvelopeForActions } from "./owner-next-envelope.mjs";
 
 const OWNER_ID = "157891068";
 const REPOSITORY_ID = "1445644538";
@@ -52,7 +53,7 @@ export async function bindGitHubNextEvent(context) {
 
 async function readReceipt(db, event) {
   return db.prepare(
-    "SELECT source_comment_id, repository_id, owner_numeric_id, issue_number, event_name, event_action, actor_numeric_id, actor_login, author_association, body_digest, ref, target_sha, workflow_ref, workflow_sha, run_id, run_attempt, profile, event_digest, admission_id, recorded_at, dispatch_enabled FROM pool_source_comment_receipts WHERE repository_id = ? AND source_comment_id = ?"
+    "SELECT source_comment_id, repository_id, owner_numeric_id, issue_number, event_name, event_action, actor_numeric_id, actor_login, author_association, body_digest, ref, target_sha, workflow_ref, workflow_sha, run_id, run_attempt, profile, event_digest, admission_id, recorded_at, dispatch_enabled, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha FROM pool_source_comment_receipts WHERE repository_id = ? AND source_comment_id = ?"
   ).bind(event.repositoryId, event.sourceCommentId).first();
 }
 
@@ -66,7 +67,16 @@ function receiptMatches(row, event, admissionId) {
     row.workflow_ref === event.workflowRef && row.workflow_sha === event.workflowSha &&
     row.run_id === event.runId && row.run_attempt === event.runAttempt &&
     row.profile === PROFILE && row.event_digest === event.eventDigest &&
-    row.admission_id === admissionId && row.dispatch_enabled === 0);
+    row.admission_id === admissionId && row.dispatch_enabled === 0 &&
+    row.attestation_schema === (event.attestationSchema ?? "") &&
+    row.attestation_version === (event.attestationVersion ?? 0) &&
+    row.issue_node_id === (event.issueNodeId ?? "") && row.comment_node_id === (event.commentNodeId ?? "") &&
+    row.observed_default_head_sha === (event.observedDefaultHeadSha ?? "") &&
+    row.run_head_sha === (event.runHeadSha ?? "") && row.workflow_id === (event.workflowId ?? "") &&
+    row.workflow_state === (event.workflowState ?? "") &&
+    row.workflow_commit_sha === (event.workflowCommitSha ?? "") &&
+    row.workflow_file_blob_sha === (event.workflowFileBlobSha ?? "") &&
+    row.workflow_file_ref_sha === (event.workflowFileRefSha ?? ""));
 }
 
 async function verifyAdmissionChain(db, input) {
@@ -122,12 +132,15 @@ async function recordGitHubNextReceipt(db, input, event, trustedClock) {
     try { recordedAt = trustedClock(); } catch { return deny("TRUSTED_CLOCK_UNAVAILABLE"); }
     if (!Number.isSafeInteger(recordedAt) || recordedAt <= 0) return deny("TRUSTED_CLOCK_INVALID");
     await db.prepare(
-      "INSERT INTO pool_source_comment_receipts (source_comment_id, repository_id, owner_numeric_id, issue_number, event_name, event_action, actor_numeric_id, actor_login, author_association, body_digest, ref, target_sha, workflow_ref, workflow_sha, run_id, run_attempt, profile, event_digest, admission_id, recorded_at, dispatch_enabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)"
+      "INSERT INTO pool_source_comment_receipts (source_comment_id, repository_id, owner_numeric_id, issue_number, event_name, event_action, actor_numeric_id, actor_login, author_association, body_digest, ref, target_sha, workflow_ref, workflow_sha, run_id, run_attempt, profile, event_digest, admission_id, recorded_at, dispatch_enabled, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(event.sourceCommentId, event.repositoryId, event.ownerNumericId, event.issueNumber,
       event.eventName, event.eventAction, event.actorNumericId, event.actorLogin,
       event.authorAssociation, event.bodyDigest, event.ref, event.targetSha, event.workflowRef,
       event.workflowSha, event.runId, event.runAttempt, event.profile, event.eventDigest,
-      input.admissionId, recordedAt).run();
+      input.admissionId, recordedAt, event.attestationSchema ?? "", event.attestationVersion ?? 0,
+      event.issueNodeId ?? "", event.commentNodeId ?? "", event.observedDefaultHeadSha ?? "",
+      event.runHeadSha ?? "", event.workflowId ?? "", event.workflowState ?? "",
+      event.workflowCommitSha ?? "", event.workflowFileBlobSha ?? "", event.workflowFileRefSha ?? "").run();
     const committed = await readReceipt(db.withSession("first-primary"), event);
     return receiptMatches(committed, event, input.admissionId)
       ? { decision: "SOURCE_COMMENT_RECORDED", admissionId: input.admissionId, sourceCommentId: event.sourceCommentId, dispatch: false, executionAuthorized: false }
@@ -142,14 +155,40 @@ async function recordGitHubNextReceipt(db, input, event, trustedClock) {
   }
 }
 
+async function admitBoundGitHubNextEvent(db, input, event, trustedClock) {
+  if (input?.approval?.envelopeDigest !== event.eventDigest) return deny("SOURCE_COMMENT_ADMISSION_ENVELOPE_MISMATCH");
+  const admitted = await admitQualifiedTask(db, input, trustedClock);
+  if (!["ADMITTED_QUEUED", "ADMISSION_ALREADY_COMMITTED"].includes(admitted.decision)) return admitted;
+  const receipt = await recordGitHubNextReceipt(db, input, event, trustedClock);
+  if (receipt.decision === "DENY") return receipt;
+  return { ...admitted, sourceCommentId: event.sourceCommentId,
+    receiptDecision: receipt.decision, dispatch: false, executionAuthorized: false };
+}
+
 export async function admitGitHubNextEvent(db, input, context, trustedClock) {
   const bound = await bindGitHubNextEvent(context);
   if (bound.decision !== "BOUND") return bound;
-  if (input?.approval?.envelopeDigest !== bound.context.eventDigest) return deny("SOURCE_COMMENT_ADMISSION_ENVELOPE_MISMATCH");
-  const admitted = await admitQualifiedTask(db, input, trustedClock);
-  if (!["ADMITTED_QUEUED", "ADMISSION_ALREADY_COMMITTED"].includes(admitted.decision)) return admitted;
-  const receipt = await recordGitHubNextReceipt(db, input, bound.context, trustedClock);
-  if (receipt.decision === "DENY") return receipt;
-  return { ...admitted, sourceCommentId: bound.context.sourceCommentId,
-    receiptDecision: receipt.decision, dispatch: false, executionAuthorized: false };
+  return admitBoundGitHubNextEvent(db, input, bound.context, trustedClock);
+}
+
+export async function admitGitHubNextAttestedEvent(db, input, sourceJson, suppliedDigest, trustedContext, trustedClock) {
+  let verified;
+  try { verified = await verifyOwnerNextEnvelopeForActions(sourceJson, suppliedDigest, trustedContext); }
+  catch (error) { return deny(error?.code || "API_ATTESTATION_INVALID"); }
+  const { event: e, ref: r, run, policy } = verified.envelope;
+  const event = {
+    sourceCommentId: e.commentId, repositoryId: e.repositoryId, ownerNumericId: e.ownerId,
+    issueNumber: e.issueNumber, eventName: e.name, eventAction: e.action,
+    actorNumericId: e.actorId, actorLogin: e.actorLogin, authorAssociation: e.authorAssociation,
+    bodyDigest: e.bodySha256, ref: r.name, targetSha: run.headSha,
+    workflowRef: trustedContext.workflowRef, workflowSha: run.workflowCommitSha,
+    runId: Number(run.id), runAttempt: run.attempt, profile: policy.profile,
+    eventDigest: verified.digest, attestationSchema: verified.envelope.schema,
+    attestationVersion: verified.envelope.version, issueNodeId: e.issueNodeId,
+    commentNodeId: e.commentNodeId, observedDefaultHeadSha: r.observedDefaultHeadSha,
+    runHeadSha: run.headSha, workflowId: run.workflowId, workflowState: run.workflowState,
+    workflowCommitSha: run.workflowCommitSha, workflowFileBlobSha: run.workflowFileBlobSha,
+    workflowFileRefSha: run.workflowFileRefSha
+  };
+  return admitBoundGitHubNextEvent(db, input, event, trustedClock);
 }

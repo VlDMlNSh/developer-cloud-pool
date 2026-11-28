@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-28 — Pass 113 controller/API/D1 ancestry reconciliation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2405,3 +2405,56 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - PR #179 base remains PR #178 branch at `680bb7a1af7984b74b93e17284ef4f11ad30dba0`; OPEN/DRAFT/UNMERGED, mergeable=true, 0 formal reviews/threads.
 - Validation PR #180 targets default `Основной`, exact code/test SHA `b4ec2dc46cf2b0cf90ffb48a35075ed06e837b1e`; OPEN/DRAFT/UNMERGED, validation-only; do not merge.
 - Pass 110 report/checkpoint/Context Window were written and read back through GitHub; final CI evidence remains D1 45895942746 (134/134) and Contract 45895942756 SUCCESS.
+
+
+## Pass 111 — API-attested Envelope v1 to D1 durable receipt (2026-11-27)
+
+- Parent PR #179 head / frozen stack base: `80705bae2dca1f928368429c17922787b86be4bc`; canonical default `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Implementation branch `feat/pass111-d1-attested-receipt-2026-11-27`; final code/test HEAD `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- Added migration 0018 to existing append-only source-comment receipt, persisting attestation schema/version, Issue/Comment node IDs, observed default/run HEAD, workflow ID/state, workflow commit SHA, workflow-file blob SHA and workflow-file ref SHA. Existing workflow_sha remains the workflow commit SHA.
+- Added `admitGitHubNextAttestedEvent`: strict serialized Envelope v1 parse, WebCrypto digest recomputation, trusted Actions event/run/workflow cross-check, canonical digest bound to existing approval envelope digest, D1 admission and durable receipt write/readback/replay. No parallel ledger or dependency.
+- Added local D1 integration tests for full provenance persistence + replay, node-ID/digest substitution and workflow-ref mismatch. Legacy synthetic adapter remains for compatibility tests only; production workflow is not wired and must use attested entrypoint.
+- Final validation-only PR #182 merge-result CI for code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`: D1 run `45897059595` / job `140173459403` SUCCESS, 9/9 files and 137/137 tests, merge-result checkout `ac30d05...`; Pool Contract run `45897059549` / job `140173459315` SUCCESS (dispatch gate false, YAML and security contract checks).
+- PR #181 OPEN/DRAFT/UNMERGED, base PR #179 branch at `80705bae2dca1f928368429c17922787b86be4bc`, mergeable=true, formal reviews 0, threads 0. PR #182 validation-only OPEN/DRAFT/UNMERGED; do not merge. PR #178–#180 remain open/draft/unmerged.
+- Controller/API verifier same-run wiring, trusted API read-back, workflow-byte authenticity/default-ref race, hosted D1, executor/provider/UI/state recovery and independent review NOT VERIFIED / NOT IMPLEMENTED. No secrets, hosted D1 writes, provider calls, dispatch, executor, deployment, merge or production mutation.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED; dispatch/execution authorization false.
+- Next: wire API verifier and attested D1 adapter in one non-dispatching controller workflow; remove legacy non-attested entrypoint from production import surface; add same-run E2E and repeat CI.
+- Report: `docs/reports/2026-11-27-pass111-api-attested-d1-receipt.md`; checkpoint: `docs/checkpoints/2026-11-27-pass111-api-attested-d1-receipt.md`.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 111 governance revalidation — 2026-11-27
+
+- Default ref API confirms `refs/heads/Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Active repository ruleset ID `26550182` (`Основной — verified`) applies to default: deletion and non-fast-forward blocked; pull request required; review-thread resolution required; required approving review count 0; code-owner review false; no bypass actors; current integration cannot bypass.
+- Branch protection read endpoint returns 403, so legacy branch protection settings NOT VERIFIED. Root and `.github/CODEOWNERS` not found. PR #181 review submissions 0 and inline threads 0. Project-level independent review remains required before qualification/merge.
+
+
+## Pass 112 — Controller/API verifier/D1 composition preflight — 2026-11-28
+
+- Canonical default re-read: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pass 111 implementation branch `feat/pass111-d1-attested-receipt-2026-11-27`; prior branch HEAD observed `682b060ef376b8ebee8ae47872150776d28c4426`; code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- PR #176 candidate contains `.github/workflows/next-event-controller.yml` (blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a`), a read-only audit workflow invoking `scripts/owner-next-event-audit.mjs`. It has no D1 binding or admission call.
+- That workflow file is NOT FOUND on Pass 111 branch. The branch stack therefore does not yet compose Controller/API verifier with the Pass 111 D1 adapter.
+- Pass 111 adapter exports both `admitGitHubNextAttestedEvent` and legacy `admitGitHubNextEvent`. Legacy remains in test imports; production import-surface restriction is NOT VERIFIED because no production controller caller is wired.
+- Re-read Pass 111 CI: D1 run 45897059595 SUCCESS (9/9 files, 137/137 tests, merge-result prefix `ac30d05`); Pool Contract run 45897059549 SUCCESS. These do not prove same-run controller→API→D1 E2E.
+- PR #181 remains OPEN/DRAFT/UNMERGED; formal reviews 0, inline threads 0.
+- Added report `docs/reports/2026-11-28-pass112-controller-api-d1-composition-preflight.md` and checkpoint `docs/checkpoints/2026-11-28-pass112-controller-api-d1-composition-preflight.md` on this branch.
+- No code changes, secrets, hosted D1 writes, provider calls, dispatch, executor, deployment, merge or production mutation. Gemini/Claude/ECC/FCC NOT RUN. Independent security review NOT RUN. Active engineering time NOT MEASURED.
+- Decision: composition BLOCKED pending ancestry reconciliation and same-branch wiring. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. dispatch=false and executionAuthorized=false.
+- Next: reconcile PR #176–#182 ancestry; port the read-only API controller and construct same-run serialized Envelope v1; call only attested D1 adapter; remove legacy non-attested production import path; add E2E/adversarial tests; exact-head and canonical-base CI; independent security review.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 113 — Controller/API/D1 ancestry and governance reconciliation — 2026-11-28
+
+- Canonical default remains `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; Pass111 implementation/code baseline is `4c8d820102472e130c2e9760f5d42f650ca43394`; Pass113 documentation commit is `6c59924d874e4434b038839bcd28c55bf4f5169f`.
+- PR #176 controller head `f06155b8ac121a4af90cbc2356f12b965d0fbde9` diverges from Pass111: Pass111 ahead 111 commits, PR176 ahead 38 commits, common base default. PR #177 and #178 are ancestors of Pass111 (79 and 31 commits respectively).
+- PR #176 workflow `.github/workflows/next-event-controller.yml` is read-only and calls `scripts/owner-next-event-audit.mjs`; it reads GitHub API provenance but does not call D1. Workflow path is absent on Pass111 branch.
+- Pass111 D1 adapter still exports both attested and legacy non-attested admission functions; no production controller caller is wired. Production import-surface restriction NOT VERIFIED.
+- PRs #176–#182 remain OPEN/DRAFT/UNMERGED; review submissions and inline threads are empty. Active ruleset #26550182 scopes to default, requires PR and resolved threads, blocks deletion/non-fast-forward, but requires 0 approvals and has no bypass actors.
+- Pass112 head CI re-read: D1 #46162665233 SUCCESS; Pool Contract #46162665194 SUCCESS. These do not prove Controller→API→D1 E2E.
+- Pass113 ancestry reconciliation VERIFIED; integration BLOCKED pending minimal file-level port. No code changes, secrets, hosted D1 writes, dispatch, provider calls, deployment, merge or production mutation. Gemini/Claude/ECC/FCC and independent security review NOT RUN; active engineering time NOT MEASURED.
+- Next: port only the minimal read-only controller/API evidence path onto Pass111 lineage, produce same-run Envelope v1, call only attested D1 adapter, isolate legacy adapter to test-only use, add E2E/adversarial tests and run exact-head/merge-result CI.
+- Report: `docs/reports/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`; checkpoint: `docs/checkpoints/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
