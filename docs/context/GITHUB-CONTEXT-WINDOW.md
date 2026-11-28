@@ -2750,3 +2750,18 @@ Report: `docs/reports/2026-11-28-pass128-security-and-node24-import-isolation.md
 Checkpoint: `docs/checkpoints/2026-11-28-pass128-security-and-node24-import-isolation.md`  
 Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 129 — owner /next controller exact-head and governance revalidation (2026-11-28)
+
+- Report: [Pass 129](../reports/2026-11-28-pass129-controller-governance-revalidation.md); checkpoint: [Pass 129 checkpoint](../checkpoints/2026-11-28-pass129-controller-governance-revalidation.md).
+- Current PR #188: OPEN / DRAFT / UNMERGED; head `a11cf4bc5af39dd9648b5081ec0d85df78b849e2`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; observed PR size 243 commits / 96 files / +12,800/-16.
+- Latest exact PR merge-result `51bea6ec31e15b52eed219c07e3a3ea7d186290f` verified in both CI job logs: Pool Contract run `46177096578` / job `141078156869` SUCCESS, 42/42 Node tests; D1 Ledger run `46177096569` / job `141078156730` SUCCESS, 9/9 files / 140/140 tests.
+- Re-read controller workflow and collector/verifier/import-graph source. No confirmed exploitable defect found in bounded review; external independent security review remains NOT RUN.
+- Default-branch Contents API for `.github/workflows/next-event-controller.yml` returns 404 / NOT_FOUND. Workflow is not active; live issue_comment execution NOT RUN.
+- Active ruleset `26550182` confirmed on `refs/heads/Основной`: PR required, deletion/non-fast-forward blocked, review-thread resolution required. Important gap: required approvals = 0, required reviewers empty, code-owner review false. Independent approval is not enforced by this ruleset.
+- Branch-protection endpoint returned 403; effective branch protection NOT VERIFIED. `POOL_DISPATCH_ENABLED` metadata NOT VERIFIED. No secret values were accessed.
+- No dispatch, provider calls, hosted D1 writes, executor, deployment, merge or production mutation. New dependencies 0; paid resources 0; active time NOT MEASURED; benchmark NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next: independent exact-head security review, authorized metadata-only governance verification, and only then approved default-branch integration. No bypass or controller activation before approved integration.
+
