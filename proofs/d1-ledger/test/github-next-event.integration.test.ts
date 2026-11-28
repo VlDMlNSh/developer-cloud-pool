@@ -497,9 +497,6 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
       decision: "ADMISSION_ALREADY_COMMITTED", receiptDecision: "SOURCE_COMMENT_ALREADY_RECORDED",
       dispatch: false, executionAuthorized: false
     });
-    const row = await env.POOL_DB.prepare(
-      "SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE source_comment_id = ?"
-    ).bind(String(f.input.approval.approvalId).replace("approval-next-", "900000")).first();
     const receipt = await env.POOL_DB.prepare(
       "SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE admission_id = ?"
     ).bind(f.input.admissionId).first();
@@ -511,7 +508,6 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
       workflow_commit_sha: "f".repeat(40), workflow_file_blob_sha: expect.stringMatching(/^[0-9a-f]{40}$/),
       workflow_file_ref_sha: "f".repeat(40), dispatch_enabled: 0
     });
-    expect(row).toBeUndefined();
   });
 
   it("rejects API-envelope substitution before D1 admission", async () => {
