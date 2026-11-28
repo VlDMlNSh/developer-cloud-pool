@@ -2448,7 +2448,7 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 ## Pass 113 — Controller/API/D1 ancestry and governance reconciliation — 2026-11-28
 
-- Canonical default remains `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; Pass111/112 branch HEAD remains `4c8d820102472e130c2e9760f5d42f650ca43394`.
+- Canonical default remains `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`; Pass111 implementation/code baseline is `4c8d820102472e130c2e9760f5d42f650ca43394`; Pass113 documentation commit is `6c59924d874e4434b038839bcd28c55bf4f5169f`.
 - PR #176 controller head `f06155b8ac121a4af90cbc2356f12b965d0fbde9` diverges from Pass111: Pass111 ahead 111 commits, PR176 ahead 38 commits, common base default. PR #177 and #178 are ancestors of Pass111 (79 and 31 commits respectively).
 - PR #176 workflow `.github/workflows/next-event-controller.yml` is read-only and calls `scripts/owner-next-event-audit.mjs`; it reads GitHub API provenance but does not call D1. Workflow path is absent on Pass111 branch.
 - Pass111 D1 adapter still exports both attested and legacy non-attested admission functions; no production controller caller is wired. Production import-surface restriction NOT VERIFIED.
