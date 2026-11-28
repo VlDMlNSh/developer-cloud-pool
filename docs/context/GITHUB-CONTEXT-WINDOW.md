@@ -2428,3 +2428,19 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Default ref API confirms `refs/heads/Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
 - Active repository ruleset ID `26550182` (`Основной — verified`) applies to default: deletion and non-fast-forward blocked; pull request required; review-thread resolution required; required approving review count 0; code-owner review false; no bypass actors; current integration cannot bypass.
 - Branch protection read endpoint returns 403, so legacy branch protection settings NOT VERIFIED. Root and `.github/CODEOWNERS` not found. PR #181 review submissions 0 and inline threads 0. Project-level independent review remains required before qualification/merge.
+
+
+## Pass 112 — Controller/API verifier/D1 composition preflight — 2026-11-28
+
+- Canonical default re-read: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pass 111 implementation branch `feat/pass111-d1-attested-receipt-2026-11-27`; prior branch HEAD observed `682b060ef376b8ebee8ae47872150776d28c4426`; code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- PR #176 candidate contains `.github/workflows/next-event-controller.yml` (blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a`), a read-only audit workflow invoking `scripts/owner-next-event-audit.mjs`. It has no D1 binding or admission call.
+- That workflow file is NOT FOUND on Pass 111 branch. The branch stack therefore does not yet compose Controller/API verifier with the Pass 111 D1 adapter.
+- Pass 111 adapter exports both `admitGitHubNextAttestedEvent` and legacy `admitGitHubNextEvent`. Legacy remains in test imports; production import-surface restriction is NOT VERIFIED because no production controller caller is wired.
+- Re-read Pass 111 CI: D1 run 45897059595 SUCCESS (9/9 files, 137/137 tests, merge-result prefix `ac30d05`); Pool Contract run 45897059549 SUCCESS. These do not prove same-run controller→API→D1 E2E.
+- PR #181 remains OPEN/DRAFT/UNMERGED; formal reviews 0, inline threads 0.
+- Added report `docs/reports/2026-11-28-pass112-controller-api-d1-composition-preflight.md` and checkpoint `docs/checkpoints/2026-11-28-pass112-controller-api-d1-composition-preflight.md` on this branch.
+- No code changes, secrets, hosted D1 writes, provider calls, dispatch, executor, deployment, merge or production mutation. Gemini/Claude/ECC/FCC NOT RUN. Independent security review NOT RUN. Active engineering time NOT MEASURED.
+- Decision: composition BLOCKED pending ancestry reconciliation and same-branch wiring. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED. dispatch=false and executionAuthorized=false.
+- Next: reconcile PR #176–#182 ancestry; port the read-only API controller and construct same-run serialized Envelope v1; call only attested D1 adapter; remove legacy non-attested production import path; add E2E/adversarial tests; exact-head and canonical-base CI; independent security review.
+- MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
