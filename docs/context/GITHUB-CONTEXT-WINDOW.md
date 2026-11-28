@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 134 latest-head CI and governance revalidationnd governance revalidation
+Last refreshed: 2026-11-28 — Pass 134 exact merge-result CI closurend governance revalidationnd governance revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
@@ -2870,3 +2870,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Pass 134](../reports/2026-11-28-pass134-latest-head-ci-governance.md); checkpoint: [Pass 134 checkpoint](../checkpoints/2026-11-28-pass134-latest-head-ci-governance.md).
 - Next: owner-authorized ruleset update requiring at least one independent approval, then independent exact-head security review. No merge, activation or dispatch before gates.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 134 exact-head CI closure
+- After initial Pass 134 documentation, PR head `1566cb3f5660437baa40f5b605197ccc3b19df09`; exact merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae` against base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- D1 run `46183777441`, job `141099004240`: SUCCESS; exact checkout `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`; 9/9 files, 140/140 tests.
+- Pool Contract run `46183777429`, job `141099017601`: SUCCESS; exact checkout `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- 182/182 tests VERIFIED on this exact merge-result only. Subsequent documentation-only commits are outside this CI target.
+- Governance remains BLOCKED: ruleset #26550182 approvals=0; formal reviews 0; threads 0; independent security review NOT RUN. Default-branch controller workflow absent; dispatch variable NOT VERIFIED.
+- Report: [Pass 134](../reports/2026-11-28-pass134-latest-head-ci-governance.md); checkpoint: [Pass 134 checkpoint](../checkpoints/2026-11-28-pass134-latest-head-ci-governance.md).
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
