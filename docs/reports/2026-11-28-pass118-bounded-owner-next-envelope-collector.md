@@ -4,7 +4,7 @@ Date: 2026-11-28
 Contour: A only  
 Status: SUCCEEDED (collector implementation + exact-head Pool Contract CI); end-to-end controller/D1 composition NOT RUN  
 Base: PR #181 head `453d74ff70a67d3091d920281f6471a721f1808d`  
-Code/test/workflow head validated: `cbee39dcf5ee16f4ec491c535cd2f9c4cc4eda9e`
+Code/test/workflow head validated: `9f80fb5df2bca95165385e989e284c633cc24f45`
 
 ## Scope and DoD
 Implement a read-only bounded GitHub API collector that produces the exact canonical Envelope v1 accepted by the existing Workers verifier/D1 attested adapter. Add adversarial tests and run exact-head CI. Do not wire admission, execute workers, dispatch, provision hosted D1, deploy or merge.
@@ -41,7 +41,7 @@ Added `scripts/owner-next-api-envelope.test.mjs` with 8 tests:
 Pool Contract Validation now runs both the existing Envelope v1 suite and the new collector suite on PR #181's stacked base branch.
 
 ## Verification
-- Exact-head Pool Contract run [46167867802](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46167867802): SUCCESS; job `141049343699`.
+- Exact-head Pool Contract run [46168085516](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46168085516): SUCCESS; job `141050055417`.
 - YAML workflow parsing: SUCCESS.
 - Pool security contract validator: SUCCESS.
 - Node test suite: 28/28 PASS (20 existing Envelope v1 tests + 8 new collector tests), 0 failed.
