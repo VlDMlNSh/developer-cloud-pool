@@ -72,7 +72,7 @@ if (!d1ProofWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c1812
     !d1ProofWorkflow.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
     !/package-manager-cache:\\s*false/.test(d1ProofWorkflow) ||
     !poolContractWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
-    /actions\\/(?:checkout|setup-node)@(?:11bd71901bbe5b1630ceea73d27597364c9af683|49933ea5288caeca8642d1e84afbd3f7d6820020)/.test(d1ProofWorkflow + poolContractWorkflow)) {
+    /actions\/(?:checkout|setup-node)@(?:11bd71901bbe5b1630ceea73d27597364c9af683|49933ea5288caeca8642d1e84afbd3f7d6820020)/.test(d1ProofWorkflow + poolContractWorkflow)) {
   fail("D1 and Pool Contract validation workflows must use immutable Node24 action pins and disable implicit package caching");
 }
 if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
