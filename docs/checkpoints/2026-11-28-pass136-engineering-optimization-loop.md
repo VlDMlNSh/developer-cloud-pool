@@ -19,3 +19,10 @@ Date: 2026-11-28
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: owner sets >=1 independent approval in ruleset #26550182; independent security review; then bounded workflow-scanner pilot.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Documentation-head CI closure
+- Tested docs-head: `958bd204fdb2d7067862fefbbf6add17b2521f27`; exact merge-result: `84fcf23808a4f079820725b5b589bf4052d03595`.
+- Pool Contract run 46188473593 / job 141113640176: SUCCESS, 42/42; controller CLI 5/5; import graph PASS.
+- D1 run 46188473686 / job 141113620413: SUCCESS, 9/9 files, 140/140 tests.
+- 182/182 tests on same merge-result SHA. Later documentation-only closure commits need separate CI readback.
+- Remaining effort estimate confidence LOW–MEDIUM.
