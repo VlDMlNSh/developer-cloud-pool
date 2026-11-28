@@ -96,5 +96,5 @@ test("D1 and pool validation workflows use immutable Node24 actions without impl
   assert.ok(d1.includes(setupNode));
   assert.match(d1, /package-manager-cache:\\s*false/);
   assert.ok(pool.includes(checkout));
-  assert.doesNotMatch(d1 + pool, /actions\\/(?:checkout|setup-node)@(?:11bd71901bbe5b1630ceea73d27597364c9af683|49933ea5288caeca8642d1e84afbd3f7d6820020)/);
+  assert.ok(![ "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683", "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020" ].some(reference => (d1 + pool).includes(reference)));
 });
