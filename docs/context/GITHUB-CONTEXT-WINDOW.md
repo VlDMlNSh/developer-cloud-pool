@@ -2298,3 +2298,11 @@ Canonical MediaHub map (separate deferred Contour B): https://github.com/VlDMlNS
 - PR #184 formal reviews 0; review threads 0; independent review NOT RUN.
 - Source CI remains limited to PR #181's separate D1/Pool Contract results. No Controller→Envelope→D1 E2E.
 - Active time NOT MEASURED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 115 complete llm.asm input preservation
+
+- The Pass 115 report has an addendum preserving all technical figures, limitations and exact build commands supplied by the owner for `alesha-pro/llm.asm`.
+- It records the author/project attribution, creation/star snapshot, MIT claim, 17,252 assembly lines, three binary sizes, boot latency, EPYC 7642 throughput/comparisons, PyTorch parity/cosine, AVX2/FMA/F16C prerequisites, Qwen3-0.6B Q8_0 scope, ~2,048-token context, bare-metal limitations and supplied Linux build procedure.
+- Every performance and provenance figure is labeled user-provided/upstream claim and not independently reproduced. No clone/build/model download/benchmark was run.
+- Pass 115 report: `docs/reports/2026-11-28-pass115-spec-kit-llm-asm-assessment.md`; checkpoint addendum: `docs/checkpoints/2026-11-28-pass115-spec-kit-llm-asm.md`.
