@@ -2887,3 +2887,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Pool Contract run `46183858640`, job `141099272422`: SUCCESS; exact checkout `f82ecaf0d08037916706eac0c1e6b8430129657d`; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; import graph PASS.
 - D1 latest completed run remains `46183777441`, job `141099004240`: 140/140 on prior merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`; no D1 workflow run returned for this docs-only head. Do not present 182 as same-SHA proof.
 - Ruleset #26550182 still requires 0 approvals; reviews 0; threads 0; independent security review NOT RUN; controller activation NOT RUN; dispatch variable NOT VERIFIED.
+
+
+## Pass 135 — exact current merge-result CI and governance revalidation (2026-11-28)
+
+- Tested PR #188 head: `e7a4af9cb1a8ca4e78e482cc33124ea775c39c5b`; base: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; exact merge-result checked out by both CI jobs: `fe07218ebe66e99ffabf7d319bfe2bbfb6f2fc7f`.
+- Pool Contract run `46183939639`, job `141099520936`: SUCCESS; 42/42 tests; controller CLI pass; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`. Job environment observed `POOL_DISPATCH_ENABLED=false` at 2026-11-28 19:58 UTC.
+- D1 run `46183939574`, job `141099520719`: SUCCESS; 9/9 test files, 140/140 tests.
+- 182/182 tests VERIFIED on the same exact merge-result SHA `fe07218ebe66e99ffabf7d319bfe2bbfb6f2fc7f`. This is isolated CI evidence, not proof of hosted D1 production durability or full Contour A acceptance.
+- PR #188 remains OPEN/DRAFT/UNMERGED; 274 commits / 108 files / +13,510/-16; formal reviews 0; review threads 0.
+- Ruleset #26550182 active, but required approvals=0; required reviewers empty; CODEOWNERS review false; last-push approval false; extra approval false; bypass actors empty; current-user bypass never. Governance BLOCKED.
+- Default branch `Основной` still returns 404 for `.github/workflows/next-event-controller.yml`; live controller activation NOT RUN.
+- Dispatch flag false was observed in the Pool Contract workflow environment at the timestamp above only. Re-read before any future authorized dispatch; do not infer permanent state. No secret values read.
+- No dispatch, provider/model calls, executor, hosted D1 writes, deployment, merge or production mutation. Gemini Agents 1/2/3 and Claude Code NOT RUN.
+- New dependencies 0; paid resources 0; production mutations 0; active engineering time NOT MEASURED.
+- Independent security review NOT RUN. No verified UI/browser acceptance, live model routing, quota enforcement, remote durable state/recovery or multi-runner qualification.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 135](../reports/2026-11-28-pass135-exact-head-ci-governance.md); checkpoint: [Pass 135 checkpoint](../checkpoints/2026-11-28-pass135-exact-head-ci-governance.md).
+- Next: owner updates [ruleset #26550182](https://github.com/VlDMlNSh/developer-cloud-pool/rules/26550182) to require at least one independent approval, then independent security review of the exact current PR head. No merge, controller activation or dispatch before gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
