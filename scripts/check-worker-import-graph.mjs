@@ -27,11 +27,11 @@ export function inspectWorkerImportGraph(entryPath, rootPath = path.dirname(entr
     }
     visited.add(current);
     const source = fs.readFileSync(current, "utf8");
-    if (/\\b(?:import\\s*\\(|require\\s*\\()/.test(source)) {
+    if (/\b(?:import\s*\(|require\s*\()/.test(source)) {
       throw new Error("WORKER_DYNAMIC_OR_REQUIRE_IMPORT_FORBIDDEN: " + path.relative(root, current));
     }
     const imports = [
-      ...source.matchAll(/\\b(?:import|export)\\s+(?:[^;"']*?\\s+from\\s*)?["']([^"']+)["']/g)
+      ...source.matchAll(/\b(?:import|export)\s+(?:[^;"']*?\s+from\s*)?["']([^"']+)["']/g)
     ].map(match => match[1]);
     for (const specifier of imports) {
       if (!specifier.startsWith(".")) {
@@ -56,9 +56,9 @@ export function inspectWorkerImportGraph(entryPath, rootPath = path.dirname(entr
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const graph = inspectWorkerImportGraph(ENTRY, ROOT);
-    process.stdout.write("WORKER_IMPORT_GRAPH=PASS modules=" + graph.modules.length + " edges=" + graph.edges.length + "\\n");
+    process.stdout.write("WORKER_IMPORT_GRAPH=PASS modules=" + graph.modules.length + " edges=" + graph.edges.length + "\n");
   } catch (error) {
-    process.stderr.write((error?.message || "WORKER_IMPORT_GRAPH_FAILED") + "\\n");
+    process.stderr.write((error?.message || "WORKER_IMPORT_GRAPH_FAILED") + "\n");
     process.exitCode = 1;
   }
 }
