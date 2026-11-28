@@ -7,10 +7,6 @@ on:
     paths:
       - ".github/workflows/**"
       - "scripts/**"
-      - "docs/architecture/CLI-ANYTHING-ADOPTION-AND-POOL-CLI.md"
-      - "docs/checkpoints/2026-11-28-pass114-cli-anything-poolctl.md"
-      - "docs/context/GITHUB-CONTEXT-WINDOW.md"
-      - "docs/reports/2026-11-28-pass114-cli-anything-poolctl.md"
       - "docs/reports/2026-11-18-contour-a-broad-plan-and-legacy-dispatch-retirement.md"
   push:
     branches:
