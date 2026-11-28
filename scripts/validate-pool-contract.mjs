@@ -132,6 +132,19 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
 
+const workerGraphCheck = spawnSync(process.execPath, ["scripts/check-worker-import-graph.mjs"], {
+  encoding: "utf8",
+  timeout: 10_000,
+  stdio: "pipe",
+  env: { PATH: process.env.PATH || "" }
+});
+if (workerGraphCheck.error || workerGraphCheck.status !== 0) {
+  fail("D1 proof Worker transitive import graph is not isolated: " +
+    (workerGraphCheck.stderr || workerGraphCheck.error?.message || "check failed"));
+} else {
+  pass((workerGraphCheck.stdout || "").trim());
+}
+
 const controllerTests = spawnSync(process.execPath, ["--test", "scripts/owner-next-controller.test.mjs"], {
   encoding: "utf8",
   timeout: 30_000,
