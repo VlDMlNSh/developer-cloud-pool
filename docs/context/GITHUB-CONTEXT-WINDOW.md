@@ -2570,7 +2570,7 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 - PR #188 merge-result at tested head: 4731e2d21fde8a328ec6dbbc14791da40980f0e7.
 - Exact head association: Pool Contract Validation run 46170933384, job 141058959300, SUCCESS; YAML parse and security validator passed; Node tests 32/32.
 - PR #188 formal reviews 0, inline threads 0; independent security review NOT RUN.
-- D1 local integration on Pass 124 merge result NOT RUN. The clean-default run above exercised Pool Contract only; do not infer D1 receipt composition.
+- Isolated D1 Ledger run 46171241176, job 141059915920: SUCCESS on merge-result 9be990c45ee6fafef45e92ff78df38830c9e01ac; 9/9 files and 139/139 tests. This does not yet prove the exact collector-produced JSON/digest passes through Workers verifier into the D1 attested adapter; that composition remains NOT RUN.
 - Traditional branch protection/ruleset detailed read and current POOL_DISPATCH_ENABLED variable read-back NOT VERIFIED in this pass. No dispatch attempted.
 
 ### 19.2 Pass 124 implementation
