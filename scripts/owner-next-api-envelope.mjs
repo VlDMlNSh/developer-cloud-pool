@@ -141,9 +141,18 @@ export async function collectOwnerNextEnvelope({ event, env, apiGet }) {
       env.GITHUB_WORKFLOW_REF !== REPOSITORY + "/" + OWNER_NEXT_WORKFLOW_PATH + "@refs/heads/" + DEFAULT_BRANCH) {
     reject("GITHUB_RUNTIME_CONTEXT_MISMATCH");
   }
+  const eventRepository = event.repository;
+  if (!eventRepository || eventRepository.id !== Number(REPOSITORY_ID) ||
+      eventRepository.full_name !== REPOSITORY ||
+      eventRepository.owner?.id !== Number(OWNER_ID) ||
+      eventRepository.owner?.login !== OWNER_LOGIN) reject("SOURCE_REPOSITORY_EVENT_IDENTITY_MISMATCH");
   if (event.action !== "created" || event.issue?.number !== ISSUE_NUMBER || event.issue?.pull_request ||
+      typeof event.issue?.node_id !== "string" || !event.issue.node_id.trim() ||
       event.comment?.body !== "/next" || event.comment?.user?.id !== Number(OWNER_ID) ||
-      event.sender?.id !== Number(OWNER_ID) || event.comment?.author_association !== "OWNER" ||
+      event.comment?.user?.login !== OWNER_LOGIN ||
+      event.sender?.id !== Number(OWNER_ID) || event.sender?.login !== OWNER_LOGIN ||
+      event.comment?.author_association !== "OWNER" ||
+      typeof event.comment?.node_id !== "string" || !event.comment.node_id.trim() ||
       !Number.isSafeInteger(event.comment?.id)) reject("SOURCE_EVENT_NOT_ALLOWED");
 
   const commentId = assertDecimal(event.comment.id, "SOURCE_COMMENT_ID_INVALID");
@@ -166,10 +175,13 @@ export async function collectOwnerNextEnvelope({ event, env, apiGet }) {
   if (repository.id !== Number(REPOSITORY_ID) || repository.full_name !== REPOSITORY ||
       repository.owner?.id !== Number(OWNER_ID) || repository.owner?.login !== OWNER_LOGIN ||
       repository.default_branch !== DEFAULT_BRANCH) reject("REPOSITORY_IDENTITY_MISMATCH");
-  if (issue.number !== ISSUE_NUMBER || issue.pull_request || issue.node_id !== event.issue.node_id) reject("ISSUE_IDENTITY_MISMATCH");
-  if (comment.id !== event.comment.id || comment.node_id !== event.comment.node_id ||
-      comment.issue_url !== issue.url || comment.body !== "/next" ||
-      comment.user?.id !== Number(OWNER_ID) || comment.author_association !== "OWNER") reject("COMMENT_IDENTITY_MISMATCH");
+  if (issue.number !== ISSUE_NUMBER || issue.pull_request ||
+      typeof issue.node_id !== "string" || !issue.node_id.trim() ||
+      issue.node_id !== event.issue.node_id) reject("ISSUE_IDENTITY_MISMATCH");
+  if (comment.id !== event.comment.id || typeof comment.node_id !== "string" || !comment.node_id.trim() ||
+      comment.node_id !== event.comment.node_id || comment.issue_url !== issue.url ||
+      comment.body !== "/next" || comment.user?.id !== Number(OWNER_ID) ||
+      comment.user?.login !== OWNER_LOGIN || comment.author_association !== "OWNER") reject("COMMENT_IDENTITY_MISMATCH");
   if (workflowRun.id !== Number(runId) || workflowRun.run_attempt !== runAttempt ||
       workflowRun.event !== "issue_comment" || workflowRun.path !== OWNER_NEXT_WORKFLOW_PATH + "@" + DEFAULT_BRANCH ||
       workflowRun.repository?.id !== repository.id || workflowRun.actor?.id !== Number(OWNER_ID) ||
@@ -224,19 +236,33 @@ export async function collectOwnerNextEnvelope({ event, env, apiGet }) {
   return { sourceJson: JSON.stringify(envelope), digest, envelope, dispatch: false, executionAuthorized: false };
 }
 
-export function mapGitHubActionsContext({ event, env, envelope }) {
+export function mapGitHubActionsContext({ event, env }) {
+  // Preserve the independent GitHub webhook payload and runner context. Do not
+  // echo values back from the API-derived envelope: the Workers verifier must
+  // compare two independently sourced representations of the same event.
   return {
-    githubActions: "true", serverUrl: env.GITHUB_SERVER_URL,
-    eventName: envelope.event.name, eventAction: envelope.event.action,
-    repository: envelope.event.repository, repositoryId: envelope.event.repositoryId,
-    ownerNumericId: envelope.event.ownerId, ownerLogin: envelope.event.actorLogin,
-    actorId: envelope.event.actorId, actorLogin: envelope.event.actorLogin,
-    ref: envelope.ref.name, sha: envelope.run.headSha,
-    workflowRef: env.GITHUB_WORKFLOW_REF, workflowSha: env.GITHUB_WORKFLOW_SHA,
-    runId: Number(envelope.run.id), runAttempt: envelope.run.attempt,
-    issueNumber: envelope.event.issueNumber, isPullRequest: false,
-    commentId: Number(envelope.event.commentId), commentBody: envelope.event.body,
-    commentUserId: envelope.event.actorId, commentUserLogin: envelope.event.actorLogin,
-    commentAuthorAssociation: envelope.event.authorAssociation
+    githubActions: env.GITHUB_ACTIONS,
+    serverUrl: env.GITHUB_SERVER_URL,
+    eventName: env.GITHUB_EVENT_NAME,
+    eventAction: event.action,
+    repository: env.GITHUB_REPOSITORY,
+    repositoryId: event.repository?.id,
+    ownerNumericId: event.repository?.owner?.id,
+    ownerLogin: event.repository?.owner?.login,
+    actorId: event.sender?.id,
+    actorLogin: event.sender?.login,
+    ref: env.GITHUB_REF,
+    sha: env.GITHUB_SHA,
+    workflowRef: env.GITHUB_WORKFLOW_REF,
+    workflowSha: env.GITHUB_WORKFLOW_SHA,
+    runId: Number(env.GITHUB_RUN_ID),
+    runAttempt: Number(env.GITHUB_RUN_ATTEMPT),
+    issueNumber: event.issue?.number,
+    isPullRequest: Boolean(event.issue?.pull_request),
+    commentId: event.comment?.id,
+    commentBody: event.comment?.body,
+    commentUserId: event.comment?.user?.id,
+    commentUserLogin: event.comment?.user?.login,
+    commentAuthorAssociation: event.comment?.author_association
   };
 }
