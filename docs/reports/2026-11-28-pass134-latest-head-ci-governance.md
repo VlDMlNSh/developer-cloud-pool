@@ -68,3 +68,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Thus 182/182 tests VERIFIED on exact merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`. This does not verify subsequent documentation-only commits.
 - Current governance remains unchanged: ruleset #26550182 required approvals=0; reviews=0; threads=0; independent security review NOT RUN; default-branch controller workflow NOT FOUND; dispatch variable NOT VERIFIED.
 - No dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Post-documentation Pool Contract CI
+- PR documentation finalization advanced the head to `b5e8b698e139611745663b910fe289c8d2db4158`; exact merge-result `f82ecaf0d08037916706eac0c1e6b8430129657d` against base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pool Contract run `46183858640`, job `141099272422`: SUCCESS; log explicitly checks out `f82ecaf0d08037916706eac0c1e6b8430129657d`; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- D1 Ledger's latest completed run remains `46183777441` / job `141099004240` on prior exact merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`: 140/140 tests. D1 workflow did not return a run for this docs-only head; do not claim D1 CI on `b5e8b698e139611745663b910fe289c8d2db4158`.
+- Combined evidence: Pool Contract 42/42 on `f82ecaf0d08037916706eac0c1e6b8430129657d`; D1 140/140 on the immediately preceding tested merge-result. They are not a combined 182-test run on one SHA.
