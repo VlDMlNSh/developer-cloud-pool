@@ -157,3 +157,34 @@ A candidate is not top based on stars or social attention. Record exact repo and
 - ACCEPTED: only the formal Contour A acceptance state, never a synonym for a successful OSS pilot.
 
 If a daily scan or implementation cannot run, record NOT RUN and why. If upstream evidence, free entitlement, security posture or compatibility is inaccessible, record NOT VERIFIED. Never claim a scan, benchmark or integration that was not performed.
+
+
+## Daily OSS delta scan — 2026-11-28 (Pass 123)
+
+This is the fresh delta scan performed after the owner-approved policy was recorded. Sources below include upstream GitHub release/advisory pages; no package was installed and no runtime benchmark was run.
+
+| Candidate | Fresh primary evidence | Assessment | Decision |
+|---|---|---|---|
+| [Bifrost](https://github.com/maximhq/bifrost) | Official repo states Apache-2.0; official releases show Bifrost HTTP v2.6.0 (2026-11-19) and Helm chart v2.1.50 (2026-11-25). Release notes include Go/toolchain and dependency security updates. | Strong gateway alternative worth evaluating for provider routing and account/usage controls. Need inspect edition boundaries, exact dependency graph, auth/credential isolation, persistence, quota enforcement semantics, and actual free deployment footprint. Release signing observed on release page; full SBOM/provenance and independent security posture NOT VERIFIED. | **PILOT candidate only** — contract-level comparison/synthetic benchmark; no runtime integration or credentials. |
+| [agentgateway](https://github.com/agentgateway/agentgateway) | Official repository identifies Apache-2.0; official v1.7.0 release page (2026-10-27) documents model catalog capability metadata, cost by service tier, per-model/user analytics, CEL policy, prompt/tool-output guards and session encryption behavior. | Strong control/policy gateway candidate for LLM + MCP/A2A traffic. Adds a Rust/Go stack, configuration complexity and potentially external guardrail data flows; does not replace our D1 task ledger or Jarvis policy coordinator. Need threat model and test exact standalone vs Kubernetes scope. | **ADAPT concepts; DEFER runtime**. Consider capability/privacy/cost metadata and fail-closed policy semantics in our route contract. |
+| [LangGraph](https://github.com/langchain-ai/langgraph) | Official release page shows v1.2.24 (2026-11-20), signed GitHub release; v1.2.23 includes state propagation fixes and dependency updates. | Mature graph/checkpoint concepts remain useful; adopting runtime would duplicate D1 state/receipt/lease model and add Python runtime. | **ADAPT concepts; DEFER runtime**. |
+| [LiteLLM](https://github.com/BerriAI/litellm) | Official GitHub security advisories include multiple recent issues: high-severity Azure credential parameter secret exfiltration (Nov 12), critical enterprise proxy file read/master-key exposure (Oct 27), and November 23 cross-tenant data visibility / deployment-poisoning advisories. | This materially raises the bar for a credential-bearing gateway. Even if patched versions exist, broad attack surface and repeated supply-chain/security incidents make a new deployment inappropriate for our current small, fail-closed control plane. This is not a claim that all versions/configurations are vulnerable. | **REJECT deployment for current Contour A; REUSE only protocol/usage patterns**. Revisit only after independent security assessment and strong need. |
+| [Temporal Python SDK](https://github.com/temporalio/sdk-python) | Pass 122 evidence remains the current reviewed snapshot; no new primary release/advisory verification performed in this delta scan. | No new reason to introduce a second durable workflow engine beside D1. | **DEFER**. |
+| [Dagger](https://github.com/dagger/dagger) | Pass 122 evidence remains current; no new primary release/advisory verification performed in this delta scan. | CI acceleration still needs our own queue/install/test/cache baseline before pilot. | **PILOT remains conditional on baseline**. |
+| [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) | Pass 122 evidence remains current; no new primary release/advisory verification performed in this delta scan. | Adopt correlation/metric semantics first; no qualified free telemetry sink demonstrated. | **ADAPT semantics; DEFER collector runtime**. |
+| [Pydantic AI](https://github.com/pydantic/pydantic-ai) | Pass 122 evidence remains current; no new primary release/advisory verification performed in this delta scan. | No demonstrated Python executor requirement on current Node/Workers path. | **DEFER**. |
+
+### Concrete architecture adaptation from this scan
+
+- Extend route qualification to include model capability metadata (modalities/context window), actual serving service tier, per-route cost/quota domain, and user/task correlation. This is an adaptation of the useful model-catalog/analytics concepts from agentgateway, not adoption of its runtime.
+- Require outbound destination allowlists and immutable provider endpoint selection; never accept caller-controlled base URLs, model-list overrides, or credential parameters. This guardrail is reinforced by the published LiteLLM SSRF/credential-exfiltration advisory history.
+- Treat prompt/tool-output inspection as an explicit policy stage with privacy classification and failure mode; do not forward tool outputs to third-party guardrail services unless data flow and entitlement are approved.
+- Keep the gateway behind the policy coordinator and a provider-neutral contract; it must not own task lifecycle, approval, durable execution state, or authority to dispatch by itself.
+
+### Evidence limitations
+
+- No candidate code was cloned, built, installed or benchmarked.
+- Bifrost full SBOM, transitive dependency scan, runtime memory/CPU, free-tier suitability and enterprise feature boundaries: NOT VERIFIED.
+- agentgateway complete threat model, SBOM, standalone persistence and outbound data flows: NOT VERIFIED.
+- LiteLLM advisory applicability is version/configuration-specific; this scan is a deployment-risk assessment, not a forensic audit of every release.
+- No new runtime dependency or provider route was added. All candidates remain unqualified.
