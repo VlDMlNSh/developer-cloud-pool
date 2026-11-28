@@ -88,3 +88,53 @@ Next: use the spec to conduct source-level ancestry/schema overlap across PRs #1
 - Eight principal artifacts were fetched back from GitHub and passed static structural assertions: Markdown headers present, no dispatch:true or executionAuthorized:true markers; FR/SEC/AC and scope-exclusion checks passed.
 - Existing Pool Contract Validation path filter excludes .specify/**, specs/** and these docs; no exact-head CI run was expected or observed. CI status: NOT RUN, not PASS.
 - PR #184 has zero formal reviews and zero review threads at last readback. Independent review NOT RUN.
+
+
+## Addendum — complete user-supplied llm.asm data captured (2026-11-28)
+
+The following figures and instructions were supplied by the project owner in chat and are preserved here as **user-provided upstream claims**, not independently reproduced measurements:
+
+### Project identity and scope
+- Repository: https://github.com/alesha-pro/llm.asm
+- Author attribution supplied: Алексей Фатеев (`alesha-pro`).
+- Claimed creation date: 2026-11-25; claimed popularity snapshot: approximately 1,800 stars as of 2026-11-27.
+- Claimed license: MIT.
+- Claimed implementation: three x86-64 assembly projects, no C, libc or third-party runtime dependencies; approximately 17,252 lines of assembly.
+- Model scope: Qwen3-0.6B; stated inference format Q8_0; CPU-only benchmark scope on AMD EPYC 7642.
+
+### Binary sizes and behavior
+- Linux inference executable: 14,712 bytes with `FAST_Q8=1`.
+- Bare-metal OS image: 24,252 bytes; claimed time from boot to chat: 74–94 ms.
+- Mini-GPT trainer: approximately 32 KB (user-provided rounded figure; upstream README's more precise figure was recorded separately as 32,944 bytes).
+- Chat context: approximately 2,048 tokens before reset, per the supplied description.
+- The 14,712-byte figure is the executable size, not model weights. The separately recorded upstream README figure for Qwen3-0.6B Q8_0 weights is approximately 613.66 MiB.
+
+### Performance and parity claims
+- Decode: 126.8 tokens/s at 40 CPU threads; 20.7 tokens/s at one thread.
+- Claimed advantage over llama.cpp CPU Q8_0: 18–36% across 1–40 threads.
+- Claimed bare-metal advantage over Linux llama.cpp: up to 54%.
+- Claimed PyTorch FP32 greedy parity: 64/64 tokens; cosine similarity 0.99965.
+- All figures above are author/user-supplied claims. No independent reproduction was performed in Pass 115/116; differences in prefill, benchmark harness, thread placement, compiler flags, memory bandwidth and measurement method remain open.
+
+### Platform prerequisites and supplied build procedure
+- CPU: x86-64 with AVX2, FMA and F16C; Haswell generation or newer.
+- Linux build prerequisites supplied: `nasm` and `binutils`.
+- Supplied procedure:
+
+```sh
+sudo apt install nasm binutils
+git clone https://github.com/alesha-pro/llm.asm
+cd llm.asm
+python3 scripts/export_weights.py --model-dir models/qwen3-0.6b-bf16 --out models/qwen3-0.6b-q8_0.asmbin --scale-dtype fp16
+make inference FAST_Q8=1
+./build/asm-llm -m models/qwen3-0.6b-q8_0.asmbin -p "запрос" -n 128 -t 16
+make os FAST_Q8=1
+make os-run MODEL=models/qwen3-0.6b-q8_0.asmbin SMP=16
+```
+
+### Explicit limitations supplied
+- One model family/size (Qwen3-0.6B), one stated quantization (Q8_0), one CPU architecture family/platform; no broad model/hardware qualification.
+- Author performance measurements are not independently verified.
+- Bare-metal OS has no network and no memory protection according to the supplied description; experimental only, not production suitable.
+- Context resets around 2,048 tokens.
+- No clone, build, model download, benchmark or execution was performed by Cloud Pool in Pass 115/116. The build procedure is recorded for a future isolated R&D evaluation only, after Contour A acceptance.
