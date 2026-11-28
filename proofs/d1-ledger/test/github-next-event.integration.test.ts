@@ -39,7 +39,7 @@ async function fixture(id, commentIdOverride, attested = false) {
       headBranch: "Основной", headSha: context.sha, workflowId: "98765",
       workflowPath: ".github/workflows/next-event-controller.yml", workflowState: "active",
       workflowCommitSha: context.workflowSha, workflowFileBlobSha: "c".repeat(40),
-      workflowFileRefSha: context.sha },
+      workflowFileRefSha: context.workflowSha },
     policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
   };
   const attestationDigest = await digestOwnerNextEnvelope(envelope);
