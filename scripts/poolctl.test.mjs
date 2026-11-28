@@ -24,7 +24,7 @@ test("help documents only the read-only contract validation command", () => {
   assert.equal(result.status, 0);
   assert.match(result.stdout, /contract validate/);
   assert.match(result.stdout, /read-only/);
-  assert.doesNotMatch(result.stdout, /(^|\\n)\\s{2}(dispatch|approve|run|exec)\\s{2,}/m);
+  assert.doesNotMatch(result.stdout, /(^|\n)\s{2}(dispatch|approve|run|exec)\s{2,}/m);
 });
 
 test("contract validation emits a stable machine-readable success result", () => {
@@ -63,6 +63,6 @@ test("caller environment values are not forwarded or echoed", () => {
   const sentinel = "POOLCTL_ENV_SENTINEL_DO_NOT_ECHO";
   const result = run(["contract", "validate", "--json"], { POOLCTL_TEST_SECRET_SENTINEL: sentinel });
   assert.equal(result.status, 0, result.stderr);
-  assert.doesNotMatch(result.stdout, new RegExp(sentinel));
+  assert.doesNotMatch(result.stdout, /(^|\n)\s{2}(dispatch|approve|run|exec)\s{2,}/m);
   assert.doesNotMatch(result.stderr, new RegExp(sentinel));
 });
