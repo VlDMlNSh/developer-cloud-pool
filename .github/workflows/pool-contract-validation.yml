@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - "Основной"
+      - "feat/pass111-d1-attested-receipt-2026-11-27"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
