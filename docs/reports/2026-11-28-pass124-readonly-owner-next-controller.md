@@ -38,7 +38,7 @@ No runtime dependency, new ledger or provider route added.
 - Job log confirms workflow YAML parse, Pool Contract security validator and 32/32 Node tests passed.
 - PR #188: OPEN / DRAFT / UNMERGED;  against default due the cumulative D1 proof + Pass 120–124 stack.
 - PR #188 reviews: 0; inline threads: 0.
-- D1 local integration tests on the Pass 124 merge-result: NOT RUN. This default-base run executed Pool Contract Validation only; do not infer D1 composition from it.
+- Isolated D1 Ledger run 46171241176, job 141059915920: SUCCESS on merge-result 9be990c45ee6fafef45e92ff78df38830c9e01ac; 9/9 files and 139/139 tests passed. The suite exercises existing synthetic integration fixtures; exact collector-produced JSON/digest through Workers verifier into D1 remains NOT RUN.
 - Independent security review: NOT RUN.
 
 ## Daily OSS intelligence — 2026-11-28
