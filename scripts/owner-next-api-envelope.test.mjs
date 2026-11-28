@@ -37,7 +37,7 @@ function apiFixture(overrides = {}) {
   const issue = { number: 96, node_id: "I_kwDOTestIssue",
     url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" };
   const comment = { id: 300, node_id: "IC_kwDOTestComment", issue_url: issue.url,
-    body: "/next", author_association: "OWNER", user: { id: 157891068 } };
+    body: "/next", author_association: "OWNER", user: { id: 157891068, login: "VlDMlNSh" } };
   const run = { id: 400, run_attempt: 1, event: "issue_comment",
     path: ".github/workflows/next-event-controller.yml@Основной", workflow_id: 500,
     repository: { id: 1445644538 }, actor: { id: 157891068 },
