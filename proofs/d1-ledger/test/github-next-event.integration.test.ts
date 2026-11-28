@@ -490,7 +490,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     const replay = await admitGitHubNextAttestedEvent(
       env.POOL_DB, f.input, f.sourceJson, f.digest, f.trustedContext, trustedClock
     );
-    expect(first).toMatchObject({
+    expect(first, "collector-to-D1 first admission: " + JSON.stringify(first)).toMatchObject({
       decision: "ADMITTED_QUEUED", receiptDecision: "SOURCE_COMMENT_RECORDED",
       dispatch: false, executionAuthorized: false
     });
