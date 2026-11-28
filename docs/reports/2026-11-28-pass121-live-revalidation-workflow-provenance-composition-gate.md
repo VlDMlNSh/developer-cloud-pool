@@ -122,7 +122,7 @@ Documentation PR #169:
 Reviewed immutable source blobs on PR #186:
 - scripts/owner-next-api-envelope.mjs — blob e06a405bdb0d2b0d47fcabde6f0449d067a5cfd7.
 - scripts/owner-next-api-attestation-envelope.mjs — blob 6c8d88629dc19ccf15f65f380db79d9dc2a60b4a.
-- proofs/d1-ledger/src/owner-next-envelope.mjs — blob 594ef6611f1bc53c5ab8? [source blob is 594ef6611f1bc53c3b? verify exact blob below].
+- proofs/d1-ledger/src/owner-next-envelope.mjs — blob 594ef6611f1bc53d0deb4fa1ccd0c6ec077ff55a.
 - proofs/d1-ledger/migrations/0018_api_attested_source_comment_receipts.sql — blob a7cbb7527d3dbe0882b68a88d13e15a3b3bbb1c6.
 
 Confirmed F-119-01 correction:
