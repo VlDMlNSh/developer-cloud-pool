@@ -12,7 +12,7 @@ Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
 
 - Starting Pass 126 branch head: `f7e1c3f960ca8afc2c071d40c86a24e937df9d97` (Pass 125 docs-complete state).
 - Exact tested branch code/test head: `0610fe5079f5dd8a8ef9498e35de580cda573e56`.
-- Exact PR merge-result SHA used by both latest CI runs: `1bf5144...` (GitHub log: merge of `0610fe5079f5dd8a8ef9498e35de580cda573e56` into `565404f84b6b86afb4dc2d8fa939341f42df6eca`).
+- Exact PR merge-result SHA used by both latest CI runs: `1bf51441f0a77cba6c36c5448a525f782a951ce2` (GitHub log: merge of `0610fe5079f5dd8a8ef9498e35de580cda573e56` into `565404f84b6b86afb4dc2d8fa939341f42df6eca`).
 - Default branch: `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
 - PR #188: OPEN / DRAFT / UNMERGED.
 - Scope: eliminate self-echoing trusted context; independently map Actions context from raw webhook and runner environment; validate webhook repository and immutable source IDs; adversarially mutate API responses and trusted event/runner fields.
