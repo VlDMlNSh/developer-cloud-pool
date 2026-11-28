@@ -15,6 +15,7 @@ const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const ownerNextController = read(".github/workflows/next-event-controller.yml");
+const ownerNextActivationContract = read("docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md");
 const d1ProofWorker = read("proofs/d1-ledger/src/worker.mjs");
 
 const workflows = [
@@ -55,6 +56,15 @@ if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s
 
 if (!/^  issue_comment:\s*\n    types:\s*\[created\]/m.test(ownerNextController)) {
   fail("Owner /next controller must subscribe only to created issue_comment events");
+}
+if (!ownerNextActivationContract.includes("unless the workflow file exists on the repository's default branch") ||
+    !ownerNextActivationContract.includes("Live `issue_comment` execution: **NOT RUN**")) {
+  fail("Owner /next activation contract must document the default-branch prerequisite and current NOT RUN state");
+}
+if (!ownerNextController.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    !ownerNextController.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
+    !/package-manager-cache:\\s*false/.test(ownerNextController)) {
+  fail("Owner /next controller must use the reviewed immutable Node24 action pins with package-manager caching disabled");
 }
 if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
   fail("Owner /next controller must have read-only repository/issue/actions permissions");
