@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-28 — Pass 114 CLI-Anything methodology and read-only poolctl MVP
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/cross-chat-continuation-2026-11-06`
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (re-read from refs/heads/Основной)
+Documentation continuation branch: `feat/pass114-agent-native-poolctl-2026-11-28` (unmerged working branch)
 Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
 This document is maintained on the documentation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
 
@@ -2236,3 +2236,17 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 114 — CLI-Anything methodology adoption / poolctl MVP — 2026-11-28
+
+- Canonical default SHA frozen and re-read: `565404f84b6b86afb4dc2d8fa939341f42df6eca`; Pass 114 branch `feat/pass114-agent-native-poolctl-2026-11-28` created from that exact SHA.
+- Reviewed HKUDS/CLI-Anything upstream README (blob `8a78b5420911eff5e7cc219bf1ecb2a12b562874`), HARNESS (`4fd881137c280cf33fcbf9342b91629524906136`), SECURITY (`5135f80daa19d48325b9c6f0f27204930664f40b`) and LICENSE (`ee86799f79a1dd41bd82923f4dbf40cfb336684d`); license verified Apache-2.0.
+- Adapted methodology, not installer: implemented read-only `scripts/poolctl.mjs contract validate [--json]` over the existing validator; fixed executable/argv, `shell:false`, 10s timeout, 64KiB output cap, minimal child environment and stable JSON. Unknown commands/options fail closed.
+- Added five subprocess tests in `scripts/poolctl.test.mjs`; Pool Contract workflow now runs them. Added architecture/adoption document and README link.
+- No Python/Click or other runtime dependencies; no CLI-Hub auto-install, third-party package, Claude plugin installation or invocation. Claude Code NOT RUN because no authorized server-3 host/session was established.
+- CLI is diagnostics only, not scheduler, admission authority, D1 client, executor or dispatch path. JSON outputs retain `dispatch:false` and `executionAuthorized:false`.
+- No secrets read, hosted D1 writes, API mutation, provider calls, dispatch, execution, deployment or merge. CI pending at report creation; independent security review NOT RUN; active engineering time NOT MEASURED.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-28-pass114-cli-anything-poolctl.md`; checkpoint: `docs/checkpoints/2026-11-28-pass114-cli-anything-poolctl.md`; architecture: `docs/architecture/CLI-ANYTHING-ADOPTION-AND-POOL-CLI.md`.
+- Next: open Draft PR to default; run exact-head Pool Contract CI; inspect results and diff; request independent security review. Do not merge.
