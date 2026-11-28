@@ -2236,3 +2236,23 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
+## Pass 115 — Spec Kit adoption and llm.asm assessment (2026-11-28)
+
+- Working branch: `docs/pass115-spec-kit-adoption-2026-11-28`; created from default `Основной` at `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #184: OPEN / DRAFT / UNMERGED; head at initial PR creation `c0c2c884452e89886725ba00d0a6dbd3c617992a`; 11 files added, 438 lines, 0 deletions; docs/spec only.
+- Spec Kit: ADOPT WITH ADAPTATION. Added `.specify/memory/constitution.md`, spec/plan/tasks templates, and `specs/115-controller-api-d1-composition/` spec/plan/tasks. CLI install/execution NOT RUN; no Python/uv runtime dependency or community extensions added.
+- llm.asm: RESEARCH ONLY / DEFERRED. Upstream reports 14,712-byte Linux ELF, but Qwen3-0.6B Q8_0 weights are ~613.66 MiB. Author-reported benchmark/parity not independently reproduced. Bare-metal OS rejected for Cloud Pool control plane due missing required isolation/security controls. No code copied, build or model download.
+- PR #176 remains OPEN; its read-only controller foundation does not yet establish Controller/API/attested-D1 composition. PR #183 remains OPEN; read-only poolctl is not runtime qualification.
+- Pass 115 changed no runtime code, controller, D1 schema, workflow permissions, secrets, provider route or production state. No dispatch, D1 writes, provider calls, deployment or merge.
+- New branch exact-head CI: NOT RUN at this checkpoint; PR-triggered workflow query returned no runs and combined status query returned no contexts. This is NOT VERIFIED, not a pass.
+- Independent security review: NOT RUN. Gemini/Claude: NOT RUN. Active engineering time: NOT MEASURED.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: use `specs/115-controller-api-d1-composition/spec.md` to reconcile ancestry and schema/import overlap across PRs #176–#183 and Pass 110/111 before any implementation.
+- Pass 115 report: `docs/reports/2026-11-28-pass115-spec-kit-llm-asm-assessment.md`.
+- Pass 115 checkpoint: `docs/checkpoints/2026-11-28-pass115-spec-kit-llm-asm.md`.
+- Pass 115 context overlay: `docs/context/GITHUB-CONTEXT-WINDOW-PASS115.md`.
+- Spec Kit adoption: `docs/architecture/SPEC-KIT-ADOPTION.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
