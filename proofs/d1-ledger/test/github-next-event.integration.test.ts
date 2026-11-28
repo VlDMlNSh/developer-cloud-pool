@@ -45,8 +45,8 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
   };
   let attestation = { sourceJson: JSON.stringify(envelope), digest: await digestOwnerNextEnvelope(envelope), trustedContext: context };
   if (collectorBacked) {
-    const workflowBytes = new TextEncoder().encode("name: next-event-controller\\n");
-    const blobHeader = new TextEncoder().encode("blob " + workflowBytes.byteLength + "\\0");
+    const workflowBytes = new TextEncoder().encode("name: next-event-controller\n");
+    const blobHeader = new TextEncoder().encode("blob " + workflowBytes.byteLength + "\0");
     const blobObject = new Uint8Array(blobHeader.byteLength + workflowBytes.byteLength);
     blobObject.set(blobHeader);
     blobObject.set(workflowBytes, blobHeader.byteLength);
