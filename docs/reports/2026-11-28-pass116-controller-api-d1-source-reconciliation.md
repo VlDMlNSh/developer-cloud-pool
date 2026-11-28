@@ -77,3 +77,13 @@ Decision: do not merge or cherry-pick the full PR #176 branch. It would import a
 Create one fresh integration branch from Pass 111 branch HEAD `4c8d820102472e130c2e9760f5d42f650ca43394`; port only the controller workflow/verifier/tests from PR #176; refactor the verifier into a pure, testable API-evidence collector that emits exact Envelope v1 JSON + digest; add strict fixed-origin bounded API transport; source workflow commit SHA from trusted Actions context and independently bind workflow bytes; feed that same output into the existing Workers verifier and local D1 attested adapter test harness; prove legacy entrypoint cannot be imported by production composition; add replay/substitution/timeout/stale-ref/rerun tests; run exact-head D1 and Pool Contract CI. No hosted D1, dispatch, providers or deployment.
 
 Canonical MediaHub map (separate Contour B, deferred): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+ 
+
+## Post-creation verification
+- Final branch commit: `d6b86f703294be4d1c15550c71f2199391517d58`.
+- Compare against frozen default SHA: 21 commits, 14 changed files, 654 additions, 0 deletions; all paths are docs/specification. No runtime source, workflow, D1 migration or test files changed.
+- GitHub readback of the report and refined task list succeeded. PR #184 discussion comment ID: 7242328902.
+- Exact-head workflow runs: none returned; combined classic statuses: empty. The existing workflows do not watch these docs/spec paths. CI status: NOT RUN, not PASS.
+- PR #184 formal reviews: 0; review threads: 0; independent review NOT RUN.
+- Source CI referenced in this audit remains PR #181 code/test SHA `88911e5...`: D1 run #45897059595 SUCCESS; Pool Contract run #45897059549 SUCCESS. Those runs do not test the controller composition.
+- No tests, runtime changes, hosted writes, dispatch, provider calls, deployment or merge in Pass 116. Active time NOT MEASURED.
