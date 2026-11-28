@@ -234,3 +234,16 @@ No material change to the previous security dispositions was found in this delta
 - **LiteLLM** — official advisory page continues to list the Nov 12 high-severity Azure Entra credential-parameter exfiltration advisory and Oct 27 critical enterprise proxy file-read/master-key advisory. **Do not deploy** in current Contour A pending independent assessment; applicability remains version/configuration-specific. Sources: https://github.com/BerriAI/litellm/security/advisories and https://www.litellm.ai/security
 
 No package was installed, no runtime benchmark was performed, and no runtime dependency or provider route was added.
+
+## Pass 126 OSS and platform delta — 2026-11-28
+
+### Reuse / adapt decisions
+- **Cloudflare Workers Vitest** — **REUSE** existing pinned harness for local Workers/D1 behavior. Cloudflare recommends Workers Vitest for unit tests and its test harness for integration coverage. Do not equate Miniflare with a hardened sandbox: official docs explicitly warn against executing untrusted code directly in Miniflare. Sources: https://developers.cloudflare.com/workers/testing/vitest-integration/ and https://developers.cloudflare.com/workers/testing/
+- **GitHub Actions first-party actions** — **ADAPT / DEFER exact pin migration to Pass 127**. Current pinned checkout/setup-node SHAs pass but emit Node20-targeting deprecation warnings while runners force Node24. GitHub states Node20 was removed from Actions runners on 2026-09-23. Current checkout v7 includes safer fork PR handling and dependency/security updates; setup-node v7.1.0 is a current release. Before changing the security-critical controller workflow, verify exact immutable full SHAs, signed release/provenance and input compatibility. No floating tags. Sources: https://github.blog/changelog/2026-09-23-node-20-is-no-longer-available-in-github-actions/ ; https://github.com/actions/checkout ; https://github.com/actions/setup-node/releases
+- No new package, runtime, hosted service, provider or paid resource was introduced.
+
+### Security architecture finding
+Pass 125's Actions-context mapper echoed several identity/ref/run values from the API-derived envelope. Pass 126 corrected this to independently map raw webhook payload + runner environment and added adversarial tests. See `docs/reports/2026-11-28-pass126-independent-actions-provenance.md`.
+
+### Activation constraint
+GitHub's `issue_comment` workflow only triggers when the workflow file exists on the default branch. The controller file is absent from current default branch `Основной` (Contents read NOT_FOUND), so live event execution is NOT RUN until approved integration. Do not add a manual or privileged bypass. Source: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
