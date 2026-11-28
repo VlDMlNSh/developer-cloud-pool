@@ -7,7 +7,7 @@ Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest report/checkpoint: `docs/reports/2026-11-28-pass129-controller-governance-revalidation.md` / `docs/checkpoints/2026-11-28-pass129-controller-governance-revalidation.md` (working branch remains unmerged)
+Latest report/checkpoint: `docs/reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` / `docs/checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2755,8 +2755,8 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 ## Pass 129 — owner /next controller exact-head and governance revalidation (2026-11-28)
 
 - Report: [Pass 129](../reports/2026-11-28-pass129-controller-governance-revalidation.md); checkpoint: [Pass 129 checkpoint](../checkpoints/2026-11-28-pass129-controller-governance-revalidation.md).
-- Current PR #188: OPEN / DRAFT / UNMERGED; head `a11cf4bc5af39dd9648b5081ec0d85df78b849e2`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; observed PR size 243 commits / 96 files / +12,800/-16.
-- Latest exact PR merge-result `51bea6ec31e15b52eed219c07e3a3ea7d186290f` verified in both CI job logs: Pool Contract run `46177096578` / job `141078156869` SUCCESS, 42/42 Node tests; D1 Ledger run `46177096569` / job `141078156730` SUCCESS, 9/9 files / 140/140 tests.
+- Pass 129 snapshot: PR #188 OPEN / DRAFT / UNMERGED; code head `a11cf4bc5af39dd9648b5081ec0d85df78b849e2`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; observed size 243 commits / 96 files / +12,800/-16.
+- Pass 129 exact PR merge-result `51bea6ec31e15b52eed219c07e3a3ea7d186290f` passed Pool Contract run `46177096578` (42/42) and D1 run `46177096569` (140/140). Superseded by Pass 130 latest-head evidence.
 - Re-read controller workflow and collector/verifier/import-graph source. No confirmed exploitable defect found in bounded review; external independent security review remains NOT RUN.
 - Default-branch Contents API for `.github/workflows/next-event-controller.yml` returns 404 / NOT_FOUND. Workflow is not active; live issue_comment execution NOT RUN.
 - Active ruleset `26550182` confirmed on `refs/heads/Основной`: PR required, deletion/non-fast-forward blocked, review-thread resolution required. Important gap: required approvals = 0, required reviewers empty, code-owner review false. Independent approval is not enforced by this ruleset.
@@ -2765,3 +2765,16 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Next: independent exact-head security review, authorized metadata-only governance verification, and only then approved default-branch integration. No bypass or controller activation before approved integration.
 
+
+## Pass 130 — exact-head CI closure and Context Window reconciliation (2026-11-28)
+
+- Current PR #188 snapshot: OPEN / DRAFT / UNMERGED; head `ba8e3e3453e3470d7caf7a99b6f419a3df3a9626`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; exact merge-result `5e91bc756023f7566b3affe3ceb8a650ad0380af`; 249 commits / 98 files / +12,929/-16.
+- Both latest PR CI logs explicitly checked out exact merge-result `5e91bc756023f7566b3affe3ceb8a650ad0380af`: D1 run `46177702381` / job `141080041530` SUCCESS, 9/9 files / 140/140 tests; Pool Contract run `46177702422` / job `141080052752` SUCCESS, 42/42 tests. Logs show Node v24.9.0; no Node20 deprecation warning observed.
+- Formal PR reviews: 0; review threads: 0.
+- Active ruleset `26550182` last read in Pass129 still has 0 required approvals; governance gap remains.
+- Issue #1's `POOL_DISPATCH_ENABLED=false` evidence dates to 2026-11-04/17. It explicitly states current variable was not read later. Current variable value is NOT VERIFIED; do not rely on historical evidence.
+- Current default-branch workflow activation, independent security review, hosted D1, remote UI, qualified executor/routing remain NOT VERIFIED / NOT RUN.
+- No secret values, dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. No code/dependencies/paid resources added. Active time NOT MEASURED; benchmark NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 130](../reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md); checkpoint: [Pass 130 checkpoint](../checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md).
+- Next: independent security review of exact current PR head; authorized metadata-only readback for current dispatch-variable and effective governance; no bypass, controller activation or dispatch.
