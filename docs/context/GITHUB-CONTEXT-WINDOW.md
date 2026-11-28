@@ -2465,12 +2465,12 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 Status: SUCCEEDED (bounded collector + exact-head Pool Contract CI); end-to-end controller/D1 composition NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 
 - Base PR #181 head: `453d74ff70a67d3091d920281f6471a721f1808d`.
-- Code/test/workflow head validated: `cbee39dcf5ee16f4ec491c535cd2f9c4cc4eda9e`.
+- Code/test/workflow head validated: `9f80fb5df2bca95165385e989e284c633cc24f45`.
 - PR #185: OPEN/DRAFT/UNMERGED, stacked on PR #181; head is advanced by report/checkpoint/Context Window commits after tested code head.
 - Added `scripts/owner-next-api-envelope.mjs` and `scripts/owner-next-api-envelope.test.mjs`; adapted existing API audit approach and reused `digestOwnerNextEnvelope`.
 - API origin fixed to `https://api.github.com`; repository path allowlist; rejects traversal/encoded path separators and redirects; 3-second timeout; 256 KiB response cap; fatal UTF-8/JSON parse.
 - Collector reads repo, Issue #96, comment, workflow run, workflow metadata, default ref and workflow-file bytes; checks immutable identity, exact event and first attempt; computes Git blob SHA-1 from bytes; keeps target SHA, workflow commit SHA, blob SHA and ref SHA distinct.
-- Exact-head Pool Contract CI [46167867802](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46167867802): SUCCESS; job 141049343699; YAML parse and security contract pass; Node tests 28/28 PASS (20 existing Envelope tests + 8 collector tests).
+- Exact-head Pool Contract CI [46168085516](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46168085516): SUCCESS; job 141050055417; YAML parse and security contract pass; Node tests 28/28 PASS (20 existing Envelope tests + 8 collector tests).
 - Earlier intermediate CI failures were inspected and corrected; only the final exact code/test/workflow head is marked successful.
 - Local tests NOT RUN; CI run is the test evidence. Independent security review NOT RUN.
 - No D1 code/schema changed; collector is not yet invoked by issue_comment workflow; exact JSON/digest not yet fed into Workers/D1 integration test. Legacy adapter export remains; production import graph NOT VERIFIED.
