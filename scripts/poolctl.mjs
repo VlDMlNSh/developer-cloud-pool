@@ -70,7 +70,7 @@ function main(args) {
 
   // The child receives only a minimal environment. No GitHub token, provider key,
   // repository secret, or caller-controlled argument is forwarded.
-  const childEnv = { PATH: process.env.PATH ?? "" };
+  const childEnv = {};
   if (process.platform === "win32" && process.env.SystemRoot) {
     childEnv.SystemRoot = process.env.SystemRoot;
   }
