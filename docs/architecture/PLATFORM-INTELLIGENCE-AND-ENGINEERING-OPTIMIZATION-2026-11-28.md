@@ -215,7 +215,7 @@ This is the fresh delta scan performed after the owner-approved policy was recor
 
 - PR #188: OPEN / DRAFT / UNMERGED, base `Основной` at `565404f84b6b86afb4dc2d8fa939341f42df6eca`; head code/test SHA `359302ea4082b36b5c5be7af4bdb03d5037daeed`; merge-result SHA `4731e2d21fde8a328ec6dbbc14791da40980f0e7`.
 - Pool Contract Validation run `46170933384`, job `141058959300`: SUCCESS; workflow YAML parse and security-contract validation passed; Node tests 32/32 passed.
-- D1 local integration suite on the Pass 124 merge result: NOT RUN. The default-base validation path ran Pool Contract Validation only; it did not establish end-to-end collector → Workers verifier → D1 receipt composition.
+- Isolated D1 Ledger run 46171241176, job 141059915920: SUCCESS on merge-result 9be990c45ee6fafef45e92ff78df38830c9e01ac; 9/9 files and 139/139 tests passed. This validates the existing D1 migration/authority suite, but its fixtures do not yet consume the exact controller-produced serialized JSON/digest; that end-to-end composition remains NOT RUN.
 - PR #188 formal reviews: 0; inline threads: 0; independent security review: NOT RUN.
 - Controller workflow has not been invoked on the default branch; no live issue event, API collection, hosted D1, provider call, executor, dispatch, deployment or production mutation occurred.
 - PR #188 is a large cumulative clean-default integration candidate carrying the D1 proof and Pass 120–124 stack. Refresh exact diff metrics from GitHub before any merge decision. Pass 124's bounded code delta from Pass 120 is five files. Keep Draft and do not merge until D1 composition, independent security review and governance gates pass.
