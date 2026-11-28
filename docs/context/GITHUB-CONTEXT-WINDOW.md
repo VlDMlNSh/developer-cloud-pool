@@ -2,13 +2,13 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 123 owner-approved daily OSS intelligence and adaptation policy
+Last refreshed: 2026-11-28 — Pass 124 read-only owner /next controller and daily OSS security delta
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
-Documentation continuation branch: `docs/pass123-daily-oss-adaptation-policy-2026-11-28`
-Latest daily report commit: `6f7c52ee1f4e4c1c56aa24ee1c7ea8671e4c7185` (this branch remains unmerged)
-This document is maintained on the current documentation continuation branch and is NOT merged into the default branch. Do not represent the documentation branch as default/canonical production code.
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by default-vs-feature compare)
+Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
+Latest daily report: `docs/reports/2026-11-28-pass124-readonly-owner-next-controller.md` (working branch remains unmerged)
+This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
 
@@ -2558,3 +2558,37 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 - LiteLLM deployment rejected for current Contour A based on its official 2026 advisories, including credential-exfiltration and proxy/master-key exposure findings. Applicability is version/configuration-specific; retain only conceptual patterns pending independent security reassessment.
 - Concrete adaptation recorded: route metadata should include capabilities/modalities/context window, actual serving tier, cost/quota domain and correlation; provider endpoints must be immutable/allowlisted; caller-supplied base URLs, model-list overrides and credential parameters must be rejected; tool-output inspection must have explicit privacy and failure-mode policy.
 - No code, package, provider route or infrastructure changed; no benchmarks, independent review or deployment performed. Pass 123 remains documentation-only.
+
+
+## 19. Pass 124 — read-only owner /next controller and OSS security delta (2026-11-28)
+
+### 19.1 Repository and PR state
+- Default branch Основной HEAD: 565404f84b6b86afb4dc2d8fa939341f42df6eca, verified by compare API.
+- Pass 124 implementation/test HEAD: 359302ea4082b36b5c5be7af4bdb03d5037daeed.
+- PR #188: OPEN / DRAFT / UNMERGED; base Основной @ 565404f84b6b86afb4dc2d8fa939341f42df6eca; head feat/pass124-readonly-owner-next-controller-2026-11-28.
+- PR #188 cumulative clean-base diff: 170 commits, 83 files, +11,425/-4. It carries the D1 proof lineage and Pass 120–124 stack; this is a large integration candidate, not a merge-ready patch.
+- PR #188 merge-result at tested head: 4731e2d21fde8a328ec6dbbc14791da40980f0e7.
+- Exact head association: Pool Contract Validation run 46170933384, job 141058959300, SUCCESS; YAML parse and security validator passed; Node tests 32/32.
+- PR #188 formal reviews 0, inline threads 0; independent security review NOT RUN.
+- D1 local integration on Pass 124 merge result NOT RUN. The clean-default run above exercised Pool Contract only; do not infer D1 receipt composition.
+- Traditional branch protection/ruleset detailed read and current POOL_DISPATCH_ENABLED variable read-back NOT VERIFIED in this pass. No dispatch attempted.
+
+### 19.2 Pass 124 implementation
+- Added .github/workflows/next-event-controller.yml for issue_comment.created only, exact Issue #96, exact /next body, numeric owner ID matching both comment author and sender, OWNER association, PR conversation excluded.
+- Permissions contents/issues/actions read only; no write scope, workflow_dispatch, workflow_run, workflow_call, executor or provider route.
+- Checkout source at github.workflow_sha, persist-credentials=false; all Actions pinned by full commit SHA.
+- Added scripts/owner-next-controller.mjs to invoke the bounded API collector with ephemeral read-only Actions token, map trusted Actions context, recompute canonical envelope digest, and emit base64-safe exact envelope/digest/context outputs. Authorization outputs are fixed false.
+- Added CLI tests for serialization, digest tampering, escalation, context mismatch and output injection; Pool Contract validator executes these tests and checks controller security properties.
+- Reused existing Pass 118 collector and Pass 110/111 envelope/Workers/D1 contracts. No runtime dependency or second ledger.
+- Controller workflow has not been invoked on default branch. No live issue event, API collection, hosted D1, provider call, dispatch, executor, deployment or production mutation.
+
+### 19.3 Daily OSS security decisions
+- Bifrost: previous PILOT candidate superseded to DEFER runtime. Official advisories list high/critical findings including unauthenticated RCE in custom plugin HTTP path for dynamically linked builds, critical MCP stdio RCE and SSRF deny-list gaps. Affected/fixed version analysis, SBOM and threat model NOT VERIFIED. Do not install or expose until independent review.
+- agentgateway: ADAPT capability/modality/context-window metadata, service-tier cost accounting and analytics concepts; DEFER runtime. v1.7 prompt guards include tool outputs by default, which can increase data sent to vendor guardrail APIs; external guards require explicit privacy/failure-mode approval.
+- LiteLLM: do not deploy in current Contour A; retain only conceptual routing/usage patterns pending independent security review. Advisory applicability is version/configuration-specific; no blanket claim that all versions are compromised.
+- Primary sources: https://github.com/maximhq/bifrost/security/advisories ; https://github.com/agentgateway/agentgateway/releases ; https://github.com/BerriAI/litellm/security/advisories ; https://docs.litellm.ai/blog/trail-of-bits-patch-the-planet
+
+### 19.4 Next critical path
+- Pass 125: pass the exact collector-produced serialized JSON/digest and independently mapped trusted Actions context through the Workers-native verifier into the local D1 attested adapter; prove receipt persistence and replay readback; prove legacy synthetic adapter import isolation from the worker production graph.
+- Keep dispatch=false and executionAuthorized=false. No hosted D1, provider calls or executor.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
