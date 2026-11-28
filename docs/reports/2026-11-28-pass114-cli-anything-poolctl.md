@@ -31,20 +31,26 @@ Date: 2026-11-28
 - Dispatch=false and executionAuthorized=false are preserved in all CLI JSON outputs.
 - Exact-head CI and independent review are pending until the PR is opened and checks complete.
 
+## CI evidence and governance
+- Draft PR #183: OPEN / DRAFT / UNMERGED; head `2b9d9d51712a1e45b5c77233d4a45952a0fe4e51`; base `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pool Contract run [46164275649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46164275649): SUCCESS; job `141038230498`; run metadata binds exact PR head and base; merge-result checkout `cda3a56...`.
+- Job log: dispatch gate disabled/unset; all 5 workflow YAML files parse; existing `POOL_CONTRACT_VALIDATION=PASS`; CLI subprocess suite 5/5 passed, 0 failed.
+- PR #183 formal reviews: 0; inline review comments: 0. Active ruleset #26550182 is active on `refs/heads/Основной`, requires PR and thread resolution, has 0 required approvals and no bypass actors. Independent security review remains NOT RUN.
+- CI emits a non-failing warning: pinned `actions/checkout` commit `11bd719...` targets Node 20 while runner forces Node 24. Track as separate action-runtime maintenance; no action version changed in this pass.
+
 ## Metrics
 - New runtime dependencies: 0.
 - New hosted services: 0.
 - New authority/mutation surfaces: 0.
 - Automated CLI tests authored: 5.
 - Active engineering time: NOT MEASURED.
-- CI status: PENDING at report creation.
+- CI: SUCCESS on PR head `2b9d9d51712a1e45b5c77233d4a45952a0fe4e51` / merge-result `cda3a56...`; 5/5 CLI tests pass.
 
 ## Next
-1. Open a Draft PR against canonical `Основной`.
-2. Verify exact-head Pool Contract CI and inspect logs/test counts.
-3. Correct any test/contract failures and re-read final diff.
-4. Obtain independent security review before merge.
-5. Keep CLI read-only; only expand after Controller/API/attested-D1 composition is verified.
+1. Keep PR #183 Draft/unmerged until independent security review.
+2. Re-read final diff and exact-head/merge-result evidence before any merge decision.
+3. Track the Node 20→24 action-runtime warning as separate maintenance.
+4. Keep CLI read-only; expand only after Controller/API/attested-D1 composition is verified.
 
 Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
 
