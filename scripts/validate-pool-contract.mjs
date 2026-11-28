@@ -15,6 +15,7 @@ const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const ownerNextController = read(".github/workflows/next-event-controller.yml");
+const d1ProofWorker = read("proofs/d1-ledger/src/worker.mjs");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
@@ -122,6 +123,13 @@ if (controllerTests.error || controllerTests.status !== 0) {
   fail("Owner /next controller CLI tests failed or timed out");
 } else {
   pass("owner /next controller CLI tests passed");
+}
+
+if (/from\\s+["'][^"']*github-next-event\\.mjs["']/.test(d1ProofWorker) ||
+    /from\\s+["'][^"']*owner-next-envelope\\.mjs["']/.test(d1ProofWorker)) {
+  fail("D1 proof Worker entrypoint must not import the legacy synthetic or attested GitHub event adapters");
+} else {
+  pass("D1 proof Worker entrypoint is isolated from legacy and attested GitHub event adapters");
 }
 
 if (failures.length) {
