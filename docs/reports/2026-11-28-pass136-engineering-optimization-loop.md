@@ -63,3 +63,12 @@ No packages installed, no benchmarks, no runtime dependency additions, no provid
 
 Platform Intelligence register: docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## Documentation-head CI closure
+- After the first Pass 136 artifacts, PR head `958bd204fdb2d7067862fefbbf6add17b2521f27` was tested.
+- Exact merge-result: `84fcf23808a4f079820725b5b589bf4052d03595`, merging that head into base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pool Contract run [46188473593](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46188473593), job `141113640176`: SUCCESS; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`; dispatch environment false.
+- D1 run [46188473686](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46188473686), job `141113620413`: SUCCESS; 9/9 files, 140/140 tests.
+- 182/182 tests VERIFIED on exact merge-result `84fcf23808a4f079820725b5b589bf4052d03595`.
+- Subsequent Pass 136 report/checkpoint/Context Window closure commits are documentation-only; their newer head requires its own CI readback and must not inherit the 182-test claim automatically.
+- Remaining effort estimate confidence: LOW–MEDIUM; recalibrate after the first 2–3 remaining work packages and independent review.
