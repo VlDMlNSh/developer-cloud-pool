@@ -2778,3 +2778,22 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [Pass 130](../reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md); checkpoint: [Pass 130 checkpoint](../checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md).
 - Next: independent security review of exact current PR head; authorized metadata-only readback for current dispatch-variable and effective governance; no bypass, controller activation or dispatch.
+
+
+## Pass 131 — current-head exact CI and governance revalidation (2026-11-28)
+
+- Current PR #188: OPEN / DRAFT / UNMERGED; head `212c7134919c3102429cd9e451196bd661830b7c`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; exact merge-result `6fc5b9bb82e7ad969cc898a342f33be0f0ced9d4`; 254 commits / 100 files / +13,033/-16. Current head commit is documentation-only.
+- Exact merge-result CI verified from job logs:
+  - D1 run `46180077703`, job `141087418790`: SUCCESS; checked out `6fc5b9bb82e7ad969cc898a342f33be0f0ced9d4`; Node 24.9.0; 9/9 files, 140/140 tests.
+  - Pool Contract run `46180077771`, job `141087431064`: SUCCESS; checked out `6fc5b9bb82e7ad969cc898a342f33be0f0ced9d4`; 42/42 tests; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- Formal reviews 0; inline threads 0; independent security review NOT RUN.
+- Active ruleset #26550182 re-read in full: selector `refs/heads/Основной`; PR required; deletion/non-fast-forward blocked; review-thread resolution required; required approvals 0; required reviewers empty; CODEOWNERS review false; last-push approval false; extra approval for unattributed changes false; bypass actors empty.
+- Default branch `Основной` still returns 404 for `.github/workflows/next-event-controller.yml`; workflow exists only in PR branch. Live controller activation/execution NOT RUN.
+- Current `POOL_DISPATCH_ENABLED` Actions variable metadata NOT VERIFIED: approved GitHub connector does not expose the Actions variables endpoint. Historical Issue #1 data is stale and not proof of current value.
+- No secrets, dispatch, provider calls, Worker/DSH, hosted D1 writes, deployment, merge or production mutation. Gemini Agent 1/2/3 and Claude Code NOT RUN.
+- New dependencies 0; paid resources 0; active engineering time NOT MEASURED. CI wall time from job metadata: D1 ~22s, Pool Contract ~5s.
+- Reuse First: documentation/evidence-only pass; reused GitHub API metadata, active Rulesets API, existing immutable Node24 CI and existing test suites. No new OSS component needed.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 131](../reports/2026-11-28-pass131-current-head-ci-governance-revalidation.md); checkpoint: [Pass 131 checkpoint](../checkpoints/2026-11-28-pass131-current-head-ci-governance-revalidation.md).
+- Next: owner-authorized ruleset update requiring at least one independent approval, followed by independent security review of exact PR head. No merge, controller activation or dispatch before gates pass.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
