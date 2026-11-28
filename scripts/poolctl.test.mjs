@@ -59,7 +59,7 @@ test("unknown options fail closed", () => {
   assert.equal(payload.executionAuthorized, false);
 });
 
-test("caller environment values are not forwarded or echoed", () => {
+test("caller environment values are not echoed by the CLI", () => {
   const sentinel = "POOLCTL_ENV_SENTINEL_DO_NOT_ECHO";
   const result = run(["contract", "validate", "--json"], { POOLCTL_TEST_SECRET_SENTINEL: sentinel });
   assert.equal(result.status, 0, result.stderr);
