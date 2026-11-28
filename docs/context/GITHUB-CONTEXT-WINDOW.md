@@ -2500,3 +2500,20 @@ Status: VERIFIED (source correction + exact-head CI); independent security revie
 - Active engineering time NOT MEASURED. Independent security review NOT RUN. Local non-CI tests NOT RUN.
 - Next Pass 121: wire trusted read-only issue_comment workflow → actual collector JSON/digest → Workers verifier → local D1 attested adapter integration test; prove legacy adapter import isolation; independent security review. Keep dispatch false.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 121 — Controller composition preflight (2026-11-28)
+
+Status: VERIFIED (source/lineage preflight); end-to-end composition BLOCKED; independent security review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Pass 120 docs target: `82b7983d9b4178ffbad44bcfc8122a87a0026123`; tested code/test head: `8d0401ec7d45542a71e20594a9f22d193afe4846`. This Pass 121 branch is documentation-only.
+- The Pass 120 branch and default branch do not contain `.github/workflows/next-event-controller.yml`. The previous Pass 98 controller exists on `feat/pass98-canonical-next-controller-audit-2026-11-25` (workflow blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a`, script blob `4e969000ab32df6ff37663c329fe406b859809f4`).
+- Pass 98 is not safe to copy unchanged: it fetches workflow bytes at `workflowRun.head_sha` and asserts file ref SHA equals target SHA. Pass 120 requires immutable `GITHUB_WORKFLOW_SHA` and `workflowFileRefSha === workflowCommitSha`, independent from target/default HEAD.
+- Existing API collector, Workers verifier, attested D1 adapter, migration 0018 and local D1 Vitest harness are reusable. Current integration fixture uses a synthetic envelope rather than actual collector JSON/digest.
+- Current `src/worker.mjs` is inert and imports no GitHub adapter. Full repository production import-graph isolation NOT VERIFIED; legacy `admitGitHubNextEvent` remains exported and used by compatibility tests.
+- PR #186 OPEN/DRAFT/UNMERGED; reviews 0, threads 0. PR #187 validation-only, never merge. Pass 120 D1 46168608155 SUCCESS (139/139); Pool Contract 46168608158 and 46168608181 SUCCESS (29/29 each). Docs-head clean-base D1 46168765420 and Contract 46168765439 SUCCESS.
+- Local tests NOT RUN; independent security review NOT RUN; current ruleset detail NOT VERIFIED; active time NOT MEASURED. No secrets, hosted D1, provider calls, dispatch, executor, deployment, merge or production mutation.
+- Reuse First: reuse collector/verifier/D1 adapter/migration/harness and pinned actions; adapt prior workflow only; do not reuse Pass 98 audit script unchanged; build a small CLI bridge and same-serialized-envelope D1 test path. No new dependency.
+- Next Pass 122: add least-privilege issue_comment controller + collector CLI bridge using `GITHUB_WORKFLOW_SHA`; pass exact serialized source JSON/digest/trusted context into local D1 integration test calling only `admitGitHubNextAttestedEvent`; prove legacy adapter import isolation; exact-head/clean-base CI and independent review. Keep dispatch=false and executionAuthorized=false.
+- Report: `docs/reports/2026-11-28-pass121-controller-composition-preflight.md`; checkpoint: `docs/checkpoints/2026-11-28-pass121-controller-composition-preflight.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
