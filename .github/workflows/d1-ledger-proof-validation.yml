@@ -1,0 +1,44 @@
+name: Isolated D1 Ledger Proof
+
+on:
+  pull_request:
+    branches:
+      - "Основной"
+    paths:
+      - "proofs/d1-ledger/**"
+      - ".github/workflows/d1-ledger-proof-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  d1-ledger-proof:
+    name: Clean-base Workers-runtime D1 migration tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: proofs/d1-ledger
+    steps:
+      - name: Checkout exact pull request revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.9.0
+          check-latest: false
+          package-manager-cache: false
+
+      - name: Install exact lockfile dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Check inert Worker entrypoint
+        run: npm run check
+
+      - name: Run fresh local D1 migration and authority tests
+        run: npm test

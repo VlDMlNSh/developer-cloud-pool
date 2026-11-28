@@ -1,0 +1,56 @@
+name: Canonical Owner /next Event Controller (Read Only)
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: read
+  actions: read
+
+concurrency:
+  group: owner-next-readonly-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: >-
+      github.repository == 'VlDMlNSh/developer-cloud-pool' &&
+      github.event.issue.number == 96 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.body == '/next' &&
+      github.event.comment.user.id == 157891068 &&
+      github.event.sender.id == 157891068 &&
+      github.event.comment.author_association == 'OWNER'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read
+      actions: read
+    outputs:
+      source_json_base64: ${{ steps.collect.outputs.source_json_base64 }}
+      source_digest: ${{ steps.collect.outputs.source_digest }}
+      trusted_context_base64: ${{ steps.collect.outputs.trusted_context_base64 }}
+      dispatch: ${{ steps.collect.outputs.dispatch }}
+      execution_authorized: ${{ steps.collect.outputs.execution_authorized }}
+    steps:
+      - name: Checkout workflow-pinned trusted source without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.9.0
+          check-latest: false
+          package-manager-cache: false
+
+      - name: Collect and attest owner /next event (read only)
+        id: collect
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/owner-next-controller.mjs

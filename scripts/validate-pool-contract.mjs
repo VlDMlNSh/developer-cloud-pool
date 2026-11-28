@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { spawnSync } from "node:child_process";
 
 const failures = [];
 const pass = (message) => console.log("PASS " + message);
@@ -13,13 +14,19 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const ownerNextController = read(".github/workflows/next-event-controller.yml");
+const ownerNextActivationContract = read("docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md");
+const d1ProofWorkflow = read(".github/workflows/d1-ledger-proof-validation.yml");
+const poolContractWorkflow = read(".github/workflows/pool-contract-validation.yml");
+const d1ProofWorker = read("proofs/d1-ledger/src/worker.mjs");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
-  ".github/workflows/runner-resource-probe.yml"
+  ".github/workflows/runner-resource-probe.yml",
+  ".github/workflows/next-event-controller.yml"
 ].map((path) => [path, read(path)]);
 
 for (const [path, source] of workflows) {
@@ -48,6 +55,45 @@ if (failures.length === 0) pass("workflow inputs are not interpolated into shell
 if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s*$/gm)].every((m) => /@[0-9a-f]{40}$/.test(m[1])))) {
   pass("all external Actions references are pinned to 40-character commit SHAs");
 }
+
+if (!/^  issue_comment:\s*\n    types:\s*\[created\]/m.test(ownerNextController)) {
+  fail("Owner /next controller must subscribe only to created issue_comment events");
+}
+if (!ownerNextActivationContract.includes("unless the workflow file exists on the repository's default branch") ||
+    !ownerNextActivationContract.includes("Live `issue_comment` execution: **NOT RUN**")) {
+  fail("Owner /next activation contract must document the default-branch prerequisite and current NOT RUN state");
+}
+if (!ownerNextController.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    !ownerNextController.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
+    !/package-manager-cache:\s*false/.test(ownerNextController)) {
+  fail("Owner /next controller must use the reviewed immutable Node24 action pins with package-manager caching disabled");
+}
+if (!d1ProofWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    !d1ProofWorkflow.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
+    !/package-manager-cache:\s*false/.test(d1ProofWorkflow) ||
+    !poolContractWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    /actions\/(?:checkout|setup-node)@(?:11bd71901bbe5b1630ceea73d27597364c9af683|49933ea5288caeca8642d1e84afbd3f7d6820020)/.test(d1ProofWorkflow + poolContractWorkflow)) {
+  fail("D1 and Pool Contract validation workflows must use immutable Node24 action pins and disable implicit package caching");
+}
+if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
+  fail("Owner /next controller must have read-only repository/issue/actions permissions");
+}
+if (/workflow_dispatch:|workflow_run:|workflow_call:|issues:\s*write|actions:\s*write|contents:\s*write|secrets\.|dispatches/i.test(ownerNextController)) {
+  fail("Owner /next controller must not expose dispatch, privileged triggers, secret access or write permissions");
+}
+if (!/github\.event\.comment\.author_association == 'OWNER'/.test(ownerNextController) ||
+    !/github\.event\.comment\.user\.id == 157891068/.test(ownerNextController) ||
+    !/github\.event\.sender\.id == 157891068/.test(ownerNextController)) {
+  fail("Owner /next controller must bind the event to the numeric repository owner identity");
+}
+if (!/ref:\s*\$\{\{\s*github\.workflow_sha\s*\}\}/.test(ownerNextController) ||
+    !/persist-credentials:\s*false/.test(ownerNextController)) {
+  fail("Owner /next controller must check out workflow-pinned source without persisted credentials");
+}
+if (!/node scripts\/owner-next-controller\.mjs/.test(ownerNextController)) {
+  fail("Owner /next controller must invoke the bounded API-attested collector CLI");
+}
+if (failures.length === 0) pass("owner /next controller is owner-bound, workflow-pinned, read-only and non-dispatching");
 
 if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Retired worker must default to permissions: {}");
 if (!/^  retired:\s*$/m.test(worker)) fail("Legacy worker must contain only the retired guard job");
@@ -85,6 +131,38 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
+
+const workerGraphCheck = spawnSync(process.execPath, ["scripts/check-worker-import-graph.mjs"], {
+  encoding: "utf8",
+  timeout: 10_000,
+  stdio: "pipe",
+  env: { PATH: process.env.PATH || "" }
+});
+if (workerGraphCheck.error || workerGraphCheck.status !== 0) {
+  fail("D1 proof Worker transitive import graph is not isolated: " +
+    (workerGraphCheck.stderr || workerGraphCheck.error?.message || "check failed"));
+} else {
+  pass((workerGraphCheck.stdout || "").trim());
+}
+
+const controllerTests = spawnSync(process.execPath, ["--test", "scripts/owner-next-controller.test.mjs"], {
+  encoding: "utf8",
+  timeout: 30_000,
+  stdio: "inherit",
+  env: { PATH: process.env.PATH || "" }
+});
+if (controllerTests.error || controllerTests.status !== 0) {
+  fail("Owner /next controller CLI tests failed or timed out");
+} else {
+  pass("owner /next controller CLI tests passed");
+}
+
+if (/from\s+["'][^"']*github-next-event\.mjs["']/.test(d1ProofWorker) ||
+    /from\s+["'][^"']*owner-next-envelope\.mjs["']/.test(d1ProofWorker)) {
+  fail("D1 proof Worker entrypoint must not import the legacy synthetic or attested GitHub event adapters");
+} else {
+  pass("D1 proof Worker entrypoint is isolated from legacy and attested GitHub event adapters");
+}
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
