@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 117 live state refresh and controller/D1 composition gate
+Last refreshed: 2026-11-28 — Pass 119 workflow-file provenance audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2344,3 +2344,20 @@ Status: VERIFIED (source/governance read-back); implementation integration NOT R
 
 Report: `docs/reports/2026-11-28-pass117-live-state-and-composition-gate.md`  
 Checkpoint: `docs/checkpoints/2026-11-28-pass117-live-state-and-composition-gate.md`
+
+
+## Pass 119 — API-attested workflow provenance audit (2026-11-28)
+
+- Audited Pass 118 PR #185 at immutable head `cbee39dcf5ee16f4ec491c535cd2f9c4cc4eda9e`; collector source blob `9946881694fac6d57876d543103ee66af31a480b`.
+- Exact GitHub Actions run `46167867802`, job `141049343699`: SUCCESS. Retrieved job log confirms Pool Contract Validation PASS and 28/28 Node tests passed. This is CI evidence for the collector branch, not controller/D1 end-to-end qualification.
+- F-119-01 HIGH/BLOCKING: collector fetches workflow file contents at `workflowRun.head_sha` (event/target SHA) and stores that same SHA as `workflowFileRefSha`; it does not fetch at `GITHUB_WORKFLOW_SHA`. The canonical D1 Envelope validator also requires `workflowFileRefSha === headSha`. Thus the blob digest is not bound to the workflow commit identity.
+- Finding posted to PR #185: https://github.com/VlDMlNSh/developer-cloud-pool/pull/185#issuecomment-7242656346
+- Required remediation: fetch workflow file at immutable `GITHUB_WORKFLOW_SHA`; verify blob bytes; bind `workflowFileRefSha` to `workflowCommitSha`; preserve target SHA independently; update the existing canonical Envelope validator/digest and D1 receipt constraints together; add distinct-SHA and cross-ref blob-substitution tests; feed actual collector JSON into local Workers/D1 integration.
+- Reuse decision: retain existing API collector, Envelope v1 canonical digest, and single D1 ledger; no parallel schema/ledger and no new dependency.
+- Pass 119 report: `docs/reports/2026-11-28-pass119-workflow-provenance-audit.md`; checkpoint: `docs/checkpoints/2026-11-28-pass119-workflow-provenance-audit.md`.
+- No code/migration/workflow/governance changes; no local test run, hosted D1 writes, secrets/variables reads, provider calls, dispatch, executor launch, deployment, merge or production mutation.
+- Independent security review NOT RUN; active engineering time NOT MEASURED. Controller → Envelope → D1 composition remains NOT VERIFIED. Dispatch and execution remain prohibited.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded pass: Pass 120 remediation on a fresh branch from re-read Pass 111 D1 lineage tip, with collector + canonical validator/digest + Workers/D1 integration changed and tested together; exact-head CI and log inspection; no dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
