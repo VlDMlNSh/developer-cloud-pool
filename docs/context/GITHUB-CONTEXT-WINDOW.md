@@ -2534,3 +2534,16 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 - Next Pass 123: read-only issue_comment controller + collector CLI bridge; feed exact collector JSON/digest through Workers verifier to local D1 attested adapter test; prove legacy import isolation; keep dispatch=false and executionAuthorized=false.
 - Report: `docs/reports/2026-11-28-pass122-platform-intelligence-optimization.md`; checkpoint: `docs/checkpoints/2026-11-28-pass122-platform-intelligence-optimization.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 18. Owner-approved daily OSS intelligence and adaptation — Pass 123 (2026-11-28)
+
+- Owner explicitly approved the proposed engineering directions and requested daily discovery/adaptation of the strongest mature OSS projects as a permanent part of every /next.
+- Effective operating rule: perform a dated calendar-day OSS/release/advisory scan and a delta scan on every /next; if same-day scan remains current, record NO MATERIAL CHANGE rather than inventing activity. Record source refs, immutable release/commit, license, maintenance, security/provenance, dependencies, data handling, privileges, free-tier/cost, compatibility, benchmark hypothesis, rollback and disposition.
+- Adaptation is required, not indiscriminate dependency adoption. Map each useful idea to a specific Cloud Pool critical-path requirement; use REUSE, ADAPT, BUILD, PILOT, DEFER or REJECT; implement one bounded, safe improvement when evidence supports it. Popularity/stars are discovery signals only.
+- Owner-approved target directions: Jarvis as policy coordinator; persist-before-dispatch; D1 remains the candidate state ledger until measured otherwise; control/data-plane separation; provider-neutral route qualification with account/quota/privacy boundaries; correlation IDs and structured observability; measured CI optimization; independent implementation/test/security roles.
+- These approvals do not authorize paid services, secrets access, provider calls, Gemini/Claude dispatch outside approved controllers, executor launch, deployment, production mutation, auto-merge or bypass of review/governance. Contour B remains forbidden until Contour A ACCEPTED.
+- Status distinctions: DISCOVERED / ASSESSED / PILOT / INTEGRATED / QUALIFIED; ACCEPTED remains reserved for formal Contour A acceptance. Unknowns = NOT VERIFIED; unperformed work = NOT RUN.
+- Canonical operating contract: docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md, section Owner-approved daily adaptation policy.
+- Pass 123 is documentation-only; no runtime dependencies, code, provider routes or infrastructure changed. No tests/benchmarks or independent security review run.
+- Previous Pass 122 branch/head: docs/pass122-platform-intelligence-optimization-2026-11-28 @ fa47196f9df200546bc56a15ba1d577f78fbc159.
