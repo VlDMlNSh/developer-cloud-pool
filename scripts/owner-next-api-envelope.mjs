@@ -68,10 +68,15 @@ export function createBoundedGitHubApiGet({ token, fetchImpl = globalThis.fetch,
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 10_000) reject("TIMEOUT_CONFIGURATION_INVALID");
 
   return async function apiGet(path) {
-    if (typeof path !== "string" || !path.startsWith("/repos/" + REPOSITORY + "/") ||
-        path.includes("..") || path.startsWith("//")) reject("GITHUB_API_PATH_NOT_ALLOWED");
+    const repositoryRoot = "/repos/" + REPOSITORY;
+    if (typeof path !== "string" || (path !== repositoryRoot && !path.startsWith(repositoryRoot + "/")) ||
+        path.includes("..") || path.includes("\\\\") || /%(?:2f|5c|2e)/i.test(path) ||
+        path.startsWith("//") || path.includes("#")) reject("GITHUB_API_PATH_NOT_ALLOWED");
     const url = new URL(path, API_ORIGIN);
     if (url.origin !== API_ORIGIN) reject("GITHUB_API_ORIGIN_NOT_ALLOWED");
+    if (url.username || url.password || url.pathname !== repositoryRoot && !url.pathname.startsWith(repositoryRoot + "/")) {
+      reject("GITHUB_API_PATH_NOT_ALLOWED");
+    }
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
