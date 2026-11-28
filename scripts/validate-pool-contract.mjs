@@ -125,8 +125,8 @@ if (controllerTests.error || controllerTests.status !== 0) {
   pass("owner /next controller CLI tests passed");
 }
 
-if (/from\\s+["'][^"']*github-next-event\\.mjs["']/.test(d1ProofWorker) ||
-    /from\\s+["'][^"']*owner-next-envelope\\.mjs["']/.test(d1ProofWorker)) {
+if (/from\s+["'][^"']*github-next-event\.mjs["']/.test(d1ProofWorker) ||
+    /from\s+["'][^"']*owner-next-envelope\.mjs["']/.test(d1ProofWorker)) {
   fail("D1 proof Worker entrypoint must not import the legacy synthetic or attested GitHub event adapters");
 } else {
   pass("D1 proof Worker entrypoint is isolated from legacy and attested GitHub event adapters");
