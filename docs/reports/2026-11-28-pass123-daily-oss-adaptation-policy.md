@@ -40,3 +40,23 @@ This is a documentation/governance pass, not implementation of the proposed arch
 ## Next
 
 Fresh daily OSS release/advisory scan, then continue the bounded Cloud Pool critical path from Pass 122. No dispatch or execution until gates pass.
+
+
+## Fresh daily OSS delta scan (2026-11-28)
+
+Primary upstream sources reviewed:
+- Bifrost official repository and releases: Apache-2.0; HTTP v2.6.0 (Nov 19) and Helm v2.1.50 (Nov 25); release includes Go/toolchain and dependency security updates.
+- agentgateway official repository/release: Apache-2.0; v1.7.0 (Oct 27) includes model capability metadata, service-tier cost reporting, per-model/user analytics, CEL policy and guardrail/session security behavior.
+- LangGraph official releases: v1.2.24 (Nov 20), GitHub release signature shown as verified.
+- LiteLLM official security advisories include Nov 12 credential exfiltration advisory, Oct 27 critical enterprise proxy file-read/master-key advisory, and several Nov 23 advisories affecting tenant visibility/deployment integrity. Applicability depends on affected versions/configurations; this is not a blanket claim that all releases are vulnerable.
+
+Disposition:
+- Bifrost: PILOT candidate only; no runtime/credential integration. Need edition, SBOM, threat model, resource/free-tier and quota-enforcement verification.
+- agentgateway: ADAPT metadata and fail-closed policy concepts; DEFER runtime due stack/complexity and lack of demonstrated need.
+- LangGraph: ADAPT concepts; DEFER runtime because D1 currently owns state/receipt/lease.
+- LiteLLM: reject deployment in current Contour A; retain only protocol/usage pattern learning pending independent security reassessment.
+- Temporal, Dagger, OTel Collector and Pydantic AI retain Pass 122 dispositions; no fresh primary-source release/advisory audit was completed for them in this delta scan.
+
+Concrete adaptation: extend provider route metadata with capability/modalities/context window, serving service tier, per-route cost/quota domain and correlation. Require immutable provider endpoints/outbound allowlists; reject caller-controlled base URLs, model-list overrides and credential parameters. Explicitly govern tool-output inspection, privacy and failure mode.
+
+No package installed, benchmark executed, runtime dependency added, provider route enabled or service deployed. Candidate security/SBOM/compatibility qualifications remain NOT VERIFIED.
