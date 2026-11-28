@@ -265,3 +265,28 @@ GitHub's `issue_comment` workflow only triggers when the workflow file exists on
 - Fresh default-branch Contents read for `.github/workflows/next-event-controller.yml` remains NOT_FOUND. The tests verify policy structure/documentation but do not replace the live default-branch Contents check.
 - Pass 127 exact PR merge-result `1dc7db175f4eec559053cae536536911b0117df2` is verified by both job logs: D1 140/140 PASS and Pool Contract 37/37 PASS (`POOL_CONTRACT_VALIDATION=PASS`). CI still emits Node20 deprecation warnings from separate validation workflows' legacy action pins; controller workflow itself has Node24 pins but is not yet triggerable from default branch. Local tests NOT RUN. Independent security review NOT RUN.
 - PR #188 remains OPEN/DRAFT/UNMERGED; independent review and effective governance remain NOT VERIFIED.
+
+
+## Pass 128 OSS, security and CI delta — 2026-11-28
+
+### Node 24 validation workflows
+- Reused the official immutable GitHub Actions already evaluated in Pass 127:
+  - checkout v7.0.1 SHA `3d3c42e5aac5ba805825da76410c181273ba90b1`
+  - setup-node v7.1.0 SHA `949feb2413d6458794dcd2491c4babbbce0c15c1`
+- Migrated `.github/workflows/d1-ledger-proof-validation.yml` and `.github/workflows/pool-contract-validation.yml`; setup-node package-manager cache explicitly disabled.
+- Final CI logs contain no Node20 action deprecation warning for these workflows.
+- No new dependencies, services, provider routes or paid resources.
+
+### Import-graph security guard
+- Added `scripts/check-worker-import-graph.mjs` and tests.
+- Recursively resolves local static imports/exports, rejects dynamic import/require and non-relative imports, forbids reachability of event/controller adapters and blocks symlink realpath escapes.
+- Current Worker entrypoint graph: 1 module, 0 edges. This is a source-policy guard, not a hostile-code sandbox.
+- Replaced previous direct-import-only inspection with the recursive graph check in Pool Contract validation.
+
+### Source-level review and evidence
+- Reviewed owner-only workflow admission, read-only permissions, bounded API collector, independently mapped raw Actions context, envelope verifier, D1 receipt linkage and migration 0018 constraints.
+- Local collector → verifier → D1 composition remains synthetic API fixtures on Workers Vitest/Miniflare. No live GitHub event or hosted D1 claim.
+- Exact merge-result `a1a6e41eb16bcd63d72f18bbb3cf7ee5911cc1bf`:
+  - D1 run `46176960877`: 9/9 files, 140/140 tests PASS.
+  - Pool Contract run `46176960864`: 42/42 Node tests, `POOL_CONTRACT_VALIDATION=PASS`, `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- Independent external security review remains NOT RUN. Default-branch controller workflow remains NOT FOUND; live controller NOT RUN.
