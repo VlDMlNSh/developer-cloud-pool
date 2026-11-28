@@ -405,3 +405,48 @@ Primary sources:
 ### Pass 136 estimate confidence clarification
 - Remaining 52–95 focused engineering hours: **LOW–MEDIUM confidence**. The range is based on currently evidenced missing capabilities and a work-package breakdown, not a measured velocity model. Re-estimate after the first 2–3 work packages and after independent security review reveals its findings.
 - External reviewer availability, owner approval latency, free-hosting feasibility and any newly discovered authorization constraints are excluded from active engineering effort and can extend calendar duration.
+
+
+---
+
+## Pass 137 — governance truth refresh and scanner provenance (2026-11-28)
+
+### Current repository evidence
+- PR #188 remains OPEN / DRAFT / UNMERGED; head `bebf4d9f92a5d7c8d9677a6828b1707e7e22e069`, base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Default branch `Основной` HEAD independently verified as `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Exact merge-result `82a77557bd8aac4f941a5554a4d2818e96cba57b` checked out by both current successful PR CI jobs.
+- Pool Contract Validation run 46188556454 / job 141113886341: 42/42 tests, validator PASS, import graph PASS; log explicitly observed `POOL_DISPATCH_ENABLED=false`.
+- D1 Ledger run 46188556460 / job 141113874704: 9/9 files, 140/140 tests.
+- Total 182/182 tests on one merge-result SHA. This remains local/CI evidence, not live service acceptance.
+- PR formal reviews 0; review threads 0.
+
+### Governance correction — current ruleset is insufficient for independent approval
+- Active ruleset #26550182 applies to `refs/heads/Основной`.
+- It requires PRs, prevents deletion/non-fast-forward and requires review-thread resolution.
+- `required_approving_review_count=0`; no required reviewers, CODEOWNERS review, last-push approval or extra approval.
+- Bypass actors empty; current user bypass never.
+- Branch-protection endpoint reports `protected=false` and required status checks off; active ruleset remains a distinct enforcement object.
+- Consequence: approval is not currently a configured mandatory merge gate. Owner action: set at least one required approving review, save, then re-read effective ruleset. Independent security review remains NOT RUN.
+- Default branch controller workflow still NOT_FOUND; live controller activation NOT RUN.
+
+### Pass 137 Reuse First — security scanners
+| Component | Current upstream evidence | License | Decision |
+|---|---|---|---|
+| zizmor v1.33.1 | GitHub release published 2026-11-22, immutable=true; Linux x86_64 asset digest `sha256:3e6a301c7a820a2501915f5a9de8c0486da82bdec7965f068477538a98743d43` | MIT | PILOT NEXT, advisory/read-only |
+| OpenSSF Scorecard v5.7.0 | GitHub release published 2026-11-19, immutable=false; Linux amd64 asset digest `sha256:3b08ec0a8681806c3e744ec9210742a502c7d66f06f25523b70f7128738235d3`; attestation asset exists but not verified | Apache-2.0 | DEFER pending attestation/data-flow review |
+
+- zizmor GitHub release API is ahead of PyPI metadata observed during this scan (PyPI latest showed 1.32.0). Prefer the immutable upstream GitHub binary with its asset digest; do not silently install the older PyPI package.
+- zizmor not installed or executed. No dependencies added. No workflow changed.
+- Scorecard not installed or executed. No token supplied; no repository clone or public score publication.
+- Reuse existing repository workflow validation and CI logs. Do not add a new runtime component.
+
+### Pass 137 status and metrics
+- Maturity: Stage 2/7 VERIFIED local integration proof; Stage 3 governance BLOCKED.
+- Remaining estimate: 52–95 focused hours, LOW–MEDIUM confidence; unchanged pending work-package evidence.
+- Historical actual cumulative hours and Pass 137 active time: NOT MEASURED / NOT RECOVERABLE; do not infer from message/commit/CI duration.
+- Code/runtime changes 0; dependencies installed 0; new tests 0; existing CI 182/182 same-SHA.
+- Paid resources 0; secrets read 0; dispatches 0; provider calls 0; executor launches 0; hosted D1 writes 0; deployments 0; merges 0; production mutations 0.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+- Report: `docs/reports/2026-11-28-pass137-governance-provenance-refresh.md`.
+- Checkpoint: `docs/checkpoints/2026-11-28-pass137-governance-provenance-refresh.md`.
+- Next: owner raises ruleset approval threshold; independent security review; then bounded zizmor read-only pilot. No merge/activation/dispatch until gates pass.
