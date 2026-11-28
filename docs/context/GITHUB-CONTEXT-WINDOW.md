@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 133 latest exact-head CI and governance revalidation
+Last refreshed: 2026-11-28 — Pass 134 latest-head CI and governance revalidationnd governance revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
@@ -2849,4 +2849,24 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
 - Report: [Pass 133](../reports/2026-11-28-pass133-latest-ci-governance-revalidation.md); checkpoint: [Pass 133 checkpoint](../checkpoints/2026-11-28-pass133-latest-ci-governance-revalidation.md).
 - Next: owner-authorized ruleset change requiring at least one independent approval, then independent security review of exact PR head. No merge, activation or dispatch before gates.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 134 — latest-head CI and governance revalidation (2026-11-28)
+
+- Current PR #188: OPEN / DRAFT / UNMERGED; head `bb3d6e79c78c1b7fbdd4f2f2cb43cc995bedfbba`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; exact merge-result `d2a476c4b373dcb2098fad5eb557c89da5956722`; 265 commits / 106 files / +13,367/-16.
+- Exact merge-result CI verified in both job logs:
+  - D1 run `46183459138`, job `141098007999`: SUCCESS; exact checkout `d2a476c4b373dcb2098fad5eb557c89da5956722`; 9/9 files, 140/140 tests.
+  - Pool Contract run `46183459148`, job `141098016970`: SUCCESS; exact checkout `d2a476c4b373dcb2098fad5eb557c89da5956722`; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- Total 182 tests VERIFIED on exact merge-result only.
+- Formal reviews 0; inline threads 0; independent security review NOT RUN.
+- Active ruleset #26550182 unchanged: PR required; deletion/non-fast-forward prevented; thread resolution required; required approvals 0; required reviewers empty; CODEOWNERS review false; last-push approval false; extra approval false; bypass actors empty.
+- Default branch `Основной` still returns 404 for `.github/workflows/next-event-controller.yml`; live controller NOT RUN.
+- Current `POOL_DISPATCH_ENABLED` Actions variable metadata NOT VERIFIED; no secret values accessed.
+- No dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. Gemini/Claude NOT RUN.
+- New dependencies 0; paid resources 0; active engineering time NOT MEASURED.
+- Reuse First: evidence-only pass reused existing GitHub metadata, Rulesets API and existing pinned CI/test suites; no new component/dependency required.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: [Pass 134](../reports/2026-11-28-pass134-latest-head-ci-governance.md); checkpoint: [Pass 134 checkpoint](../checkpoints/2026-11-28-pass134-latest-head-ci-governance.md).
+- Next: owner-authorized ruleset update requiring at least one independent approval, then independent exact-head security review. No merge, activation or dispatch before gates.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
