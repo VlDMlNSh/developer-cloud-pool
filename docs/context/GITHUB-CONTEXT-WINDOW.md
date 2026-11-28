@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 126 independent Actions provenance and adversarial API verification
+Last refreshed: 2026-11-28 — Pass 127 Node24 immutable Actions pins and issue_comment activation contract
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest daily report: `docs/reports/2026-11-28-pass126-independent-actions-provenance.md` (working branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-28-pass127-node24-actions-activation-contract.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -49,8 +49,8 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 
 - Repository: public `VlDMlNSh/developer-cloud-pool`; default branch `Основной`.
 - Verified default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`; Pass 126 tested code/test head `0610fe5079f5dd8a8ef9498e35de580cda573e56`; docs continue on this branch and remain unmerged.
-- PR #188: OPEN / DRAFT / UNMERGED; base default HEAD above; latest code/test head at Pass 126 `0610fe5079f5dd8a8ef9498e35de580cda573e56`. It is a large cumulative candidate (204 commits, 87 files, +11,986/-6 at the Pass 126 code head), not a merge-ready patch.
+- Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`; Pass 127 latest observed branch commit `398bc48065a6d0e034cb610cf11e13c995c3804f`; Pass 126 tested code/test head `0610fe5079f5dd8a8ef9498e35de580cda573e56`; Pass 127 code/tests are pending CI; docs and changes remain unmerged.
+- PR #188: OPEN / DRAFT / UNMERGED; base default HEAD above; latest observed branch commit `398bc48065a6d0e034cb610cf11e13c995c3804f`; Pass 127 exact-head CI NOT VERIFIED. It remains a large cumulative candidate, not a merge-ready patch.
 - PR #188 formal reviews: 0; inline review threads: 0; independent security review: NOT RUN.
 - PRs #185, #186, #187 and the earlier D1/controller stack remain OPEN/DRAFT/UNMERGED where last observed; refresh before relying on them. PR #188 remains the current integration candidate.
 - Fresh default-branch Contents read for `.github/workflows/next-event-controller.yml` returned NOT_FOUND. GitHub documents that an `issue_comment` workflow must exist on the default branch to trigger. Therefore controller live execution is NOT RUN while the workflow exists only in PR #188.
@@ -2659,5 +2659,37 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 
 Report: `docs/reports/2026-11-28-pass126-independent-actions-provenance.md`  
 Checkpoint: `docs/checkpoints/2026-11-28-pass126-independent-actions-provenance.md`  
+Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 22. Pass 127 — Node24 immutable Actions pins and issue_comment activation contract (2026-11-28)
+
+### 22.1 Reuse First and action refresh
+- Reused official GitHub first-party Actions rather than introducing a new runtime or dependency.
+- `actions/checkout` v7.0.1 exact commit `3d3c42e5aac5ba805825da76410c181273ba90b1`; exact-commit `action.yml` declares Node24 and retains `ref`/ `persist-credentials` inputs. MIT license verified. GitHub release page reports immutable release and verified signature.
+- `actions/setup-node` v7.1.0 exact commit `949feb2413d6458794dcd2491c4babbbce0c15c1`; exact-commit `action.yml` declares Node24 and retains `node-version`/ `check-latest` inputs. Upstream notes no input/output/behavior changes in v7. MIT license verified. GitHub release page reports immutable release and verified signature.
+- Controller pins both full SHAs and explicitly sets `package-manager-cache: false`; retains `persist-credentials: false`, read-only permissions and workflow-pinned checkout.
+- Connector commit payload did not expose structured signature verification; signature status is sourced from upstream GitHub release pages, not local cryptographic verification.
+
+### 22.2 Activation contract and tests
+- Added `docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md`, documenting that GitHub only triggers `issue_comment` workflows when the workflow file exists on the default branch.
+- Added static assertions to `scripts/owner-next-controller.test.mjs` for issue_comment-only trigger, forbidden alternate triggers, exact immutable action pins, cache-disabled setup-node and activation-contract content.
+- Added matching checks to `scripts/validate-pool-contract.mjs`.
+- Default branch `Основной` remains `565404f84b6b86afb4dc2d8fa939341f42df6eca`; fresh Contents read for `.github/workflows/next-event-controller.yml` returned NOT_FOUND. Live controller execution remains NOT RUN. Static tests do not replace this live precondition.
+
+### 22.3 Verification and governance
+- Pass 127 latest observed branch commit: `398bc48065a6d0e034cb610cf11e13c995c3804f`.
+- Controller workflow blob: `e8c673349a1ad1ebbc5616fd9541dc38986f4969`; controller test blob: `906821df87b39e4a4decae188cb084ef743fe4e4`; validator blob: `076a95de97b666cc9c39bc29933a83046d8fc95c`.
+- Report: `docs/reports/2026-11-28-pass127-node24-actions-activation-contract.md`; checkpoint: `docs/checkpoints/2026-11-28-pass127-node24-actions-activation-contract.md`.
+- Pass 127 workflow-run lookup returned no runs; exact merge-result CI NOT VERIFIED. Local tests NOT RUN. Pass 126's 140/140 D1 and 36/36 contract results apply only to prior merge-result `1bf51441f0a77cba6c36c5448a525f782a951ce2`.
+- PR #188 remains OPEN/DRAFT/UNMERGED; reviews 0; inline threads 0; independent security review NOT RUN. Effective ruleset and `POOL_DISPATCH_ENABLED` metadata NOT VERIFIED.
+- No secrets, hosted D1, provider calls, dispatch, executor, deployment, merge, production mutation, new dependencies or paid resources. Active time NOT MEASURED; benchmark NOT RUN.
+- Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+
+Next: obtain exact PR merge-result CI for Pass 127, inspect jobs/logs, conduct independent security review of controller → collector → raw Actions context → Envelope verifier → D1 receipt, and refresh effective governance metadata. Do not activate controller until the workflow is safely present on default branch through approved governance.
+
+Report: `docs/reports/2026-11-28-pass127-node24-actions-activation-contract.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass127-node24-actions-activation-contract.md`  
 Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
