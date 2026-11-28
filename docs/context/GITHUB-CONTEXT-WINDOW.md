@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 124 read-only owner /next controller and daily OSS security delta
+Last refreshed: 2026-11-28 — Pass 125 exact API collector → Workers verifier → D1 receipt composition
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by default-vs-feature compare)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest daily report: `docs/reports/2026-11-28-pass124-readonly-owner-next-controller.md` (working branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-28-pass125-api-collector-d1-composition.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2592,3 +2592,39 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 - Pass 125: pass the exact collector-produced serialized JSON/digest and independently mapped trusted Actions context through the Workers-native verifier into the local D1 attested adapter; prove receipt persistence and replay readback; prove legacy synthetic adapter import isolation from the worker production graph.
 - Keep dispatch=false and executionAuthorized=false. No hosted D1, provider calls or executor.
 - Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+## 20. Pass 125 — exact API collector → Workers verifier → D1 receipt composition (2026-11-28)
+
+### Verified implementation and test evidence
+- Pass 125 parent SHA: `de2a909282c964e08ae0f1efc43bf4554163863e`.
+- Exact tested code/test SHA: `3ead23090b2b652ad0108fc12c0e5628f9568e97`.
+- PR #188 remains OPEN / DRAFT / UNMERGED; base `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- D1 run `46172563736`, job `141064025304`: SUCCESS, 9/9 files and 140/140 tests.
+- Pool Contract run `46172563762`, job `141064025522`: SUCCESS.
+- New local synthetic integration test invokes the real bounded `collectOwnerNextEnvelope` with deterministic GitHub API fixtures, uses its exact serialized `sourceJson` and digest, maps trusted Actions context, and passes all three values to `admitGitHubNextAttestedEvent`.
+- Test proves D1 receipt readback for attestation schema/version, Issue/Comment node IDs, default/run SHA, workflow ID/state, workflow commit/blob/ref SHA and `dispatch_enabled=0`; exact replay returns already-committed/already-recorded.
+- Pool Contract adds a direct-import guard proving the inert D1 Worker entrypoint does not directly import the legacy synthetic or attested GitHub event adapter.
+- Two test fixture identity collisions were found by CI (approval ID, then admission ID) and corrected by unique synthetic IDs. D1 guards were not weakened.
+- The CI test uses synthetic API responses. Live issue-comment event, real Actions API collection/token, controller run, hosted D1 and deployed behavior remain NOT RUN.
+
+### Scope limitations and gates
+- Direct Worker import isolation is checked; full transitive production import graph remains NOT VERIFIED.
+- Independent security review: NOT RUN. PR #188 formal reviews: 0; inline threads: 0.
+- Effective detailed ruleset conditions and current dispatch-variable metadata: NOT VERIFIED in this pass.
+- No secret values read, provider calls, hosted D1 writes, dispatch, executor launch, deployment, merge or production mutation.
+- Active engineering time NOT MEASURED; performance benchmark NOT RUN.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+### Reuse First and OSS delta
+- REUSE existing bounded collector, Envelope v1, Workers verifier, D1 attested adapter, migration 0018 and pinned local Workers/Vitest/D1 harness. No new dependency or ledger.
+- Official Cloudflare Workers Vitest documentation supports local Workers-runtime integration tests with bindings and Miniflare: https://developers.cloudflare.com/workers/testing/vitest-integration/
+- No material change to prior Bifrost (DEFER), agentgateway (ADAPT concepts / DEFER runtime) or LiteLLM (do not deploy for current Contour A) dispositions. See `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`, Pass 125 addendum.
+
+### Next critical path
+- Pass 126: independent security review of the complete controller → collector → verifier → D1 trust chain; adversarial tests for API identity substitutions, stale default ref, workflow blob mismatch, run/attempt mismatch, replay and partial receipt readback.
+- Refresh exact PR head, CI and governance before any review/merge decision. Keep dispatch=false and executionAuthorized=false.
+- Do not merge PR #188 before independent review and governance gates pass. No Contour B until formal Contour A ACCEPTED.
+
+Report: `docs/reports/2026-11-28-pass125-api-collector-d1-composition.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass125-api-collector-d1-composition.md`  
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
