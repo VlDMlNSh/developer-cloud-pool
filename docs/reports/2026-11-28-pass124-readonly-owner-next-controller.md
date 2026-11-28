@@ -36,7 +36,7 @@ No runtime dependency, new ledger or provider route added.
 - Pool Contract Validation run: https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46170933384
 - Job: 141058959300, SUCCESS.
 - Job log confirms workflow YAML parse, Pool Contract security validator and 32/32 Node tests passed.
-- PR #188: OPEN / DRAFT / UNMERGED; 170 commits, 83 files, +11,425/-4 against default due the cumulative D1 proof + Pass 120–124 stack.
+- PR #188: OPEN / DRAFT / UNMERGED;  against default due the cumulative D1 proof + Pass 120–124 stack.
 - PR #188 reviews: 0; inline threads: 0.
 - D1 local integration tests on the Pass 124 merge-result: NOT RUN. This default-base run executed Pool Contract Validation only; do not infer D1 composition from it.
 - Independent security review: NOT RUN.
