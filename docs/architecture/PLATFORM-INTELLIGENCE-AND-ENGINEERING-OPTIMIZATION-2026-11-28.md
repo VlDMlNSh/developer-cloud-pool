@@ -218,7 +218,7 @@ This is the fresh delta scan performed after the owner-approved policy was recor
 - D1 local integration suite on the Pass 124 merge result: NOT RUN. The default-base validation path ran Pool Contract Validation only; it did not establish end-to-end collector → Workers verifier → D1 receipt composition.
 - PR #188 formal reviews: 0; inline threads: 0; independent security review: NOT RUN.
 - Controller workflow has not been invoked on the default branch; no live issue event, API collection, hosted D1, provider call, executor, dispatch, deployment or production mutation occurred.
-- The PR's cumulative clean-default diff is 83 files / 11,425 additions / 4 deletions across 170 commits. Pass 124's bounded code delta from the Pass 120 lineage is five files; earlier D1 proof and Pass 121–123 documentation are carried as its prerequisite stack. Keep Draft and do not merge until D1 composition, exact-head validation, independent security review and governance gates pass.
+- The PR's cumulative clean-default diff is / 11,425 additions / 4 deletions across . Pass 124's bounded code delta from the Pass 120 lineage is five files; earlier D1 proof and Pass 121–123 documentation are carried as its prerequisite stack. Keep Draft and do not merge until D1 composition, exact-head validation, independent security review and governance gates pass.
 
 ### Next critical-path task
 
