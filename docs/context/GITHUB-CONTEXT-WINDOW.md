@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 128 source security review, Node24 validation workflows and transitive Worker import isolation
+Last refreshed: 2026-11-28 — Pass 129 owner /next controller exact-head and governance revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest daily report: `docs/reports/2026-11-28-pass128-security-and-node24-import-isolation.md` (working branch remains unmerged)
+Latest report/checkpoint: `docs/reports/2026-11-28-pass129-controller-governance-revalidation.md` / `docs/checkpoints/2026-11-28-pass129-controller-governance-revalidation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
