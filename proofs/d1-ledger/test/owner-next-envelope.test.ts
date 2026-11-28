@@ -75,7 +75,7 @@ describe("Workers-native owner /next API envelope", () => {
   });
 
   it("rejects mismatched workflow and run provenance", async () => {
-    const value = envelope(); value.run.workflowCommitSha = sha("d");
+    const value = envelope(); value.run.workflowCommitSha = sha("d"); value.run.workflowFileRefSha = sha("d");
     const digest = await digestOwnerNextEnvelope(value);
     await expect(verifyOwnerNextEnvelopeForActions(JSON.stringify(value), digest, context))
       .rejects.toThrow("ACTIONS_RUN_CROSSCHECK_FAILED");
