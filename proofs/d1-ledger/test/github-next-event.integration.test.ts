@@ -39,7 +39,7 @@ async function fixture(id, commentIdOverride, attested = false) {
       headBranch: "Основной", headSha: context.sha, workflowId: "98765",
       workflowPath: ".github/workflows/next-event-controller.yml", workflowState: "active",
       workflowCommitSha: context.workflowSha, workflowFileBlobSha: "c".repeat(40),
-      workflowFileRefSha: context.sha },
+      workflowFileRefSha: context.workflowSha },
     policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
   };
   const attestationDigest = await digestOwnerNextEnvelope(envelope);
@@ -415,7 +415,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     expect(first).toMatchObject({ decision: "ADMITTED_QUEUED", receiptDecision: "SOURCE_COMMENT_RECORDED", dispatch: false, executionAuthorized: false });
     expect(replay).toMatchObject({ decision: "ADMISSION_ALREADY_COMMITTED", receiptDecision: "SOURCE_COMMENT_ALREADY_RECORDED", dispatch: false, executionAuthorized: false });
     const row = await env.POOL_DB.prepare("SELECT event_digest, attestation_schema, attestation_version, issue_node_id, comment_node_id, observed_default_head_sha, run_head_sha, workflow_id, workflow_state, workflow_commit_sha, workflow_file_blob_sha, workflow_file_ref_sha, dispatch_enabled FROM pool_source_comment_receipts WHERE source_comment_id = ?").bind(String(f.context.commentId)).first();
-    expect(row).toMatchObject({ event_digest: f.digest, attestation_schema: "cloud-pool.owner-next.api-attestation", attestation_version: 1, issue_node_id: "I_kwDOTestIssue", comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: f.context.sha, run_head_sha: f.context.sha, workflow_id: "98765", workflow_state: "active", workflow_commit_sha: f.context.workflowSha, workflow_file_blob_sha: "c".repeat(40), workflow_file_ref_sha: f.context.sha, dispatch_enabled: 0 });
+    expect(row).toMatchObject({ event_digest: f.digest, attestation_schema: "cloud-pool.owner-next.api-attestation", attestation_version: 1, issue_node_id: "I_kwDOTestIssue", comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: f.context.sha, run_head_sha: f.context.sha, workflow_id: "98765", workflow_state: "active", workflow_commit_sha: f.context.workflowSha, workflow_file_blob_sha: "c".repeat(40), workflow_file_ref_sha: f.context.workflowSha, dispatch_enabled: 0 });
   });
 
   it("rejects API-envelope substitution before D1 admission", async () => {

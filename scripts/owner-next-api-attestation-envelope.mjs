@@ -143,7 +143,7 @@ export function validateOwnerNextEnvelope(envelope) {
   if (run.event !== "issue_comment" || run.headBranch !== DEFAULT_BRANCH || !sha(run.headSha)) reject("RUN_SOURCE_INVALID");
   if (!decimal(run.workflowId) || run.workflowPath !== WORKFLOW_PATH || run.workflowState !== "active") reject("WORKFLOW_METADATA_INVALID");
   if (!sha(run.workflowCommitSha) || !sha(run.workflowFileBlobSha) || !sha(run.workflowFileRefSha)) reject("WORKFLOW_SHA_INVALID");
-  if (run.headSha !== r.observedDefaultHeadSha || run.workflowFileRefSha !== run.headSha) reject("RUN_REF_PROVENANCE_MISMATCH");
+  if (run.headSha !== r.observedDefaultHeadSha || run.workflowFileRefSha !== run.workflowCommitSha) reject("RUN_REF_PROVENANCE_MISMATCH");
 
   const p = envelope.policy;
   exactKeys(p, POLICY_KEYS, "ENVELOPE_POLICY_KEYS_INVALID");

@@ -32,7 +32,7 @@ const envelope = () => ({
     id: "123456", attempt: 1, event: "issue_comment", headBranch: "Основной",
     headSha: sha("a"), workflowId: "98765",
     workflowPath: ".github/workflows/next-event-controller.yml", workflowState: "active",
-    workflowCommitSha: sha("b"), workflowFileBlobSha: sha("c"), workflowFileRefSha: sha("a")
+    workflowCommitSha: sha("b"), workflowFileBlobSha: sha("c"), workflowFileRefSha: sha("b")
   },
   policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
 });
@@ -75,7 +75,7 @@ describe("Workers-native owner /next API envelope", () => {
   });
 
   it("rejects mismatched workflow and run provenance", async () => {
-    const value = envelope(); value.run.workflowCommitSha = sha("d");
+    const value = envelope(); value.run.workflowCommitSha = sha("d"); value.run.workflowFileRefSha = sha("d");
     const digest = await digestOwnerNextEnvelope(value);
     await expect(verifyOwnerNextEnvelopeForActions(JSON.stringify(value), digest, context))
       .rejects.toThrow("ACTIONS_RUN_CROSSCHECK_FAILED");
@@ -84,6 +84,19 @@ describe("Workers-native owner /next API envelope", () => {
   it("rejects a non-read-only policy", async () => {
     const value = envelope(); value.policy.dispatch = true;
     await expect(digestOwnerNextEnvelope(value)).rejects.toThrow("POLICY_NOT_READ_ONLY");
+  });
+
+  it("accepts distinct target and workflow SHAs only when file ref is the workflow commit", async () => {
+    const value = envelope();
+    expect(value.run.headSha).not.toBe(value.run.workflowCommitSha);
+    expect(value.run.workflowFileRefSha).toBe(value.run.workflowCommitSha);
+    await expect(digestOwnerNextEnvelope(value)).resolves.toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it("rejects a workflow file ref bound to the target SHA instead of workflow commit", async () => {
+    const value = envelope();
+    value.run.workflowFileRefSha = value.run.headSha;
+    await expect(digestOwnerNextEnvelope(value)).rejects.toThrow("RUN_REF_PROVENANCE_MISMATCH");
   });
 
   it("rejects mismatched run head and observed default head", async () => {

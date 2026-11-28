@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 113 controller/API/D1 ancestry reconciliation
+Last refreshed: 2026-11-28 — Pass 120 provenance correction and free-compute plan
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2458,3 +2458,45 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: port only the minimal read-only controller/API evidence path onto Pass111 lineage, produce same-run Envelope v1, call only attested D1 adapter, isolate legacy adapter to test-only use, add E2E/adversarial tests and run exact-head/merge-result CI.
 - Report: `docs/reports/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`; checkpoint: `docs/checkpoints/2026-11-28-pass113-controller-api-d1-ancestry-reconciliation.md`.
 - MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 118 — bounded API-attested owner /next envelope collector (2026-11-28)
+
+Status: SUCCEEDED (bounded collector + exact-head Pool Contract CI); end-to-end controller/D1 composition NOT RUN. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Base PR #181 head: `453d74ff70a67d3091d920281f6471a721f1808d`.
+- Code/test/workflow head validated: `9f80fb5df2bca95165385e989e284c633cc24f45`.
+- PR #185: OPEN/DRAFT/UNMERGED, stacked on PR #181; head is advanced by report/checkpoint/Context Window commits after tested code head.
+- Added `scripts/owner-next-api-envelope.mjs` and `scripts/owner-next-api-envelope.test.mjs`; adapted existing API audit approach and reused `digestOwnerNextEnvelope`.
+- API origin fixed to `https://api.github.com`; repository path allowlist; rejects traversal/encoded path separators and redirects; 3-second timeout; 256 KiB response cap; fatal UTF-8/JSON parse.
+- Collector reads repo, Issue #96, comment, workflow run, workflow metadata, default ref and workflow-file bytes; checks immutable identity, exact event and first attempt; computes Git blob SHA-1 from bytes; keeps target SHA, workflow commit SHA, blob SHA and ref SHA distinct.
+- Exact-head Pool Contract CI [46168085516](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46168085516): SUCCESS; job 141050055417; YAML parse and security contract pass; Node tests 28/28 PASS (20 existing Envelope tests + 8 collector tests).
+- Earlier intermediate CI failures were inspected and corrected; only the final exact code/test/workflow head is marked successful.
+- Local tests NOT RUN; CI run is the test evidence. Independent security review NOT RUN.
+- No D1 code/schema changed; collector is not yet invoked by issue_comment workflow; exact JSON/digest not yet fed into Workers/D1 integration test. Legacy adapter export remains; production import graph NOT VERIFIED.
+- Current dispatch variable NOT VERIFIED; dispatch prohibited. No secrets, hosted D1, provider calls, execution, deployment, production mutation or merge.
+- Active engineering time NOT MEASURED. Compare before docs: 3 files, 375 additions, 0 deletions.
+- Next: Pass 119 wires trusted issue_comment workflow → collector → exact serialized Envelope/digest → Workers verifier → local D1 attested adapter integration test; no hosted D1 or dispatch.
+
+Report: `docs/reports/2026-11-28-pass118-bounded-owner-next-envelope-collector.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass118-bounded-owner-next-envelope-collector.md`
+
+
+## Pass 120 — workflow-code provenance correction + Jarvis free-compute plan (2026-11-28)
+
+Status: VERIFIED (source correction + exact-head CI); independent security review NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Implementation PR #186 OPEN/DRAFT/UNMERGED, stacked on PR #181. Validation-only PR #187 OPEN/DRAFT/UNMERGED against default; never merge #187.
+- Pass 111 base: `453d74ff70a67d3091d920281f6471a721f1808d`; Pass 118 source collector blob: `9946881694fac6d57876d543103ee66af31a480b`.
+- Final tested code/test/workflow head: `8d0401ec7d45542a71e20594a9f22d193afe4846`. Later docs-only commits added compute plan/report/checkpoint.
+- F-119-01 corrected across collector, Node canonical verifier, Workers verifier, D1 migration 0018 and integration fixtures: workflow bytes are read at immutable `GITHUB_WORKFLOW_SHA`; `workflowFileRefSha` must equal `workflowCommitSha`; target/head SHA remains independently checked against observed default ref.
+- Adversarial tests cover distinct target/workflow SHAs, reject target-SHA-as-workflow-ref, and assert API request ref uses `GITHUB_WORKFLOW_SHA`.
+- Final D1 run `46168608155`, job `141051675618`: SUCCESS, 9/9 test files and 139/139 tests.
+- Final Pool Contract runs `46168608158` / `46168608181`, jobs `141051675805` / `141051675838`: SUCCESS; YAML parsing/security contracts PASS; 29/29 tests each. Intermediate failures were read, diagnosed and corrected before final head.
+- Added `docs/architecture/JARVIS-FREE-COMPUTE-AND-ROUTING-PLAN-2026-11-28.md`: GitHub public standard runners (free/unlimited for public repos; standard Ubuntu 4 vCPU/16 GB/14 GB; Free plan concurrency 20), Cloudflare Workers/D1 Free limits, Gemini Free-tier constraints, model gateway, task isolation, persist-before-dispatch and free-first/no-paid-fallback policy.
+- OpenAI API is usage-priced, not free compute; no OpenAI API key is required or configured. Gemini free tier is optional and unqualified; privacy/quota/account checks required before use.
+- Report: `docs/reports/2026-11-28-pass120-workflow-provenance-and-free-compute.md`; checkpoint: `docs/checkpoints/2026-11-28-pass120-workflow-provenance-and-free-compute.md`.
+- No secret values or Actions variables read; no API keys created/stored; no hosted D1 writes, provider calls, dispatch, executor launch, deployment, merge or production mutation.
+- Active engineering time NOT MEASURED. Independent security review NOT RUN. Local non-CI tests NOT RUN.
+- Next Pass 121: wire trusted read-only issue_comment workflow → actual collector JSON/digest → Workers verifier → local D1 attested adapter integration test; prove legacy adapter import isolation; independent security review. Keep dispatch false.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md

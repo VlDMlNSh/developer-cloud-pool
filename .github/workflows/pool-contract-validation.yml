@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - "Основной"
+      - "feat/pass111-d1-attested-receipt-2026-11-27"
     paths:
       - ".github/workflows/**"
       - "scripts/**"
@@ -56,4 +57,4 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/validate-pool-contract.mjs
-          node --test scripts/owner-next-api-attestation-envelope.test.mjs
+          node --test scripts/owner-next-api-attestation-envelope.test.mjs scripts/owner-next-api-envelope.test.mjs
