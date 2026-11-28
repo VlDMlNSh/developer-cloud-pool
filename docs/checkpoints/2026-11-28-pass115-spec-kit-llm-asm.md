@@ -23,3 +23,7 @@
 - Eight principal artifacts fetched back and passed static structural assertions; no exact-head CI run because existing workflow path filters exclude these files.
 - Formal reviews: 0; review threads: 0; independent review NOT RUN.
 - Status remains: Spec Kit artifacts VERIFIED; CLI NOT RUN; llm.asm RESEARCH ONLY; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Complete source-data capture addendum
+The Pass 115 report now preserves the complete llm.asm figures and build procedure supplied by the owner: project attribution/date/star snapshot/license/17,252 assembly lines; all three binary sizes and boot time; EPYC 7642 throughput and llama.cpp comparisons; 64/64 PyTorch FP32 parity and cosine 0.99965; AVX2/FMA/F16C prerequisites; exact Linux build commands; ~2,048-token context; one-model/Q8_0 scope; and bare-metal network/memory-protection limitations. These are explicitly labeled user-provided claims, not independently reproduced. No build or model download was performed.
