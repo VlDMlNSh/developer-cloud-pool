@@ -63,7 +63,7 @@ if (!ownerNextActivationContract.includes("unless the workflow file exists on th
 }
 if (!ownerNextController.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
     !ownerNextController.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
-    !/package-manager-cache:\\s*false/.test(ownerNextController)) {
+    !/package-manager-cache:\s*false/.test(ownerNextController)) {
   fail("Owner /next controller must use the reviewed immutable Node24 action pins with package-manager caching disabled");
 }
 if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
