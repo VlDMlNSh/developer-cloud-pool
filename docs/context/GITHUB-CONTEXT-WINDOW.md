@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 125 exact API collector → Workers verifier → D1 receipt composition
+Last refreshed: 2026-11-28 — Pass 126 independent Actions provenance and adversarial API verification
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by default-vs-feature compare)
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest daily report: `docs/reports/2026-11-28-pass125-api-collector-d1-composition.md` (working branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-28-pass126-independent-actions-provenance.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -47,15 +47,16 @@ Contour B is explicitly deferred. It must not be pulled forward because a scope 
 
 ## 3. Repository state, branches and governance
 
-- Repository metadata currently reports default branch `Основной`, public repository, pushed_at 2026-11-06T12:17:27Z, open issues count 28.
-- Observed default HEAD: `64d2636d4500127e635c214ccfb722c6b3fcda80`.
-- Branch API returned `protected=false` for `Основной` and all listed feature/docs branches. This field alone does NOT establish whether a repository ruleset is effective.
-- Active repository ruleset collection returned one active ruleset: ID `26550182`, name `Основной — verified`, target branch, enforcement active. Its current conditions/rules must be read directly before any merge or dispatch; do not infer effective protections solely from the collection listing.
-- Historical Issue #1 evidence (2026-11-04) reported exact selector `refs/heads/Основной`, PR required, zero required approvals, deletion/non-fast-forward restrictions, review-thread resolution enabled, no bypass actors, and `POOL_DISPATCH_ENABLED=false` read back through owner-authenticated GitHub CLI. Treat the variable read-back and detailed ruleset condition as historical until rechecked; do not read secret values.
-- Issue #2 is closed and contains an earlier governance alignment history; its former ruleset ID 26535481 was reported absent. Current ruleset collection shows ID 26550182.
-- PRs are not automatically accepted because mergeable=true or CI passed. Formal independent review, effective ruleset details, provenance, exact-head checks and acceptance criteria remain separate gates.
-- The current documentation branch `docs/cross-chat-continuation-2026-11-06` is a working continuation branch. PR #27 remains OPEN/DRAFT/UNMERGED. Do not call it merged or the default branch.
-
+- Repository: public `VlDMlNSh/developer-cloud-pool`; default branch `Основной`.
+- Verified default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`; Pass 126 tested code/test head `0610fe5079f5dd8a8ef9498e35de580cda573e56`; docs continue on this branch and remain unmerged.
+- PR #188: OPEN / DRAFT / UNMERGED; base default HEAD above; latest code/test head at Pass 126 `0610fe5079f5dd8a8ef9498e35de580cda573e56`. It is a large cumulative candidate (204 commits, 87 files, +11,986/-6 at the Pass 126 code head), not a merge-ready patch.
+- PR #188 formal reviews: 0; inline review threads: 0; independent security review: NOT RUN.
+- PRs #185, #186, #187 and the earlier D1/controller stack remain OPEN/DRAFT/UNMERGED where last observed; refresh before relying on them. PR #188 remains the current integration candidate.
+- Fresh default-branch Contents read for `.github/workflows/next-event-controller.yml` returned NOT_FOUND. GitHub documents that an `issue_comment` workflow must exist on the default branch to trigger. Therefore controller live execution is NOT RUN while the workflow exists only in PR #188.
+- Detailed effective ruleset conditions, current branch-protection configuration and current `POOL_DISPATCH_ENABLED` variable metadata: NOT VERIFIED in Pass 126. The available GitHub connector did not expose a safe read path for those exact metadata. Do not rely on historical Issue #1/ruleset evidence as current.
+- No secret values were read. No controller dispatch, executor, provider call, hosted D1 write, deployment, merge or production mutation occurred.
+- A CI `mergeable=true` response is not a governance approval. Keep PR #188 Draft/unmerged until independent security review and effective governance gates are evidenced.
 ## 4. Cloud execution architecture and actual runtime status
 
 ### Intended architecture
@@ -2627,4 +2628,36 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 
 Report: `docs/reports/2026-11-28-pass125-api-collector-d1-composition.md`  
 Checkpoint: `docs/checkpoints/2026-11-28-pass125-api-collector-d1-composition.md`  
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+## 21. Pass 126 — independent Actions provenance and adversarial verification (2026-11-28)
+
+### 21.1 Finding and implementation
+- Pass 125's `mapGitHubActionsContext` copied several identity/ref/run values from the API-derived Envelope. Pass 126 corrected this self-echo: context now derives independently from the raw issue_comment webhook payload and actual `GITHUB_*` runner environment.
+- Collector validates webhook repository numeric ID, full name, owner numeric ID/login, event sender ID/login, comment author ID/login and required immutable issue/comment node IDs.
+- API issue/comment responses must provide non-empty matching node IDs and owner identity.
+- Workers verifier compares the API-attested Envelope v1 with the independently mapped webhook/runner context. Dispatch and execution authority remain false.
+
+### 21.2 Adversarial validation
+- Tested code/test SHA: `0610fe5079f5dd8a8ef9498e35de580cda573e56`.
+- Exact PR merge-result SHA: `1bf51441f0a77cba6c36c5448a525f782a951ce2` (merge of tested code head into default `565404f84b6b86afb4dc2d8fa939341f42df6eca`).
+- D1 run `46175255919`, job `141072385396`: SUCCESS; 9/9 files, 140/140 tests.
+- Pool Contract run `46175255931`, job `141072385703`: SUCCESS; 36/36 Node tests and `POOL_CONTRACT_VALIDATION=PASS`.
+- Adversarial tests mutate raw webhook issue/comment/author/sender fields, runner repository/ref/SHA/workflow/run fields, and API repository/issue/comment/workflow-run/workflow responses. Stale ref, blob digest, run attempt, API origin/path/size/timeout, duplicate JSON key and policy/digest tests remain.
+- First adversarial matrix run had one test-only expected-error mismatch: a repository env mutation correctly fails the event cross-check before the run cross-check. The assertion was corrected to the actual fail-closed boundary; final exact merge-result CI passed.
+
+### 21.3 Activation and evidence limitations
+- Default branch does not contain `.github/workflows/next-event-controller.yml` (fresh Contents API read NOT_FOUND). GitHub requires an issue_comment workflow to exist on default branch before it can trigger. Live event/controller execution is NOT RUN; do not add workflow_dispatch or privileged bypass.
+- Miniflare/Workers Vitest validates local runtime/binding behavior but is not a hardened sandbox for untrusted code. Do not use it as an isolation boundary.
+- Current pinned checkout/setup-node actions pass but emit Node20-targeting deprecation warnings under Node24 runners. Node20 was removed from GitHub Actions runners on 2026-09-23. Immutable Node24-native action pin migration is deferred to Pass 127 until exact release SHAs and input compatibility are verified.
+- Formal reviews: 0; inline threads: 0; independent security review: NOT RUN. Detailed ruleset and dispatch variable metadata NOT VERIFIED.
+- No secrets, hosted D1, provider calls, dispatch, executor, deployment, merge, production mutation, paid resources or new dependencies.
+
+### 21.4 Next critical path
+- Pass 127: independent review of controller → collector → raw Actions context → Envelope verifier → D1 receipt; verify immutable Node24 action release SHAs and provenance; add a machine-checked default-branch activation requirement; refresh exact PR and governance.
+- Keep PR #188 Draft/unmerged until review/governance gates pass. Contour A remains BLOCKED / NOT ACCEPTED; Contour B remains DEFERRED.
+
+Report: `docs/reports/2026-11-28-pass126-independent-actions-provenance.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass126-independent-actions-provenance.md`  
+Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
