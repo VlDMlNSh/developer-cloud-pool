@@ -25,7 +25,7 @@ Status: VERIFIED — controller/CLI implementation and Pool Contract merge-resul
 - YAML parse and static security contracts: PASS.
 - Node test suite in CI: 32/32 PASS.
 - PR formal reviews: 0; inline review threads: 0.
-- D1 local integration on this merge-result: NOT RUN. Existing prior D1 run results do not qualify this new composed head.
+- Isolated D1 Ledger run 46171241176, job 141059915920: SUCCESS on merge-result 9be990c45ee6fafef45e92ff78df38830c9e01ac; 9/9 files, 139/139 tests. Exact collector-output → Workers verifier → D1 receipt composition remains NOT RUN.
 - Independent security review: NOT RUN.
 - Controller event on default branch: NOT RUN; workflow not deployed/merged.
 
