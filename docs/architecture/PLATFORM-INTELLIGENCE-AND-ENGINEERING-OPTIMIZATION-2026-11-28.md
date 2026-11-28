@@ -223,3 +223,14 @@ This is the fresh delta scan performed after the owner-approved policy was recor
 ### Next critical-path task
 
 Feed the exact collector-produced serialized JSON and digest plus the independently mapped trusted Actions context into the Workers-native verifier and local D1 attested adapter in one integration test. Prove receipt persistence and replay readback, and prove legacy synthetic adapter imports cannot enter the production worker graph. Keep `dispatch=false`, `executionAuthorized=false`; no hosted D1 or executor.
+
+## Daily OSS delta scan — Pass 125 (2026-11-28)
+
+No material change to the previous security dispositions was found in this delta scan.
+
+- **Cloudflare Workers Vitest integration** — official docs updated 2026-08-20 describe local Workers-runtime unit/integration tests, direct binding access and Miniflare execution. **REUSE** the existing pinned `@cloudflare/vitest-plugin` / Vitest / D1 harness; no new dependency or hosted database. Source: https://developers.cloudflare.com/workers/testing/vitest-integration/
+- **Bifrost** — official advisories still expose high/critical issues covering custom-plugin HTTP RCE, MCP stdio RCE and SSRF deny-list gaps. **DEFER runtime** until affected/fixed version ranges, SBOM, threat model and independent review are verified. Source: https://github.com/maximhq/bifrost/security/advisories
+- **agentgateway** — v1.7.0 remains the reviewed release in this scan; capability/context metadata and service-tier cost concepts remain **ADAPT**, runtime **DEFER**. Tool-output guard defaults retain a privacy/data-flow implication. Source: https://github.com/agentgateway/agentgateway/releases
+- **LiteLLM** — official advisory page continues to list the Nov 12 high-severity Azure Entra credential-parameter exfiltration advisory and Oct 27 critical enterprise proxy file-read/master-key advisory. **Do not deploy** in current Contour A pending independent assessment; applicability remains version/configuration-specific. Sources: https://github.com/BerriAI/litellm/security/advisories and https://www.litellm.ai/security
+
+No package was installed, no runtime benchmark was performed, and no runtime dependency or provider route was added.
