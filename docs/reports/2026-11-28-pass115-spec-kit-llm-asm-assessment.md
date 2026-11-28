@@ -81,3 +81,10 @@ Decision: ADAPT process/templates into Cloud Pool; do not install CLI or extensi
 - Contour B: DEFERRED.
 
 Next: use the spec to conduct source-level ancestry/schema overlap across PRs #176–#183 and Pass 110/111; implement only after selecting one compatible canonical path.
+
+## 8. Post-creation verification
+- PR #184: OPEN / DRAFT / UNMERGED; branch final commit at verification: 46284f0fbaa9ea17c7659e0bf3b1253f4595b9b9.
+- Compare against frozen default base: 12 commits, 12 changed files, 438 additions, 0 deletions; all paths are documentation/specification.
+- Eight principal artifacts were fetched back from GitHub and passed static structural assertions: Markdown headers present, no dispatch:true or executionAuthorized:true markers; FR/SEC/AC and scope-exclusion checks passed.
+- Existing Pool Contract Validation path filter excludes .specify/**, specs/** and these docs; no exact-head CI run was expected or observed. CI status: NOT RUN, not PASS.
+- PR #184 has zero formal reviews and zero review threads at last readback. Independent review NOT RUN.
