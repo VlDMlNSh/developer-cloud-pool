@@ -1,4 +1,6 @@
 import fs from "node:fs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { createBoundedGitHubApiGet, collectOwnerNextEnvelope, mapGitHubActionsContext } from "./owner-next-api-envelope.mjs";
 
 const DIGEST = /^[0-9a-f]{64}$/;
@@ -76,7 +78,7 @@ export async function main(env = process.env) {
   process.stdout.write("DISPATCH=false\nEXECUTION_AUTHORIZED=false\n");
 }
 
-if (process.argv[1] && new URL(import.meta.url).pathname === new URL("file://" + process.argv[1]).pathname) {
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   main().catch(error => {
     process.stderr.write("OWNER_NEXT_CONTROLLER=DENIED code=" + (error?.code || "CONTROLLER_FAILED") + "\n");
     process.exitCode = 1;
