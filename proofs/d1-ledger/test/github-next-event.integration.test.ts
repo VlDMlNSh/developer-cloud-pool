@@ -121,7 +121,7 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
     executionIdempotencyKey: `idem-next-${id}${collectorBacked ? "-collector" : ""}`
   };
   const input = {
-    admissionId: `admission-next-${id}`,
+    admissionId: `admission-next-${id}${collectorBacked ? "-collector" : ""}`,
     taskKey: await canonicalTaskKey({
       repositoryId: approval.repositoryId, issueNumber: approval.issueNumber,
       targetSha, profile: approval.profile, executorId
