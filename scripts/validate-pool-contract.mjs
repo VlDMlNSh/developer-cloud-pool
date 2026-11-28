@@ -16,6 +16,8 @@ const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
 const ownerNextController = read(".github/workflows/next-event-controller.yml");
 const ownerNextActivationContract = read("docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md");
+const d1ProofWorkflow = read(".github/workflows/d1-ledger-proof-validation.yml");
+const poolContractWorkflow = read(".github/workflows/pool-contract-validation.yml");
 const d1ProofWorker = read("proofs/d1-ledger/src/worker.mjs");
 
 const workflows = [
@@ -65,6 +67,13 @@ if (!ownerNextController.includes("actions/checkout@3d3c42e5aac5ba805825da76410c
     !ownerNextController.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
     !/package-manager-cache:\s*false/.test(ownerNextController)) {
   fail("Owner /next controller must use the reviewed immutable Node24 action pins with package-manager caching disabled");
+}
+if (!d1ProofWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    !d1ProofWorkflow.includes("actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1") ||
+    !/package-manager-cache:\\s*false/.test(d1ProofWorkflow) ||
+    !poolContractWorkflow.includes("actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1") ||
+    /actions\\/(?:checkout|setup-node)@(?:11bd71901bbe5b1630ceea73d27597364c9af683|49933ea5288caeca8642d1e84afbd3f7d6820020)/.test(d1ProofWorkflow + poolContractWorkflow)) {
+  fail("D1 and Pool Contract validation workflows must use immutable Node24 action pins and disable implicit package caching");
 }
 if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
   fail("Owner /next controller must have read-only repository/issue/actions permissions");
