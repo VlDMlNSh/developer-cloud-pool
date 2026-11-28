@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createBoundedGitHubApiGet, collectOwnerNextEnvelope, mapGitHubActionsContext } from "./owner-next-api-envelope.mjs";
 
 const sha = "a".repeat(40);
-const blobSha = "c".repeat(40);
+const blobSha = "fef12251141e871adcbc3bbf627f163f3518a548";
 const env = {
   GITHUB_REPOSITORY: "VlDMlNSh/developer-cloud-pool",
   GITHUB_EVENT_NAME: "issue_comment",
