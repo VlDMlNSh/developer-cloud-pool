@@ -88,6 +88,7 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
       sender: { id: 157891068 }
     };
     const runnerEnv = {
+      GITHUB_ACTIONS: "true", GITHUB_SERVER_URL: "https://github.com",
       GITHUB_REPOSITORY: "VlDMlNSh/developer-cloud-pool", GITHUB_EVENT_NAME: "issue_comment",
       GITHUB_REF: "refs/heads/Основной", GITHUB_SHA: context.sha,
       GITHUB_WORKFLOW_SHA: context.workflowSha, GITHUB_WORKFLOW_REF: workflowRef,
