@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 129 owner /next controller exact-head and governance revalidation
+Last refreshed: 2026-11-28 — Pass 130 exact-head CI closure and Context Window reconciliation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
-Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
+Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 current head `3c779aab0baf7e13fd24e24e247bf5b2e7d175f9`; latest commits are documentation-only; post-doc CI NOT VERIFIED)
 Latest report/checkpoint: `docs/reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` / `docs/checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
