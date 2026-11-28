@@ -116,3 +116,44 @@ If a field is unknown, mark it `NOT VERIFIED`; do not infer.
 - Independent security review of candidate adoption: NOT RUN.
 - Contour A: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
+
+
+## Owner-approved daily adaptation policy — effective Pass 123 (2026-11-28)
+
+The repository owner explicitly approved the previously proposed engineering directions and requested that technology intelligence and mature-project adaptation become a continuous, daily operating responsibility. This approval authorizes architecture evaluation, documentation, bounded non-production prototypes, tests and integration behind the existing gates. It does not authorize paid services, secret access, production mutation, credential creation, provider dispatch, executor launch, or bypass of governance.
+
+### Daily cadence and per-request execution
+
+- **Daily scan (calendar-day cadence):** review the strongest relevant mature OSS projects, releases, security advisories, maintainer activity, license changes and proven engineering patterns across agent orchestration, workflow durability, model routing, CI/CD, observability, auth, state, sandboxing and developer UX. Avoid repetitive broad searches when no material upstream change exists; retain a dated scan record and state what was checked.
+- **Every /next:** perform a short delta scan against the last dated scan and the current critical-path task. A new conversation/request must not silently skip this workstream. If the same-day scan is still current, verify its sources and record NO MATERIAL CHANGE rather than manufacture novelty.
+- **Adaptation, not collection:** for every accepted idea, identify the exact Cloud Pool contract/component it improves, choose REUSE, ADAPT, BUILD, PILOT, DEFER or REJECT, and implement one bounded improvement when safe and useful. Do not add a project merely to increase the dependency count.
+- **Priority:** Contour A critical path first. Platform-wide improvements must strengthen the cloud pool, Jarvis coordination, execution reliability, security, routing, quota accounting, persistence, auditability, UI or measured developer throughput. Contour B remains prohibited until Contour A is ACCEPTED.
+- **Daily deliverable:** dated candidate/decision entries, source/release identifiers, material changes, integration status, measured benefit or explicit NOT MEASURED, risks, and next revisit trigger. Update this register and Context Window/checkpoint after a material change; a no-change scan can be logged in the pass report/checkpoint without rewriting all architecture sections.
+
+### Approved architecture directions
+
+Owner accepts these as target directions for Contour A engineering, subject to technical proof and existing security/governance gates:
+
+1. Jarvis is a policy coordinator and task decomposer, not an unrestricted executor. It creates bounded role-specific task envelopes and evaluates evidence.
+2. Persist task, attempt, lease and authorization state before any dispatch. Results require immutable target SHA, artifact digest and independent verification.
+3. Keep one authoritative candidate task/state ledger (currently D1 candidate) and keep GitHub authoritative for source, workflow provenance, reviews and CI. Add another state engine only after a measured limitation is documented.
+4. Separate control plane from inference/build data plane; use isolated, disposable executors with least-privilege capabilities.
+5. Adopt provider-neutral route qualification: provider, account/issuer, model/version, quota domain, cost class, capability, privacy class and evidence. Keep credential values outside registries. Paid fallback is denied.
+6. Add correlation IDs and structured events across task → attempt → lease → model request → artifact → review. Establish real baselines before adopting telemetry infrastructure or CI acceleration tools.
+7. Separate implementation, test/contract and security/provenance roles. Reviewers must not inherit implementation write credentials.
+8. Optimize CI using observed queue/startup/install/test/cache/retry/failure/artifact timings; preserve all required checks and free-tier constraints.
+
+### Adoption and evidence gates
+
+A candidate is not top based on stars or social attention. Record exact repo and immutable release/commit, license, activity, security advisories/policy, provenance/signing, dependency footprint, compatibility, data flows, privilege, cost/free-tier, benchmark baseline/threshold, rollback and disposition. Unknowns are NOT VERIFIED. Pin versions and GitHub Actions SHAs. New runtime dependencies require explicit requirement, SBOM/dependency diff, vulnerability review, tests and measurable benefit. Security-sensitive or credential-bearing components require threat modeling and independent review before enablement. Pilot in a non-critical isolated path first. No auto-merge and no autonomous adoption based solely on an LLM recommendation.
+
+### Status semantics
+
+- DISCOVERED: candidate identified, not yet vetted.
+- ASSESSED: evidence card complete enough for a disposition.
+- PILOT: bounded non-production experiment approved by existing project gates.
+- INTEGRATED: code/config/docs merged or present in a working branch; does not mean qualified.
+- QUALIFIED: acceptance tests, security and operational evidence pass.
+- ACCEPTED: only the formal Contour A acceptance state, never a synonym for a successful OSS pilot.
+
+If a daily scan or implementation cannot run, record NOT RUN and why. If upstream evidence, free entitlement, security posture or compatibility is inaccessible, record NOT VERIFIED. Never claim a scan, benchmark or integration that was not performed.
