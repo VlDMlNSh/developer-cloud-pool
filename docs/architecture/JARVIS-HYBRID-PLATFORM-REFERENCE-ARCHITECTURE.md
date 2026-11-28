@@ -376,3 +376,52 @@ The L1/L2/L3 topology above is the intended future architecture, not current inv
 The first build phase runs on GitHub-hosted ephemeral jobs. The 2011 Mac mini may later join as an optional low-intensity worker or backup helper after read-only inventory; it must not execute untrusted public PR code.
 
 DeepSeek Harness is now the primary candidate agent runtime for evaluation. Use its headless profile for one-shot cloud tasks only after the dedicated runtime smoke test and security gates. It does not replace GitHub Actions dispatch, Pool Bridge policy, immutable task envelopes, durable project state or independent acceptance. See [DeepSeek Harness adoption and cloud-first build plan](DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md).
+
+
+## 11. Owner-approved Claude Code-first execution and operator workbench update (2026-11-24)
+
+- Claude Code is the primary candidate engineering-agent runtime for the first qualified executor. The existing project lineage is `local model / inference adapter → FCC → Claude Code → ECC`; FCC/ECC exact identities and contracts must be verified, not inferred.
+- FCC is the intended authorization/compatibility path in the owner proposal, not a quota bypass or automatic proof of Claude Code authentication. Free API providers and local models are separate inference routes behind account-isolated quota policy; local inference does not grant GitHub permissions.
+- Mac mini Server 2011 (owner-reported i7/16 GB) is a low-intensity connector/index/cache/backup candidate only after host and disk qualification. Mac mini 2018 i3 (planned 32 GB) is a local worker/control/data candidate only after security and performance qualification. The future remote video server is a separate media/storage/transcoding/inference node, never a privileged control plane.
+- Microsoft Visual Studio Code is the human operator/admin workbench for repository work and approved remote-node diagnostics. It is not the Jarvis scheduler, durable state store, identity provider or dispatch authority. Remote SSH/Tunnels and extensions require host/network/supply-chain review.
+- Automatic runner slot refill, checkpointing, idempotency, lease/fencing, recovery and UI reconnect/replay are specified in [the lifecycle design](CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md) and tracked by [Issue #172](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
+
+Status: DESIGN / NOT IMPLEMENTED / NOT QUALIFIED. No Claude Code executor, local host, video server or VS Code remote connection was launched in this pass.
+
+
+## 12. Multi-layer agent organization and strategic evolution (2026-11-24)
+
+The long-term target is not only a multi-agent workflow but a governed, extensible AI organization. Preserve ECC as an explicit required component of the proposed Claude Code execution stack; do not omit it. The proposed lineage remains local model / inference adapter → FCC → Claude Code → ECC, with FCC/ECC identities and authentication/tool contracts subject to canonical-source verification.
+
+The staged model is: (1) Multi-Agent System coordinated by Jarvis; (2) AI Corporation with departments, accountable roles, quota/budget envelopes, organizational memory, quality and incident management; (3) Agentic Ecosystem / Agent Economy with independently governed organizations, authenticated capability discovery and contract-based delegation. Level 3 is a research direction, not a settled industry standard or current implementation.
+
+The compute topology explicitly includes ephemeral GitHub Actions, persistent cloud control plane, candidate Mac mini 2011 and 2018 nodes, a future isolated remote video server, and Microsoft Visual Studio Code as the human operator/admin workbench. None of the local nodes is considered connected or qualified until separately tested. Detailed stages and progression gates: [Jarvis Multi-Layer Agent Organization Roadmap](JARVIS-MULTI-LAYER-AGENT-ORGANIZATION-ROADMAP.md); tracking: [Issue #173](https://github.com/VlDMlNSh/developer-cloud-pool/issues/173).
+
+Contour A remains the priority. Contour B and later-level implementation remain deferred until Contour A is ACCEPTED and the relevant subsequent gates pass.
+
+
+## Pass 75 — canonical FCC/ECC identity and qualification boundary
+
+This addendum supersedes earlier statements in this document that the intended FCC/ECC identities were unknown. The owner-approved executor task [Issue #115](https://github.com/VlDMlNSh/developer-cloud-pool/issues/115) and its source/provenance notes identify:
+
+- **FCC — Free Claude Code:** https://github.com/Alishahryar1/free-claude-code
+- **ECC — Everything Claude Code:** canonical repository now https://github.com/affaan-m/ECC (the former `affaan-m/everything-claude-code` URL redirects to this repository).
+
+Pinned provenance already used by the repository's no-secret qualification:
+- FCC commit: `eb92e4c07af0d6ad8881dce1cd958c3d072c27c5`; pinned LICENSE declares `AGPL-3.0-only`; pinned `pyproject.toml` requires exactly Python `3.14.10`.
+- ECC commit: `e413166c50e85fb205b988b5e78874b5a88ea4d2`; pinned LICENSE declares MIT.
+- Current ECC repository metadata read during Pass75: package `ecc-universal` version `2.2.3`, MIT; SECURITY.md currently lists 2.x / RC as supported. This current version is not a replacement for the pinned commit in the historical runner artifact; any new qualification must pin and attest a fresh exact version/commit.
+- FCC current README continues to identify the project as an independent, non-Anthropic project and advertises Python 3.14 / AGPL. No dedicated SECURITY.md was found at the checked path; this is not proof of absence of all security processes.
+
+Critical FCC quota boundary: pinned source includes ordered API-key lists and numbered selection; the pinned test suite exercises sequential attempts across keys after 403/429. Never place credentials from distinct accounts/quota domains into one FCC profile. Require exactly one credential/account per isolated FCC profile, one selected model, no `MODEL_FALLBACKS`, no numbered-key fallback/key cycling, and no provider or paid fallback. Keep provider identity and quota ledger separate.
+
+Historical PR #116 no-secret runner evidence:
+- PR #116 head `2e944f13818f434cf135602c1c0e82051f1d3fa8`; base at creation `35208f0ef28f0ac031a7acdf35fc90ccc9b16845`.
+- Runner run `44286955337` SUCCESS; job `134741981861`, all 18 listed steps SUCCESS.
+- Pool Contract Validation run `44286955360` SUCCESS; job `134741972786`, all 7 listed steps SUCCESS.
+- Artifact `14420066410`, 34,605 bytes, digest `sha256:17638539900909e0c482a1178bfb88a2e301019db06d588f82fc1aefdd0c2d3a`; artifact expiry reported 2026-11-25.
+- The proof covers installation, signed Claude Code binary verification, Docker no-egress primitive, FCC loopback health/shutdown, synthetic profile guard and mock CLI handoff, selected ECC skill installation, resource/provenance capture. It does **not** prove actual CODE worker execution inside the container, provider-specific egress allowlisting, a real Claude session, a permitted free provider route/account/quota, or production dispatch.
+- PR #116 remains OPEN/DRAFT/UNMERGED and is 74 commits ahead / 12 behind the current observed base `8c38bb073146d1c71da3e90cbbb11b55eb34a1e9`. Its successful runs are historical evidence on its own immutable head, not current-base integration evidence.
+- FCC must remain loopback-only until qualified legal review resolves AGPL-3.0-only obligations for the intended remote/network deployment. Claude Code hosted-use entitlement and provider terms remain separately NOT VERIFIED.
+
+Disposition: identity and historical source/license provenance are now VERIFIED from owner task records plus upstream repository readback. Installation feasibility has historical exact-head CI evidence. New integration, current-base qualification, provider route, quota, actual worker execution, remote FCC deployment and legal review remain NOT QUALIFIED. No install or runtime was executed in Pass75.

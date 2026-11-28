@@ -126,3 +126,15 @@ Run the manual resource probe on ubuntu-24.04, record actual runner characterist
 - Dependency caching: https://docs.github.com/en/actions/reference/dependency-caching
 - Dodaios: https://github.com/Dodaios/Dodaios
 - agent-browser: https://github.com/vercel-labs/agent-browser
+
+
+## 9. Owner-approved continuous lifecycle and recovery design (2026-11-24)
+
+- The primary first engineering-agent profile is Claude Code. Preserve the current project toolchain lineage `local model / inference adapter → FCC → Claude Code → ECC`; FCC/ECC canonical identities, versions, licenses and auth semantics remain to be verified.
+- GitHub-hosted jobs are ephemeral. On completion/failure/cancellation, the scheduler should refill released account-level concurrency with the next eligible task; a new VM must be allocated. This is automatic slot refill, not guaranteed instant provisioning or a warm persistent VM.
+- Task state, leases/fencing generations, checkpoints, idempotency keys, artifact digests and audit records must be persisted outside runner-local storage before acknowledgement. Actions cache is not durable storage.
+- Require atomic completion, stale-worker fencing, ambiguous-dispatch reconciliation, bounded retries and fault-injection tests for runner loss, cancellation, duplicate delivery, lease expiry and storage outage.
+- Keep UI/API availability independent from runner lifecycle; reconnect/replay and snapshot recovery must prevent visual freezes and lost state.
+- Full design and qualification gates: [Claude Code-first executor and runner lifecycle](CLAUDE-CODE-RUNNER-LIFECYCLE-AND-HYBRID-EXECUTION.md); tracking [Issue #172](https://github.com/VlDMlNSh/developer-cloud-pool/issues/172).
+
+Status: DESIGN / NOT IMPLEMENTED / NOT QUALIFIED. No live dispatch or runtime claim is made.
