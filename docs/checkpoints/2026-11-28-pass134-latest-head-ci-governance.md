@@ -21,3 +21,9 @@ Date: 2026-11-28
 - D1 run `46183777441`, job `141099004240`: SUCCESS, 140/140 tests.
 - Pool Contract run `46183777429`, job `141099017601`: SUCCESS, 42/42 tests; controller CLI 5/5; import graph PASS.
 - 182/182 tests VERIFIED on this exact merge-result. Later docs-only commits are not included in this CI claim.
+
+
+## Post-documentation Pool Contract CI
+- Head `b5e8b698e139611745663b910fe289c8d2db4158`; exact merge-result `f82ecaf0d08037916706eac0c1e6b8430129657d`.
+- Pool Contract run `46183858640`, job `141099272422`: SUCCESS, 42/42 tests; controller CLI 5/5; import graph PASS.
+- D1 latest completed run `46183777441`, job `141099004240`: 140/140 on prior merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`; no D1 run for this docs-only head. Do not combine counts as one-SHA proof.
