@@ -5,7 +5,7 @@ Date: 2026-11-28
 ## Status
 
 **IMPLEMENTED** — controller action references migrated to immutable Node 24-native releases; default-branch activation precondition is now documented and guarded by repository tests.
-**NOT VERIFIED** — latest branch CI, local test execution in this environment, live issue_comment execution, independent security review, effective ruleset details, dispatch-variable metadata and hosted runtime behavior.
+**VERIFIED** — exact PR merge-result CI for Pass 127 code/tests (D1 140/140; Pool Contract 37/37). **NOT VERIFIED / NOT RUN** — live issue_comment execution, local test execution in this environment, independent security review, effective ruleset details, dispatch-variable metadata and hosted runtime behavior.
 Contour A remains **BLOCKED / NOT ACCEPTED**. Contour B remains **DEFERRED**.
 
 ## Frozen target and scope
@@ -77,8 +77,11 @@ No new package, provider, runtime service, paid resource or secret was introduce
   - activation contract created in commit `d4dcaab37465545e2d64be256fd2a572747cddb0`.
 - Fetched both upstream `action.yml` files at their immutable release commits and confirmed Node 24 runtime declarations and relevant input compatibility.
 - GitHub release pages report verified signatures for both upstream release commits. The connector's commit payload did not expose a structured signature-verification field; no local cryptographic verification was run.
-- Latest `fetch_commit_workflow_runs` for Pass 127 final commit returned an empty list. This connector view is limited to PR-triggered runs; no new run ID/job evidence is available. Latest Pass 127 CI: **NOT VERIFIED**.
-- Pass 126 CI (140/140 D1 tests and 36/36 contract tests) applies to prior tested merge result `1bf51441f0a77cba6c36c5448a525f782a951ce2`, not Pass 127 changes.
+- Pass 127 PR-triggered CI was found for code/test head `398bc48065a6d0e034cb610cf11e13c995c3804f`; both jobs checked out exact PR merge-result `1dc7db175f4eec559053cae536536911b0117df2` (merge of that head into default `565404f84b6b86afb4dc2d8fa939341f42df6eca`).
+- Isolated D1 Ledger Proof run `46175962014`, job `141074554758`: SUCCESS; 9/9 files and 140/140 tests passed.
+- Pool Contract Validation run `46175962010`, job `141074577217`: SUCCESS; new activation-contract test included, 37/37 Node tests passed and `POOL_CONTRACT_VALIDATION=PASS`.
+- Both job logs confirm checkout of merge-result `1dc7db175f4eec559053cae536536911b0117df2`; the merge-result run lookup itself returned no records, so exact SHA is grounded in the logs.
+- CI still emits Node20 deprecation warnings from separate D1/Pool Contract validation workflows' old action pins; this pass updated the owner controller workflow pins only. The controller workflow itself remains untriggered because it is absent from default branch.
 - Default-branch Contents API read for `.github/workflows/next-event-controller.yml` still returns NOT_FOUND. Live controller execution remains NOT RUN.
 - PR #188 review submissions 0; inline review threads 0. Independent security review NOT RUN.
 - Detailed effective ruleset and `POOL_DISPATCH_ENABLED` metadata NOT VERIFIED.
@@ -88,7 +91,7 @@ No new package, provider, runtime service, paid resource or secret was introduce
 ## Metrics
 
 - Active engineering time: NOT MEASURED.
-- Test execution for Pass 127: NOT RUN locally; CI NOT VERIFIED.
+- Test execution for Pass 127: CI VERIFIED at PR merge-result (140/140 D1; 37/37 contract); local test execution NOT RUN.
 - New dependencies: 0.
 - Paid resources: 0.
 - New security defects confirmed: 0; review remains bounded and does not replace independent security review.
