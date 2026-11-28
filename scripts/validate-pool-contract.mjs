@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { spawnSync } from "node:child_process";
 
 const failures = [];
 const pass = (message) => console.log("PASS " + message);
@@ -110,6 +111,18 @@ for (const [name, source] of [["DSH evaluation", dsh], ["Resource Probe", resour
 }
 if (!dsh.includes("@deepseek-ai/dsh@0.2.1-rc.5")) fail("DSH package version must remain exact-pinned");
 if (failures.length === 0) pass("standalone DSH and Resource Probe remain manual, read-only and secret-free");
+
+const controllerTests = spawnSync(process.execPath, ["--test", "scripts/owner-next-controller.test.mjs"], {
+  encoding: "utf8",
+  timeout: 30_000,
+  stdio: "inherit",
+  env: { PATH: process.env.PATH || "" }
+});
+if (controllerTests.error || controllerTests.status !== 0) {
+  fail("Owner /next controller CLI tests failed or timed out");
+} else {
+  pass("owner /next controller CLI tests passed");
+}
 
 if (failures.length) {
   for (const message of failures) console.error("FAIL " + message);
