@@ -6,7 +6,7 @@ Last refreshed: 2026-11-28 — Pass 130 exact-head CI closure and Context Window
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
-Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 current head `3c779aab0baf7e13fd24e24e247bf5b2e7d175f9`; latest commits are documentation-only; post-doc CI NOT VERIFIED)
+Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 OPEN/DRAFT/UNMERGED; latest documentation commits are not included in the tested merge-result; post-doc CI NOT VERIFIED)
 Latest report/checkpoint: `docs/reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` / `docs/checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
