@@ -177,10 +177,12 @@ export async function collectOwnerNextEnvelope({ event, env, apiGet }) {
     reject("WORKFLOW_RUN_IDENTITY_MISMATCH");
   }
 
+  const workflowCommitSha = assertSha(env.GITHUB_WORKFLOW_SHA, "WORKFLOW_COMMIT_SHA_INVALID");
+
   const [workflow, defaultBranchRef, workflowFile] = await Promise.all([
     apiGet(repoPath + "/actions/workflows/" + workflowRun.workflow_id),
     apiGet(repoPath + "/git/ref/heads/" + encodeURIComponent(DEFAULT_BRANCH)),
-    apiGet(repoPath + "/contents/" + OWNER_NEXT_WORKFLOW_PATH + "?ref=" + encodeURIComponent(workflowRun.head_sha))
+    apiGet(repoPath + "/contents/" + OWNER_NEXT_WORKFLOW_PATH + "?ref=" + encodeURIComponent(workflowCommitSha))
   ]);
   assertObject(workflow, "WORKFLOW_METADATA_INVALID");
   assertObject(defaultBranchRef, "DEFAULT_REF_RESPONSE_INVALID");
@@ -213,8 +215,8 @@ export async function collectOwnerNextEnvelope({ event, env, apiGet }) {
       id: runId, attempt: runAttempt, event: "issue_comment",
       headBranch: DEFAULT_BRANCH, headSha: targetSha,
       workflowId: String(workflow.id), workflowPath: workflow.path,
-      workflowState: workflow.state, workflowCommitSha: env.GITHUB_WORKFLOW_SHA,
-      workflowFileBlobSha, workflowFileRefSha: targetSha
+      workflowState: workflow.state, workflowCommitSha,
+      workflowFileBlobSha, workflowFileRefSha: workflowCommitSha
     },
     policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
   };
