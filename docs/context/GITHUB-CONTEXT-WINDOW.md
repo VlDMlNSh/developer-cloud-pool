@@ -2,7 +2,7 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-08 — PR #36/#37/#39 authorization composition audit
+Last refreshed: 2026-11-28 — Pass 119 workflow-file provenance audit
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `197ba98d0dc7d8437d759dd25bee8750d02e59ae` (latest commit-search read-back)
@@ -2236,3 +2236,131 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Next: remediate F-50-01 in a bounded revision, run adversarial tests, rerun exact-head CI, and obtain independent security review.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+---
+
+## Pass 115 — Spec Kit adoption and llm.asm assessment (2026-11-28)
+
+- Working branch: `docs/pass115-spec-kit-adoption-2026-11-28`; created from default `Основной` at `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #184: OPEN / DRAFT / UNMERGED; head at initial PR creation `c0c2c884452e89886725ba00d0a6dbd3c617992a`; 11 files added, 438 lines, 0 deletions; docs/spec only.
+- Spec Kit: ADOPT WITH ADAPTATION. Added `.specify/memory/constitution.md`, spec/plan/tasks templates, and `specs/115-controller-api-d1-composition/` spec/plan/tasks. CLI install/execution NOT RUN; no Python/uv runtime dependency or community extensions added.
+- llm.asm: RESEARCH ONLY / DEFERRED. Upstream reports 14,712-byte Linux ELF, but Qwen3-0.6B Q8_0 weights are ~613.66 MiB. Author-reported benchmark/parity not independently reproduced. Bare-metal OS rejected for Cloud Pool control plane due missing required isolation/security controls. No code copied, build or model download.
+- PR #176 remains OPEN; its read-only controller foundation does not yet establish Controller/API/attested-D1 composition. PR #183 remains OPEN; read-only poolctl is not runtime qualification.
+- Pass 115 changed no runtime code, controller, D1 schema, workflow permissions, secrets, provider route or production state. No dispatch, D1 writes, provider calls, deployment or merge.
+- New branch exact-head CI: NOT RUN at this checkpoint; PR-triggered workflow query returned no runs and combined status query returned no contexts. This is NOT VERIFIED, not a pass.
+- Independent security review: NOT RUN. Gemini/Claude: NOT RUN. Active engineering time: NOT MEASURED.
+- Contour A: BLOCKED / NOT ACCEPTED. Contour B: DEFERRED.
+- Next: use `specs/115-controller-api-d1-composition/spec.md` to reconcile ancestry and schema/import overlap across PRs #176–#183 and Pass 110/111 before any implementation.
+- Pass 115 report: `docs/reports/2026-11-28-pass115-spec-kit-llm-asm-assessment.md`.
+- Pass 115 checkpoint: `docs/checkpoints/2026-11-28-pass115-spec-kit-llm-asm.md`.
+- Pass 115 context overlay: `docs/context/GITHUB-CONTEXT-WINDOW-PASS115.md`.
+- Spec Kit adoption: `docs/architecture/SPEC-KIT-ADOPTION.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+### Pass 115 final readback
+
+- PR #184 was created as Draft, OPEN / UNMERGED. PR discussion comment ID: 7242241835.
+- Final verification before this context update: branch commit `d3aae455194295b8daf6bd84dacd434c759f83d4`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Compare: 12 commits; 12 files; 438 additions; 0 deletions; docs/spec only.
+- Static readback assertions passed for 8 principal artifacts, including FR/SEC/AC coverage and no true dispatch/execution-authorization markers.
+- Pool Contract Validation does not watch these docs/spec paths; no exact-head CI run was observed or expected. CI remains NOT RUN, not PASS.
+- PR #184 formal reviews: 0; review threads: 0; independent security review NOT RUN.
+- No tests or runtime operations were performed; active time NOT MEASURED.
+
+
+## Pass 116 — Controller/API/Envelope/D1 source reconciliation (2026-11-28)
+
+- Frozen default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Controller PR #176 head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`; Pass 111 branch HEAD `4c8d820102472e130c2e9760f5d42f650ca43394`; Pass 111 code/test SHA `88911e5a127b9345270b15da8e7cd3f8aa54293a`.
+- Ancestry: #176 vs Pass 111 DIVERGED, common base default; Pass 111 side 111 commits ahead, controller side 38 behind. #177 and #178 are ancestors of Pass 111. Do not merge full #176 branch.
+- Source findings: controller workflow blob `822cc29c1b773ccff34ac7cbe4fa61cf94dce55a` is absent from Pass 111 branch; controller verifier blob `4e969000ab32df6ff37663c329fe406b859809f4` ends at OBSERVED_ONLY and does not emit Envelope JSON/digest or call D1. D1 adapter blob `af12b9113de5f67d0242ef19f57c2d6b999270a3` exports legacy and attested APIs. D1 Worker is inert (blob `5429e1abb2049a63562fa411b0d3b041f2f8276b`). Integration tests construct Envelope fixtures directly rather than using controller API collector.
+- Migration 0017 blob `2d226a23e94cdf7a767eed989b8ef0b8781c69fb`; migration 0018 blob `366a890797cd8187848072894a1d7dbe8f5e6791`. Existing single-ledger chain is reusable; no second ledger or migration required by current evidence.
+- PR #181 CI on code/test SHA `88911e5...`: D1 run #45897059595 SUCCESS (9 files / 137 tests); Pool Contract run #45897059549 SUCCESS. These do not establish controller→Envelope→D1 E2E. Formal reviews and threads: 0; independent security review NOT RUN.
+- Pass 116 is source/docs/spec only. No runtime code, D1 schema, workflow permissions, secrets, hosted D1, provider, dispatch, executor, deployment or merge changed.
+- Spec refined with FR-009–FR-011, SEC-008, AC-007–AC-009. Plan explicitly selects a minimal source port onto a fresh branch from Pass 111 lineage and requires real collector output to feed the local D1 integration test. Tasks T001/T002 VERIFIED at source-audit level; T003–T013 remain PLANNED.
+- Pass 116 report: `docs/reports/2026-11-28-pass116-controller-api-d1-source-reconciliation.md`.
+- Pass 116 checkpoint: `docs/checkpoints/2026-11-28-pass116-controller-api-d1-source-reconciliation.md`.
+- Pass 115/116 docs branch: `docs/pass115-spec-kit-adoption-2026-11-28`; PR #184 remains Draft/unmerged.
+- Exact-head CI for Pass 116 docs: NOT RUN; changed paths are docs/spec and are excluded by current Pool Contract workflow path filters. Independent review NOT RUN. Active engineering time NOT MEASURED.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+- Next: create one integration branch from Pass 111 HEAD, port minimal Controller API collector, emit canonical Envelope v1 from same-run evidence, and prove it through the Workers verifier + local D1 attested adapter; isolate legacy import path. No hosted D1 or dispatch.
+
+Canonical MediaHub map (separate deferred Contour B): https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 116 final verification readback
+
+- PR #184 remains OPEN / DRAFT / UNMERGED. Pass 116 discussion comment: `7242328902`.
+- Pass 116 report and checkpoint updated with final verification.
+- Compare against frozen default: 21 commits, 14 files, 654 additions, 0 deletions; all changed paths are docs/spec only.
+- Final docs/spec branch commit before this context refresh: `6aed9b2983fdf612277876f4eb25b92b41b23423`.
+- Exact-head CI NOT RUN; no workflow run or classic status was returned. This is expected because the current workflows exclude these docs/spec paths.
+- PR #184 formal reviews 0; review threads 0; independent review NOT RUN.
+- Source CI remains limited to PR #181's separate D1/Pool Contract results. No Controller→Envelope→D1 E2E.
+- Active time NOT MEASURED. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 115 complete llm.asm input preservation
+
+- The Pass 115 report has an addendum preserving all technical figures, limitations and exact build commands supplied by the owner for `alesha-pro/llm.asm`.
+- It records the author/project attribution, creation/star snapshot, MIT claim, 17,252 assembly lines, three binary sizes, boot latency, EPYC 7642 throughput/comparisons, PyTorch parity/cosine, AVX2/FMA/F16C prerequisites, Qwen3-0.6B Q8_0 scope, ~2,048-token context, bare-metal limitations and supplied Linux build procedure.
+- Every performance and provenance figure is labeled user-provided/upstream claim and not independently reproduced. No clone/build/model download/benchmark was run.
+- Pass 115 report: `docs/reports/2026-11-28-pass115-spec-kit-llm-asm-assessment.md`; checkpoint addendum: `docs/checkpoints/2026-11-28-pass115-spec-kit-llm-asm.md`.
+
+
+## Pass 117 — live state refresh and controller/D1 composition gate (2026-11-28)
+
+Status: VERIFIED (source/governance read-back); implementation integration NOT RUN. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### Frozen refs and PR state
+- Default branch `Основной` HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (branch API + recent commit search).
+- PR #176: OPEN/DRAFT/UNMERGED, head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`, base default SHA above. Read-only controller/audit; does not emit Envelope v1 or call D1.
+- PR #181: OPEN/DRAFT/UNMERGED, head `453d74ff70a67d3091d920281f6471a721f1808d`, base `80705bae2dca1f928368429c17922787b86be4bc`; 22 commits ahead, 10 changed files. Exact-head Actions runs: D1 `46163553692` SUCCESS; Pool Contract `46163553680` SUCCESS. Reviews: 0; inline threads: 0. This proves local Workers/D1 tests only.
+- PR #184: OPEN/DRAFT/UNMERGED, head `b473e4b06df1e0f2489b5f7280bc53f114f20752`, base default SHA; 27 commits, 14 files, 746 additions, 0 deletions. Exact-head workflow runs: none. Reviews: 0; inline threads: 0.
+- PRs #177, #178, #179 and #183 were re-read: OPEN/DRAFT/UNMERGED; mergeable flag true is not acceptance.
+
+### Controller/D1 composition finding
+- PR #181 D1 adapter source `proofs/d1-ledger/src/github-next-event.mjs` exports both legacy `admitGitHubNextEvent` and attested `admitGitHubNextAttestedEvent`. Its integration tests still exercise legacy fixtures as well as attested-envelope cases.
+- PR #181 `proofs/d1-ledger/src/worker.mjs` is deliberately inert and returns 404; no production HTTP ingress or dispatch capability.
+- Canonical `.github/workflows/next-event-controller.yml` is absent from the PR #181 branch. It exists on PR #176 branch, but that workflow runs `scripts/owner-next-event-audit.mjs` and remains audit-only. Do not merge the full PR #176 branch (38 commits from default) into the D1 lineage.
+- PR #181 exact-head D1 CI run job `141035991048` completed SUCCESS; steps include checking inert Worker entrypoint and fresh local D1 migration/authority tests. Combined status contexts are empty; named Actions runs are the available CI evidence.
+- Issue #140 is still OPEN; updated 2026-11-28. It remains the controlling current-base admission/lease proof issue.
+
+### Governance
+- Active ruleset #26550182 was fetched directly. It targets exactly `refs/heads/Основной`, enforcement active, requires PR, requires review-thread resolution, has 0 required approvals, no CODEOWNERS requirement and no bypass actors. Classic branch endpoint says `protected=false`; keep the ruleset and classic protection facts distinct.
+- Actions variable metadata endpoint for `POOL_DISPATCH_ENABLED` was not available through the read connector. Current value is NOT VERIFIED; do not infer from historical CI. Dispatch stays prohibited.
+- Independent security review NOT RUN. No secrets read, no hosted D1 writes, no provider calls, no dispatch, no deployment, no merge.
+
+### Reuse First and scope decision
+- REUSE PR #176's read-only GitHub API verifier and Node built-in test approach; REUSE PR #181's canonical Envelope v1 verifier and attested D1 adapter; no new dependency or parallel ledger.
+- Next bounded implementation should start from the exact current PR #181 head only after rechecking its branch ref, port the minimum controller evidence-collector files from PR #176, and emit one canonical Envelope from bounded fixed-origin API readbacks. Keep target SHA, workflow commit SHA, workflow-file blob SHA and workflow-file ref SHA distinct. Prove production import isolation for legacy adapter. Local synthetic D1 only.
+- T003 legacy-import isolation: PARTIALLY VERIFIED — D1 Worker is inert and no production ingress exists in the candidate; a full repository-wide production call-graph proof is still NOT VERIFIED. Keep this task open until the final composed tree is inspected.
+
+### Metrics and next step
+- Engineering active time: NOT MEASURED. Pass 117 tool/readback duration is not a measure of engineering labor.
+- CI evidence: 2 named exact-head runs SUCCESS on PR #181; PR #184 exact-head CI NOT RUN.
+- Defects/blockers: controller and D1 remain separate; API collector does not emit Envelope; legacy export remains; independent review missing; current dispatch variable NOT VERIFIED; no UI/runtime qualification.
+- Next: fresh-branch implementation of minimal controller → API evidence collector → Envelope v1 → Workers verifier → local D1 attested adapter composition, with fixed-origin timeout/body bounds and adversarial tests. No merge/dispatch/deployment.
+
+Report: `docs/reports/2026-11-28-pass117-live-state-and-composition-gate.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass117-live-state-and-composition-gate.md`
+
+
+## Pass 119 — API-attested workflow provenance audit (2026-11-28)
+
+- Audited Pass 118 PR #185 at immutable head `cbee39dcf5ee16f4ec491c535cd2f9c4cc4eda9e`; collector source blob `9946881694fac6d57876d543103ee66af31a480b`.
+- Exact GitHub Actions run `46167867802`, job `141049343699`: SUCCESS. Retrieved job log confirms Pool Contract Validation PASS and 28/28 Node tests passed. This is CI evidence for the collector branch, not controller/D1 end-to-end qualification.
+- F-119-01 HIGH/BLOCKING: collector fetches workflow file contents at `workflowRun.head_sha` (event/target SHA) and stores that same SHA as `workflowFileRefSha`; it does not fetch at `GITHUB_WORKFLOW_SHA`. The canonical D1 Envelope validator also requires `workflowFileRefSha === headSha`. Thus the blob digest is not bound to the workflow commit identity.
+- Finding posted to PR #185: https://github.com/VlDMlNSh/developer-cloud-pool/pull/185#issuecomment-7242656346
+- Required remediation: fetch workflow file at immutable `GITHUB_WORKFLOW_SHA`; verify blob bytes; bind `workflowFileRefSha` to `workflowCommitSha`; preserve target SHA independently; update the existing canonical Envelope validator/digest and D1 receipt constraints together; add distinct-SHA and cross-ref blob-substitution tests; feed actual collector JSON into local Workers/D1 integration.
+- Reuse decision: retain existing API collector, Envelope v1 canonical digest, and single D1 ledger; no parallel schema/ledger and no new dependency.
+- Pass 119 report: `docs/reports/2026-11-28-pass119-workflow-provenance-audit.md`; checkpoint: `docs/checkpoints/2026-11-28-pass119-workflow-provenance-audit.md`.
+- No code/migration/workflow/governance changes; no local test run, hosted D1 writes, secrets/variables reads, provider calls, dispatch, executor launch, deployment, merge or production mutation.
+- Independent security review NOT RUN; active engineering time NOT MEASURED. Controller → Envelope → D1 composition remains NOT VERIFIED. Dispatch and execution remain prohibited.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Next bounded pass: Pass 120 remediation on a fresh branch from re-read Pass 111 D1 lineage tip, with collector + canonical validator/digest + Workers/D1 integration changed and tested together; exact-head CI and log inspection; no dispatch.
+
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Governance read-back on 2026-11-28: active ruleset #26550182 targets exactly `refs/heads/Основной`; PR required; review-thread resolution required; required approvals 0; no CODEOWNERS requirement; no bypass actors; current user cannot bypass. Classic branch API reports `protected=false`, which is a separate endpoint fact and does not negate the active ruleset.
+- PR #185 formal review submissions: 0; review threads: 0. No governance mutation.
