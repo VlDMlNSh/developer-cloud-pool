@@ -2,12 +2,12 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 127 Node24 immutable Actions pins and issue_comment activation contract
+Last refreshed: 2026-11-28 — Pass 128 source security review, Node24 validation workflows and transitive Worker import isolation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
 Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`
-Latest daily report: `docs/reports/2026-11-28-pass127-node24-actions-activation-contract.md` (working branch remains unmerged)
+Latest daily report: `docs/reports/2026-11-28-pass128-security-and-node24-import-isolation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
 ---
@@ -2692,5 +2692,61 @@ Next: obtain exact PR merge-result CI for Pass 127, inspect jobs/logs, conduct i
 
 Report: `docs/reports/2026-11-28-pass127-node24-actions-activation-contract.md`  
 Checkpoint: `docs/checkpoints/2026-11-28-pass127-node24-actions-activation-contract.md`  
+Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
+Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## 23. Pass 128 — source security review, Node24 validation workflows and transitive Worker import isolation (2026-11-28)
+
+### 23.1 Target and branch state
+- Default branch `Основной`: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pass 128 final code/test head: `d5a08db2f01158ea8a457190401126b2f19afda9`.
+- Exact PR merge-result CI: `a1a6e41eb16bcd63d72f18bbb3cf7ee5911cc1bf`, merging Pass 128 head into the default HEAD.
+- PR #188 remains OPEN / DRAFT / UNMERGED; comparison to default is 239 commits, 94 files, +12,578/-16.
+- Formal reviews 0; inline threads 0; independent external security review NOT RUN.
+
+### 23.2 Node 24 validation workflows
+- Reused official immutable first-party Actions:
+  - checkout v7.0.1 SHA `3d3c42e5aac5ba805825da76410c181273ba90b1`
+  - setup-node v7.1.0 SHA `949feb2413d6458794dcd2491c4babbbce0c15c1`
+- Migrated `.github/workflows/d1-ledger-proof-validation.yml` and `.github/workflows/pool-contract-validation.yml`.
+- D1 workflow disables implicit package-manager cache with `package-manager-cache: false`.
+- Final validation logs show no Node20 action deprecation warning.
+
+### 23.3 Source-level security review
+- Workflow admission remains issue_comment-created only, repository/Issue #96/owner numeric ID bound, PR comments excluded, exact `/next`, read-only permissions, workflow SHA checkout and no persisted credentials.
+- Collector: fixed API origin, repository-scoped paths, redirect rejection, 256 KiB body bound, bounded timeout, raw webhook and runner environment checks, API identity cross-checks, default-ref/run SHA equality, workflow-file Git blob verification at `GITHUB_WORKFLOW_SHA`, reruns fail closed.
+- Trusted Actions context remains independently mapped from raw webhook and runner environment; not copied from API envelope.
+- Workers verifier enforces exact schema keys, duplicate-key rejection, identity/ref/run cross-checks and digest verification.
+- D1 adapter binds attestation digest to approval and immutable receipt; migration 0018 constrains attestation schema/version and workflow provenance. Receipt checks keep dispatch disabled.
+- Local collector → verifier → D1 composition uses synthetic GitHub API fixtures in Workers Vitest/Miniflare. It is not a live GitHub event or hosted D1 test.
+
+### 23.4 Transitive Worker import isolation
+- Added `scripts/check-worker-import-graph.mjs` and tests.
+- Traverses local static import/export graph; rejects dynamic import, CommonJS require, non-relative imports and missing targets.
+- Resolves real paths and blocks symlink escapes outside the Worker source root.
+- Rejects transitive reachability of legacy event adapter, attested adapter, API collectors and controller modules.
+- Current Worker entrypoint graph: 1 module, 0 edges. Worker remains deliberately inert and returns 404.
+- CI tests include transitive forbidden import, dynamic/require/non-relative import and symlink escape fixtures. This is a source-policy guard, not a hostile-code sandbox.
+
+### 23.5 Exact CI evidence
+- D1 run `46176960877`, job `141077728349`: SUCCESS; 9/9 files, 140/140 tests.
+- Pool Contract run `46176960864`, job `141077735842`: SUCCESS; 42/42 Node tests; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- Both logs show exact merge-result `a1a6e41eb16bcd63d72f18bbb3cf7ee5911cc1bf`.
+- Two intermediate CI attempts failed due incorrect regex escaping in newly added assertions; diagnosed from logs and fixed. Final exact merge-result CI passed. No production code was weakened.
+- Local tests NOT RUN; hosted D1 NOT RUN; live controller NOT RUN.
+
+### 23.6 Governance, blockers and metrics
+- Default-branch Contents read for `.github/workflows/next-event-controller.yml` remains NOT_FOUND. GitHub requires an issue_comment workflow to exist on default branch before it can trigger.
+- Live controller execution NOT RUN. Dispatch/execution remain false.
+- Effective ruleset/branch-protection and `POOL_DISPATCH_ENABLED` metadata NOT VERIFIED.
+- No secrets read, hosted D1 writes, provider calls, dispatch, executor launch, deployment, merge or production mutation.
+- New dependencies 0; paid resources 0; active engineering time NOT MEASURED; benchmark NOT RUN.
+- Contour A remains BLOCKED / NOT ACCEPTED. Contour B remains DEFERRED.
+
+Next: independent external security review, authorized metadata-only governance verification, then approved default-branch integration. Do not activate controller through a bypass.
+
+Report: `docs/reports/2026-11-28-pass128-security-and-node24-import-isolation.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass128-security-and-node24-import-isolation.md`  
 Platform Intelligence register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`  
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
