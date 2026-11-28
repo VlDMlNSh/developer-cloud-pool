@@ -14,3 +14,6 @@ Status: VERIFIED (source audit and CI evidence); BLOCKED (workflow-file provenan
 - Independent security review NOT RUN. Active engineering time NOT MEASURED.
 - Next: Pass 120 remediation + adversarial distinct-SHA/blob-substitution tests + actual collector-to-Workers/D1 integration; exact-head CI; no dispatch.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Governance re-read: active ruleset #26550182 targets exactly `refs/heads/Основной`; PR required; thread resolution required; 0 required approvals; no bypass actors. Classic branch protection API reports protected=false, distinct from active ruleset.
+- PR #185 formal reviews 0; review threads 0.
