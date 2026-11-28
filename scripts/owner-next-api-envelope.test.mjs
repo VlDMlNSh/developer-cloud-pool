@@ -1,10 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createBoundedGitHubApiGet, collectOwnerNextEnvelope, mapGitHubActionsContext } from "./owner-next-api-envelope.mjs";
+import { verifyOwnerNextEnvelopeForActions } from "../proofs/d1-ledger/src/owner-next-envelope.mjs";
 
 const sha = "a".repeat(40);
 const blobSha = "fef12251141e871adcbc3bbf627f163f3518a548";
 const env = {
+  GITHUB_ACTIONS: "true",
   GITHUB_REPOSITORY: "VlDMlNSh/developer-cloud-pool",
   GITHUB_EVENT_NAME: "issue_comment",
   GITHUB_REF: "refs/heads/Основной",
@@ -17,8 +19,9 @@ const event = {
   action: "created",
   issue: { number: 96, node_id: "I_kwDOTestIssue" },
   comment: { id: 300, node_id: "IC_kwDOTestComment", body: "/next",
-    user: { id: 157891068 }, author_association: "OWNER" },
-  sender: { id: 157891068 }
+    user: { id: 157891068, login: "VlDMlNSh" }, author_association: "OWNER" },
+  sender: { id: 157891068, login: "VlDMlNSh" },
+  repository: { id: 1445644538, full_name: "VlDMlNSh/developer-cloud-pool", owner: { id: 157891068, login: "VlDMlNSh" } }
 };
 const workflowBytes = new TextEncoder().encode("name: controller\n");
 async function gitBlobSha(bytes) {
@@ -70,6 +73,52 @@ test("collects one canonical API-attested envelope with distinct target and work
   assert.equal(result.executionAuthorized, false);
   const context = mapGitHubActionsContext({ event, env, envelope: result.envelope });
   assert.equal(context.workflowSha, "b".repeat(40));
+});
+
+test("maps trusted Actions context from the raw webhook and runner environment, not the API envelope", async () => {
+  const result = await collectOwnerNextEnvelope({ event, env, apiGet: apiFixture() });
+  const changedEvent = {
+    ...event,
+    sender: { id: 42, login: "attacker" }
+  };
+  const context = mapGitHubActionsContext({ event: changedEvent, env, envelope: result.envelope });
+  assert.equal(context.actorId, 42);
+  assert.equal(context.actorLogin, "attacker");
+  await assert.rejects(
+    verifyOwnerNextEnvelopeForActions(result.sourceJson, result.digest, context),
+    /ACTIONS_EVENT_CROSSCHECK_FAILED/
+  );
+
+  const changedEnv = { ...env, GITHUB_SHA: "d".repeat(40) };
+  const runnerContext = mapGitHubActionsContext({ event, env: changedEnv, envelope: result.envelope });
+  assert.equal(runnerContext.sha, "d".repeat(40));
+  await assert.rejects(
+    verifyOwnerNextEnvelopeForActions(result.sourceJson, result.digest, runnerContext),
+    /ACTIONS_RUN_CROSSCHECK_FAILED/
+  );
+});
+
+test("rejects webhook repository identity substitution and missing immutable node IDs", async () => {
+  const wrongRepository = {
+    ...event,
+    repository: { ...event.repository, id: 7 }
+  };
+  await assert.rejects(
+    collectOwnerNextEnvelope({ event: wrongRepository, env, apiGet: apiFixture() }),
+    /SOURCE_REPOSITORY_EVENT_IDENTITY_MISMATCH/
+  );
+  const missingIssueNode = { ...event, issue: { number: 96 } };
+  await assert.rejects(
+    collectOwnerNextEnvelope({ event: missingIssueNode, env, apiGet: apiFixture() }),
+    /SOURCE_EVENT_NOT_ALLOWED/
+  );
+  const missingCommentNode = {
+    ...event, comment: { ...event.comment, node_id: undefined }
+  };
+  await assert.rejects(
+    collectOwnerNextEnvelope({ event: missingCommentNode, env, apiGet: apiFixture() }),
+    /SOURCE_EVENT_NOT_ALLOWED/
+  );
 });
 
 test("rejects a default-ref race", async () => {
