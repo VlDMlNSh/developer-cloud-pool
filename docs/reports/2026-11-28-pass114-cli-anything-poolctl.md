@@ -32,8 +32,9 @@ Date: 2026-11-28
 - Exact-head CI and independent review are pending until the PR is opened and checks complete.
 
 ## CI evidence and governance
-- Draft PR #183: OPEN / DRAFT / UNMERGED; head `2b9d9d51712a1e45b5c77233d4a45952a0fe4e51`; base `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Pool Contract run [46164275649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46164275649): SUCCESS; job `141038230498`; run metadata binds exact PR head and base; merge-result checkout `cda3a56...`.
+- Draft PR #183: OPEN / DRAFT / UNMERGED; current head was advanced by documentation-only commits after validation; base `Основной` @ `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Validated source/workflow head: `2b9d9d51712a1e45b5c77233d4a45952a0fe4e51`. Later commits update only report/checkpoint/Context Window; no CLI source, tests or workflow changes occurred after the successful run.
+- Pool Contract run [46164275649](https://github.com/VlDMlNSh/developer-cloud-pool/actions/runs/46164275649): SUCCESS; job `141038230498`; run metadata binds validated source/workflow head `2b9d9d...` and base `565404f...`; merge-result checkout `cda3a56...`.
 - Job log: dispatch gate disabled/unset; all 5 workflow YAML files parse; existing `POOL_CONTRACT_VALIDATION=PASS`; CLI subprocess suite 5/5 passed, 0 failed.
 - PR #183 formal reviews: 0; inline review comments: 0. Active ruleset #26550182 is active on `refs/heads/Основной`, requires PR and thread resolution, has 0 required approvals and no bypass actors. Independent security review remains NOT RUN.
 - CI emits a non-failing warning: pinned `actions/checkout` commit `11bd719...` targets Node 20 while runner forces Node 24. Track as separate action-runtime maintenance; no action version changed in this pass.
