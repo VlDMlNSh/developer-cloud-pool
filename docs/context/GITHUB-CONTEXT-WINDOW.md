@@ -2547,3 +2547,14 @@ Status: VERIFIED (architecture/process register documented); runtime integration
 - Canonical operating contract: docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md, section Owner-approved daily adaptation policy.
 - Pass 123 is documentation-only; no runtime dependencies, code, provider routes or infrastructure changed. No tests/benchmarks or independent security review run.
 - Previous Pass 122 branch/head: docs/pass122-platform-intelligence-optimization-2026-11-28 @ fa47196f9df200546bc56a15ba1d577f78fbc159.
+
+
+### Pass 123 daily OSS scan addendum — 2026-11-28
+
+- Fresh upstream scan completed for Bifrost, agentgateway, LangGraph and LiteLLM. Evidence and decisions are in the Platform Intelligence register and Pass 123 report.
+- Bifrost Apache-2.0; official releases HTTP v2.6.0 (2026-11-19), Helm v2.1.50 (2026-11-25): PILOT candidate only; full SBOM, threat model, free-tier/resource and quota semantics NOT VERIFIED.
+- agentgateway Apache-2.0; official v1.7.0 (2026-10-27): ADAPT capability/service-tier/cost/analytics and fail-closed policy concepts; runtime DEFER.
+- LangGraph official v1.2.24 (2026-11-20): ADAPT workflow concepts; runtime DEFER.
+- LiteLLM deployment rejected for current Contour A based on its official 2026 advisories, including credential-exfiltration and proxy/master-key exposure findings. Applicability is version/configuration-specific; retain only conceptual patterns pending independent security reassessment.
+- Concrete adaptation recorded: route metadata should include capabilities/modalities/context window, actual serving tier, cost/quota domain and correlation; provider endpoints must be immutable/allowlisted; caller-supplied base URLs, model-list overrides and credential parameters must be rejected; tool-output inspection must have explicit privacy and failure-mode policy.
+- No code, package, provider route or infrastructure changed; no benchmarks, independent review or deployment performed. Pass 123 remains documentation-only.
