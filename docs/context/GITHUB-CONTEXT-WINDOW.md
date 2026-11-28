@@ -2,11 +2,11 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 130 exact-head CI closure and Context Window reconciliation
+Last refreshed: 2026-11-28 — Pass 131 current-head exact CI and governance revalidation
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
 Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
-Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 OPEN/DRAFT/UNMERGED; latest documentation commits are not included in the tested merge-result; post-doc CI NOT VERIFIED)
+Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 OPEN/DRAFT/UNMERGED; Pass 131 verified CI target head `212c7134919c3102429cd9e451196bd661830b7c`; Pass 131 report/checkpoint/Context Window commits are documentation-only and later than that tested head; post-doc CI NOT VERIFIED)
 Latest report/checkpoint: `docs/reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` / `docs/checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` (working branch remains unmerged)
 This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
 
@@ -2797,3 +2797,11 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Pass 131](../reports/2026-11-28-pass131-current-head-ci-governance-revalidation.md); checkpoint: [Pass 131 checkpoint](../checkpoints/2026-11-28-pass131-current-head-ci-governance-revalidation.md).
 - Next: owner-authorized ruleset update requiring at least one independent approval, followed by independent security review of exact PR head. No merge, controller activation or dispatch before gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+### Pass 131 documentation finalization note
+- Pass 131 report created: `docs/reports/2026-11-28-pass131-current-head-ci-governance-revalidation.md` (blob `652f4b66a632da0af75048ac10e22d8f02274542`).
+- Pass 131 checkpoint created: `docs/checkpoints/2026-11-28-pass131-current-head-ci-governance-revalidation.md` (blob `7d5d7344797cf24d90f8cd2adde7dfb42a1d39d7`).
+- Pass 131 tested PR head remains `212c7134919c3102429cd9e451196bd661830b7c`; its exact merge-result `6fc5b9bb82e7ad969cc898a342f33be0f0ced9d4` passed both CI suites.
+- Documentation updates advanced PR branch after the tested head. Latest pre-final-context PR head observed: `2875c3060ef8c81dce3e55604ede0ec9f0e486cd`; no workflow runs returned for this post-documentation head. Its CI is NOT VERIFIED. This does not invalidate CI for the tested head; it limits the claim to that exact merge-result.
+- PR metadata after docs: 257 commits / 102 files / +13,139/-16; OPEN / DRAFT / UNMERGED.
