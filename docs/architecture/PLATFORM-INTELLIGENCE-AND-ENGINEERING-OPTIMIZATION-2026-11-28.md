@@ -247,3 +247,21 @@ Pass 125's Actions-context mapper echoed several identity/ref/run values from th
 
 ### Activation constraint
 GitHub's `issue_comment` workflow only triggers when the workflow file exists on the default branch. The controller file is absent from current default branch `Основной` (Contents read NOT_FOUND), so live event execution is NOT RUN until approved integration. Do not add a manual or privileged bypass. Source: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
+
+
+## Pass 127 OSS and platform delta — 2026-11-28
+
+### First-party GitHub Actions refresh
+
+- **actions/checkout v7.0.1 — REUSE**: immutable release commit `3d3c42e5aac5ba805825da76410c181273ba90b1`; GitHub release page marks the release immutable and its commit signature verified. Exact-commit `action.yml` declares `runs.using: node24`; `ref` and `persist-credentials` inputs are present. MIT license verified from exact release commit.
+- **actions/setup-node v7.1.0 — REUSE**: immutable release commit `949feb2413d6458794dcd2491c4babbbce0c15c1`; GitHub release page marks the release immutable and its commit signature verified. Exact-commit `action.yml` declares `runs.using: node24`; `node-version` and `check-latest` inputs are present. Upstream v7 release notes state no input/output/behavior changes; MIT license verified from exact release commit.
+- Controller workflow pins both actions by full SHA and sets `package-manager-cache: false`; retains `persist-credentials: false`, read-only permissions and workflow-pinned checkout.
+- No new dependencies, package manifests, services, provider routes or paid resources.
+- Sources: https://github.com/actions/checkout/releases ; https://github.com/actions/setup-node/releases ; https://github.com/actions/checkout ; https://github.com/actions/setup-node
+
+### Activation contract
+
+- Added `docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md` and test/validator checks. The contract records the GitHub requirement that an `issue_comment` workflow must exist on the default branch before it triggers.
+- Fresh default-branch Contents read for `.github/workflows/next-event-controller.yml` remains NOT_FOUND. The tests verify policy structure/documentation but do not replace the live default-branch Contents check.
+- Pass 127 CI was not visible in the connector workflow-run lookup; no new run/job evidence is claimed. Local tests NOT RUN. Action migration is implemented but NOT VERIFIED by CI.
+- PR #188 remains OPEN/DRAFT/UNMERGED; independent review and effective governance remain NOT VERIFIED.
