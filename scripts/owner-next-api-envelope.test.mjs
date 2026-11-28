@@ -43,24 +43,18 @@ function apiFixture(overrides = {}) {
   const ref = { object: { sha } };
   const file = { path: ".github/workflows/next-event-controller.yml", encoding: "base64",
     content: b64, sha: blobSha };
-  const map = new Map([
-    ["/repos/VlDMlNSh/developer-cloud-pool", repo],
-    ["/repos/VlDMlNSh/developer-cloud-pool/issues/96", issue],
-    ["/repos/VlDMlNSh/developer-cloud-pool/issues/comments/300", comment],
-    ["/repos/VlDMlNSh/developer-cloud-pool/actions/runs/400", run],
-    ["/repos/VlDMlNSh/developer-cloud-pool/actions/workflows/500", workflow],
-    ["/repos/VlDMlNSh/developer-cloud-pool/git/ref/heads/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9", ref],
-    ["/repos/VlDMlNSh/developer-cloud-pool/contents/.github/workflows/next-event-controller.yml?ref=" + sha, file]
-  ]);
-  for (const [key, value] of Object.entries(overrides)) {
-    if (key === "refSha") map.set("/repos/VlDMlNSh/developer-cloud-pool/git/ref/heads/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D0%BE%D0%B9", { object: { sha: value } });
-    else if (key === "fileSha") map.set("/repos/VlDMlNSh/developer-cloud-pool/contents/.github/workflows/next-event-controller.yml?ref=" + sha, { ...file, sha: value });
-    else if (key === "run") map.set("/repos/VlDMlNSh/developer-cloud-pool/actions/runs/400", { ...run, ...value });
-  }
+  const fileResult = overrides.fileSha ? { ...file, sha: overrides.fileSha } : file;
+  const refResult = overrides.refSha ? { object: { sha: overrides.refSha } } : ref;
+  const runResult = overrides.run ? { ...run, ...overrides.run } : run;
   return async path => {
-    const value = map.get(path);
-    if (!value) throw new Error("unexpected API path");
-    return value;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool") return repo;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/96") return issue;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/comments/300") return comment;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/runs/400") return runResult;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/workflows/500") return workflow;
+    if (path.includes("/git/ref/heads/")) return refResult;
+    if (path.includes("/contents/.github/workflows/next-event-controller.yml?ref=" + sha)) return fileResult;
+    throw new Error("unexpected API path: " + path);
   };
 }
 
