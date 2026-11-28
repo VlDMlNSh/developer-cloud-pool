@@ -4,7 +4,7 @@ Date: 2026-11-28
 
 - Starting Pass 126 branch head: `f7e1c3f960ca8afc2c071d40c86a24e937df9d97`.
 - Tested code/test head: `0610fe5079f5dd8a8ef9498e35de580cda573e56`.
-- Exact CI merge result: `1bf5144...` = merge of code head into default `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Exact CI merge result: `1bf51441f0a77cba6c36c5448a525f782a951ce2` = merge of code head into default `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
 - Fixed self-echoing trust context: mapper now reads raw webhook payload + runner environment, never copies identity/ref/run fields from the API envelope.
 - Collector validates webhook repository numeric identity, owner identity/login, issue/comment immutable node IDs, and API-side issue/comment identity.
 - Adversarial coverage: raw webhook mutations, runner provenance mutations, API repository/issue/comment/run/workflow substitution, default-ref race, workflow blob mismatch, run-attempt mismatch, bounded API transport.
