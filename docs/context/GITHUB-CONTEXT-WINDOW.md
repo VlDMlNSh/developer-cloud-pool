@@ -2966,3 +2966,24 @@ Every /next must: (1) reconcile Context Window/HEAD/refs/PR/issues/CI/reviews/ru
 - D1 run `46188473686`, job `141113620413`: SUCCESS, 9/9 files, 140/140 tests.
 - 182/182 tests on that same merge-result SHA. Report/checkpoint/context updates after this tested docs head are documentation-only and require fresh CI correlation; do not inherit test claims.
 - Remaining effort estimate confidence LOW–MEDIUM. Recalibrate after first 2–3 work packages and independent review.
+
+
+---
+
+## Pass 137 — 2026-11-28 governance truth refresh and scanner provenance
+
+- Current PR #188: OPEN / DRAFT / UNMERGED; branch `feat/pass124-readonly-owner-next-controller-2026-11-28`; head at Pass 137 target `bebf4d9f92a5d7c8d9677a6828b1707e7e22e069`; base/default `Основной` HEAD `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Two successful PR workflows report head `bebf4d9f92a5d7c8d9677a6828b1707e7e22e069`; both jobs checked out exact merge-result `82a77557bd8aac4f941a5554a4d2818e96cba57b`.
+- Pool Contract run 46188556454, job 141113886341: SUCCESS, 42/42; YAML parse and contract validation pass; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`; log explicitly saw `POOL_DISPATCH_ENABLED=false`.
+- D1 run 46188556460, job 141113874704: SUCCESS, 9/9 files, 140/140 tests; Node 24.9.0.
+- Aggregate 182/182 tests on exact merge-result `82a77557bd8aac4f941a5554a4d2818e96cba57b`. This is CI/local proof only, not a deployed system.
+- Formal PR reviews 0; review threads 0.
+- Active ruleset #26550182 on `refs/heads/Основной`: PR required, deletion/non-fast-forward prohibited, review-thread resolution required, but `required_approving_review_count=0`; no required reviewers/CODEOWNERS/last-push approval. Bypass actors empty, current user bypass never. Branch-protection endpoint separately reports `protected=false` and required status checks off. **Independent approval is not a mandatory merge gate today.**
+- Owner action: set ruleset #26550182 `Required approving reviews = 1` or stronger, save and re-read effective ruleset.
+- Default branch controller path `.github/workflows/next-event-controller.yml`: NOT_FOUND; live controller activation NOT RUN. Independent security review NOT RUN.
+- Reuse First: zizmor v1.33.1 GitHub release published 2026-11-22, immutable; MIT; x86_64 Linux asset SHA-256 `3e6a301c7a820a2501915f5a9de8c0486da82bdec7965f068477538a98743d43`; PILOT NEXT, not installed/run. Scorecard v5.7.0, Apache-2.0, release immutable=false; asset SHA-256 `3b08ec0a8681806c3e744ec9210742a502c7d66f06f25523b70f7128738235d3`; attestation asset present but not verified; DEFER.
+- Pass 137 made documentation/evidence changes only; no code/workflow/dependency/test changes. Actual active time NOT MEASURED. Remaining estimate 52–95 focused hours, LOW–MEDIUM confidence. Paid resources/secrets reads/dispatches/provider calls/executor launches/hosted D1 writes/deployments/merges/production mutations all 0.
+- Contour A BLOCKED / NOT ACCEPTED. Contour B DEFERRED.
+- Report: `docs/reports/2026-11-28-pass137-governance-provenance-refresh.md`; checkpoint: `docs/checkpoints/2026-11-28-pass137-governance-provenance-refresh.md`; Platform Intelligence register updated.
+- Next: owner approval-threshold update; independent security review; then bounded, advisory-only zizmor pilot with immutable binary and digest verification. No merge/activation/dispatch.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
