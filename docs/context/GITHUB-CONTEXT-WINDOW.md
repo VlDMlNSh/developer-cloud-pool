@@ -2306,3 +2306,41 @@ Canonical MediaHub map (separate deferred Contour B): https://github.com/VlDMlNS
 - It records the author/project attribution, creation/star snapshot, MIT claim, 17,252 assembly lines, three binary sizes, boot latency, EPYC 7642 throughput/comparisons, PyTorch parity/cosine, AVX2/FMA/F16C prerequisites, Qwen3-0.6B Q8_0 scope, ~2,048-token context, bare-metal limitations and supplied Linux build procedure.
 - Every performance and provenance figure is labeled user-provided/upstream claim and not independently reproduced. No clone/build/model download/benchmark was run.
 - Pass 115 report: `docs/reports/2026-11-28-pass115-spec-kit-llm-asm-assessment.md`; checkpoint addendum: `docs/checkpoints/2026-11-28-pass115-spec-kit-llm-asm.md`.
+
+
+## Pass 117 — live state refresh and controller/D1 composition gate (2026-11-28)
+
+Status: VERIFIED (source/governance read-back); implementation integration NOT RUN. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+### Frozen refs and PR state
+- Default branch `Основной` HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (branch API + recent commit search).
+- PR #176: OPEN/DRAFT/UNMERGED, head `f06155b8ac121a4af90cbc2356f12b965d0fbde9`, base default SHA above. Read-only controller/audit; does not emit Envelope v1 or call D1.
+- PR #181: OPEN/DRAFT/UNMERGED, head `453d74ff70a67d3091d920281f6471a721f1808d`, base `80705bae2dca1f928368429c17922787b86be4bc`; 22 commits ahead, 10 changed files. Exact-head Actions runs: D1 `46163553692` SUCCESS; Pool Contract `46163553680` SUCCESS. Reviews: 0; inline threads: 0. This proves local Workers/D1 tests only.
+- PR #184: OPEN/DRAFT/UNMERGED, head `b473e4b06df1e0f2489b5f7280bc53f114f20752`, base default SHA; 27 commits, 14 files, 746 additions, 0 deletions. Exact-head workflow runs: none. Reviews: 0; inline threads: 0.
+- PRs #177, #178, #179 and #183 were re-read: OPEN/DRAFT/UNMERGED; mergeable flag true is not acceptance.
+
+### Controller/D1 composition finding
+- PR #181 D1 adapter source `proofs/d1-ledger/src/github-next-event.mjs` exports both legacy `admitGitHubNextEvent` and attested `admitGitHubNextAttestedEvent`. Its integration tests still exercise legacy fixtures as well as attested-envelope cases.
+- PR #181 `proofs/d1-ledger/src/worker.mjs` is deliberately inert and returns 404; no production HTTP ingress or dispatch capability.
+- Canonical `.github/workflows/next-event-controller.yml` is absent from the PR #181 branch. It exists on PR #176 branch, but that workflow runs `scripts/owner-next-event-audit.mjs` and remains audit-only. Do not merge the full PR #176 branch (38 commits from default) into the D1 lineage.
+- PR #181 exact-head D1 CI run job `141035991048` completed SUCCESS; steps include checking inert Worker entrypoint and fresh local D1 migration/authority tests. Combined status contexts are empty; named Actions runs are the available CI evidence.
+- Issue #140 is still OPEN; updated 2026-11-28. It remains the controlling current-base admission/lease proof issue.
+
+### Governance
+- Active ruleset #26550182 was fetched directly. It targets exactly `refs/heads/Основной`, enforcement active, requires PR, requires review-thread resolution, has 0 required approvals, no CODEOWNERS requirement and no bypass actors. Classic branch endpoint says `protected=false`; keep the ruleset and classic protection facts distinct.
+- Actions variable metadata endpoint for `POOL_DISPATCH_ENABLED` was not available through the read connector. Current value is NOT VERIFIED; do not infer from historical CI. Dispatch stays prohibited.
+- Independent security review NOT RUN. No secrets read, no hosted D1 writes, no provider calls, no dispatch, no deployment, no merge.
+
+### Reuse First and scope decision
+- REUSE PR #176's read-only GitHub API verifier and Node built-in test approach; REUSE PR #181's canonical Envelope v1 verifier and attested D1 adapter; no new dependency or parallel ledger.
+- Next bounded implementation should start from the exact current PR #181 head only after rechecking its branch ref, port the minimum controller evidence-collector files from PR #176, and emit one canonical Envelope from bounded fixed-origin API readbacks. Keep target SHA, workflow commit SHA, workflow-file blob SHA and workflow-file ref SHA distinct. Prove production import isolation for legacy adapter. Local synthetic D1 only.
+- T003 legacy-import isolation: PARTIALLY VERIFIED — D1 Worker is inert and no production ingress exists in the candidate; a full repository-wide production call-graph proof is still NOT VERIFIED. Keep this task open until the final composed tree is inspected.
+
+### Metrics and next step
+- Engineering active time: NOT MEASURED. Pass 117 tool/readback duration is not a measure of engineering labor.
+- CI evidence: 2 named exact-head runs SUCCESS on PR #181; PR #184 exact-head CI NOT RUN.
+- Defects/blockers: controller and D1 remain separate; API collector does not emit Envelope; legacy export remains; independent review missing; current dispatch variable NOT VERIFIED; no UI/runtime qualification.
+- Next: fresh-branch implementation of minimal controller → API evidence collector → Envelope v1 → Workers verifier → local D1 attested adapter composition, with fixed-origin timeout/body bounds and adversarial tests. No merge/dispatch/deployment.
+
+Report: `docs/reports/2026-11-28-pass117-live-state-and-composition-gate.md`  
+Checkpoint: `docs/checkpoints/2026-11-28-pass117-live-state-and-composition-gate.md`
