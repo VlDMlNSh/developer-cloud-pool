@@ -2361,3 +2361,6 @@ Checkpoint: `docs/checkpoints/2026-11-28-pass117-live-state-and-composition-gate
 - Next bounded pass: Pass 120 remediation on a fresh branch from re-read Pass 111 D1 lineage tip, with collector + canonical validator/digest + Workers/D1 integration changed and tested together; exact-head CI and log inspection; no dispatch.
 
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+- Governance read-back on 2026-11-28: active ruleset #26550182 targets exactly `refs/heads/Основной`; PR required; review-thread resolution required; required approvals 0; no CODEOWNERS requirement; no bypass actors; current user cannot bypass. Classic branch API reports `protected=false`, which is a separate endpoint fact and does not negate the active ruleset.
+- PR #185 formal review submissions: 0; review threads: 0. No governance mutation.
