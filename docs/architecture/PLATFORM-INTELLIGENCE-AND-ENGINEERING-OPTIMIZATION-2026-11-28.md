@@ -290,3 +290,114 @@ GitHub's `issue_comment` workflow only triggers when the workflow file exists on
   - D1 run `46176960877`: 9/9 files, 140/140 tests PASS.
   - Pool Contract run `46176960864`: 42/42 Node tests, `POOL_CONTRACT_VALIDATION=PASS`, `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
 - Independent external security review remains NOT RUN. Default-branch controller workflow remains NOT FOUND; live controller NOT RUN.
+
+## Pass 136 — Engineering Optimization Loop, maturity scale and effort ledger (2026-11-28)
+
+### Owner request and operating change
+The owner requested that every /next optimize the whole Cloud Pool platform, scan current AI/OSS developments, reuse stable components and code patterns, expand meaningful tests, review architecture/security/cost, and increase the depth gradually toward a 15–20 minute engineering work budget.
+
+This is now normative for subsequent /next passes. It applies to the whole platform architecture, but Contour A remains the only implementation priority until formal ACCEPTED. Contour B can be tracked in a read-only technology radar, but no Contour B implementation begins early.
+
+### Maturity scale (not a fabricated percentage)
+| Stage | Gate | Evidence required |
+|---|---|---|
+| 0 — Scope and governance foundation | PLANNED | Owner requirements, authority boundaries, free-tier constraints, threat model and acceptance criteria |
+| 1 — Architecture/contracts | VERIFIED DESIGN | Architecture decisions, API/task/provider/state contracts, data-flow and trust-boundary diagrams |
+| 2 — Local integration proof | VERIFIED | Exact-SHA CI, adversarial/contract tests, local D1/Workers composition, source/provenance checks |
+| 3 — Governance and independent review | QUALIFIED GATE | Effective ruleset, independent approval/security review, resolved findings, provenance and merge-readiness |
+| 4 — Controlled runtime | QUALIFIED | Authorized controller activation, task admission, lease/fencing, isolated executor, durable state/recovery, audit |
+| 5 — User surface and model operations | QUALIFIED | Authenticated responsive UI, live read API, account-isolated routing, quota/cost controls and no-paid-fallback tests |
+| 6 — End-to-end operational qualification | QUALIFIED | Phone/desktop journeys, fault injection, concurrency/replay/recovery, security, cost/free-tier and independent acceptance evidence |
+| 7 — Contour A acceptance | ACCEPTED | All required capabilities work together; independent acceptance report and owner acceptance evidence |
+
+Current position: Stage 2 — Local integration proof, with a blocking Stage 3 governance gate. The latest verified target at the start of Pass 136 is PR #188 head 9521094a65cf6bb4fafa5b9b6348110338cf6cba, base 565404f84b6b86afb4dc2d8fa939341f42df6eca, exact merge-result 73d4269384cd1cd4c1945dd7f4bd296753a308fe. Pool Contract 42/42 and D1 140/140 both passed on that same merge-result. This is not a running cloud pool and not acceptance.
+
+Stage 3 blocker: active ruleset #26550182 still requires 0 approvals; PR #188 has 0 formal reviews and 0 inline threads; independent security review NOT RUN. The controller workflow is absent from default branch Основной (Contents API 404), so live issue_comment activation is NOT RUN.
+
+### Engineering-hours ledger and remaining estimate
+Historical actual engineering hours across earlier chat passes were not recorded with a reliable timer or timesheet. They cannot be reconstructed from the number of /next messages, Git commit timestamps, CI duration or calendar time.
+- Cumulative actual engineering hours before Pass 136: NOT MEASURED / NOT RECOVERABLE.
+- Pass 136 active engineering hours: NOT MEASURED. CI runtimes are test metrics, not engineering hours.
+- This is not a claim that zero hours were spent.
+- Future passes must record actual active minutes only when a reliable start/end measurement exists; otherwise keep NOT MEASURED. Never backfill guessed actual time.
+
+Planning estimate to reach Contour A ACCEPTED from current evidence: 52–95 additional focused engineering hours, excluding external review/owner waiting time, provider quota waiting, and newly discovered infrastructure/legal constraints. This is a rough work-breakdown estimate, not a delivery promise:
+
+| Remaining work package | Estimated active engineering effort |
+|---|---:|
+| Governance remediation, independent security review coordination, integration readiness | 3–6 h |
+| Controller activation contract and end-to-end admission proof after governance gate | 5–9 h |
+| Durable task/attempt state, leases, fencing, idempotency, ambiguous outcomes and recovery | 10–18 h |
+| Executor lifecycle, isolation, resource limits and evidence/artifact handling | 8–14 h |
+| Responsive web console, server-side auth/session, live read API and browser QA | 10–18 h |
+| Provider-neutral route qualification, account isolation, quota/cost ledger and no-paid-fallback tests | 8–14 h |
+| End-to-end fault/security/operational qualification, fixes, docs and independent acceptance | 8–16 h |
+| TOTAL | 52–95 h |
+
+The range must be revised after each work package using measured task durations and actual defects. Any hosting limitation that cannot be satisfied on the approved free GitHub-only path must be recorded as BLOCKED rather than silently solved with paid or unapproved hosting.
+
+### Per-/next Engineering Optimization Loop (mandatory)
+1. Context and governance sync: refresh Context Window, default/current HEAD, branches, PRs/issues, exact-head CI and logs, reviews/threads, rulesets, permissions and executor availability. Distinguish current facts from historical snapshots.
+2. Technology intelligence delta: inspect primary GitHub releases/tags, security advisories, official docs and standards for relevant agent/model SDKs, orchestration, MCP/A2A, state/storage, routing, UI, CI/CD, sandboxing, observability and hardware/edge architecture. Use a prior scan as baseline; log NO MATERIAL CHANGE when appropriate. Do not equate stars or social posts with maturity.
+3. Reuse First: search maintained, license-compatible OSS and stable code patterns. Inspect exact version/commit, license, release provenance, activity, advisories, dependency footprint, supported runtime, resource use, data flows and operational cost. Record REUSE / ADAPT / BUILD / PILOT / DEFER / REJECT. Do not import snippets without license/attribution review.
+4. Architecture-wide optimization review: assess UI/Experience, API/auth, policy/authority, task DAG, admission, queue, lease/fencing, executor, model routing, quota/cost, durable state, audit/observability, CI and free-tier footprint. Contour B is radar-only until Contour A ACCEPTED.
+5. Select by measurable leverage: choose one high-value improvement using risk reduction, critical-path acceleration, defect reduction, runtime/cost impact and implementation scope. Avoid broad refactors without measured need.
+6. Freeze target: record target SHA, scope, non-goals, permissions, risks, rollback and Definition of Done before changes.
+7. Implement and test: prefer existing mature components and existing contracts. Expand tests where they close an identified gap: unit, schema/contract, adversarial/security, property/fuzz, integration, fault-injection/recovery, browser/accessibility, performance/resource and regression. Do not inflate test counts with low-value assertions.
+8. Verify: inspect full diff and changed files; run relevant tests; inspect exact checkout SHA in CI logs; validate clean-base/merge-result as appropriate; run security/provenance checks. Empty/incomplete/inaccessible results are NOT VERIFIED.
+9. Update evidence: append a dated technology decision, work report, checkpoint, Context Window, metrics and next step. Record commit/blob SHA and links. Keep old evidence immutable and mark superseded records instead of silently rewriting history.
+10. Safety gates: no secret reads, paid fallback, account mixing, provider/model call, dispatch, executor launch, deployment, production mutation or governance bypass without its own explicit authorization and passed gates.
+
+### Gradual per-request work-budget ramp
+The requested target is 15–20 minutes of substantive engineering work per /next, but actual duration must not be claimed without measurement. Ramp scope rather than padding a pass:
+- Passes 136–138: target 8–10 minutes of focused work.
+- Passes 139–141: target 10–12 minutes.
+- Pass 142 onward: target 15–20 minutes, subject to tool availability, context budget and a single bounded DoD.
+- If blocked by owner action or unavailable API, continue safe independent work rather than bypassing the gate.
+- Do not keep a pass open merely to consume time; evidence quality and completed DoD take precedence over duration.
+
+### Metrics required on every pass
+- Stage and gate status; critical-path work package.
+- Target HEAD/base/merge-result SHA and PR size.
+- Tests passed/failed/skipped, exact-SHA status and coverage where available.
+- Security findings by severity; unresolved governance/review blockers.
+- Actual active minutes (measured) and estimated effort (separate).
+- Remaining estimate range and confidence / assumptions.
+- CI queue, startup, dependency install, test and artifact durations where logs expose them.
+- Defect count, retries, recovery/fencing outcomes, resource use and cost/free-tier impact where measured.
+- OSS candidates scanned, dispositions and exact upstream versions/commits.
+- New dependencies/services/provider routes and paid spend (must remain 0 unless separately authorized).
+- Next action and acceptance evidence required.
+
+### Pass 136 technology delta scan — primary-source evidence
+| Candidate | Fresh upstream evidence | Cloud Pool decision |
+|---|---|---|
+| LangGraph | v1.2.24 (2026-11-20) fixes message reducer handling and null checkpoint behavior; CLI v0.4.44 (2026-11-25) adds JSON output for deploy listing and fixes secret-list handling. | ADAPT strict checkpoint/recovery and machine-readable operations ideas; DEFER runtime because current Node/Workers + D1 ledger should remain one state authority until a concrete limitation is measured. |
+| OpenAI Agents SDK | v0.26.0 (2026-11-24), MIT; release notes include bounded TAR path validation, Docker CPU/path inspection and storage mount privilege restrictions, MCP metadata precedence and queued-tool guardrail handling. | ADAPT sandbox path/resource/guardrail acceptance patterns; DEFER Python runtime because it does not replace the current Node/Workers controller or task ledger. |
+| Google ADK Python | v2.15.1 (2026-11-24), Apache-2.0; fixes streamed A2A output persistence and dynamic instruction gating. | ADAPT stream-completion/persistence tests and routing-gate semantics; DEFER runtime pending a demonstrated Python executor requirement and threat-model fit. |
+| zizmor | v1.33.1 (2026-11-22), MIT; immutable GitHub release and published binary SHA-256 digests; static analysis for GitHub Actions injection, token permissions, credential persistence and impostor commits. | PILOT candidate for an additional workflow-security CI check after install path and exact release asset provenance review. Not installed or run in this pass. |
+| OpenSSF Scorecard | v5.7.0 (2026-11-19), Apache-2.0; release includes an in-toto provenance artifact. | PILOT candidate for a read-only supply-chain baseline and recurring trend; score is not a substitute for threat modeling or mandatory review. Not run in this pass. |
+
+Primary sources:
+- https://github.com/langchain-ai/langgraph/releases
+- https://github.com/openai/openai-agents-python/releases/tag/v0.26.0
+- https://github.com/openai/openai-agents-python/blob/main/LICENSE
+- https://github.com/google/adk-python/releases/tag/v2.15.1
+- https://github.com/google/adk-python/blob/main/LICENSE
+- https://github.com/zizmorcore/zizmor/releases/tag/v1.33.1
+- https://github.com/zizmorcore/zizmor/blob/main/LICENSE
+- https://github.com/ossf/scorecard/releases/tag/v5.7.0
+- https://github.com/ossf/scorecard/blob/main/LICENSE
+- https://cheatsheetseries.owasp.org/cheatsheets/GitHub_Actions_Security_Cheat_Sheet.html
+- https://owasp.github.io/DevSecOpsGuideline/2-Process/2-3-Build/2-3-6-Supply-Chain-Security/2-3-6-3-CICD-Pipeline-Security/
+
+### Pass 136 disposition
+- Technology delta scan: COMPLETED for this bounded shortlist; not exhaustive.
+- New dependencies installed: 0.
+- Runtime components integrated: 0.
+- Security scanners executed: NOT RUN.
+- New test suites added: 0; this pass changes the process/measurement contract.
+- Actual engineering time: NOT MEASURED.
+- Current stage: 2 — VERIFIED local integration proof; Stage 3 BLOCKED.
+- Contour A: BLOCKED / NOT ACCEPTED.
+- Contour B: DEFERRED.
