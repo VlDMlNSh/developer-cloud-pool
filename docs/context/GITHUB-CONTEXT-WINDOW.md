@@ -2880,3 +2880,10 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Governance remains BLOCKED: ruleset #26550182 approvals=0; formal reviews 0; threads 0; independent security review NOT RUN. Default-branch controller workflow absent; dispatch variable NOT VERIFIED.
 - Report: [Pass 134](../reports/2026-11-28-pass134-latest-head-ci-governance.md); checkpoint: [Pass 134 checkpoint](../checkpoints/2026-11-28-pass134-latest-head-ci-governance.md).
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+### Pass 134 post-documentation CI boundary
+- After Pass 134 docs, PR head `b5e8b698e139611745663b910fe289c8d2db4158`; exact merge-result `f82ecaf0d08037916706eac0c1e6b8430129657d`.
+- Pool Contract run `46183858640`, job `141099272422`: SUCCESS; exact checkout `f82ecaf0d08037916706eac0c1e6b8430129657d`; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; import graph PASS.
+- D1 latest completed run remains `46183777441`, job `141099004240`: 140/140 on prior merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`; no D1 workflow run returned for this docs-only head. Do not present 182 as same-SHA proof.
+- Ruleset #26550182 still requires 0 approvals; reviews 0; threads 0; independent security review NOT RUN; controller activation NOT RUN; dispatch variable NOT VERIFIED.
