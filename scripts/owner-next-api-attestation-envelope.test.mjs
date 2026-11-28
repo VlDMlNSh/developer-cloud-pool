@@ -26,7 +26,7 @@ function fixture() {
       id: "400000001", attempt: 1, event: "issue_comment", headBranch: "Основной", headSha: head,
       workflowId: "500000001", workflowPath: ".github/workflows/next-event-controller.yml",
       workflowState: "active", workflowCommitSha: "b".repeat(40),
-      workflowFileBlobSha: "c".repeat(40), workflowFileRefSha: head
+      workflowFileBlobSha: "c".repeat(40), workflowFileRefSha: "b".repeat(40)
     },
     policy: { profile: "jarvis-code-sandbox-v1", dispatch: false, executionAuthorized: false }
   };
