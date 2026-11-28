@@ -2517,3 +2517,20 @@ Status: VERIFIED (source/lineage preflight); end-to-end composition BLOCKED; ind
 - Next Pass 122: add least-privilege issue_comment controller + collector CLI bridge using `GITHUB_WORKFLOW_SHA`; pass exact serialized source JSON/digest/trusted context into local D1 integration test calling only `admitGitHubNextAttestedEvent`; prove legacy adapter import isolation; exact-head/clean-base CI and independent review. Keep dispatch=false and executionAuthorized=false.
 - Report: `docs/reports/2026-11-28-pass121-controller-composition-preflight.md`; checkpoint: `docs/checkpoints/2026-11-28-pass121-controller-composition-preflight.md`.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 122 — Platform intelligence and engineering optimization (2026-11-28)
+
+Status: VERIFIED (architecture/process register documented); runtime integrations and benchmarks NOT RUN; Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+- Base SHA: `f387e590993a729701710c2819d713f2b75d2663`; documentation branch: `docs/pass122-platform-intelligence-optimization-2026-11-28`.
+- New standing requirement: every `/next` includes OSS intelligence and platform optimization: discover → filter → decide → prove → integrate → revisit. Candidate dispositions: REUSE / ADAPT / BUILD / PILOT / DEFER / REJECT. Popularity is not an adoption gate; license, activity, security, data flow, dependency footprint, free-tier cost, compatibility and measured benefit are mandatory.
+- Register: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`.
+- Initial candidate decisions: LangGraph ADAPT concepts / DEFER runtime; Temporal DEFER pending demonstrated D1 limits and viable ops model; Dagger PILOT only after CI baseline; Pydantic AI DEFER until justified Python executor; OpenTelemetry ADAPT semantics first / DEFER collector runtime; LiteLLM REUSE routing/usage patterns / DEFER credential-bearing gateway deployment. Six candidates reviewed; no dependencies or provider routes added.
+- Architecture decisions: Jarvis coordinator separate from scoped executors; persist-before-dispatch; D1 remains single candidate task/receipt ledger; provider-neutral qualified routes; correlation IDs and measurable observability; benchmark CI before adding Dagger or broad parallelism; independent reviewer; no paid fallback.
+- PR #186 OPEN/DRAFT/UNMERGED, formal reviews 0 and threads 0; PR #187 validation-only, never merge.
+- Pass 120 D1 run `46168608155` SUCCESS 139/139; Pool Contract `46168608158` and `46168608181` SUCCESS 29/29 each. No new CI for this docs-only branch.
+- Candidate benchmarks/integrations NOT RUN; local tests NOT RUN; independent security review NOT RUN; active time NOT MEASURED. No secrets, provider calls, dispatch, hosted D1 writes, executor, deployment, merge or production mutation.
+- Next Pass 123: read-only issue_comment controller + collector CLI bridge; feed exact collector JSON/digest through Workers verifier to local D1 attested adapter test; prove legacy import isolation; keep dispatch=false and executionAuthorized=false.
+- Report: `docs/reports/2026-11-28-pass122-platform-intelligence-optimization.md`; checkpoint: `docs/checkpoints/2026-11-28-pass122-platform-intelligence-optimization.md`.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
