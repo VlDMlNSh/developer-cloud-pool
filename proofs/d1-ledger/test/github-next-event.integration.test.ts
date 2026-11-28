@@ -59,7 +59,7 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
       issue: { number: 96, node_id: "I_kwDOTestIssue", url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96" },
       comment: { id: context.commentId, node_id: "IC_kwDOTestComment",
         issue_url: "https://api.github.com/repos/VlDMlNSh/developer-cloud-pool/issues/96",
-        body: "/next", user: { id: 157891068 }, author_association: "OWNER" },
+        body: "/next", user: { id: 157891068, login: "VlDMlNSh" }, author_association: "OWNER" },
       run: { id: context.runId, run_attempt: 1, event: "issue_comment",
         path: ".github/workflows/next-event-controller.yml@Основной",
         repository: { id: 1445644538 }, actor: { id: 157891068 },
