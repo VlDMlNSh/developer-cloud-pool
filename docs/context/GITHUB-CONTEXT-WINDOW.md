@@ -2906,3 +2906,13 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - Report: [Pass 135](../reports/2026-11-28-pass135-exact-head-ci-governance.md); checkpoint: [Pass 135 checkpoint](../checkpoints/2026-11-28-pass135-exact-head-ci-governance.md).
 - Next: owner updates [ruleset #26550182](https://github.com/VlDMlNSh/developer-cloud-pool/rules/26550182) to require at least one independent approval, then independent security review of the exact current PR head. No merge, controller activation or dispatch before gates pass.
 - Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 135 documentation-head CI closure
+- After creating the Pass 135 report/checkpoint/Context Window, the PR documentation head was `d38e28d0839c4d98112859e8f73813af0548dc91`.
+- Exact merge-result: `657b2ca58c74cf733b9e3d1bcc6953f219c4bff2`, merging that head into base `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- Pool Contract run `46187502404`, job `141110609633`: SUCCESS; exact checkout `657b2ca...`; 42/42 tests; controller CLI pass; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`; job environment recorded `POOL_DISPATCH_ENABLED=false`.
+- D1 run `46187502402`, job `141110601714`: SUCCESS; exact checkout `657b2ca...`; 9/9 test files, 140/140 tests.
+- 182/182 tests VERIFIED on this exact documentation-head merge-result. This validates the tested revision, not later doc-only commits.
+- Governance unchanged: ruleset #26550182 required approvals=0; reviews=0; threads=0; independent security review NOT RUN; default-branch controller workflow NOT FOUND.
+- No dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
