@@ -46,15 +46,19 @@ function apiFixture(overrides = {}) {
   const ref = { object: { sha } };
   const file = { path: ".github/workflows/next-event-controller.yml", encoding: "base64",
     content: b64, sha: blobSha };
+  const repoResult = overrides.repository ? { ...repo, ...overrides.repository } : repo;
+  const issueResult = overrides.issue ? { ...issue, ...overrides.issue } : issue;
+  const commentResult = overrides.comment ? { ...comment, ...overrides.comment } : comment;
+  const workflowResult = overrides.workflow ? { ...workflow, ...overrides.workflow } : workflow;
   const fileResult = overrides.fileSha ? { ...file, sha: overrides.fileSha } : file;
   const refResult = overrides.refSha ? { object: { sha: overrides.refSha } } : ref;
   const runResult = overrides.run ? { ...run, ...overrides.run } : run;
   return async path => {
-    if (path === "/repos/VlDMlNSh/developer-cloud-pool") return repo;
-    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/96") return issue;
-    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/comments/300") return comment;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool") return repoResult;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/96") return issueResult;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/issues/comments/300") return commentResult;
     if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/runs/400") return runResult;
-    if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/workflows/500") return workflow;
+    if (path === "/repos/VlDMlNSh/developer-cloud-pool/actions/workflows/500") return workflowResult;
     if (path.includes("/git/ref/heads/")) return refResult;
     if (path.includes("/contents/.github/workflows/next-event-controller.yml?ref=" + env.GITHUB_WORKFLOW_SHA)) return fileResult;
     throw new Error("unexpected API path: " + path);
@@ -119,6 +123,59 @@ test("rejects webhook repository identity substitution and missing immutable nod
     collectOwnerNextEnvelope({ event: missingCommentNode, env, apiGet: apiFixture() }),
     /SOURCE_EVENT_NOT_ALLOWED/
   );
+});
+
+test("rejects API identity substitution across repository, issue, comment, run and workflow responses", async () => {
+  const cases = [
+    [{ repository: { id: 8 } }, /REPOSITORY_IDENTITY_MISMATCH/],
+    [{ issue: { node_id: "I_kwDOForged" } }, /ISSUE_IDENTITY_MISMATCH/],
+    [{ comment: { id: 301 } }, /COMMENT_IDENTITY_MISMATCH/],
+    [{ run: { id: 401 } }, /WORKFLOW_RUN_IDENTITY_MISMATCH/],
+    [{ run: { run_attempt: 2 } }, /WORKFLOW_RUN_IDENTITY_MISMATCH/],
+    [{ workflow: { id: 501 } }, /WORKFLOW_METADATA_MISMATCH/],
+    [{ workflow: { state: "disabled" } }, /WORKFLOW_METADATA_MISMATCH/]
+  ];
+  for (const [overrides, expected] of cases) {
+    await assert.rejects(
+      collectOwnerNextEnvelope({ event, env, apiGet: apiFixture(overrides) }),
+      expected
+    );
+  }
+});
+
+test("verifier rejects independently changed webhook fields and runner provenance", async () => {
+  const result = await collectOwnerNextEnvelope({ event, env, apiGet: apiFixture() });
+  const eventMutations = [
+    { ...event, issue: { ...event.issue, number: 97 } },
+    { ...event, comment: { ...event.comment, id: 301 } },
+    { ...event, comment: { ...event.comment, body: "/next " } },
+    { ...event, comment: { ...event.comment, author_association: "COLLABORATOR" } },
+    { ...event, comment: { ...event.comment, user: { id: 42, login: "attacker" } } },
+    { ...event, sender: { id: 42, login: "attacker" } }
+  ];
+  for (const changedEvent of eventMutations) {
+    const context = mapGitHubActionsContext({ event: changedEvent, env });
+    await assert.rejects(
+      verifyOwnerNextEnvelopeForActions(result.sourceJson, result.digest, context),
+      /ACTIONS_EVENT_CROSSCHECK_FAILED/
+    );
+  }
+  const envMutations = [
+    { ...env, GITHUB_REPOSITORY: "attacker/repo" },
+    { ...env, GITHUB_REF: "refs/heads/attacker" },
+    { ...env, GITHUB_SHA: "d".repeat(40) },
+    { ...env, GITHUB_WORKFLOW_REF: "attacker/workflow@refs/heads/Основной" },
+    { ...env, GITHUB_WORKFLOW_SHA: "e".repeat(40) },
+    { ...env, GITHUB_RUN_ID: "401" },
+    { ...env, GITHUB_RUN_ATTEMPT: "2" }
+  ];
+  for (const changedEnv of envMutations) {
+    const context = mapGitHubActionsContext({ event, env: changedEnv });
+    await assert.rejects(
+      verifyOwnerNextEnvelopeForActions(result.sourceJson, result.digest, context),
+      /ACTIONS_RUN_CROSSCHECK_FAILED/
+    );
+  }
 });
 
 test("rejects a default-ref race", async () => {
