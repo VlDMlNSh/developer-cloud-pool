@@ -2,13 +2,15 @@
 
 > **Единый источник восстановления контекста проекта.** Этот файл объединяет текущее состояние облачного пула, облачной среды разработки, удалённого веб-доступа, исполнителей, маршрутизации моделей, квот, безопасности, GitHub governance, CI, решений, доказательств и очередности работ. При конфликте кратких checkpoint/report с этим файлом сначала сверяй первичные GitHub refs, Issues, PR, CI и contracts; затем обновляй этот файл. Остальные документы служат подробными доказательствами/контрактами и навигацией, а не параллельными окнами контекста.
 
-Last refreshed: 2026-11-28 — Pass 134 exact merge-result CI closurend governance revalidationnd governance revalidation
+Last refreshed: 2026-11-28 — Pass 136 Engineering Optimization Loop and maturity/effort scale.
 Repository: https://github.com/VlDMlNSh/developer-cloud-pool
 Default branch: `Основной`
-Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by commit search and PR merge-result CI)
-Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28` (PR #188 OPEN/DRAFT/UNMERGED; Pass 131 verified CI target head `212c7134919c3102429cd9e451196bd661830b7c`; Pass 131 report/checkpoint/Context Window commits are documentation-only and later than that tested head; post-doc CI NOT VERIFIED)
-Latest report/checkpoint: `docs/reports/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` / `docs/checkpoints/2026-11-28-pass130-exact-head-ci-and-context-reconciliation.md` (working branch remains unmerged)
-This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Do not represent the documentation branch as default/canonical production code.
+Observed default HEAD: `565404f84b6b86afb4dc2d8fa939341f42df6eca` (verified by current PR base and exact merge-result CI)
+Current continuation branch: `feat/pass124-readonly-owner-next-controller-2026-11-28`; PR #188 OPEN/DRAFT/UNMERGED.
+Pass 136 target at start: PR head `9521094a65cf6bb4fafa5b9b6348110338cf6cba`; exact merge-result `73d4269384cd1cd4c1945dd7f4bd296753a308fe`; D1 140/140 and Pool Contract 42/42 passed on that same merge-result.
+Pass 136 documentation artifacts: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`, `docs/reports/2026-11-28-pass136-engineering-optimization-loop.md`, `docs/checkpoints/2026-11-28-pass136-engineering-optimization-loop.md`.
+Maturity: Stage 2 — VERIFIED local integration proof; Stage 3 governance gate BLOCKED. Current estimate to Contour A ACCEPTED: 52–95 additional focused engineering hours. Historical actual hours NOT MEASURED / NOT RECOVERABLE; do not infer from message count or CI duration.
+This document is maintained on the current continuation branch and is NOT merged into the default branch. Do not treat its content as deployed production state. Historical sections below are append-only snapshots; the latest dated Pass section supersedes older operational snapshots.
 
 ---
 
@@ -2916,3 +2918,43 @@ Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediah
 - 182/182 tests VERIFIED on this exact documentation-head merge-result. This validates the tested revision, not later doc-only commits.
 - Governance unchanged: ruleset #26550182 required approvals=0; reviews=0; threads=0; independent security review NOT RUN; default-branch controller workflow NOT FOUND.
 - No dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. Contour A remains BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+
+
+## Pass 136 — current engineering state and optimization operating contract (2026-11-28)
+
+### Current source-of-truth snapshot
+- PR #188 OPEN / DRAFT / UNMERGED; branch `feat/pass124-readonly-owner-next-controller-2026-11-28`.
+- At Pass 136 start: head `9521094a65cf6bb4fafa5b9b6348110338cf6cba`; base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; exact merge-result `73d4269384cd1cd4c1945dd7f4bd296753a308fe`.
+- Exact merge-result CI: Pool Contract run `46187595184`, job `141110915235`, SUCCESS 42/42; D1 run `46187595260`, job `141110895989`, SUCCESS 140/140; 182/182 tests on the same SHA.
+- PR size at pass start: 280 commits / 110 files / +13,656 / -16.
+- Formal reviews 0; inline threads 0; independent security review NOT RUN.
+- Active ruleset #26550182 applies to `refs/heads/Основной`, but required approvals=0, required reviewers empty, CODEOWNERS review=false, last-push approval=false, extra approval=false. Bypass actors empty; current-user bypass never.
+- Default branch `Основной` still returns 404 for `.github/workflows/next-event-controller.yml`; live issue_comment controller activation NOT RUN.
+- Current job log observed `POOL_DISPATCH_ENABLED=false` for the Pool Contract workflow execution at 2026-11-28 20:40 UTC. This is a timestamped observation, not a permanent guarantee. Re-read before any future separately authorized dispatch. No secrets read.
+
+### Maturity and time accounting
+- Current stage: Stage 2 — VERIFIED local integration proof; Stage 3 governance/independent-review gate BLOCKED.
+- Stage ladder and evidence requirements are defined in the Platform Intelligence register. Stage 4 requires authorized live runtime; Stage 5 user surface/model operations; Stage 6 end-to-end operational qualification; Stage 7 formal Contour A ACCEPTED.
+- Historical cumulative actual engineering hours NOT MEASURED / NOT RECOVERABLE. Pass 136 active hours NOT MEASURED. Do not treat NOT MEASURED as zero.
+- Remaining planning estimate: 52–95 focused engineering hours, excluding external owner/reviewer waiting, provider quota waiting and new infrastructure constraints. This estimate must be recalibrated from measured work-package outcomes.
+- Per-/next work-budget ramp: Passes 136–138 target 8–10 minutes; 139–141 target 10–12; 142 onward target 15–20 minutes. Actual duration is only reported when reliably measured; no padding or gate bypass.
+
+### Mandatory Engineering Optimization Loop
+Every /next must: (1) reconcile Context Window/HEAD/refs/PR/issues/CI/reviews/rulesets/agents; (2) scan primary-source AI/OSS releases, advisories and standards for material deltas; (3) perform Reuse First with license, provenance, activity, security, dependency, runtime, data-flow and cost review; (4) assess architecture across UI/API/auth, authority, task DAG/admission, queue, lease/fencing, executor, routing, quota, durable state, audit, observability, CI and free-tier; (5) choose one bounded high-leverage Contour A improvement; (6) freeze SHA/scope/DoD/risks; (7) implement and expand only meaningful unit/contract/adversarial/property/integration/fault-recovery/browser/performance tests; (8) inspect exact checkout logs/diff/provenance; (9) update report/checkpoint/context/metrics; (10) retain all authorization gates. Contour B is read-only radar until Contour A ACCEPTED.
+
+### Pass 136 technology intelligence
+- LangGraph 1.2.24 / CLI 0.4.44: ADAPT checkpoint/recovery and machine-readable operations; runtime DEFER.
+- OpenAI Agents SDK 0.26.0 (MIT): ADAPT sandbox path/resource/guardrail acceptance patterns; Python runtime DEFER.
+- Google ADK Python 2.15.1 (Apache-2.0): ADAPT A2A stream persistence/routing-gate tests; runtime DEFER.
+- zizmor 1.33.1 (MIT): PILOT candidate for workflow security scanning; not installed/run.
+- OpenSSF Scorecard 5.7.0 (Apache-2.0): PILOT candidate for read-only supply-chain baseline; not run.
+- No packages installed, benchmarks run, runtime dependencies added or provider routes enabled.
+- Full evidence and primary source links: `docs/architecture/PLATFORM-INTELLIGENCE-AND-ENGINEERING-OPTIMIZATION-2026-11-28.md`.
+
+### Safety and current status
+- No dispatch, provider/model calls, executor launch, hosted D1 writes, deployment, merge or production mutation.
+- New dependencies 0; paid resources 0; Gemini/Claude NOT RUN.
+- Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
+- Report: `docs/reports/2026-11-28-pass136-engineering-optimization-loop.md`; checkpoint: `docs/checkpoints/2026-11-28-pass136-engineering-optimization-loop.md`.
+- Next: owner sets at least one independent approval in [ruleset #26550182](https://github.com/VlDMlNSh/developer-cloud-pool/rules/26550182); then independent security review and bounded zizmor/Scorecard pilot after provenance review.
+- Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
