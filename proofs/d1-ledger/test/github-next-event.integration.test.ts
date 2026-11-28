@@ -11,7 +11,7 @@ const trustedClock = () => NOW;
 const workflowRef = "VlDMlNSh/developer-cloud-pool/.github/workflows/next-event-controller.yml@refs/heads/Основной";
 
 async function fixture(id, commentIdOverride, attested = false, collectorBacked = false) {
-  const targetSha = id.repeat(40);
+  const targetSha = collectorBacked ? id.repeat(39) + "b" : id.repeat(40);
   const context = {
     githubActions: "true", serverUrl: "https://github.com",
     eventName: "issue_comment", eventAction: "created",
@@ -20,7 +20,7 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
     actorId: "157891068", actorLogin: "VlDMlNSh",
     ref: "refs/heads/Основной", sha: targetSha, workflowRef, workflowSha: "f".repeat(40),
     runId: 500000 + id.charCodeAt(0), runAttempt: 1,
-    issueNumber: 96, isPullRequest: false, commentId: commentIdOverride ?? (900000 + id.charCodeAt(0)),
+    issueNumber: 96, isPullRequest: false, commentId: commentIdOverride ?? (900000 + id.charCodeAt(0) + (collectorBacked ? 1000000 : 0)),
     commentBody: "/next", commentUserId: "157891068",
     commentUserLogin: "VlDMlNSh", commentAuthorAssociation: "OWNER"
   };
@@ -102,23 +102,23 @@ async function fixture(id, commentIdOverride, attested = false, collectorBacked 
   }
   const attestationDigest = attestation.digest;
   const approval = {
-    approvalId: "approval-next-" + id, ownerNumericId: "157891068",
+    approvalId: "approval-next-" + id + (collectorBacked ? "-collector" : ""), ownerNumericId: "157891068",
     repositoryId: "1445644538", issueNumber: 96, targetSha,
     profile: "jarvis-code-sandbox-v1", executorId,
     envelopeDigest: attested ? attestationDigest : bound.context.eventDigest
   };
   const route = {
-    schemaVersion: 1, qualificationId: `route-next-${id}`, routeId: "local-ollama",
+    schemaVersion: 1, qualificationId: `route-next-${id}${collectorBacked ? "-collector" : ""}`, routeId: "local-ollama",
     providerId: "ollama", modelId: "qwen-local", issuerId: "local-authority",
     accountRef: "local-account-1", credentialHandleRef: "local-handle-1",
     quotaDomainId: null, costClass: "local", capabilityId: "pool.execute.local",
-    capabilityProfile: "jarvis-code-sandbox-v1", evidenceRef: `local-evidence:next-${id}`,
+    capabilityProfile: "jarvis-code-sandbox-v1", evidenceRef: `local-evidence:next-${id}${collectorBacked ? "-collector" : ""}`,
     evidenceDigest: id.repeat(64), observedAt: NOW - 60, validUntil: NOW + 3600,
     revocationVersion: 0, registryVersion: "registry-v1"
   };
   const attempt = {
-    attemptId: `attempt-next-${id}`, inputDigest: "e".repeat(64),
-    executionIdempotencyKey: `idem-next-${id}`
+    attemptId: `attempt-next-${id}${collectorBacked ? "-collector" : ""}`, inputDigest: "e".repeat(64),
+    executionIdempotencyKey: `idem-next-${id}${collectorBacked ? "-collector" : ""}`
   };
   const input = {
     admissionId: `admission-next-${id}`,
@@ -481,7 +481,7 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     expect(f.sourceJson).toBe(JSON.stringify(JSON.parse(f.sourceJson)));
     expect(f.trustedContext).toMatchObject({
       githubActions: "true", serverUrl: "https://github.com",
-      workflowSha: "f".repeat(40), sha: "5".repeat(40),
+      workflowSha: "f".repeat(40), sha: "5".repeat(39) + "b",
       issueNumber: 96, commentBody: "/next", commentAuthorAssociation: "OWNER"
     });
     const first = await admitGitHubNextAttestedEvent(
@@ -504,8 +504,8 @@ describe("GitHub /next admission and durable source-comment receipt — local D1
     expect(receipt).toMatchObject({
       event_digest: f.digest, attestation_schema: "cloud-pool.owner-next.api-attestation",
       attestation_version: 1, issue_node_id: "I_kwDOTestIssue",
-      comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: "5".repeat(40),
-      run_head_sha: "5".repeat(40), workflow_id: "98765", workflow_state: "active",
+      comment_node_id: "IC_kwDOTestComment", observed_default_head_sha: "5".repeat(39) + "b",
+      run_head_sha: "5".repeat(39) + "b", workflow_id: "98765", workflow_state: "active",
       workflow_commit_sha: "f".repeat(40), workflow_file_blob_sha: expect.stringMatching(/^[0-9a-f]{40}$/),
       workflow_file_ref_sha: "f".repeat(40), dispatch_enabled: 0
     });
