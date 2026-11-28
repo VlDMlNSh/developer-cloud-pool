@@ -81,3 +81,11 @@ Pass 120: remediate F-119-01 on a fresh branch from the re-read Pass 111 D1 line
 
 Contour A: BLOCKED / NOT ACCEPTED.
 Contour B: DEFERRED.
+
+## Governance read-back (2026-11-28)
+
+- Active repository ruleset ID `26550182`, name `Основной — verified`, enforcement `active`, exact include selector `refs/heads/Основной`.
+- Rules: deletion denied; non-fast-forward denied; pull request required; review-thread resolution required; required approving review count is 0; CODEOWNERS review disabled; bypass actors empty; current user cannot bypass.
+- Classic branch endpoint reports `protected=false`; this does not negate the independently read active repository ruleset. Keep these facts distinct.
+- PR #185 formal review submissions: 0; review threads: 0. Its draft/unmerged status remains unchanged.
+- No governance or ruleset mutation performed.
