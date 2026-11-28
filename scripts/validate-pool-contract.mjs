@@ -51,6 +51,29 @@ if (workflows.every(([, source]) => [...source.matchAll(/^\s*uses:\s*([^\s#]+)\s
   pass("all external Actions references are pinned to 40-character commit SHAs");
 }
 
+if (!/^  issue_comment:\s*\n    types:\s*\[created\]/m.test(ownerNextController)) {
+  fail("Owner /next controller must subscribe only to created issue_comment events");
+}
+if (!/^permissions:\s*\n  contents:\s*read\n  issues:\s*read\n  actions:\s*read\s*$/m.test(ownerNextController)) {
+  fail("Owner /next controller must have read-only repository/issue/actions permissions");
+}
+if (/workflow_dispatch:|workflow_run:|workflow_call:|issues:\s*write|actions:\s*write|contents:\s*write|secrets\.|dispatches/i.test(ownerNextController)) {
+  fail("Owner /next controller must not expose dispatch, privileged triggers, secret access or write permissions");
+}
+if (!/github\.event\.comment\.author_association == 'OWNER'/.test(ownerNextController) ||
+    !/github\.event\.comment\.user\.id == 157891068/.test(ownerNextController) ||
+    !/github\.event\.sender\.id == 157891068/.test(ownerNextController)) {
+  fail("Owner /next controller must bind the event to the numeric repository owner identity");
+}
+if (!/ref:\s*\$\{\{\s*github\.workflow_sha\s*\}\}/.test(ownerNextController) ||
+    !/persist-credentials:\s*false/.test(ownerNextController)) {
+  fail("Owner /next controller must check out workflow-pinned source without persisted credentials");
+}
+if (!/node scripts\/owner-next-controller\.mjs/.test(ownerNextController)) {
+  fail("Owner /next controller must invoke the bounded API-attested collector CLI");
+}
+if (failures.length === 0) pass("owner /next controller is owner-bound, workflow-pinned, read-only and non-dispatching");
+
 if (!/^permissions:\s*\{\s*\}/m.test(worker)) fail("Retired worker must default to permissions: {}");
 if (!/^  retired:\s*$/m.test(worker)) fail("Legacy worker must contain only the retired guard job");
 if (!/Legacy DSH worker is retired/.test(worker) || !/exit 1/.test(worker)) {
