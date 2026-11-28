@@ -28,7 +28,7 @@ WHEN NOT (
     AND length(NEW.comment_node_id) BETWEEN 1 AND 256
     AND NEW.observed_default_head_sha = NEW.target_sha
     AND NEW.run_head_sha = NEW.target_sha
-    AND NEW.workflow_file_ref_sha = NEW.run_head_sha
+    AND NEW.workflow_file_ref_sha = NEW.workflow_commit_sha
     AND NEW.workflow_commit_sha = NEW.workflow_sha
     AND length(NEW.workflow_id) BETWEEN 1 AND 32
     AND NEW.workflow_id NOT GLOB '*[^0-9]*'
