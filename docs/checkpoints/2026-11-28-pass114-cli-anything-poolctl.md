@@ -1,16 +1,19 @@
 # Pass 114 checkpoint — 2026-11-28
 
-Status: IMPLEMENTED (read-only CLI MVP); CI PENDING; NOT QUALIFIED
+Status: VERIFIED (read-only CLI MVP and PR merge-result CI); NOT QUALIFIED / NOT ACCEPTED
 
-- Target/default SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
-- Branch: `feat/pass114-agent-native-poolctl-2026-11-28`, created from exact default SHA.
-- Added `scripts/poolctl.mjs`: `contract validate [--json]`, fixed validator path/argv, `shell:false`, timeout/output caps, minimal child env, stable JSON and fail-closed unknown command/options.
-- Added `scripts/poolctl.test.mjs`: subprocess tests for help, JSON success, unsupported command, unknown option and env non-disclosure.
-- Pool Contract workflow now runs the CLI tests.
-- Added `docs/architecture/CLI-ANYTHING-ADOPTION-AND-POOL-CLI.md`.
-- CLI-Anything upstream README/HARNESS/SECURITY/LICENSE reviewed; license Apache-2.0. Methodology adapted; public CLI-Hub auto-install and Claude plugin execution rejected/deferred.
-- No new runtime dependencies, no credentials, network calls, hosted D1 writes, dispatch, execution or production changes.
-- CI PENDING; independent security review NOT RUN; Claude Code NOT RUN; active engineering time NOT MEASURED.
-- All CLI outputs preserve `dispatch:false` and `executionAuthorized:false`.
+- Canonical default/base SHA: `565404f84b6b86afb4dc2d8fa939341f42df6eca`.
+- PR #183: OPEN / DRAFT / UNMERGED.
+- Final PR head SHA: `2b9d9d51712a1e45b5c77233d4a45952a0fe4e51`.
+- Exact PR validation run #46164275649: SUCCESS; job #141038230498; merge-result checkout `cda3a56...`.
+- CI verified 5 workflow YAML files, existing Pool Contract validator PASS, CLI subprocess tests 5/5 PASS / 0 FAIL, dispatch gate disabled or unset.
+- Added `scripts/poolctl.mjs contract validate [--json]`, fixed Node executable/script, argv list, `shell:false`, timeout/output bounds, empty child environment (Windows SystemRoot only), stable JSON, fail-closed unknown command/options.
+- Added 5 subprocess tests and CI wiring; no new runtime dependencies.
+- Reviewed upstream CLI-Anything README/HARNESS/SECURITY/LICENSE; Apache-2.0 verified. Adopted methodology, rejected CLI-Hub auto-install and REPL for control plane.
+- PR #183 reviews 0, inline comments 0. Ruleset #26550182 active; 0 required approvals; independent security review NOT RUN.
+- Non-blocking CI warning: pinned actions/checkout targets Node 20 while runner forces Node 24; follow-up maintenance.
+- Claude Code plugin NOT RUN (server-3 authorization/session not established).
+- No secrets, hosted D1, API mutations, provider calls, dispatch, execution, deployment or merge.
+- Active engineering time NOT MEASURED.
 - Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
-- Next: Draft PR to default, exact-head CI, inspect logs/diff, request independent security review. Do not merge.
+- Next: independent security review; retain Draft/unmerged. Do not add mutation commands or expand CLI before Controller/API/D1 E2E.
