@@ -38,7 +38,7 @@ Status: VERIFIED — controller/CLI implementation and Pool Contract merge-resul
 No secrets read, provider calls, hosted D1 writes, dispatch, executor launch, deployment, merge or production mutation. CI read-only token permissions only. Gemini/Claude NOT RUN. Time not measured. Benchmarks NOT RUN.
 
 ## Branch / PR scale
-- Cumulative PR #188 carries prerequisite D1/Pass 120 and Pass 121–123 lineage: 170 commits, 83 files, +11,425/-4 against default. This is a large clean-base integration candidate, not a merge-ready patch.
+- Cumulative PR #188 carries prerequisite D1/Pass 120 and Pass 121–124 lineage. Its clean-default diff is large and must be refreshed from GitHub before any merge decision; it is not a merge-ready patch.
 - Pass 124 code delta relative to Pass 120: five files (controller workflow, contract workflow, CLI, tests, validator).
 - Keep PR Draft/unmerged until D1 integration, independent review and governance gates pass.
 
