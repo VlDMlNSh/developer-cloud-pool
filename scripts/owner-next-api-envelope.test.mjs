@@ -106,6 +106,7 @@ test("API transport pins origin and rejects paths outside the repository", async
   assert.equal(new URL(calls[0]).origin, "https://api.github.com");
   await assert.rejects(apiGet("https://attacker.invalid/"), /GITHUB_API_PATH_NOT_ALLOWED/);
   await assert.rejects(apiGet("/repos/other/repo/issues/96"), /GITHUB_API_PATH_NOT_ALLOWED/);
+  await assert.rejects(apiGet("/repos/VlDMlNSh/developer-cloud-pool/%2e%2e/other"), /GITHUB_API_PATH_NOT_ALLOWED/);
 });
 
 test("API transport rejects oversized bodies", async () => {
