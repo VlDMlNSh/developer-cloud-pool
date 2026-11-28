@@ -13,13 +13,15 @@ const supervisor = read(".github/workflows/pool-supervisor.yml");
 const supervisorScript = read("scripts/pool-supervisor.mjs");
 const dsh = read(".github/workflows/dsh-runtime-evaluation.yml");
 const resource = read(".github/workflows/runner-resource-probe.yml");
+const ownerNextController = read(".github/workflows/next-event-controller.yml");
 
 const workflows = [
   ".github/workflows/pool-contract-validation.yml",
   ".github/workflows/pool-supervisor.yml",
   ".github/workflows/pool-worker.yml",
   ".github/workflows/dsh-runtime-evaluation.yml",
-  ".github/workflows/runner-resource-probe.yml"
+  ".github/workflows/runner-resource-probe.yml",
+  ".github/workflows/next-event-controller.yml"
 ].map((path) => [path, read(path)]);
 
 for (const [path, source] of workflows) {
