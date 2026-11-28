@@ -161,19 +161,19 @@ test("verifier rejects independently changed webhook fields and runner provenanc
     );
   }
   const envMutations = [
-    { ...env, GITHUB_REPOSITORY: "attacker/repo" },
-    { ...env, GITHUB_REF: "refs/heads/attacker" },
-    { ...env, GITHUB_SHA: "d".repeat(40) },
-    { ...env, GITHUB_WORKFLOW_REF: "attacker/workflow@refs/heads/Основной" },
-    { ...env, GITHUB_WORKFLOW_SHA: "e".repeat(40) },
-    { ...env, GITHUB_RUN_ID: "401" },
-    { ...env, GITHUB_RUN_ATTEMPT: "2" }
+    [{ ...env, GITHUB_REPOSITORY: "attacker/repo" }, /ACTIONS_EVENT_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_REF: "refs/heads/attacker" }, /ACTIONS_RUN_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_SHA: "d".repeat(40) }, /ACTIONS_RUN_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_WORKFLOW_REF: "attacker/workflow@refs/heads/Основной" }, /ACTIONS_RUN_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_WORKFLOW_SHA: "e".repeat(40) }, /ACTIONS_RUN_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_RUN_ID: "401" }, /ACTIONS_RUN_CROSSCHECK_FAILED/],
+    [{ ...env, GITHUB_RUN_ATTEMPT: "2" }, /ACTIONS_RUN_CROSSCHECK_FAILED/]
   ];
-  for (const changedEnv of envMutations) {
+  for (const [changedEnv, expected] of envMutations) {
     const context = mapGitHubActionsContext({ event, env: changedEnv });
     await assert.rejects(
       verifyOwnerNextEnvelopeForActions(result.sourceJson, result.digest, context),
-      /ACTIONS_RUN_CROSSCHECK_FAILED/
+      expected
     );
   }
 });
