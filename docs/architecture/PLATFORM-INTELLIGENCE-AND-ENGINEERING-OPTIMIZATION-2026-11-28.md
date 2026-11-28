@@ -263,5 +263,5 @@ GitHub's `issue_comment` workflow only triggers when the workflow file exists on
 
 - Added `docs/architecture/OWNER-NEXT-ISSUE-COMMENT-ACTIVATION-CONTRACT.md` and test/validator checks. The contract records the GitHub requirement that an `issue_comment` workflow must exist on the default branch before it triggers.
 - Fresh default-branch Contents read for `.github/workflows/next-event-controller.yml` remains NOT_FOUND. The tests verify policy structure/documentation but do not replace the live default-branch Contents check.
-- Pass 127 CI was not visible in the connector workflow-run lookup; no new run/job evidence is claimed. Local tests NOT RUN. Action migration is implemented but NOT VERIFIED by CI.
+- Pass 127 exact PR merge-result `1dc7db175f4eec559053cae536536911b0117df2` is verified by both job logs: D1 140/140 PASS and Pool Contract 37/37 PASS (`POOL_CONTRACT_VALIDATION=PASS`). CI still emits Node20 deprecation warnings from separate validation workflows' legacy action pins; controller workflow itself has Node24 pins but is not yet triggerable from default branch. Local tests NOT RUN. Independent security review NOT RUN.
 - PR #188 remains OPEN/DRAFT/UNMERGED; independent review and effective governance remain NOT VERIFIED.
