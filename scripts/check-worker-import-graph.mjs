@@ -13,14 +13,14 @@ const FORBIDDEN = new Set([
 ]);
 
 export function inspectWorkerImportGraph(entryPath, rootPath = path.dirname(entryPath)) {
-  const root = path.resolve(rootPath);
-  const entry = path.resolve(entryPath);
+  const root = fs.realpathSync(path.resolve(rootPath));
+  const entry = fs.realpathSync(path.resolve(entryPath));
   const queue = [entry];
   const visited = new Set();
   const edges = [];
 
   while (queue.length) {
-    const current = queue.shift();
+    const current = fs.realpathSync(queue.shift());
     if (visited.has(current)) continue;
     if (!current.startsWith(root + path.sep) && current !== root) {
       throw new Error("WORKER_IMPORT_ESCAPES_ROOT: " + path.relative(root, current));
@@ -41,8 +41,12 @@ export function inspectWorkerImportGraph(entryPath, rootPath = path.dirname(entr
       const candidates = path.extname(resolved)
         ? [resolved]
         : [resolved + ".mjs", resolved + ".js", resolved + ".ts", path.join(resolved, "index.mjs")];
-      const target = candidates.find(candidate => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
-      if (!target) throw new Error("WORKER_IMPORT_TARGET_MISSING: " + specifier);
+      const candidate = candidates.find(item => fs.existsSync(item) && fs.statSync(item).isFile());
+      if (!candidate) throw new Error("WORKER_IMPORT_TARGET_MISSING: " + specifier);
+      const target = fs.realpathSync(candidate);
+      if (!target.startsWith(root + path.sep) && target !== root) {
+        throw new Error("WORKER_IMPORT_ESCAPES_ROOT: " + path.relative(root, target));
+      }
       if (FORBIDDEN.has(path.basename(target))) {
         throw new Error("WORKER_FORBIDDEN_ADAPTER_REACHABLE: " + path.relative(root, target));
       }
