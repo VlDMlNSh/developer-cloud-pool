@@ -47,3 +47,20 @@ test("rejects dynamic, require and non-relative imports", () => {
     fs.rmSync(root, { recursive: true, force: true });
   }
 });
+
+
+test("rejects a symlink import that resolves outside the Worker source root", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "worker-graph-root-"));
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), "worker-graph-outside-"));
+  try {
+    const entry = path.join(root, "worker.mjs");
+    const external = path.join(outside, "external.mjs");
+    fs.writeFileSync(entry, 'import "./linked.mjs";');
+    fs.writeFileSync(external, "export const external = true;");
+    fs.symlinkSync(external, path.join(root, "linked.mjs"));
+    assert.throws(() => inspectWorkerImportGraph(entry, root), /WORKER_IMPORT_ESCAPES_ROOT/);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(outside, { recursive: true, force: true });
+  }
+});
