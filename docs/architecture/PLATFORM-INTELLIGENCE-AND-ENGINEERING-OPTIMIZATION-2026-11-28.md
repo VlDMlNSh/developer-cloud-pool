@@ -401,3 +401,7 @@ Primary sources:
 - Current stage: 2 — VERIFIED local integration proof; Stage 3 BLOCKED.
 - Contour A: BLOCKED / NOT ACCEPTED.
 - Contour B: DEFERRED.
+
+### Pass 136 estimate confidence clarification
+- Remaining 52–95 focused engineering hours: **LOW–MEDIUM confidence**. The range is based on currently evidenced missing capabilities and a work-package breakdown, not a measured velocity model. Re-estimate after the first 2–3 work packages and after independent security review reveals its findings.
+- External reviewer availability, owner approval latency, free-hosting feasibility and any newly discovered authorization constraints are excluded from active engineering effort and can extend calendar duration.
