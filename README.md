@@ -21,6 +21,7 @@ An independent project for a governed, cloud-first agent platform and Jarvis run
 - [20-slot cloud architecture](docs/architecture/CLOUD-POOL-20-RUNNER-ARCHITECTURE.md)
 - [Jarvis hybrid platform reference architecture](docs/architecture/JARVIS-HYBRID-PLATFORM-REFERENCE-ARCHITECTURE.md)
 - [DeepSeek Harness adoption and cloud-first build plan](docs/architecture/DEEPSEEK-HARNESS-ADOPTION-AND-CLOUD-FIRST-PLAN.md)
+- [CLI-Anything adoption and read-only Pool CLI contract](docs/architecture/CLI-ANYTHING-ADOPTION-AND-POOL-CLI.md)
 - [GitHub Pool Supervisor and recovery architecture](docs/architecture/GITHUB-POOL-SUPERVISOR-AND-RECOVERY.md)
 
 ## Cloud pool control
