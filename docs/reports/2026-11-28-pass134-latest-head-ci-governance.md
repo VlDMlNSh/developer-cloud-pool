@@ -58,3 +58,13 @@ Report: `docs/reports/2026-11-28-pass134-latest-head-ci-governance.md`
 Checkpoint: `docs/checkpoints/2026-11-28-pass134-latest-head-ci-governance.md`
 Context Window: `docs/context/GITHUB-CONTEXT-WINDOW.md`
 Canonical MediaHub map: https://github.com/VlDMlNSh/mediahub-os/blob/docs/mediahub-chat-tree-map-20261012/docs/architecture/MEDIAHUB-CHAT-TREE-MAP.md
+
+
+## Pass 134 CI closure addendum
+- The Pass 134 report/checkpoint/Context Window documentation commits advanced the PR to head `1566cb3f5660437baa40f5b605197ccc3b19df09` before this addendum.
+- Exact merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae` merges head `1566cb3f5660437baa40f5b605197ccc3b19df09` into base `565404f84b6b86afb4dc2d8fa939341f42df6eca`; both job logs explicitly show that checkout.
+- D1 run `46183777441`, job `141099004240`: SUCCESS; 9/9 files, 140/140 tests.
+- Pool Contract run `46183777429`, job `141099017601`: SUCCESS; 42/42 tests; controller CLI 5/5; `POOL_CONTRACT_VALIDATION=PASS`; `WORKER_IMPORT_GRAPH=PASS modules=1 edges=0`.
+- Thus 182/182 tests VERIFIED on exact merge-result `f1a129ecbfabdfc214d81d6e5fb72b376257f5ae`. This does not verify subsequent documentation-only commits.
+- Current governance remains unchanged: ruleset #26550182 required approvals=0; reviews=0; threads=0; independent security review NOT RUN; default-branch controller workflow NOT FOUND; dispatch variable NOT VERIFIED.
+- No dispatch, provider calls, executor, hosted D1 writes, deployment, merge or production mutation. Contour A BLOCKED / NOT ACCEPTED; Contour B DEFERRED.
